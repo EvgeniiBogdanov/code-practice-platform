@@ -1,0 +1,1 @@
+const memoFunc = useMemo(() => func(a, b), [a, b])

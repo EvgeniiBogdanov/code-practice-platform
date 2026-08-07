@@ -1,0 +1,107 @@
+import React from "react";
+import { Search, Code2, Zap, Brain } from "lucide-react";
+
+const SECTION_LABELS = {
+  react: { label: "REACT", icon: <Code2 size={12} style={{ color: "#61dafb" }} /> },
+  javascript: { label: "JS", icon: <Zap size={12} style={{ color: "#f59e0b" }} /> },
+  algorithms: { label: "ALGO", icon: <Brain size={12} style={{ color: "#a855f7" }} /> },
+};
+
+export const CommandPaletteModal = ({
+  paletteOpen,
+  setPaletteOpen,
+  paletteQuery,
+  setPaletteQuery,
+  allTasksList,
+  selectedTask,
+  setSelectedTask,
+  setActiveSection,
+  setActiveTab,
+  activeSection = "react",
+}) => {
+  if (!paletteOpen) return null;
+
+  // Filter tasks by current active section (home shows all)
+  const sectionTasks = activeSection === "home"
+    ? allTasksList
+    : allTasksList.filter((t) => t.section === activeSection);
+
+  const filteredTasks = sectionTasks.filter((t) =>
+    t.title.toLowerCase().includes(paletteQuery.toLowerCase()) ||
+    (t.category && t.category.toLowerCase().includes(paletteQuery.toLowerCase())) ||
+    (t.group && t.group.toLowerCase().includes(paletteQuery.toLowerCase()))
+  );
+
+  const sectionLabel = activeSection === "home"
+    ? "Все разделы"
+    : activeSection === "react"
+      ? "React"
+      : activeSection === "javascript"
+        ? "JavaScript"
+        : "Алгоритмы";
+
+  return (
+    <div
+      className="command-palette-overlay"
+      onClick={() => setPaletteOpen(false)}
+    >
+      <div
+        className="command-palette"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="command-palette-header">
+          <Search size={16} />
+          <input
+            autoFocus
+            placeholder={`Поиск задачи в разделе ${sectionLabel}...`}
+            value={paletteQuery}
+            onChange={(e) => setPaletteQuery(e.target.value)}
+            className="command-palette-input"
+          />
+          <kbd className="header-kbd">ESC</kbd>
+        </div>
+        <div className="command-palette-results">
+          {filteredTasks.map((task) => {
+            const sectionMeta = SECTION_LABELS[task.section] || SECTION_LABELS.react;
+            return (
+              <button
+                key={`${task.section}-${task.id}`}
+                className={`command-palette-item ${
+                  selectedTask?.id === task.id ? "active" : ""
+                }`}
+                onClick={() => {
+                  setActiveSection(task.section || "react");
+                  setSelectedTask(task);
+                  setPaletteOpen(false);
+                  setActiveTab("candidate");
+                }}
+              >
+                {activeSection === "home" && (
+                  <span className="palette-item-section-badge" style={{ display: "inline-flex", alignItems: "center", gap: "3px", fontSize: "10px", fontWeight: 600, padding: "1px 6px", borderRadius: "4px", background: "var(--notion-hover)", color: "var(--text-muted)", marginRight: "6px", flexShrink: 0 }}>
+                    {sectionMeta.icon} {sectionMeta.label}
+                  </span>
+                )}
+                <span className="palette-item-category">{task.category}</span>
+                <span className="palette-item-title">{task.title}</span>
+                {task.difficulty && (
+                  <span
+                    className={`difficulty-badge difficulty-${task.difficulty}`}
+                  >
+                    {task.difficulty}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+          {filteredTasks.length === 0 && (
+            <div className="command-palette-empty">
+              Ничего не найдено по запросу «{paletteQuery}» в разделе {sectionLabel}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CommandPaletteModal;

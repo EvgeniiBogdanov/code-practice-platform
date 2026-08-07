@@ -1,0 +1,1 @@
+const memoCallback = useCallback(() => func(a, b), [a, b])
