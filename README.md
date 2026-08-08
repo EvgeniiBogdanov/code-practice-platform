@@ -1,4 +1,4 @@
-# 🚀 Frontend Interview Playground & Practice `v2.0.2`
+# 🚀 Frontend Interview Playground & Practice `v2.0.3`
 
 <img width="1727" height="859" alt="v2-03" src="https://github.com/user-attachments/assets/ca9af402-5512-4091-92f6-b801d15d334d" />
 
