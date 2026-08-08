@@ -142,16 +142,30 @@ body {
 .header-left {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  min-width: 0;
+  flex: 1 1 auto;
 }
 
-/* Хлебные крошки в стиле Notion */
+/* Хлебные крошки в стиле Notion (адаптивная однострочная обрезка с троеточием) */
 .header-breadcrumbs {
   display: flex;
   align-items: center;
-  gap: 3px;
-  font-size: 14px;
+  gap: 2px;
+  font-size: 13.5px;
   font-family: var(--font-sans);
+  min-width: 0;
+  flex: 1 1 auto;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+}
+
+.breadcrumb-dropdown-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  flex-shrink: 1;
 }
 
 .breadcrumb-item {
@@ -161,9 +175,9 @@ body {
   background: transparent;
   border: none;
   color: var(--text-muted);
-  padding: 4px 7px;
+  padding: 4px 6px;
   border-radius: var(--radius-sm);
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 500;
   cursor: pointer;
   transition:
@@ -171,6 +185,29 @@ body {
     color var(--transition-hover);
   user-select: none;
   line-height: 1.2;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  flex-shrink: 1;
+}
+
+.breadcrumb-item svg,
+.breadcrumb-icon-wrapper {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.breadcrumb-text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  max-width: 100%;
+  flex: 1 1 auto;
+  display: block;
 }
 
 .breadcrumb-item:hover {
@@ -188,6 +225,7 @@ body {
   margin-left: 2px;
   opacity: 0.6;
   transition: transform 0.15s ease;
+  flex-shrink: 0;
 }
 
 .breadcrumb-task-btn:hover .breadcrumb-chevron {
@@ -198,6 +236,8 @@ body {
   color: rgba(255, 255, 255, 0.22);
   font-size: 11.5px;
   margin: 0 1px;
+  flex-shrink: 0;
+  user-select: none;
 }
 
 /* Выпадающее меню хлебных крошек */
@@ -247,12 +287,27 @@ body {
   border-bottom: 1px solid var(--border-color);
   background: rgba(255, 255, 255, 0.02);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.breadcrumb-dropdown-header span:not(svg) {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex: 1;
 }
 
 .breadcrumb-dropdown-list {
   padding: 4px;
   overflow-y: auto;
+  overflow-x: hidden;
   max-height: 320px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .breadcrumb-dropdown-item {
@@ -265,12 +320,25 @@ body {
   border: none;
   border-radius: var(--radius-sm);
   color: var(--text-main);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
   line-height: 1.3;
   cursor: pointer;
   text-align: left;
   transition: background var(--transition-hover);
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.breadcrumb-dropdown-item > span:first-child,
+.breadcrumb-dropdown-item > svg:first-child {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .breadcrumb-dropdown-item:hover {
@@ -285,10 +353,13 @@ body {
 }
 
 .dropdown-item-title {
-  flex: 1;
+  flex: 1 1 0%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  min-width: 0;
+  max-width: 100%;
+  display: block;
 }
 
 .dropdown-item-count {
@@ -459,6 +530,18 @@ body {
   transition:
     background var(--transition-hover),
     color var(--transition-hover);
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.sidebar-title span:not(.sidebar-chevron) {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex: 1;
 }
 
 .sidebar-title:hover {
@@ -479,6 +562,7 @@ body {
 /* Notion-style Nested Tree View */
 .notion-tree-group-block {
   margin-bottom: 4px;
+  min-width: 0;
 }
 
 .notion-tree-node-header {
@@ -495,6 +579,10 @@ body {
   transition:
     background var(--transition-hover),
     color var(--transition-hover);
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .notion-tree-node-header:hover {
@@ -811,6 +899,10 @@ body {
   border-radius: var(--radius-md) var(--radius-md) 0 0;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(8px);
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
 }
 
 .tab-link {
@@ -831,6 +923,24 @@ body {
     color var(--transition-fast),
     border-color var(--transition-fast),
     background var(--transition-hover);
+  min-width: 0;
+  max-width: 220px;
+  overflow: hidden;
+  white-space: nowrap;
+  flex-shrink: 1;
+}
+
+.tab-link svg {
+  flex-shrink: 0;
+}
+
+.tab-link span:not(svg) {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex: 1 1 0%;
+  display: block;
 }
 
 .tab-link:hover {
@@ -2367,18 +2477,7 @@ body {
   color: var(--text-main);
 }
 
-/* 10. Адаптивность для мобильных и планшетов */
-@media (max-width: 1024px) {
-  .sidebar {
-    position: fixed;
-    top: 44px;
-    bottom: 36px;
-    left: 0;
-    z-index: 500;
-    box-shadow: var(--shadow-popover);
-  }
-}
-
+/* 10. Адаптивность и адаптивные компоненты */
 @media (max-width: 768px) {
   .content-area {
     padding: 0 0 14px 0;
@@ -3140,7 +3239,8 @@ svg.lucide,
 
 .sidebar-workspace-info-wrapper {
   position: relative;
-  flex: 1;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .sidebar-workspace-info-btn {
@@ -3157,6 +3257,17 @@ svg.lucide,
   border-radius: var(--radius-sm);
   transition: background var(--transition-fast);
   width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.sidebar-workspace-info-btn span:not(.sidebar-section-chevron):not(svg) {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex: 1;
 }
 
 .sidebar-workspace-info-btn:hover {
@@ -3166,6 +3277,7 @@ svg.lucide,
 .sidebar-section-chevron {
   margin-left: auto;
   opacity: 0.5;
+  flex-shrink: 0;
 }
 
 .section-dropdown-menu {
@@ -3192,6 +3304,11 @@ svg.lucide,
   letter-spacing: 0.04em;
   color: var(--text-muted);
   padding: 6px 8px 4px 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .section-dropdown-item {
@@ -3209,6 +3326,25 @@ svg.lucide,
   width: 100%;
   text-align: left;
   transition: background var(--transition-fast);
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.section-dropdown-item svg {
+  flex-shrink: 0;
+}
+
+.section-dropdown-item > span:not(.section-badge) {
+  flex: 1 1 0%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  max-width: 100%;
+  display: block;
 }
 
 .section-dropdown-item:hover {
@@ -3946,6 +4082,14 @@ svg.lucide,
   transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   user-select: none;
   white-space: nowrap;
+  min-width: 0;
+  max-width: 180px;
+  overflow: hidden;
+  flex-shrink: 1;
+}
+
+.vscode-file-tab svg {
+  flex-shrink: 0;
 }
 
 .vscode-file-tab:hover {
@@ -3962,6 +4106,12 @@ svg.lucide,
 
 .vscode-file-tab .file-tab-name {
   line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex: 1 1 0%;
+  display: block;
 }
 
 .vscode-editor-actions {
@@ -5501,6 +5651,139 @@ svg.lucide,
   100% {
     opacity: 1;
     transform: translateX(-50%) scale(1);
+  }
+}
+
+/* ==========================================================================
+   MODERN STANDARD BREAKPOINT ENGINE (NOTION & MODERN WEB STANDARDS)
+   1. Mobile Small (XS): < 480px
+   2. Mobile & Tablet (MD): <= 768px (Notion Overlay Drawer)
+   3. Desktop Inline Split (LG): > 768px
+   4. Small Laptop / Compact Desktop: 1024px - 1279px
+   5. Large Widescreen Desktop (XL/2XL): >= 1280px
+   ========================================================================== */
+
+/* 1. Mobile Small (XS): < 480px */
+@media (max-width: 479.98px) {
+  .header-left {
+    gap: 4px;
+  }
+
+  .breadcrumb-item {
+    padding: 3px 4px;
+    font-size: 12px;
+    max-width: 110px;
+  }
+
+  .breadcrumb-separator {
+    font-size: 10px;
+    margin: 0;
+  }
+
+  .vscode-file-tab {
+    max-width: 110px;
+    padding: 2px 6px;
+    font-size: 10.5px;
+  }
+
+  .tabs-header {
+    padding: 0 4px;
+    gap: 2px;
+  }
+
+  .tab-link {
+    padding: 7px 8px;
+    font-size: 12.5px;
+    max-width: 130px;
+  }
+
+  .console-info-section {
+    padding: 4px 8px;
+  }
+}
+
+/* 2. Mobile & Tablet (<= 768px) -> Notion Overlay Drawer */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    width: 285px !important;
+    max-width: 85vw !important;
+    z-index: 2000 !important;
+    box-shadow: 8px 0 32px rgba(0, 0, 0, 0.65) !important;
+    transform: translateX(0) !important;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .sidebar.sidebar-collapsed {
+    transform: translateX(-100%) !important;
+    box-shadow: none !important;
+    pointer-events: none !important;
+  }
+
+  /* Backdrop blur overlay */
+  .sidebar-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    z-index: 1999;
+    animation: fadeInBackdrop 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  /* Always show panel toggle button in header on mobile */
+  .app-header .sidebar-toggle-btn {
+    display: inline-flex !important;
+  }
+
+  .desktop-hidden {
+    display: inline-flex !important;
+  }
+}
+
+@keyframes fadeInBackdrop {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 3. Desktop (> 768px) -> Inline Split Pane Layout */
+@media (min-width: 769px) {
+  .sidebar-backdrop {
+    display: none !important;
+  }
+
+  .desktop-hidden {
+    display: none !important;
+  }
+}
+
+/* 4. Small Laptop / Compact Desktop (1024px - 1279px) */
+@media (min-width: 1024px) and (max-width: 1279.98px) {
+  .sidebar {
+    width: 260px;
+  }
+}
+
+/* 5. Standard Desktop (>= 1280px) */
+@media (min-width: 1280px) {
+  .sidebar {
+    width: 280px;
   }
 }
 

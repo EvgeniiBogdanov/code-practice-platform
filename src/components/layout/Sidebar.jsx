@@ -94,6 +94,24 @@ export const Sidebar = ({
     }));
   };
 
+  const handleTaskClick = (task) => {
+    setSelectedTask(task);
+    if (setActiveTab) setActiveTab("candidate");
+    if (typeof window !== "undefined" && window.innerWidth <= 768) {
+      setSidebarOpen(false);
+    }
+  };
+
+  React.useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape" && sidebarOpen && typeof window !== "undefined" && window.innerWidth <= 768) {
+        setSidebarOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [sidebarOpen, setSidebarOpen]);
+
   React.useEffect(() => {
     // Единый паттерн для всех корневых разделов: при переключении все группы и подгруппы свернуты
     setExpandedJsGroups({});
@@ -222,10 +240,7 @@ export const Sidebar = ({
                   {WARMUP_TASKS.filter(isTaskVisible).map((task) => (
                     <button
                       key={task.id}
-                      onClick={() => {
-                        setSelectedTask(task);
-                        setActiveTab("candidate");
-                      }}
+                      onClick={() => handleTaskClick(task)}
                       className={`task-btn notion-tree-task-btn ${selectedTask?.id === task.id ? "active" : ""}`}
                       onMouseEnter={(e) => showTooltip(e, task.title)}
                       onMouseLeave={hideTooltip}
@@ -266,10 +281,7 @@ export const Sidebar = ({
                   {REFACTORING_TASKS.filter(isTaskVisible).map((task) => (
                     <button
                       key={task.id}
-                      onClick={() => {
-                        setSelectedTask(task);
-                        setActiveTab("candidate");
-                      }}
+                      onClick={() => handleTaskClick(task)}
                       className={`task-btn notion-tree-task-btn ${selectedTask?.id === task.id ? "active" : ""}`}
                       onMouseEnter={(e) => showTooltip(e, task.title)}
                       onMouseLeave={hideTooltip}
@@ -310,10 +322,7 @@ export const Sidebar = ({
                   {MAIN_TASKS.filter(isTaskVisible).map((task) => (
                     <button
                       key={task.id}
-                      onClick={() => {
-                        setSelectedTask(task);
-                        setActiveTab("candidate");
-                      }}
+                      onClick={() => handleTaskClick(task)}
                       className={`task-btn notion-tree-task-btn ${selectedTask?.id === task.id ? "active" : ""}`}
                       onMouseEnter={(e) => showTooltip(e, task.title)}
                       onMouseLeave={hideTooltip}
@@ -354,10 +363,7 @@ export const Sidebar = ({
                   {ADVANCED_TASKS.filter(isTaskVisible).map((task) => (
                     <button
                       key={task.id}
-                      onClick={() => {
-                        setSelectedTask(task);
-                        setActiveTab("candidate");
-                      }}
+                      onClick={() => handleTaskClick(task)}
                       className={`task-btn notion-tree-task-btn ${selectedTask?.id === task.id ? "active" : ""}`}
                       onMouseEnter={(e) => showTooltip(e, task.title)}
                       onMouseLeave={hideTooltip}
@@ -398,10 +404,7 @@ export const Sidebar = ({
                   {REACT_TS_TASKS.filter(isTaskVisible).map((task) => (
                     <button
                       key={task.id}
-                      onClick={() => {
-                        setSelectedTask(task);
-                        setActiveTab("candidate");
-                      }}
+                      onClick={() => handleTaskClick(task)}
                       className={`task-btn notion-tree-task-btn ${selectedTask?.id === task.id ? "active" : ""}`}
                       onMouseEnter={(e) => showTooltip(e, task.title)}
                       onMouseLeave={hideTooltip}
@@ -604,10 +607,7 @@ export const Sidebar = ({
                                     {tasks.filter(isTaskVisible).map((task) => (
                                       <button
                                         key={task.id}
-                                        onClick={() => {
-                                          setSelectedTask(task);
-                                          setActiveTab("candidate");
-                                        }}
+                                        onClick={() => handleTaskClick(task)}
                                         className={`task-btn notion-tree-task-btn ${
                                           selectedTask?.id === task.id ? "active" : ""
                                         }`}
