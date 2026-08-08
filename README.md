@@ -2,11 +2,11 @@
 
 # 🚀 Frontend Interview Playground & Practice
 
-### Интерактивная платформа для подготовки к техническим собеседованиям по React и JavaScript
+### Интерактивная платформа для подготовки к техническим собеседованиям и просто практики.
 
-**`v2.0.3`** · От Junior до Lead · 250+ реальных задач с собеседований
+**`v2.0.4`** · От Junior до Lead · 250+ реальных задач разной сложности
 
-[![🌐 Онлайн-версия](https://img.shields.io/badge/🌐_Открыть_online-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://evgeniibogdanov.github.io/frontend-practice/)
+[![Онлайн-версия](https://img.shields.io/badge/🌐_Открыть_online-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://evgeniibogdanov.github.io/frontend-practice/)
 
 ---
 
@@ -45,7 +45,8 @@
 
 ## 📖 О проекте
 
-<img width="1727" height="859" alt="v2-03 preview" src="https://github.com/user-attachments/assets/ca9af402-5512-4091-92f6-b801d15d334d" />
+<img width="1722" height="909" alt="v2-04" src="https://github.com/user-attachments/assets/369a691d-9f9c-4332-8d3d-cabe6969d562" />
+<img width="1728" height="912" alt="v2-04-code" src="https://github.com/user-attachments/assets/330215ab-f704-4131-83a6-5b5103f693e5" />
 
 **Frontend Interview Playground** — это интерактивная платформа для подготовки к техническим собеседованиям по **React** и **JavaScript** (от уровня **Junior** до **Lead**). Платформа содержит более **250 практических задач с реальных интервью**, разборы антипаттернов в кодe кандидатов, эталонные решения и интерактивные шпаргалки.
 
@@ -53,8 +54,8 @@
 
 > 🌐 **Быстрый доступ:**
 >
-> - **[🚀 Открыть интерактивную онлайн-версию](https://evgeniibogdanov.github.io/frontend-practice/)** — *без локальной установки, редактор в браузере*
-> - **[📥 Перейти к инструкции по локальной установке](#-пошаговая-установка-и-запуск)** — *для практики в связке с IDE*
+> - **[🚀 Открыть онлайн-версию](https://evgeniibogdanov.github.io/frontend-practice/)** — *без локальной установки, редактор в браузере*
+> - **[📥 Перейти к инструкции по локальной установке](#-пошаговая-установка-и-запуск)** — *для практики в связке с IDE (находите файл в проекте, редактируете, и он синхронизурется с браузером)*
 
 <div align="right">[ <a href="#-frontend-interview-playground--practice">⬆ Наверх</a> ]</div>
 

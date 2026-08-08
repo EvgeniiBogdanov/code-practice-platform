@@ -77,7 +77,6 @@ export const HomeDashboard = ({
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <h1 className="notion-page-title">Обзор платформы</h1>
-          <span className="notion-tag blue" style={{ fontSize: "12px", padding: "2px 8px", borderRadius: "12px", fontWeight: "600" }}>v1.0</span>
         </div>
         <p className="notion-page-subtitle">
           Интерактивная среда для подготовки к Frontend-собеседованиям. Практика на реальных задачах, кандидатский код, эталонные решения и разборы теории.

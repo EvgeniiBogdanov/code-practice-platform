@@ -29,34 +29,39 @@ export const MaterialsTab = ({ selectedTask }) => {
   if (!hasExplanation && !hasArticles) {
     return (
       <div
+        className="materials-empty-state"
         style={{
-          color: "#888888",
+          color: "var(--text-muted)",
           fontStyle: "italic",
-          padding: "20px 0",
+          padding: "30px 20px",
+          textAlign: "center",
         }}
       >
-        Материалы и разбор для данной задачи формируются.
+        <div>Материалы и разбор для данной задачи формируются.</div>
       </div>
     );
   }
 
   return (
-    <div className="materials-tab-container" style={{ display: "flex", flexDirection: "column", gap: "8px", width: "100%" }}>
+    <div className="materials-tab-container" style={{ display: "flex", flexDirection: "column", gap: "24px", width: "100%" }}>
       {hasExplanation && (
-        <div
-          className="solution-explanation-card"
-          style={{ marginTop: 0, marginBottom: 0 }}
-        >
-          <div className="solution-explanation-header">
-            <span>💡</span> Разбор решения
-          </div>
+        <article className="notion-article-page">
+          <header className="notion-article-header">
+            <h1 className="notion-article-title">
+              Разбор решения: {selectedTask.title}
+            </h1>
+          </header>
+
+          <hr className="notion-article-divider" />
+
+          {/* Notion Article Body */}
           <div
-            className="solution-explanation-body"
+            className="notion-article-content"
             dangerouslySetInnerHTML={{
               __html: parseMarkdown(explanationText),
             }}
           />
-        </div>
+        </article>
       )}
 
       {hasArticles && (

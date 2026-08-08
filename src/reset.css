@@ -591,3 +591,91 @@ button:disabled,
   background-repeat: no-repeat !important;
 }
 
+/* --------------------------------------------------------------------------
+   5. GLOBAL LIGHT THEME FORM CONTROLS OVERRIDES ([data-theme="light"])
+   Global light theme overrides for inputs, search, textareas, selects & checkboxes
+   -------------------------------------------------------------------------- */
+
+[data-theme="light"] input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="range"]):not([type="file"]):not(.vscode-input-textarea),
+[data-theme="light"] input:not([type]),
+[data-theme="light"] input[type="text"],
+[data-theme="light"] input[type="search"],
+[data-theme="light"] input[type="password"],
+[data-theme="light"] input[type="email"],
+[data-theme="light"] input[type="number"],
+[data-theme="light"] input[type="date"],
+[data-theme="light"] input[type="time"],
+[data-theme="light"] input[type="datetime-local"],
+[data-theme="light"] input[type="month"],
+[data-theme="light"] input[type="week"],
+[data-theme="light"] input[type="tel"],
+[data-theme="light"] input[type="url"],
+[data-theme="light"] textarea:not(.vscode-input-textarea) {
+  color-scheme: light;
+  background-color: #ffffff;
+  border: 1px solid rgba(55, 53, 47, 0.22);
+  color: #191919;
+}
+
+[data-theme="light"] input::placeholder,
+[data-theme="light"] textarea:not(.vscode-input-textarea)::placeholder {
+  color: rgba(55, 53, 47, 0.45);
+  opacity: 1;
+}
+
+[data-theme="light"] input:not([type="checkbox"]):not([type="radio"]):not(.vscode-input-textarea):hover,
+[data-theme="light"] textarea:not(.vscode-input-textarea):hover {
+  border-color: rgba(55, 53, 47, 0.4);
+  background-color: #f9f9f8;
+}
+
+[data-theme="light"] input:not([type="checkbox"]):not([type="radio"]):not(.vscode-input-textarea):focus,
+[data-theme="light"] textarea:not(.vscode-input-textarea):focus {
+  border-color: var(--notion-blue, #0066cc);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
+}
+
+[data-theme="light"] select {
+  color-scheme: light;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%23374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>');
+  border: 1px solid rgba(55, 53, 47, 0.22);
+  color: #191919;
+}
+
+[data-theme="light"] select:hover {
+  border-color: rgba(55, 53, 47, 0.4);
+  background-color: #f9f9f8;
+}
+
+[data-theme="light"] select:focus {
+  border-color: var(--notion-blue, #0066cc);
+  box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
+}
+
+[data-theme="light"] select option {
+  background-color: #ffffff;
+  color: #191919;
+}
+
+[data-theme="light"] input[type="checkbox"],
+[data-theme="light"] input[type="radio"] {
+  color-scheme: light;
+  background-color: #ffffff;
+  border: 1px solid rgba(55, 53, 47, 0.35);
+}
+
+[data-theme="light"] input[type="checkbox"]:hover,
+[data-theme="light"] input[type="radio"]:hover {
+  border-color: rgba(55, 53, 47, 0.6);
+  background-color: #f4f4f2;
+}
+
+[data-theme="light"] input[type="checkbox"]:checked,
+[data-theme="light"] input[type="radio"]:checked {
+  background-color: var(--notion-blue, #0066cc);
+  border-color: var(--notion-blue, #0066cc);
+}
+
+

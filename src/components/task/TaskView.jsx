@@ -46,9 +46,6 @@ export const TaskView = ({
                 </span>
               )}
             </h2>
-            <span className="task-filepath">
-              Файл: <code>{activeTask.filepath}</code>
-            </span>
           </div>
           <div style={{ display: "flex", gap: "8px", flexShrink: 0 }}>
             <button
@@ -117,7 +114,7 @@ export const TaskView = ({
               onClick={() => setActiveTab("questions")}
             >
               <HelpCircle size={14} style={{ color: "#a855f7" }} />
-              <span>Вопросы (собеседование)</span>
+              <span>Вопросы ({activeTask.interviewerQuestions ? activeTask.interviewerQuestions.length : 0})</span>
             </button>
             <button
               className={`tab-link ${activeTab === "checklist" ? "active" : ""}`}

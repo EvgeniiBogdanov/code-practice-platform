@@ -35,6 +35,7 @@ export const CodeEditor = ({
   files = [],
   activeFileIdx = 0,
   onFileSelect,
+  bottomConsole = null,
 }) => {
   const storageKey = `playground_js_code_${taskId}`;
 
@@ -51,6 +52,18 @@ export const CodeEditor = ({
 
   const [copied, setCopied] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+
+  useEffect(() => {
+    if (!isFullscreen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape" || e.key === "F11") {
+        e.preventDefault();
+        setIsFullscreen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isFullscreen]);
   const [wordWrap, setWordWrap] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [cursorPos, setCursorPos] = useState({ line: 1, col: 1, selectedLength: 0 });
@@ -588,6 +601,29 @@ export const CodeEditor = ({
             <WrapText size={14} />
           </button>
 
+          {isCodeModified && (
+            <button
+              className="vscode-icon-btn"
+              onClick={handleReset}
+              data-tooltip="Сбросить код к исходному шаблону"
+            >
+              <RotateCcw size={14} />
+            </button>
+          )}
+
+          {/* Кнопка копирования: только иконка */}
+          <button
+            className="vscode-icon-btn"
+            onClick={handleCopy}
+            data-tooltip={copied ? "Скопировано в буфер обмена" : "Скопировать код решения"}
+          >
+            {copied ? (
+              <Check size={14} style={{ color: "#10b981" }} />
+            ) : (
+              <Copy size={14} />
+            )}
+          </button>
+
           <button
             className="vscode-icon-btn"
             onClick={handleDecreaseFontSize}
@@ -611,29 +647,6 @@ export const CodeEditor = ({
             }
           >
             <ZoomIn size={14} />
-          </button>
-
-          {isCodeModified && (
-            <button
-              className="vscode-icon-btn"
-              onClick={handleReset}
-              data-tooltip="Сбросить код к исходному шаблону"
-            >
-              <RotateCcw size={14} />
-            </button>
-          )}
-
-          {/* Кнопка копирования: только иконка */}
-          <button
-            className="vscode-icon-btn"
-            onClick={handleCopy}
-            data-tooltip={copied ? "Скопировано в буфер обмена" : "Скопировать код решения"}
-          >
-            {copied ? (
-              <Check size={14} style={{ color: "#10b981" }} />
-            ) : (
-              <Copy size={14} />
-            )}
           </button>
 
           <button
@@ -743,44 +756,52 @@ export const CodeEditor = ({
       </div>
 
       {/* Минималистичный статус-бар с проверкой орфографии */}
-      <div className="vscode-status-bar">
-        <div className="status-left">
-          {diagnostics.errorCount > 0 ? (
-            <span className="status-item status-typo-warning" title="Обнаружена синтаксическая опечатка">
-              <AlertCircle size={11} style={{ color: "#f87171" }} />
-              <span>
-                {diagnostics.errorCount} {diagnostics.errorCount === 1 ? "ошибка" : "ошибок"}
-                {activeTypo && `: ${activeTypo.typo} → ${activeTypo.correct}`}
+      {!bottomConsole && (
+        <div className="vscode-status-bar">
+          <div className="status-left">
+            {diagnostics.errorCount > 0 ? (
+              <span className="status-item status-typo-warning" title="Обнаружена синтаксическая опечатка">
+                <AlertCircle size={11} style={{ color: "#f87171" }} />
+                <span>
+                  {diagnostics.errorCount} {diagnostics.errorCount === 1 ? "ошибка" : "ошибок"}
+                  {activeTypo && `: ${activeTypo.typo} → ${activeTypo.correct}`}
+                </span>
               </span>
+            ) : (
+              <span className="status-item status-typo-ok">
+                <CheckCircle2 size={11} style={{ color: "#34d399" }} />
+                <span>Синтаксис корректен</span>
+              </span>
+            )}
+
+            <span className="status-sep">|</span>
+
+            <span className="status-item status-coords">
+              Стр {cursorPos.line}, Кол {cursorPos.col}
             </span>
-          ) : (
-            <span className="status-item status-typo-ok">
-              <CheckCircle2 size={11} style={{ color: "#34d399" }} />
-              <span>Синтаксис корректен</span>
+            <span className="status-sep">|</span>
+            <span className="status-item">
+              {lineCount} {lineCount === 1 ? "строка" : lineCount < 5 ? "строки" : "строк"} ({code.length} симв)
             </span>
-          )}
+          </div>
 
-          <span className="status-sep">|</span>
-
-          <span className="status-item status-coords">
-            Стр {cursorPos.line}, Кол {cursorPos.col}
-          </span>
-          <span className="status-sep">|</span>
-          <span className="status-item">
-            {lineCount} {lineCount === 1 ? "строка" : lineCount < 5 ? "строки" : "строк"} ({code.length} симв)
-          </span>
+          <div className="status-right">
+            <span className="status-item">Пробелы: 2</span>
+            <span className="status-sep">|</span>
+            <span className="status-item">UTF-8</span>
+            <span className="status-sep">|</span>
+            <span className="status-item lang-tag" title={`Язык синтаксиса: ${langInfo.name}`}>
+              <Code2 size={11} style={{ color: langInfo.color }} /> {langInfo.name}
+            </span>
+          </div>
         </div>
+      )}
 
-        <div className="status-right">
-          <span className="status-item">Пробелы: 2</span>
-          <span className="status-sep">|</span>
-          <span className="status-item">UTF-8</span>
-          <span className="status-sep">|</span>
-          <span className="status-item lang-tag" title={`Язык синтаксиса: ${langInfo.name}`}>
-            <Code2 size={11} style={{ color: langInfo.color }} /> {langInfo.name}
-          </span>
+      {bottomConsole && (
+        <div className="vscode-editor-bottom-console">
+          {bottomConsole}
         </div>
-      </div>
+      )}
     </div>
   );
 };
