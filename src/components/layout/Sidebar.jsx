@@ -32,6 +32,8 @@ import { getGroupMeta } from "../../javascript/data/groupConfig";
 export const Sidebar = ({
   sidebarOpen,
   setSidebarOpen,
+  sidebarWidth = 260,
+  setSidebarWidth,
   activeSection,
   setActiveSection,
   sectionDropdownOpen,
@@ -79,6 +81,49 @@ export const Sidebar = ({
 }) => {
   const [expandedJsGroups, setExpandedJsGroups] = React.useState({});
   const [expandedJsSubgroups, setExpandedJsSubgroups] = React.useState({});
+  const [isResizing, setIsResizing] = React.useState(false);
+
+  const startResizing = React.useCallback(
+    (mouseDownEvent) => {
+      mouseDownEvent.preventDefault();
+      setIsResizing(true);
+
+      const startX = mouseDownEvent.clientX;
+      const startWidth = sidebarWidth;
+
+      const handleMouseMove = (mouseMoveEvent) => {
+        const deltaX = mouseMoveEvent.clientX - startX;
+        const newWidth = Math.min(Math.max(startWidth + deltaX, 200), 480);
+        if (setSidebarWidth) {
+          setSidebarWidth(newWidth);
+        }
+      };
+
+      const handleMouseUp = () => {
+        setIsResizing(false);
+        document.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mouseup", handleMouseUp);
+        document.body.style.cursor = "";
+        document.body.style.userSelect = "";
+      };
+
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+      document.body.style.cursor = "col-resize";
+      document.body.style.userSelect = "none";
+    },
+    [sidebarWidth, setSidebarWidth]
+  );
+
+  const handleResetWidth = React.useCallback(
+    (e) => {
+      e.preventDefault();
+      if (setSidebarWidth) {
+        setSidebarWidth(260);
+      }
+    },
+    [setSidebarWidth]
+  );
 
   const toggleJsGroup = (groupName) => {
     setExpandedJsGroups((prev) => ({
@@ -128,7 +173,14 @@ export const Sidebar = ({
   const totalJsCount = JS_TASKS.length;
 
   return (
-    <aside className={`sidebar ${sidebarOpen ? "" : "sidebar-collapsed"}`}>
+    <aside
+      className={`sidebar ${sidebarOpen ? "" : "sidebar-collapsed"} ${isResizing ? "is-resizing" : ""}`}
+      style={
+        sidebarOpen
+          ? { width: `${sidebarWidth}px`, minWidth: `${sidebarWidth}px`, maxWidth: `${sidebarWidth}px` }
+          : undefined
+      }
+    >
       <div className="sidebar-header">
         <div className="sidebar-workspace-info-wrapper" ref={sectionDropdownRef}>
           <button
@@ -136,11 +188,11 @@ export const Sidebar = ({
             onClick={() => setSectionDropdownOpen((prev) => !prev)}
             title="Переключить раздел платформы"
           >
-            {activeSection === "home" && <><Home size={16} style={{ color: "#60a5fa" }} /> <span>ГЛАВНАЯ</span></>}
-            {activeSection === "react" && <><Code2 size={16} style={{ color: "#61dafb" }} /> <span>REACT</span></>}
-            {activeSection === "javascript" && <><Zap size={16} style={{ color: "#f59e0b" }} /> <span>JAVASCRIPT</span></>}
-            {activeSection === "algorithms" && <><Brain size={16} style={{ color: "#a855f7" }} /> <span>АЛГОРИТМЫ</span></>}
-            <ChevronDown size={14} className="sidebar-section-chevron" />
+            {activeSection === "home" && <><Home size={15} style={{ color: "#60a5fa" }} /> <span>ГЛАВНАЯ</span></>}
+            {activeSection === "react" && <><Code2 size={15} style={{ color: "#61dafb" }} /> <span>REACT</span></>}
+            {activeSection === "javascript" && <><Zap size={15} style={{ color: "#f59e0b" }} /> <span>JAVASCRIPT</span></>}
+            {activeSection === "algorithms" && <><Brain size={15} style={{ color: "#a855f7" }} /> <span>АЛГОРИТМЫ</span></>}
+            <ChevronDown size={13} className="sidebar-section-chevron" />
           </button>
 
           {sectionDropdownOpen && renderSectionDropdownMenu(() => setSectionDropdownOpen(false))}
@@ -150,7 +202,7 @@ export const Sidebar = ({
           onClick={() => setSidebarOpen(false)}
           title="Свернуть боковую панель"
         >
-          <PanelLeftClose size={16} />
+          <PanelLeftClose size={15} />
         </button>
       </div>
 
@@ -168,7 +220,7 @@ export const Sidebar = ({
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  marginBottom: "8px",
+                  marginBottom: "6px",
                 }}
               >
                 <span
@@ -177,14 +229,14 @@ export const Sidebar = ({
                     fontSize: "11px",
                     fontWeight: "600",
                     textTransform: "uppercase",
-                    letterSpacing: "0.05em",
+                    letterSpacing: "0.04em",
                     fontFamily: "var(--font-sans)",
                     display: "flex",
                     alignItems: "center",
-                    gap: "6px",
+                    gap: "5px",
                   }}
                 >
-                  <CheckSquare size={14} /> Выполнено задач
+                  <CheckSquare size={13} /> Выполнено задач
                 </span>
                 <span
                   style={{
@@ -224,10 +276,10 @@ export const Sidebar = ({
                 onClick={() => setWarmupExpanded(!warmupExpanded)}
               >
                 <ChevronRight
-                  size={14}
+                  size={13}
                   className={`sidebar-chevron ${warmupExpanded ? "expanded" : ""}`}
                 />
-                <Flame size={14} style={{ color: "#ff6b6b" }} />
+                <Flame size={15} style={{ color: "#ff6b6b" }} />
                 <span className="node-title">Разминка</span>
                 <span className={`node-count ${completedWarmup > 0 && completedWarmup === totalWarmup ? "completed" : ""}`}>
                   {completedWarmup}/{totalWarmup}
@@ -245,7 +297,7 @@ export const Sidebar = ({
                       onMouseEnter={(e) => showTooltip(e, task.title)}
                       onMouseLeave={hideTooltip}
                     >
-                      <span className="task-btn-title"><FileText size={13} style={{ color: "#94a3b8" }} /> {task.title}</span>
+                      <span className="task-btn-title"><FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} /><span className="task-btn-text">{task.title}</span></span>
                       {completedTasks[task.id] &&
                         (completedTasks[task.id] === "unsolved" ? (
                           <span className="dropdown-item-unsolved"><X size={12} /></span>
@@ -265,10 +317,10 @@ export const Sidebar = ({
                 onClick={() => setRefactoringExpanded(!refactoringExpanded)}
               >
                 <ChevronRight
-                  size={14}
+                  size={13}
                   className={`sidebar-chevron ${refactoringExpanded ? "expanded" : ""}`}
                 />
-                <Wrench size={14} style={{ color: "#3b82f6" }} />
+                <Wrench size={15} style={{ color: "#3b82f6" }} />
                 <span className="node-title">Рефакторинг</span>
                 <span className={`node-count ${completedRefactoring > 0 && completedRefactoring === totalRefactoring ? "completed" : ""}`}>
                   {completedRefactoring}/{totalRefactoring}
@@ -286,7 +338,7 @@ export const Sidebar = ({
                       onMouseEnter={(e) => showTooltip(e, task.title)}
                       onMouseLeave={hideTooltip}
                     >
-                      <span className="task-btn-title"><FileText size={13} style={{ color: "#94a3b8" }} /> {task.title}</span>
+                      <span className="task-btn-title"><FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} /><span className="task-btn-text">{task.title}</span></span>
                       {completedTasks[task.id] &&
                         (completedTasks[task.id] === "unsolved" ? (
                           <span className="dropdown-item-unsolved"><X size={12} /></span>
@@ -306,10 +358,10 @@ export const Sidebar = ({
                 onClick={() => setTasksExpanded(!tasksExpanded)}
               >
                 <ChevronRight
-                  size={14}
+                  size={13}
                   className={`sidebar-chevron ${tasksExpanded ? "expanded" : ""}`}
                 />
-                <Rocket size={14} style={{ color: "#10b981" }} />
+                <Rocket size={15} style={{ color: "#10b981" }} />
                 <span className="node-title">Middle</span>
                 <span className={`node-count ${completedMain > 0 && completedMain === totalMain ? "completed" : ""}`}>
                   {completedMain}/{totalMain}
@@ -327,7 +379,7 @@ export const Sidebar = ({
                       onMouseEnter={(e) => showTooltip(e, task.title)}
                       onMouseLeave={hideTooltip}
                     >
-                      <span className="task-btn-title"><FileText size={13} style={{ color: "#94a3b8" }} /> {task.title}</span>
+                      <span className="task-btn-title"><FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} /><span className="task-btn-text">{task.title}</span></span>
                       {completedTasks[task.id] &&
                         (completedTasks[task.id] === "unsolved" ? (
                           <span className="dropdown-item-unsolved"><X size={12} /></span>
@@ -347,10 +399,10 @@ export const Sidebar = ({
                 onClick={() => setAdvancedExpanded(!advancedExpanded)}
               >
                 <ChevronRight
-                  size={14}
+                  size={13}
                   className={`sidebar-chevron ${advancedExpanded ? "expanded" : ""}`}
                 />
-                <Brain size={14} style={{ color: "#a855f7" }} />
+                <Brain size={15} style={{ color: "#a855f7" }} />
                 <span className="node-title">Strong</span>
                 <span className={`node-count ${completedAdvanced > 0 && completedAdvanced === totalAdvanced ? "completed" : ""}`}>
                   {completedAdvanced}/{totalAdvanced}
@@ -368,7 +420,7 @@ export const Sidebar = ({
                       onMouseEnter={(e) => showTooltip(e, task.title)}
                       onMouseLeave={hideTooltip}
                     >
-                      <span className="task-btn-title"><FileText size={13} style={{ color: "#94a3b8" }} /> {task.title}</span>
+                      <span className="task-btn-title"><FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} /><span className="task-btn-text">{task.title}</span></span>
                       {completedTasks[task.id] &&
                         (completedTasks[task.id] === "unsolved" ? (
                           <span className="dropdown-item-unsolved"><X size={12} /></span>
@@ -388,10 +440,10 @@ export const Sidebar = ({
                 onClick={() => setReactTsExpanded(!reactTsExpanded)}
               >
                 <ChevronRight
-                  size={14}
+                  size={13}
                   className={`sidebar-chevron ${reactTsExpanded ? "expanded" : ""}`}
                 />
-                <Zap size={14} style={{ color: "#eab308" }} />
+                <Zap size={15} style={{ color: "#eab308" }} />
                 <span className="node-title">React + TS (Разминка)</span>
                 <span className={`node-count ${completedReactTs > 0 && completedReactTs === totalReactTs ? "completed" : ""}`}>
                   {completedReactTs}/{totalReactTs}
@@ -409,7 +461,7 @@ export const Sidebar = ({
                       onMouseEnter={(e) => showTooltip(e, task.title)}
                       onMouseLeave={hideTooltip}
                     >
-                      <span className="task-btn-title"><FileText size={13} style={{ color: "#94a3b8" }} /> {task.title}</span>
+                      <span className="task-btn-title"><FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} /><span className="task-btn-text">{task.title}</span></span>
                       {completedTasks[task.id] &&
                         (completedTasks[task.id] === "unsolved" ? (
                           <span className="dropdown-item-unsolved"><X size={12} /></span>
@@ -429,10 +481,10 @@ export const Sidebar = ({
                 onClick={() => setReactTsPracticeExpanded(!reactTsPracticeExpanded)}
               >
                 <ChevronRight
-                  size={14}
+                  size={13}
                   className={`sidebar-chevron ${reactTsPracticeExpanded ? "expanded" : ""}`}
                 />
-                <Zap size={14} style={{ color: "#eab308" }} />
+                <Zap size={15} style={{ color: "#eab308" }} />
                 <span className="node-title">React + TS (Практика)</span>
                 <span className={`node-count ${completedReactTsPractice > 0 && completedReactTsPractice === totalReactTsPractice ? "completed" : ""}`}>
                   {completedReactTsPractice}/{totalReactTsPractice}
@@ -443,7 +495,7 @@ export const Sidebar = ({
               >
                 <div className="task-list-inner notion-tree-tasks-container">
                   {REACT_TS_PRACTICE_TASKS.filter(isTaskVisible).length === 0 ? (
-                    <div style={{ padding: "6px 10px", fontSize: "12px", color: "var(--fg-muted)", fontStyle: "italic" }}>
+                    <div style={{ padding: "5px 8px", fontSize: "12px", color: "var(--text-muted)", fontStyle: "italic" }}>
                       Скоро появятся новые задачи...
                     </div>
                   ) : (
@@ -458,7 +510,7 @@ export const Sidebar = ({
                         onMouseEnter={(e) => showTooltip(e, task.title)}
                         onMouseLeave={hideTooltip}
                       >
-                        <span className="task-btn-title"><FileText size={13} style={{ color: "#94a3b8" }} /> {task.title}</span>
+                        <span className="task-btn-title"><FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} /><span className="task-btn-text">{task.title}</span></span>
                         {completedTasks[task.id] &&
                           (completedTasks[task.id] === "unsolved" ? (
                             <span className="dropdown-item-unsolved"><X size={12} /></span>
@@ -500,7 +552,7 @@ export const Sidebar = ({
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
-                      marginBottom: "8px",
+                      marginBottom: "6px",
                     }}
                   >
                     <span
@@ -509,14 +561,14 @@ export const Sidebar = ({
                         fontSize: "11px",
                         fontWeight: "600",
                         textTransform: "uppercase",
-                        letterSpacing: "0.05em",
+                        letterSpacing: "0.04em",
                         fontFamily: "var(--font-sans)",
                         display: "flex",
                         alignItems: "center",
-                        gap: "6px",
+                        gap: "5px",
                       }}
                     >
-                      <CheckSquare size={14} /> Выполнено задач
+                      <CheckSquare size={13} /> Выполнено задач
                     </span>
                     <span
                       style={{
@@ -564,10 +616,10 @@ export const Sidebar = ({
                         onClick={() => toggleJsGroup(groupName)}
                       >
                         <ChevronRight
-                          size={14}
+                          size={13}
                           className={`sidebar-chevron ${isGroupOpen ? "expanded" : ""}`}
                         />
-                        {groupMeta.renderIcon(14)}
+                        {groupMeta.renderIcon(15)}
                         <span className="node-title">{groupName}</span>
                         <span className={`node-count ${isGroupCompleted ? "completed" : ""}`}>
                           {completedGroupTasks.length}/{totalGroupTasks.length}
@@ -594,7 +646,7 @@ export const Sidebar = ({
                                     size={13}
                                     className={`sidebar-chevron ${isSubOpen ? "expanded" : ""}`}
                                   />
-                                  <Folder size={13} style={{ color: groupMeta.color, opacity: 0.9 }} />
+                                  <Folder size={14} style={{ color: groupMeta.color, opacity: 0.85 }} />
                                   <span className="node-title">{subgroupName}</span>
                                   <span className={`node-count ${isSubCompleted ? "completed" : ""}`}>
                                     {completedSubTasks.length}/{tasks.length}
@@ -615,7 +667,7 @@ export const Sidebar = ({
                                         onMouseLeave={hideTooltip}
                                       >
                                         <span className="task-btn-title">
-                                          <FileText size={13} style={{ color: "#94a3b8" }} /> {task.title}
+                                          <FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} /><span className="task-btn-text">{task.title}</span>
                                         </span>
                                         {completedTasks[task.id] &&
                                           (completedTasks[task.id] === "unsolved" ? (
@@ -643,14 +695,14 @@ export const Sidebar = ({
             );
           })()
         ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
             <div
               className={`notion-tree-node-header group-header ${
                 activeSection === "home" ? "active" : ""
               }`}
               onClick={() => setActiveSection("home")}
             >
-              <Home size={14} style={{ color: "#60a5fa" }} />
+              <Home size={15} style={{ color: "#60a5fa" }} />
               <span className="node-title">ГЛАВНАЯ (ОБЗОР)</span>
             </div>
 
@@ -666,7 +718,7 @@ export const Sidebar = ({
                 }
               }}
             >
-              <Zap size={14} style={{ color: "#f59e0b" }} />
+              <Zap size={15} style={{ color: "#f59e0b" }} />
               <span className="node-title">JAVASCRIPT</span>
               <span
                 className={`node-count ${
@@ -691,7 +743,7 @@ export const Sidebar = ({
                 }
               }}
             >
-              <Code2 size={14} style={{ color: "#61dafb" }} />
+              <Code2 size={15} style={{ color: "#61dafb" }} />
               <span className="node-title">REACT</span>
               <span
                 className={`node-count ${
@@ -710,7 +762,7 @@ export const Sidebar = ({
               }`}
               onClick={() => setActiveSection("algorithms")}
             >
-              <Brain size={14} style={{ color: "#a855f7" }} />
+              <Brain size={15} style={{ color: "#a855f7" }} />
               <span className="node-title">АЛГОРИТМЫ</span>
               <span
                 className="node-count"
@@ -722,6 +774,15 @@ export const Sidebar = ({
           </div>
         )}
       </div>
+
+      {sidebarOpen && (
+        <div
+          className={`sidebar-resizer ${isResizing ? "is-active" : ""}`}
+          onMouseDown={startResizing}
+          onDoubleClick={handleResetWidth}
+          title="Зажмите и потяните для изменения ширины. Двойной клик — сброс"
+        />
+      )}
     </aside>
   );
 };

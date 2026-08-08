@@ -225,7 +225,7 @@ export const Header = ({
                     title="Выбрать группу задач"
                   >
                     {currentGroupMeta.renderIcon(14)}
-                    <span className="breadcrumb-text-truncate">{(selectedTask.group || "Циклы").toUpperCase()}</span>
+                    <span className="breadcrumb-text-truncate">{selectedTask.group || "Циклы"}</span>
                     <ChevronDown size={14} className="breadcrumb-chevron" />
                   </button>
 
@@ -258,7 +258,7 @@ export const Header = ({
                               }}
                             >
                               {gMeta.renderIcon(14)}
-                              <span className="dropdown-item-title">{gName.toUpperCase()}</span>
+                              <span className="dropdown-item-title">{gName}</span>
                               <span className={`dropdown-item-count ${isCompleted ? "completed" : ""}`}>
                                 {completedCount}/{groupTasks.length}
                               </span>
@@ -286,7 +286,7 @@ export const Header = ({
                   {subgroupDropdownOpen && (
                     <div className="breadcrumb-dropdown-menu">
                       <div className="breadcrumb-dropdown-header">
-                        <Folder size={14} style={{ color: currentGroupMeta.color }} /> Подгруппы ({selectedTask.group?.toUpperCase()})
+                        <Folder size={14} style={{ color: currentGroupMeta.color }} /> Подгруппы ({selectedTask.group})
                       </div>
                       <div className="breadcrumb-dropdown-list">
                         {Array.from(
