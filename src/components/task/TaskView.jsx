@@ -135,6 +135,8 @@ export const TaskView = ({
                 CandidateComponent={CandidateComponent}
                 handleCopyCode={handleCopyCode}
                 copiedCodeId={copiedCodeId}
+                setTaskStatus={setTaskStatus}
+                completedTasks={completedTasks}
               />
             )}
 
@@ -144,6 +146,8 @@ export const TaskView = ({
                 SolutionComponent={SolutionComponent}
                 handleCopyCode={handleCopyCode}
                 copiedCodeId={copiedCodeId}
+                setTaskStatus={setTaskStatus}
+                completedTasks={completedTasks}
               />
             )}
 

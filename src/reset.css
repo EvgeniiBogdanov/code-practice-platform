@@ -53,8 +53,7 @@ p, li, figcaption {
 img,
 picture,
 video,
-canvas,
-svg {
+canvas {
   display: block;
   max-width: 100%;
   height: auto;
@@ -150,7 +149,7 @@ input[type="month"],
 input[type="week"],
 input[type="tel"],
 input[type="url"],
-textarea {
+textarea:not(.vscode-input-textarea) {
   display: inline-block;
   vertical-align: middle;
   box-sizing: border-box;
@@ -172,21 +171,21 @@ textarea {
 
 /* Placeholder Styling */
 input::placeholder,
-textarea::placeholder {
+textarea:not(.vscode-input-textarea)::placeholder {
   color: rgba(255, 255, 255, 0.45);
   opacity: 1;
 }
 
 /* Input Hover State */
 input:not([type="checkbox"]):not([type="radio"]):hover,
-textarea:hover {
+textarea:not(.vscode-input-textarea):hover {
   border-color: rgba(255, 255, 255, 0.4);
   background-color: #282828;
 }
 
 /* Input Focus State */
 input:not([type="checkbox"]):not([type="radio"]):focus,
-textarea:focus {
+textarea:not(.vscode-input-textarea):focus {
   border-color: var(--notion-blue, #2383e2);
   background-color: #2a2a2a;
   box-shadow: 0 0 0 2px rgba(35, 131, 226, 0.3);
@@ -194,13 +193,13 @@ textarea:focus {
 
 /* Invalid Input State */
 input:invalid:not(:placeholder-shown),
-textarea:invalid:not(:placeholder-shown) {
+textarea:not(.vscode-input-textarea):invalid:not(:placeholder-shown) {
   border-color: var(--notion-red, #e54d42);
   box-shadow: 0 0 0 2px rgba(229, 77, 66, 0.2);
 }
 
 /* Textarea Specifics */
-textarea {
+textarea:not(.vscode-input-textarea) {
   resize: vertical;
   min-height: 80px;
   height: auto;

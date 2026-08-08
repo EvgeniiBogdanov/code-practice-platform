@@ -138,6 +138,18 @@ import CandidateAdvanced1Raw from "../tasks/4_strong/1_FetchUsersReducer/index.j
 import CandidateAdvanced2Raw from "../tasks/4_strong/2_FetchUsersRTK/index.jsx?raw";
 import CandidateAdvanced3Raw from "../tasks/4_strong/3_FetchUsersRTKSelectors/index.jsx?raw";
 
+import CandidateAdvanced1_Index from "../tasks/4_strong/1_FetchUsersReducer/index.jsx?raw";
+import CandidateAdvanced1_Hook from "../tasks/4_strong/1_FetchUsersReducer/useFetchUsers.js?raw";
+import CandidateAdvanced1_Reducer from "../tasks/4_strong/1_FetchUsersReducer/reducer.js?raw";
+
+import CandidateAdvanced2_Index from "../tasks/4_strong/2_FetchUsersRTK/index.jsx?raw";
+import CandidateAdvanced2_Slice from "../tasks/4_strong/2_FetchUsersRTK/usersSlice.js?raw";
+import CandidateAdvanced2_Store from "../tasks/4_strong/2_FetchUsersRTK/store.js?raw";
+
+import CandidateAdvanced3_Index from "../tasks/4_strong/3_FetchUsersRTKSelectors/index.jsx?raw";
+import CandidateAdvanced3_Slice from "../tasks/4_strong/3_FetchUsersRTKSelectors/usersSlice.js?raw";
+import CandidateAdvanced3_Store from "../tasks/4_strong/3_FetchUsersRTKSelectors/store.js?raw";
+
 // Импорт эталонных решений
 import Solution1 from "../solutions/3_middle/1_FetchPersons.jsx";
 import Solution1Raw from "../solutions/3_middle/1_FetchPersons.jsx?raw";
@@ -167,9 +179,11 @@ import SolutionAdvanced1_Reducer from "../solutions/4_strong/1_FetchUsersReducer
 
 import SolutionAdvanced2_Index from "../solutions/4_strong/2_FetchUsersRTK/index.jsx?raw";
 import SolutionAdvanced2_Slice from "../solutions/4_strong/2_FetchUsersRTK/usersSlice.js?raw";
+import SolutionAdvanced2_Store from "../solutions/4_strong/2_FetchUsersRTK/store.js?raw";
 
 import SolutionAdvanced3_Index from "../solutions/4_strong/3_FetchUsersRTKSelectors/index.jsx?raw";
 import SolutionAdvanced3_Slice from "../solutions/4_strong/3_FetchUsersRTKSelectors/usersSlice.js?raw";
+import SolutionAdvanced3_Store from "../solutions/4_strong/3_FetchUsersRTKSelectors/store.js?raw";
 
 // Импорт компонентов React + TS
 import ReactTsCandidate1 from "../tasks/5_react_ts/1_GenericList.tsx?raw";
@@ -1947,6 +1961,26 @@ export const ADVANCED_TASKS = [
     solution: SolutionAdvanced1,
     rawSolution: `// index.jsx\n${SolutionAdvanced1_Index}\n\n// useFetchUsers.js\n${SolutionAdvanced1_Hook}\n\n// reducer.js\n${SolutionAdvanced1_Reducer}\n\n/*\n=== Разбор решения ===\nПроблема: Использование нескольких независимых состояний useState (например [loading, setLoading], [error, setError], [data, setData]) часто приводит к рассинхронизации данных или нелогичным комбинациям (например одновременно loading: true и error: "Error").\n\nЭтапы решения:\n1. **Создание редьюсера**: Определяем чистую функцию reducer(state, action), обрабатывающую 3 действия: FETCH_INIT, FETCH_SUCCESS, FETCH_FAILURE.\n   \`\`\`js\n   const reducer = (state, action) => {\n     switch (action.type) {\n       case 'FETCH_INIT':\n         return { ...state, isLoading: true, isError: false };\n       case 'FETCH_SUCCESS':\n         return { ...state, isLoading: false, isError: false, data: action.payload };\n       case 'FETCH_FAILURE':\n         return { ...state, isLoading: false, isError: true };\n       default:\n         return state;\n     }\n   };\n   \`\`\`\n\n2. **Инициализация useReducer**: В кастомном хуке useFetchUsers инициализируем состояние с помощью useReducer(reducer, initialState).\n\n3. **Отправка экшенов**: Вызываем dispatch({ type: 'FETCH_INIT' }) перед запросом, dispatch({ type: 'FETCH_SUCCESS', payload }) при успехе и dispatch({ type: 'FETCH_FAILURE' }) при ошибке.\n\nКлючевые выводы:\n- useReducer гарантирует атомарное обновление нескольких связанных полей стейта в один шаг.\n*/`,
     filepath: "src/react/tasks/4_strong/1_FetchUsersReducer/index.jsx",
+    files: [
+      {
+        name: "index.jsx",
+        filepath: "src/react/tasks/4_strong/1_FetchUsersReducer/index.jsx",
+        candidateCode: CandidateAdvanced1_Index,
+        solutionCode: SolutionAdvanced1_Index,
+      },
+      {
+        name: "useFetchUsers.js",
+        filepath: "src/react/tasks/4_strong/1_FetchUsersReducer/useFetchUsers.js",
+        candidateCode: CandidateAdvanced1_Hook,
+        solutionCode: SolutionAdvanced1_Hook,
+      },
+      {
+        name: "reducer.js",
+        filepath: "src/react/tasks/4_strong/1_FetchUsersReducer/reducer.js",
+        candidateCode: CandidateAdvanced1_Reducer,
+        solutionCode: SolutionAdvanced1_Reducer,
+      },
+    ],
     articles: [
       {
         title: "Хук useReducer (React.dev)",
@@ -1981,8 +2015,28 @@ export const ADVANCED_TASKS = [
     candidate: CandidateAdvanced2,
     rawCandidate: CandidateAdvanced2Raw,
     solution: SolutionAdvanced2,
-    rawSolution: `// index.jsx\n${SolutionAdvanced2_Index}\n\n// usersSlice.js\n${SolutionAdvanced2_Slice}\n\n/*\n=== Разбор решения ===\nПроблема: Ручное написание редюсеров, экшенов и обработки асинхронных состояний в чистом Redux создает много избыточного кода.\n\nЭтапы решения:\n1. **Создание AsyncThunk**: С помощью createAsyncThunk создаем асинхронную функцию fetchUsers, выполняющую сетевой запрос.\n   \`\`\`js\n   export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {\n     const response = await fetch('https://jsonplaceholder.typicode.com/users');\n     return await response.json();\n   });\n   \`\`\`\n\n2. **Настройка extraReducers**: В createSlice обрабатываем 3 автоматических состояния промиса: pending, fulfilled, rejected.\n   \`\`\`js\n   extraReducers: (builder) => {\n     builder\n       .addCase(fetchUsers.pending, (state) => { state.status = 'loading'; })\n       .addCase(fetchUsers.fulfilled, (state, action) => { state.status = 'succeeded'; state.items = action.payload; })\n       .addCase(fetchUsers.rejected, (state, action) => { state.status = 'failed'; state.error = action.error.message; });\n   }\n   \`\`\`\n\n3. **Связывание с компонентами**: Читаем данные через useSelector и отправляем действия через useDispatch.\n\nКлючевые выводы:\n- RTK автоматически генерирует экшены pending/fulfilled/rejected и позволяет изменять стейт через мутирующий синтаксис благодаря Immer.js.\n*/`,
+    rawSolution: `// index.jsx\n${SolutionAdvanced2_Index}\n\n// usersSlice.js\n${SolutionAdvanced2_Slice}\n\n// store.js\n${SolutionAdvanced2_Store}\n\n/*\n=== Разбор решения ===\nПроблема: Ручное написание редюсеров, экшенов и обработки асинхронных состояний в чистом Redux создает много избыточного кода.\n\nЭтапы решения:\n1. **Создание AsyncThunk**: С помощью createAsyncThunk создаем асинхронную функцию fetchUsers, выполняющую сетевой запрос.\n   \`\`\`js\n   export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {\n     const response = await fetch('https://jsonplaceholder.typicode.com/users');\n     return await response.json();\n   });\n   \`\`\`\n\n2. **Настройка extraReducers**: В createSlice обрабатываем 3 автоматических состояния промиса: pending, fulfilled, rejected.\n   \`\`\`js\n   extraReducers: (builder) => {\n     builder\n       .addCase(fetchUsers.pending, (state) => { state.status = 'loading'; })\n       .addCase(fetchUsers.fulfilled, (state, action) => { state.status = 'succeeded'; state.items = action.payload; })\n       .addCase(fetchUsers.rejected, (state, action) => { state.status = 'failed'; state.error = action.error.message; });\n   }\n   \`\`\`\n\n3. **Связывание с компонентами**: Читаем данные через useSelector и отправляем действия через useDispatch.\n\nКлючевые выводы:\n- RTK автоматически генерирует экшены pending/fulfilled/rejected и позволяет изменять стейт через мутирующий синтаксис благодаря Immer.js.\n*/`,
     filepath: "src/react/tasks/4_strong/2_FetchUsersRTK/index.jsx",
+    files: [
+      {
+        name: "index.jsx",
+        filepath: "src/react/tasks/4_strong/2_FetchUsersRTK/index.jsx",
+        candidateCode: CandidateAdvanced2_Index,
+        solutionCode: SolutionAdvanced2_Index,
+      },
+      {
+        name: "usersSlice.js",
+        filepath: "src/react/tasks/4_strong/2_FetchUsersRTK/usersSlice.js",
+        candidateCode: CandidateAdvanced2_Slice,
+        solutionCode: SolutionAdvanced2_Slice,
+      },
+      {
+        name: "store.js",
+        filepath: "src/react/tasks/4_strong/2_FetchUsersRTK/store.js",
+        candidateCode: CandidateAdvanced2_Store,
+        solutionCode: SolutionAdvanced2_Store,
+      },
+    ],
     articles: [
       {
         title: "createAsyncThunk (Redux Toolkit)",
@@ -2017,8 +2071,28 @@ export const ADVANCED_TASKS = [
     candidate: CandidateAdvanced3,
     rawCandidate: CandidateAdvanced3Raw,
     solution: SolutionAdvanced3,
-    rawSolution: `// index.jsx\n${SolutionAdvanced3_Index}\n\n// usersSlice.js\n${SolutionAdvanced3_Slice}\n\n/*\n=== Разбор решения ===\nПроблема: Выполнение фильтрации массива прямо в useSelector без мемоизации приводит к возврату нового массива при каждом рендере, что вызывает ненужные перерисовки подписчиков.\n\nЭтапы решения:\n1. **Входные селекторы**: Создаем простые атомарные селекторы для извлечения исходных массивов и фильтров из стейта.\n   \`\`\`js\n   const selectUsers = (state) => state.users.items;\n   const selectSearchTerm = (state) => state.users.searchTerm;\n   \`\`\`\n\n2. **Мемоизированный селектор**: Объединяем их через createSelector.\n   \`\`\`js\n   export const selectFilteredUsers = createSelector(\n     [selectUsers, selectSearchTerm],\n     (users, searchTerm) => {\n       return users.filter((u) => u.name.toLowerCase().includes(searchTerm.toLowerCase()));\n     }\n   );\n   \`\`\`\n\n3. **Подписка компонентов**: Компонент использует useSelector(selectFilteredUsers) и перерисовывается только если результат фильтрации реально изменился.\n\nКлючевые выводы:\n- createSelector пересчитывает результат только при изменении возвращаемых значений входных селекторов.\n*/`,
+    rawSolution: `// index.jsx\n${SolutionAdvanced3_Index}\n\n// usersSlice.js\n${SolutionAdvanced3_Slice}\n\n// store.js\n${SolutionAdvanced3_Store}\n\n/*\n=== Разбор решения ===\nПроблема: Выполнение фильтрации массива прямо в useSelector без мемоизации приводит к возврату нового массива при каждом рендере, что вызывает ненужные перерисовки подписчиков.\n\nЭтапы решения:\n1. **Входные селекторы**: Создаем простые атомарные селекторы для извлечения исходных массивов и фильтров из стейта.\n   \`\`\`js\n   const selectUsers = (state) => state.users.items;\n   const selectSearchTerm = (state) => state.users.searchTerm;\n   \`\`\`\n\n2. **Мемоизированный селектор**: Объединяем их через createSelector.\n   \`\`\`js\n   export const selectFilteredUsers = createSelector(\n     [selectUsers, selectSearchTerm],\n     (users, searchTerm) => {\n       return users.filter((u) => u.name.toLowerCase().includes(searchTerm.toLowerCase()));\n     }\n   );\n   \`\`\`\n\n3. **Подписка компонентов**: Компонент использует useSelector(selectFilteredUsers) и перерисовывается только если результат фильтрации реально изменился.\n\nКлючевые выводы:\n- createSelector пересчитывает результат только при изменении возвращаемых значений входных селекторов.\n*/`,
     filepath: "src/react/tasks/4_strong/3_FetchUsersRTKSelectors/index.jsx",
+    files: [
+      {
+        name: "index.jsx",
+        filepath: "src/react/tasks/4_strong/3_FetchUsersRTKSelectors/index.jsx",
+        candidateCode: CandidateAdvanced3_Index,
+        solutionCode: SolutionAdvanced3_Index,
+      },
+      {
+        name: "usersSlice.js",
+        filepath: "src/react/tasks/4_strong/3_FetchUsersRTKSelectors/usersSlice.js",
+        candidateCode: CandidateAdvanced3_Slice,
+        solutionCode: SolutionAdvanced3_Slice,
+      },
+      {
+        name: "store.js",
+        filepath: "src/react/tasks/4_strong/3_FetchUsersRTKSelectors/store.js",
+        candidateCode: CandidateAdvanced3_Store,
+        solutionCode: SolutionAdvanced3_Store,
+      },
+    ],
     articles: [
       {
         title: "createSelector (Reselect / RTK)",

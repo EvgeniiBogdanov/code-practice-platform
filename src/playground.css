@@ -1253,12 +1253,11 @@ body {
   transition: color var(--transition-fast);
 }
 
-/* Notion Callout Block — Заметки и рекомендации к вариантам решений */
+/* Notion Callout Block — Заметки и подсказки к вариантам решений (по умолчанию свернуты) */
 .solution-recommendation-card {
-  padding: 4px 12px;
   background: var(--bg-subtle, rgba(255, 255, 255, 0.03));
   border: 1px solid var(--border-color);
-  border-left: 4px solid var(--text-muted);
+  border-left: 3px solid #f59e0b; /* Оранжевая полоска слева для обычной подсказки */
   border-radius: var(--radius-md, 8px);
   margin-bottom: 8px;
   color: var(--text-main);
@@ -1266,36 +1265,59 @@ body {
   line-height: 1.55;
   box-sizing: border-box;
   width: 100%;
+  overflow: hidden;
+  transition: all 0.2s ease;
 }
 
 .solution-recommendation-card.is-recommended {
-  background: rgba(16, 185, 129, 0.07);
-  border-color: rgba(16, 185, 129, 0.2);
-  border-left: 4px solid #10b981;
+  background: var(--bg-subtle, rgba(255, 255, 255, 0.03));
+  border-color: var(--border-color);
+  border-left: 3px solid #10b981; /* Зеленая полоска слева для рекомендуемой подсказки */
+}
+
+.solution-recommendation-toggle {
+  all: unset;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 4px 12px;
+  box-sizing: border-box;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s ease;
+}
+
+.solution-recommendation-toggle:hover {
+  background: rgba(255, 255, 255, 0.05); /* Нейтральный серый hover для всех подсказок */
 }
 
 .solution-recommendation-header {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 600;
-  color: var(--text-main);
-  margin-bottom: 4px;
+  color: var(--text-main, #e2e8f0); /* Нейтральный серый цвет заголовка */
 }
 
-.solution-recommendation-card.is-recommended .solution-recommendation-header {
-  color: #10b981;
+.recommendation-chevron {
+  transition: transform 0.2s ease;
+  color: var(--text-muted, rgba(255, 255, 255, 0.5));
+}
+
+.recommendation-chevron.rotate-open {
+  transform: rotate(180deg);
 }
 
 .solution-recommendation-text {
-  font-size: 12.5px;
+  padding: 4px 12px;
+  font-size: 12px;
   line-height: 1.55;
-  color: var(--text-muted);
-}
-
-.solution-recommendation-card.is-recommended .solution-recommendation-text {
-  color: var(--text-main);
+  color: var(--text-muted, rgba(255, 255, 255, 0.7));
+  border-top: 1px dashed rgba(255, 255, 255, 0.06);
+  padding-top: 8px;
+  animation: fadeIn 0.15s ease;
 }
 
 .article-link:hover {
@@ -2249,10 +2271,6 @@ body {
   border-left-color: #059669;
 }
 
-[data-theme="light"] .solution-recommendation-card.is-recommended .solution-recommendation-header {
-  color: #059669;
-}
-
 [data-theme="light"] .solution-explanation-header,
 [data-theme="light"] .solution-articles-header {
   border-bottom-color: var(--border-color);
@@ -2688,9 +2706,26 @@ body {
 
 /* Lucide Icons Global UI Alignment */
 .lucide,
-svg.lucide {
+svg.lucide,
+.vscode-ide-editor svg,
+.js-console-container svg,
+.browser-mockup svg {
   flex-shrink: 0;
   vertical-align: middle;
+  display: inline-block;
+  max-width: none;
+  max-height: none;
+}
+
+.vscode-icon-btn svg,
+.vscode-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.js-console-btn-icon svg {
+  width: 13px;
+  height: 13px;
 }
 
 .task-btn-title,
@@ -3780,9 +3815,9 @@ svg.lucide {
 .view-mode-btn {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 3px 9px;
-  height: 22px;
+  gap: 6px;
+  padding: 2px 6px;
+  height: 20px;
   font-size: 11.5px;
   font-weight: 500;
   line-height: 1;
@@ -3805,3 +3840,1675 @@ svg.lucide {
   background: var(--bg-card, #1e1e1e);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
 }
+
+/* ==========================================================================
+   6. VS CODE / LEETCODE GRADE BROWSER CODE EDITOR & RUNNER
+   ========================================================================== */
+
+.task-code-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+.task-console-wrapper {
+  width: 100%;
+  margin-top: 2px;
+}
+
+/* --- VS Code IDE Container --- */
+.vscode-ide-editor {
+  width: 100%;
+  background: #1e1e1e;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md, 8px);
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  font-size: var(--editor-font-size, 13px);
+}
+
+.vscode-ide-editor.ide-focused {
+  /* Без изменения рамки и тени при фокусе */
+}
+
+/* 1. Header Toolbar (Thinner 30px Height & Embedded Button Tabs) */
+.vscode-editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px;
+  background: #181818;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  height: 30px;
+  min-height: 30px;
+  gap: 8px;
+  user-select: none;
+  overflow: hidden;
+}
+
+.vscode-editor-tabs-container {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  height: 30px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+
+.vscode-editor-tabs-container::-webkit-scrollbar {
+  height: 2px;
+}
+
+.vscode-editor-tabs-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 2px;
+}
+
+.vscode-editor-single-file {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  height: 24px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-main, #e2e8f0);
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* Вкладки файлов — по точному референсу кнопки view-mode-btn (Код / Интерфейс) */
+.vscode-file-tab {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  height: 22px;
+  box-sizing: border-box;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  white-space: nowrap;
+}
+
+.vscode-file-tab:hover {
+  color: var(--text-main, #ffffff);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.vscode-file-tab.active {
+  color: var(--text-main, #ffffff);
+  background: var(--bg-card, #2b2b2c);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  font-weight: 500;
+}
+
+.vscode-file-tab .file-tab-name {
+  line-height: 1;
+}
+
+.vscode-editor-actions {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+  margin-left: 6px;
+  height: 30px;
+}
+
+.vscode-tab-title {
+  font-family: var(--font-mono);
+}
+
+.vscode-modified-dot {
+  color: #38bdf8;
+  font-size: 10px;
+  margin-left: 2px;
+}
+
+.vscode-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--text-muted, rgba(255, 255, 255, 0.45));
+}
+.bc-part {
+  color: rgba(255, 255, 255, 0.45);
+}
+.bc-sep {
+  color: rgba(255, 255, 255, 0.2);
+}
+.bc-file {
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
+.vscode-editor-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.vscode-action-group {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  padding: 1px;
+}
+
+.vscode-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  border-radius: 3px;
+  color: var(--text-muted, rgba(255, 255, 255, 0.6));
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+.vscode-icon-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+.vscode-icon-btn.active {
+  background: rgba(56, 189, 248, 0.2);
+  color: #38bdf8;
+}
+.vscode-icon-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.font-size-label {
+  font-size: 9.5px;
+  margin-left: 2px;
+  font-weight: 600;
+}
+
+.vscode-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  height: 25px;
+  font-size: 11.5px;
+  font-weight: 500;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.btn-format-action {
+  background: rgba(56, 189, 248, 0.1);
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.25);
+}
+.btn-format-action:hover {
+  background: #0284c7;
+  color: #ffffff;
+}
+
+.btn-reset-action,
+.btn-copy-action {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-muted, rgba(255, 255, 255, 0.6));
+  border-color: rgba(255, 255, 255, 0.08);
+}
+.btn-reset-action:hover,
+.btn-copy-action:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.btn-tests-action {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border-color: rgba(59, 130, 246, 0.3);
+  font-weight: 600;
+}
+.btn-tests-action:hover {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.btn-run-action {
+  background: #10b981;
+  color: #064e3b;
+  font-weight: 600;
+  border-color: #059669;
+  box-shadow: 0 1px 4px rgba(16, 185, 129, 0.3);
+}
+.btn-run-action:hover {
+  background: #059669;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+.btn-run-action:active {
+  transform: translateY(0);
+}
+
+.vscode-kbd {
+  font-size: 9px;
+  font-family: var(--font-sans);
+  background: rgba(0, 0, 0, 0.2);
+  color: inherit;
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+/* 2. Editor Surface (Gutter + Canvas: Auto-expanding without max-height or scroll constraints) */
+.vscode-editor-surface {
+  display: flex;
+  position: relative;
+  background: #1e1e1e;
+  min-height: 180px;
+  height: auto;
+  overflow: visible;
+}
+
+/* Line Numbers Gutter */
+.vscode-gutter {
+  width: 48px;
+  min-width: 48px;
+  padding: 14px 10px 14px 0;
+  background: #1e1e1e;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  user-select: none;
+  color: #858585;
+  font-family: var(--font-mono);
+  font-size: inherit;
+  line-height: 1.6;
+  text-align: right;
+  box-sizing: border-box;
+}
+
+.vscode-gutter-line {
+  height: 20.8px;
+  transition: color 0.1s ease;
+}
+
+.active-line-gutter {
+  color: #c6c6c6 !important;
+  font-weight: 600;
+}
+
+/* Canvas Area */
+.vscode-canvas {
+  flex: 1;
+  position: relative;
+  min-width: 0;
+  height: auto;
+}
+
+.vscode-code-stack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 180px;
+}
+
+.vscode-syntax-layer {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 14px 16px;
+  font-family: var(--font-mono);
+  font-size: inherit;
+  line-height: 1.6;
+  pointer-events: none;
+  box-sizing: border-box;
+  color: #d4d4d4;
+  white-space: pre;
+}
+
+.wrap-on .vscode-syntax-layer {
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+}
+
+.vscode-syntax-layer code {
+  font-family: var(--font-mono);
+  font-size: inherit;
+  line-height: 1.6;
+  tab-size: 2;
+}
+
+/* Текстовое поле ввода: 100% изоляция без скролла, расширяется по высоте кода */
+.vscode-input-textarea {
+  all: unset;
+  display: block;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 180px !important;
+  margin: 0 !important;
+  padding: 14px 16px !important;
+  background: transparent !important;
+  color: transparent !important;
+  caret-color: #38bdf8 !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  resize: none !important;
+  font-family: var(--font-mono) !important;
+  font-size: inherit !important;
+  line-height: 1.6 !important;
+  tab-size: 2 !important;
+  box-sizing: border-box !important;
+  z-index: 2 !important;
+  overflow: hidden !important;
+  cursor: text !important;
+  white-space: pre !important;
+}
+
+.wrap-on .vscode-input-textarea {
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+}
+
+.vscode-input-textarea::selection {
+  background: rgba(38, 79, 120, 0.75) !important;
+  color: transparent !important;
+}
+
+.vscode-input-textarea::placeholder {
+  color: rgba(255, 255, 255, 0.25) !important;
+}
+
+.vscode-pre-only {
+  margin: 0;
+  padding: 14px 16px;
+  font-family: var(--font-mono);
+  font-size: inherit;
+  line-height: 1.6;
+  color: #d4d4d4;
+  white-space: pre;
+}
+
+/* Floating Quick-Scroll to Console Button (Neutral Minimalist Design) */
+.quick-scroll-console-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: #222222;
+  color: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+  animation: bounceIn 0.2s ease;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.quick-scroll-console-btn:hover {
+  background: #2a2a2a;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.22);
+  transform: translateY(-1px);
+}
+
+.quick-scroll-console-btn svg {
+  color: rgba(255, 255, 255, 0.6) !important;
+  transition: color 0.15s ease;
+}
+
+.quick-scroll-console-btn:hover svg {
+  color: #ffffff !important;
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 3. VS Code Status Bar (Neutral Dark Gray) */
+.vscode-status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 14px;
+  background: #181818;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--text-muted, rgba(255, 255, 255, 0.55));
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.4;
+  user-select: none;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.status-left,
+.status-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.status-sep {
+  color: rgba(255, 255, 255, 0.15);
+}
+
+.status-saved-tag {
+  color: #10b981;
+  font-weight: 500;
+}
+
+/* Fullscreen Mode */
+.ide-fullscreen {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
+  z-index: 99999 !important;
+  border-radius: 0 !important;
+}
+.ide-fullscreen .vscode-editor-surface {
+  max-height: calc(100vh - 60px) !important;
+  height: calc(100vh - 60px) !important;
+}
+.ide-fullscreen .vscode-code-stack,
+.ide-fullscreen .vscode-input-textarea {
+  max-height: calc(100vh - 60px) !important;
+  height: calc(100vh - 60px) !important;
+}
+
+/* Word wrap styles */
+.wrap-on .vscode-syntax-layer,
+.wrap-on .vscode-input-textarea,
+.wrap-on .vscode-pre-only {
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+  overflow-x: hidden !important;
+}
+
+.wrap-off .vscode-syntax-layer,
+.wrap-off .vscode-input-textarea,
+.wrap-off .vscode-pre-only {
+  white-space: pre !important;
+  word-break: normal !important;
+  overflow-x: auto !important;
+}
+
+
+/* --- Terminal Console (JsConsole) --- */
+.js-console-container {
+  width: 100%;
+  background: #121212;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md, 8px);
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+}
+
+.js-console-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: #1c1c1c;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.js-console-title-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.js-console-icon {
+  color: #10b981;
+  display: flex;
+  align-items: center;
+}
+
+.js-console-title {
+  font-weight: 600;
+  font-size: 12.5px;
+  color: var(--text-main, #ffffff);
+}
+
+.js-console-filename {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-muted, rgba(255, 255, 255, 0.6));
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.js-console-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.badge-ready {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-muted, rgba(255, 255, 255, 0.6));
+}
+
+.badge-running {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.badge-success {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.badge-error {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.js-console-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--text-muted, rgba(255, 255, 255, 0.6));
+  background: rgba(255, 255, 255, 0.04);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.js-console-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.js-console-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  height: 25px;
+  font-size: 11.5px;
+  font-weight: 500;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.btn-run {
+  background: #10b981;
+  color: #064e3b;
+  font-weight: 600;
+  border-color: #059669;
+}
+.btn-run:hover:not(:disabled) {
+  background: #059669;
+  color: #ffffff;
+}
+
+.btn-clear,
+.btn-copy {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-muted, rgba(255, 255, 255, 0.6));
+  border-color: rgba(255, 255, 255, 0.08);
+}
+.btn-clear:hover:not(:disabled),
+.btn-copy:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-main, #ffffff);
+}
+
+.js-console-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.console-kbd {
+  font-size: 9px;
+  font-family: var(--font-sans);
+  background: rgba(0, 0, 0, 0.2);
+  color: inherit;
+  padding: 1px 3px;
+  border-radius: 3px;
+}
+
+.js-console-body {
+  padding: 12px 16px;
+  min-height: 110px;
+  max-height: 380px;
+  overflow-y: auto;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  background: #111111;
+}
+
+.js-console-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 0;
+  color: var(--text-muted, rgba(255, 255, 255, 0.5));
+}
+
+.empty-state-prompt {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.empty-state-hint {
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.empty-state-hint strong {
+  color: var(--text-main, #ffffff);
+}
+
+.empty-state-hint kbd {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 11px;
+  color: var(--text-main, #ffffff);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.empty-state-run-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  padding: 5px 12px;
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.empty-state-run-btn:hover {
+  background: #10b981;
+  color: #064e3b;
+}
+
+.js-console-output {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.console-command-line {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 11.5px;
+  margin-bottom: 6px;
+}
+
+.prompt-sign {
+  color: #10b981;
+  font-weight: bold;
+  margin-right: 4px;
+}
+
+/* Отдельный отчерченный раздел информации выполнения в консоли */
+.console-info-section {
+  margin-top: 10px;
+  padding-top: 4px;
+}
+
+.console-info-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+.console-info-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-muted, rgba(255, 255, 255, 0.55));
+  flex-wrap: wrap;
+}
+
+.console-info-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.console-info-item.item-time strong {
+  color: var(--text-main, #ffffff);
+  font-weight: 500;
+}
+
+.console-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.console-status-pill.status-success {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.console-status-pill.status-error {
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.2);
+}
+
+.console-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+.line-prefix {
+  flex-shrink: 0;
+  font-size: 10.5px;
+  font-weight: 600;
+  user-select: none;
+}
+
+.tag-log {
+  color: rgba(255, 255, 255, 0.4);
+}
+.tag-info {
+  color: #38bdf8;
+}
+.tag-warn {
+  color: #fbbf24;
+}
+.tag-error {
+  color: #f87171;
+}
+.tag-time {
+  color: #a78bfa;
+}
+.tag-count {
+  color: #c084fc;
+}
+.tag-trace {
+  color: #fb923c;
+}
+
+.line-content {
+  flex: 1;
+  min-width: 0;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.line-args {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.line-time {
+  flex-shrink: 0;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.2);
+  margin-left: auto;
+  user-select: none;
+}
+
+.line-running {
+  color: #f59e0b;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  padding: 6px 0;
+}
+
+.line-exit {
+  font-size: 11px;
+  padding-top: 6px;
+  margin-top: 4px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+}
+.exit-success {
+  color: rgba(16, 185, 129, 0.8);
+}
+.exit-error {
+  color: rgba(239, 68, 68, 0.8);
+}
+
+/* Tokens for console formatting */
+.console-token {
+  font-family: var(--font-mono);
+}
+
+.token-boolean {
+  color: #38bdf8;
+  font-weight: 600;
+}
+
+.token-number {
+  color: #fb923c;
+}
+
+.token-nan {
+  color: #f87171;
+  font-style: italic;
+}
+
+.token-null,
+.token-undefined {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.token-string {
+  color: #4ade80;
+}
+
+.token-function {
+  color: #c084fc;
+}
+
+.token-date {
+  color: #34d399;
+}
+
+.token-regexp {
+  color: #f472b6;
+}
+
+.token-collection {
+  color: #a78bfa;
+}
+
+.token-circular {
+  color: #fbbf24;
+  font-style: italic;
+}
+
+.token-error-val {
+  color: #f87171;
+}
+
+.token-generic {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Console table */
+.console-table-wrapper {
+  margin: 4px 0;
+  overflow-x: auto;
+}
+
+.console-table {
+  border-collapse: collapse;
+  font-size: 11.5px;
+  font-family: var(--font-mono);
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.console-table th {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 4px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: left;
+  color: #38bdf8;
+  font-weight: 600;
+}
+
+.console-table td {
+  padding: 4px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.console-table tr:hover td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.td-index {
+  color: rgba(255, 255, 255, 0.4);
+  font-style: italic;
+}
+
+.spin-icon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Light Theme Adjustments */
+[data-theme="light"] .interactive-code-editor {
+  background: #f8fafc;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+[data-theme="light"] .code-editor-toolbar {
+  background: #f1f5f9;
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+[data-theme="light"] .editor-container {
+  background: #ffffff;
+}
+[data-theme="light"] .editor-line-numbers {
+  background: #f8fafc;
+  border-right-color: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.35);
+}
+[data-theme="light"] .editor-pre,
+[data-theme="light"] .editor-highlight-layer {
+  color: #1e293b;
+}
+[data-theme="light"] .js-console-container {
+  background: #0f172a;
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+/* ==========================================================================
+   7. LEETCODE-GRADE EDITOR, TEST SUITE & STATUS BAR STYLES
+   ========================================================================== */
+
+/* Fullscreen Editor Mode */
+.editor-fullscreen {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
+  z-index: 99999 !important;
+  border-radius: 0 !important;
+}
+.editor-fullscreen .editor-container {
+  max-height: calc(100vh - 80px) !important;
+  height: calc(100vh - 80px) !important;
+}
+
+/* Word Wrap Options */
+.wrap-enabled .editor-textarea,
+.wrap-enabled .editor-highlight-layer {
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+  overflow-x: hidden !important;
+}
+
+.wrap-disabled .editor-textarea,
+.wrap-disabled .editor-highlight-layer {
+  white-space: pre !important;
+  word-break: normal !important;
+  overflow-x: auto !important;
+}
+
+/* Active Line Number Highlight */
+.active-line-num {
+  color: #38bdf8 !important;
+  font-weight: 600;
+  background: rgba(56, 189, 248, 0.1);
+  border-radius: 2px;
+}
+
+/* Button Groups in Editor Toolbar */
+.editor-button-group {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 5px;
+  padding: 1px;
+}
+
+.editor-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  color: var(--text-muted, rgba(255, 255, 255, 0.6));
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+.editor-icon-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-main, #ffffff);
+}
+.editor-icon-btn.active {
+  background: rgba(56, 189, 248, 0.2);
+  color: #38bdf8;
+}
+.editor-icon-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.btn-format {
+  background: rgba(56, 189, 248, 0.1);
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.25);
+}
+.btn-format:hover {
+  background: #0284c7;
+  color: #ffffff;
+}
+
+.btn-tests-editor,
+.btn-tests {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  font-weight: 500;
+}
+.btn-tests-editor:hover,
+.btn-tests:hover:not(:disabled) {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+/* Editor Status Bar */
+.editor-status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 14px;
+  background: #181818;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted, rgba(255, 255, 255, 0.5));
+  user-select: none;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.status-bar-left,
+.status-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-divider {
+  color: rgba(255, 255, 255, 0.15);
+}
+
+.status-saved {
+  color: #10b981;
+}
+
+/* --- VS Code Authentic Terminal Console --- */
+.vscode-terminal-panel {
+  background: #141414;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md, 8px);
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+}
+
+.vscode-terminal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 12px;
+  height: 32px;
+  background: #1c1c1c;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  gap: 12px;
+}
+
+.vscode-terminal-title {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #cccccc;
+}
+
+.console-counter {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-family: var(--font-mono);
+}
+
+.console-exec-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.js-console-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.js-console-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+}
+
+.badge-success {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.badge-error {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.badge-running {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+}
+
+.js-console-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.js-console-btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.btn-run-mini {
+  background: #10b981;
+  color: #064e3b;
+  border-color: #059669;
+  box-shadow: 0 1px 3px rgba(16, 185, 129, 0.25);
+}
+.btn-run-mini:hover:not(:disabled) {
+  background: #059669;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+.btn-run-mini:active {
+  transform: translateY(0);
+}
+
+.btn-clear-mini,
+.btn-copy-mini {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-muted, rgba(255, 255, 255, 0.6));
+  border-color: rgba(255, 255, 255, 0.08);
+}
+.btn-clear-mini:hover:not(:disabled),
+.btn-copy-mini:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text-main, #ffffff);
+}
+.js-console-btn-icon:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.vscode-terminal-body {
+  min-height: 100px;
+  max-height: 380px;
+  overflow-y: auto;
+  padding: 12px 16px;
+  background: #141414;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+.js-console-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8px 0;
+  gap: 4px;
+}
+
+.empty-state-prompt {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.empty-state-hint {
+  font-size: 11.5px;
+  color: var(--text-muted, rgba(255, 255, 255, 0.45));
+  margin: 0;
+}
+
+.js-console-output {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.console-command-line {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 6px;
+}
+
+.prompt-sign {
+  color: #10b981;
+  font-weight: 700;
+  margin-right: 6px;
+}
+
+.console-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 1px 0;
+}
+
+.line-prefix {
+  font-size: 10.5px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.tag-error {
+  color: #ef4444;
+}
+.tag-warn {
+  color: #f59e0b;
+}
+.tag-info {
+  color: #38bdf8;
+}
+.tag-time {
+  color: #c084fc;
+}
+
+.line-content {
+  flex: 1;
+  word-break: break-word;
+}
+
+.line-args {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.line-time {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.2);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.line-running {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #38bdf8;
+  font-size: 12px;
+  padding: 4px 0;
+}
+
+.line-exit {
+  font-size: 11px;
+  padding: 6px 0 2px 0;
+  margin-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+.exit-success {
+  color: rgba(255, 255, 255, 0.45);
+}
+.exit-error {
+  color: #f87171;
+}
+
+/* Tokens */
+.console-token {
+  font-family: var(--font-mono);
+}
+.token-string {
+  color: #a5d6ff;
+}
+.token-number {
+  color: #79c0ff;
+}
+.token-boolean {
+  color: #d2a8ff;
+  font-weight: 600;
+}
+.token-null,
+.token-undefined,
+.token-nan {
+  color: #8b949e;
+  font-style: italic;
+}
+.token-function {
+  color: #d2a8ff;
+}
+.token-collection,
+.token-date,
+.token-regexp {
+  color: #7ee787;
+}
+.token-error-val {
+  color: #f85149;
+}
+.token-generic {
+  color: #e6edf3;
+}
+
+/* Snippet Popup */
+.vscode-snippet-popup {
+  position: absolute;
+  top: 44px;
+  left: 56px;
+  min-width: 240px;
+  background: #252526;
+  border: 1px solid #007acc;
+  border-radius: 5px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  overflow: hidden;
+}
+
+.snippet-popup-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  background: #1f1f1f;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 10.5px;
+  color: #e2e8f0;
+}
+
+.popup-hint {
+  margin-left: auto;
+  font-size: 9.5px;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.15);
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+.snippet-popup-list {
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+.snippet-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 8px;
+  cursor: pointer;
+  transition: background 0.1s ease;
+}
+.snippet-item:hover,
+.snippet-item.active {
+  background: #094771;
+  color: #ffffff;
+}
+
+.snippet-item-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.snippet-prefix {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: #38bdf8;
+  font-size: 11.5px;
+}
+
+.snippet-detail {
+  font-size: 10.5px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* Typo QuickFix Banner (Neutral Gray) */
+.typo-quickfix-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 14px;
+  background: #1e1e1e;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  gap: 12px;
+  animation: fadeIn 0.15s ease;
+}
+
+.typo-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.typo-msg {
+  font-size: 11.5px;
+  color: #fca5a5;
+  font-family: var(--font-mono);
+}
+.typo-msg code {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.2);
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-weight: 700;
+  text-decoration: underline wavy #ef4444;
+}
+.typo-msg strong {
+  color: #34d399;
+  font-weight: 700;
+}
+
+.typo-fix-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  background: #10b981;
+  color: #064e3b;
+  font-weight: 600;
+  font-size: 11px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(16, 185, 129, 0.25);
+  transition: all 0.15s ease;
+}
+.typo-fix-btn:hover {
+  background: #059669;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* Gutter Error Highlights */
+.gutter-has-error {
+  color: #f87171 !important;
+  font-weight: 700 !important;
+}
+
+.gutter-error-dot {
+  color: #ef4444;
+  font-weight: 900;
+  margin-right: 2px;
+}
+
+/* Status Bar Typo Indicators */
+.status-typo-warning {
+  color: #fca5a5 !important;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.status-typo-ok {
+  color: #34d399 !important;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* --- Instant Custom Tooltip Engine --- */
+[data-tooltip] {
+  position: relative;
+}
+
+/* --- Global React Portal Tooltip (Renders directly into document.body on top of EVERYTHING) --- */
+.app-global-portal-tooltip {
+  position: fixed;
+  transform: translateX(-50%);
+  background: #252526;
+  color: #f1f5f9;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  padding: 4px 10px;
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 500;
+  white-space: nowrap;
+  border-radius: 5px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65), 0 2px 6px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  z-index: 999999;
+  animation: portalTooltipFade 0.15s ease-out;
+  user-select: none;
+}
+
+.app-global-portal-tooltip.placement-top {
+  transform: translateX(-50%) translateY(-100%);
+}
+
+@keyframes portalTooltipFade {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+
+
+
+
+
+
+
+
