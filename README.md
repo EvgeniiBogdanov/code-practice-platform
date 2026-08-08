@@ -1,13 +1,15 @@
 # 🚀 Frontend Interview Playground & Practice `v2.0.3`
 
-[![Live Demo](https://img.shields.io/badge/🌐_Онлайн_версия-Открыть_в_браузере-10b981?style=for-the-badge)](https://evgeniibogdanov.github.io/frontend-practice/)
+<a href="https://evgeniibogdanov.github.io/frontend-practice/" target="_blank" rel="noopener noreferrer">
+  <img src="https://img.shields.io/badge/🌐_Онлайн_версия-Открыть_в_браузере-10b981?style=for-the-badge" alt="Live Demo">
+</a>
 
 <img width="1727" height="859" alt="v2-03" src="https://github.com/user-attachments/assets/ca9af402-5512-4091-92f6-b801d15d334d" />
 
 Интерактивная платформа для подготовки к техническим собеседованиям по **React** и **JavaScript** (от уровня Junior до Lead). Платформа содержит более 250 практических задач с реальных интервью, разборами антипаттернов в кандидатском коде, эталонными решениями и интерактивными шпаргалками. Теперь решать задачи можно не только в своей IDE, но также и непосредственно в браузере!
 
 > 🌐 **Быстрый доступ:**
-> - **[🚀 Открыть интерактивную онлайн-версию в браузере](https://evgeniibogdanov.github.io/frontend-practice/)** *(без локальной установки)*
+> - **[🚀 Открыть интерактивную онлайн-версию в браузере](https://evgeniibogdanov.github.io/frontend-practice/)** *(без локальной установки, редактор в браузере)*
 > - **[📥 Перейти к инструкции по локальной офлайн-установке](#-пошаговая-установка-и-запуск)** *(после локальный установки, вы можете решать задачи также в связке с IDE)*
 
 ---
