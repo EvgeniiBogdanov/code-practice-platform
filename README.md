@@ -6,8 +6,7 @@
 
 **`v2.0.3`** · От Junior до Lead · 250+ реальных задач с собеседований
 
-[![🌐 Онлайн-версия](https://img.shields.io/badge/🌐_Открыть_Live_Demo-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://evgeniibogdanov.github.io/frontend-practice/)
-[![📥 Скачать](https://img.shields.io/badge/📥_Скачать_ZIP-1e40af?style=for-the-badge&logo=github&logoColor=white)](https://github.com/EvgeniiBogdanov/frontend-practice/archive/refs/heads/main.zip)
+[![🌐 Онлайн-версия](https://img.shields.io/badge/-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://evgeniibogdanov.github.io/frontend-practice/)
 
 ---
 
