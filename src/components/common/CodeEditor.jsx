@@ -13,10 +13,16 @@ import {
   Code2,
   AlertCircle,
   Wand2,
+  ZoomIn,
+  ZoomOut,
 } from "lucide-react";
 import { highlightJS } from "../../utils/codeHighlighter";
 import { checkAutoCloseTag } from "../../utils/snippetsEngine";
 import { lintJavaScriptCode, fixTypoInCode } from "../../utils/codeLinter";
+
+const MIN_FONT_SIZE = 13;
+const MAX_FONT_SIZE = 20;
+const FONT_SIZE_STORAGE_KEY = "playground_editor_font_size";
 
 export const CodeEditor = ({
   initialCode = "",
@@ -48,6 +54,46 @@ export const CodeEditor = ({
   const [wordWrap, setWordWrap] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [cursorPos, setCursorPos] = useState({ line: 1, col: 1, selectedLength: 0 });
+
+  // Размер шрифта редактора (мин 13px, макс 20px, по умолчанию 13px, сохранение в localStorage)
+  const [fontSize, setFontSize] = useState(() => {
+    try {
+      const saved = localStorage.getItem(FONT_SIZE_STORAGE_KEY);
+      if (saved !== null) {
+        const parsed = parseInt(saved, 10);
+        if (!isNaN(parsed) && parsed >= MIN_FONT_SIZE && parsed <= MAX_FONT_SIZE) {
+          return parsed;
+        }
+      }
+    } catch (err) {
+      console.error("Failed to load font size from localStorage", err);
+    }
+    return MIN_FONT_SIZE;
+  });
+
+  const handleIncreaseFontSize = () => {
+    setFontSize((prev) => {
+      const next = Math.min(MAX_FONT_SIZE, prev + 1);
+      try {
+        localStorage.setItem(FONT_SIZE_STORAGE_KEY, String(next));
+      } catch (err) {
+        console.error("Failed to save font size to localStorage", err);
+      }
+      return next;
+    });
+  };
+
+  const handleDecreaseFontSize = () => {
+    setFontSize((prev) => {
+      const next = Math.max(MIN_FONT_SIZE, prev - 1);
+      try {
+        localStorage.setItem(FONT_SIZE_STORAGE_KEY, String(next));
+      } catch (err) {
+        console.error("Failed to save font size to localStorage", err);
+      }
+      return next;
+    });
+  };
 
   // Автоматическая проверка синтаксиса и опечаток (conts -> const, etc.)
   const [diagnostics, setDiagnostics] = useState({
@@ -187,6 +233,19 @@ export const CodeEditor = ({
     if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
       e.preventDefault();
       if (onRun) onRun(code);
+      return;
+    }
+
+    // Изменение размера шрифта: Ctrl+ / Ctrl-
+    if ((e.ctrlKey || e.metaKey) && (e.key === "+" || e.key === "=")) {
+      e.preventDefault();
+      handleIncreaseFontSize();
+      return;
+    }
+
+    if ((e.ctrlKey || e.metaKey) && (e.key === "-" || e.key === "_")) {
+      e.preventDefault();
+      handleDecreaseFontSize();
       return;
     }
 
@@ -451,6 +510,7 @@ export const CodeEditor = ({
       className={`vscode-ide-editor ${isFullscreen ? "ide-fullscreen" : ""} ${
         isFocused ? "ide-focused" : ""
       }`}
+      style={{ "--editor-font-size": `${fontSize}px` }}
     >
       {/* Шапка редактора: Слева вкладки файлов (с горизонтальным скроллом), Справа кнопки управления */}
       <div className="vscode-editor-header">
@@ -505,7 +565,6 @@ export const CodeEditor = ({
                 className="vscode-icon-btn"
                 onClick={handleUndo}
                 disabled={historyIndexRef.current <= 0}
-                title="Отменить (Ctrl+Z)"
                 data-tooltip="Отменить изменение (Ctrl+Z)"
               >
                 <Undo2 size={14} />
@@ -514,7 +573,6 @@ export const CodeEditor = ({
                 className="vscode-icon-btn"
                 onClick={handleRedo}
                 disabled={historyIndexRef.current >= historyRef.current.length - 1}
-                title="Повторить (Ctrl+Y)"
                 data-tooltip="Повторить изменение (Ctrl+Y)"
               >
                 <Redo2 size={14} />
@@ -525,17 +583,40 @@ export const CodeEditor = ({
           <button
             className={`vscode-icon-btn ${wordWrap ? "active" : ""}`}
             onClick={() => setWordWrap((prev) => !prev)}
-            title={wordWrap ? "Выключить перенос длинных строк" : "Включить перенос длинных строк"}
             data-tooltip={wordWrap ? "Выключить перенос длинных строк" : "Включить перенос длинных строк"}
           >
             <WrapText size={14} />
+          </button>
+
+          <button
+            className="vscode-icon-btn"
+            onClick={handleDecreaseFontSize}
+            disabled={fontSize <= MIN_FONT_SIZE}
+            data-tooltip={
+              fontSize <= MIN_FONT_SIZE
+                ? `Минимальный размер шрифта (${MIN_FONT_SIZE}px)`
+                : `Уменьшить шрифт кода (${fontSize}px, Ctrl -)`
+            }
+          >
+            <ZoomOut size={14} />
+          </button>
+          <button
+            className="vscode-icon-btn"
+            onClick={handleIncreaseFontSize}
+            disabled={fontSize >= MAX_FONT_SIZE}
+            data-tooltip={
+              fontSize >= MAX_FONT_SIZE
+                ? `Максимальный размер шрифта (${MAX_FONT_SIZE}px)`
+                : `Увеличить шрифт кода (${fontSize}px, Ctrl +)`
+            }
+          >
+            <ZoomIn size={14} />
           </button>
 
           {isCodeModified && (
             <button
               className="vscode-icon-btn"
               onClick={handleReset}
-              title="Сбросить код к исходному шаблону"
               data-tooltip="Сбросить код к исходному шаблону"
             >
               <RotateCcw size={14} />
@@ -546,7 +627,6 @@ export const CodeEditor = ({
           <button
             className="vscode-icon-btn"
             onClick={handleCopy}
-            title={copied ? "Скопировано в буфер обмена" : "Скопировать код решения"}
             data-tooltip={copied ? "Скопировано в буфер обмена" : "Скопировать код решения"}
           >
             {copied ? (
@@ -559,7 +639,6 @@ export const CodeEditor = ({
           <button
             className="vscode-icon-btn"
             onClick={() => setIsFullscreen((prev) => !prev)}
-            title={isFullscreen ? "Выйти из полноэкранного режима (F11)" : "Развернуть на весь экран (F11)"}
             data-tooltip={isFullscreen ? "Выйти из полноэкранного режима (F11)" : "Развернуть на весь экран (F11)"}
           >
             {isFullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}

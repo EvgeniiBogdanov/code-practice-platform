@@ -9,7 +9,13 @@ import {
   CheckCircle2,
   AlertCircle,
   Loader2,
+  ZoomIn,
+  ZoomOut,
 } from "lucide-react";
+
+const MIN_FONT_SIZE = 13;
+const MAX_FONT_SIZE = 20;
+const FONT_SIZE_STORAGE_KEY = "playground_editor_font_size";
 
 export const JsConsole = ({
   logs = [],
@@ -22,6 +28,46 @@ export const JsConsole = ({
 }) => {
   const [copied, setCopied] = useState(false);
   const outputEndRef = useRef(null);
+
+  // Синхронизация размера шрифта с редактором кода через localStorage
+  const [fontSize, setFontSize] = useState(() => {
+    try {
+      const saved = localStorage.getItem(FONT_SIZE_STORAGE_KEY);
+      if (saved !== null) {
+        const parsed = parseInt(saved, 10);
+        if (!isNaN(parsed) && parsed >= MIN_FONT_SIZE && parsed <= MAX_FONT_SIZE) {
+          return parsed;
+        }
+      }
+    } catch (err) {
+      console.error("Failed to load font size from localStorage", err);
+    }
+    return MIN_FONT_SIZE;
+  });
+
+  const handleIncreaseFontSize = () => {
+    setFontSize((prev) => {
+      const next = Math.min(MAX_FONT_SIZE, prev + 1);
+      try {
+        localStorage.setItem(FONT_SIZE_STORAGE_KEY, String(next));
+      } catch (err) {
+        console.error("Failed to save font size to localStorage", err);
+      }
+      return next;
+    });
+  };
+
+  const handleDecreaseFontSize = () => {
+    setFontSize((prev) => {
+      const next = Math.max(MIN_FONT_SIZE, prev - 1);
+      try {
+        localStorage.setItem(FONT_SIZE_STORAGE_KEY, String(next));
+      } catch (err) {
+        console.error("Failed to save font size to localStorage", err);
+      }
+      return next;
+    });
+  };
 
   // Автоскролл к концу при выводе логов
   useEffect(() => {
@@ -140,64 +186,86 @@ export const JsConsole = ({
   const cleanFilename = filename ? filename.split("/").pop() : "main.js";
 
   return (
-    <div className="js-console-container vscode-terminal-panel">
-      {/* Шапка терминала в стиле VS Code */}
-      <div className="js-console-header vscode-terminal-header">
-        <div className="js-console-header-left">
-          <Terminal size={14} style={{ color: "#38bdf8" }} />
-          <span className="vscode-terminal-title">КОНСОЛЬ</span>
+    <div
+      className="js-console-container vscode-terminal-panel"
+      style={{ "--editor-font-size": `${fontSize}px` }}
+    >
+      {/* Шапка консоли в едином дизайне с редактором кода */}
+      <div className="vscode-editor-header">
+        <div className="vscode-editor-single-file">
+          <Terminal size={13} style={{ color: "#38bdf8", flexShrink: 0 }} />
+          <span className="file-tab-name">{customTitle || "Консоль"}</span>
           {logs.length > 0 && <span className="console-counter">{logs.length}</span>}
         </div>
 
-        <div className="js-console-header-right">
-          {/* Индикатор статуса выполнения */}
+        <div className="vscode-editor-actions">
           {isRunning && (
             <span className="js-console-badge badge-running">
-              <Loader2 size={13} className="spin-icon" /> Выполнение...
+              <Loader2 size={12} className="spin-icon" /> Выполнение...
             </span>
           )}
 
-          {/* Действия: компактные кнопки VS Code с подсказками */}
-          <div className="js-console-actions">
-            {onRun && (
-              <button
-                className="js-console-btn-icon btn-run-mini"
-                onClick={onRun}
-                disabled={isRunning}
-                title="Запустить код в Node.js (Ctrl + Enter)"
-                data-tooltip="Запустить код в Node.js (Ctrl + Enter)"
-                aria-label="Запустить код"
-              >
-                <Play size={13} fill="currentColor" />
-              </button>
+          {onRun && (
+            <button
+              className="vscode-icon-btn"
+              onClick={onRun}
+              disabled={isRunning}
+              data-tooltip="Запустить код в Node.js (Ctrl + Enter)"
+              aria-label="Запустить код"
+            >
+              <Play size={14} style={{ color: "#10b981" }} fill="currentColor" />
+            </button>
+          )}
+
+          <button
+            className="vscode-icon-btn"
+            onClick={onClear}
+            disabled={logs.length === 0 && !lastExecution}
+            data-tooltip="Очистить вывод терминала"
+            aria-label="Очистить"
+          >
+            <Trash2 size={14} />
+          </button>
+
+          <button
+            className="vscode-icon-btn"
+            onClick={handleCopyLogs}
+            disabled={logs.length === 0}
+            data-tooltip={copied ? "Вывод скопирован!" : "Скопировать вывод терминала"}
+            aria-label="Копировать"
+          >
+            {copied ? (
+              <Check size={14} style={{ color: "#10b981" }} />
+            ) : (
+              <Copy size={14} />
             )}
+          </button>
 
-            <button
-              className="js-console-btn-icon btn-clear-mini"
-              onClick={onClear}
-              disabled={logs.length === 0 && !lastExecution}
-              title="Очистить вывод терминала"
-              data-tooltip="Очистить вывод терминала"
-              aria-label="Очистить"
-            >
-              <Trash2 size={13} />
-            </button>
+          <button
+            className="vscode-icon-btn"
+            onClick={handleDecreaseFontSize}
+            disabled={fontSize <= MIN_FONT_SIZE}
+            data-tooltip={
+              fontSize <= MIN_FONT_SIZE
+                ? `Минимальный размер шрифта (${MIN_FONT_SIZE}px)`
+                : `Уменьшить шрифт (${fontSize}px, Ctrl -)`
+            }
+          >
+            <ZoomOut size={14} />
+          </button>
 
-            <button
-              className="js-console-btn-icon btn-copy-mini"
-              onClick={handleCopyLogs}
-              disabled={logs.length === 0}
-              title={copied ? "Вывод скопирован!" : "Скопировать вывод терминала"}
-              data-tooltip={copied ? "Вывод скопирован!" : "Скопировать вывод терминала"}
-              aria-label="Копировать"
-            >
-              {copied ? (
-                <Check size={13} style={{ color: "#10b981" }} />
-              ) : (
-                <Copy size={13} />
-              )}
-            </button>
-          </div>
+          <button
+            className="vscode-icon-btn"
+            onClick={handleIncreaseFontSize}
+            disabled={fontSize >= MAX_FONT_SIZE}
+            data-tooltip={
+              fontSize >= MAX_FONT_SIZE
+                ? `Максимальный размер шрифта (${MAX_FONT_SIZE}px)`
+                : `Увеличить шрифт (${fontSize}px, Ctrl +)`
+            }
+          >
+            <ZoomIn size={14} />
+          </button>
         </div>
       </div>
 
@@ -205,7 +273,7 @@ export const JsConsole = ({
       <div className="js-console-body vscode-terminal-body">
         {logs.length === 0 && !isRunning && !lastExecution ? (
           <div className="js-console-empty-state">
-            <div className="empty-state-prompt">
+            <div className="console-command-line">
               <span className="prompt-sign">$</span> node {cleanFilename}
             </div>
             <p className="empty-state-hint">
@@ -256,45 +324,66 @@ export const JsConsole = ({
               </div>
             )}
 
-            {/* Отдельный отчерченный раздел информации выполнения в самом окне консоли */}
-            {lastExecution && !isRunning && (
-              <div className="console-info-section">
-                <div className="console-info-divider" />
-                <div className="console-info-bar">
-                  <div className="console-info-item item-time">
-                    <Zap size={12} style={{ color: "#f59e0b" }} />
-                    <span>
-                      Время выполнения:{" "}
-                      <strong>
-                        {lastExecution.durationMs !== undefined
-                          ? `${lastExecution.durationMs}ms`
-                          : "0ms"}
-                      </strong>
-                    </span>
-                  </div>
 
-                  <div className="console-info-item item-status">
-                    {lastExecution.exitCode === 0 ? (
-                      <span className="console-status-pill status-success">
-                        <CheckCircle2 size={12} /> Завершено (код 0)
-                      </span>
-                    ) : (
-                      <span className="console-status-pill status-error">
-                        <AlertCircle size={12} /> Ошибка (код {lastExecution.exitCode})
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="console-info-item item-count">
-                    <span>Записей логов: {logs.length}</span>
-                  </div>
-                </div>
-              </div>
-            )}
 
             <div ref={outputEndRef} />
           </div>
         )}
+      </div>
+
+      {/* Статус-бар консоли в едином дизайне с редактором кода */}
+      <div className="vscode-status-bar">
+        <div className="status-left">
+          {isRunning ? (
+            <span className="status-item status-typo-warning">
+              <Loader2 size={11} className="spin-icon" style={{ color: "#38bdf8" }} />
+              <span>Выполнение процесса Node.js...</span>
+            </span>
+          ) : lastExecution ? (
+            lastExecution.exitCode === 0 ? (
+              <span className="status-item status-typo-ok">
+                <CheckCircle2 size={11} style={{ color: "#34d399" }} />
+                <span>Завершено (код 0)</span>
+              </span>
+            ) : (
+              <span className="status-item status-typo-warning">
+                <AlertCircle size={11} style={{ color: "#f87171" }} />
+                <span>Ошибка (код {lastExecution.exitCode})</span>
+              </span>
+            )
+          ) : (
+            <span className="status-item status-typo-ok">
+              <CheckCircle2 size={11} style={{ color: "#34d399" }} />
+              <span>Готов к работе</span>
+            </span>
+          )}
+
+          <span className="status-sep">|</span>
+
+          {lastExecution?.durationMs !== undefined && (
+            <>
+              <span className="status-item">
+                <Zap size={11} style={{ color: "#f59e0b" }} />
+                {lastExecution.durationMs}ms
+              </span>
+              <span className="status-sep">|</span>
+            </>
+          )}
+
+          <span className="status-item">
+            {logs.length} {logs.length === 1 ? "лог" : logs.length < 5 ? "лога" : "логов"}
+          </span>
+        </div>
+
+        <div className="status-right">
+          <span className="status-item">Node.js v20</span>
+          <span className="status-sep">|</span>
+          <span className="status-item">UTF-8</span>
+          <span className="status-sep">|</span>
+          <span className="status-item lang-tag" title="Язык синтаксиса: Terminal">
+            <Terminal size={11} style={{ color: "#38bdf8" }} /> Terminal
+          </span>
+        </div>
       </div>
     </div>
   );
