@@ -229,7 +229,7 @@ const Playground = () => {
     ...ADVANCED_TASKS.map((t) => ({ ...t, difficulty: "strong", category: "Strong", section: "react" })),
     ...REACT_TS_TASKS.map((t) => ({ ...t, difficulty: "ts", category: "React + TS (Разминка)", section: "react" })),
     ...REACT_TS_PRACTICE_TASKS.map((t) => ({ ...t, difficulty: "ts", category: "React + TS (Практика)", section: "react" })),
-    ...JS_TASKS.map((t) => ({ ...t, category: t.group || "JavaScript", section: "javascript" })),
+    ...JS_TASKS.map((t) => ({ ...t, group: t.group, subgroup: t.subgroup, category: t.group || "JavaScript", section: "javascript" })),
   ], []);
 
   // Клавиатурная навигация и Cmd+K

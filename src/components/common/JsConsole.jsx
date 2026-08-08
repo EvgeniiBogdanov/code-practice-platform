@@ -9,8 +9,6 @@ import {
   CheckCircle2,
   AlertCircle,
   Loader2,
-  ZoomIn,
-  ZoomOut,
 } from "lucide-react";
 
 const MIN_FONT_SIZE = 13;
@@ -239,32 +237,6 @@ export const JsConsole = ({
             ) : (
               <Copy size={14} />
             )}
-          </button>
-
-          <button
-            className="vscode-icon-btn"
-            onClick={handleDecreaseFontSize}
-            disabled={fontSize <= MIN_FONT_SIZE}
-            data-tooltip={
-              fontSize <= MIN_FONT_SIZE
-                ? `Минимальный размер шрифта (${MIN_FONT_SIZE}px)`
-                : `Уменьшить шрифт (${fontSize}px, Ctrl -)`
-            }
-          >
-            <ZoomOut size={14} />
-          </button>
-
-          <button
-            className="vscode-icon-btn"
-            onClick={handleIncreaseFontSize}
-            disabled={fontSize >= MAX_FONT_SIZE}
-            data-tooltip={
-              fontSize >= MAX_FONT_SIZE
-                ? `Максимальный размер шрифта (${MAX_FONT_SIZE}px)`
-                : `Увеличить шрифт (${fontSize}px, Ctrl +)`
-            }
-          >
-            <ZoomIn size={14} />
           </button>
         </div>
       </div>

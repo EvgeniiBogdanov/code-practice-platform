@@ -61,12 +61,12 @@ export const CandidateTab = ({
       ([entry]) => {
         setIsConsoleVisible(entry.isIntersecting);
       },
-      { threshold: 0.15 }
+      { threshold: 0 }
     );
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [hasCandidateComponent, viewMode, activeFileIdx]);
+  }, [hasCandidateComponent, viewMode, activeFileIdx, currentTask.id]);
 
   const handleRunCode = async (codeToExecute) => {
     if (isRunning) return;
@@ -177,21 +177,21 @@ export const CandidateTab = ({
               currentCodeRef.current = val;
             }}
             readOnly={false}
+            bottomConsole={
+              isJsTask ? (
+                <div ref={consoleWrapperRef} className="task-console-wrapper">
+                  <JsConsole
+                    logs={consoleLogs}
+                    isRunning={isRunning}
+                    lastExecution={lastExecution}
+                    filename={activeFile.filepath || activeFile.name}
+                    onRun={() => handleRunCode()}
+                    onClear={handleClearConsole}
+                  />
+                </div>
+              ) : null
+            }
           />
-
-          {/* Интерактивная консоль Node.js под контейнером кода */}
-          {isJsTask && (
-            <div ref={consoleWrapperRef} className="task-console-wrapper">
-              <JsConsole
-                logs={consoleLogs}
-                isRunning={isRunning}
-                lastExecution={lastExecution}
-                filename={activeFile.filepath || activeFile.name}
-                onRun={() => handleRunCode()}
-                onClear={handleClearConsole}
-              />
-            </div>
-          )}
 
           {/* Кнопка быстрой перемотки к консоли по IntersectionObserver */}
           {isJsTask && !isConsoleVisible && (

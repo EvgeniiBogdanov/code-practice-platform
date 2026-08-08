@@ -1,5 +1,6 @@
 import React from "react";
 import { Search, Code2, Zap, Brain } from "lucide-react";
+import { getGroupMeta } from "../../javascript/data/groupConfig";
 
 const SECTION_LABELS = {
   react: { label: "REACT", icon: <Code2 size={12} style={{ color: "#61dafb" }} /> },
@@ -26,11 +27,16 @@ export const CommandPaletteModal = ({
     ? allTasksList
     : allTasksList.filter((t) => t.section === activeSection);
 
-  const filteredTasks = sectionTasks.filter((t) =>
-    t.title.toLowerCase().includes(paletteQuery.toLowerCase()) ||
-    (t.category && t.category.toLowerCase().includes(paletteQuery.toLowerCase())) ||
-    (t.group && t.group.toLowerCase().includes(paletteQuery.toLowerCase()))
-  );
+  const filteredTasks = sectionTasks.filter((t) => {
+    const q = paletteQuery.toLowerCase();
+    return (
+      t.title.toLowerCase().includes(q) ||
+      (t.category && t.category.toLowerCase().includes(q)) ||
+      (t.group && t.group.toLowerCase().includes(q)) ||
+      (t.subgroup && t.subgroup.toLowerCase().includes(q)) ||
+      (t.difficulty && t.difficulty.toLowerCase().includes(q))
+    );
+  });
 
   const sectionLabel = activeSection === "home"
     ? "Все разделы"
@@ -63,6 +69,8 @@ export const CommandPaletteModal = ({
         <div className="command-palette-results">
           {filteredTasks.map((task) => {
             const sectionMeta = SECTION_LABELS[task.section] || SECTION_LABELS.react;
+            const jsMeta = task.section === "javascript" && task.group ? getGroupMeta(task.group) : null;
+
             return (
               <button
                 key={`${task.section}-${task.id}`}
@@ -81,13 +89,25 @@ export const CommandPaletteModal = ({
                     {sectionMeta.icon} {sectionMeta.label}
                   </span>
                 )}
-                <span className="palette-item-category">{task.category}</span>
                 <span className="palette-item-title">{task.title}</span>
+
                 {task.difficulty && (
                   <span
                     className={`difficulty-badge difficulty-${task.difficulty}`}
                   >
                     {task.difficulty}
+                  </span>
+                )}
+
+                {jsMeta && (
+                  <span
+                    className="js-group-badge"
+                    style={{
+                      background: jsMeta.bg,
+                      color: jsMeta.color,
+                    }}
+                  >
+                    {task.group}
                   </span>
                 )}
               </button>
