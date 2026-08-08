@@ -1,6 +1,7 @@
 import React from "react";
 import {
   PanelLeftOpen,
+  PanelLeftClose,
   Home,
   Code2,
   Zap,
@@ -170,15 +171,13 @@ export const Header = ({
   return (
     <header className="app-header">
       <div className="header-left">
-        {!sidebarOpen && (
-          <button
-            className="sidebar-toggle-btn"
-            onClick={() => setSidebarOpen(true)}
-            title="Развернуть панель задач"
-          >
-            <PanelLeftOpen size={16} />
-          </button>
-        )}
+        <button
+          className={`sidebar-toggle-btn ${sidebarOpen ? "desktop-hidden" : ""}`}
+          onClick={() => setSidebarOpen((prev) => !prev)}
+          title={sidebarOpen ? "Свернуть панель задач" : "Развернуть панель задач"}
+        >
+          {sidebarOpen ? <PanelLeftClose size={16} /> : <PanelLeftOpen size={16} />}
+        </button>
 
         {/* Интерактивные кликабельные хлебные крошки Notion-style (macOS Finder Emulation) */}
         <nav className="header-breadcrumbs" aria-label="Хлебные крошки Finder">
@@ -189,10 +188,10 @@ export const Header = ({
               onClick={toggleSectionDropdown}
               title="Переключить раздел практики"
             >
-              {activeSection === "home" && <><Home size={15} style={{ color: "#60a5fa" }} /> <span>ГЛАВНАЯ</span></>}
-              {activeSection === "react" && <><Code2 size={15} style={{ color: "#61dafb" }} /> <span>REACT</span></>}
-              {activeSection === "javascript" && <><Zap size={15} style={{ color: "#f59e0b" }} /> <span>JAVASCRIPT</span></>}
-              {activeSection === "algorithms" && <><Brain size={15} style={{ color: "#a855f7" }} /> <span>АЛГОРИТМЫ</span></>}
+              {activeSection === "home" && <><Home size={15} style={{ color: "#60a5fa" }} /> <span className="breadcrumb-text-truncate">ГЛАВНАЯ</span></>}
+              {activeSection === "react" && <><Code2 size={15} style={{ color: "#61dafb" }} /> <span className="breadcrumb-text-truncate">REACT</span></>}
+              {activeSection === "javascript" && <><Zap size={15} style={{ color: "#f59e0b" }} /> <span className="breadcrumb-text-truncate">JAVASCRIPT</span></>}
+              {activeSection === "algorithms" && <><Brain size={15} style={{ color: "#a855f7" }} /> <span className="breadcrumb-text-truncate">АЛГОРИТМЫ</span></>}
               <ChevronDown size={14} className="breadcrumb-chevron" />
             </button>
 
@@ -226,7 +225,7 @@ export const Header = ({
                     title="Выбрать группу задач"
                   >
                     {currentGroupMeta.renderIcon(14)}
-                    <span>{(selectedTask.group || "Циклы").toUpperCase()}</span>
+                    <span className="breadcrumb-text-truncate">{(selectedTask.group || "Циклы").toUpperCase()}</span>
                     <ChevronDown size={14} className="breadcrumb-chevron" />
                   </button>
 
@@ -280,7 +279,7 @@ export const Header = ({
                     title="Выбрать подгруппу задач"
                   >
                     <Folder size={14} style={{ color: currentGroupMeta.color, opacity: 0.9 }} />
-                    <span>{selectedTask.subgroup || "for"}</span>
+                    <span className="breadcrumb-text-truncate">{selectedTask.subgroup || "for"}</span>
                     <ChevronDown size={14} className="breadcrumb-chevron" />
                   </button>
 
@@ -341,7 +340,7 @@ export const Header = ({
                     title="Выбрать задачу из подгруппы"
                   >
                     <span>{taskIcon}</span>
-                    <span>{selectedTask?.title}</span>
+                    <span className="breadcrumb-text-truncate">{selectedTask?.title}</span>
                     <ChevronDown size={14} className="breadcrumb-chevron" />
                   </button>
 
@@ -394,7 +393,7 @@ export const Header = ({
                   title="Выбрать другую группу задач"
                 >
                   <span>{categoryIcon}</span>
-                  <span>{taskCategory}</span>
+                  <span className="breadcrumb-text-truncate">{taskCategory}</span>
                   <ChevronDown size={14} className="breadcrumb-chevron" />
                 </button>
 
@@ -447,7 +446,7 @@ export const Header = ({
                   title="Выбрать другую задачу из этого раздела"
                 >
                   <span>{taskIcon}</span>
-                  <span>{selectedTask?.title}</span>
+                  <span className="breadcrumb-text-truncate">{selectedTask?.title}</span>
                   <ChevronDown size={14} className="breadcrumb-chevron" />
                 </button>
 

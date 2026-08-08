@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import {
   Home,
   Code2,
@@ -132,9 +132,47 @@ const Playground = () => {
     localStorage.setItem("playground_theme", theme);
   }, [theme]);
 
+  // Запоминание настройки пользователя для десктопа (> 768px)
+  const desktopSidebarPreferenceRef = useRef(
+    localStorage.getItem("playground_sidebar_open") !== "false"
+  );
+
+  const setSidebarOpenWithPreference = useCallback((valOrFn) => {
+    setSidebarOpen((prev) => {
+      const nextVal = typeof valOrFn === "function" ? valOrFn(prev) : valOrFn;
+      if (typeof window !== "undefined" && window.innerWidth > 768) {
+        desktopSidebarPreferenceRef.current = nextVal;
+        localStorage.setItem("playground_sidebar_open", String(nextVal));
+      }
+      return nextVal;
+    });
+  }, []);
+
+  // Умный адаптивный эффект перехода Desktop <-> Mobile/Tablet (768px)
   useEffect(() => {
-    localStorage.setItem("playground_sidebar_open", sidebarOpen);
-  }, [sidebarOpen]);
+    let wasMobile = window.innerWidth <= 768;
+
+    const handleResize = () => {
+      const isNowMobile = window.innerWidth <= 768;
+
+      if (isNowMobile && !wasMobile) {
+        // Переход с десктопа на мобильный -> сворачиваем сайдбар
+        setSidebarOpen(false);
+        wasMobile = true;
+      } else if (!isNowMobile && wasMobile) {
+        // Переход с мобильного на десктоп -> восстанавливаем сохраненное состояние десктопа
+        setSidebarOpen(desktopSidebarPreferenceRef.current);
+        wasMobile = false;
+      }
+    };
+
+    if (wasMobile) {
+      setSidebarOpen(false);
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleCopyCode = (id, codeText) => {
     if (!codeText) return;
@@ -709,7 +747,7 @@ const Playground = () => {
     <div className="app-container">
       <Sidebar
         sidebarOpen={sidebarOpen}
-        setSidebarOpen={setSidebarOpen}
+        setSidebarOpen={setSidebarOpenWithPreference}
         activeSection={activeSection}
         setActiveSection={setActiveSection}
         sectionDropdownOpen={sectionDropdownOpen}
@@ -753,10 +791,19 @@ const Playground = () => {
         hideTooltip={hideTooltip}
       />
 
+      {/* Notion-style Mobile Sidebar Overlay Backdrop */}
+      {sidebarOpen && (
+        <div
+          className="sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       <div className="app-content-wrapper">
         <Header
           sidebarOpen={sidebarOpen}
-          setSidebarOpen={setSidebarOpen}
+          setSidebarOpen={setSidebarOpenWithPreference}
           activeSection={activeSection}
           setActiveSection={setActiveSection}
           headerSectionDropdownOpen={headerSectionDropdownOpen}
