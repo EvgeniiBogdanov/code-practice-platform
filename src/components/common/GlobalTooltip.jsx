@@ -21,11 +21,17 @@ export const GlobalTooltip = () => {
       const text = target.getAttribute("data-tooltip");
       if (!text || text.trim() === "") return;
 
+      // Подавляем дефолтный браузерный title тултип, чтобы не открывались оба тултипа одновременно
+      if (target.hasAttribute("title")) {
+        target.setAttribute("data-suppressed-title", target.getAttribute("title"));
+        target.removeAttribute("title");
+      }
+
       activeTargetRef.current = target;
 
       if (timerRef.current) clearTimeout(timerRef.current);
 
-      // Задержка 350ms перед показом
+      // Увеличенная комфортная задержка 650ms перед показом тултипа
       timerRef.current = setTimeout(() => {
         if (activeTargetRef.current !== target) return;
 
@@ -62,34 +68,44 @@ export const GlobalTooltip = () => {
           y,
           placement,
         });
-      }, 350);
+      }, 650);
     };
 
     const handleMouseOut = (e) => {
       const target = e.target.closest("[data-tooltip]");
-      if (target && activeTargetRef.current === target) {
-        if (timerRef.current) clearTimeout(timerRef.current);
-        activeTargetRef.current = null;
-        setTooltipState((prev) => ({ ...prev, visible: false }));
+      if (target) {
+        if (target.hasAttribute("data-suppressed-title")) {
+          target.setAttribute("title", target.getAttribute("data-suppressed-title"));
+          target.removeAttribute("data-suppressed-title");
+        }
+        if (activeTargetRef.current === target) {
+          if (timerRef.current) clearTimeout(timerRef.current);
+          activeTargetRef.current = null;
+          setTooltipState((prev) => ({ ...prev, visible: false }));
+        }
       }
     };
 
-    const handleScrollOrResize = () => {
+    const handleDismiss = () => {
       if (timerRef.current) clearTimeout(timerRef.current);
       activeTargetRef.current = null;
-      setTooltipState((prev) => ({ ...prev, visible: false }));
+      setTooltipState((prev) => (prev.visible ? { ...prev, visible: false } : prev));
     };
 
     document.addEventListener("mouseover", handleMouseOver, true);
     document.addEventListener("mouseout", handleMouseOut, true);
-    window.addEventListener("scroll", handleScrollOrResize, true);
-    window.addEventListener("resize", handleScrollOrResize, true);
+    document.addEventListener("mousedown", handleDismiss, true);
+    document.addEventListener("click", handleDismiss, true);
+    window.addEventListener("scroll", handleDismiss, true);
+    window.addEventListener("resize", handleDismiss, true);
 
     return () => {
       document.removeEventListener("mouseover", handleMouseOver, true);
       document.removeEventListener("mouseout", handleMouseOut, true);
-      window.removeEventListener("scroll", handleScrollOrResize, true);
-      window.removeEventListener("resize", handleScrollOrResize, true);
+      document.removeEventListener("mousedown", handleDismiss, true);
+      document.removeEventListener("click", handleDismiss, true);
+      window.removeEventListener("scroll", handleDismiss, true);
+      window.removeEventListener("resize", handleDismiss, true);
       if (timerRef.current) clearTimeout(timerRef.current);
     };
   }, []);

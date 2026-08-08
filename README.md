@@ -1,6 +1,6 @@
 # 🚀 Frontend Interview Playground & Practice `v2.0.2`
 
-<img width="1728" height="905" alt="v2-02" src="https://github.com/user-attachments/assets/0e4c6522-24c2-45ac-a14d-d904e5721bbe" />
+<img width="1727" height="859" alt="v2-03" src="https://github.com/user-attachments/assets/ca9af402-5512-4091-92f6-b801d15d334d" />
 
 Интерактивная платформа для подготовки к техническим собеседованиям по **React** и **JavaScript** (от уровня Junior до Lead). Платформа содержит более 250 практических задач с реальных интервью, разборами антипаттернов в кандидатском коде, эталонными решениями и интерактивными шпаргалками. Теперь решать задачи можно не только в своей IDE, но также и непосредственно в браузере!
 

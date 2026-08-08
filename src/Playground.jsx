@@ -283,7 +283,7 @@ const Playground = () => {
     const rect = e.currentTarget.getBoundingClientRect();
     tooltipTimer.current = setTimeout(() => {
       setTooltip({ text, x: rect.left + 12, y: rect.top - 4 });
-    }, 300);
+    }, 650);
   };
 
   const hideTooltip = () => {
