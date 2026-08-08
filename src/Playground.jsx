@@ -33,6 +33,7 @@ import TaskView from "./components/task/TaskView";
 import CheatSheetModal from "./components/modals/CheatSheetModal";
 import CommandPaletteModal from "./components/modals/CommandPaletteModal";
 import StatsModal from "./components/modals/StatsModal";
+import GlobalTooltip from "./components/common/GlobalTooltip";
 
 const Playground = () => {
   const [selectedTask, setSelectedTask] = useState(() => {
@@ -968,6 +969,9 @@ const Playground = () => {
           {tooltip.text}
         </div>
       )}
+
+      {/* Глобальный портал всплывающих подсказок (вывод поверх всего) */}
+      <GlobalTooltip />
     </div>
   );
 };

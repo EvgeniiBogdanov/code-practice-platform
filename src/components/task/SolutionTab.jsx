@@ -1,15 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { Lock, Check, Copy, Eye, Code2, FileCode } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { Lock, Eye, Code2, FileCode, Terminal, ArrowDown, ChevronDown, Check } from "lucide-react";
 import { ALL_TASKS } from "../../react/data/tasksData";
 import ErrorBoundary from "../common/ErrorBoundary";
-import { highlightJS } from "../../utils/codeHighlighter";
+import CodeEditor from "../common/CodeEditor";
+import JsConsole from "../common/JsConsole";
 import { parseSolutionCodeAndExplanation } from "../../utils/solutionParser";
+import { runNodeJsCode, clearRunningTimers } from "../../utils/nodeRunner";
+import { getTaskFiles } from "../../utils/taskFiles";
 
 export const SolutionTab = ({
   selectedTask,
   SolutionComponent,
   handleCopyCode,
   copiedCodeId,
+  setTaskStatus,
+  completedTasks,
 }) => {
   const currentTask =
     ALL_TASKS.find((t) => String(t.id) === String(selectedTask.id)) ||
@@ -19,12 +24,19 @@ export const SolutionTab = ({
     Boolean(SolutionComponent) &&
     typeof SolutionComponent !== "string" &&
     !currentTask.isRaw;
+
   const [viewMode, setViewMode] = useState("preview"); // 'preview' | 'code'
   const [activeVariantIndex, setActiveVariantIndex] = useState(0);
+  const [activeFileIdx, setActiveFileIdx] = useState(0);
+  const [isHintExpanded, setIsHintExpanded] = useState(false); // По умолчанию подсказка свернута
 
-  useEffect(() => {
-    setActiveVariantIndex(0);
-  }, [currentTask.id]);
+  // Состояние консоли Node.js
+  const [consoleLogs, setConsoleLogs] = useState([]);
+  const [isRunning, setIsRunning] = useState(false);
+  const [lastExecution, setLastExecution] = useState(null);
+  const [isConsoleVisible, setIsConsoleVisible] = useState(true);
+
+  const consoleWrapperRef = useRef(null);
 
   const solutionVariants = currentTask.solutions || [
     {
@@ -33,50 +45,150 @@ export const SolutionTab = ({
         currentTask.rawSolution ||
         (typeof currentTask.solution === "string" ? currentTask.solution : ""),
       filepath: currentTask.filepath,
+      files: currentTask.files,
     },
   ];
 
   const currentVariant = solutionVariants[activeVariantIndex] || solutionVariants[0];
+  const files = getTaskFiles(currentVariant, "solution");
+  const activeFile = files[activeFileIdx] || files[0];
+
   const rawText = currentVariant.rawSolution || "";
-  const { code } = parseSolutionCodeAndExplanation(rawText);
+  const { explanation } = parseSolutionCodeAndExplanation(rawText);
+
+  // Сброс при смене задачи или варианта
+  useEffect(() => {
+    setActiveVariantIndex(0);
+    setActiveFileIdx(0);
+    setIsHintExpanded(false);
+    setConsoleLogs([]);
+    setIsRunning(false);
+    setLastExecution(null);
+    clearRunningTimers();
+  }, [currentTask.id]);
+
+  useEffect(() => {
+    setActiveFileIdx(0);
+    setIsHintExpanded(false);
+    setConsoleLogs([]);
+    setIsRunning(false);
+    setLastExecution(null);
+    clearRunningTimers();
+  }, [activeVariantIndex]);
+
+  // IntersectionObserver для отслеживания видимости консоли Node.js
+  useEffect(() => {
+    const el = consoleWrapperRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsConsoleVisible(entry.isIntersecting);
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [hasSolutionComponent, viewMode, activeVariantIndex, activeFileIdx]);
+
+  const handleRunCode = async (codeToExecute) => {
+    if (isRunning) return;
+    const codeToRun = codeToExecute !== undefined ? codeToExecute : activeFile.code;
+
+    setIsRunning(true);
+    setConsoleLogs([]);
+
+    const result = await runNodeJsCode(codeToRun, {
+      onLog: (newLog, allLogs) => {
+        setConsoleLogs(allLogs);
+      },
+    });
+
+    setConsoleLogs(result.logs);
+    setLastExecution({
+      durationMs: result.durationMs,
+      exitCode: result.exitCode,
+      error: result.error,
+    });
+    setIsRunning(false);
+  };
+
+  const handleClearConsole = () => {
+    setConsoleLogs([]);
+    setLastExecution(null);
+    clearRunningTimers();
+  };
+
+  const isJsTask =
+    !hasSolutionComponent ||
+    currentTask.isRaw ||
+    currentTask.section === "javascript" ||
+    String(currentTask.id).startsWith("js") ||
+    Boolean(currentTask.filepath && currentTask.filepath.includes("javascript"));
+
+  const variantFilepath = activeFile.filepath || activeFile.name || "solution.js";
 
   return (
-    <div style={{ width: "100%" }}>
-      {/* Варианты решений в отдельных файлах */}
+    <div style={{ width: "100%", position: "relative" }}>
+      {/* Переключатель вариантов решения (если их несколько) */}
       {solutionVariants.length > 1 && (
         <div className="solution-variants-bar">
-          {solutionVariants.map((variant, idx) => (
+          {solutionVariants.map((v, idx) => (
             <button
               key={idx}
+              className={`solution-variant-btn ${
+                activeVariantIndex === idx ? "active" : ""
+              }`}
               onClick={() => setActiveVariantIndex(idx)}
-              className={`solution-variant-btn ${activeVariantIndex === idx ? "active" : ""}`}
             >
               <FileCode size={13} />
-              <span>{variant.title}</span>
-              {variant.isRecommended && (
-                <span className="solution-variant-recommended-tag">
-                  Рекомендуется
-                </span>
+              <span>{v.title}</span>
+              {v.isRecommended && (
+                <Check
+                  size={13}
+                  style={{ color: "#10b981", strokeWidth: 2.5, flexShrink: 0 }}
+                />
               )}
             </button>
           ))}
         </div>
       )}
 
-      {/* Пометка о предпочтительности варианта на собеседовании */}
+      {/* Сворачиваемая пометка о предпочтительности варианта */}
       {currentVariant.recommendationNote && (
         <div
           className={`solution-recommendation-card ${
             currentVariant.isRecommended ? "is-recommended" : ""
           }`}
         >
-          <div className="solution-recommendation-header">
-            <span>{currentVariant.isRecommended ? "💡" : "📌"}</span>
-            <span>{currentVariant.badge || "Пометка для собеседования"}:</span>
-          </div>
-          <div className="solution-recommendation-text">
-            {currentVariant.recommendationNote}
-          </div>
+          <button
+            className="solution-recommendation-toggle"
+            onClick={() => setIsHintExpanded((prev) => !prev)}
+            title={isHintExpanded ? "Свернуть подсказку" : "Развернуть подсказку"}
+          >
+            <div className="solution-recommendation-header">
+              <span>{currentVariant.isRecommended ? "💡" : "📌"}</span>
+              <span>
+                {currentVariant.badge ||
+                  (currentVariant.isRecommended
+                    ? "Предпочтительно на собеседовании"
+                    : "Особенности подхода")}
+                :
+              </span>
+            </div>
+            <ChevronDown
+              size={14}
+              className={`recommendation-chevron ${
+                isHintExpanded ? "rotate-open" : ""
+              }`}
+            />
+          </button>
+          {isHintExpanded && (
+            <div className="solution-recommendation-text">
+              {currentVariant.recommendationNote}
+            </div>
+          )}
         </div>
       )}
 
@@ -110,8 +222,16 @@ export const SolutionTab = ({
               <span className="browser-dot maximize" />
             </div>
             <div className="browser-mockup-address">
-              <Lock size={12} style={{ marginRight: 4, display: "inline-block", verticalAlign: "middle", color: "#10b981" }} /> localhost:5173/
-              {(currentVariant.filepath || currentTask.filepath).split("/").pop()}
+              <Lock
+                size={12}
+                style={{
+                  marginRight: 4,
+                  display: "inline-block",
+                  verticalAlign: "middle",
+                  color: "#10b981",
+                }}
+              />{" "}
+              localhost:5173/{activeFile.name}
             </div>
             <div style={{ width: "52px" }} />
           </div>
@@ -122,27 +242,52 @@ export const SolutionTab = ({
           </div>
         </div>
       ) : (
-        <div className="code-preview-wrapper">
-          <button
-            className="code-copy-btn"
-            onClick={() => handleCopyCode(`sol-${currentTask.id}-${activeVariantIndex}`, code)}
-            title={copiedCodeId === `sol-${currentTask.id}-${activeVariantIndex}` ? "Скопировано!" : "Копировать код"}
-          >
-            {copiedCodeId === `sol-${currentTask.id}-${activeVariantIndex}` ? (
-              <Check size={13} style={{ color: "#10b981" }} />
-            ) : (
-              <Copy size={13} />
-            )}
-          </button>
-          <pre className="code-preview-block">
-            <code
-              dangerouslySetInnerHTML={{
-                __html: highlightJS(
-                  code || "// Код решения подготавливается",
-                ),
+        /* Чистый и минималистичный редактор решения, расширяющийся по высоте */
+        <div className="task-code-section">
+          <CodeEditor
+            key={`sol_${currentTask.id}_${activeVariantIndex}`}
+            initialCode={activeFile.code || "// Код решения подготавливается"}
+            taskId={`sol_${currentTask.id}_${activeVariantIndex}_file_${activeFileIdx}`}
+            filepath={activeFile.filepath || activeFile.name}
+            title={activeFile.name}
+            files={files}
+            activeFileIdx={activeFileIdx}
+            onFileSelect={setActiveFileIdx}
+            onRun={handleRunCode}
+            readOnly={false}
+          />
+
+          {/* Интерактивная консоль Node.js под контейнером кода */}
+          {isJsTask && (
+            <div ref={consoleWrapperRef} className="task-console-wrapper">
+              <JsConsole
+                logs={consoleLogs}
+                isRunning={isRunning}
+                lastExecution={lastExecution}
+                filename={activeFile.filepath || activeFile.name}
+                onRun={() => handleRunCode()}
+                onClear={handleClearConsole}
+                customTitle={`node ${activeFile.name}`}
+              />
+            </div>
+          )}
+
+          {/* Кнопка быстрой перемотки к консоли по IntersectionObserver */}
+          {isJsTask && !isConsoleVisible && (
+            <button
+              className="quick-scroll-console-btn"
+              onClick={() => {
+                consoleWrapperRef.current?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "nearest",
+                });
               }}
-            />
-          </pre>
+              title="Перейти к консоли"
+            >
+              <ArrowDown size={13} />
+              <span>Консоль</span>
+            </button>
+          )}
         </div>
       )}
     </div>
