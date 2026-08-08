@@ -77,6 +77,19 @@ const Playground = () => {
   const [sidebarOpen, setSidebarOpen] = useState(() => {
     return localStorage.getItem("playground_sidebar_open") !== "false";
   });
+  const [sidebarWidth, setSidebarWidth] = useState(() => {
+    if (typeof window === "undefined") return 260;
+    const saved = localStorage.getItem("playground_sidebar_width");
+    const parsed = saved ? parseInt(saved, 10) : 260;
+    return isNaN(parsed) ? 260 : Math.min(Math.max(parsed, 200), 480);
+  });
+
+  const updateSidebarWidth = useCallback((width) => {
+    const clamped = Math.min(Math.max(width, 200), 480);
+    setSidebarWidth(clamped);
+    localStorage.setItem("playground_sidebar_width", String(clamped));
+  }, []);
+
   const [sidebarFilter] = useState("ALL"); // ALL | SOLVED | UNSOLVED
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem("playground_theme") || "dark";
@@ -693,12 +706,12 @@ const Playground = () => {
     }
 
     return [
-      { id: "category-warmup", name: "РАЗМИНКА", icon: <Flame size={15} style={{ color: "#ff6b6b" }} />, tasks: WARMUP_TASKS, completed: completedWarmup, total: totalWarmup },
-      { id: "category-refactoring", name: "РЕФАКТОРИНГ", icon: <Wrench size={15} style={{ color: "#3b82f6" }} />, tasks: REFACTORING_TASKS, completed: completedRefactoring, total: totalRefactoring },
-      { id: "category-middle", name: "MIDDLE", icon: <Rocket size={15} style={{ color: "#10b981" }} />, tasks: MAIN_TASKS, completed: completedMain, total: totalMain },
-      { id: "category-strong", name: "STRONG", icon: <Brain size={15} style={{ color: "#a855f7" }} />, tasks: ADVANCED_TASKS, completed: completedAdvanced, total: totalAdvanced },
-      { id: "category-ts", name: "REACT + TS (РАЗМИНКА)", icon: <Zap size={15} style={{ color: "#eab308" }} />, tasks: REACT_TS_TASKS, completed: completedReactTs, total: totalReactTs },
-      { id: "category-ts-practice", name: "REACT + TS (ПРАКТИКА)", icon: <Zap size={15} style={{ color: "#eab308" }} />, tasks: REACT_TS_PRACTICE_TASKS, completed: completedReactTsPractice, total: totalReactTsPractice },
+      { id: "category-warmup", name: "Разминка", icon: <Flame size={15} style={{ color: "#ff6b6b" }} />, tasks: WARMUP_TASKS, completed: completedWarmup, total: totalWarmup },
+      { id: "category-refactoring", name: "Рефакторинг", icon: <Wrench size={15} style={{ color: "#3b82f6" }} />, tasks: REFACTORING_TASKS, completed: completedRefactoring, total: totalRefactoring },
+      { id: "category-middle", name: "Middle", icon: <Rocket size={15} style={{ color: "#10b981" }} />, tasks: MAIN_TASKS, completed: completedMain, total: totalMain },
+      { id: "category-strong", name: "Strong", icon: <Brain size={15} style={{ color: "#a855f7" }} />, tasks: ADVANCED_TASKS, completed: completedAdvanced, total: totalAdvanced },
+      { id: "category-ts", name: "React + TS (Разминка)", icon: <Zap size={15} style={{ color: "#eab308" }} />, tasks: REACT_TS_TASKS, completed: completedReactTs, total: totalReactTs },
+      { id: "category-ts-practice", name: "React + TS (Практика)", icon: <Zap size={15} style={{ color: "#eab308" }} />, tasks: REACT_TS_PRACTICE_TASKS, completed: completedReactTsPractice, total: totalReactTsPractice },
     ];
   }, [activeSection, completedWarmup, totalWarmup, completedRefactoring, totalRefactoring, completedMain, totalMain, completedAdvanced, totalAdvanced, completedReactTs, totalReactTs, completedReactTsPractice, totalReactTsPractice, completedTasks]);
 
@@ -707,7 +720,7 @@ const Playground = () => {
       const match = JS_TASKS.find((t) => String(t.id) === String(selectedTask?.id));
       const categoryName = match?.group && match?.subgroup
         ? `${match.group} > ${match.subgroup}`
-        : (match?.group || "JAVASCRIPT");
+        : (match?.group || "JavaScript");
       const subTasks = JS_TASKS.filter(
         (t) => t.group === match?.group && t.subgroup === match?.subgroup
       );
@@ -720,17 +733,17 @@ const Playground = () => {
       };
     }
     if (WARMUP_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "РАЗМИНКА", categoryIcon: <Flame size={15} style={{ color: "#ff6b6b" }} />, taskIcon: <FileText size={14} style={{ color: "#94a3b8" }} />, currentCategoryTasks: WARMUP_TASKS, categoryId: "category-warmup" };
+      return { taskCategory: "Разминка", categoryIcon: <Flame size={15} style={{ color: "#ff6b6b" }} />, taskIcon: <FileText size={14} style={{ color: "#94a3b8" }} />, currentCategoryTasks: WARMUP_TASKS, categoryId: "category-warmup" };
     if (REFACTORING_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "РЕФАКТОРИНГ", categoryIcon: <Wrench size={15} style={{ color: "#3b82f6" }} />, taskIcon: <FileText size={14} style={{ color: "#94a3b8" }} />, currentCategoryTasks: REFACTORING_TASKS, categoryId: "category-refactoring" };
+      return { taskCategory: "Рефакторинг", categoryIcon: <Wrench size={15} style={{ color: "#3b82f6" }} />, taskIcon: <FileText size={14} style={{ color: "#94a3b8" }} />, currentCategoryTasks: REFACTORING_TASKS, categoryId: "category-refactoring" };
     if (MAIN_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "MIDDLE", categoryIcon: <Rocket size={15} style={{ color: "#10b981" }} />, taskIcon: <FileText size={14} style={{ color: "#94a3b8" }} />, currentCategoryTasks: MAIN_TASKS, categoryId: "category-middle" };
+      return { taskCategory: "Middle", categoryIcon: <Rocket size={15} style={{ color: "#10b981" }} />, taskIcon: <FileText size={14} style={{ color: "#94a3b8" }} />, currentCategoryTasks: MAIN_TASKS, categoryId: "category-middle" };
     if (ADVANCED_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "STRONG", categoryIcon: <Brain size={15} style={{ color: "#a855f7" }} />, taskIcon: <FileText size={14} style={{ color: "#94a3b8" }} />, currentCategoryTasks: ADVANCED_TASKS, categoryId: "category-strong" };
+      return { taskCategory: "Strong", categoryIcon: <Brain size={15} style={{ color: "#a855f7" }} />, taskIcon: <FileText size={14} style={{ color: "#94a3b8" }} />, currentCategoryTasks: ADVANCED_TASKS, categoryId: "category-strong" };
     if (REACT_TS_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "REACT + TS (РАЗМИНКА)", categoryIcon: <Zap size={15} style={{ color: "#eab308" }} />, taskIcon: <FileText size={14} style={{ color: "#94a3b8" }} />, currentCategoryTasks: REACT_TS_TASKS, categoryId: "category-ts" };
+      return { taskCategory: "React + TS (Разминка)", categoryIcon: <Zap size={15} style={{ color: "#eab308" }} />, taskIcon: <FileText size={14} style={{ color: "#94a3b8" }} />, currentCategoryTasks: REACT_TS_TASKS, categoryId: "category-ts" };
     if (REACT_TS_PRACTICE_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "REACT + TS (ПРАКТИКА)", categoryIcon: <Zap size={15} style={{ color: "#eab308" }} />, taskIcon: <FileText size={14} style={{ color: "#94a3b8" }} />, currentCategoryTasks: REACT_TS_PRACTICE_TASKS, categoryId: "category-ts-practice" };
+      return { taskCategory: "React + TS (Практика)", categoryIcon: <Zap size={15} style={{ color: "#eab308" }} />, taskIcon: <FileText size={14} style={{ color: "#94a3b8" }} />, currentCategoryTasks: REACT_TS_PRACTICE_TASKS, categoryId: "category-ts-practice" };
     return { taskCategory: "", categoryIcon: null, taskIcon: <FileText size={14} style={{ color: "#94a3b8" }} />, currentCategoryTasks: [], categoryId: "" };
   }, [selectedTask.id]);
 
@@ -748,6 +761,8 @@ const Playground = () => {
       <Sidebar
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpenWithPreference}
+        sidebarWidth={sidebarWidth}
+        setSidebarWidth={updateSidebarWidth}
         activeSection={activeSection}
         setActiveSection={setActiveSection}
         sectionDropdownOpen={sectionDropdownOpen}
