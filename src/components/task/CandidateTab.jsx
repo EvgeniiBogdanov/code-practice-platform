@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { Lock, Eye, Code2, Terminal, ArrowDown, FileCode } from "lucide-react";
 import { ALL_TASKS } from "../../react/data/tasksData";
 import ErrorBoundary from "../common/ErrorBoundary";
@@ -15,6 +16,8 @@ export const CandidateTab = ({
   setTaskStatus,
   completedTasks,
 }) => {
+  const navigate = useNavigate();
+
   const currentTask =
     ALL_TASKS.find((t) => String(t.id) === String(selectedTask.id)) ||
     selectedTask;
@@ -104,6 +107,18 @@ export const CandidateTab = ({
     String(currentTask.id).startsWith("js") ||
     Boolean(currentTask.filepath && currentTask.filepath.includes("javascript"));
 
+  const handleToggleFullscreen = () => {
+    const section =
+      currentTask.section === "javascript" || String(currentTask.id).startsWith("js")
+        ? "javascript"
+        : "react";
+
+    navigate({
+      to: section === "javascript" ? "/open/javascript/$taskId" : "/open/react/$taskId",
+      params: { taskId: String(currentTask.id) },
+    });
+  };
+
   return (
     <div style={{ width: "100%", position: "relative" }}>
       {/* Для React-задач с визуальным компонентом */}
@@ -177,6 +192,7 @@ export const CandidateTab = ({
               currentCodeRef.current = val;
             }}
             readOnly={false}
+            onToggleFullscreen={handleToggleFullscreen}
             bottomConsole={
               isJsTask ? (
                 <div ref={consoleWrapperRef} className="task-console-wrapper">

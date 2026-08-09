@@ -46,6 +46,9 @@ export const CodeEditor = ({
   activeFileIdx = 0,
   onFileSelect,
   bottomConsole = null,
+  isFullscreen: externalIsFullscreen,
+  onToggleFullscreen,
+  extraHeaderActions = null,
 }) => {
   const storageKey = `playground_js_code_${taskId}`;
 
@@ -61,19 +64,28 @@ export const CodeEditor = ({
   });
 
   const [copied, setCopied] = useState(false);
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [internalIsFullscreen, setInternalIsFullscreen] = useState(false);
+  const isFullscreen = externalIsFullscreen !== undefined ? externalIsFullscreen : internalIsFullscreen;
+
+  const handleToggleFullscreen = () => {
+    if (onToggleFullscreen) {
+      onToggleFullscreen();
+    } else {
+      setInternalIsFullscreen((prev) => !prev);
+    }
+  };
 
   useEffect(() => {
-    if (!isFullscreen) return;
+    if (!isFullscreen || onToggleFullscreen) return;
     const handleKeyDown = (e) => {
       if (e.key === "Escape" || e.key === "F11") {
         e.preventDefault();
-        setIsFullscreen(false);
+        setInternalIsFullscreen(false);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isFullscreen]);
+  }, [isFullscreen, onToggleFullscreen]);
   const [wordWrap, setWordWrap] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [cursorPos, setCursorPos] = useState({ line: 1, col: 1, selectedLength: 0 });
@@ -885,10 +897,12 @@ export const CodeEditor = ({
             <ZoomIn size={14} />
           </button>
 
+          {extraHeaderActions}
+
           <button
             className="vscode-icon-btn"
-            onClick={() => setIsFullscreen((prev) => !prev)}
-            data-tooltip={isFullscreen ? "Выйти из полноэкранного режима (F11)" : "Развернуть на весь экран (F11)"}
+            onClick={handleToggleFullscreen}
+            data-tooltip={isFullscreen ? "Свернуть редактор (Esc)" : "Развернуть редактор (open)"}
           >
             {isFullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
           </button>
