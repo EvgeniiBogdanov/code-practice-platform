@@ -67,6 +67,8 @@ const RootLayout = () => {
   const pathname = routerState.location.pathname;
   const navigate = useNavigate();
 
+  const isOpenMode = pathname.startsWith("/open") || pathname.includes("/open");
+
   // Определение текущей активной секции по пути URL
   const activeSection = useMemo(() => {
     if (pathname.includes("/react")) return "react";
@@ -97,6 +99,15 @@ const RootLayout = () => {
     const jsIdx = segments.indexOf("javascript");
     if (jsIdx !== -1 && segments[jsIdx + 1]) {
       return segments[jsIdx + 1];
+    }
+    const openIdx = segments.indexOf("open");
+    if (
+      openIdx !== -1 &&
+      segments[openIdx + 1] &&
+      segments[openIdx + 1] !== "react" &&
+      segments[openIdx + 1] !== "javascript"
+    ) {
+      return segments[openIdx + 1];
     }
     return null;
   }, [pathname]);
@@ -371,6 +382,8 @@ const RootLayout = () => {
 
   // Клавиатурная навигация и Cmd+K
   useEffect(() => {
+    if (isOpenMode) return;
+
     const handleKeyDown = (e) => {
       if (["INPUT", "TEXTAREA", "SELECT"].includes(e.target.tagName)) {
         if (e.key === "Escape") setPaletteOpen(false);
@@ -751,6 +764,24 @@ const RootLayout = () => {
     completedJsTotal,
     totalJsCount,
   ]);
+
+  if (isOpenMode) {
+    return (
+      <PracticeContext.Provider value={outletContext}>
+        <div className="app-container app-container-open">
+          <main className="content-area-open">
+            <Outlet context={outletContext} />
+          </main>
+          {tooltip && (
+            <div className="fixed-tooltip" style={{ left: tooltip.x, top: tooltip.y }}>
+              {tooltip.text}
+            </div>
+          )}
+          <GlobalTooltip />
+        </div>
+      </PracticeContext.Provider>
+    );
+  }
 
   return (
     <PracticeContext.Provider value={outletContext}>
