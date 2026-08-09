@@ -287,22 +287,7 @@ const SELF_CLOSING_TAGS = new Set([
   "wbr",
 ]);
 
-/**
- * Проверка автозакрытия тега JSX / HTML при вводе '>'
- */
-export const checkAutoCloseTag = (codeBeforeCursor) => {
-  const match = codeBeforeCursor.match(/<([a-zA-Z0-9_\-]+)([^>]*)$/);
-  if (!match) return null;
-
-  const tagName = match[1];
-  const tagAttrs = match[2];
-
-  if (tagAttrs.trim().endsWith("/") || SELF_CLOSING_TAGS.has(tagName.toLowerCase())) {
-    return null;
-  }
-
-  return tagName;
-};
+export { checkAutoCloseTag } from "./tagEngine";
 
 /**
  * Поиск всех подсказок (автодополнения) для текста перед курсором

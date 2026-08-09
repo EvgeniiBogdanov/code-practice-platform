@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
+import { createPortal } from "react-dom";
 import {
   RotateCcw,
   Copy,
@@ -20,7 +21,12 @@ import {
   Globe,
 } from "lucide-react";
 import { highlightJS } from "../../utils/codeHighlighter";
-import { checkAutoCloseTag, getCompletions, expandSnippet } from "../../utils/snippetsEngine";
+import { getCompletions, expandSnippet } from "../../utils/snippetsEngine";
+import {
+  checkAutoCloseTag,
+  findLastUnclosedTag,
+  handleAutoRenameTag,
+} from "../../utils/tagEngine";
 import { lintJavaScriptCode, fixTypoInCode } from "../../utils/codeLinter";
 import { formatJavaScriptCode } from "../../utils/codeFormatter";
 
@@ -177,21 +183,85 @@ export const CodeEditor = ({
     setCompletionState({ visible: false, word: "", items: [], selectedIndex: 0 });
   };
 
+  const popoverRef = useRef(null);
+  const listRef = useRef(null);
+
+  // Автоскролл выбранного элемента в списке подсказок при навигации стрелками
+  useEffect(() => {
+    if (completionState.visible && listRef.current) {
+      const activeEl = listRef.current.querySelector(".autocomplete-active");
+      if (activeEl) {
+        activeEl.scrollIntoView({ block: "nearest" });
+      }
+    }
+  }, [completionState.selectedIndex, completionState.visible]);
+
+  // Обновление положения поповера при скролле окна или изменении размера
+  useEffect(() => {
+    if (!completionState.visible) return;
+
+    const handleWindowChange = () => {
+      setCompletionState((prev) => (prev.visible ? { ...prev } : prev));
+    };
+
+    window.addEventListener("scroll", handleWindowChange, true);
+    window.addEventListener("resize", handleWindowChange);
+    return () => {
+      window.removeEventListener("scroll", handleWindowChange, true);
+      window.removeEventListener("resize", handleWindowChange);
+    };
+  }, [completionState.visible]);
+
   const calculatePopoverPos = () => {
     const textarea = textareaRef.current;
-    if (!textarea) return { top: 32, left: 50 };
+    if (!textarea) return { visible: false, top: 0, left: 0, placement: "bottom" };
+
+    const rect = textarea.getBoundingClientRect();
     const pos = textarea.selectionStart;
     const textBefore = code.substring(0, pos);
-    const lineNum = textBefore.split("\n").length;
-    const colNum = pos - textBefore.lastIndexOf("\n");
+    const lines = textBefore.split("\n");
+    const lineNum = lines.length;
+    const currentLineText = lines[lines.length - 1];
+    const colNum = currentLineText.length;
 
-    const lineH = Math.round(fontSize * 1.5);
-    const charW = Math.round(fontSize * 0.58);
+    const lineH = fontSize * 1.6;
+    const charW = fontSize * 0.6;
+    const paddingTop = 14;
+    const paddingLeft = 16;
 
-    const top = lineNum * lineH + 6;
-    const left = Math.min(Math.max(colNum * charW + 42, 45), 450);
+    // Позиция строки внутри текстового поля с учетом скролла
+    const lineTopInTextarea = paddingTop + (lineNum - 1) * lineH - (textarea.scrollTop || 0);
+    const lineBottomInTextarea = lineTopInTextarea + lineH;
 
-    return { top, left };
+    // Экранные координаты курсора (для fixed portal)
+    const cursorScreenX = rect.left + paddingLeft + colNum * charW - (textarea.scrollLeft || 0);
+    const cursorScreenYBottom = rect.top + lineBottomInTextarea;
+    const cursorScreenYTop = rect.top + lineTopInTextarea;
+
+    // Если курсор скрыт за пределами видимой области редактора
+    if (cursorScreenYBottom < rect.top - 10 || cursorScreenYTop > rect.bottom + 10) {
+      return { visible: false, top: 0, left: 0, placement: "bottom" };
+    }
+
+    const popoverEstimatedHeight = Math.min(260, 32 + (completionState.items.length || 1) * 28 + 8);
+    const popoverWidth = 320;
+
+    const spaceBelow = window.innerHeight - cursorScreenYBottom;
+    const spaceAbove = cursorScreenYTop;
+
+    let placement = "bottom";
+    let top = cursorScreenYBottom + 4;
+
+    // Умный переворот вверх, если снизу нет места (например, перед консолью или внизу экрана)
+    if (spaceBelow < popoverEstimatedHeight && spaceAbove > spaceBelow) {
+      placement = "top";
+      top = Math.max(10, cursorScreenYTop - popoverEstimatedHeight - 4);
+    }
+
+    // Защита от выхода за горизонтальные границы экрана
+    const left = Math.max(12, Math.min(cursorScreenX, window.innerWidth - popoverWidth - 16));
+
+    return { visible: true, top, left, placement };
   };
 
   // Стек истории для Undo/Redo
@@ -438,21 +508,48 @@ export const CodeEditor = ({
       return;
     }
 
-    // 4. Автозакрытие HTML / JSX тегов при нажатии '>'
+    // 4. Автозакрытие HTML / JSX тегов и фрагментов при нажатии '>'
     if (e.key === ">" && start === end) {
       const textBefore = code.substring(0, start);
-      const autoCloseTag = checkAutoCloseTag(textBefore);
+      const textAfter = code.substring(end);
+      const autoCloseTagResult = checkAutoCloseTag(textBefore, textAfter);
 
-      if (autoCloseTag) {
+      if (autoCloseTagResult) {
         e.preventDefault();
-        const closeTagStr = `></${autoCloseTag}>`;
-        const updated = code.substring(0, start) + closeTagStr + code.substring(end);
+        const closeTagStr = autoCloseTagResult.isFragment
+          ? `></>`
+          : `></${autoCloseTagResult.tagName}>`;
+        const updated = code.substring(0, start) + closeTagStr + textAfter;
         updateCode(updated);
 
         setTimeout(() => {
-          textarea.selectionStart = textarea.selectionEnd = start + 1;
+          if (textareaRef.current) {
+            textareaRef.current.selectionStart = textareaRef.current.selectionEnd = start + 1;
+          }
         }, 0);
         return;
+      }
+    }
+
+    // 4.1. Автодополнение незакрытого тега при вводе '/' после '<'
+    if (e.key === "/" && start === end) {
+      const textBefore = code.substring(0, start);
+      if (textBefore.endsWith("<")) {
+        const unclosedTag = findLastUnclosedTag(textBefore.slice(0, -1));
+        if (unclosedTag !== null) {
+          e.preventDefault();
+          const insertStr = unclosedTag === "" ? `/>` : `/${unclosedTag}>`;
+          const updated = code.substring(0, start) + insertStr + code.substring(end);
+          updateCode(updated);
+
+          setTimeout(() => {
+            if (textareaRef.current) {
+              textareaRef.current.selectionStart = textareaRef.current.selectionEnd =
+                start + insertStr.length;
+            }
+          }, 0);
+          return;
+        }
       }
     }
 
@@ -608,6 +705,9 @@ export const CodeEditor = ({
       }
       if (gutterRef.current) {
         gutterRef.current.scrollTop = top;
+      }
+      if (completionState.visible) {
+        setCompletionState((prev) => ({ ...prev }));
       }
     }
   };
@@ -867,9 +967,22 @@ export const CodeEditor = ({
                 onChange={(e) => {
                   const val = e.target.value;
                   const pos = e.target.selectionStart;
-                  updateCode(val);
+
+                  // Auto Rename Tag: синхронное переименование парного тега в <></>
+                  const { updatedCode, newCursorPos } = handleAutoRenameTag(code, val, pos);
+
+                  updateCode(updatedCode);
                   updateCursorCoordinates();
-                  checkAndTriggerCompletions(val, pos);
+                  checkAndTriggerCompletions(updatedCode, newCursorPos);
+
+                  if (updatedCode !== val) {
+                    setTimeout(() => {
+                      if (textareaRef.current) {
+                        textareaRef.current.selectionStart = textareaRef.current.selectionEnd =
+                          newCursorPos;
+                      }
+                    }, 0);
+                  }
                 }}
                 onKeyDown={handleKeyDown}
                 onKeyUp={(e) => {
@@ -908,55 +1021,61 @@ export const CodeEditor = ({
                 autoCorrect="off"
               />
 
-              {/* Всплывающее меню подсказок и автодополнения (IntelliSense) */}
-              {completionState.visible && completionState.items.length > 0 && (
-                <div
-                  className="autocomplete-popover"
-                  style={{
-                    top: `${calculatePopoverPos().top}px`,
-                    left: `${calculatePopoverPos().left}px`,
-                  }}
-                >
-                  <div className="autocomplete-header">
-                    <span>Подсказки для "{completionState.word}"</span>
-                    <span className="autocomplete-hint">↑↓ выбор • Enter/Tab вставить</span>
-                  </div>
-                  <div className="autocomplete-list">
-                    {completionState.items.map((item, idx) => {
-                      const isSelected = idx === completionState.selectedIndex;
-                      return (
-                        <div
-                          key={idx}
-                          className={`autocomplete-item ${isSelected ? "autocomplete-active" : ""}`}
-                          onMouseDown={(e) => {
-                            e.preventDefault();
-                            handleApplyCompletion(item);
-                          }}
-                          onMouseEnter={() => {
-                            setCompletionState((prev) => ({ ...prev, selectedIndex: idx }));
-                          }}
-                        >
-                          <span className={`autocomplete-kind-badge kind-${item.kind}`}>
-                            {item.kind === "snippet" ? (
-                              <Wand2 size={12} />
-                            ) : item.kind === "hook" ? (
-                              <Sparkles size={12} />
-                            ) : item.kind === "keyword" ? (
-                              <Code2 size={12} />
-                            ) : item.kind === "variable" ? (
-                              <Box size={12} />
-                            ) : (
-                              <Globe size={12} />
-                            )}
-                          </span>
-                          <span className="autocomplete-label">{item.label}</span>
-                          <span className="autocomplete-detail">{item.detail}</span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
+              {/* Всплывающее меню подсказок и автодополнения (IntelliSense) через React Portal */}
+              {completionState.visible && completionState.items.length > 0 && (() => {
+                const popoverPos = calculatePopoverPos();
+                if (popoverPos.visible === false) return null;
+                return createPortal(
+                  <div
+                    ref={popoverRef}
+                    className={`autocomplete-popover placement-${popoverPos.placement}`}
+                    style={{
+                      top: `${popoverPos.top}px`,
+                      left: `${popoverPos.left}px`,
+                    }}
+                  >
+                    <div className="autocomplete-header">
+                      <span>Подсказки для "{completionState.word}"</span>
+                      <span className="autocomplete-hint">↑↓ выбор • Enter/Tab вставить</span>
+                    </div>
+                    <div ref={listRef} className="autocomplete-list">
+                      {completionState.items.map((item, idx) => {
+                        const isSelected = idx === completionState.selectedIndex;
+                        return (
+                          <div
+                            key={idx}
+                            className={`autocomplete-item ${isSelected ? "autocomplete-active" : ""}`}
+                            onMouseDown={(e) => {
+                              e.preventDefault();
+                              handleApplyCompletion(item);
+                            }}
+                            onMouseEnter={() => {
+                              setCompletionState((prev) => ({ ...prev, selectedIndex: idx }));
+                            }}
+                          >
+                            <span className={`autocomplete-kind-badge kind-${item.kind}`}>
+                              {item.kind === "snippet" ? (
+                                <Wand2 size={12} />
+                              ) : item.kind === "hook" ? (
+                                <Sparkles size={12} />
+                              ) : item.kind === "keyword" ? (
+                                <Code2 size={12} />
+                              ) : item.kind === "variable" ? (
+                                <Box size={12} />
+                              ) : (
+                                <Globe size={12} />
+                              )}
+                            </span>
+                            <span className="autocomplete-label">{item.label}</span>
+                            <span className="autocomplete-detail">{item.detail}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>,
+                  document.body
+                );
+              })()}
             </div>
           )}
         </div>

@@ -6178,7 +6178,7 @@ svg.lucide,
 [data-theme="light"] .vscode-snippet-popup {
   background: #ffffff;
   border-color: #0969da;
-  box-shadow: 0 8px 24px rgba(140, 149, 159, 0.2);
+  box-shadow: 0 4px 12px rgba(140, 149, 159, 0.15);
 }
 
 [data-theme="light"] .snippet-popup-header {
@@ -6757,7 +6757,7 @@ svg.lucide,
   background: #ffffff;
   color: #24292e;
   border-color: #d0d7de;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 
@@ -7209,7 +7209,7 @@ svg.lucide,
   background: #252526;
   border: 1px solid #007acc;
   border-radius: 5px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(0, 0, 0, 0.2);
   z-index: 100;
   overflow: hidden;
 }
@@ -7361,24 +7361,40 @@ svg.lucide,
    INTELLISENSE AUTOCOMPLETE POPOVER (VS CODE STYLED DROPDOWN)
    ========================================================================== */
 .autocomplete-popover {
-  position: absolute;
-  z-index: 100;
+  position: fixed;
+  z-index: 999999;
   width: 320px;
   max-width: 90vw;
   background: #252526;
-  border: 1px solid #3c3c3c;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 6px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65), 0 2px 6px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(0, 0, 0, 0.2);
   font-family: var(--font-mono, monospace);
   font-size: 12px;
   overflow: hidden;
   animation: popoverFadeIn 0.12s ease-out;
+  pointer-events: auto;
+}
+
+.autocomplete-popover.placement-top {
+  animation: popoverFadeInTop 0.12s ease-out;
 }
 
 @keyframes popoverFadeIn {
   from {
     opacity: 0;
     transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes popoverFadeInTop {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
   }
   to {
     opacity: 1;
@@ -7488,7 +7504,7 @@ svg.lucide,
 [data-theme="light"] .autocomplete-popover {
   background: #ffffff;
   border-color: #cbd5e1;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 [data-theme="light"] .autocomplete-header {
@@ -7537,7 +7553,7 @@ svg.lucide,
   font-weight: 500;
   white-space: nowrap;
   border-radius: 5px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65), 0 2px 6px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.15);
   pointer-events: none;
   z-index: 999999;
   animation: portalTooltipFade 0.15s ease-out;

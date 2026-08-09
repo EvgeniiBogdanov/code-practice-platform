@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 
 export default defineConfig({
-  base: "/frontend-practice/",
+  base: "/code-practice-platform/",
   plugins: [
     TanStackRouterVite({
       routesDirectory: "./src/routes",

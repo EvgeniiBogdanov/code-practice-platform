@@ -1,27 +1,27 @@
 <div align="center">
 
-# 🚀 Frontend Interview Playground & Practice
+# 🚀 Interview Playground & Practice
 
 ### Интерактивная платформа для подготовки к техническим собеседованиям и практики.
 
-**`v2.0.8`** · От Junior до Senior · 250+ реальных задач разной сложности
+**`v2.0.9`** · От Junior до Senior · 250+ реальных задач разной сложности
 
-[![Онлайн-версия](https://img.shields.io/badge/Открыть_online-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://evgeniibogdanov.github.io/frontend-practice/)
+[![Онлайн-версия](https://img.shields.io/badge/Открыть_online-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://evgeniibogdanov.github.io/code-practice-platform/)
 
 ---
 
-[![GitHub Views](https://komarev.com/ghpvc/?username=EvgeniiBogdanov&repo=frontend-practice&label=Views&color=0e75b6&style=flat-square)](https://github.com/EvgeniiBogdanov/frontend-practice)
-[![GitHub Stars](https://img.shields.io/github/stars/EvgeniiBogdanov/frontend-practice?style=flat-square&label=Stars&color=yellow&logo=github)](https://github.com/EvgeniiBogdanov/frontend-practice/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/EvgeniiBogdanov/frontend-practice?style=flat-square&label=Forks&color=blue&logo=github)](https://github.com/EvgeniiBogdanov/frontend-practice/network/members)
-[![GitHub Watchers](https://img.shields.io/github/watchers/EvgeniiBogdanov/frontend-practice?style=flat-square&label=Watchers&color=6e5494)](https://github.com/EvgeniiBogdanov/frontend-practice/watchers)
-[![GitHub Issues](https://img.shields.io/github/issues/EvgeniiBogdanov/frontend-practice?style=flat-square&label=Issues&color=red)](https://github.com/EvgeniiBogdanov/frontend-practice/issues)
-[![GitHub PRs](https://img.shields.io/github/issues-pr/EvgeniiBogdanov/frontend-practice?style=flat-square&label=PRs&color=orange)](https://github.com/EvgeniiBogdanov/frontend-practice/pulls)
+[![GitHub Views](https://komarev.com/ghpvc/?username=EvgeniiBogdanov&repo=code-practice-platform&label=Views&color=0e75b6&style=flat-square)](https://github.com/EvgeniiBogdanov/code-practice-platform)
+[![GitHub Stars](https://img.shields.io/github/stars/EvgeniiBogdanov/code-practice-platform?style=flat-square&label=Stars&color=yellow&logo=github)](https://github.com/EvgeniiBogdanov/code-practice-platform/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/EvgeniiBogdanov/code-practice-platform?style=flat-square&label=Forks&color=blue&logo=github)](https://github.com/EvgeniiBogdanov/code-practice-platform/network/members)
+[![GitHub Watchers](https://img.shields.io/github/watchers/EvgeniiBogdanov/code-practice-platform?style=flat-square&label=Watchers&color=6e5494)](https://github.com/EvgeniiBogdanov/code-practice-platform/watchers)
+[![GitHub Issues](https://img.shields.io/github/issues/EvgeniiBogdanov/code-practice-platform?style=flat-square&label=Issues&color=red)](https://github.com/EvgeniiBogdanov/code-practice-platform/issues)
+[![GitHub PRs](https://img.shields.io/github/issues-pr/EvgeniiBogdanov/code-practice-platform?style=flat-square&label=PRs&color=orange)](https://github.com/EvgeniiBogdanov/code-practice-platform/pulls)
 
-[![License](https://img.shields.io/github/license/EvgeniiBogdanov/frontend-practice?style=flat-square&color=green)](LICENSE.md)
-[![Last Commit](https://img.shields.io/github/last-commit/EvgeniiBogdanov/frontend-practice?style=flat-square&color=blue)](https://github.com/EvgeniiBogdanov/frontend-practice/commits/main)
-[![Repo Size](https://img.shields.io/github/repo-size/EvgeniiBogdanov/frontend-practice?style=flat-square&color=purple)](https://github.com/EvgeniiBogdanov/frontend-practice)
-[![Contributors](https://img.shields.io/github/contributors/EvgeniiBogdanov/frontend-practice?style=flat-square&color=brightgreen)](https://github.com/EvgeniiBogdanov/frontend-practice/graphs/contributors)
-[![Language](https://img.shields.io/github/languages/top/EvgeniiBogdanov/frontend-practice?style=flat-square&color=yellow&logo=javascript)](https://github.com/EvgeniiBogdanov/frontend-practice)
+[![License](https://img.shields.io/github/license/EvgeniiBogdanov/code-practice-platform?style=flat-square&color=green)](LICENSE.md)
+[![Last Commit](https://img.shields.io/github/last-commit/EvgeniiBogdanov/code-practice-platform?style=flat-square&color=blue)](https://github.com/EvgeniiBogdanov/code-practice-platform/commits/main)
+[![Repo Size](https://img.shields.io/github/repo-size/EvgeniiBogdanov/code-practice-platform?style=flat-square&color=purple)](https://github.com/EvgeniiBogdanov/code-practice-platform)
+[![Contributors](https://img.shields.io/github/contributors/EvgeniiBogdanov/code-practice-platform?style=flat-square&color=brightgreen)](https://github.com/EvgeniiBogdanov/code-practice-platform/graphs/contributors)
+[![Language](https://img.shields.io/github/languages/top/EvgeniiBogdanov/code-practice-platform?style=flat-square&color=yellow&logo=javascript)](https://github.com/EvgeniiBogdanov/code-practice-platform)
 
 </div>
 
@@ -53,7 +53,7 @@
 
 > 🌐 **Быстрый доступ:**
 >
-> - **[🚀 Открыть онлайн-версию](https://evgeniibogdanov.github.io/frontend-practice/)** — _без локальной установки, редактор в браузере_
+> - **[🚀 Открыть онлайн-версию](https://evgeniibogdanov.github.io/code-practice-platform/)** — _без локальной установки, редактор в браузере_
 > - **[📥 Перейти к инструкции по локальной установке](#-пошаговая-установка-и-запуск)** — _для практики в связке с IDE (находите файл в проекте, редактируете, и он синхронизурется с браузером)_
 
 <div align="right">[ <a href="#-frontend-interview-playground--practice">⬆ Наверх</a> ]</div>
@@ -155,13 +155,13 @@
 Откройте терминал (или командную строку) и выполните команду клонирования:
 
 ```bash
-git clone https://github.com/EvgeniiBogdanov/frontend-practice.git
+git clone https://github.com/EvgeniiBogdanov/code-practice-platform.git
 ```
 
 Перейдите в папку проекта:
 
 ```bash
-cd frontend-practice
+cd code-practice-platform
 ```
 
 ### 2️⃣ Установка зависимостей
@@ -259,4 +259,4 @@ src/
 
 Если проект оказался вам полезным — поставьте ⭐ звёздочку репозиторию! Это лучшая поддержка для open-source проектов.
 
-[![GitHub stars chart](https://bytecrank.com/nastyox/reporoster/php/repostars.php?user=EvgeniiBogdanov&repo=frontend-practice)](
+[![GitHub stars chart](https://bytecrank.com/nastyox/reporoster/php/repostars.php?user=EvgeniiBogdanov&repo=code-practice-platform)](
