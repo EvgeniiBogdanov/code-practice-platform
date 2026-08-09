@@ -30,7 +30,7 @@ import {
 import { lintJavaScriptCode, fixTypoInCode } from "../../utils/codeLinter";
 import { formatJavaScriptCode } from "../../utils/codeFormatter";
 
-const MIN_FONT_SIZE = 13;
+const MIN_FONT_SIZE = 14;
 const MAX_FONT_SIZE = 20;
 const FONT_SIZE_STORAGE_KEY = "playground_editor_font_size";
 
@@ -461,13 +461,21 @@ export const CodeEditor = ({
     }
 
     // Изменение размера шрифта: Ctrl+ / Ctrl-
-    if ((e.ctrlKey || e.metaKey) && (e.key === "+" || e.key === "=")) {
+    const isIncreaseFont =
+      (e.ctrlKey || e.metaKey) &&
+      (e.key === "+" || e.key === "=" || e.code === "Equal" || e.code === "NumpadAdd");
+
+    const isDecreaseFont =
+      (e.ctrlKey || e.metaKey) &&
+      (e.key === "-" || e.key === "_" || e.code === "Minus" || e.code === "NumpadSubtract");
+
+    if (isIncreaseFont) {
       e.preventDefault();
       handleIncreaseFontSize();
       return;
     }
 
-    if ((e.ctrlKey || e.metaKey) && (e.key === "-" || e.key === "_")) {
+    if (isDecreaseFont) {
       e.preventDefault();
       handleDecreaseFontSize();
       return;
@@ -931,26 +939,38 @@ export const CodeEditor = ({
 
       {/* Рабочая область редактора */}
       <div className={`vscode-editor-surface ${wordWrap ? "wrap-on" : "wrap-off"}`}>
-        {/* Номера строк с индикатором ошибок */}
-        <div ref={gutterRef} className="vscode-gutter" aria-hidden="true">
-          {Array.from({ length: Math.max(lineCount, 1) }).map((_, i) => {
-            const lineNum = i + 1;
-            const hasError = diagnostics.problems.some((p) => p.line === lineNum && p.severity === "error");
+        {/* Номера строк с адаптивной шириной под количество цифр */}
+        {(() => {
+          const digits = String(Math.max(lineCount, 1)).length;
+          const dynamicGutterWidth = Math.max(32, 20 + digits * 9);
 
-            return (
-              <div
-                key={i}
-                className={`vscode-gutter-line ${activeLine === lineNum ? "active-line-gutter" : ""} ${
-                  hasError ? "gutter-has-error" : ""
-                }`}
-                title={hasError ? "Ошибка синтаксиса или опечатка на строке" : ""}
-              >
-                {hasError && <span className="gutter-error-dot">•</span>}
-                {lineNum}
-              </div>
-            );
-          })}
-        </div>
+          return (
+            <div
+              ref={gutterRef}
+              className="vscode-gutter"
+              aria-hidden="true"
+              style={{ width: `${dynamicGutterWidth}px`, minWidth: `${dynamicGutterWidth}px` }}
+            >
+              {Array.from({ length: Math.max(lineCount, 1) }).map((_, i) => {
+                const lineNum = i + 1;
+                const hasError = diagnostics.problems.some((p) => p.line === lineNum && p.severity === "error");
+
+                return (
+                  <div
+                    key={i}
+                    className={`vscode-gutter-line ${activeLine === lineNum ? "active-line-gutter" : ""} ${
+                      hasError ? "gutter-has-error" : ""
+                    }`}
+                    title={hasError ? "Ошибка синтаксиса или опечатка на строке" : ""}
+                  >
+                    {hasError && <span className="gutter-error-dot">•</span>}
+                    {lineNum}
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })()}
 
         {/* Холст кода */}
         <div className="vscode-canvas">

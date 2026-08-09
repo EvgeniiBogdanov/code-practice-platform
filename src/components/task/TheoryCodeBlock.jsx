@@ -61,8 +61,8 @@ export const TheoryCodeBlock = ({ code = "", language = "javascript" }) => {
 
   return (
     <div
-      className="vscode-ide-editor theory-code-editor"
-      style={{ margin: "16px 0", "--editor-font-size": "14px" }}
+      className="theory-code-editor"
+      style={{ margin: "16px 0" }}
     >
       {/* Шапка редактора: Формат файла */}
       <div className="vscode-editor-header">
@@ -76,13 +76,24 @@ export const TheoryCodeBlock = ({ code = "", language = "javascript" }) => {
 
       {/* Поверхность редактора с номерами строк, аккуратной иконкой скопировать без текста (вверху справа в самом коде) и подсвеченным кодом */}
       <div className="vscode-editor-surface wrap-off">
-        <div className="vscode-gutter" aria-hidden="true">
-          {lines.map((_, i) => (
-            <div key={i} className="vscode-gutter-line">
-              {i + 1}
+        {(() => {
+          const digits = String(Math.max(lines.length, 1)).length;
+          const dynamicGutterWidth = Math.max(32, 20 + digits * 9);
+
+          return (
+            <div
+              className="vscode-gutter"
+              aria-hidden="true"
+              style={{ width: `${dynamicGutterWidth}px`, minWidth: `${dynamicGutterWidth}px` }}
+            >
+              {lines.map((_, i) => (
+                <div key={i} className="vscode-gutter-line">
+                  {i + 1}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          );
+        })()}
 
         <div className="vscode-canvas" style={{ position: "relative" }}>
           {/* Notion-style плавающая иконка скопировать без текста вверху справа */}

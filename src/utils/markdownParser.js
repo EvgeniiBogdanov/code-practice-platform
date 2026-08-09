@@ -123,7 +123,7 @@ export const parseMarkdown = (markdownText) => {
           .join("");
 
         return `
-          <div class="vscode-ide-editor theory-code-editor" style="margin: 16px 0;">
+          <div class="theory-code-editor" style="margin: 16px 0;">
             <div class="vscode-editor-header">
               <div class="vscode-editor-single-file">
                 <span class="file-tab-name" style="font-weight: 500;">${langName}</span>
