@@ -4,9 +4,9 @@
 
 ### Интерактивная платформа для подготовки к техническим собеседованиям и практики.
 
-**`v2.0.7`** · От Junior до Senior · 250+ реальных задач разной сложности
+**`v2.0.8`** · От Junior до Senior · 250+ реальных задач разной сложности
 
-[![Онлайн-версия](https://img.shields.io/badge/🌐_Открыть_online-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://evgeniibogdanov.github.io/frontend-practice/)
+[![Онлайн-версия](https://img.shields.io/badge/Открыть_online-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://evgeniibogdanov.github.io/frontend-practice/)
 
 ---
 
@@ -45,7 +45,7 @@
 
 ## 📖 О проекте
 
-<img width="1722" height="909" alt="v2-04" src="https://github.com/user-attachments/assets/369a691d-9f9c-4332-8d3d-cabe6969d562" />
+<img width="1728" height="888" alt="v 2 0 8" src="https://github.com/user-attachments/assets/078060e7-9f1f-4fd4-bddf-63187b1cc2d6" />
 
 **Frontend Interview Playground** — это интерактивная платформа для подготовки к техническим собеседованиям по **React** и **JavaScript** (от уровня **Junior** до **Lead**). Платформа содержит более **250 практических задач с реальных интервью**, разборы антипаттернов в кодe кандидатов, эталонные решения и интерактивные шпаргалки.
 

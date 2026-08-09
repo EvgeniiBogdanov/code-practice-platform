@@ -1,30 +1,84 @@
 /* Переменные темы - Полное соответствие дизайн-системе Notion (2025 Standard) */
 :root {
+  /* ==========================================
+     1. TYPOGRAPHY TOKENS
+     ========================================== */
   --font-sans:
-    ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
+    ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
   --font-serif: Lyon-Text, Georgia, YuMincho, "SF Pro Serif", serif;
   --font-mono:
     ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono",
     Courier, monospace;
 
+  /* Font Sizes */
+  --fs-2xs: 9px;
+  --fs-xs: 10px;
+  --fs-sm: 11px;
+  --fs-base-sm: 12px;
+  --fs-base: 13px;
+  --fs-md: 14px;
+  --fs-lg: 15px;
+  --fs-xl: 16px;
+  --fs-2xl: 18px;
+  --fs-3xl: 20px;
+  --fs-4xl: 24px;
+  --fs-5xl: 32px;
+
+  /* Font Weights */
+  --fw-normal: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-black: 900;
+
+  /* Line Heights */
+  --lh-none: 1;
+  --lh-tight: 1.2;
+  --lh-snug: 1.35;
+  --lh-normal: 1.5;
+  --lh-relaxed: 1.6;
+  --lh-loose: 1.7;
+
+  /* ==========================================
+     2. COLOR TOKENS (Dark Theme Defaults)
+     ========================================== */
+  /* Surfaces & Backgrounds */
   --bg-app: #191919;
   --bg-sidebar: #202020;
   --bg-card: #252525;
   --bg-popover: #262626;
   --bg-subtle: rgba(255, 255, 255, 0.027);
+  --bg-deep: #111111;
+  --bg-elevated: #181818;
+  --bg-editor: #1e1e1e;
+  --bg-input: #222222;
+  --bg-input-hover: #282828;
+  --bg-input-focus: #2a2a2a;
+  --bg-tooltip-code: #252526;
+  --bg-surface: #1c1c1c;
+
+  /* Borders */
   --border-color: rgba(255, 255, 255, 0.081);
   --border-strong: rgba(255, 255, 255, 0.16);
+  --border-editor: #333333;
+  --border-hover: rgba(255, 255, 255, 0.22);
 
+  /* Text & Foreground */
   --text-main: rgba(255, 255, 255, 0.9);
   --text-muted: rgba(255, 255, 255, 0.6);
   --fg-muted: rgba(255, 255, 255, 0.44);
   --text-placeholder: rgba(255, 255, 255, 0.28);
+  --text-dimmed: #999999;
+  --text-secondary: #cccccc;
+  --text-on-accent: #ffffff;
 
+  /* Notion Interactive States */
   --notion-hover: rgba(255, 255, 255, 0.055);
   --notion-active: rgba(255, 255, 255, 0.085);
   --notion-selected: rgba(255, 255, 255, 0.11);
 
+  /* Notion Brand Accents */
   --notion-blue: #2383e2;
   --notion-blue-bg: rgba(35, 131, 226, 0.15);
   --notion-purple: #9065b0;
@@ -40,19 +94,107 @@
   --notion-gray: #9b9b9b;
   --notion-gray-bg: rgba(155, 155, 155, 0.2);
 
-  --radius-lg: 8px;
-  --radius-md: 6px;
-  --radius-sm: 4px;
+  /* Semantic UI Colors */
+  --color-success: #10b981;
+  --color-success-hover: #059669;
+  --color-success-contrast: #064e3b;
+  --color-success-light: #34d399;
+  --color-error: #ef4444;
+  --color-error-light: #f87171;
+  --color-error-muted: #fca5a5;
+  --color-warning: #f59e0b;
+  --color-warning-light: #fbbf24;
+  --color-info: #38bdf8;
+  --color-info-light: #60a5fa;
+  --color-accent-purple: #a855f7;
+  --color-accent-purple-light: #c084fc;
+  --color-accent-purple-muted: #d2a8ff;
 
+  /* Window Control Dots */
+  --dot-close: #ff5f56;
+  --dot-minimize: #ffbd2e;
+  --dot-maximize: #27c93f;
+
+  /* Syntax Highlighting Tokens (Dark Mode) */
+  --hl-comment: #8b949e;
+  --hl-string: #a5d6ff;
+  --hl-number: #79c0ff;
+  --hl-keyword: #ff7b72;
+  --hl-function: #d2a8ff;
+  --hl-tag: #7ee787;
+  --hl-punctuation: #e6edf3;
+  --hl-error: #f85149;
+  --hl-operator: #ff7b72;
+  --hl-type: #79c0ff;
+  --hl-variable: #e6edf3;
+
+  /* ==========================================
+     3. SPACING TOKENS
+     ========================================== */
+  --space-0: 0;
+  --space-px: 1px;
+  --space-0-5: 2px;
+  --space-1: 4px;
+  --space-1-5: 6px;
+  --space-2: 8px;
+  --space-2-5: 10px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* ==========================================
+     4. BORDER RADIUS TOKENS
+     ========================================== */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-full: 9999px;
+
+  /* ==========================================
+     5. SHADOW TOKENS
+     ========================================== */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.12);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.25);
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.35);
   --shadow-popover:
     0 15px 35px -5px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.094);
+  --shadow-glow-blue: 0 0 0 2px rgba(35, 131, 226, 0.35);
+  --shadow-glow-red: 0 0 0 2px rgba(229, 77, 66, 0.35);
+  --shadow-glow-green: 0 0 0 2px rgba(16, 185, 129, 0.35);
 
+  /* ==========================================
+     6. Z-INDEX TOKENS
+     ========================================== */
+  --z-base: 10;
+  --z-sticky: 30;
+  --z-fixed: 100;
+  --z-dropdown: 1000;
+  --z-modal: 1200;
+  --z-modal-confirm: 1300;
+  --z-sidebar-backdrop: 1999;
+  --z-sidebar: 2000;
+  --z-drawer: 9000;
+  --z-tooltip: 9999;
+  --z-command-palette: 10000;
+  --z-fullscreen: 99999;
+  --z-portal: 999999;
+
+  /* ==========================================
+     7. TRANSITION TOKENS
+     ========================================== */
   --transition-hover: 50ms ease-in-out;
   --transition-fast: 100ms ease;
   --transition-standard: 150ms cubic-bezier(0.2, 0, 0, 1);
+  --transition-medium: 200ms cubic-bezier(0.2, 0, 0, 1);
+  --transition-slow: 300ms cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 /* Сброс стилей и изоляция скролла всего окна */
@@ -926,14 +1068,20 @@ body {
 .task-header-row {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 12px;
+  align-items: center;
+  margin-bottom: 14px;
   gap: 16px;
+}
+
+.task-title-container {
+  display: flex;
+  align-items: center;
+  min-width: 0;
 }
 
 .task-detail-title {
   font-size: 32px;
-  margin-bottom: 6px;
+  margin-bottom: 0;
   font-weight: 700;
   color: var(--text-main);
   letter-spacing: -0.015em;
@@ -942,6 +1090,13 @@ body {
   align-items: center;
   gap: 12px;
   font-family: var(--font-sans);
+}
+
+.task-status-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .task-filepath {
@@ -1004,39 +1159,81 @@ body {
 .tab-link {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   background: transparent;
   border: none;
   color: var(--text-muted);
-  font-size: 14px;
-  font-weight: 500;
-  padding: 9px 12px;
+  font-family: inherit;
+  font-size: 14.5px;
+  font-weight: 600;
+  padding: 15px 8px;
   border-radius: var(--radius-sm) var(--radius-sm) 0 0;
   cursor: pointer;
   position: relative;
-  border-bottom: 2px solid transparent;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -1px;
+  text-decoration: none;
   transition:
     color var(--transition-fast),
     border-color var(--transition-fast),
     background var(--transition-hover);
   min-width: 0;
-  max-width: 220px;
+  max-width: 260px;
   overflow: hidden;
   white-space: nowrap;
   flex-shrink: 1;
 }
 
-.tab-link svg {
+.tab-link .tab-icon {
   flex-shrink: 0;
+  transition: transform 0.15s ease;
 }
 
-.tab-link span:not(svg) {
+.tab-link.tab-candidate .tab-icon {
+  color: #10b981;
+}
+
+.tab-link.tab-solution .tab-icon {
+  color: #3b82f6;
+}
+
+.tab-link.tab-materials .tab-icon {
+  color: #f59e0b;
+}
+
+.tab-link.tab-questions .tab-icon {
+  color: #a855f7;
+}
+
+.tab-link.tab-checklist .tab-icon {
+  color: #06b6d4;
+}
+
+.tab-link span:not(.tab-badge):not(.tab-icon) {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 0;
-  flex: 1 1 0%;
+  flex: 1 1 auto;
   display: block;
+}
+
+.tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+  margin-left: 2px;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
 }
 
 .tab-link:hover {
@@ -1044,10 +1241,41 @@ body {
   color: var(--text-main);
 }
 
+.tab-link:hover .tab-badge {
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--text-main);
+}
+
+/* Общие стили для активной вкладки: текст var(--text-main), без заливки, без смены жирности */
 .tab-link.active {
   background: transparent;
   color: var(--text-main);
-  border-bottom-color: var(--notion-blue);
+}
+
+.tab-link.active .tab-badge {
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--text-main);
+}
+
+/* Индивидуальные цветовые темы нижнего подчеркивания в стиле GitHub */
+.tab-link.tab-candidate.active {
+  border-bottom-color: #10b981;
+}
+
+.tab-link.tab-solution.active {
+  border-bottom-color: #3b82f6;
+}
+
+.tab-link.tab-materials.active {
+  border-bottom-color: #f59e0b;
+}
+
+.tab-link.tab-questions.active {
+  border-bottom-color: #a855f7;
+}
+
+.tab-link.tab-checklist.active {
+  border-bottom-color: #06b6d4;
 }
 
 .tabs-content {
@@ -2479,82 +2707,101 @@ body {
 
 /* 9. Светлая тема (Light Mode Design System & Tokens) */
 
-/* Syntax Highlighting Tokens (Default / Dark Mode) */
+/* Syntax Highlighting Tokens (Driven by Theme Variables) */
 .hl-cm {
-  color: #8b949e;
+  color: var(--hl-comment);
   font-style: italic;
 }
 .hl-str {
-  color: #a5d6ff;
+  color: var(--hl-string);
 }
 .hl-num {
-  color: #79c0ff;
+  color: var(--hl-number);
 }
 .hl-tag-punct {
-  color: #8b949e;
+  color: var(--hl-comment);
 }
 .hl-arrow {
-  color: #ff7b72;
-  font-weight: 600;
+  color: var(--hl-operator);
+  font-weight: var(--fw-semibold);
 }
 .hl-op {
-  color: #ff7b72;
+  color: var(--hl-operator);
 }
 .hl-kw {
-  color: #ff7b72;
-  font-weight: 600;
+  color: var(--hl-keyword);
+  font-weight: var(--fw-semibold);
 }
 .hl-bool {
-  color: #79c0ff;
-  font-weight: 600;
+  color: var(--hl-number);
+  font-weight: var(--fw-semibold);
 }
 .hl-type {
-  color: #79c0ff;
-  font-weight: 500;
+  color: var(--hl-type);
+  font-weight: var(--fw-medium);
 }
 .hl-hook {
-  color: #d2a8ff;
-  font-weight: 600;
+  color: var(--hl-function);
+  font-weight: var(--fw-semibold);
 }
 .hl-global {
-  color: #79c0ff;
+  color: var(--hl-number);
 }
 .hl-fn {
-  color: #d2a8ff;
+  color: var(--hl-function);
 }
 .hl-prop {
-  color: #e6edf3;
+  color: var(--hl-variable);
 }
 .hl-tag {
-  color: #7ee787;
-  font-weight: 600;
+  color: var(--hl-tag);
+  font-weight: var(--fw-semibold);
 }
 .hl-attr {
-  color: #79c0ff;
+  color: var(--hl-type);
 }
 .hl-punct {
-  color: #e6edf3;
+  color: var(--hl-punctuation);
 }
 
 /* Light Theme Variables */
 [data-theme="light"] {
+  /* Surfaces & Backgrounds */
   --bg-app: #fbfbfa;
   --bg-sidebar: #f7f6f3;
   --bg-card: #ffffff;
   --bg-popover: #ffffff;
   --bg-subtle: #f4f4f2;
+  --bg-deep: #ffffff;
+  --bg-elevated: #f9f9f8;
+  --bg-editor: #ffffff;
+  --bg-input: #ffffff;
+  --bg-input-hover: #f9f9f8;
+  --bg-input-focus: #ffffff;
+  --bg-tooltip-code: #f6f8fa;
+  --bg-surface: #f8fafc;
+
+  /* Borders */
   --border-color: rgba(55, 53, 47, 0.12);
   --border-strong: rgba(55, 53, 47, 0.22);
+  --border-editor: #d0d7de;
+  --border-hover: rgba(55, 53, 47, 0.4);
 
+  /* Text & Foreground */
   --text-main: #191919;
   --text-muted: rgba(55, 53, 47, 0.68);
   --fg-muted: rgba(55, 53, 47, 0.48);
   --text-placeholder: rgba(55, 53, 47, 0.32);
+  --text-dimmed: #57606a;
+  --text-secondary: #334155;
+  --text-on-accent: #ffffff;
 
+  /* Notion Interactive States */
   --notion-hover: rgba(55, 53, 47, 0.07);
   --notion-active: rgba(55, 53, 47, 0.14);
   --notion-selected: rgba(55, 53, 47, 0.18);
 
+  /* Notion Brand Accents */
   --notion-blue: #0066cc;
   --notion-blue-bg: rgba(0, 102, 204, 0.1);
   --notion-purple: #7d449e;
@@ -2570,68 +2817,44 @@ body {
   --notion-gray: #787774;
   --notion-gray-bg: rgba(120, 119, 116, 0.15);
 
+  /* Semantic UI Colors */
+  --color-success: #059669;
+  --color-success-hover: #047857;
+  --color-success-contrast: #ffffff;
+  --color-success-light: #10b981;
+  --color-error: #d32f2f;
+  --color-error-light: #ef4444;
+  --color-error-muted: #f87171;
+  --color-warning: #c75d18;
+  --color-warning-light: #f59e0b;
+  --color-info: #0066cc;
+  --color-info-light: #0284c7;
+  --color-accent-purple: #7d449e;
+  --color-accent-purple-light: #a855f7;
+  --color-accent-purple-muted: #8250df;
+
+  /* Shadows */
   --shadow-sm: 0 1px 2px rgba(15, 15, 15, 0.05);
   --shadow-md: 0 4px 12px rgba(15, 15, 15, 0.08);
   --shadow-lg: 0 8px 24px rgba(15, 15, 15, 0.12);
   --shadow-popover:
     0 12px 32px -4px rgba(15, 15, 15, 0.15), 0 0 0 1px rgba(15, 15, 15, 0.08);
-}
+  --shadow-glow-blue: 0 0 0 2px rgba(0, 102, 204, 0.2);
+  --shadow-glow-red: 0 0 0 2px rgba(211, 47, 47, 0.2);
+  --shadow-glow-green: 0 0 0 2px rgba(45, 106, 79, 0.2);
 
-/* Syntax Highlighting Tokens (Light Mode - GitHub Light Reference) */
-[data-theme="light"] .hl-cm {
-  color: #6e7781;
-  font-style: italic;
-}
-[data-theme="light"] .hl-str {
-  color: #0a3069;
-}
-[data-theme="light"] .hl-num {
-  color: #0550ae;
-}
-[data-theme="light"] .hl-tag-punct {
-  color: #57606a;
-}
-[data-theme="light"] .hl-arrow {
-  color: #cf222e;
-  font-weight: 600;
-}
-[data-theme="light"] .hl-op {
-  color: #cf222e;
-}
-[data-theme="light"] .hl-kw {
-  color: #cf222e;
-  font-weight: 600;
-}
-[data-theme="light"] .hl-bool {
-  color: #0550ae;
-  font-weight: 600;
-}
-[data-theme="light"] .hl-type {
-  color: #0550ae;
-  font-weight: 500;
-}
-[data-theme="light"] .hl-hook {
-  color: #8250df;
-  font-weight: 600;
-}
-[data-theme="light"] .hl-global {
-  color: #0550ae;
-}
-[data-theme="light"] .hl-fn {
-  color: #8250df;
-}
-[data-theme="light"] .hl-prop {
-  color: #24292e;
-}
-[data-theme="light"] .hl-tag {
-  color: #116329;
-  font-weight: 600;
-}
-[data-theme="light"] .hl-attr {
-  color: #0550ae;
-}
-[data-theme="light"] .hl-punct {
-  color: #24292e;
+  /* Syntax Highlighting Tokens (Light Mode) */
+  --hl-comment: #6e7781;
+  --hl-string: #0a3069;
+  --hl-number: #0550ae;
+  --hl-keyword: #cf222e;
+  --hl-function: #8250df;
+  --hl-tag: #116329;
+  --hl-punctuation: #24292e;
+  --hl-error: #cf222e;
+  --hl-operator: #cf222e;
+  --hl-type: #0550ae;
+  --hl-variable: #24292e;
 }
 
 
@@ -2784,15 +3007,49 @@ body {
   color: var(--text-muted);
 }
 
+[data-theme="light"] .tab-badge {
+  background: rgba(0, 0, 0, 0.06);
+  color: var(--text-muted);
+}
+
 [data-theme="light"] .tab-link:hover {
   color: var(--text-main);
   background: var(--notion-hover);
 }
 
-[data-theme="light"] .tab-link.active {
+[data-theme="light"] .tab-link:hover .tab-badge {
+  background: rgba(0, 0, 0, 0.1);
   color: var(--text-main);
-  background: var(--bg-card);
-  border-bottom-color: var(--notion-blue);
+}
+
+[data-theme="light"] .tab-link.active {
+  background: transparent;
+  color: var(--text-main);
+}
+
+[data-theme="light"] .tab-link.active .tab-badge {
+  background: rgba(0, 0, 0, 0.1);
+  color: var(--text-main);
+}
+
+[data-theme="light"] .tab-link.tab-candidate.active {
+  border-bottom-color: #059669;
+}
+
+[data-theme="light"] .tab-link.tab-solution.active {
+  border-bottom-color: #2563eb;
+}
+
+[data-theme="light"] .tab-link.tab-materials.active {
+  border-bottom-color: #d97706;
+}
+
+[data-theme="light"] .tab-link.tab-questions.active {
+  border-bottom-color: #9333ea;
+}
+
+[data-theme="light"] .tab-link.tab-checklist.active {
+  border-bottom-color: #0891b2;
 }
 
 [data-theme="light"] .tabs-content {
@@ -7340,9 +7597,9 @@ svg.lucide,
   }
 
   .tab-link {
-    padding: 7px 8px;
-    font-size: 12.5px;
-    max-width: 130px;
+    padding: 8px 10px;
+    font-size: 13.5px;
+    max-width: 160px;
   }
 
   .console-info-section {

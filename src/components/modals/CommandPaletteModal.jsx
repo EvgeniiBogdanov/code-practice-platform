@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { Search, Code2, Zap, Brain } from "lucide-react";
 import { getGroupMeta } from "../../javascript/data/groupConfig";
 
@@ -13,13 +14,12 @@ export const CommandPaletteModal = ({
   setPaletteOpen,
   paletteQuery,
   setPaletteQuery,
-  allTasksList,
+  allTasksList = [],
   selectedTask,
-  setSelectedTask,
-  setActiveSection,
-  setActiveTab,
   activeSection = "react",
 }) => {
+  const navigate = useNavigate();
+
   if (!paletteOpen) return null;
 
   // Filter tasks by current active section (home shows all)
@@ -45,6 +45,23 @@ export const CommandPaletteModal = ({
       : activeSection === "javascript"
         ? "JavaScript"
         : "Алгоритмы";
+
+  const handleSelectTask = (task) => {
+    setPaletteOpen(false);
+    if (task.section === "javascript") {
+      navigate({
+        to: "/javascript/$taskId",
+        params: { taskId: String(task.id) },
+        search: (prev) => prev,
+      });
+    } else {
+      navigate({
+        to: "/react/$taskId",
+        params: { taskId: String(task.id) },
+        search: (prev) => prev,
+      });
+    }
+  };
 
   return (
     <div
@@ -75,14 +92,9 @@ export const CommandPaletteModal = ({
               <button
                 key={`${task.section}-${task.id}`}
                 className={`command-palette-item ${
-                  selectedTask?.id === task.id ? "active" : ""
+                  String(selectedTask?.id) === String(task.id) ? "active" : ""
                 }`}
-                onClick={() => {
-                  setActiveSection(task.section || "react");
-                  setSelectedTask(task);
-                  setPaletteOpen(false);
-                  setActiveTab("candidate");
-                }}
+                onClick={() => handleSelectTask(task)}
               >
                 {activeSection === "home" && (
                   <span className="palette-item-section-badge" style={{ display: "inline-flex", alignItems: "center", gap: "3px", fontSize: "10px", fontWeight: 600, padding: "1px 6px", borderRadius: "4px", background: "var(--notion-hover)", color: "var(--text-muted)", marginRight: "6px", flexShrink: 0 }}>

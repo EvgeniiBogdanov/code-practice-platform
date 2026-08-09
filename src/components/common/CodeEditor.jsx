@@ -618,13 +618,13 @@ export const CodeEditor = ({
     const fileExt = cleanPath.split(".").pop();
 
     if (fileExt === "tsx") {
-      return { name: "React TSX", color: "#61dafb" };
+      return { name: "React TSX", color: "var(--color-info)" };
     }
     if (fileExt === "jsx") {
-      return { name: "React JSX", color: "#61dafb" };
+      return { name: "React JSX", color: "var(--color-info)" };
     }
     if (fileExt === "ts") {
-      return { name: "TypeScript", color: "#3178c6" };
+      return { name: "TypeScript", color: "var(--notion-blue)" };
     }
 
     const isReactCode =
@@ -632,10 +632,10 @@ export const CodeEditor = ({
       /import\s+.*React|from\s+['"]react['"]|export\s+default\s+function/m.test(code);
 
     if (cleanPath.includes("react") || isReactCode) {
-      return { name: "React JSX", color: "#61dafb" };
+      return { name: "React JSX", color: "var(--color-info)" };
     }
 
-    return { name: "JavaScript", color: "#f59e0b" };
+    return { name: "JavaScript", color: "var(--color-warning)" };
   }, [filepath, title, code]);
 
   const lineCount = lines.length;
@@ -754,7 +754,7 @@ export const CodeEditor = ({
             data-tooltip={copied ? "Скопировано в буфер обмена" : "Скопировать код решения"}
           >
             {copied ? (
-              <Check size={14} style={{ color: "#10b981" }} />
+              <Check size={14} style={{ color: "var(--color-success)" }} />
             ) : (
               <Copy size={14} />
             )}
@@ -799,7 +799,7 @@ export const CodeEditor = ({
       {activeTypo && (
         <div className="typo-quickfix-banner">
           <div className="typo-banner-left">
-            <AlertCircle size={13} style={{ color: "#f87171" }} />
+            <AlertCircle size={13} style={{ color: "var(--color-error-light)" }} />
             <span className="typo-msg">
               Стр {activeTypo.line}: Опечатка <code>{activeTypo.typo}</code> вместо <strong>{activeTypo.correct}</strong>
             </span>
@@ -968,7 +968,7 @@ export const CodeEditor = ({
           <div className="status-left">
             {diagnostics.errorCount > 0 ? (
               <span className="status-item status-typo-warning" title="Обнаружена синтаксическая опечатка">
-                <AlertCircle size={11} style={{ color: "#f87171" }} />
+                <AlertCircle size={11} style={{ color: "var(--color-error-light)" }} />
                 <span>
                   {diagnostics.errorCount} {diagnostics.errorCount === 1 ? "ошибка" : "ошибок"}
                   {activeTypo && `: ${activeTypo.typo} → ${activeTypo.correct}`}
@@ -976,7 +976,7 @@ export const CodeEditor = ({
               </span>
             ) : (
               <span className="status-item status-typo-ok">
-                <CheckCircle2 size={11} style={{ color: "#34d399" }} />
+                <CheckCircle2 size={11} style={{ color: "var(--color-success-light)" }} />
                 <span>Синтаксис корректен</span>
               </span>
             )}

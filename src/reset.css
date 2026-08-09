@@ -157,45 +157,45 @@ textarea:not(.vscode-input-textarea) {
   max-width: 100%;
   padding: 6px 10px;
   height: 34px;
-  line-height: 1.3;
+  line-height: var(--lh-snug, 1.3);
   color-scheme: dark;
-  background-color: #222222;
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  background-color: var(--bg-input, #222222);
+  border: 1px solid var(--border-strong, rgba(255, 255, 255, 0.22));
   border-radius: var(--radius-md, 6px);
-  color: #ffffff;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 13px;
+  color: var(--text-main, #ffffff);
+  font-family: var(--font-sans);
+  font-size: var(--fs-base, 13px);
   outline: none;
-  transition: border-color 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
 }
 
 /* Placeholder Styling */
 input::placeholder,
 textarea:not(.vscode-input-textarea)::placeholder {
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--text-placeholder, rgba(255, 255, 255, 0.45));
   opacity: 1;
 }
 
 /* Input Hover State */
 input:not([type="checkbox"]):not([type="radio"]):hover,
 textarea:not(.vscode-input-textarea):hover {
-  border-color: rgba(255, 255, 255, 0.4);
-  background-color: #282828;
+  border-color: var(--border-hover, rgba(255, 255, 255, 0.4));
+  background-color: var(--bg-input-hover, #282828);
 }
 
 /* Input Focus State */
 input:not([type="checkbox"]):not([type="radio"]):focus,
 textarea:not(.vscode-input-textarea):focus {
   border-color: var(--notion-blue, #2383e2);
-  background-color: #2a2a2a;
-  box-shadow: 0 0 0 2px rgba(35, 131, 226, 0.3);
+  background-color: var(--bg-input-focus, #2a2a2a);
+  box-shadow: var(--shadow-glow-blue);
 }
 
 /* Invalid Input State */
 input:invalid:not(:placeholder-shown),
 textarea:not(.vscode-input-textarea):invalid:not(:placeholder-shown) {
   border-color: var(--notion-red, #e54d42);
-  box-shadow: 0 0 0 2px rgba(229, 77, 66, 0.2);
+  box-shadow: var(--shadow-glow-red);
 }
 
 /* Textarea Specifics */
@@ -203,7 +203,7 @@ textarea:not(.vscode-input-textarea) {
   resize: vertical;
   min-height: 80px;
   height: auto;
-  line-height: 1.5;
+  line-height: var(--lh-normal, 1.5);
 }
 
 /* Select Dropdown */
@@ -214,10 +214,10 @@ select {
   width: auto;
   min-width: 140px;
   height: 34px;
-  line-height: 1.3;
+  line-height: var(--lh-snug, 1.3);
   padding: 6px 30px 6px 10px;
   color-scheme: dark;
-  background-color: #252525;
+  background-color: var(--bg-card, #252525);
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>');
   background-repeat: no-repeat;
   background-position: right 10px center;
@@ -225,32 +225,32 @@ select {
   border: 1px solid var(--border-color, rgba(255, 255, 255, 0.18));
   border-radius: var(--radius-md, 6px);
   color: var(--text-main, #ffffff);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 13px;
-  font-weight: 400;
+  font-family: var(--font-sans);
+  font-size: var(--fs-base, 13px);
+  font-weight: var(--fw-normal, 400);
   cursor: pointer;
   outline: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  transition: border-color 100ms ease, box-shadow 100ms ease, background-color 100ms ease;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
 }
 
 select:hover {
-  border-color: rgba(255, 255, 255, 0.35);
-  background-color: #2c2c2c;
+  border-color: var(--border-hover, rgba(255, 255, 255, 0.35));
+  background-color: var(--bg-input-hover, #2c2c2c);
 }
 
 select:focus {
   border-color: var(--notion-blue, #2383e2);
-  box-shadow: 0 0 0 2px rgba(35, 131, 226, 0.25);
+  box-shadow: var(--shadow-glow-blue);
 }
 
 select option {
-  background-color: #252525;
-  color: #ffffff;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 13px;
+  background-color: var(--bg-card, #252525);
+  color: var(--text-main, #ffffff);
+  font-family: var(--font-sans);
+  font-size: var(--fs-base, 13px);
   padding: 8px 12px;
 }
 
@@ -267,17 +267,17 @@ input[type="checkbox"] {
   min-height: 16px;
   margin: 0;
   color-scheme: dark;
-  background-color: #222222;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 4px;
+  background-color: var(--bg-input, #222222);
+  border: 1px solid var(--border-strong, rgba(255, 255, 255, 0.35));
+  border-radius: var(--radius-sm, 4px);
   cursor: pointer;
   outline: none;
-  transition: background-color 100ms ease, border-color 100ms ease, box-shadow 100ms ease;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 input[type="checkbox"]:hover {
-  border-color: rgba(255, 255, 255, 0.6);
-  background-color: #2a2a2a;
+  border-color: var(--border-hover, rgba(255, 255, 255, 0.6));
+  background-color: var(--bg-input-focus, #2a2a2a);
 }
 
 input[type="checkbox"]:checked {
@@ -301,17 +301,17 @@ input[type="radio"] {
   min-height: 16px;
   margin: 0;
   color-scheme: dark;
-  background-color: #222222;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 50%;
+  background-color: var(--bg-input, #222222);
+  border: 1px solid var(--border-strong, rgba(255, 255, 255, 0.35));
+  border-radius: var(--radius-full, 50%);
   cursor: pointer;
   outline: none;
-  transition: background-color 100ms ease, border-color 100ms ease, box-shadow 100ms ease;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 input[type="radio"]:hover {
-  border-color: rgba(255, 255, 255, 0.6);
-  background-color: #2a2a2a;
+  border-color: var(--border-hover, rgba(255, 255, 255, 0.6));
+  background-color: var(--bg-input-focus, #2a2a2a);
 }
 
 input[type="radio"]:checked {
@@ -334,17 +334,17 @@ input[type="reset"],
   gap: 5px;
   padding: 4px 10px;
   height: 30px;
-  font-size: 12.5px;
-  font-weight: 500;
-  line-height: 1.2;
+  font-size: var(--fs-base-sm, 12.5px);
+  font-weight: var(--fw-medium, 500);
+  line-height: var(--lh-tight, 1.2);
   color: var(--text-main, rgba(255, 255, 255, 0.9));
-  background-color: rgba(255, 255, 255, 0.06);
+  background-color: var(--notion-hover, rgba(255, 255, 255, 0.06));
   border: 1px solid var(--border-color, rgba(255, 255, 255, 0.14));
   border-radius: var(--radius-sm, 5px);
   cursor: pointer;
   user-select: none;
   outline: none;
-  transition: background-color 100ms ease, border-color 100ms ease, box-shadow 100ms ease, transform 50ms ease;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-hover);
 }
 
 button:hover,
@@ -352,8 +352,8 @@ input[type="button"]:hover,
 input[type="submit"]:hover,
 input[type="reset"]:hover,
 .btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.22);
+  background-color: var(--notion-active, rgba(255, 255, 255, 0.1));
+  border-color: var(--border-strong, rgba(255, 255, 255, 0.22));
 }
 
 button:active,
@@ -361,7 +361,7 @@ input[type="button"]:active,
 input[type="submit"]:active,
 input[type="reset"]:active,
 .btn:active {
-  background-color: rgba(255, 255, 255, 0.14);
+  background-color: var(--notion-selected, rgba(255, 255, 255, 0.14));
   transform: translateY(0.5px);
 }
 
@@ -369,30 +369,30 @@ button:focus-visible,
 input[type="button"]:focus-visible,
 input[type="submit"]:focus-visible,
 .btn:focus-visible {
-  box-shadow: 0 0 0 2px rgba(35, 131, 226, 0.4);
+  box-shadow: var(--shadow-glow-blue);
 }
 
 /* Button Variants */
 button.btn-primary, .btn-primary {
   background-color: var(--notion-blue, #2383e2);
-  color: #ffffff;
+  color: var(--text-on-accent, #ffffff);
   border-color: transparent;
 }
 button.btn-primary:hover, .btn-primary:hover {
-  background-color: #1d72c8;
+  background-color: var(--color-info-light, #1d72c8);
   border-color: transparent;
-  box-shadow: 0 2px 6px rgba(35, 131, 226, 0.35);
+  box-shadow: var(--shadow-glow-blue);
 }
 
 button.btn-danger, .btn-danger {
   background-color: var(--notion-red, #e54d42);
-  color: #ffffff;
+  color: var(--text-on-accent, #ffffff);
   border-color: transparent;
 }
 button.btn-danger:hover, .btn-danger:hover {
-  background-color: #c93b31;
+  background-color: var(--color-error, #c93b31);
   border-color: transparent;
-  box-shadow: 0 2px 6px rgba(229, 77, 66, 0.35);
+  box-shadow: var(--shadow-glow-red);
 }
 
 /* Disabled Form Control States */
@@ -612,70 +612,70 @@ button:disabled,
 [data-theme="light"] input[type="url"],
 [data-theme="light"] textarea:not(.vscode-input-textarea) {
   color-scheme: light;
-  background-color: #ffffff;
-  border: 1px solid rgba(55, 53, 47, 0.22);
-  color: #191919;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-strong);
+  color: var(--text-main);
 }
 
 [data-theme="light"] input::placeholder,
 [data-theme="light"] textarea:not(.vscode-input-textarea)::placeholder {
-  color: rgba(55, 53, 47, 0.45);
+  color: var(--text-placeholder);
   opacity: 1;
 }
 
 [data-theme="light"] input:not([type="checkbox"]):not([type="radio"]):not(.vscode-input-textarea):hover,
 [data-theme="light"] textarea:not(.vscode-input-textarea):hover {
-  border-color: rgba(55, 53, 47, 0.4);
-  background-color: #f9f9f8;
+  border-color: var(--border-hover);
+  background-color: var(--bg-input-hover);
 }
 
 [data-theme="light"] input:not([type="checkbox"]):not([type="radio"]):not(.vscode-input-textarea):focus,
 [data-theme="light"] textarea:not(.vscode-input-textarea):focus {
-  border-color: var(--notion-blue, #0066cc);
-  background-color: #ffffff;
-  box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
+  border-color: var(--notion-blue);
+  background-color: var(--bg-input-focus);
+  box-shadow: var(--shadow-glow-blue);
 }
 
 [data-theme="light"] select {
   color-scheme: light;
-  background-color: #ffffff;
+  background-color: var(--bg-input);
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%23374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>');
-  border: 1px solid rgba(55, 53, 47, 0.22);
-  color: #191919;
+  border: 1px solid var(--border-strong);
+  color: var(--text-main);
 }
 
 [data-theme="light"] select:hover {
-  border-color: rgba(55, 53, 47, 0.4);
-  background-color: #f9f9f8;
+  border-color: var(--border-hover);
+  background-color: var(--bg-input-hover);
 }
 
 [data-theme="light"] select:focus {
-  border-color: var(--notion-blue, #0066cc);
-  box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
+  border-color: var(--notion-blue);
+  box-shadow: var(--shadow-glow-blue);
 }
 
 [data-theme="light"] select option {
-  background-color: #ffffff;
-  color: #191919;
+  background-color: var(--bg-card);
+  color: var(--text-main);
 }
 
 [data-theme="light"] input[type="checkbox"],
 [data-theme="light"] input[type="radio"] {
   color-scheme: light;
-  background-color: #ffffff;
-  border: 1px solid rgba(55, 53, 47, 0.35);
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-strong);
 }
 
 [data-theme="light"] input[type="checkbox"]:hover,
 [data-theme="light"] input[type="radio"]:hover {
-  border-color: rgba(55, 53, 47, 0.6);
-  background-color: #f4f4f2;
+  border-color: var(--border-hover);
+  background-color: var(--bg-subtle);
 }
 
 [data-theme="light"] input[type="checkbox"]:checked,
 [data-theme="light"] input[type="radio"]:checked {
-  background-color: var(--notion-blue, #0066cc);
-  border-color: var(--notion-blue, #0066cc);
+  background-color: var(--notion-blue);
+  border-color: var(--notion-blue);
 }
 
 
