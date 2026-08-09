@@ -4,7 +4,7 @@
 
 ### Интерактивная платформа для подготовки к техническим собеседованиям и практики.
 
-**`v2.0.5`** · От Junior до Senior · 250+ реальных задач разной сложности
+**`v2.0.6`** · От Junior до Senior · 250+ реальных задач разной сложности
 
 [![Онлайн-версия](https://img.shields.io/badge/🌐_Открыть_online-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://evgeniibogdanov.github.io/frontend-practice/)
 
