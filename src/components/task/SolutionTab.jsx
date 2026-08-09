@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { Lock, Eye, Code2, FileCode, Terminal, ArrowDown, ChevronDown, Check } from "lucide-react";
 import { ALL_TASKS } from "../../react/data/tasksData";
 import ErrorBoundary from "../common/ErrorBoundary";
@@ -16,9 +17,23 @@ export const SolutionTab = ({
   setTaskStatus,
   completedTasks,
 }) => {
+  const navigate = useNavigate();
+
   const currentTask =
     ALL_TASKS.find((t) => String(t.id) === String(selectedTask.id)) ||
     selectedTask;
+
+  const handleToggleFullscreen = () => {
+    const section =
+      currentTask.section === "javascript" || String(currentTask.id).startsWith("js")
+        ? "javascript"
+        : "react";
+
+    navigate({
+      to: section === "javascript" ? "/open/javascript/$taskId" : "/open/react/$taskId",
+      params: { taskId: String(currentTask.id) },
+    });
+  };
 
   const hasSolutionComponent =
     Boolean(SolutionComponent) &&
@@ -219,7 +234,12 @@ export const SolutionTab = ({
             <div className="browser-mockup-dots">
               <span className="browser-dot close" />
               <span className="browser-dot minimize" />
-              <span className="browser-dot maximize" />
+              <span
+                className="browser-dot maximize"
+                onClick={handleToggleFullscreen}
+                style={{ cursor: "pointer" }}
+                title="Развернуть во весь экран (/open)"
+              />
             </div>
             <div className="browser-mockup-address">
               <Lock
@@ -255,6 +275,7 @@ export const SolutionTab = ({
             onFileSelect={setActiveFileIdx}
             onRun={handleRunCode}
             readOnly={false}
+            onToggleFullscreen={handleToggleFullscreen}
             bottomConsole={
               isJsTask ? (
                 <div ref={consoleWrapperRef} className="task-console-wrapper">

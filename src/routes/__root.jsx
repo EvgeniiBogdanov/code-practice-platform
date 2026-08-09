@@ -114,13 +114,13 @@ const RootLayout = () => {
 
   const selectedTask = useMemo(() => {
     if (selectedTaskId) {
-      const found = ALL_TASKS.find((t) => String(t.id) === String(selectedTaskId));
+      const found = allTasksList.find((t) => String(t.id) === String(selectedTaskId));
       if (found) return found;
     }
     if (activeSection === "javascript" && JS_TASKS.length > 0) return JS_TASKS[0];
     if (activeSection === "react" && WARMUP_TASKS.length > 0) return WARMUP_TASKS[0];
     return WARMUP_TASKS[0] || null;
-  }, [selectedTaskId, activeSection]);
+  }, [selectedTaskId, activeSection, allTasksList]);
 
   // Сохраняем последний просмотренный id
   useEffect(() => {

@@ -5916,6 +5916,26 @@ svg.lucide,
   box-sizing: border-box;
 }
 
+.open-editor-title-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 3px 10px;
+  border-radius: var(--radius-sm, 6px);
+}
+
+.open-editor-title-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 320px;
+}
+
 .open-editor-top-actions {
   display: flex;
   align-items: center;

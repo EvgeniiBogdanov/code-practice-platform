@@ -151,9 +151,9 @@ export const OpenEditorView = ({ task, section = "javascript" }) => {
 
   return (
     <div className="open-editor-container">
-      {/* Для визуальных React задач: переключатель Код / Интерфейс */}
-      {hasCandidateComponent && (
-        <div className="open-editor-top-bar">
+      {/* Шапка полноэкранного режима /open с кнопками "Поделиться" и "Свернуть" */}
+      <div className="open-editor-top-bar">
+        {hasCandidateComponent ? (
           <div className="view-mode-toggle-bar" style={{ margin: 0 }}>
             <button
               className={`view-mode-btn ${viewMode === "code" ? "active" : ""}`}
@@ -172,27 +172,32 @@ export const OpenEditorView = ({ task, section = "javascript" }) => {
               <span>Интерфейс</span>
             </button>
           </div>
-
-          <div className="open-editor-top-actions">
-            <button
-              className="open-share-btn"
-              onClick={handleCopyLink}
-              title="Скопировать ссылку для решения"
-            >
-              {linkCopied ? <Check size={13} style={{ color: "#10b981" }} /> : <Share2 size={13} />}
-              <span>{linkCopied ? "Ссылка скопирована" : "Поделиться"}</span>
-            </button>
-            <button
-              className="open-exit-btn"
-              onClick={handleExit}
-              title="Выйти из полноэкранного режима (Esc)"
-            >
-              <Minimize2 size={14} />
-              <span>Свернуть</span>
-            </button>
+        ) : (
+          <div className="open-editor-title-badge">
+            <Code2 size={14} style={{ color: "var(--notion-blue, #3b82f6)" }} />
+            <span className="open-editor-title-text">{task.title || "Редактор задачи"}</span>
           </div>
+        )}
+
+        <div className="open-editor-top-actions">
+          <button
+            className="open-share-btn"
+            onClick={handleCopyLink}
+            title="Скопировать ссылку для шеринга задачи (/open)"
+          >
+            {linkCopied ? <Check size={13} style={{ color: "#10b981" }} /> : <Share2 size={13} />}
+            <span>{linkCopied ? "Ссылка скопирована" : "Поделиться"}</span>
+          </button>
+          <button
+            className="open-exit-btn"
+            onClick={handleExit}
+            title="Выйти из полноэкранного режима (Esc)"
+          >
+            <Minimize2 size={14} />
+            <span>Свернуть</span>
+          </button>
         </div>
-      )}
+      </div>
 
       {hasCandidateComponent && viewMode === "preview" ? (
         <div className="open-preview-wrapper">

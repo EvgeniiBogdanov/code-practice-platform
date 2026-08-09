@@ -149,7 +149,12 @@ export const CandidateTab = ({
             <div className="browser-mockup-dots">
               <span className="browser-dot close" />
               <span className="browser-dot minimize" />
-              <span className="browser-dot maximize" />
+              <span
+                className="browser-dot maximize"
+                onClick={handleToggleFullscreen}
+                style={{ cursor: "pointer" }}
+                title="Развернуть во весь экран (/open)"
+              />
             </div>
             <div className="browser-mockup-address">
               <Lock
