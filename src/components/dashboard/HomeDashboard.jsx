@@ -72,14 +72,9 @@ export const HomeDashboard = ({
     <div className="notion-home-container">
       {/* Notion Page Header */}
       <div className="notion-page-header">
-        <div className="notion-page-icon-wrapper">
-          <span className="notion-page-emoji">🚀</span>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <h1 className="notion-page-title">Обзор платформы</h1>
-        </div>
+        <h1 className="notion-page-title">Обзор платформы</h1>
         <p className="notion-page-subtitle">
-          Интерактивная среда для подготовки к Frontend-собеседованиям. Практика на реальных задачах, кандидатский код, эталонные решения и разборы теории.
+          Интерактивная платформа для подготовки к Frontend-собеседованиям (250+ задач). Встроенный редактор кода и консоль в браузере, кандидатский код, эталонные решения и разборы теории.
         </p>
       </div>
 
@@ -89,7 +84,7 @@ export const HomeDashboard = ({
         <div className="notion-callout-content">
           <div className="notion-callout-title">Быстрый старт</div>
           <div className="notion-callout-text">
-            Выберите интересующий раздел практики ниже, анализируйте исходный код кандидата, изучайте оптимизированные решения и используйте шпаргалки для успешного прохождения интервью.
+            Решайте задачи во встроенном браузерном редакторе или вашей любимой IDE. Анализируйте исходный код кандидата, изучайте эталонные решения O(N) / O(1) и используйте интерактивную консоль Node.js.
           </div>
         </div>
       </div>
@@ -268,12 +263,36 @@ export const HomeDashboard = ({
           <div className="notion-feature-card">
             <div className="notion-feature-header">
               <div className="notion-feature-icon-badge blue">
+                <Code2 size={16} />
+              </div>
+              <h4 className="notion-feature-title">Встроенный редактор кода</h4>
+            </div>
+            <p className="notion-feature-desc">
+              Редактирование JS, TS и React (JSX/TSX) прямо в браузере, поддержка многофайловых задач, подстветка синтаксиса и полноэкранный режим.
+            </p>
+          </div>
+
+          <div className="notion-feature-card">
+            <div className="notion-feature-header">
+              <div className="notion-feature-icon-badge amber">
                 <Terminal size={16} />
+              </div>
+              <h4 className="notion-feature-title">Интерактивная консоль Node.js</h4>
+            </div>
+            <p className="notion-feature-desc">
+              Мгновенный запуск кода (Ctrl+Enter) с замером времени выполнения (⚡ ms), умным сворачиванием и выводом всех типов данных.
+            </p>
+          </div>
+
+          <div className="notion-feature-card">
+            <div className="notion-feature-header">
+              <div className="notion-feature-icon-badge purple">
+                <Brain size={16} />
               </div>
               <h4 className="notion-feature-title">Песочница кандидата</h4>
             </div>
             <p className="notion-feature-desc">
-              Запускаемый код с багами и недочетами реальных кандидатов для тренировки навыка проведения Code Review.
+              Запускаемый live-код с багами и недочетами реальных кандидатов для отработки навыка проведения Code Review.
             </p>
           </div>
 
@@ -282,22 +301,22 @@ export const HomeDashboard = ({
               <div className="notion-feature-icon-badge green">
                 <CheckCircle2 size={16} />
               </div>
-              <h4 className="notion-feature-title">Эталонное решение</h4>
+              <h4 className="notion-feature-title">Эталонные решения</h4>
             </div>
             <p className="notion-feature-desc">
-              Чистое оптимизированное решение с разбором архитектуры, сложности O(N) / O(1) и лучшими практиками.
+              Оптимизированные решения с разбором сложности O(N) / O(1), выбором нескольких вариантов и лучшими практиками собеседований.
             </p>
           </div>
 
           <div className="notion-feature-card">
             <div className="notion-feature-header">
-              <div className="notion-feature-icon-badge purple">
+              <div className="notion-feature-icon-badge blue">
                 <ClipboardCheck size={16} />
               </div>
-              <h4 className="notion-feature-title">Чек-лист и вопросы</h4>
+              <h4 className="notion-feature-title">Чек-листы и вопросы</h4>
             </div>
             <p className="notion-feature-desc">
-              Вопросы интервьюера и требования самопроверки, проверяющие усвоение темы перед собеседованием.
+              Вопросы интервьюера и критерии самопроверки, проверяющие усвоение материала перед выходом на интервью.
             </p>
           </div>
 
@@ -306,10 +325,10 @@ export const HomeDashboard = ({
               <div className="notion-feature-icon-badge amber">
                 <Lightbulb size={16} />
               </div>
-              <h4 className="notion-feature-title">Шпаргалки и аналитика</h4>
+              <h4 className="notion-feature-title">Поиск и шпаргалки</h4>
             </div>
             <p className="notion-feature-desc">
-              Быстрый поиск патернов в Command Palette (`Cmd+K`), шпаргалки и автоматический учет прогресса.
+              Мгновенный поиск по всей базе задач через Command Palette (Cmd+K / Ctrl+K), модальные шпаргалки и автоматический учет прогресса.
             </p>
           </div>
         </div>
