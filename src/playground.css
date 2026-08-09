@@ -1531,8 +1531,7 @@ body {
   border-radius: 0 !important;
   width: 100%;
   box-sizing: border-box;
-  margin-bottom: 8px;
-  padding: 4px 16px 12px 16px;
+  padding: 4px 12px;
 }
 
 [data-theme="light"] .notion-article-page {
@@ -1652,11 +1651,21 @@ body {
   color: #059669;
 }
 
+.notion-badge-yellow {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+[data-theme="light"] .notion-badge-yellow {
+  background: rgba(217, 119, 6, 0.12);
+  color: #b45309;
+}
+
 .notion-article-divider {
   border: 0;
   height: 1px;
   background: var(--border-color, rgba(255, 255, 255, 0.12));
-  margin: 16px 0 20px 0;
+  margin: 12px 0 12px 0;
 }
 
 [data-theme="light"] .notion-article-divider {
@@ -1666,59 +1675,80 @@ body {
 .notion-article-content {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   color: var(--text-main, #e2e8f0);
   font-size: 15px;
-  line-height: 1.7;
+  line-height: 1.68;
   font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
 }
 
+.notion-article-content > *:first-child,
+.notion-article-content h1:first-child,
+.notion-article-content h2:first-child,
+.notion-article-content h3:first-child,
+.notion-article-content h4:first-child {
+  margin-top: 0 !important;
+}
+
 [data-theme="light"] .notion-article-content {
-  color: #24292e;
+  color: #37352f;
 }
 
-.notion-paragraph {
-  margin: 0;
-  line-height: 1.7;
-  color: inherit;
+.notion-article-content p {
+  margin: 4px 0 8px 0;
+  line-height: 1.68;
 }
 
+/* Notion Headings (H1 - H5) */
+.notion-article-content h1,
 .notion-h1 {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 700;
+  line-height: 1.25;
+  margin: 28px 0 10px 0;
+  color: var(--text-main, #ffffff);
+  border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.12));
+  padding-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.notion-article-content h2,
+.notion-h2 {
+  font-size: 20px;
+  font-weight: 600;
   line-height: 1.3;
-  margin: 24px 0 8px 0;
-  color: var(--text-main);
-  border-bottom: 1px solid var(--border-color);
-  padding-bottom: 6px;
+  margin: 22px 0 8px 0;
+  color: var(--text-main, #ffffff);
+  border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  padding-bottom: 4px;
   letter-spacing: -0.015em;
 }
 
-.notion-h2 {
-  font-size: 17.5px;
+.notion-article-content h3,
+.notion-h3 {
+  font-size: 18px;
   font-weight: 600;
   line-height: 1.35;
-  margin: 20px 0 6px 0;
-  color: var(--text-main);
+  margin: 14px 0 6px 0;
+  color: var(--text-main, #ffffff);
   letter-spacing: -0.01em;
 }
 
-.notion-h3 {
+.notion-article-content h4,
+.notion-article-content h5,
+.notion-h4 {
   font-size: 15.5px;
   font-weight: 600;
   line-height: 1.4;
-  margin: 16px 0 6px 0;
-  color: var(--text-main);
+  margin: 14px 0 4px 0;
+  color: var(--text-main, #ffffff);
 }
 
-.notion-h4 {
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1.4;
-  margin: 12px 0 4px 0;
-  color: var(--text-main);
-}
-
+[data-theme="light"] .notion-article-content h1,
+[data-theme="light"] .notion-article-content h2,
+[data-theme="light"] .notion-article-content h3,
+[data-theme="light"] .notion-article-content h4,
+[data-theme="light"] .notion-article-content h5,
 [data-theme="light"] .notion-h1,
 [data-theme="light"] .notion-h2,
 [data-theme="light"] .notion-h3,
@@ -1727,7 +1757,77 @@ body {
   border-bottom-color: rgba(55, 53, 47, 0.12);
 }
 
-/* Notion Callouts */
+/* Notion Inline Code — Coral Warm Accent (только для инлайн-кода в тексте) */
+.notion-article-content p > code,
+.notion-article-content li > code,
+.notion-article-content blockquote > code,
+.notion-article-content td > code,
+.notion-inline-code {
+  font-family: var(--font-mono, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace);
+  font-size: 13.5px;
+  background: rgba(135, 131, 120, 0.15);
+  color: #eb5757;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 500;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+[data-theme="light"] .notion-article-content p > code,
+[data-theme="light"] .notion-article-content li > code,
+[data-theme="light"] .notion-article-content blockquote > code,
+[data-theme="light"] .notion-article-content td > code,
+[data-theme="light"] .notion-inline-code {
+  background: rgba(135, 131, 120, 0.15);
+  color: #eb5757;
+}
+
+/* Сброс инлайн-стилей для редактора блоков кода VS Code / TheoryCodeBlock */
+.vscode-ide-editor code,
+.theory-code-editor code,
+.vscode-pre-only code {
+  background: transparent !important;
+  color: inherit !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  font-size: 14px !important;
+  font-weight: normal !important;
+  font-family: var(--font-mono, Menlo, Monaco, Consolas, monospace) !important;
+}
+
+/* Notion Lists (UL & OL) — нумерация на одном уровне с текстом */
+.notion-article-content ul,
+.notion-article-content ol {
+  display: block !important;
+  margin: 0 !important;
+  padding-left: 24px !important;
+}
+
+.notion-article-content li {
+  display: list-item !important;
+  line-height: 1.68;
+  padding-left: 4px;
+}
+
+.notion-article-content ul > li {
+  list-style-type: disc !important;
+}
+
+.notion-article-content ul > li > ul > li {
+  list-style-type: circle !important;
+}
+
+.notion-article-content ol > li {
+  list-style-type: decimal !important;
+}
+
+.notion-article-content li > p {
+  display: inline;
+  margin: 0 !important;
+}
+
+/* Notion Callouts & Quotes */
 .notion-callout-box {
   display: flex;
   gap: 12px;
@@ -1745,6 +1845,36 @@ body {
   border-color: rgba(55, 53, 47, 0.12);
 }
 
+.notion-callout-box.notion-callout-tip {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+.notion-callout-box.notion-callout-warning {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+.notion-callout-box.notion-callout-important {
+  background: rgba(168, 85, 247, 0.08);
+  border-color: rgba(168, 85, 247, 0.25);
+}
+
+[data-theme="light"] .notion-callout-box.notion-callout-tip {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+[data-theme="light"] .notion-callout-box.notion-callout-warning {
+  background: #fffbeb;
+  border-color: #fef3c7;
+}
+
+[data-theme="light"] .notion-callout-box.notion-callout-important {
+  background: #faf5ff;
+  border-color: #e9d5ff;
+}
+
 .notion-callout-icon {
   font-size: 18px;
   line-height: 1;
@@ -1757,7 +1887,11 @@ body {
   margin: 0;
 }
 
-/* Notion Quotes */
+.notion-callout-text p {
+  margin: 0;
+}
+
+.notion-article-content blockquote,
 .notion-quote-block {
   margin: 8px 0;
   padding: 4px 0 4px 14px;
@@ -1767,12 +1901,41 @@ body {
   line-height: 1.6;
 }
 
+[data-theme="light"] .notion-article-content blockquote,
 [data-theme="light"] .notion-quote-block {
   border-left-color: #37352f;
   color: #37352f;
 }
 
-/* Notion Bullet Lists */
+/* Notion Links */
+.notion-article-content a,
+.notion-text-link {
+  color: #2383e2;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity var(--transition-fast, 0.15s ease);
+}
+
+.notion-article-content a:hover,
+.notion-text-link:hover {
+  opacity: 0.8;
+}
+
+/* Notion Horizontal Rule */
+.notion-article-content hr,
+.notion-body-hr {
+  border: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+  margin: 20px 0;
+}
+
+[data-theme="light"] .notion-article-content hr,
+[data-theme="light"] .notion-body-hr {
+  background: rgba(55, 53, 47, 0.12);
+}
+
+/* Notion Bullet Lists Custom */
 .notion-list-item {
   display: flex;
   align-items: baseline;
@@ -1886,6 +2049,103 @@ body {
   margin: 0 !important;
   border-radius: 0 !important;
   padding: 12px 16px !important;
+}
+
+/* Блок кода в разделе "Разбор и теория" — компактная высота под количество строк (без 180px min-height) */
+.theory-code-editor {
+  box-shadow: none !important;
+  position: relative;
+  font-size: 14px !important;
+  margin: 2px !important;
+}
+
+.theory-code-editor .vscode-editor-surface {
+  min-height: auto !important;
+  height: auto !important;
+}
+
+.theory-code-editor .vscode-gutter {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  height: auto !important;
+}
+
+.theory-code-editor .vscode-canvas {
+  position: relative;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  height: auto !important;
+}
+
+.theory-code-editor pre.vscode-pre-only {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.6 !important;
+}
+
+.theory-code-editor .notion-code-copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border-radius: 5px;
+  border: none !important;
+  background: rgba(255, 255, 255, 0.054) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  user-select: none;
+  box-shadow: none !important;
+}
+
+.theory-code-editor:hover .notion-code-copy-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.theory-code-editor .notion-code-copy-btn:hover {
+  background: rgba(255, 255, 255, 0.09) !important;
+  color: #ffffff;
+  border: none !important;
+}
+
+.theory-code-editor .notion-code-copy-btn.copied {
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.2) !important;
+  border: none !important;
+}
+
+[data-theme="light"] .theory-code-editor {
+  box-shadow: none !important;
+}
+
+[data-theme="light"] .theory-code-editor .notion-code-copy-btn {
+  border: none !important;
+  background: rgba(0, 0, 0, 0.07) !important;
+  color: #37352f;
+  box-shadow: none !important;
+}
+
+[data-theme="light"] .theory-code-editor .notion-code-copy-btn:hover {
+  background: rgba(0, 0, 0, 0.12) !important;
+  color: #000000;
+  border: none !important;
+}
+
+[data-theme="light"] .theory-code-editor .notion-code-copy-btn.copied {
+  color: #059669;
+  background: #d1fae5 !important;
+  border: none !important;
 }
 
 .notion-body-hr {
@@ -3523,7 +3783,7 @@ body {
   align-items: flex-start;
   gap: 16px;
   border-bottom: 1px solid var(--border-color);
-  padding-bottom: 12px;
+  padding: 4px 12px;
 }
 
 .checklist-title {
@@ -5199,7 +5459,8 @@ svg.lucide,
   white-space: pre;
 }
 
-.wrap-on .vscode-syntax-layer {
+.wrap-on .vscode-syntax-layer,
+.wrap-on .vscode-pre-only {
   white-space: pre-wrap !important;
   word-break: break-word !important;
 }
