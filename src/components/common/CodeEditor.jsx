@@ -22,6 +22,7 @@ import {
 import { highlightJS } from "../../utils/codeHighlighter";
 import { checkAutoCloseTag, getCompletions, expandSnippet } from "../../utils/snippetsEngine";
 import { lintJavaScriptCode, fixTypoInCode } from "../../utils/codeLinter";
+import { formatJavaScriptCode } from "../../utils/codeFormatter";
 
 const MIN_FONT_SIZE = 13;
 const MAX_FONT_SIZE = 20;
@@ -270,6 +271,18 @@ export const CodeEditor = ({
     }
   };
 
+  const handleFormat = async () => {
+    if (!code) return;
+    try {
+      const formatted = await formatJavaScriptCode(code);
+      if (formatted && formatted !== code) {
+        updateCode(formatted);
+      }
+    } catch (err) {
+      console.error("Failed to format code with Prettier", err);
+    }
+  };
+
   const handleReset = () => {
     updateCode(initialCode);
     if (taskId) {
@@ -355,6 +368,13 @@ export const CodeEditor = ({
     if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
       e.preventDefault();
       if (onRun) onRun(code);
+      return;
+    }
+
+    // 1.1. Форматирование кода через Prettier: Shift+Alt+F или Ctrl+Alt+L
+    if ((e.shiftKey && e.altKey && e.key.toLowerCase() === "f") || ((e.ctrlKey || e.metaKey) && e.altKey && e.key.toLowerCase() === "l")) {
+      e.preventDefault();
+      handleFormat();
       return;
     }
 
@@ -698,6 +718,13 @@ export const CodeEditor = ({
                 data-tooltip="Повторить изменение (Ctrl+Y)"
               >
                 <Redo2 size={14} />
+              </button>
+              <button
+                className="vscode-icon-btn"
+                onClick={handleFormat}
+                data-tooltip="Отформатировать код (Prettier, Shift+Alt+F)"
+              >
+                <Wand2 size={14} />
               </button>
             </>
           )}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
-  Terminal,
+  Terminal as TerminalIcon,
   Play,
   Trash2,
   Copy,
@@ -11,12 +11,50 @@ import {
   Loader2,
   ChevronDown,
   ChevronUp,
+  ZoomIn,
+  ZoomOut,
 } from "lucide-react";
+import { Terminal } from "@xterm/xterm";
+import { FitAddon } from "@xterm/addon-fit";
+import "@xterm/xterm/css/xterm.css";
 
-const MIN_FONT_SIZE = 13;
+const MIN_FONT_SIZE = 12;
 const MAX_FONT_SIZE = 20;
 const FONT_SIZE_STORAGE_KEY = "playground_editor_font_size";
 const CONSOLE_COLLAPSED_STORAGE_KEY = "playground_console_collapsed";
+
+const getTerminalTheme = (themeName) => {
+  const isLight = themeName === "light";
+  return isLight
+    ? {
+        background: "#ffffff",
+        foreground: "#1f2937",
+        cursor: "#0284c7",
+        selectionBackground: "rgba(2, 132, 199, 0.2)",
+        black: "#f1f5f9",
+        red: "#dc2626",
+        green: "#16a34a",
+        yellow: "#d97706",
+        blue: "#2563eb",
+        magenta: "#9333ea",
+        cyan: "#0284c7",
+        white: "#0f172a",
+      }
+    : {
+        background: "#141414",
+        foreground: "#cccccc",
+        cursor: "#38bdf8",
+        selectionBackground: "rgba(56, 189, 248, 0.3)",
+        black: "#141414",
+        red: "#f87171",
+        green: "#34d399",
+        yellow: "#fbbf24",
+        blue: "#60a5fa",
+        magenta: "#c084fc",
+        cyan: "#38bdf8",
+        white: "#f8fafc",
+      };
+};
 
 export const JsConsole = ({
   logs = [],
@@ -59,7 +97,6 @@ export const JsConsole = ({
     }
   };
 
-  // Временный разворот консоли при запуске кода без перезаписи явного выбора пользователя в localStorage
   useEffect(() => {
     if (isRunning && isCollapsed) {
       if (onToggleCollapse) {
@@ -70,9 +107,6 @@ export const JsConsole = ({
     }
   }, [isRunning, isCollapsed, onToggleCollapse]);
 
-  const outputEndRef = useRef(null);
-
-  // Синхронизация размера шрифта с редактором кода через localStorage
   const [fontSize, setFontSize] = useState(() => {
     try {
       const saved = localStorage.getItem(FONT_SIZE_STORAGE_KEY);
@@ -85,7 +119,7 @@ export const JsConsole = ({
     } catch (err) {
       console.error("Failed to load font size from localStorage", err);
     }
-    return MIN_FONT_SIZE;
+    return 13;
   });
 
   const handleIncreaseFontSize = () => {
@@ -112,12 +146,180 @@ export const JsConsole = ({
     });
   };
 
-  // Автоскролл к концу при выводе логов
+  // Отслеживание светлой/тёмной темы оформления
+  const [currentTheme, setCurrentTheme] = useState(() => {
+    return document.documentElement.getAttribute("data-theme") || "dark";
+  });
+
   useEffect(() => {
-    if (outputEndRef.current && !isCollapsed) {
-      outputEndRef.current.scrollIntoView({ behavior: "smooth" });
+    const observer = new MutationObserver(() => {
+      const theme = document.documentElement.getAttribute("data-theme") || "dark";
+      setCurrentTheme(theme);
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const termContainerRef = useRef(null);
+  const xtermRef = useRef(null);
+  const fitAddonRef = useRef(null);
+  const lastRenderedLogCountRef = useRef(0);
+
+  const cleanFilename = filename ? filename.split("/").pop() : "main.js";
+
+  // Инициализация xterm.js терминала
+  useEffect(() => {
+    if (!termContainerRef.current) return;
+
+    const term = new Terminal({
+      cursorBlink: false,
+      fontFamily: "'Fira Code', 'Cascadia Code', 'JetBrains Mono', Consolas, monospace",
+      fontSize: fontSize,
+      lineHeight: 1.25,
+      theme: getTerminalTheme(currentTheme),
+      convertEol: true,
+      disableStdin: true,
+      scrollback: 2000,
+    });
+
+    const fitAddon = new FitAddon();
+    term.loadAddon(fitAddon);
+    term.open(termContainerRef.current);
+
+    xtermRef.current = term;
+    fitAddonRef.current = fitAddon;
+
+    setTimeout(() => {
+      try {
+        fitAddon.fit();
+      } catch {
+        // ignore
+      }
+    }, 30);
+
+    return () => {
+      try {
+        term.dispose();
+      } catch {
+        // ignore
+      }
+    };
+  }, []);
+
+  // Синхронизация темы xterm при переключении светлой/тёмной темы
+  useEffect(() => {
+    if (xtermRef.current) {
+      xtermRef.current.options.theme = getTerminalTheme(currentTheme);
     }
-  }, [logs, isRunning, lastExecution, isCollapsed]);
+  }, [currentTheme]);
+
+  // Синхронизация размера и ресайза при смене fontSize или сворачивании
+  useEffect(() => {
+    if (xtermRef.current) {
+      xtermRef.current.options.fontSize = fontSize;
+      if (fitAddonRef.current && !isCollapsed) {
+        setTimeout(() => {
+          try {
+            fitAddonRef.current.fit();
+          } catch {
+            // ignore
+          }
+        }, 50);
+      }
+    }
+  }, [fontSize, isCollapsed]);
+
+  // Отрисовка вывода логов в xterm.js с динамической авто-высотой
+  useEffect(() => {
+    const term = xtermRef.current;
+    if (!term) return;
+
+    // Расчет физических строк текста с учетом многострочных объектов/выводов
+    const totalPhysicalLines = logs.reduce((sum, log) => {
+      let text = log.text || "";
+      if (log.args && log.args.length > 0) {
+        text = log.args.map((a) => String(a.text || "")).join(" ");
+      }
+      return sum + (text ? text.split("\n").length : 1);
+    }, 0);
+
+    const lineCount =
+      logs.length === 0 && !isRunning && !lastExecution
+        ? 3
+        : Math.max(3, totalPhysicalLines + (lastExecution ? 2 : 1) + 1);
+    const contentRows = Math.min(Math.max(3, lineCount), 18);
+
+    try {
+      term.resize(term.cols || 80, contentRows);
+      if (fitAddonRef.current && !isCollapsed) {
+        fitAddonRef.current.fit();
+        term.resize(term.cols || 80, contentRows);
+      }
+    } catch {
+      // ignore
+    }
+
+    if (logs.length === 0 && !isRunning && !lastExecution) {
+      term.clear();
+      term.writeln(`\x1b[36m$ node ${cleanFilename}\x1b[0m`);
+      term.writeln(`\x1b[90m// Нажмите «Запустить» (Ctrl+Enter) для выполнения кода...\x1b[0m`);
+      lastRenderedLogCountRef.current = 0;
+      return;
+    }
+
+    if (logs.length < lastRenderedLogCountRef.current) {
+      term.clear();
+      term.writeln(`\x1b[36m$ node ${cleanFilename}\x1b[0m`);
+      lastRenderedLogCountRef.current = 0;
+    }
+
+    if (lastRenderedLogCountRef.current === 0 && logs.length > 0) {
+      term.clear();
+      term.writeln(`\x1b[36m$ node ${cleanFilename}\x1b[0m`);
+    }
+
+    for (let i = lastRenderedLogCountRef.current; i < logs.length; i++) {
+      const log = logs[i];
+      let prefix = "";
+      let color = currentTheme === "light" ? "\x1b[30m" : "\x1b[37m";
+
+      if (log.type === "error") {
+        prefix = "\x1b[31m[Error] ";
+        color = "\x1b[31m";
+      } else if (log.type === "warn") {
+        prefix = "\x1b[33m[Warn] ";
+        color = "\x1b[33m";
+      } else if (log.type === "info") {
+        prefix = "\x1b[36m[Info] ";
+        color = "\x1b[36m";
+      } else if (log.type === "time") {
+        prefix = "\x1b[35m[Timer] ";
+        color = "\x1b[35m";
+      }
+
+      let contentStr = log.text || "";
+      if (log.args && log.args.length > 0) {
+        contentStr = log.args.map((a) => String(a.text || "")).join(" ");
+      }
+
+      term.writeln(`${prefix}${color}${contentStr}\x1b[0m \x1b[90m${log.timestamp || ""}\x1b[0m`);
+    }
+
+    lastRenderedLogCountRef.current = logs.length;
+
+    if (lastExecution) {
+      if (lastExecution.exitCode === 0) {
+        term.writeln(`\x1b[32m✔ Process exited with code 0 (${lastExecution.durationMs || 0}ms)\x1b[0m`);
+      } else {
+        term.writeln(`\x1b[31m✖ Process exited with error code ${lastExecution.exitCode} (${lastExecution.durationMs || 0}ms)\x1b[0m`);
+      }
+    }
+  }, [logs, isRunning, lastExecution, cleanFilename, currentTheme]);
 
   const handleCopyLogs = () => {
     if (!logs || logs.length === 0) return;
@@ -133,100 +335,14 @@ export const JsConsole = ({
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const renderLogArg = (arg, argIdx) => {
-    if (!arg) return null;
-    const text = arg.text !== undefined ? String(arg.text) : "";
-
-    switch (arg.type) {
-      case "string":
-        return (
-          <span key={argIdx} className="console-token token-string">
-            {text}
-          </span>
-        );
-      case "number":
-        return (
-          <span key={argIdx} className="console-token token-number">
-            {text}
-          </span>
-        );
-      case "boolean":
-        return (
-          <span key={argIdx} className="console-token token-boolean">
-            {text}
-          </span>
-        );
-      case "null":
-        return (
-          <span key={argIdx} className="console-token token-null">
-            null
-          </span>
-        );
-      case "undefined":
-        return (
-          <span key={argIdx} className="console-token token-undefined">
-            undefined
-          </span>
-        );
-      case "function":
-        return (
-          <span key={argIdx} className="console-token token-function">
-            {text}
-          </span>
-        );
-      case "object":
-      case "array":
-      case "set":
-      case "map":
-        return (
-          <span key={argIdx} className="console-token token-collection">
-            {text}
-          </span>
-        );
-      case "error":
-        return (
-          <span key={argIdx} className="console-token token-error-val">
-            {text}
-          </span>
-        );
-      default:
-        return (
-          <span key={argIdx} className="console-token token-generic">
-            {text}
-          </span>
-        );
+  const handleClearTerminal = () => {
+    if (xtermRef.current) {
+      xtermRef.current.clear();
+      xtermRef.current.writeln(`\x1b[36m$ node ${cleanFilename}\x1b[0m`);
+      lastRenderedLogCountRef.current = 0;
     }
+    if (onClear) onClear();
   };
-
-  const renderTable = (tableData) => {
-    if (!tableData || !tableData.columns) return null;
-    return (
-      <div className="console-table-wrapper">
-        <table className="console-table">
-          <thead>
-            <tr>
-              {tableData.columns.map((col, i) => (
-                <th key={i}>{col}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {tableData.rows.map((row, rowIdx) => (
-              <tr key={rowIdx}>
-                {tableData.columns.map((col, colIdx) => (
-                  <td key={colIdx} className={col === "(index)" ? "td-index" : ""}>
-                    {row[col]}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
-  };
-
-  const cleanFilename = filename ? filename.split("/").pop() : "main.js";
 
   return (
     <div
@@ -236,8 +352,8 @@ export const JsConsole = ({
       {/* Шапка консоли в едином дизайне с редактором кода */}
       <div className="vscode-editor-header">
         <div className="vscode-editor-single-file">
-          <Terminal size={13} style={{ color: "#38bdf8", flexShrink: 0 }} />
-          <span className="file-tab-name">{customTitle || "Консоль"}</span>
+          <TerminalIcon size={13} style={{ color: "#38bdf8", flexShrink: 0 }} />
+          <span className="file-tab-name">{customTitle || "Терминал"}</span>
           {logs.length > 0 && <span className="console-counter">{logs.length}</span>}
         </div>
 
@@ -262,7 +378,7 @@ export const JsConsole = ({
 
           <button
             className="vscode-icon-btn"
-            onClick={onClear}
+            onClick={handleClearTerminal}
             disabled={logs.length === 0 && !lastExecution}
             data-tooltip="Очистить вывод терминала"
             aria-label="Очистить"
@@ -286,6 +402,24 @@ export const JsConsole = ({
 
           <button
             className="vscode-icon-btn"
+            onClick={handleDecreaseFontSize}
+            disabled={fontSize <= MIN_FONT_SIZE}
+            data-tooltip={`Уменьшить шрифт терминала (${fontSize}px)`}
+          >
+            <ZoomOut size={14} />
+          </button>
+
+          <button
+            className="vscode-icon-btn"
+            onClick={handleIncreaseFontSize}
+            disabled={fontSize >= MAX_FONT_SIZE}
+            data-tooltip={`Увеличить шрифт терминала (${fontSize}px)`}
+          >
+            <ZoomIn size={14} />
+          </button>
+
+          <button
+            className="vscode-icon-btn"
             onClick={handleToggleCollapse}
             data-tooltip={isCollapsed ? "Развернуть консоль" : "Свернуть консоль"}
             aria-label={isCollapsed ? "Развернуть консоль" : "Свернуть консоль"}
@@ -295,66 +429,9 @@ export const JsConsole = ({
         </div>
       </div>
 
-      {/* Холст вывода терминала */}
+      {/* Холст интерактивного Web Terminal */}
       <div className="js-console-body vscode-terminal-body">
-        {logs.length === 0 && !isRunning && !lastExecution ? (
-          <div className="js-console-empty-state">
-            <div className="console-command-line">
-              <span className="prompt-sign">$</span> node {cleanFilename}
-            </div>
-            <p className="empty-state-hint">
-              Нажмите <strong>«Запустить»</strong> (<kbd>Ctrl+Enter</kbd>) для выполнения кода.
-            </p>
-          </div>
-        ) : (
-          <div className="js-console-output">
-            <div className="console-command-line">
-              <span className="prompt-sign">$</span> node {cleanFilename}
-            </div>
-
-            {logs.map((log) => (
-              <div key={log.id} className={`console-line line-${log.type}`}>
-                {log.type !== "log" && (
-                  <span className="line-prefix">
-                    {log.type === "error" && <span className="tag-error">[Error]</span>}
-                    {log.type === "warn" && <span className="tag-warn">[Warn]</span>}
-                    {log.type === "info" && <span className="tag-info">[Info]</span>}
-                    {log.type === "time" && <span className="tag-time">[Timer]</span>}
-                    {log.type === "count" && <span className="tag-count">[Count]</span>}
-                    {log.type === "trace" && <span className="tag-trace">[Trace]</span>}
-                  </span>
-                )}
-
-                <div className="line-content">
-                  {log.tableData ? (
-                    renderTable(log.tableData)
-                  ) : (
-                    <div className="line-args">
-                      {log.args && log.args.length > 0 ? (
-                        log.args.map((arg, idx) => renderLogArg(arg, idx))
-                      ) : (
-                        <span className="console-token token-generic">{log.text}</span>
-                      )}
-                    </div>
-                  )}
-                </div>
-
-                <span className="line-time">{log.timestamp}</span>
-              </div>
-            ))}
-
-            {isRunning && (
-              <div className="console-line line-running">
-                <Loader2 size={12} className="spin-icon" />
-                <span>Выполнение процесса Node.js...</span>
-              </div>
-            )}
-
-
-
-            <div ref={outputEndRef} />
-          </div>
-        )}
+        <div ref={termContainerRef} className="xterm-view-container" style={{ width: "100%", height: "100%", padding: "4px 8px" }} />
       </div>
 
       {/* Статус-бар консоли в едином дизайне с редактором кода */}
@@ -407,7 +484,7 @@ export const JsConsole = ({
           <span className="status-item">UTF-8</span>
           <span className="status-sep">|</span>
           <span className="status-item lang-tag" title="Язык синтаксиса: Terminal">
-            <Terminal size={11} style={{ color: "#38bdf8" }} /> Terminal
+            <TerminalIcon size={11} style={{ color: "#38bdf8" }} /> Terminal
           </span>
         </div>
       </div>

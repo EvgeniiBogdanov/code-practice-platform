@@ -1,34 +1,31 @@
 /**
  * codeFormatter.js
- * Надежный Prettier-grade форматтер JavaScript кода.
- * Безопасно сохраняет строки, регулярные выражения, комментарии, выравнивает отступы (2 пробела)
- * и форматирует операторы, запятые и скобки.
+ * Форматирование кода через Prettier standalone с безопасным фоллбэком.
  */
+import prettier from "prettier/standalone";
+import parserBabel from "prettier/plugins/babel";
+import parserEstree from "prettier/plugins/estree";
 
-export const formatJavaScriptCode = (rawCode) => {
+export const formatJavaScriptCodeSync = (rawCode) => {
   if (!rawCode || typeof rawCode !== "string") return "";
 
-  // 1. Разбиваем на строки и очищаем от висячих пробелов справа
-  const lines = rawCode.split("\n").map((l) => l.trimRight());
+  const lines = rawCode.split("\n").map((l) => l.trimEnd());
   let indentLevel = 0;
   const formattedLines = [];
 
   for (let rawLine of lines) {
     let line = rawLine.trim();
 
-    // Сохраняем пустые строки
     if (!line) {
       formattedLines.push("");
       continue;
     }
 
-    // Если строка — комментарий, сохраняем её с текущим уровнем отступа
     if (line.startsWith("//") || line.startsWith("/*") || line.startsWith("*")) {
       formattedLines.push("  ".repeat(indentLevel) + line);
       continue;
     }
 
-    // Закрывающие скобки в начале строки уменьшают отступ перед этой строкой
     let leadingCloses = 0;
     for (let char of line) {
       if (char === "}" || char === "]" || char === ")") {
@@ -43,13 +40,11 @@ export const formatJavaScriptCode = (rawCode) => {
       indentLevel = Math.max(0, indentLevel - 1);
     }
 
-    // 2. Безопасное форматирование пробелов вокруг операторов
-    // Нормализуем пробелы вокруг стрелок, сравнений и присваиваний
     line = line
       .replace(/\s*===\s*/g, " === ")
       .replace(/\s*!==\s*/g, " !== ")
       .replace(/\s*==\s*/g, " == ")
-      .replace(/\s*!=\s*/g, " != ")
+      .replace(/\s*!=\s*/g, " !=")
       .replace(/\s*<=\s*/g, " <= ")
       .replace(/\s*>=\s*/g, " >= ")
       .replace(/\s*=>\s*/g, " => ")
@@ -66,7 +61,6 @@ export const formatJavaScriptCode = (rawCode) => {
       .replace(/\s*{\s*$/, " {")
       .trim();
 
-    // Исправляем ошибочные пробелы в инкрементах/декрементах
     line = line
       .replace(/\+\s+\+/g, "++")
       .replace(/-\s+-/g, "--")
@@ -76,10 +70,8 @@ export const formatJavaScriptCode = (rawCode) => {
       .replace(/=\s+=/g, "==")
       .replace(/=\s+>/g, "=>");
 
-    // Добавляем отформатированную строку с отступом в 2 пробела
     formattedLines.push("  ".repeat(indentLevel) + line);
 
-    // 3. Подсчет изменения отступа для последующих строк
     let opens = 0;
     let closes = 0;
     let inString = false;
@@ -89,7 +81,6 @@ export const formatJavaScriptCode = (rawCode) => {
       const char = line[i];
       const prev = i > 0 ? line[i - 1] : "";
 
-      // Игнорируем скобки внутри строковых литералов
       if ((char === '"' || char === "'" || char === "`") && prev !== "\\") {
         if (!inString) {
           inString = true;
@@ -108,7 +99,6 @@ export const formatJavaScriptCode = (rawCode) => {
       }
     }
 
-    // Если закрывающие скобки стояли в начале строки, мы их уже учли выше
     const netChange = opens - (closes - leadingCloses);
     if (netChange !== 0) {
       indentLevel = Math.max(0, indentLevel + netChange);
@@ -116,4 +106,25 @@ export const formatJavaScriptCode = (rawCode) => {
   }
 
   return formattedLines.join("\n");
+};
+
+export const formatJavaScriptCode = async (rawCode) => {
+  if (!rawCode || typeof rawCode !== "string") return "";
+
+  try {
+    const formatted = await prettier.format(rawCode, {
+      parser: "babel",
+      plugins: [parserBabel, parserEstree],
+      semi: true,
+      singleQuote: false,
+      tabWidth: 2,
+      trailingComma: "es5",
+      bracketSpacing: true,
+      arrowParens: "always",
+    });
+    return formatted.trimEnd();
+  } catch (err) {
+    console.warn("Prettier formatting notice (using fallback):", err.message);
+    return formatJavaScriptCodeSync(rawCode);
+  }
 };
