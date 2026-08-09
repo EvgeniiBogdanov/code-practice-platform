@@ -5015,17 +5015,65 @@ svg.lucide,
 }
 
 .ide-fullscreen .vscode-editor-surface {
-  flex: 1 1 auto !important;
+  flex: 1 1 0% !important;
+  min-height: 0 !important;
   height: auto !important;
   max-height: none !important;
   overflow: hidden !important;
+  position: relative !important;
+  display: flex !important;
 }
 
-.ide-fullscreen .vscode-code-stack,
-.ide-fullscreen .vscode-input-textarea {
+.ide-fullscreen .vscode-gutter {
   height: 100% !important;
+  overflow: hidden !important;
+  flex-shrink: 0 !important;
+}
+
+.ide-fullscreen .vscode-canvas {
+  flex: 1 1 0% !important;
+  min-width: 0 !important;
+  height: 100% !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.ide-fullscreen .vscode-code-stack {
+  height: 100% !important;
+  width: 100% !important;
+  position: relative !important;
+  overflow: hidden !important;
   max-height: none !important;
 }
+
+.ide-fullscreen .vscode-syntax-layer {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+  margin: 0 !important;
+}
+
+.ide-fullscreen .vscode-input-textarea {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow-y: auto !important;
+  max-height: none !important;
+  z-index: 2 !important;
+}
+
+.ide-fullscreen .vscode-pre-only {
+  height: 100% !important;
+  overflow-y: auto !important;
+  box-sizing: border-box !important;
+}
+
 
 .vscode-editor-bottom-console {
   margin-top: 0;
@@ -5091,8 +5139,28 @@ svg.lucide,
 
 .ide-fullscreen .vscode-editor-bottom-console .js-console-body {
   flex: 1 1 auto !important;
+  height: 100% !important;
   overflow-y: auto !important;
+  min-height: 0 !important;
   max-height: none !important;
+}
+
+/* Collapsed Console State */
+.console-collapsed .js-console-body,
+.console-collapsed .vscode-status-bar {
+  display: none !important;
+}
+
+.vscode-editor-bottom-console:has(.console-collapsed) {
+  height: 30px !important;
+  max-height: 30px !important;
+  min-height: 30px !important;
+}
+
+.ide-fullscreen .vscode-editor-bottom-console:has(.console-collapsed) {
+  height: 30px !important;
+  max-height: 30px !important;
+  min-height: 30px !important;
 }
 
 .ide-fullscreen .vscode-editor-bottom-console .vscode-status-bar {
@@ -5297,8 +5365,9 @@ svg.lucide,
 .js-console-body {
   padding: 12px 16px;
   min-height: 110px;
-  max-height: 380px;
-  overflow-y: auto;
+  height: auto;
+  max-height: none;
+  overflow-y: visible;
   font-family: var(--font-mono);
   font-size: 12.5px;
   line-height: 1.6;

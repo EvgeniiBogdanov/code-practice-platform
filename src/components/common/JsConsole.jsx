@@ -9,11 +9,14 @@ import {
   CheckCircle2,
   AlertCircle,
   Loader2,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 
 const MIN_FONT_SIZE = 13;
 const MAX_FONT_SIZE = 20;
 const FONT_SIZE_STORAGE_KEY = "playground_editor_font_size";
+const CONSOLE_COLLAPSED_STORAGE_KEY = "playground_console_collapsed";
 
 export const JsConsole = ({
   logs = [],
@@ -23,8 +26,50 @@ export const JsConsole = ({
   onRun,
   onClear,
   customTitle,
+  isCollapsed: controlledIsCollapsed,
+  onToggleCollapse,
 }) => {
   const [copied, setCopied] = useState(false);
+  const [internalIsCollapsed, setInternalIsCollapsed] = useState(() => {
+    try {
+      const saved = localStorage.getItem(CONSOLE_COLLAPSED_STORAGE_KEY);
+      if (saved !== null) {
+        return saved === "true";
+      }
+    } catch (err) {
+      console.error("Failed to load console collapsed state from localStorage", err);
+    }
+    return true;
+  });
+
+  const isCollapsed =
+    controlledIsCollapsed !== undefined ? controlledIsCollapsed : internalIsCollapsed;
+
+  const handleToggleCollapse = () => {
+    const nextState = !isCollapsed;
+    if (onToggleCollapse) {
+      onToggleCollapse(nextState);
+    } else {
+      setInternalIsCollapsed(nextState);
+    }
+    try {
+      localStorage.setItem(CONSOLE_COLLAPSED_STORAGE_KEY, String(nextState));
+    } catch (err) {
+      console.error("Failed to save console collapsed state to localStorage", err);
+    }
+  };
+
+  // Временный разворот консоли при запуске кода без перезаписи явного выбора пользователя в localStorage
+  useEffect(() => {
+    if (isRunning && isCollapsed) {
+      if (onToggleCollapse) {
+        onToggleCollapse(false);
+      } else {
+        setInternalIsCollapsed(false);
+      }
+    }
+  }, [isRunning, isCollapsed, onToggleCollapse]);
+
   const outputEndRef = useRef(null);
 
   // Синхронизация размера шрифта с редактором кода через localStorage
@@ -69,10 +114,10 @@ export const JsConsole = ({
 
   // Автоскролл к концу при выводе логов
   useEffect(() => {
-    if (outputEndRef.current) {
+    if (outputEndRef.current && !isCollapsed) {
       outputEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [logs, isRunning, lastExecution]);
+  }, [logs, isRunning, lastExecution, isCollapsed]);
 
   const handleCopyLogs = () => {
     if (!logs || logs.length === 0) return;
@@ -185,7 +230,7 @@ export const JsConsole = ({
 
   return (
     <div
-      className="js-console-container vscode-terminal-panel"
+      className={`js-console-container vscode-terminal-panel ${isCollapsed ? "console-collapsed" : ""}`}
       style={{ "--editor-font-size": `${fontSize}px` }}
     >
       {/* Шапка консоли в едином дизайне с редактором кода */}
@@ -237,6 +282,15 @@ export const JsConsole = ({
             ) : (
               <Copy size={14} />
             )}
+          </button>
+
+          <button
+            className="vscode-icon-btn"
+            onClick={handleToggleCollapse}
+            data-tooltip={isCollapsed ? "Развернуть консоль" : "Свернуть консоль"}
+            aria-label={isCollapsed ? "Развернуть консоль" : "Свернуть консоль"}
+          >
+            {isCollapsed ? <ChevronDown size={14} /> : <ChevronUp size={14} />}
           </button>
         </div>
       </div>
