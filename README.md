@@ -1,10 +1,10 @@
 <div align="center">
 
-# Code Practice Platform · *`v2.1.1`* 
+# Code Practice Platform · _`v2.1.2`_
 
 ### Интерактивная платформа для подготовки к техническим собеседованиям и практики.
 
-От Junior до Senior · 250+ реальных задач разной сложности
+250+ реальных задач разной сложности
 
 [![Онлайн-версия](https://img.shields.io/badge/Открыть_online-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://evgeniibogdanov.github.io/code-practice-platform/)
 
@@ -45,9 +45,9 @@
 
 ## 📖 О проекте
 
-<img width="1728" height="888" alt="v 2 0 8" src="https://github.com/user-attachments/assets/078060e7-9f1f-4fd4-bddf-63187b1cc2d6" />
+<img width="1725" height="899" alt="v 2-1-2" src="https://github.com/user-attachments/assets/562ba211-e189-48fe-a1c6-011019f7449f" />
 
-**Frontend Interview Playground** — это интерактивная платформа для подготовки к техническим собеседованиям по **React** и **JavaScript** (от уровня **Junior** до **Lead**). Платформа содержит более **250 практических задач с реальных интервью**, разборы антипаттернов в кодe кандидатов, эталонные решения и интерактивные шпаргалки.
+**Code Practice Platform** — это интерактивная платформа для подготовки к техническим собеседованиям по **React** и **JavaScript** (от уровня **Junior** до **Senior**). Платформа содержит более **250 практических задач с реальных интервью**, разборы антипаттернов в кодe кандидатов, эталонные решения и интерактивные шпаргалки.
 
 Теперь решать задачи можно не только в своей IDE, но также и непосредственно в браузере!
 

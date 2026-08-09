@@ -1,140 +1,143 @@
+import { marked } from "marked";
 import { highlightJS } from "./codeHighlighter";
 
-export const parseMarkdown = (text) => {
-  if (!text) return "";
+const escapeHtmlChar = (str) =>
+  str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-  // 0. Нормализация списков (склеиваем номера 1., 2. и маркеры, случайно оторванные переносом строки от текста)
-  let cleanedText = text.replace(/^(\d+\.|[-*•])[ \t]*\n+[ \t]*(?=\S)/gm, "$1 ");
+// Настройка официальной библиотеки marked
+marked.use({
+  gfm: true,
+  breaks: true,
+  renderer: {
+    // Кастомный рендерер блоков кода (для передачи в React-компонент TheoryCodeBlock)
+    code({ text, lang }) {
+      const cleanLang = (lang || "javascript").toLowerCase();
+      return `__MD_CODE_BLOCK_START__${cleanLang}__LANG_DELIM__${encodeURIComponent(text)}__MD_CODE_BLOCK_END__`;
+    },
+    // Безопасная обработка неэкранированных форм HTML (input, select, button) в тексте статей
+    html({ text }) {
+      const lower = text.trim().toLowerCase();
+      if (
+        lower.startsWith("<input") ||
+        lower.startsWith("<select") ||
+        lower.startsWith("<button") ||
+        lower.startsWith("<form") ||
+        lower.startsWith("<textarea") ||
+        lower.startsWith("<option")
+      ) {
+        return `<code class="notion-inline-code">${escapeHtmlChar(text.trim())}</code>`;
+      }
+      return text;
+    },
+    // Кастомные плашки Notion Callouts для цитат с эмодзи
+    blockquote(token) {
+      const text = (token.text || "").trim();
+      const match = text.match(/^(⚠️|📌|🚀|🎯|🛠️|ℹ️|🔥)\s*(.*)/s);
+      if (match) {
+        const icon = match[1];
+        const content = match[2];
+        let alertClass = "note";
+        if (icon === "⚠️") alertClass = "warning";
+        if (icon === "📌") alertClass = "tip";
+        if (icon === "🚀" || icon === "🔥") alertClass = "important";
+        return `<div class="notion-callout-box notion-callout-${alertClass}"><span class="notion-callout-icon">${icon}</span><div class="notion-callout-text"><p>${content}</p></div></div>`;
+      }
+      return `blockquote>${this.parser.parse(token.tokens)}</blockquote>`;
+    },
+  },
+});
 
-  // 1. Извлекаем блоки кода ```lang ... ``` или ``lang ... `` (с учетом любых отступов)
-  const codeBlocks = [];
-  const extractCodeBlocks = (str, pattern) => {
-    return str.replace(pattern, (_, lang, code) => {
-      const placeholder = `__MD_CODE_BLOCK_${codeBlocks.length}__`;
-      const languageName = (lang || "javascript").toLowerCase();
-      const highlighted = highlightJS(code.trim());
-      const blockHtml = `
-        <div class="notion-code-wrapper">
-          <div class="notion-code-header">
-            <span class="notion-code-lang">${languageName}</span>
-          </div>
-          <pre class="code-preview-block notion-code-content"><code>${highlighted}</code></pre>
-        </div>
-      `;
-      codeBlocks.push(blockHtml);
-      return placeholder;
-    });
-  };
+// Функция разделения Markdown на блоки с кодом и стандартизированный HTML
+export const parseMarkdownBlocks = (markdownText) => {
+  if (!markdownText) return [];
 
-  // 3 бактэка (с отступом или без)
-  let htmlText = extractCodeBlocks(cleanedText, /^[ \t]*\`{3}(\w*)[ \t]*\n([\s\S]*?)^[ \t]*\`{3}/gm);
-  // 2 бактэка (на случай неполного эскейпинга)
-  htmlText = extractCodeBlocks(htmlText, /^[ \t]*\`{2}(\w*)[ \t]*\n([\s\S]*?)^[ \t]*\`{2}/gm);
+  // Очистка от битых символов юникода (\uFFFD) и устаревших иконок 💡
+  const cleanText = markdownText
+    .replace(/\uFFFD\uFE0F?|\uFFFD|/g, "")
+    .replace(/💡\s*/g, "");
 
-  // 2. Разбиваем на отдельные строки
-  const rawLines = htmlText.split("\n");
-  const processedLines = [];
+  // Автоматическое объединение оторванных номеров списков (например "1.\nИтерация" -> "1. Итерация")
+  const normalizedText = cleanText
+    .replace(/^(\s*\d+\.)[ \t]*\n+[ \t]*(\S)/gm, "$1 $2")
+    .replace(/^(\s*[-*•])[ \t]*\n+[ \t]*(\S)/gm, "$1 $2");
 
-  for (let line of rawLines) {
-    let l = line.trim();
+  // Парсинг через библиотеку marked
+  const fullHtml = marked.parse(normalizedText);
 
-    if (!l) {
-      continue;
+  const blocks = [];
+  const parts = fullHtml.split("__MD_CODE_BLOCK_START__");
+
+  parts.forEach((part, i) => {
+    if (i === 0) {
+      if (part.trim()) blocks.push({ type: "markdown", html: part });
+    } else {
+      const endIdx = part.indexOf("__MD_CODE_BLOCK_END__");
+      if (endIdx !== -1) {
+        const codeSection = part.substring(0, endIdx);
+        const mdSection = part.substring(endIdx + "__MD_CODE_BLOCK_END__".length);
+
+        const delimIdx = codeSection.indexOf("__LANG_DELIM__");
+        const lang = codeSection.substring(0, delimIdx);
+        const code = decodeURIComponent(
+          codeSection.substring(delimIdx + "__LANG_DELIM__".length)
+        );
+
+        blocks.push({ type: "code", language: lang, code });
+        if (mdSection.trim()) blocks.push({ type: "markdown", html: mdSection });
+      } else {
+        if (part.trim()) blocks.push({ type: "markdown", html: part });
+      }
     }
-
-    if (/^__MD_CODE_BLOCK_\d+__$/.test(l)) {
-      processedLines.push(l);
-      continue;
-    }
-
-    // Чекбоксы Notion / To-do list: - [ ] или - [x]
-    if (/^[-*•]?\s*\[([ xX])\]\s*(.*)/.test(l)) {
-      l = l.replace(
-        /^[-*•]?\s*\[([ xX])\]\s*(.*)/,
-        (_, checked, content) => {
-          const isChecked = checked !== " ";
-          return `<div class="notion-todo-item ${isChecked ? "checked" : ""}"><span class="notion-todo-box">${isChecked ? "☑" : "☐"}</span><span class="notion-todo-text">${content}</span></div>`;
-        }
-      );
-    }
-    // Коллаут с эмодзи или GitHub-style alerts (> 💡, > ⚠️, > [!NOTE], etc.)
-    else if (/^>\s+([💡⚠️📌ℹ️🚀📝🔑🔥⭐]|\[!(NOTE|TIP|WARNING|IMPORTANT|CAUTION)\])\s*(.*)/i.test(l)) {
-      l = l.replace(
-        /^>\s+([💡⚠️📌ℹ️🚀📝🔑🔥⭐]|\[!(NOTE|TIP|WARNING|IMPORTANT|CAUTION)\])\s*(.*)/i,
-        (_, icon, alertType, content) => {
-          let calloutIcon = icon;
-          if (alertType) {
-            const upper = alertType.toUpperCase();
-            calloutIcon = upper === "WARNING" || upper === "CAUTION" ? "⚠️" : upper === "TIP" ? "💡" : "ℹ️";
-          }
-          return `<div class="notion-callout-box"><span class="notion-callout-icon">${calloutIcon}</span><div class="notion-callout-text">${content}</div></div>`;
-        }
-      );
-    }
-    // Цитаты / обычные коллауты >
-    else if (/^>\s+(.*)/.test(l)) {
-      l = l.replace(/^>\s+(.*)/, '<blockquote class="notion-quote-block">$1</blockquote>');
-    }
-    // Заголовки ####, ###, ##, #
-    else if (/^####\s+(.*)/.test(l)) {
-      l = l.replace(/^####\s+(.*)/, '<h5 class="notion-h4">$1</h5>');
-    } else if (/^###\s+(.*)/.test(l)) {
-      l = l.replace(/^###\s+(.*)/, '<h4 class="notion-h3">$1</h4>');
-    } else if (/^##\s+(.*)/.test(l)) {
-      l = l.replace(/^##\s+(.*)/, '<h3 class="notion-h2">$1</h3>');
-    } else if (/^#\s+(.*)/.test(l)) {
-      l = l.replace(/^#\s+(.*)/, '<h2 class="notion-h1">$1</h2>');
-    }
-    // Разделитель --- или ***
-    else if (/^(---|[*]{3})$/.test(l)) {
-      l = '<hr class="notion-body-hr" />';
-    }
-    // Нумерованный список: 1. текст
-    else if (/^\d+\.\s*(.*)/.test(l)) {
-      l = l.replace(
-        /^(\d+\.)\s*(.*)/,
-        '<div class="notion-list-item"><span class="notion-list-num">$1</span><span class="notion-list-content">$2</span></div>'
-      );
-    }
-    // Маркированный список: - или * или •
-    else if (/^[-*•]\s*(.*)/.test(l)) {
-      l = l.replace(
-        /^[-*•]\s*(.*)/,
-        '<div class="notion-list-item"><span class="notion-list-bullet">•</span><span class="notion-list-content">$1</span></div>'
-      );
-    }
-    // Обычный абзац
-    else {
-      l = `<p class="notion-paragraph">${l}</p>`;
-    }
-
-    // Ссылки: [text](url)
-    l = l.replace(
-      /\[([^\]]+)\]\(([^)]+)\)/g,
-      '<a class="notion-text-link" href="$2" target="_blank" rel="noopener noreferrer">$1 ↗</a>'
-    );
-
-    // Инлайн-код: `code`
-    l = l.replace(/`([^`]+)`/g, '<code class="notion-inline-code">$1</code>');
-
-    // Жирный текст: **bold**
-    l = l.replace(/(\*\*|__)(.*?)\1/g, '<strong>$2</strong>');
-
-    // Курсив: *italic*
-    l = l.replace(/(\*|_)(.*?)\1/g, '<em>$2</em>');
-
-    // Зачеркнутый текст: ~~text~~
-    l = l.replace(/~~(.*?)~~/g, '<del>$1</del>');
-
-    processedLines.push(l);
-  }
-
-  let result = processedLines.join("");
-
-  // Возвращаем сохраненные блоки кода
-  codeBlocks.forEach((blockHtml, index) => {
-    result = result.replace(`__MD_CODE_BLOCK_${index}__`, blockHtml);
   });
 
-  return result;
+  return blocks;
+};
+
+// Обратная совместимость с генерацией HTML в строку
+export const parseMarkdown = (markdownText) => {
+  if (!markdownText) return "";
+
+  const blocks = parseMarkdownBlocks(markdownText);
+  return blocks
+    .map((block) => {
+      if (block.type === "markdown") {
+        return block.html;
+      } else {
+        const lang = block.language || "javascript";
+        const langName =
+          lang === "jsx" || lang === "react"
+            ? "React JSX"
+            : lang === "tsx"
+            ? "React TSX"
+            : lang === "ts" || lang === "typescript"
+            ? "TypeScript"
+            : lang === "html"
+            ? "HTML"
+            : lang === "css"
+            ? "CSS"
+            : "JavaScript";
+        const highlighted = highlightJS(block.code);
+        const lines = block.code.split("\n");
+        const lineGutter = lines
+          .map((_, i) => `<div class="vscode-gutter-line">${i + 1}</div>`)
+          .join("");
+
+        return `
+          <div class="vscode-ide-editor theory-code-editor" style="margin: 16px 0;">
+            <div class="vscode-editor-header">
+              <div class="vscode-editor-single-file">
+                <span class="file-tab-name" style="font-weight: 500;">${langName}</span>
+              </div>
+            </div>
+            <div class="vscode-editor-surface wrap-off">
+              <div class="vscode-gutter" aria-hidden="true">${lineGutter}</div>
+              <div class="vscode-canvas">
+                <pre class="vscode-pre-only"><code>${highlighted}</code></pre>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    })
+    .join("");
 };
