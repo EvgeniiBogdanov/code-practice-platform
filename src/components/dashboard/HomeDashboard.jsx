@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "@tanstack/react-router";
 import {
   Code2,
   Zap,
@@ -18,31 +19,12 @@ import { REACT_TASKS, WARMUP_TASKS } from "../../react/data/tasksData";
 import { ALL_ALGO_TASKS } from "../../algorithms/data/tasksData";
 
 export const HomeDashboard = ({
-  setActiveSection,
   completedTotal,
   totalTasks,
   completedJsTotal = 0,
   totalJsCount = 0,
   completedTasks = {},
-  setSelectedTask,
-  setActiveTab,
 }) => {
-  const handleOpenReact = () => {
-    setActiveSection("react");
-    if (WARMUP_TASKS.length > 0 && setSelectedTask) {
-      setSelectedTask(WARMUP_TASKS[0]);
-    }
-    if (setActiveTab) setActiveTab("candidate");
-  };
-
-  const handleOpenJs = () => {
-    setActiveSection("javascript");
-    if (JS_TASKS.length > 0 && setSelectedTask) {
-      setSelectedTask(JS_TASKS[0]);
-    }
-    if (setActiveTab) setActiveTab("candidate");
-  };
-
   // Helper to check if task is solved
   const isSolved = (id) =>
     completedTasks && (completedTasks[id] === true || completedTasks[id] === "solved");
@@ -98,51 +80,67 @@ export const HomeDashboard = ({
           </div>
           <div className="notion-stat-val-row">
             <span className="notion-stat-val">
-              {grandSolved} <span className="notion-stat-sub">/ {grandTotal} задач</span>
+              {grandSolved}<span className="notion-stat-total">/{grandTotal}</span>
             </span>
-            <span className="notion-tag blue">{grandPct}%</span>
+            <span className="notion-stat-percent">{grandPct}%</span>
           </div>
-          <div className="notion-progress-bar">
-            <div className="notion-progress-fill blue" style={{ width: `${grandPct}%` }} />
+          <div className="notion-stat-bar-track">
+            <div className="notion-stat-bar-fill blue" style={{ width: `${grandPct}%` }} />
           </div>
         </div>
 
         <div className="notion-stat-card">
           <div className="notion-stat-label">
             <Zap size={14} style={{ color: "#f59e0b" }} />
-            <span>Раздел JavaScript</span>
+            <span>JavaScript</span>
           </div>
           <div className="notion-stat-val-row">
             <span className="notion-stat-val">
-              {completedJsTotal} <span className="notion-stat-sub">/ {jsTotal}</span>
+              {jsSolved}<span className="notion-stat-total">/{jsTotal}</span>
             </span>
-            <span className="notion-tag amber">{jsPct}%</span>
+            <span className="notion-stat-percent">{jsPct}%</span>
           </div>
-          <div className="notion-progress-bar">
-            <div className="notion-progress-fill amber" style={{ width: `${jsPct}%` }} />
+          <div className="notion-stat-bar-track">
+            <div className="notion-stat-bar-fill amber" style={{ width: `${jsPct}%` }} />
           </div>
         </div>
 
         <div className="notion-stat-card">
           <div className="notion-stat-label">
             <Code2 size={14} style={{ color: "var(--notion-blue)" }} />
-            <span>Раздел React</span>
+            <span>React</span>
           </div>
           <div className="notion-stat-val-row">
             <span className="notion-stat-val">
-              {completedTotal} <span className="notion-stat-sub">/ {totalTasks}</span>
+              {reactSolved}<span className="notion-stat-total">/{reactTotal}</span>
             </span>
-            <span className="notion-tag blue">{reactPct}%</span>
+            <span className="notion-stat-percent">{reactPct}%</span>
           </div>
-          <div className="notion-progress-bar">
-            <div className="notion-progress-fill blue" style={{ width: `${reactPct}%` }} />
+          <div className="notion-stat-bar-track">
+            <div className="notion-stat-bar-fill blue" style={{ width: `${reactPct}%` }} />
+          </div>
+        </div>
+
+        <div className="notion-stat-card">
+          <div className="notion-stat-label">
+            <Brain size={14} style={{ color: "#a855f7" }} />
+            <span>Алгоритмы</span>
+          </div>
+          <div className="notion-stat-val-row">
+            <span className="notion-stat-val">
+              0<span className="notion-stat-total">/0</span>
+            </span>
+            <span className="notion-stat-badge">Скоро</span>
+          </div>
+          <div className="notion-stat-bar-track">
+            <div className="notion-stat-bar-fill purple" style={{ width: "0%" }} />
           </div>
         </div>
       </div>
 
       <hr className="notion-divider" />
 
-      {/* Notion Gallery View — Разделы практики */}
+      {/* Notion Section: Разделы подготовки (Gallery View) */}
       <div className="notion-section-block">
         <div className="notion-block-header">
           <FolderGit2 size={16} className="notion-block-icon" />
@@ -151,7 +149,7 @@ export const HomeDashboard = ({
 
         <div className="notion-gallery-grid">
           {/* JavaScript Card */}
-          <div className="notion-gallery-card" onClick={handleOpenJs}>
+          <Link to="/javascript" className="notion-gallery-card">
             <div className="notion-card-cover amber-cover">
               <Zap size={24} style={{ color: "#f59e0b" }} />
             </div>
@@ -171,22 +169,16 @@ export const HomeDashboard = ({
               </div>
               <div className="notion-card-footer">
                 <span className="notion-card-progress">{completedJsTotal} из {jsTotal} решено ({jsPct}%)</span>
-                <button
-                  className="notion-action-btn amber"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleOpenJs();
-                  }}
-                >
+                <span className="notion-action-btn amber">
                   <span>Открыть</span>
                   <ArrowRight size={13} />
-                </button>
+                </span>
               </div>
             </div>
-          </div>
+          </Link>
 
           {/* React Card */}
-          <div className="notion-gallery-card" onClick={handleOpenReact}>
+          <Link to="/react" className="notion-gallery-card">
             <div className="notion-card-cover blue-cover">
               <Code2 size={24} style={{ color: "var(--notion-blue)" }} />
             </div>
@@ -206,22 +198,16 @@ export const HomeDashboard = ({
               </div>
               <div className="notion-card-footer">
                 <span className="notion-card-progress">{completedTotal} из {totalTasks} решено ({reactPct}%)</span>
-                <button
-                  className="notion-action-btn blue"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleOpenReact();
-                  }}
-                >
+                <span className="notion-action-btn blue">
                   <span>Открыть</span>
                   <ArrowRight size={13} />
-                </button>
+                </span>
               </div>
             </div>
-          </div>
+          </Link>
 
           {/* Algorithms Card */}
-          <div className="notion-gallery-card disabled">
+          <Link to="/algorithms" className="notion-gallery-card">
             <div className="notion-card-cover purple-cover">
               <Brain size={24} style={{ color: "#a855f7" }} />
             </div>
@@ -240,13 +226,13 @@ export const HomeDashboard = ({
               </div>
               <div className="notion-card-footer">
                 <span className="notion-card-progress">В разработке</span>
-                <button className="notion-action-btn disabled" disabled>
+                <span className="notion-action-btn disabled">
                   <Clock size={13} />
                   <span>Скоро</span>
-                </button>
+                </span>
               </div>
             </div>
-          </div>
+          </Link>
         </div>
       </div>
 

@@ -254,7 +254,7 @@ const Playground = () => {
       }
 
       const currentIdx = allTasksList.findIndex((t) => t.id === selectedTask.id);
-      const tabs = ["candidate", "solution", "materials", "questions"];
+      const tabs = ["candidate", "solution", "materials", "questions", "checklist"];
       const tabIdx = tabs.indexOf(activeTab);
 
       if (e.key === "ArrowDown" && currentIdx < allTasksList.length - 1) {
@@ -372,7 +372,7 @@ const Playground = () => {
           closeFn();
         }}
       >
-        <Home size={15} style={{ color: "#60a5fa" }} /> <span>ГЛАВНАЯ</span> <span className="section-badge soon">Обзор</span>
+        <Home size={15} style={{ color: "var(--color-info-light)" }} /> <span>ГЛАВНАЯ</span> <span className="section-badge soon">Обзор</span>
       </button>
       <button
         className={`section-dropdown-item ${activeSection === "javascript" ? "active" : ""}`}
@@ -385,7 +385,7 @@ const Playground = () => {
           closeFn();
         }}
       >
-        <Zap size={15} style={{ color: "#f59e0b" }} /> <span>JAVASCRIPT</span> <span className="section-badge active">{JS_TASKS.length} задач</span>
+        <Zap size={15} style={{ color: "var(--color-warning)" }} /> <span>JAVASCRIPT</span> <span className="section-badge active">{JS_TASKS.length} задач</span>
       </button>
       <button
         className={`section-dropdown-item ${activeSection === "react" ? "active" : ""}`}
@@ -398,7 +398,7 @@ const Playground = () => {
           closeFn();
         }}
       >
-        <Code2 size={15} style={{ color: "#61dafb" }} /> <span>REACT</span> <span className="section-badge active">{totalTasks} задач</span>
+        <Code2 size={15} style={{ color: "var(--color-info)" }} /> <span>REACT</span> <span className="section-badge active">{totalTasks} задач</span>
       </button>
       <button
         className={`section-dropdown-item ${activeSection === "algorithms" ? "active" : ""}`}
@@ -407,7 +407,7 @@ const Playground = () => {
           closeFn();
         }}
       >
-        <Brain size={15} style={{ color: "#a855f7" }} /> <span>АЛГОРИТМЫ</span> <span className="section-badge soon">0 задач</span>
+        <Brain size={15} style={{ color: "var(--color-accent-purple)" }} /> <span>АЛГОРИТМЫ</span> <span className="section-badge soon">0 задач</span>
       </button>
     </div>
   );
@@ -423,7 +423,7 @@ const Playground = () => {
             setHeaderSectionDropdownOpen(false);
           }}
         >
-          <span><Home size={15} style={{ color: "#60a5fa" }} /></span>
+          <span><Home size={15} style={{ color: "var(--color-info-light)" }} /></span>
           <span className="dropdown-item-title">ГЛАВНАЯ</span>
           <span className="section-badge soon">Обзор</span>
         </button>
@@ -438,7 +438,7 @@ const Playground = () => {
             setHeaderSectionDropdownOpen(false);
           }}
         >
-          <span><Zap size={15} style={{ color: "#f59e0b" }} /></span>
+          <span><Zap size={15} style={{ color: "var(--color-warning)" }} /></span>
           <span className="dropdown-item-title">JAVASCRIPT</span>
           <span className="section-badge active">{JS_TASKS.length} задач</span>
         </button>
@@ -453,7 +453,7 @@ const Playground = () => {
             setHeaderSectionDropdownOpen(false);
           }}
         >
-          <span><Code2 size={15} style={{ color: "#61dafb" }} /></span>
+          <span><Code2 size={15} style={{ color: "var(--color-info)" }} /></span>
           <span className="dropdown-item-title">REACT</span>
           <span className="section-badge active">{totalTasks} задач</span>
         </button>
@@ -464,7 +464,7 @@ const Playground = () => {
             setHeaderSectionDropdownOpen(false);
           }}
         >
-          <span><Brain size={15} style={{ color: "#a855f7" }} /></span>
+          <span><Brain size={15} style={{ color: "var(--color-accent-purple)" }} /></span>
           <span className="dropdown-item-title">АЛГОРИТМЫ</span>
           <span className="section-badge soon">0 задач</span>
         </button>
@@ -706,12 +706,12 @@ const Playground = () => {
     }
 
     return [
-      { id: "category-warmup", name: "Разминка", icon: <Flame size={15} style={{ color: "#ff6b6b" }} />, tasks: WARMUP_TASKS, completed: completedWarmup, total: totalWarmup },
-      { id: "category-refactoring", name: "Рефакторинг", icon: <Wrench size={15} style={{ color: "#3b82f6" }} />, tasks: REFACTORING_TASKS, completed: completedRefactoring, total: totalRefactoring },
-      { id: "category-middle", name: "Middle", icon: <Rocket size={15} style={{ color: "#10b981" }} />, tasks: MAIN_TASKS, completed: completedMain, total: totalMain },
-      { id: "category-strong", name: "Strong", icon: <Brain size={15} style={{ color: "#a855f7" }} />, tasks: ADVANCED_TASKS, completed: completedAdvanced, total: totalAdvanced },
-      { id: "category-ts", name: "React + TS (Разминка)", icon: <Zap size={15} style={{ color: "#eab308" }} />, tasks: REACT_TS_TASKS, completed: completedReactTs, total: totalReactTs },
-      { id: "category-ts-practice", name: "React + TS (Практика)", icon: <Zap size={15} style={{ color: "#eab308" }} />, tasks: REACT_TS_PRACTICE_TASKS, completed: completedReactTsPractice, total: totalReactTsPractice },
+      { id: "category-warmup", name: "Разминка", icon: <Flame size={15} style={{ color: "var(--notion-red)" }} />, tasks: WARMUP_TASKS, completed: completedWarmup, total: totalWarmup },
+      { id: "category-refactoring", name: "Рефакторинг", icon: <Wrench size={15} style={{ color: "var(--notion-blue)" }} />, tasks: REFACTORING_TASKS, completed: completedRefactoring, total: totalRefactoring },
+      { id: "category-middle", name: "Middle", icon: <Rocket size={15} style={{ color: "var(--color-success)" }} />, tasks: MAIN_TASKS, completed: completedMain, total: totalMain },
+      { id: "category-strong", name: "Strong", icon: <Brain size={15} style={{ color: "var(--color-accent-purple)" }} />, tasks: ADVANCED_TASKS, completed: completedAdvanced, total: totalAdvanced },
+      { id: "category-ts", name: "React + TS (Разминка)", icon: <Zap size={15} style={{ color: "var(--color-warning-light)" }} />, tasks: REACT_TS_TASKS, completed: completedReactTs, total: totalReactTs },
+      { id: "category-ts-practice", name: "React + TS (Практика)", icon: <Zap size={15} style={{ color: "var(--color-warning-light)" }} />, tasks: REACT_TS_PRACTICE_TASKS, completed: completedReactTsPractice, total: totalReactTsPractice },
     ];
   }, [activeSection, completedWarmup, totalWarmup, completedRefactoring, totalRefactoring, completedMain, totalMain, completedAdvanced, totalAdvanced, completedReactTs, totalReactTs, completedReactTsPractice, totalReactTsPractice, completedTasks]);
 
@@ -726,25 +726,25 @@ const Playground = () => {
       );
       return {
         taskCategory: categoryName,
-        categoryIcon: <Zap size={15} style={{ color: "#f59e0b" }} />,
-        taskIcon: <FileText size={14} style={{ color: "#94a3b8" }} />,
+        categoryIcon: <Zap size={15} style={{ color: "var(--color-warning)" }} />,
+        taskIcon: <FileText size={14} style={{ color: "var(--text-dimmed)" }} />,
         currentCategoryTasks: subTasks,
         categoryId: `category-js-${categoryName}`,
       };
     }
     if (WARMUP_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "Разминка", categoryIcon: <Flame size={15} style={{ color: "#ff6b6b" }} />, taskIcon: <FileText size={14} style={{ color: "#94a3b8" }} />, currentCategoryTasks: WARMUP_TASKS, categoryId: "category-warmup" };
+      return { taskCategory: "Разминка", categoryIcon: <Flame size={15} style={{ color: "var(--notion-red)" }} />, taskIcon: <FileText size={14} style={{ color: "var(--text-dimmed)" }} />, currentCategoryTasks: WARMUP_TASKS, categoryId: "category-warmup" };
     if (REFACTORING_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "Рефакторинг", categoryIcon: <Wrench size={15} style={{ color: "#3b82f6" }} />, taskIcon: <FileText size={14} style={{ color: "#94a3b8" }} />, currentCategoryTasks: REFACTORING_TASKS, categoryId: "category-refactoring" };
+      return { taskCategory: "Рефакторинг", categoryIcon: <Wrench size={15} style={{ color: "var(--notion-blue)" }} />, taskIcon: <FileText size={14} style={{ color: "var(--text-dimmed)" }} />, currentCategoryTasks: REFACTORING_TASKS, categoryId: "category-refactoring" };
     if (MAIN_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "Middle", categoryIcon: <Rocket size={15} style={{ color: "#10b981" }} />, taskIcon: <FileText size={14} style={{ color: "#94a3b8" }} />, currentCategoryTasks: MAIN_TASKS, categoryId: "category-middle" };
+      return { taskCategory: "Middle", categoryIcon: <Rocket size={15} style={{ color: "var(--color-success)" }} />, taskIcon: <FileText size={14} style={{ color: "var(--text-dimmed)" }} />, currentCategoryTasks: MAIN_TASKS, categoryId: "category-middle" };
     if (ADVANCED_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "Strong", categoryIcon: <Brain size={15} style={{ color: "#a855f7" }} />, taskIcon: <FileText size={14} style={{ color: "#94a3b8" }} />, currentCategoryTasks: ADVANCED_TASKS, categoryId: "category-strong" };
+      return { taskCategory: "Strong", categoryIcon: <Brain size={15} style={{ color: "var(--color-accent-purple)" }} />, taskIcon: <FileText size={14} style={{ color: "var(--text-dimmed)" }} />, currentCategoryTasks: ADVANCED_TASKS, categoryId: "category-strong" };
     if (REACT_TS_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "React + TS (Разминка)", categoryIcon: <Zap size={15} style={{ color: "#eab308" }} />, taskIcon: <FileText size={14} style={{ color: "#94a3b8" }} />, currentCategoryTasks: REACT_TS_TASKS, categoryId: "category-ts" };
+      return { taskCategory: "React + TS (Разминка)", categoryIcon: <Zap size={15} style={{ color: "var(--color-warning-light)" }} />, taskIcon: <FileText size={14} style={{ color: "var(--text-dimmed)" }} />, currentCategoryTasks: REACT_TS_TASKS, categoryId: "category-ts" };
     if (REACT_TS_PRACTICE_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "React + TS (Практика)", categoryIcon: <Zap size={15} style={{ color: "#eab308" }} />, taskIcon: <FileText size={14} style={{ color: "#94a3b8" }} />, currentCategoryTasks: REACT_TS_PRACTICE_TASKS, categoryId: "category-ts-practice" };
-    return { taskCategory: "", categoryIcon: null, taskIcon: <FileText size={14} style={{ color: "#94a3b8" }} />, currentCategoryTasks: [], categoryId: "" };
+      return { taskCategory: "React + TS (Практика)", categoryIcon: <Zap size={15} style={{ color: "var(--color-warning-light)" }} />, taskIcon: <FileText size={14} style={{ color: "var(--text-dimmed)" }} />, currentCategoryTasks: REACT_TS_PRACTICE_TASKS, categoryId: "category-ts-practice" };
+    return { taskCategory: "", categoryIcon: null, taskIcon: <FileText size={14} style={{ color: "var(--text-dimmed)" }} />, currentCategoryTasks: [], categoryId: "" };
   }, [selectedTask.id]);
 
   const isTaskVisible = (task) => {
@@ -991,7 +991,7 @@ const Playground = () => {
                   alignItems: "flex-start",
                 }}
               >
-                <AlertTriangle size={20} style={{ flexShrink: 0, color: "#ef4444", marginTop: "2px" }} />
+                <AlertTriangle size={20} style={{ flexShrink: 0, color: "var(--color-error)", marginTop: "2px" }} />
                 <div>
                   <div style={{ fontWeight: 600, marginBottom: "4px", color: "var(--text-main)", fontSize: "14px" }}>
                     Сбросить статистику раздела {activeSection === "javascript" ? "JavaScript" : "React"}?
@@ -1013,9 +1013,9 @@ const Playground = () => {
               <button
                 className="stats-reset-btn"
                 style={{
-                  background: "#ef4444",
-                  color: "#ffffff",
-                  borderColor: "#ef4444",
+                  background: "var(--color-error)",
+                  color: "var(--text-on-accent)",
+                  borderColor: "var(--color-error)",
                 }}
                 onClick={handleResetProgress}
               >

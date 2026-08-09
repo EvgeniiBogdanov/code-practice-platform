@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "@tanstack/react-router";
 import {
   PanelLeftOpen,
   PanelLeftClose,
@@ -27,16 +28,14 @@ export const Header = ({
   sidebarOpen,
   setSidebarOpen,
   activeSection,
-  setActiveSection,
   headerSectionDropdownOpen,
   setHeaderSectionDropdownOpen,
   headerSectionDropdownRef,
-  renderHeaderSectionDropdownMenu,
   // React breadcrumbs
   categoryDropdownRef,
   categoryDropdownOpen,
   setCategoryDropdownOpen,
-  categoriesList,
+  categoriesList = [],
   categoryId,
   categoryIcon,
   taskCategory,
@@ -45,15 +44,14 @@ export const Header = ({
   taskDropdownOpen,
   setTaskDropdownOpen,
   taskIcon,
-  currentCategoryTasks,
+  currentCategoryTasks = [],
   selectedTask,
-  setSelectedTask,
-  completedTasks,
-  setActiveTab,
+  completedTasks = {},
   // JS & Algo dropdowns
-  jsDropdownRef,
-  jsDropdownOpen,
-  setJsDropdownOpen,
+  expandedJsGroups,
+  setExpandedJsGroups,
+  expandedJsSubgroups,
+  setExpandedJsSubgroups,
   algoDropdownRef,
   algoDropdownOpen,
   setAlgoDropdownOpen,
@@ -84,18 +82,7 @@ export const Header = ({
     if (setTaskDropdownOpen) setTaskDropdownOpen(false);
     setGroupDropdownOpen(false);
     setSubgroupDropdownOpen(false);
-  };
-
-  const toggleGroupDropdown = () => {
-    const next = !groupDropdownOpen;
-    closeAllDropdowns();
-    setGroupDropdownOpen(next);
-  };
-
-  const toggleSubgroupDropdown = () => {
-    const next = !subgroupDropdownOpen;
-    closeAllDropdowns();
-    setSubgroupDropdownOpen(next);
+    if (setAlgoDropdownOpen) setAlgoDropdownOpen(false);
   };
 
   const toggleSectionDropdown = () => {
@@ -114,6 +101,18 @@ export const Header = ({
     const next = !taskDropdownOpen;
     closeAllDropdowns();
     if (setTaskDropdownOpen) setTaskDropdownOpen(next);
+  };
+
+  const toggleGroupDropdown = () => {
+    const next = !groupDropdownOpen;
+    closeAllDropdowns();
+    setGroupDropdownOpen(next);
+  };
+
+  const toggleSubgroupDropdown = () => {
+    const next = !subgroupDropdownOpen;
+    closeAllDropdowns();
+    setSubgroupDropdownOpen(next);
   };
 
   React.useEffect(() => {
@@ -167,6 +166,50 @@ export const Header = ({
     algoDropdownRef,
     setAlgoDropdownOpen,
   ]);
+
+  const renderHeaderSectionDropdownMenu = () => (
+    <div className="breadcrumb-dropdown-menu">
+      <div className="breadcrumb-dropdown-header">РАЗДЕЛЫ ПЛАТФОРМЫ</div>
+      <div className="breadcrumb-dropdown-list">
+        <Link
+          to="/home"
+          className={`breadcrumb-dropdown-item ${activeSection === "home" ? "active" : ""}`}
+          onClick={closeAllDropdowns}
+        >
+          <span><Home size={15} style={{ color: "var(--color-info-light)" }} /></span>
+          <span className="dropdown-item-title">ГЛАВНАЯ</span>
+          <span className="section-badge soon">Обзор</span>
+        </Link>
+        <Link
+          to="/javascript"
+          className={`breadcrumb-dropdown-item ${activeSection === "javascript" ? "active" : ""}`}
+          onClick={closeAllDropdowns}
+        >
+          <span><Zap size={15} style={{ color: "var(--color-warning)" }} /></span>
+          <span className="dropdown-item-title">JAVASCRIPT</span>
+          <span className="section-badge active">{JS_TASKS.length} задач</span>
+        </Link>
+        <Link
+          to="/react"
+          className={`breadcrumb-dropdown-item ${activeSection === "react" ? "active" : ""}`}
+          onClick={closeAllDropdowns}
+        >
+          <span><Code2 size={15} style={{ color: "var(--color-info)" }} /></span>
+          <span className="dropdown-item-title">REACT</span>
+          <span className="section-badge active">260+ задач</span>
+        </Link>
+        <Link
+          to="/algorithms"
+          className={`breadcrumb-dropdown-item ${activeSection === "algorithms" ? "active" : ""}`}
+          onClick={closeAllDropdowns}
+        >
+          <span><Brain size={15} style={{ color: "var(--color-accent-purple)" }} /></span>
+          <span className="dropdown-item-title">АЛГОРИТМЫ</span>
+          <span className="section-badge soon">0 задач</span>
+        </Link>
+      </div>
+    </div>
+  );
 
   return (
     <header className="app-header">
@@ -242,15 +285,17 @@ export const Header = ({
                           const isActive = selectedTask.group === gName;
                           const gMeta = getGroupMeta(gName);
                           return (
-                            <button
+                            <Link
                               key={gName}
+                              to="/javascript/$taskId"
+                              params={{ taskId: String(groupTasks[0]?.id || "1") }}
+                              search={(prev) => prev}
                               className={`breadcrumb-dropdown-item ${isActive ? "active" : ""}`}
                               onClick={() => {
-                                if (groupTasks.length > 0) {
-                                  setSelectedTask(groupTasks[0]);
-                                  setActiveTab("candidate");
-                                }
                                 closeAllDropdowns();
+                                if (setExpandedJsGroups) {
+                                  setExpandedJsGroups((prev) => ({ ...prev, [gName]: true }));
+                                }
                                 setTimeout(() => {
                                   const el = document.getElementById(`category-js-${gName}`);
                                   if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -262,7 +307,7 @@ export const Header = ({
                               <span className={`dropdown-item-count ${isCompleted ? "completed" : ""}`}>
                                 {completedCount}/{groupTasks.length}
                               </span>
-                            </button>
+                            </Link>
                           );
                         })}
                       </div>
@@ -303,15 +348,21 @@ export const Header = ({
                           const isCompleted = completedCount > 0 && completedCount === subTasks.length;
                           const isActive = selectedTask.subgroup === subName;
                           return (
-                            <button
+                            <Link
                               key={subName}
+                              to="/javascript/$taskId"
+                              params={{ taskId: String(subTasks[0]?.id || "1") }}
+                              search={(prev) => prev}
                               className={`breadcrumb-dropdown-item ${isActive ? "active" : ""}`}
                               onClick={() => {
-                                if (subTasks.length > 0) {
-                                  setSelectedTask(subTasks[0]);
-                                  setActiveTab("candidate");
-                                }
                                 closeAllDropdowns();
+                                if (setExpandedJsGroups) {
+                                  setExpandedJsGroups((prev) => ({ ...prev, [selectedTask.group]: true }));
+                                }
+                                if (setExpandedJsSubgroups) {
+                                  const subKey = `${selectedTask.group}/${subName}`;
+                                  setExpandedJsSubgroups((prev) => ({ ...prev, [subKey]: true }));
+                                }
                                 setTimeout(() => {
                                   const el = document.getElementById(`category-js-${selectedTask.group}`);
                                   if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -323,7 +374,7 @@ export const Header = ({
                               <span className={`dropdown-item-count ${isCompleted ? "completed" : ""}`}>
                                 {completedCount}/{subTasks.length}
                               </span>
-                            </button>
+                            </Link>
                           );
                         })}
                       </div>
@@ -356,13 +407,13 @@ export const Header = ({
                             t.group === selectedTask.group &&
                             t.subgroup === selectedTask.subgroup
                         ).map((t) => (
-                          <button
+                          <Link
                             key={t.id}
+                            to="/javascript/$taskId"
+                            params={{ taskId: String(t.id) }}
+                            search={(prev) => prev}
                             className={`breadcrumb-dropdown-item ${t.id === selectedTask?.id ? "active" : ""}`}
-                            onClick={() => {
-                              setSelectedTask(t);
-                              closeAllDropdowns();
-                            }}
+                            onClick={closeAllDropdowns}
                           >
                             <span>{taskIcon}</span>
                             <span className="dropdown-item-title">{t.title}</span>
@@ -372,7 +423,7 @@ export const Header = ({
                               ) : (
                                 <span className="dropdown-item-check"><Check size={12} /></span>
                               ))}
-                          </button>
+                          </Link>
                         ))}
                       </div>
                     </div>
@@ -407,14 +458,13 @@ export const Header = ({
                         const isActiveCategory = cat.id === categoryId;
                         const isCompleted = cat.completed > 0 && cat.completed === cat.total;
                         return (
-                          <button
+                          <Link
                             key={cat.id}
+                            to="/react/$taskId"
+                            params={{ taskId: String(cat.tasks[0]?.id || "1") }}
+                            search={(prev) => prev}
                             className={`breadcrumb-dropdown-item ${isActiveCategory ? "active" : ""}`}
                             onClick={() => {
-                              if (cat.tasks.length > 0) {
-                                setSelectedTask(cat.tasks[0]);
-                                setActiveTab("candidate");
-                              }
                               if (openSingleCategory) openSingleCategory(cat.id);
                               setCategoryDropdownOpen(false);
 
@@ -429,7 +479,7 @@ export const Header = ({
                             <span className={`dropdown-item-count ${isCompleted ? "completed" : ""}`}>
                               {cat.completed}/{cat.total}
                             </span>
-                          </button>
+                          </Link>
                         );
                       })}
                     </div>
@@ -442,7 +492,7 @@ export const Header = ({
               <div className="breadcrumb-dropdown-wrapper" ref={taskDropdownRef}>
                 <button
                   className="breadcrumb-item breadcrumb-task-btn"
-                  onClick={() => setTaskDropdownOpen((prev) => !prev)}
+                  onClick={toggleTaskDropdown}
                   title="Выбрать другую задачу из этого раздела"
                 >
                   <span>{taskIcon}</span>
@@ -458,13 +508,13 @@ export const Header = ({
                     </div>
                     <div className="breadcrumb-dropdown-list">
                       {currentCategoryTasks.map((t) => (
-                        <button
+                        <Link
                           key={t.id}
+                          to="/react/$taskId"
+                          params={{ taskId: String(t.id) }}
+                          search={(prev) => prev}
                           className={`breadcrumb-dropdown-item ${t.id === selectedTask?.id ? "active" : ""}`}
-                          onClick={() => {
-                            setSelectedTask(t);
-                            setTaskDropdownOpen(false);
-                          }}
+                          onClick={closeAllDropdowns}
                         >
                           <span>{taskIcon}</span>
                           <span className="dropdown-item-title">{t.title}</span>
@@ -474,7 +524,7 @@ export const Header = ({
                             ) : (
                               <span className="dropdown-item-check"><Check size={12} /></span>
                             ))}
-                        </button>
+                        </Link>
                       ))}
                     </div>
                   </div>
@@ -504,26 +554,26 @@ export const Header = ({
                       <Brain size={14} /> Темы раздела Алгоритмы
                     </div>
                     <div className="breadcrumb-dropdown-list">
-                      <button className="breadcrumb-dropdown-item" onClick={() => setAlgoDropdownOpen(false)}>
+                      <Link to="/algorithms" className="breadcrumb-dropdown-item" onClick={closeAllDropdowns}>
                         <span><FileCode size={14} /></span>
                         <span className="dropdown-item-title">Два указателя (Two Pointers)</span>
-                        <span className="dropdown-item-count">Скоро</span>
-                      </button>
-                      <button className="breadcrumb-dropdown-item" onClick={() => setAlgoDropdownOpen(false)}>
+                        <span className="section-badge soon">Скоро</span>
+                      </Link>
+                      <Link to="/algorithms" className="breadcrumb-dropdown-item" onClick={closeAllDropdowns}>
                         <span><FileCode size={14} /></span>
                         <span className="dropdown-item-title">Скользящее окно (Sliding Window)</span>
-                        <span className="dropdown-item-count">Скоро</span>
-                      </button>
-                      <button className="breadcrumb-dropdown-item" onClick={() => setAlgoDropdownOpen(false)}>
+                        <span className="section-badge soon">Скоро</span>
+                      </Link>
+                      <Link to="/algorithms" className="breadcrumb-dropdown-item" onClick={closeAllDropdowns}>
                         <span><FileCode size={14} /></span>
                         <span className="dropdown-item-title">Бинарный поиск (Binary Search)</span>
-                        <span className="dropdown-item-count">Скоро</span>
-                      </button>
-                      <button className="breadcrumb-dropdown-item" onClick={() => setAlgoDropdownOpen(false)}>
+                        <span className="section-badge soon">Скоро</span>
+                      </Link>
+                      <Link to="/algorithms" className="breadcrumb-dropdown-item" onClick={closeAllDropdowns}>
                         <span><FileCode size={14} /></span>
                         <span className="dropdown-item-title">Обход деревьев и графов</span>
-                        <span className="dropdown-item-count">Скоро</span>
-                      </button>
+                        <span className="section-badge soon">Скоро</span>
+                      </Link>
                     </div>
                   </div>
                 )}

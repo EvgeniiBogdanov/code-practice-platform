@@ -18,12 +18,12 @@ import ChecklistTab from "./ChecklistTab";
 export const TaskView = ({
   selectedTask,
   setTaskStatus,
-  completedTasks,
-  activeTab,
+  completedTasks = {},
+  activeTab = "candidate",
   setActiveTab,
   handleCopyCode,
   copiedCodeId,
-  checklistState,
+  checklistState = {},
   toggleChecklistItem,
 }) => {
   const activeTask =
@@ -37,7 +37,7 @@ export const TaskView = ({
     <div className="content-inner">
       <div className="task-detail-card">
         <div className="task-header-row">
-          <div>
+          <div className="task-title-container">
             <h2 className="task-detail-title">
               {activeTask.title}
               {activeTask.difficulty && (
@@ -47,9 +47,10 @@ export const TaskView = ({
               )}
             </h2>
           </div>
-          <div style={{ display: "flex", gap: "8px", flexShrink: 0 }}>
+          <div className="task-status-actions">
             <button
-              onClick={() => setTaskStatus(activeTask.id, "solved")}
+              type="button"
+              onClick={() => setTaskStatus && setTaskStatus(activeTask.id, "solved")}
               className={`status-btn ${
                 completedTasks[activeTask.id] === true ||
                 completedTasks[activeTask.id] === "solved"
@@ -68,7 +69,8 @@ export const TaskView = ({
             </button>
 
             <button
-              onClick={() => setTaskStatus(activeTask.id, "unsolved")}
+              type="button"
+              onClick={() => setTaskStatus && setTaskStatus(activeTask.id, "unsolved")}
               className={`status-btn ${
                 completedTasks[activeTask.id] === "unsolved"
                   ? "unsolved-active"
@@ -89,39 +91,50 @@ export const TaskView = ({
         <div className="tabs-container">
           <div className="tabs-header">
             <button
-              className={`tab-link ${activeTab === "candidate" ? "active" : ""}`}
-              onClick={() => setActiveTab("candidate")}
+              type="button"
+              onClick={() => setActiveTab && setActiveTab("candidate")}
+              className={`tab-link tab-candidate ${activeTab === "candidate" ? "active" : ""}`}
             >
-              <Play size={14} style={{ color: "#10b981" }} />
+              <Play size={14} className="tab-icon" />
               <span>Песочница кандидата</span>
             </button>
             <button
-              className={`tab-link ${activeTab === "solution" ? "active" : ""}`}
-              onClick={() => setActiveTab("solution")}
+              type="button"
+              onClick={() => setActiveTab && setActiveTab("solution")}
+              className={`tab-link tab-solution ${activeTab === "solution" ? "active" : ""}`}
             >
-              <CheckCircle size={14} style={{ color: "#3b82f6" }} />
+              <CheckCircle size={14} className="tab-icon" />
               <span>Решение</span>
             </button>
             <button
-              className={`tab-link ${activeTab === "materials" ? "active" : ""}`}
-              onClick={() => setActiveTab("materials")}
+              type="button"
+              onClick={() => setActiveTab && setActiveTab("materials")}
+              className={`tab-link tab-materials ${activeTab === "materials" ? "active" : ""}`}
             >
-              <BookOpen size={14} style={{ color: "#f59e0b" }} />
+              <BookOpen size={14} className="tab-icon" />
               <span>Разбор и теория</span>
             </button>
             <button
-              className={`tab-link ${activeTab === "questions" ? "active" : ""}`}
-              onClick={() => setActiveTab("questions")}
+              type="button"
+              onClick={() => setActiveTab && setActiveTab("questions")}
+              className={`tab-link tab-questions ${activeTab === "questions" ? "active" : ""}`}
             >
-              <HelpCircle size={14} style={{ color: "#a855f7" }} />
-              <span>Вопросы ({activeTask.interviewerQuestions ? activeTask.interviewerQuestions.length : 0})</span>
+              <HelpCircle size={14} className="tab-icon" />
+              <span>Вопросы</span>
+              <span className="tab-badge">
+                {activeTask.interviewerQuestions ? activeTask.interviewerQuestions.length : 0}
+              </span>
             </button>
             <button
-              className={`tab-link ${activeTab === "checklist" ? "active" : ""}`}
-              onClick={() => setActiveTab("checklist")}
+              type="button"
+              onClick={() => setActiveTab && setActiveTab("checklist")}
+              className={`tab-link tab-checklist ${activeTab === "checklist" ? "active" : ""}`}
             >
-              <ListChecks size={14} style={{ color: "var(--text-main, #ffffff)" }} />
-              <span>Самопроверка ({activeTask.checklist ? activeTask.checklist.length : 0})</span>
+              <ListChecks size={14} className="tab-icon" />
+              <span>Самопроверка</span>
+              <span className="tab-badge">
+                {activeTask.checklist ? activeTask.checklist.length : 0}
+              </span>
             </button>
           </div>
 

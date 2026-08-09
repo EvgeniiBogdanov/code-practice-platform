@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "@tanstack/react-router";
 import {
   Home,
   Code2,
@@ -13,7 +14,6 @@ import {
   Rocket,
   FileText,
   Folder,
-  FolderTree,
   X,
   Check,
 } from "lucide-react";
@@ -28,18 +28,15 @@ import {
 import { JS_TASKS } from "../../javascript/data/tasksData";
 import { getGroupMeta } from "../../javascript/data/groupConfig";
 
-
 export const Sidebar = ({
   sidebarOpen,
   setSidebarOpen,
   sidebarWidth = 260,
   setSidebarWidth,
   activeSection,
-  setActiveSection,
   sectionDropdownOpen,
   setSectionDropdownOpen,
   sectionDropdownRef,
-  renderSectionDropdownMenu,
   setStatsModalOpen,
   completedTotal,
   totalTasks,
@@ -70,17 +67,18 @@ export const Sidebar = ({
   setReactTsExpanded,
   reactTsPracticeExpanded,
   setReactTsPracticeExpanded,
+  // JS Group expansion states
+  expandedJsGroups = {},
+  setExpandedJsGroups,
+  expandedJsSubgroups = {},
+  setExpandedJsSubgroups,
   // Handlers & task states
   isTaskVisible,
   selectedTask,
-  setSelectedTask,
-  setActiveTab,
-  completedTasks,
+  completedTasks = {},
   showTooltip,
   hideTooltip,
 }) => {
-  const [expandedJsGroups, setExpandedJsGroups] = React.useState({});
-  const [expandedJsSubgroups, setExpandedJsSubgroups] = React.useState({});
   const [isResizing, setIsResizing] = React.useState(false);
 
   const startResizing = React.useCallback(
@@ -126,22 +124,24 @@ export const Sidebar = ({
   );
 
   const toggleJsGroup = (groupName) => {
-    setExpandedJsGroups((prev) => ({
-      ...prev,
-      [groupName]: !prev[groupName],
-    }));
+    if (setExpandedJsGroups) {
+      setExpandedJsGroups((prev) => ({
+        ...prev,
+        [groupName]: !prev[groupName],
+      }));
+    }
   };
 
   const toggleJsSubgroup = (key) => {
-    setExpandedJsSubgroups((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
+    if (setExpandedJsSubgroups) {
+      setExpandedJsSubgroups((prev) => ({
+        ...prev,
+        [key]: !prev[key],
+      }));
+    }
   };
 
-  const handleTaskClick = (task) => {
-    setSelectedTask(task);
-    if (setActiveTab) setActiveTab("candidate");
+  const handleMobileNavClick = () => {
     if (typeof window !== "undefined" && window.innerWidth <= 768) {
       setSidebarOpen(false);
     }
@@ -157,20 +157,54 @@ export const Sidebar = ({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [sidebarOpen, setSidebarOpen]);
 
-  React.useEffect(() => {
-    // Единый паттерн для всех корневых разделов: при переключении все группы и подгруппы свернуты
-    setExpandedJsGroups({});
-    setExpandedJsSubgroups({});
-    if (setWarmupExpanded) setWarmupExpanded(false);
-    if (setRefactoringExpanded) setRefactoringExpanded(false);
-    if (setTasksExpanded) setTasksExpanded(false);
-    if (setAdvancedExpanded) setAdvancedExpanded(false);
-    if (setReactTsExpanded) setReactTsExpanded(false);
-    if (setReactTsPracticeExpanded) setReactTsPracticeExpanded(false);
-  }, [activeSection]);
-
   const completedJsTotal = JS_TASKS.filter((t) => completedTasks[t.id]).length;
   const totalJsCount = JS_TASKS.length;
+
+  const renderSectionDropdown = () => (
+    <div className="section-dropdown-menu">
+      <div className="section-dropdown-header">РАЗДЕЛЫ ПРАКТИКИ</div>
+      <Link
+        to="/home"
+        className={`section-dropdown-item ${activeSection === "home" ? "active" : ""}`}
+        onClick={() => {
+          setSectionDropdownOpen(false);
+          handleMobileNavClick();
+        }}
+      >
+        <Home size={15} style={{ color: "var(--color-info-light)" }} /> <span>ГЛАВНАЯ</span> <span className="section-badge soon">Обзор</span>
+      </Link>
+      <Link
+        to="/javascript"
+        className={`section-dropdown-item ${activeSection === "javascript" ? "active" : ""}`}
+        onClick={() => {
+          setSectionDropdownOpen(false);
+          handleMobileNavClick();
+        }}
+      >
+        <Zap size={15} style={{ color: "var(--color-warning)" }} /> <span>JAVASCRIPT</span> <span className="section-badge active">{JS_TASKS.length} задач</span>
+      </Link>
+      <Link
+        to="/react"
+        className={`section-dropdown-item ${activeSection === "react" ? "active" : ""}`}
+        onClick={() => {
+          setSectionDropdownOpen(false);
+          handleMobileNavClick();
+        }}
+      >
+        <Code2 size={15} style={{ color: "var(--color-info)" }} /> <span>REACT</span> <span className="section-badge active">260+ задач</span>
+      </Link>
+      <Link
+        to="/algorithms"
+        className={`section-dropdown-item ${activeSection === "algorithms" ? "active" : ""}`}
+        onClick={() => {
+          setSectionDropdownOpen(false);
+          handleMobileNavClick();
+        }}
+      >
+        <Brain size={15} style={{ color: "var(--color-accent-purple)" }} /> <span>АЛГОРИТМЫ</span> <span className="section-badge soon">0 задач</span>
+      </Link>
+    </div>
+  );
 
   return (
     <aside
@@ -195,7 +229,7 @@ export const Sidebar = ({
             <ChevronDown size={13} className="sidebar-section-chevron" />
           </button>
 
-          {sectionDropdownOpen && renderSectionDropdownMenu(() => setSectionDropdownOpen(false))}
+          {sectionDropdownOpen && renderSectionDropdown()}
         </div>
         <button
           className="sidebar-toggle-btn"
@@ -211,7 +245,7 @@ export const Sidebar = ({
           <>
             <div
               className="sidebar-progress-card"
-              onClick={() => setStatsModalOpen(true)}
+              onClick={() => setStatsModalOpen && setStatsModalOpen(true)}
               style={{ cursor: "pointer" }}
               title="Открыть расширенную статистику задач"
             >
@@ -285,26 +319,31 @@ export const Sidebar = ({
                   {completedWarmup}/{totalWarmup}
                 </span>
               </div>
-              <div
-                className={`task-list-wrapper ${warmupExpanded ? "expanded" : ""}`}
-              >
+              <div className={`task-list-wrapper ${warmupExpanded ? "expanded" : ""}`}>
                 <div className="task-list-inner notion-tree-tasks-container">
                   {WARMUP_TASKS.filter(isTaskVisible).map((task) => (
-                    <button
+                    <Link
                       key={task.id}
-                      onClick={() => handleTaskClick(task)}
-                      className={`task-btn notion-tree-task-btn ${selectedTask?.id === task.id ? "active" : ""}`}
+                      id={`sidebar-task-${task.id}`}
+                      to="/react/$taskId"
+                      params={{ taskId: String(task.id) }}
+                      search={(prev) => prev}
+                      className={`task-btn notion-tree-task-btn ${String(selectedTask?.id) === String(task.id) ? "active" : ""}`}
+                      onClick={handleMobileNavClick}
                       onMouseEnter={(e) => showTooltip(e, task.title)}
                       onMouseLeave={hideTooltip}
                     >
-                      <span className="task-btn-title"><FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} /><span className="task-btn-text">{task.title}</span></span>
+                      <span className="task-btn-title">
+                        <FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} />
+                        <span className="task-btn-text">{task.title}</span>
+                      </span>
                       {completedTasks[task.id] &&
                         (completedTasks[task.id] === "unsolved" ? (
                           <span className="dropdown-item-unsolved"><X size={12} /></span>
                         ) : (
                           <span className="dropdown-item-check"><Check size={12} /></span>
                         ))}
-                    </button>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -326,26 +365,31 @@ export const Sidebar = ({
                   {completedRefactoring}/{totalRefactoring}
                 </span>
               </div>
-              <div
-                className={`task-list-wrapper ${refactoringExpanded ? "expanded" : ""}`}
-              >
+              <div className={`task-list-wrapper ${refactoringExpanded ? "expanded" : ""}`}>
                 <div className="task-list-inner notion-tree-tasks-container">
                   {REFACTORING_TASKS.filter(isTaskVisible).map((task) => (
-                    <button
+                    <Link
                       key={task.id}
-                      onClick={() => handleTaskClick(task)}
-                      className={`task-btn notion-tree-task-btn ${selectedTask?.id === task.id ? "active" : ""}`}
+                      id={`sidebar-task-${task.id}`}
+                      to="/react/$taskId"
+                      params={{ taskId: String(task.id) }}
+                      search={(prev) => prev}
+                      className={`task-btn notion-tree-task-btn ${String(selectedTask?.id) === String(task.id) ? "active" : ""}`}
+                      onClick={handleMobileNavClick}
                       onMouseEnter={(e) => showTooltip(e, task.title)}
                       onMouseLeave={hideTooltip}
                     >
-                      <span className="task-btn-title"><FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} /><span className="task-btn-text">{task.title}</span></span>
+                      <span className="task-btn-title">
+                        <FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} />
+                        <span className="task-btn-text">{task.title}</span>
+                      </span>
                       {completedTasks[task.id] &&
                         (completedTasks[task.id] === "unsolved" ? (
                           <span className="dropdown-item-unsolved"><X size={12} /></span>
                         ) : (
                           <span className="dropdown-item-check"><Check size={12} /></span>
                         ))}
-                    </button>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -367,26 +411,31 @@ export const Sidebar = ({
                   {completedMain}/{totalMain}
                 </span>
               </div>
-              <div
-                className={`task-list-wrapper ${tasksExpanded ? "expanded" : ""}`}
-              >
+              <div className={`task-list-wrapper ${tasksExpanded ? "expanded" : ""}`}>
                 <div className="task-list-inner notion-tree-tasks-container">
                   {MAIN_TASKS.filter(isTaskVisible).map((task) => (
-                    <button
+                    <Link
                       key={task.id}
-                      onClick={() => handleTaskClick(task)}
-                      className={`task-btn notion-tree-task-btn ${selectedTask?.id === task.id ? "active" : ""}`}
+                      id={`sidebar-task-${task.id}`}
+                      to="/react/$taskId"
+                      params={{ taskId: String(task.id) }}
+                      search={(prev) => prev}
+                      className={`task-btn notion-tree-task-btn ${String(selectedTask?.id) === String(task.id) ? "active" : ""}`}
+                      onClick={handleMobileNavClick}
                       onMouseEnter={(e) => showTooltip(e, task.title)}
                       onMouseLeave={hideTooltip}
                     >
-                      <span className="task-btn-title"><FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} /><span className="task-btn-text">{task.title}</span></span>
+                      <span className="task-btn-title">
+                        <FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} />
+                        <span className="task-btn-text">{task.title}</span>
+                      </span>
                       {completedTasks[task.id] &&
                         (completedTasks[task.id] === "unsolved" ? (
                           <span className="dropdown-item-unsolved"><X size={12} /></span>
                         ) : (
                           <span className="dropdown-item-check"><Check size={12} /></span>
                         ))}
-                    </button>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -408,26 +457,31 @@ export const Sidebar = ({
                   {completedAdvanced}/{totalAdvanced}
                 </span>
               </div>
-              <div
-                className={`task-list-wrapper ${advancedExpanded ? "expanded" : ""}`}
-              >
+              <div className={`task-list-wrapper ${advancedExpanded ? "expanded" : ""}`}>
                 <div className="task-list-inner notion-tree-tasks-container">
                   {ADVANCED_TASKS.filter(isTaskVisible).map((task) => (
-                    <button
+                    <Link
                       key={task.id}
-                      onClick={() => handleTaskClick(task)}
-                      className={`task-btn notion-tree-task-btn ${selectedTask?.id === task.id ? "active" : ""}`}
+                      id={`sidebar-task-${task.id}`}
+                      to="/react/$taskId"
+                      params={{ taskId: String(task.id) }}
+                      search={(prev) => prev}
+                      className={`task-btn notion-tree-task-btn ${String(selectedTask?.id) === String(task.id) ? "active" : ""}`}
+                      onClick={handleMobileNavClick}
                       onMouseEnter={(e) => showTooltip(e, task.title)}
                       onMouseLeave={hideTooltip}
                     >
-                      <span className="task-btn-title"><FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} /><span className="task-btn-text">{task.title}</span></span>
+                      <span className="task-btn-title">
+                        <FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} />
+                        <span className="task-btn-text">{task.title}</span>
+                      </span>
                       {completedTasks[task.id] &&
                         (completedTasks[task.id] === "unsolved" ? (
                           <span className="dropdown-item-unsolved"><X size={12} /></span>
                         ) : (
                           <span className="dropdown-item-check"><Check size={12} /></span>
                         ))}
-                    </button>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -449,26 +503,31 @@ export const Sidebar = ({
                   {completedReactTs}/{totalReactTs}
                 </span>
               </div>
-              <div
-                className={`task-list-wrapper ${reactTsExpanded ? "expanded" : ""}`}
-              >
+              <div className={`task-list-wrapper ${reactTsExpanded ? "expanded" : ""}`}>
                 <div className="task-list-inner notion-tree-tasks-container">
                   {REACT_TS_TASKS.filter(isTaskVisible).map((task) => (
-                    <button
+                    <Link
                       key={task.id}
-                      onClick={() => handleTaskClick(task)}
-                      className={`task-btn notion-tree-task-btn ${selectedTask?.id === task.id ? "active" : ""}`}
+                      id={`sidebar-task-${task.id}`}
+                      to="/react/$taskId"
+                      params={{ taskId: String(task.id) }}
+                      search={(prev) => prev}
+                      className={`task-btn notion-tree-task-btn ${String(selectedTask?.id) === String(task.id) ? "active" : ""}`}
+                      onClick={handleMobileNavClick}
                       onMouseEnter={(e) => showTooltip(e, task.title)}
                       onMouseLeave={hideTooltip}
                     >
-                      <span className="task-btn-title"><FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} /><span className="task-btn-text">{task.title}</span></span>
+                      <span className="task-btn-title">
+                        <FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} />
+                        <span className="task-btn-text">{task.title}</span>
+                      </span>
                       {completedTasks[task.id] &&
                         (completedTasks[task.id] === "unsolved" ? (
                           <span className="dropdown-item-unsolved"><X size={12} /></span>
                         ) : (
                           <span className="dropdown-item-check"><Check size={12} /></span>
                         ))}
-                    </button>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -490,36 +549,32 @@ export const Sidebar = ({
                   {completedReactTsPractice}/{totalReactTsPractice}
                 </span>
               </div>
-              <div
-                className={`task-list-wrapper ${reactTsPracticeExpanded ? "expanded" : ""}`}
-              >
+              <div className={`task-list-wrapper ${reactTsPracticeExpanded ? "expanded" : ""}`}>
                 <div className="task-list-inner notion-tree-tasks-container">
-                  {REACT_TS_PRACTICE_TASKS.filter(isTaskVisible).length === 0 ? (
-                    <div style={{ padding: "5px 8px", fontSize: "12px", color: "var(--text-muted)", fontStyle: "italic" }}>
-                      Скоро появятся новые задачи...
-                    </div>
-                  ) : (
-                    REACT_TS_PRACTICE_TASKS.filter(isTaskVisible).map((task) => (
-                      <button
-                        key={task.id}
-                        onClick={() => {
-                          setSelectedTask(task);
-                          setActiveTab("candidate");
-                        }}
-                        className={`task-btn notion-tree-task-btn ${selectedTask?.id === task.id ? "active" : ""}`}
-                        onMouseEnter={(e) => showTooltip(e, task.title)}
-                        onMouseLeave={hideTooltip}
-                      >
-                        <span className="task-btn-title"><FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} /><span className="task-btn-text">{task.title}</span></span>
-                        {completedTasks[task.id] &&
-                          (completedTasks[task.id] === "unsolved" ? (
-                            <span className="dropdown-item-unsolved"><X size={12} /></span>
-                          ) : (
-                            <span className="dropdown-item-check"><Check size={12} /></span>
-                          ))}
-                      </button>
-                    ))
-                  )}
+                  {REACT_TS_PRACTICE_TASKS.filter(isTaskVisible).map((task) => (
+                    <Link
+                      key={task.id}
+                      id={`sidebar-task-${task.id}`}
+                      to="/react/$taskId"
+                      params={{ taskId: String(task.id) }}
+                      search={(prev) => prev}
+                      className={`task-btn notion-tree-task-btn ${String(selectedTask?.id) === String(task.id) ? "active" : ""}`}
+                      onClick={handleMobileNavClick}
+                      onMouseEnter={(e) => showTooltip(e, task.title)}
+                      onMouseLeave={hideTooltip}
+                    >
+                      <span className="task-btn-title">
+                        <FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} />
+                        <span className="task-btn-text">{task.title}</span>
+                      </span>
+                      {completedTasks[task.id] &&
+                        (completedTasks[task.id] === "unsolved" ? (
+                          <span className="dropdown-item-unsolved"><X size={12} /></span>
+                        ) : (
+                          <span className="dropdown-item-check"><Check size={12} /></span>
+                        ))}
+                    </Link>
+                  ))}
                 </div>
               </div>
             </div>
@@ -657,17 +712,22 @@ export const Sidebar = ({
                                 <div className={`task-list-wrapper ${isSubOpen ? "expanded" : ""}`}>
                                   <div className="task-list-inner notion-tree-tasks-container">
                                     {tasks.filter(isTaskVisible).map((task) => (
-                                      <button
+                                      <Link
                                         key={task.id}
-                                        onClick={() => handleTaskClick(task)}
+                                        id={`sidebar-task-${task.id}`}
+                                        to="/javascript/$taskId"
+                                        params={{ taskId: String(task.id) }}
+                                        search={(prev) => prev}
                                         className={`task-btn notion-tree-task-btn ${
-                                          selectedTask?.id === task.id ? "active" : ""
+                                          String(selectedTask?.id) === String(task.id) ? "active" : ""
                                         }`}
+                                        onClick={handleMobileNavClick}
                                         onMouseEnter={(e) => showTooltip(e, task.title)}
                                         onMouseLeave={hideTooltip}
                                       >
                                         <span className="task-btn-title">
-                                          <FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} /><span className="task-btn-text">{task.title}</span>
+                                          <FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} />
+                                          <span className="task-btn-text">{task.title}</span>
                                         </span>
                                         {completedTasks[task.id] &&
                                           (completedTasks[task.id] === "unsolved" ? (
@@ -679,7 +739,7 @@ export const Sidebar = ({
                                               <Check size={12} />
                                             </span>
                                           ))}
-                                      </button>
+                                      </Link>
                                     ))}
                                   </div>
                                 </div>
@@ -696,27 +756,19 @@ export const Sidebar = ({
           })()
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
-            <div
-              className={`notion-tree-node-header group-header ${
-                activeSection === "home" ? "active" : ""
-              }`}
-              onClick={() => setActiveSection("home")}
+            <Link
+              to="/home"
+              className={`notion-tree-node-header group-header ${activeSection === "home" ? "active" : ""}`}
+              onClick={handleMobileNavClick}
             >
               <Home size={15} style={{ color: "#60a5fa" }} />
               <span className="node-title">ГЛАВНАЯ (ОБЗОР)</span>
-            </div>
+            </Link>
 
-            <div
-              className={`notion-tree-node-header group-header ${
-                activeSection === "javascript" ? "active" : ""
-              }`}
-              onClick={() => {
-                setActiveSection("javascript");
-                if (JS_TASKS.length > 0) {
-                  setSelectedTask(JS_TASKS[0]);
-                  setActiveTab("candidate");
-                }
-              }}
+            <Link
+              to="/javascript"
+              className={`notion-tree-node-header group-header ${activeSection === "javascript" ? "active" : ""}`}
+              onClick={handleMobileNavClick}
             >
               <Zap size={15} style={{ color: "#f59e0b" }} />
               <span className="node-title">JAVASCRIPT</span>
@@ -729,19 +781,12 @@ export const Sidebar = ({
               >
                 {completedJsTotal}/{totalJsCount}
               </span>
-            </div>
+            </Link>
 
-            <div
-              className={`notion-tree-node-header group-header ${
-                activeSection === "react" ? "active" : ""
-              }`}
-              onClick={() => {
-                setActiveSection("react");
-                if (WARMUP_TASKS.length > 0) {
-                  setSelectedTask(WARMUP_TASKS[0]);
-                  setActiveTab("candidate");
-                }
-              }}
+            <Link
+              to="/react"
+              className={`notion-tree-node-header group-header ${activeSection === "react" ? "active" : ""}`}
+              onClick={handleMobileNavClick}
             >
               <Code2 size={15} style={{ color: "#61dafb" }} />
               <span className="node-title">REACT</span>
@@ -754,13 +799,12 @@ export const Sidebar = ({
               >
                 {completedTotal}/{totalTasks}
               </span>
-            </div>
+            </Link>
 
-            <div
-              className={`notion-tree-node-header group-header ${
-                activeSection === "algorithms" ? "active" : ""
-              }`}
-              onClick={() => setActiveSection("algorithms")}
+            <Link
+              to="/algorithms"
+              className={`notion-tree-node-header group-header ${activeSection === "algorithms" ? "active" : ""}`}
+              onClick={handleMobileNavClick}
             >
               <Brain size={15} style={{ color: "#a855f7" }} />
               <span className="node-title">АЛГОРИТМЫ</span>
@@ -770,7 +814,7 @@ export const Sidebar = ({
               >
                 скоро
               </span>
-            </div>
+            </Link>
           </div>
         )}
       </div>
