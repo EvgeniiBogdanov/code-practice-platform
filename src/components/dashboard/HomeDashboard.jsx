@@ -13,6 +13,8 @@ import {
   TrendingUp,
   FolderGit2,
   BookOpen,
+  Star,
+  ExternalLink,
 } from "lucide-react";
 import { JS_TASKS } from "../../javascript/data/tasksData";
 import { REACT_TASKS, WARMUP_TASKS } from "../../react/data/tasksData";
@@ -56,17 +58,44 @@ export const HomeDashboard = ({
       <div className="notion-page-header">
         <h1 className="notion-page-title">Обзор платформы</h1>
         <p className="notion-page-subtitle">
-          Интерактивная платформа для подготовки к Frontend-собеседованиям (250+ задач). Встроенный редактор кода и консоль в браузере, кандидатский код, эталонные решения и разборы теории.
+          Интерактивная платформа для подготовки к собеседованиям и практики решения задач (250+ задач). Встроенный редактор кода и консоль в браузере, песочница для решения, эталонные решения и разборы теории.
         </p>
       </div>
 
-      {/* Notion Callout Banner */}
-      <div className="notion-callout-banner">
-        <div className="notion-callout-icon">💡</div>
-        <div className="notion-callout-content">
-          <div className="notion-callout-title">Быстрый старт</div>
-          <div className="notion-callout-text">
-            Решайте задачи во встроенном браузерном редакторе или вашей любимой IDE. Анализируйте исходный код кандидата, изучайте эталонные решения O(N) / O(1) и используйте интерактивную консоль Node.js.
+      {/* Notion Callouts Grid (Быстрый старт & Open-Source) */}
+      <div className="notion-callouts-grid">
+        <div className="notion-callout-banner">
+          <div className="notion-callout-icon">
+            <Lightbulb size={20} style={{ color: "var(--notion-blue, #3b82f6)" }} />
+          </div>
+          <div className="notion-callout-content">
+            <div className="notion-callout-title">Быстрый старт</div>
+            <div className="notion-callout-text">
+              Решайте задачи во встроенном браузере или любимой IDE. Анализируйте код кандидата, изучайте эталонные решения O(N) / O(1) и запускайте код в консоли Node.js.
+            </div>
+          </div>
+        </div>
+
+        <div className="notion-callout-banner">
+          <div className="notion-callout-icon">
+            <Star size={20} style={{ color: "#f59e0b", fill: "rgba(245, 158, 11, 0.2)" }} />
+          </div>
+          <div className="notion-callout-content">
+            <div className="notion-callout-header-row">
+              <span className="notion-callout-title">Open-Source проект</span>
+              <a
+                href="https://github.com/EvgeniiBogdanov/code-practice-platform"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="notion-callout-badge-link"
+              >
+                <span>GitHub</span>
+                <ExternalLink size={11} />
+              </a>
+            </div>
+            <div className="notion-callout-text">
+              Поддержите развитие платформы <a href="https://github.com/EvgeniiBogdanov/code-practice-platform" target="_blank" rel="noopener noreferrer" className="notion-text-link">звездой на GitHub</a> или внесите свой вклад новыми задачами и решениями.
+            </div>
           </div>
         </div>
       </div>
