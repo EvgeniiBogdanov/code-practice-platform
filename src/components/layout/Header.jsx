@@ -169,14 +169,16 @@ export const Header = ({
 
   const renderHeaderSectionDropdownMenu = () => (
     <div className="breadcrumb-dropdown-menu">
-      <div className="breadcrumb-dropdown-header">РАЗДЕЛЫ ПЛАТФОРМЫ</div>
+      <div className="breadcrumb-dropdown-header">
+        <span className="breadcrumb-dropdown-header-title">РАЗДЕЛЫ ПЛАТФОРМЫ</span>
+      </div>
       <div className="breadcrumb-dropdown-list">
         <Link
           to="/home"
           className={`breadcrumb-dropdown-item ${activeSection === "home" ? "active" : ""}`}
           onClick={closeAllDropdowns}
         >
-          <span><Home size={15} style={{ color: "var(--color-info-light)" }} /></span>
+          <span className="breadcrumb-dropdown-icon"><Home size={15} style={{ color: "var(--color-info-light)" }} /></span>
           <span className="dropdown-item-title">ГЛАВНАЯ</span>
           <span className="section-badge soon">Обзор</span>
         </Link>
@@ -185,7 +187,7 @@ export const Header = ({
           className={`breadcrumb-dropdown-item ${activeSection === "javascript" ? "active" : ""}`}
           onClick={closeAllDropdowns}
         >
-          <span><Zap size={15} style={{ color: "var(--color-warning)" }} /></span>
+          <span className="breadcrumb-dropdown-icon"><Zap size={15} style={{ color: "var(--color-warning)" }} /></span>
           <span className="dropdown-item-title">JAVASCRIPT</span>
           <span className="section-badge active">{JS_TASKS.length} задач</span>
         </Link>
@@ -194,7 +196,7 @@ export const Header = ({
           className={`breadcrumb-dropdown-item ${activeSection === "react" ? "active" : ""}`}
           onClick={closeAllDropdowns}
         >
-          <span><Code2 size={15} style={{ color: "var(--color-info)" }} /></span>
+          <span className="breadcrumb-dropdown-icon"><Code2 size={15} style={{ color: "var(--color-info)" }} /></span>
           <span className="dropdown-item-title">REACT</span>
           <span className="section-badge active">260+ задач</span>
         </Link>
@@ -203,7 +205,7 @@ export const Header = ({
           className={`breadcrumb-dropdown-item ${activeSection === "algorithms" ? "active" : ""}`}
           onClick={closeAllDropdowns}
         >
-          <span><Brain size={15} style={{ color: "var(--color-accent-purple)" }} /></span>
+          <span className="breadcrumb-dropdown-icon"><Brain size={15} style={{ color: "var(--color-accent-purple)" }} /></span>
           <span className="dropdown-item-title">АЛГОРИТМЫ</span>
           <span className="section-badge soon">0 задач</span>
         </Link>
@@ -275,7 +277,8 @@ export const Header = ({
                   {groupDropdownOpen && (
                     <div className="breadcrumb-dropdown-menu">
                       <div className="breadcrumb-dropdown-header">
-                        {currentGroupMeta.renderIcon(14)} Группы задач JavaScript
+                        <span className="breadcrumb-dropdown-header-icon">{currentGroupMeta.renderIcon(14)}</span>
+                        <span className="breadcrumb-dropdown-header-title">Группы задач JavaScript</span>
                       </div>
                       <div className="breadcrumb-dropdown-list">
                         {Array.from(new Set(JS_TASKS.map((t) => t.group))).map((gName) => {
@@ -302,7 +305,7 @@ export const Header = ({
                                 }, 50);
                               }}
                             >
-                              {gMeta.renderIcon(14)}
+                              <span className="breadcrumb-dropdown-icon">{gMeta.renderIcon(14)}</span>
                               <span className="dropdown-item-title">{gName}</span>
                               <span className={`dropdown-item-count ${isCompleted ? "completed" : ""}`}>
                                 {completedCount}/{groupTasks.length}
@@ -331,7 +334,10 @@ export const Header = ({
                   {subgroupDropdownOpen && (
                     <div className="breadcrumb-dropdown-menu">
                       <div className="breadcrumb-dropdown-header">
-                        <Folder size={14} style={{ color: currentGroupMeta.color }} /> Подгруппы ({selectedTask.group})
+                        <span className="breadcrumb-dropdown-header-icon">
+                          <Folder size={14} style={{ color: currentGroupMeta.color }} />
+                        </span>
+                        <span className="breadcrumb-dropdown-header-title">Подгруппы ({selectedTask.group})</span>
                       </div>
                       <div className="breadcrumb-dropdown-list">
                         {Array.from(
@@ -369,7 +375,9 @@ export const Header = ({
                                 }, 50);
                               }}
                             >
-                              <Folder size={14} style={{ color: currentGroupMeta.color, opacity: 0.9 }} />
+                              <span className="breadcrumb-dropdown-icon">
+                                <Folder size={14} style={{ color: currentGroupMeta.color, opacity: 0.9 }} />
+                              </span>
                               <span className="dropdown-item-title">{subName}</span>
                               <span className={`dropdown-item-count ${isCompleted ? "completed" : ""}`}>
                                 {completedCount}/{subTasks.length}
@@ -398,8 +406,10 @@ export const Header = ({
                   {taskDropdownOpen && (
                     <div className="breadcrumb-dropdown-menu">
                       <div className="breadcrumb-dropdown-header">
-                        <Folder size={14} style={{ color: currentGroupMeta.color }} />
-                        <span>Задачи {selectedTask.subgroup}</span>
+                        <span className="breadcrumb-dropdown-header-icon">
+                          <Folder size={14} style={{ color: currentGroupMeta.color }} />
+                        </span>
+                        <span className="breadcrumb-dropdown-header-title">Задачи {selectedTask.subgroup}</span>
                       </div>
                       <div className="breadcrumb-dropdown-list">
                         {JS_TASKS.filter(
@@ -415,7 +425,7 @@ export const Header = ({
                             className={`breadcrumb-dropdown-item ${t.id === selectedTask?.id ? "active" : ""}`}
                             onClick={closeAllDropdowns}
                           >
-                            <span>{taskIcon}</span>
+                            <span className="breadcrumb-dropdown-icon">{taskIcon}</span>
                             <span className="dropdown-item-title">{t.title}</span>
                             {completedTasks[t.id] &&
                               (completedTasks[t.id] === "unsolved" ? (
@@ -451,7 +461,8 @@ export const Header = ({
                 {categoryDropdownOpen && (
                   <div className="breadcrumb-dropdown-menu">
                     <div className="breadcrumb-dropdown-header">
-                      <FolderTree size={14} /> Группы задач React
+                      <span className="breadcrumb-dropdown-header-icon"><FolderTree size={14} /></span>
+                      <span className="breadcrumb-dropdown-header-title">Группы задач React</span>
                     </div>
                     <div className="breadcrumb-dropdown-list">
                       {categoriesList.map((cat) => {
@@ -474,7 +485,7 @@ export const Header = ({
                               }, 50);
                             }}
                           >
-                            <span>{cat.icon}</span>
+                            <span className="breadcrumb-dropdown-icon">{cat.icon}</span>
                             <span className="dropdown-item-title">{cat.name}</span>
                             <span className={`dropdown-item-count ${isCompleted ? "completed" : ""}`}>
                               {cat.completed}/{cat.total}
@@ -503,8 +514,8 @@ export const Header = ({
                 {taskDropdownOpen && (
                   <div className="breadcrumb-dropdown-menu">
                     <div className="breadcrumb-dropdown-header">
-                      <span>{categoryIcon}</span>
-                      <span>{taskCategory || "Задачи"}</span>
+                      <span className="breadcrumb-dropdown-header-icon">{categoryIcon}</span>
+                      <span className="breadcrumb-dropdown-header-title">{taskCategory || "Задачи"}</span>
                     </div>
                     <div className="breadcrumb-dropdown-list">
                       {currentCategoryTasks.map((t) => (
@@ -516,7 +527,7 @@ export const Header = ({
                           className={`breadcrumb-dropdown-item ${t.id === selectedTask?.id ? "active" : ""}`}
                           onClick={closeAllDropdowns}
                         >
-                          <span>{taskIcon}</span>
+                          <span className="breadcrumb-dropdown-icon">{taskIcon}</span>
                           <span className="dropdown-item-title">{t.title}</span>
                           {completedTasks[t.id] &&
                             (completedTasks[t.id] === "unsolved" ? (
@@ -551,26 +562,27 @@ export const Header = ({
                 {algoDropdownOpen && (
                   <div className="breadcrumb-dropdown-menu">
                     <div className="breadcrumb-dropdown-header">
-                      <Brain size={14} /> Темы раздела Алгоритмы
+                      <span className="breadcrumb-dropdown-header-icon"><Brain size={14} /></span>
+                      <span className="breadcrumb-dropdown-header-title">Темы раздела Алгоритмы</span>
                     </div>
                     <div className="breadcrumb-dropdown-list">
                       <Link to="/algorithms" className="breadcrumb-dropdown-item" onClick={closeAllDropdowns}>
-                        <span><FileCode size={14} /></span>
+                        <span className="breadcrumb-dropdown-icon"><FileCode size={14} /></span>
                         <span className="dropdown-item-title">Два указателя (Two Pointers)</span>
                         <span className="section-badge soon">Скоро</span>
                       </Link>
                       <Link to="/algorithms" className="breadcrumb-dropdown-item" onClick={closeAllDropdowns}>
-                        <span><FileCode size={14} /></span>
+                        <span className="breadcrumb-dropdown-icon"><FileCode size={14} /></span>
                         <span className="dropdown-item-title">Скользящее окно (Sliding Window)</span>
                         <span className="section-badge soon">Скоро</span>
                       </Link>
                       <Link to="/algorithms" className="breadcrumb-dropdown-item" onClick={closeAllDropdowns}>
-                        <span><FileCode size={14} /></span>
+                        <span className="breadcrumb-dropdown-icon"><FileCode size={14} /></span>
                         <span className="dropdown-item-title">Бинарный поиск (Binary Search)</span>
                         <span className="section-badge soon">Скоро</span>
                       </Link>
                       <Link to="/algorithms" className="breadcrumb-dropdown-item" onClick={closeAllDropdowns}>
-                        <span><FileCode size={14} /></span>
+                        <span className="breadcrumb-dropdown-icon"><FileCode size={14} /></span>
                         <span className="dropdown-item-title">Обход деревьев и графов</span>
                         <span className="section-badge soon">Скоро</span>
                       </Link>

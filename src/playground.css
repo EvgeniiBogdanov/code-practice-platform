@@ -435,12 +435,23 @@ body {
   max-width: 100%;
 }
 
-.breadcrumb-dropdown-header span:not(svg) {
+.breadcrumb-dropdown-header svg,
+.breadcrumb-dropdown-header-icon,
+.breadcrumb-dropdown-header > span:first-child:not(:last-child) {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.breadcrumb-dropdown-header-title,
+.breadcrumb-dropdown-header span:last-child {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 0;
   flex: 1;
+  text-align: left;
 }
 
 .breadcrumb-dropdown-list {
@@ -456,6 +467,7 @@ body {
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 8px;
   padding: 6px 8px;
   background: transparent;
@@ -476,11 +488,15 @@ body {
 }
 
 .breadcrumb-dropdown-item > span:first-child,
-.breadcrumb-dropdown-item > svg:first-child {
+.breadcrumb-dropdown-item > svg:first-child,
+.breadcrumb-dropdown-icon {
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
 }
 
 .breadcrumb-dropdown-item:hover {
@@ -495,12 +511,12 @@ body {
 }
 
 .dropdown-item-title {
-  flex: 1 1 0%;
+  flex: 1 1 auto;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 0;
-  max-width: 100%;
+  text-align: left;
   display: block;
 }
 
@@ -544,12 +560,22 @@ body {
   font-size: 12px;
   color: #4dab9a;
   font-weight: bold;
+  margin-left: auto;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .dropdown-item-unsolved {
   font-size: 12px;
   color: #e8912d;
   font-weight: bold;
+  margin-left: auto;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .header-right {
@@ -3593,18 +3619,10 @@ svg.lucide,
 .checklist-title,
 .question-accordion-title,
 .solution-explanation-header,
-.solution-articles-header,
-.dropdown-item-title {
+.solution-articles-header {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-}
-
-.dropdown-item-unsolved,
-.dropdown-item-check {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
 }
 
 /* ==========================================================================
