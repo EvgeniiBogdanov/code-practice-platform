@@ -1783,10 +1783,8 @@ body {
   color: #eb5757;
 }
 
-/* Сброс инлайн-стилей для редактора блоков кода VS Code / TheoryCodeBlock */
-.vscode-ide-editor code,
-.theory-code-editor code,
-.vscode-pre-only code {
+/* Сброс инлайн-стилей для блоков кода TheoryCodeBlock */
+.theory-code-editor code {
   background: transparent !important;
   color: inherit !important;
   padding: 0 !important;
@@ -2051,35 +2049,85 @@ body {
   padding: 12px 16px !important;
 }
 
-/* Блок кода в разделе "Разбор и теория" — компактная высота под количество строк (без 180px min-height) */
+/* Блок кода в разделе "Разбор и теория" — полностью изолированный стиль и отступы как в VS Code editor */
 .theory-code-editor {
+  width: 100%;
+  max-width: 100%;
+  background: #1e1e1e;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md, 8px);
+  overflow: hidden;
   box-shadow: none !important;
   position: relative;
   font-size: 14px !important;
-  margin: 2px !important;
+  margin: 16px 0 !important;
+  display: flex;
+  flex-direction: column;
 }
 
 .theory-code-editor .vscode-editor-surface {
+  display: flex;
+  position: relative;
+  background: #1e1e1e;
   min-height: auto !important;
   height: auto !important;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .theory-code-editor .vscode-gutter {
-  padding-top: 10px !important;
-  padding-bottom: 10px !important;
+  width: 36px;
+  min-width: 36px;
+  padding: 14px 8px 14px 0 !important;
+  background: #1e1e1e;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  user-select: none;
+  color: #858585;
+  font-family: var(--font-mono);
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  text-align: right;
+  box-sizing: border-box;
+  overflow: hidden;
+  flex-shrink: 0;
   height: auto !important;
 }
 
+.theory-code-editor .vscode-gutter-line {
+  height: 1.6em !important;
+  font-size: 14px !important;
+  transition: color 0.1s ease;
+}
+
 .theory-code-editor .vscode-canvas {
+  flex: 1;
   position: relative;
-  padding-top: 10px !important;
-  padding-bottom: 10px !important;
+  min-width: 0;
+  max-width: 100%;
   height: auto !important;
+  overflow: hidden;
+  padding: 0 !important;
 }
 
 .theory-code-editor pre.vscode-pre-only {
   margin: 0 !important;
-  padding: 0 !important;
+  padding: 14px 16px !important;
+  font-family: var(--font-mono);
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  color: #d4d4d4;
+  white-space: pre;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: auto;
+}
+
+.theory-code-editor pre.vscode-pre-only code,
+.theory-code-editor pre.vscode-pre-only code * {
+  font-family: var(--font-mono);
+  font-size: 14px !important;
   line-height: 1.6 !important;
 }
 
@@ -2126,6 +2174,8 @@ body {
 }
 
 [data-theme="light"] .theory-code-editor {
+  background: #ffffff;
+  border-color: #d0d7de;
   box-shadow: none !important;
 }
 
@@ -5119,6 +5169,7 @@ svg.lucide,
 /* --- VS Code IDE Container --- */
 .vscode-ide-editor {
   width: 100%;
+  max-width: 100%;
   background: #1e1e1e;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-md, 8px);
@@ -5126,7 +5177,7 @@ svg.lucide,
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
   display: flex;
   flex-direction: column;
-  font-size: var(--editor-font-size, 13px);
+  font-size: var(--editor-font-size, 13px) !important;
 }
 
 .vscode-ide-editor.ide-focused {
@@ -5395,29 +5446,35 @@ svg.lucide,
 }
 
 /* 2. Editor Surface (Gutter + Canvas: Auto-expanding without max-height or scroll constraints) */
+/* 2. Editor Surface (Gutter + Canvas: Auto-expanding without max-height or scroll constraints) */
 .vscode-editor-surface {
   display: flex;
   position: relative;
   background: #1e1e1e;
   min-height: 180px;
   height: auto;
-  overflow: visible;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* Line Numbers Gutter */
 .vscode-gutter {
-  width: 48px;
-  min-width: 48px;
-  padding: 14px 10px 14px 0;
+  width: 36px;
+  min-width: 36px;
+  padding: 14px 8px 14px 0;
   background: #1e1e1e;
   border-right: 1px solid rgba(255, 255, 255, 0.05);
   user-select: none;
   color: #858585;
   font-family: var(--font-mono);
-  font-size: inherit;
+  font-size: var(--editor-font-size, 13px) !important;
   line-height: 1.6;
   text-align: right;
   box-sizing: border-box;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
 .vscode-gutter-line {
@@ -5435,28 +5492,35 @@ svg.lucide,
   flex: 1;
   position: relative;
   min-width: 0;
+  max-width: 100%;
   height: auto;
+  overflow: hidden;
 }
 
 .vscode-code-stack {
   position: relative;
   width: 100%;
+  max-width: 100%;
   height: 100%;
   min-height: 180px;
+  overflow: hidden;
 }
 
 .vscode-syntax-layer {
   position: relative;
   width: 100%;
+  max-width: 100%;
   margin: 0;
   padding: 14px 16px;
   font-family: var(--font-mono);
-  font-size: inherit;
+  font-size: var(--editor-font-size, 13px) !important;
   line-height: 1.6;
   pointer-events: none;
   box-sizing: border-box;
   color: #d4d4d4;
   white-space: pre;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 .wrap-on .vscode-syntax-layer,
@@ -5465,14 +5529,15 @@ svg.lucide,
   word-break: break-word !important;
 }
 
-.vscode-syntax-layer code {
+.vscode-syntax-layer code,
+.vscode-syntax-layer code * {
   font-family: var(--font-mono);
-  font-size: inherit;
+  font-size: var(--editor-font-size, 13px) !important;
   line-height: 1.6;
   tab-size: 2;
 }
 
-/* Текстовое поле ввода: 100% изоляция без скролла, расширяется по высоте кода */
+/* Текстовое поле ввода: 100% изоляция с горизонтальным скроллом внутри холста */
 .vscode-input-textarea {
   all: unset;
   display: block;
@@ -5480,6 +5545,7 @@ svg.lucide,
   top: 0 !important;
   left: 0 !important;
   width: 100% !important;
+  max-width: 100% !important;
   height: 100% !important;
   min-height: 180px !important;
   margin: 0 !important;
@@ -5492,12 +5558,13 @@ svg.lucide,
   box-shadow: none !important;
   resize: none !important;
   font-family: var(--font-mono) !important;
-  font-size: inherit !important;
+  font-size: var(--editor-font-size, 13px) !important;
   line-height: 1.6 !important;
   tab-size: 2 !important;
   box-sizing: border-box !important;
   z-index: 2 !important;
-  overflow: hidden !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
   cursor: text !important;
   white-space: pre !important;
 }
@@ -5520,10 +5587,20 @@ svg.lucide,
   margin: 0;
   padding: 14px 16px;
   font-family: var(--font-mono);
-  font-size: inherit;
+  font-size: var(--editor-font-size, 13px) !important;
   line-height: 1.6;
   color: #d4d4d4;
   white-space: pre;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: auto;
+}
+
+.vscode-pre-only code,
+.vscode-pre-only code * {
+  font-family: var(--font-mono);
+  font-size: var(--editor-font-size, 13px) !important;
+  line-height: 1.6;
 }
 
 /* Floating Quick-Scroll to Console Button (Neutral Minimalist Design) */
@@ -5966,7 +6043,12 @@ svg.lucide,
   overflow-x: hidden !important;
 }
 
-.wrap-off .vscode-syntax-layer,
+.wrap-off .vscode-syntax-layer {
+  white-space: pre !important;
+  word-break: normal !important;
+  overflow-x: hidden !important;
+}
+
 .wrap-off .vscode-input-textarea,
 .wrap-off .vscode-pre-only {
   white-space: pre !important;

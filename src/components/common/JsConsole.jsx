@@ -19,7 +19,7 @@ import { FitAddon } from "@xterm/addon-fit";
 import "@xterm/xterm/css/xterm.css";
 
 const MIN_FONT_SIZE = 12;
-const MAX_FONT_SIZE = 20;
+const MAX_FONT_SIZE = 24;
 const FONT_SIZE_STORAGE_KEY = "playground_editor_font_size";
 const CONSOLE_COLLAPSED_STORAGE_KEY = "playground_console_collapsed";
 
@@ -122,28 +122,43 @@ export const JsConsole = ({
     return 13;
   });
 
-  const handleIncreaseFontSize = () => {
-    setFontSize((prev) => {
-      const next = Math.min(MAX_FONT_SIZE, prev + 1);
-      try {
-        localStorage.setItem(FONT_SIZE_STORAGE_KEY, String(next));
-      } catch (err) {
-        console.error("Failed to save font size to localStorage", err);
+  useEffect(() => {
+    const handleFontSizeSync = (e) => {
+      const newSize = e.detail || (e.key === FONT_SIZE_STORAGE_KEY && parseInt(e.newValue, 10));
+      if (newSize && !isNaN(newSize) && newSize >= MIN_FONT_SIZE && newSize <= MAX_FONT_SIZE) {
+        setFontSize((current) => (current !== newSize ? newSize : current));
       }
-      return next;
-    });
+    };
+    window.addEventListener("editor-font-size-change", handleFontSizeSync);
+    window.addEventListener("storage", handleFontSizeSync);
+    return () => {
+      window.removeEventListener("editor-font-size-change", handleFontSizeSync);
+      window.removeEventListener("storage", handleFontSizeSync);
+    };
+  }, []);
+
+  const handleIncreaseFontSize = () => {
+    const next = Math.min(MAX_FONT_SIZE, fontSize + 1);
+    if (next === fontSize) return;
+    setFontSize(next);
+    try {
+      localStorage.setItem(FONT_SIZE_STORAGE_KEY, String(next));
+      window.dispatchEvent(new CustomEvent("editor-font-size-change", { detail: next }));
+    } catch (err) {
+      console.error("Failed to save font size to localStorage", err);
+    }
   };
 
   const handleDecreaseFontSize = () => {
-    setFontSize((prev) => {
-      const next = Math.max(MIN_FONT_SIZE, prev - 1);
-      try {
-        localStorage.setItem(FONT_SIZE_STORAGE_KEY, String(next));
-      } catch (err) {
-        console.error("Failed to save font size to localStorage", err);
-      }
-      return next;
-    });
+    const next = Math.max(MIN_FONT_SIZE, fontSize - 1);
+    if (next === fontSize) return;
+    setFontSize(next);
+    try {
+      localStorage.setItem(FONT_SIZE_STORAGE_KEY, String(next));
+      window.dispatchEvent(new CustomEvent("editor-font-size-change", { detail: next }));
+    } catch (err) {
+      console.error("Failed to save font size to localStorage", err);
+    }
   };
 
   // Отслеживание светлой/тёмной темы оформления
