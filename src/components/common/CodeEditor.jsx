@@ -15,9 +15,12 @@ import {
   Wand2,
   ZoomIn,
   ZoomOut,
+  Sparkles,
+  Box,
+  Globe,
 } from "lucide-react";
 import { highlightJS } from "../../utils/codeHighlighter";
-import { checkAutoCloseTag } from "../../utils/snippetsEngine";
+import { checkAutoCloseTag, getCompletions, expandSnippet } from "../../utils/snippetsEngine";
 import { lintJavaScriptCode, fixTypoInCode } from "../../utils/codeLinter";
 
 const MIN_FONT_SIZE = 13;
@@ -116,6 +119,79 @@ export const CodeEditor = ({
     isValid: true,
     typoMap: {},
   });
+
+  // Состояние меню автодополнения (IntelliSense Popover)
+  const [completionState, setCompletionState] = useState({
+    visible: false,
+    word: "",
+    items: [],
+    selectedIndex: 0,
+  });
+
+  const checkAndTriggerCompletions = (currentCode, cursorIdx) => {
+    if (readOnly) return;
+    const { word, items } = getCompletions(currentCode, cursorIdx);
+    if (items.length > 0 && word.length >= 1) {
+      setCompletionState((prev) => ({
+        visible: true,
+        word,
+        items,
+        selectedIndex: prev.visible && prev.word === word ? Math.min(prev.selectedIndex, items.length - 1) : 0,
+      }));
+    } else {
+      setCompletionState({ visible: false, word: "", items: [], selectedIndex: 0 });
+    }
+  };
+
+  const handleApplyCompletion = (item) => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+    const cursorIndex = textarea.selectionStart;
+    const word = completionState.word;
+
+    if (item.kind === "snippet" && item.snippet) {
+      const { newCode, newCursorPos } = expandSnippet(code, cursorIndex, item.snippet, word);
+      updateCode(newCode);
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.selectionStart = textareaRef.current.selectionEnd = newCursorPos;
+          textareaRef.current.focus();
+        }
+      }, 0);
+    } else {
+      const startReplace = Math.max(0, cursorIndex - word.length);
+      const before = code.substring(0, startReplace);
+      const after = code.substring(cursorIndex);
+      const insertText = item.insertText;
+      const newCode = before + insertText + after;
+      const newCursorPos = startReplace + insertText.length;
+      updateCode(newCode);
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.selectionStart = textareaRef.current.selectionEnd = newCursorPos;
+          textareaRef.current.focus();
+        }
+      }, 0);
+    }
+    setCompletionState({ visible: false, word: "", items: [], selectedIndex: 0 });
+  };
+
+  const calculatePopoverPos = () => {
+    const textarea = textareaRef.current;
+    if (!textarea) return { top: 32, left: 50 };
+    const pos = textarea.selectionStart;
+    const textBefore = code.substring(0, pos);
+    const lineNum = textBefore.split("\n").length;
+    const colNum = pos - textBefore.lastIndexOf("\n");
+
+    const lineH = Math.round(fontSize * 1.5);
+    const charW = Math.round(fontSize * 0.58);
+
+    const top = lineNum * lineH + 6;
+    const left = Math.min(Math.max(colNum * charW + 42, 45), 450);
+
+    return { top, left };
+  };
 
   // Стек истории для Undo/Redo
   const historyRef = useRef([initialCode]);
@@ -241,6 +317,39 @@ export const CodeEditor = ({
 
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
+
+    // 0. Навигация в меню автодополнения (ArrowUp, ArrowDown, Enter, Tab, Escape)
+    if (completionState.visible && completionState.items.length > 0) {
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        setCompletionState((prev) => ({
+          ...prev,
+          selectedIndex: (prev.selectedIndex + 1) % prev.items.length,
+        }));
+        return;
+      }
+      if (e.key === "ArrowUp") {
+        e.preventDefault();
+        setCompletionState((prev) => ({
+          ...prev,
+          selectedIndex: (prev.selectedIndex - 1 + prev.items.length) % prev.items.length,
+        }));
+        return;
+      }
+      if (e.key === "Enter" || e.key === "Tab") {
+        e.preventDefault();
+        const selectedItem = completionState.items[completionState.selectedIndex];
+        if (selectedItem) {
+          handleApplyCompletion(selectedItem);
+        }
+        return;
+      }
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setCompletionState({ visible: false, word: "", items: [], selectedIndex: 0 });
+        return;
+      }
+    }
 
     // 1. Горячие клавиши запуска: Ctrl+Enter
     if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
@@ -729,19 +838,40 @@ export const CodeEditor = ({
                 className="vscode-input-textarea"
                 value={code}
                 onChange={(e) => {
-                  updateCode(e.target.value);
+                  const val = e.target.value;
+                  const pos = e.target.selectionStart;
+                  updateCode(val);
                   updateCursorCoordinates();
+                  checkAndTriggerCompletions(val, pos);
                 }}
                 onKeyDown={handleKeyDown}
-                onKeyUp={updateCursorCoordinates}
-                onClick={updateCursorCoordinates}
-                onSelect={updateCursorCoordinates}
+                onKeyUp={(e) => {
+                  updateCursorCoordinates();
+                  if (!["ArrowUp", "ArrowDown", "Enter", "Tab", "Escape"].includes(e.key) && textareaRef.current) {
+                    checkAndTriggerCompletions(code, textareaRef.current.selectionStart);
+                  }
+                }}
+                onClick={() => {
+                  updateCursorCoordinates();
+                  if (textareaRef.current) {
+                    checkAndTriggerCompletions(code, textareaRef.current.selectionStart);
+                  }
+                }}
+                onSelect={() => {
+                  updateCursorCoordinates();
+                }}
                 onFocus={() => {
                   setIsFocused(true);
                   updateCursorCoordinates();
+                  if (textareaRef.current) {
+                    checkAndTriggerCompletions(code, textareaRef.current.selectionStart);
+                  }
                 }}
                 onBlur={() => {
                   setIsFocused(false);
+                  setTimeout(() => {
+                    setCompletionState({ visible: false, word: "", items: [], selectedIndex: 0 });
+                  }, 200);
                 }}
                 onScroll={handleScroll}
                 placeholder="// Напишите ваш код решения здесь..."
@@ -750,6 +880,56 @@ export const CodeEditor = ({
                 autoComplete="off"
                 autoCorrect="off"
               />
+
+              {/* Всплывающее меню подсказок и автодополнения (IntelliSense) */}
+              {completionState.visible && completionState.items.length > 0 && (
+                <div
+                  className="autocomplete-popover"
+                  style={{
+                    top: `${calculatePopoverPos().top}px`,
+                    left: `${calculatePopoverPos().left}px`,
+                  }}
+                >
+                  <div className="autocomplete-header">
+                    <span>Подсказки для "{completionState.word}"</span>
+                    <span className="autocomplete-hint">↑↓ выбор • Enter/Tab вставить</span>
+                  </div>
+                  <div className="autocomplete-list">
+                    {completionState.items.map((item, idx) => {
+                      const isSelected = idx === completionState.selectedIndex;
+                      return (
+                        <div
+                          key={idx}
+                          className={`autocomplete-item ${isSelected ? "autocomplete-active" : ""}`}
+                          onMouseDown={(e) => {
+                            e.preventDefault();
+                            handleApplyCompletion(item);
+                          }}
+                          onMouseEnter={() => {
+                            setCompletionState((prev) => ({ ...prev, selectedIndex: idx }));
+                          }}
+                        >
+                          <span className={`autocomplete-kind-badge kind-${item.kind}`}>
+                            {item.kind === "snippet" ? (
+                              <Wand2 size={12} />
+                            ) : item.kind === "hook" ? (
+                              <Sparkles size={12} />
+                            ) : item.kind === "keyword" ? (
+                              <Code2 size={12} />
+                            ) : item.kind === "variable" ? (
+                              <Box size={12} />
+                            ) : (
+                              <Globe size={12} />
+                            )}
+                          </span>
+                          <span className="autocomplete-label">{item.label}</span>
+                          <span className="autocomplete-detail">{item.detail}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>

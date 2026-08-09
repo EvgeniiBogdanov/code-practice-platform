@@ -41,9 +41,14 @@ export const KEYWORD_TYPOS = {
   nubmer: "number",
   bollean: "boolean",
   usesate: "useState",
+  usestate: "useState",
   useefect: "useEffect",
+  useeffect: "useEffect",
   useref: "useRef",
   usememo: "useMemo",
+  usecallback: "useCallback",
+  usecontext: "useContext",
+  usereducer: "useReducer",
 };
 
 /**
@@ -90,7 +95,7 @@ export const lintJavaScriptCode = (code) => {
       const regex = new RegExp(`\\b${typo}\\b`, "gi");
       let match;
       while ((match = regex.exec(codePart)) !== null) {
-        if (match[0].toLowerCase() === typo) {
+        if (match[0].toLowerCase() === typo.toLowerCase() && match[0] !== correct) {
           const col = match.index + 1;
           const problem = {
             id: `typo-${lineNum}-${col}`,

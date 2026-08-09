@@ -7083,6 +7083,168 @@ svg.lucide,
   gap: 4px;
 }
 
+/* ==========================================================================
+   INTELLISENSE AUTOCOMPLETE POPOVER (VS CODE STYLED DROPDOWN)
+   ========================================================================== */
+.autocomplete-popover {
+  position: absolute;
+  z-index: 100;
+  width: 320px;
+  max-width: 90vw;
+  background: #252526;
+  border: 1px solid #3c3c3c;
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65), 0 2px 6px rgba(0, 0, 0, 0.4);
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  overflow: hidden;
+  animation: popoverFadeIn 0.12s ease-out;
+}
+
+@keyframes popoverFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.autocomplete-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 8px;
+  background: #1e1e1e;
+  border-bottom: 1px solid #333333;
+  color: #9cdcfe;
+  font-size: 10.5px;
+  font-family: var(--font-sans, sans-serif);
+}
+
+.autocomplete-hint {
+  color: #858585;
+  font-size: 10px;
+}
+
+.autocomplete-list {
+  max-height: 220px;
+  overflow-y: auto;
+  padding: 2px 0;
+}
+
+.autocomplete-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  cursor: pointer;
+  color: #cccccc;
+  transition: background 0.08s ease;
+}
+
+.autocomplete-item:hover,
+.autocomplete-item.autocomplete-active {
+  background: #04395e;
+  color: #ffffff;
+}
+
+.autocomplete-kind-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.autocomplete-kind-badge.kind-snippet {
+  background: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+}
+
+.autocomplete-kind-badge.kind-keyword {
+  background: rgba(97, 218, 251, 0.2);
+  color: #61dafb;
+}
+
+.autocomplete-kind-badge.kind-hook {
+  background: rgba(168, 85, 247, 0.2);
+  color: #c084fc;
+}
+
+.autocomplete-kind-badge.kind-variable {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+}
+
+.autocomplete-kind-badge.kind-global {
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+}
+
+.autocomplete-label {
+  font-weight: 600;
+  color: #e2e8f0;
+  flex-shrink: 0;
+}
+
+.autocomplete-item.autocomplete-active .autocomplete-label {
+  color: #ffffff;
+}
+
+.autocomplete-detail {
+  font-size: 10.5px;
+  color: #858585;
+  margin-left: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: var(--font-sans, sans-serif);
+}
+
+.autocomplete-item.autocomplete-active .autocomplete-detail {
+  color: #94a3b8;
+}
+
+/* Light Theme Overrides for Autocomplete */
+[data-theme="light"] .autocomplete-popover {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .autocomplete-header {
+  background: #f1f5f9;
+  border-bottom-color: #e2e8f0;
+  color: #0284c7;
+}
+
+[data-theme="light"] .autocomplete-hint {
+  color: #64748b;
+}
+
+[data-theme="light"] .autocomplete-item {
+  color: #334155;
+}
+
+[data-theme="light"] .autocomplete-item:hover,
+[data-theme="light"] .autocomplete-item.autocomplete-active {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+[data-theme="light"] .autocomplete-label {
+  color: #0f172a;
+}
+
+[data-theme="light"] .autocomplete-detail {
+  color: #64748b;
+}
+
 /* --- Instant Custom Tooltip Engine --- */
 [data-tooltip] {
   position: relative;
