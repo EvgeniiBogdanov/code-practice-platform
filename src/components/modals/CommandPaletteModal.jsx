@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Search, Code2, Zap, Brain } from "lucide-react";
 import { getGroupMeta } from "../../javascript/data/groupConfig";
+import { getDifficultyLabel } from "../../utils/difficultyHelpers";
 
 const SECTION_LABELS = {
   react: { label: "REACT", icon: <Code2 size={12} style={{ color: "#61dafb" }} /> },
@@ -107,7 +108,7 @@ export const CommandPaletteModal = ({
                   <span
                     className={`difficulty-badge difficulty-${task.difficulty}`}
                   >
-                    {task.difficulty}
+                    {getDifficultyLabel(task.difficulty)}
                   </span>
                 )}
 

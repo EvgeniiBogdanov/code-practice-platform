@@ -26,6 +26,9 @@ import {
   ALL_TASKS,
 } from "../react/data/tasksData";
 import { JS_TASKS } from "../javascript/data/tasksData";
+import { ALGO_TASKS } from "../algorithms/data/tasksData";
+import { getAlgoGroupMetaByInfoId } from "../algorithms/data/groupConfig";
+import { FILE_ICON_COLOR } from "../constants/uiConstants";
 
 import Sidebar from "../components/layout/Sidebar";
 import Header from "../components/layout/Header";
@@ -57,6 +60,9 @@ const NotFoundComponent = () => {
         <Link to="/javascript" className="home-section-btn" style={{ background: "#f59e0b" }}>
           <Zap size={16} /> Раздел JavaScript
         </Link>
+        <Link to="/algorithms" className="home-section-btn" style={{ background: "#a855f7" }}>
+          <Brain size={16} /> Раздел Алгоритмы
+        </Link>
       </div>
     </div>
   );
@@ -86,6 +92,7 @@ const RootLayout = () => {
     ...REACT_TS_TASKS.map((t) => ({ ...t, difficulty: "ts", category: "React + TS (Разминка)", section: "react" })),
     ...REACT_TS_PRACTICE_TASKS.map((t) => ({ ...t, difficulty: "ts", category: "React + TS (Практика)", section: "react" })),
     ...JS_TASKS.map((t) => ({ ...t, group: t.group, subgroup: t.subgroup, category: t.group || "JavaScript", section: "javascript" })),
+    ...ALGO_TASKS.map((t) => ({ ...t, group: t.group, subgroup: t.subgroup, category: t.group || "Algorithms", section: "algorithms" })),
   ], []);
 
   // Определение выбранной задачи по текущему URL
@@ -100,34 +107,100 @@ const RootLayout = () => {
     if (jsIdx !== -1 && segments[jsIdx + 1]) {
       return segments[jsIdx + 1];
     }
+    const algoIdx = segments.indexOf("algorithms");
+    if (algoIdx !== -1 && segments[algoIdx + 1]) {
+      return segments[algoIdx + 1];
+    }
     const openIdx = segments.indexOf("open");
     if (
       openIdx !== -1 &&
       segments[openIdx + 1] &&
-      segments[openIdx + 1] !== "react" &&
-      segments[openIdx + 1] !== "javascript"
+      !["react", "javascript", "algorithms"].includes(segments[openIdx + 1])
     ) {
       return segments[openIdx + 1];
     }
     return null;
   }, [pathname]);
 
+  // Stable cache for group/subgroup overview objects to prevent reference thrashing
+  const groupTaskCacheRef = useRef({});
+
   const selectedTask = useMemo(() => {
     if (selectedTaskId) {
+      if (String(selectedTaskId).startsWith("group-") || String(selectedTaskId).startsWith("subgroup-")) {
+        // Return cached object if the id hasn't changed to keep a stable reference
+        const cached = groupTaskCacheRef.current;
+        if (cached && cached.id === selectedTaskId) return cached;
+
+        const rawName = decodeURIComponent(String(selectedTaskId).replace(/^group-|^subgroup-/, ""));
+        const algoMeta = getAlgoGroupMetaByInfoId(selectedTaskId);
+        let reactGroupName = "";
+        if (selectedTaskId === "group-warmup") reactGroupName = "Разминка";
+        else if (selectedTaskId === "group-refactoring") reactGroupName = "Рефакторинг";
+        else if (selectedTaskId === "group-middle") reactGroupName = "Middle";
+        else if (selectedTaskId === "group-strong") reactGroupName = "Strong";
+        else if (selectedTaskId === "group-ts") reactGroupName = "React + TS (Разминка)";
+        else if (selectedTaskId === "group-ts-practice") reactGroupName = "React + TS (Практика)";
+
+        // JavaScript subgroup / group check
+        let jsGroup = "";
+        let jsSubgroup = "";
+        if (String(selectedTaskId).startsWith("subgroup-")) {
+          const matchedJs = JS_TASKS.find(
+            (t) =>
+              t.subgroup === rawName ||
+              `${t.group}-${t.subgroup}` === rawName ||
+              `${t.group}/${t.subgroup}` === rawName
+          );
+          if (matchedJs) {
+            jsGroup = matchedJs.group;
+            jsSubgroup = matchedJs.subgroup;
+          }
+        } else if (String(selectedTaskId).startsWith("group-")) {
+          const matchedJs = JS_TASKS.find((t) => t.group === rawName);
+          if (matchedJs) {
+            jsGroup = matchedJs.group;
+          }
+        }
+
+        const displayName = algoMeta?.name || reactGroupName || jsSubgroup || jsGroup || rawName;
+        const result = {
+          id: selectedTaskId,
+          isGroupOverview: true,
+          group: jsGroup || displayName,
+          subgroup: jsSubgroup || undefined,
+          title: algoMeta?.title || displayName,
+        };
+        groupTaskCacheRef.current = result;
+        return result;
+      }
       const found = allTasksList.find((t) => String(t.id) === String(selectedTaskId));
       if (found) return found;
     }
     if (activeSection === "javascript" && JS_TASKS.length > 0) return JS_TASKS[0];
+    if (activeSection === "algorithms") {
+      const cached = groupTaskCacheRef.current;
+      if (cached && cached.id === "group-two-pointers") return cached;
+      const result = {
+        id: "group-two-pointers",
+        isGroupOverview: true,
+        group: "Two Pointers",
+        title: "Two Pointers (два указателя)",
+      };
+      groupTaskCacheRef.current = result;
+      return result;
+    }
     if (activeSection === "react" && WARMUP_TASKS.length > 0) return WARMUP_TASKS[0];
     return WARMUP_TASKS[0] || null;
   }, [selectedTaskId, activeSection, allTasksList]);
 
-  // Сохраняем последний просмотренный id
+  // Сохраняем последний просмотренный id per section
   useEffect(() => {
-    if (selectedTaskId) {
+    if (selectedTaskId && activeSection && activeSection !== "home") {
+      localStorage.setItem(`playground_last_selected_task_id_${activeSection}`, String(selectedTaskId));
       localStorage.setItem("playground_last_selected_task_id", String(selectedTaskId));
     }
-  }, [selectedTaskId]);
+  }, [selectedTaskId, activeSection]);
 
   // Выбор активной вкладки из search params или default 'candidate'
   const activeTab = useMemo(() => {
@@ -338,47 +411,54 @@ const RootLayout = () => {
   }, []);
 
   // Автоматическая двусторонняя синхронизация открытых папок/категорий в Finder и Сайдбаре
+  // Keyed on selectedTaskId (string) instead of selectedTask (object) to avoid re-fires from reference changes
+  const prevSyncedTaskIdRef = useRef(null);
   useEffect(() => {
-    if (!selectedTask) return;
+    if (!selectedTask || !selectedTaskId) return;
+    // Skip if we already synced for this exact taskId
+    if (prevSyncedTaskIdRef.current === selectedTaskId) return;
+    prevSyncedTaskIdRef.current = selectedTaskId;
 
-    // React синхронизация категорий
-    if (WARMUP_TASKS.some((t) => String(t.id) === String(selectedTask.id))) {
+    const taskIdStr = String(selectedTask.id);
+
+    // React синхронизация категорий — use Set lookups for speed
+    if (WARMUP_TASKS.some((t) => String(t.id) === taskIdStr)) {
       setWarmupExpanded(true);
-    } else if (REFACTORING_TASKS.some((t) => String(t.id) === String(selectedTask.id))) {
+    } else if (REFACTORING_TASKS.some((t) => String(t.id) === taskIdStr)) {
       setRefactoringExpanded(true);
-    } else if (MAIN_TASKS.some((t) => String(t.id) === String(selectedTask.id))) {
+    } else if (MAIN_TASKS.some((t) => String(t.id) === taskIdStr)) {
       setTasksExpanded(true);
-    } else if (ADVANCED_TASKS.some((t) => String(t.id) === String(selectedTask.id))) {
+    } else if (ADVANCED_TASKS.some((t) => String(t.id) === taskIdStr)) {
       setAdvancedExpanded(true);
-    } else if (REACT_TS_TASKS.some((t) => String(t.id) === String(selectedTask.id))) {
+    } else if (REACT_TS_TASKS.some((t) => String(t.id) === taskIdStr)) {
       setReactTsExpanded(true);
-    } else if (REACT_TS_PRACTICE_TASKS.some((t) => String(t.id) === String(selectedTask.id))) {
+    } else if (REACT_TS_PRACTICE_TASKS.some((t) => String(t.id) === taskIdStr)) {
       setReactTsPracticeExpanded(true);
     }
 
-    // JavaScript синхронизация групп и подгрупп
-    if (selectedTask.group) {
-      setExpandedJsGroups((prev) => ({
-        ...prev,
-        [selectedTask.group]: true,
-      }));
+    // JavaScript / Algorithms синхронизация групп и подгрупп
+    if (selectedTask.group && !selectedTask.isGroupOverview) {
+      setExpandedJsGroups((prev) => {
+        if (prev[selectedTask.group]) return prev; // already expanded, skip state update
+        return { ...prev, [selectedTask.group]: true };
+      });
       if (selectedTask.subgroup) {
         const subKey = `${selectedTask.group}/${selectedTask.subgroup}`;
-        setExpandedJsSubgroups((prev) => ({
-          ...prev,
-          [subKey]: true,
-        }));
+        setExpandedJsSubgroups((prev) => {
+          if (prev[subKey]) return prev; // already expanded, skip state update
+          return { ...prev, [subKey]: true };
+        });
       }
     }
 
     // Плавная прокрутка активной задачи в сайдбаре в область видимости
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       const el = document.getElementById(`sidebar-task-${selectedTask.id}`);
       if (el) {
         el.scrollIntoView({ behavior: "smooth", block: "nearest" });
       }
-    }, 120);
-  }, [selectedTask]);
+    });
+  }, [selectedTaskId]);
 
   // Клавиатурная навигация и Cmd+K
   useEffect(() => {
@@ -575,9 +655,10 @@ const RootLayout = () => {
 
     if (activeSection === "home") {
       const jsStats = computeStats(JS_TASKS);
-      const allSolved = solvedCount + jsStats.solved;
-      const allUnsolved = unsolvedCount + jsStats.unsolved;
-      const allTotal = totalTasks + jsStats.total;
+      const algoStats = computeStats(ALGO_TASKS);
+      const allSolved = solvedCount + jsStats.solved + algoStats.solved;
+      const allUnsolved = unsolvedCount + jsStats.unsolved + algoStats.unsolved;
+      const allTotal = totalTasks + jsStats.total + algoStats.total;
       const allInProgress = allTotal - allSolved - allUnsolved;
 
       return {
@@ -595,29 +676,26 @@ const RootLayout = () => {
         categories: [
           { name: "React", completed: completedTotal, total: totalTasks },
           { name: "JavaScript", completed: jsStats.solved, total: jsStats.total },
-          { name: "Алгоритмы", completed: 0, total: 0, note: "Скоро" },
+          { name: "Алгоритмы", completed: algoStats.solved, total: algoStats.total },
         ],
       };
     }
 
+    const algoStats = computeStats(ALGO_TASKS);
+    const algoGroupNames = Array.from(new Set(ALGO_TASKS.map((t) => t.group)));
+    const algoCategories = algoGroupNames.map((gName) => {
+      const groupTasks = ALGO_TASKS.filter((t) => t.group === gName);
+      const count = groupTasks.filter((t) => completedTasks[t.id] && completedTasks[t.id] !== "unsolved").length;
+      return { name: gName, completed: count, total: groupTasks.length };
+    });
+
     return {
       title: "Статистика Алгоритмы",
       icon: <Brain size={18} style={{ color: "#a371f7" }} />,
-      total: 0,
-      solved: 0,
-      unsolved: 0,
-      inProgress: 0,
-      solvedPct: 0,
-      unsolvedPct: 0,
-      inProgressPct: 0,
-      isDevelopment: true,
-      breakdownTitle: "Темы Алгоритмы:",
-      categories: [
-        { name: "Два указателя (Two Pointers)", completed: 0, total: 0, note: "В разработке" },
-        { name: "Скользящее окно (Sliding Window)", completed: 0, total: 0, note: "В разработке" },
-        { name: "Бинарный поиск (Binary Search)", completed: 0, total: 0, note: "В разработке" },
-        { name: "Обход деревьев и графов", completed: 0, total: 0, note: "В разработке" },
-      ],
+      ...algoStats,
+      isDevelopment: false,
+      breakdownTitle: "Прогресс по темам Алгоритмы:",
+      categories: algoCategories,
     };
   }, [
     activeSection,
@@ -680,6 +758,7 @@ const RootLayout = () => {
         jsCategories.push({
           id: `category-js-${name}`,
           name: name,
+          folderId: `group-${name}`,
           icon: <Zap size={15} style={{ color: "#f59e0b" }} />,
           tasks,
           completed,
@@ -691,48 +770,52 @@ const RootLayout = () => {
     }
 
     return [
-      { id: "category-warmup", name: "Разминка", icon: <Flame size={15} style={{ color: "var(--notion-red)" }} />, tasks: WARMUP_TASKS, completed: completedWarmup, total: totalWarmup },
-      { id: "category-refactoring", name: "Рефакторинг", icon: <Wrench size={15} style={{ color: "var(--notion-blue)" }} />, tasks: REFACTORING_TASKS, completed: completedRefactoring, total: totalRefactoring },
-      { id: "category-middle", name: "Middle", icon: <Rocket size={15} style={{ color: "var(--color-success)" }} />, tasks: MAIN_TASKS, completed: completedMain, total: totalMain },
-      { id: "category-strong", name: "Strong", icon: <Brain size={15} style={{ color: "var(--color-accent-purple)" }} />, tasks: ADVANCED_TASKS, completed: completedAdvanced, total: totalAdvanced },
-      { id: "category-ts", name: "React + TS (Разминка)", icon: <Zap size={15} style={{ color: "var(--color-warning-light)" }} />, tasks: REACT_TS_TASKS, completed: completedReactTs, total: totalReactTs },
-      { id: "category-ts-practice", name: "React + TS (Практика)", icon: <Zap size={15} style={{ color: "var(--color-warning-light)" }} />, tasks: REACT_TS_PRACTICE_TASKS, completed: completedReactTsPractice, total: totalReactTsPractice },
+      { id: "category-warmup", folderId: "group-warmup", name: "Разминка", icon: <Flame size={15} style={{ color: "var(--notion-red)" }} />, tasks: WARMUP_TASKS, completed: completedWarmup, total: totalWarmup },
+      { id: "category-refactoring", folderId: "group-refactoring", name: "Рефакторинг", icon: <Wrench size={15} style={{ color: "var(--notion-blue)" }} />, tasks: REFACTORING_TASKS, completed: completedRefactoring, total: totalRefactoring },
+      { id: "category-middle", folderId: "group-middle", name: "Middle", icon: <Rocket size={15} style={{ color: "var(--color-success)" }} />, tasks: MAIN_TASKS, completed: completedMain, total: totalMain },
+      { id: "category-strong", folderId: "group-strong", name: "Strong", icon: <Brain size={15} style={{ color: "var(--color-accent-purple)" }} />, tasks: ADVANCED_TASKS, completed: completedAdvanced, total: totalAdvanced },
+      { id: "category-ts", folderId: "group-ts", name: "React + TS (Разминка)", icon: <Zap size={15} style={{ color: "var(--color-warning-light)" }} />, tasks: REACT_TS_TASKS, completed: completedReactTs, total: totalReactTs },
+      { id: "category-ts-practice", folderId: "group-ts-practice", name: "React + TS (Практика)", icon: <Zap size={15} style={{ color: "var(--color-warning-light)" }} />, tasks: REACT_TS_PRACTICE_TASKS, completed: completedReactTsPractice, total: totalReactTsPractice },
     ];
   }, [activeSection, completedWarmup, totalWarmup, completedRefactoring, totalRefactoring, completedMain, totalMain, completedAdvanced, totalAdvanced, completedReactTs, totalReactTs, completedReactTsPractice, totalReactTsPractice, completedTasks]);
 
   const { taskCategory, categoryIcon, taskIcon, currentCategoryTasks, categoryId } = useMemo(() => {
-    if (!selectedTask) return { taskCategory: "", categoryIcon: null, taskIcon: <FileText size={14} style={{ color: "var(--text-dimmed)" }} />, currentCategoryTasks: [], categoryId: "" };
+    const defaultFileIcon = <FileText size={14} className="node-file-icon" style={{ color: FILE_ICON_COLOR }} />;
+    if (!selectedTask) return { taskCategory: "", categoryIcon: null, taskIcon: defaultFileIcon, currentCategoryTasks: [], categoryId: "" };
 
-    if (JS_TASKS.some((t) => String(t.id) === String(selectedTask.id))) {
-      const match = JS_TASKS.find((t) => String(t.id) === String(selectedTask.id));
-      const categoryName = match?.group && match?.subgroup
-        ? `${match.group} > ${match.subgroup}`
-        : (match?.group || "JavaScript");
+    // React categories & groups
+    if (selectedTask.id === "group-warmup" || WARMUP_TASKS.some((t) => t.id === selectedTask.id))
+      return { taskCategory: "Разминка", categoryIcon: <Flame size={15} style={{ color: "var(--notion-red)" }} />, taskIcon: defaultFileIcon, currentCategoryTasks: WARMUP_TASKS, categoryId: "category-warmup" };
+    if (selectedTask.id === "group-refactoring" || REFACTORING_TASKS.some((t) => t.id === selectedTask.id))
+      return { taskCategory: "Рефакторинг", categoryIcon: <Wrench size={15} style={{ color: "var(--notion-blue)" }} />, taskIcon: defaultFileIcon, currentCategoryTasks: REFACTORING_TASKS, categoryId: "category-refactoring" };
+    if (selectedTask.id === "group-middle" || MAIN_TASKS.some((t) => t.id === selectedTask.id))
+      return { taskCategory: "Middle", categoryIcon: <Rocket size={15} style={{ color: "var(--color-success)" }} />, taskIcon: defaultFileIcon, currentCategoryTasks: MAIN_TASKS, categoryId: "category-middle" };
+    if (selectedTask.id === "group-strong" || ADVANCED_TASKS.some((t) => t.id === selectedTask.id))
+      return { taskCategory: "Strong", categoryIcon: <Brain size={15} style={{ color: "var(--color-accent-purple)" }} />, taskIcon: defaultFileIcon, currentCategoryTasks: ADVANCED_TASKS, categoryId: "category-strong" };
+    if (selectedTask.id === "group-ts" || REACT_TS_TASKS.some((t) => t.id === selectedTask.id))
+      return { taskCategory: "React + TS (Разминка)", categoryIcon: <Zap size={15} style={{ color: "var(--color-warning-light)" }} />, taskIcon: defaultFileIcon, currentCategoryTasks: REACT_TS_TASKS, categoryId: "category-ts" };
+    if (selectedTask.id === "group-ts-practice" || REACT_TS_PRACTICE_TASKS.some((t) => t.id === selectedTask.id))
+      return { taskCategory: "React + TS (Практика)", categoryIcon: <Zap size={15} style={{ color: "var(--color-warning-light)" }} />, taskIcon: defaultFileIcon, currentCategoryTasks: REACT_TS_PRACTICE_TASKS, categoryId: "category-ts-practice" };
+
+    // JavaScript categories & groups
+    if (JS_TASKS.some((t) => String(t.id) === String(selectedTask.id)) || (activeSection === "javascript" && selectedTask.group)) {
+      const groupName = selectedTask.group || "Циклы";
+      const subName = selectedTask.subgroup || "";
+      const categoryName = subName ? `${groupName} > ${subName}` : groupName;
       const subTasks = JS_TASKS.filter(
-        (t) => t.group === match?.group && t.subgroup === match?.subgroup
+        (t) => t.group === groupName && (!subName || t.subgroup === subName)
       );
       return {
         taskCategory: categoryName,
         categoryIcon: <Zap size={15} style={{ color: "var(--color-warning)" }} />,
-        taskIcon: <FileText size={14} style={{ color: "var(--text-dimmed)" }} />,
-        currentCategoryTasks: subTasks,
+        taskIcon: defaultFileIcon,
+        currentCategoryTasks: subTasks.length > 0 ? subTasks : JS_TASKS,
         categoryId: `category-js-${categoryName}`,
       };
     }
-    if (WARMUP_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "Разминка", categoryIcon: <Flame size={15} style={{ color: "var(--notion-red)" }} />, taskIcon: <FileText size={14} style={{ color: "var(--text-dimmed)" }} />, currentCategoryTasks: WARMUP_TASKS, categoryId: "category-warmup" };
-    if (REFACTORING_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "Рефакторинг", categoryIcon: <Wrench size={15} style={{ color: "var(--notion-blue)" }} />, taskIcon: <FileText size={14} style={{ color: "var(--text-dimmed)" }} />, currentCategoryTasks: REFACTORING_TASKS, categoryId: "category-refactoring" };
-    if (MAIN_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "Middle", categoryIcon: <Rocket size={15} style={{ color: "var(--color-success)" }} />, taskIcon: <FileText size={14} style={{ color: "var(--text-dimmed)" }} />, currentCategoryTasks: MAIN_TASKS, categoryId: "category-middle" };
-    if (ADVANCED_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "Strong", categoryIcon: <Brain size={15} style={{ color: "var(--color-accent-purple)" }} />, taskIcon: <FileText size={14} style={{ color: "var(--text-dimmed)" }} />, currentCategoryTasks: ADVANCED_TASKS, categoryId: "category-strong" };
-    if (REACT_TS_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "React + TS (Разминка)", categoryIcon: <Zap size={15} style={{ color: "var(--color-warning-light)" }} />, taskIcon: <FileText size={14} style={{ color: "var(--text-dimmed)" }} />, currentCategoryTasks: REACT_TS_TASKS, categoryId: "category-ts" };
-    if (REACT_TS_PRACTICE_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "React + TS (Практика)", categoryIcon: <Zap size={15} style={{ color: "var(--color-warning-light)" }} />, taskIcon: <FileText size={14} style={{ color: "var(--text-dimmed)" }} />, currentCategoryTasks: REACT_TS_PRACTICE_TASKS, categoryId: "category-ts-practice" };
-    return { taskCategory: "", categoryIcon: null, taskIcon: <FileText size={14} style={{ color: "var(--text-dimmed)" }} />, currentCategoryTasks: [], categoryId: "" };
-  }, [selectedTask]);
+
+    return { taskCategory: "", categoryIcon: null, taskIcon: defaultFileIcon, currentCategoryTasks: [], categoryId: "" };
+  }, [selectedTask, activeSection]);
 
   const isTaskVisible = useCallback(() => true, []);
 
@@ -795,6 +878,7 @@ const RootLayout = () => {
           sectionDropdownOpen={sectionDropdownOpen}
           setSectionDropdownOpen={setSectionDropdownOpen}
           sectionDropdownRef={sectionDropdownRef}
+          setHeaderSectionDropdownOpen={setHeaderSectionDropdownOpen}
           setStatsModalOpen={setStatsModalOpen}
           completedTotal={completedTotal}
           totalTasks={totalTasks}
@@ -850,6 +934,8 @@ const RootLayout = () => {
             sidebarOpen={sidebarOpen}
             setSidebarOpen={setSidebarOpenWithPreference}
             activeSection={activeSection}
+            sectionDropdownOpen={sectionDropdownOpen}
+            setSectionDropdownOpen={setSectionDropdownOpen}
             headerSectionDropdownOpen={headerSectionDropdownOpen}
             setHeaderSectionDropdownOpen={setHeaderSectionDropdownOpen}
             headerSectionDropdownRef={headerSectionDropdownRef}

@@ -1,12 +1,18 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { WARMUP_TASKS, REACT_TASKS } from "../../react/data/tasksData";
+import { REACT_TASKS } from "../../react/data/tasksData";
+import { isReactGroupValid } from "../../react/data/groupConfig";
 
 export const Route = createFileRoute("/react/")({
   beforeLoad: () => {
-    let targetTaskId = WARMUP_TASKS[0]?.id || "1";
+    let targetTaskId = "group-warmup";
     try {
-      const saved = localStorage.getItem("playground_last_selected_task_id");
-      if (saved && REACT_TASKS.some((t) => String(t.id) === String(saved))) {
+      const saved =
+        localStorage.getItem("playground_last_selected_task_id_react") ||
+        localStorage.getItem("playground_last_selected_task_id");
+      if (
+        saved &&
+        (isReactGroupValid(saved) || REACT_TASKS.some((t) => String(t.id) === String(saved)))
+      ) {
         targetTaskId = saved;
       }
     } catch {

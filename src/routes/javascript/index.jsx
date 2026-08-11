@@ -3,11 +3,23 @@ import { JS_TASKS } from "../../javascript/data/tasksData";
 
 export const Route = createFileRoute("/javascript/")({
   beforeLoad: () => {
-    let targetTaskId = JS_TASKS[0]?.id || "js-loops-1";
+    let targetTaskId = "group-Циклы";
     try {
-      const saved = localStorage.getItem("playground_last_selected_task_id");
-      if (saved && JS_TASKS.some((t) => String(t.id) === String(saved))) {
-        targetTaskId = saved;
+      const saved =
+        localStorage.getItem("playground_last_selected_task_id_javascript") ||
+        localStorage.getItem("playground_last_selected_task_id");
+      if (saved) {
+        const isTask = JS_TASKS.some((t) => String(t.id) === String(saved));
+        const isGroup =
+          saved.startsWith("group-") &&
+          JS_TASKS.some(
+            (t) => t.group === decodeURIComponent(saved.replace(/^group-/, ""))
+          );
+        const isSubgroup = saved.startsWith("subgroup-");
+
+        if (isTask || isGroup || isSubgroup) {
+          targetTaskId = saved;
+        }
       }
     } catch {
       // fallback

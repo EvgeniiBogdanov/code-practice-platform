@@ -21,6 +21,7 @@ export const MaterialsTab = ({ selectedTask }) => {
   if (explanationText) {
     explanationText = explanationText
       .replace(/^###\s*Разбор решения[:\s]*[^\n]*\n*/gi, "")
+      .replace(/^#\s+[^\n]*\n*/g, "")
       .trim();
   }
 
@@ -68,11 +69,6 @@ export const MaterialsTab = ({ selectedTask }) => {
                   Разбор решения: {selectedTask.title}
                 </h1>
                 <div className="notion-article-meta" style={{ marginTop: "8px" }}>
-                  {selectedTask.difficulty && (
-                    <span className={`notion-meta-badge difficulty-badge difficulty-${selectedTask.difficulty}`}>
-                      {selectedTask.difficulty === "easy" ? "Легкая" : selectedTask.difficulty === "medium" ? "Средняя" : "Сложная"}
-                    </span>
-                  )}
                   <span className="notion-meta-badge notion-badge-blue">
                     <BookOpen size={12} /> Разбор решения
                   </span>

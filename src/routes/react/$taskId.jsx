@@ -1,43 +1,46 @@
-import React from "react";
-import { createFileRoute, useParams, useSearch, Link } from "@tanstack/react-router";
+import React, { useEffect } from "react";
+import { createFileRoute, useParams, useSearch, Link, Navigate } from "@tanstack/react-router";
 import { REACT_TASKS, WARMUP_TASKS } from "../../react/data/tasksData";
+import { REACT_GROUPS_CONFIG } from "../../react/data/groupConfig";
 import TaskView from "../../components/task/TaskView";
+import GroupOverviewView from "../../components/task/GroupOverviewView";
 import { usePractice } from "../../context/PracticeContext";
-import { FileQuestion, Home, Code2 } from "lucide-react";
+import {
+  FileQuestion,
+  Home,
+  Code2,
+} from "lucide-react";
 
 function ReactTaskPage() {
   const { taskId } = useParams({ from: "/react/$taskId" });
   const search = useSearch({ from: "/react/$taskId" });
   const context = usePractice();
 
+  // Save last selected React task/folder
+  useEffect(() => {
+    if (taskId && (REACT_GROUPS_CONFIG[taskId] || REACT_TASKS.some((t) => String(t.id) === String(taskId)))) {
+      localStorage.setItem("playground_last_selected_task_id_react", taskId);
+    }
+  }, [taskId]);
+
+  // 1. Проверка на страницу группы/категории React
+  if (taskId.startsWith("group-") && REACT_GROUPS_CONFIG[taskId]) {
+    const config = REACT_GROUPS_CONFIG[taskId];
+    const groupMeta = {
+      name: config.name,
+      title: config.name,
+      desc: config.desc,
+      icon: config.icon,
+      color: config.color,
+      bg: config.bg || "rgba(59, 130, 246, 0.12)",
+    };
+    return <GroupOverviewView groupMeta={groupMeta} groupTasks={config.tasks} />;
+  }
+
   const selectedTask = REACT_TASKS.find((t) => String(t.id) === String(taskId));
 
   if (!selectedTask) {
-    return (
-      <div className="coming-soon-container" style={{ padding: "60px 20px", textAlign: "center" }}>
-        <div className="coming-soon-icon" style={{ background: "rgba(239, 68, 68, 0.1)", color: "#ef4444" }}>
-          <FileQuestion size={36} />
-        </div>
-        <h2 className="coming-soon-title" style={{ fontSize: "22px", marginBottom: "8px" }}>
-          Задача React не найдена
-        </h2>
-        <p className="coming-soon-desc" style={{ maxWidth: "460px", margin: "0 auto 24px" }}>
-          Задачи с ID «{taskId}» не существует в каталоге React.
-        </p>
-        <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
-          <Link
-            to="/react/$taskId"
-            params={{ taskId: String(WARMUP_TASKS[0]?.id || "1") }}
-            className="home-section-btn"
-          >
-            <Code2 size={16} /> Перейти к первой задаче
-          </Link>
-          <Link to="/home" className="home-section-btn-disabled" style={{ cursor: "pointer" }}>
-            <Home size={14} /> На Главную
-          </Link>
-        </div>
-      </div>
-    );
+    return <Navigate to="/react/$taskId" params={{ taskId: "group-warmup" }} replace />;
   }
 
   const activeTab = search?.tab || "candidate";

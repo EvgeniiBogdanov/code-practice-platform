@@ -108,13 +108,22 @@ export const CandidateTab = ({
     Boolean(currentTask.filepath && currentTask.filepath.includes("javascript"));
 
   const handleToggleFullscreen = () => {
-    const section =
-      currentTask.section === "javascript" || String(currentTask.id).startsWith("js")
+    const targetSection =
+      currentTask.section === "algorithms" ||
+      String(currentTask.id).startsWith("algo") ||
+      currentTask.group === "Two Pointers"
+        ? "algorithms"
+        : currentTask.section === "javascript" || String(currentTask.id).startsWith("js")
         ? "javascript"
         : "react";
 
     navigate({
-      to: section === "javascript" ? "/open/javascript/$taskId" : "/open/react/$taskId",
+      to:
+        targetSection === "algorithms"
+          ? "/open/algorithms/$taskId"
+          : targetSection === "javascript"
+          ? "/open/javascript/$taskId"
+          : "/open/react/$taskId",
       params: { taskId: String(currentTask.id) },
     });
   };
