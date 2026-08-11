@@ -1,3 +1,32 @@
+// JS WHILE TASKS IMPORTS
+import WhileLoopCandidateRaw from "../tasks/0_while/1_WhileLoop.js?raw";
+import WhileLoopSolutionRaw from "../solutions/0_while/1_WhileLoop.js?raw";
+
+import CountdownCandidateRaw from "../tasks/0_while/2_Countdown.js?raw";
+import CountdownSolutionRaw from "../solutions/0_while/2_Countdown.js?raw";
+import CountdownIdiomaticSolutionRaw from "../solutions/0_while/2_Countdown_Idiomatic.js?raw";
+
+import SumOfDigitsCandidateRaw from "../tasks/0_while/3_SumOfDigits.js?raw";
+import SumOfDigitsSolutionRaw from "../solutions/0_while/3_SumOfDigits.js?raw";
+import SumOfDigitsStringSolutionRaw from "../solutions/0_while/3_SumOfDigits_String.js?raw";
+
+import ReverseNumberCandidateRaw from "../tasks/0_while/4_ReverseNumber.js?raw";
+import ReverseNumberSolutionRaw from "../solutions/0_while/4_ReverseNumber.js?raw";
+
+import GcdEuclidCandidateRaw from "../tasks/0_while/5_GcdEuclid.js?raw";
+import GcdEuclidSolutionRaw from "../solutions/0_while/5_GcdEuclid.js?raw";
+
+import BinarySearchCandidateRaw from "../tasks/0_while/6_BinarySearch.js?raw";
+import BinarySearchSolutionRaw from "../solutions/0_while/6_BinarySearch.js?raw";
+
+import SumLinkedListCandidateRaw from "../tasks/0_while/7_SumLinkedList.js?raw";
+import SumLinkedListSolutionRaw from "../solutions/0_while/7_SumLinkedList.js?raw";
+import SumLinkedListRecursionSolutionRaw from "../solutions/0_while/7_SumLinkedList_Recursion.js?raw";
+
+import MergeSortedArraysCandidateRaw from "../tasks/0_while/8_MergeSortedArrays.js?raw";
+import MergeSortedArraysSolutionRaw from "../solutions/0_while/8_MergeSortedArrays.js?raw";
+import MergeSortedArraysSortSolutionRaw from "../solutions/0_while/8_MergeSortedArrays_Sort.js?raw";
+
 import ForLoopCandidateRaw from "../tasks/1_loops/1_ForLoop.js?raw";
 import ForLoopSolutionRaw from "../solutions/1_loops/1_ForLoop.js?raw";
 
@@ -624,6 +653,402 @@ import QueryStringParserSolutionRaw from "../solutions/23_string_dom_utils/2_Que
 
 import ClassNamesHelperCandidateRaw from "../tasks/23_string_dom_utils/3_ClassNamesHelper.js?raw";
 import ClassNamesHelperSolutionRaw from "../solutions/23_string_dom_utils/3_ClassNamesHelper.js?raw";
+
+export const JS_WHILE_TASKS = [
+  {
+    id: "js_while_1",
+    group: "Циклы",
+    subgroup: "while",
+    title: "1. Напиши базовый синтаксис цикла while",
+    desc: "Напишите базовый синтаксис бесконечного цикла while с истинным условием (while (true)) в JavaScript.",
+    isRaw: true,
+    candidate: WhileLoopCandidateRaw,
+    rawCandidate: WhileLoopCandidateRaw,
+    solution: WhileLoopSolutionRaw,
+    rawSolution: WhileLoopSolutionRaw,
+    filepath: "src/javascript/tasks/0_while/1_WhileLoop.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Базовый синтаксис",
+        recommendationNote: "Инструкция while (условие) выполняет блок кода до тех пор, пока условие истинно. Для бесконечного цикла передается значение true.",
+        rawSolution: WhileLoopSolutionRaw,
+        filepath: "src/javascript/tasks/0_while/1_WhileLoop.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Циклы while и for (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Циклы while и for",
+        url: "https://learn.javascript.ru/while-for",
+      },
+      {
+        title: "Цикл while (MDN Web Docs)",
+        urlTitle: "MDN — Инструкция while",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Statements/while",
+      },
+      {
+        title: "Цикл while (Doka.guide)",
+        urlTitle: "Дока — Цикл while",
+        url: "https://doka.guide/js/while/",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "В чем главное отличие цикла while от do...while?",
+        answer: "Цикл while проверяет условие ДО выполнения тела цикла (может не выполниться ни разу). Цикл do...while проверяет условие ПОСЛЕ первой итерации, гарантируя хотя бы однократное выполнение тела.",
+      },
+      {
+        question: "Что произойдет при выполнении бесконечного цикла while (true) в браузере без break?",
+        answer: "Основной поток выполнения (Main Thread) зависнет в бесконечном синхронном цикле, блокируя отрисовку страницы и обработку любых пользовательских событий.",
+      },
+    ],
+    checklist: [
+      "Использовано ключевое слово while",
+      "В круглых скобках указано логическое условие (true)",
+      "Тело цикла оформлено фигурными скобками {}",
+    ],
+  },
+  {
+    id: "js_while_2",
+    group: "Циклы",
+    subgroup: "while",
+    title: "2. Обратный отсчёт от N до 1",
+    desc: "Напишите функцию countdown(n), которая принимает положительное число n и выводит в консоль числа от n до 1 включительно с помощью цикла while.",
+    isRaw: true,
+    candidate: CountdownCandidateRaw,
+    rawCandidate: CountdownCandidateRaw,
+    solution: CountdownSolutionRaw,
+    rawSolution: CountdownSolutionRaw,
+    filepath: "src/javascript/tasks/0_while/2_Countdown.js",
+    solutions: [
+      {
+        title: "Вариант 1: Явный декремент в теле цикла",
+        isRecommended: true,
+        badge: "Чистый и понятный код",
+        recommendationNote: "Явная проверка условия n > 0 и шаг n-- делают код очевидным для чтения и исключают случайные ошибки на единицу (off-by-one errors).",
+        rawSolution: CountdownSolutionRaw,
+        filepath: "src/javascript/solutions/0_while/2_Countdown.js",
+      },
+      {
+        title: "Вариант 2: Идиоматичный пост-декремент while(n--)",
+        isRecommended: false,
+        badge: "Компактный синтаксис",
+        recommendationNote: "Постфиксный декремент n-- уменьшает значение сразу после проверки истинности n (0 приводится к false и останавливает цикл).",
+        rawSolution: CountdownIdiomaticSolutionRaw,
+        filepath: "src/javascript/solutions/0_while/2_Countdown_Idiomatic.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Циклы while и for (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Циклы while и for",
+        url: "https://learn.javascript.ru/while-for",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Как работает выражение while (n) при передаче числа?",
+        answer: "JavaScript приводит число к булеву типу: любое ненулевое число считается true, а 0 приводится к false, завершая выполнение цикла.",
+      },
+    ],
+    checklist: [
+      "Объявлена функция countdown(n)",
+      "Использован цикл while",
+      "Числа выводятся от n до 1 в порядке убывания",
+      "Условие выхода предотвращает зацикливание при n <= 0",
+    ],
+  },
+  {
+    id: "js_while_3",
+    group: "Циклы",
+    subgroup: "while",
+    title: "3. Сумма цифр числа",
+    desc: "Напишите функцию sumOfDigits(num), которая принимает целое неотрицательное число num и возвращает сумму всех его цифр, извлекая их через цикл while с делением на 10 (без приведения к строке). Пример: sumOfDigits(1234) → 10, sumOfDigits(705) → 12.",
+    isRaw: true,
+    candidate: SumOfDigitsCandidateRaw,
+    rawCandidate: SumOfDigitsCandidateRaw,
+    solution: SumOfDigitsSolutionRaw,
+    rawSolution: SumOfDigitsSolutionRaw,
+    filepath: "src/javascript/tasks/0_while/3_SumOfDigits.js",
+    solutions: [
+      {
+        title: "Вариант 1: Арифметическое извлечение разрядов",
+        isRecommended: true,
+        badge: "Оптимально по памяти O(1)",
+        recommendationNote: "Математическое деление на 10 и взятие остатка % 10 работает за O(log10 N) времени без аллокации промежуточных строк и массивов.",
+        rawSolution: SumOfDigitsSolutionRaw,
+        filepath: "src/javascript/solutions/0_while/3_SumOfDigits.js",
+      },
+      {
+        title: "Вариант 2: Через приведение к строке и reduce()",
+        isRecommended: false,
+        badge: "Декларативный подход",
+        recommendationNote: "Преобразование в строку String(num).split('') выделяет дополнительную память O(K), где K — количество цифр.",
+        rawSolution: SumOfDigitsStringSolutionRaw,
+        filepath: "src/javascript/solutions/0_while/3_SumOfDigits_String.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Математические операторы в JS (MDN)",
+        urlTitle: "MDN — Оператор остатка от деления %",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Remainder",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Зачем использовать Math.floor(n / 10) вместо простого n / 10?",
+        answer: "В JavaScript все числа по умолчанию имеют тип с плавающей точкой (IEEE 754 float). Операция 123 / 10 вернет 12.3, поэтому Math.floor отбрасывает дробную часть для целочисленного сдвига разряда.",
+      },
+    ],
+    checklist: [
+      "Объявлена функция sumOfDigits(num)",
+      "Сумма накапливается с помощью num % 10",
+      "Текущее число уменьшается через Math.floor(num / 10)",
+      "Корректно обрабатываются однозначные числа и 0",
+    ],
+  },
+  {
+    id: "js_while_4",
+    group: "Циклы",
+    subgroup: "while",
+    title: "4. Разворот числа",
+    desc: "Напишите функцию reverseNumber(num), которая принимает число num и возвращает число с обратным порядком цифр с помощью цикла while. Пример: reverseNumber(12345) → 54321, reverseNumber(980) → 89.",
+    isRaw: true,
+    candidate: ReverseNumberCandidateRaw,
+    rawCandidate: ReverseNumberCandidateRaw,
+    solution: ReverseNumberSolutionRaw,
+    rawSolution: ReverseNumberSolutionRaw,
+    filepath: "src/javascript/tasks/0_while/4_ReverseNumber.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение: Арифметический аккумулятор",
+        isRecommended: true,
+        badge: "O(log10 N) времени, O(1) памяти",
+        recommendationNote: "Формула reversed = reversed * 10 + (num % 10) эффективно строит перевернутое число разряд за разрядом.",
+        rawSolution: ReverseNumberSolutionRaw,
+        filepath: "src/javascript/solutions/0_while/4_ReverseNumber.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Числа в JavaScript (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Числа",
+        url: "https://learn.javascript.ru/number",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Что произойдет с ведущими нулями при развороте числа 980?",
+        answer: "При развороте 980 -> 0*10 + 0 = 0, затем 0*10 + 8 = 8, затем 8*10 + 9 = 89. В числовом представлении ведущие нули естественным образом опускаются.",
+      },
+    ],
+    checklist: [
+      "Объявлена функция reverseNumber(num)",
+      "Разворот осуществляется через формулу reversed * 10 + digit",
+      "Возвращается числовое значение",
+    ],
+  },
+  {
+    id: "js_while_5",
+    group: "Циклы",
+    subgroup: "while",
+    title: "5. Наибольший общий делитель (Алгоритм Евклида)",
+    desc: "Напишите функцию gcd(a, b), которая находит наибольший общий делитель двух положительных чисел a и b с помощью классического алгоритма Евклида через цикл while. Пример: gcd(48, 18) → 6, gcd(100, 25) → 25.",
+    isRaw: true,
+    candidate: GcdEuclidCandidateRaw,
+    rawCandidate: GcdEuclidCandidateRaw,
+    solution: GcdEuclidSolutionRaw,
+    rawSolution: GcdEuclidSolutionRaw,
+    filepath: "src/javascript/tasks/0_while/5_GcdEuclid.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение: Итеративный алгоритм Евклида",
+        isRecommended: true,
+        badge: "Логарифмическая сложность O(log(min(a,b)))",
+        recommendationNote: "Алгоритм Евклида через остаток от деления сходится экспоненциально быстро и требует константную память O(1).",
+        rawSolution: GcdEuclidSolutionRaw,
+        filepath: "src/javascript/solutions/0_while/5_GcdEuclid.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Алгоритм Евклида (Википедия)",
+        urlTitle: "Алгоритм Евклида для нахождения НОД",
+        url: "https://ru.wikipedia.org/wiki/%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%95%D0%B2%D0%BA%D0%BB%D0%B8%D0%B4%D0%B0",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Какова временная сложность алгоритма Евклида (теорема Ламе)?",
+        answer: "Количество шагов алгоритма Евклида не превышает пятикратного количества цифр меньшего из чисел в десятичной записи: O(log(min(a, b))). Худший случай — последовательные числа Фибоначчи.",
+      },
+    ],
+    checklist: [
+      "Объявлена функция gcd(a, b)",
+      "Использован цикл while (b !== 0)",
+      "На каждой итерации обновляется a = b и b = a % b",
+      "Возвращается НОД чисел",
+    ],
+  },
+  {
+    id: "js_while_6",
+    group: "Циклы",
+    subgroup: "while",
+    title: "6. Бинарный поиск",
+    desc: "Напишите функцию binarySearch(arr, target), которая принимает отсортированный по возрастанию массив чисел arr и искомое число target, и возвращает индекс элемента в массиве, либо -1, если элемент не найден. Используйте цикл while (left <= right). Пример: binarySearch([1, 3, 5, 7, 9, 11], 7) → 3, binarySearch([1, 3, 5, 7], 2) → -1.",
+    isRaw: true,
+    candidate: BinarySearchCandidateRaw,
+    rawCandidate: BinarySearchCandidateRaw,
+    solution: BinarySearchSolutionRaw,
+    rawSolution: BinarySearchSolutionRaw,
+    filepath: "src/javascript/tasks/0_while/6_BinarySearch.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение: Итеративный бинарный поиск",
+        isRecommended: true,
+        badge: "O(log N) время, O(1) память",
+        recommendationNote: "Деление диапазона поиска пополам на каждой итерации гарантирует логарифмическую производительность без накладных расходов стека.",
+        rawSolution: BinarySearchSolutionRaw,
+        filepath: "src/javascript/solutions/0_while/6_BinarySearch.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Бинарный поиск (Doka.guide)",
+        urlTitle: "Дока — Двоичный поиск",
+        url: "https://doka.guide/js/binary-search/",
+      },
+      {
+        title: "Binary Search (MDN Web Docs)",
+        urlTitle: "Алгоритмы поиска в массивах",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Array",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему в условии цикла используется left <= right, а не left < right?",
+        answer: "При условии left <= right мы проверяем случай, когда остался ровно один кандидат на проверку (left === right). Если использовать <, этот последний элемент будет пропущен.",
+      },
+      {
+        question: "Зачем в некоторых языках используют Math.floor(left + (right - left) / 2) вместо (left + right) / 2?",
+        answer: "Для предотвращения целочисленного переполнения (integer overflow) в языках со строгой 32-битной арифметикой (Java/C++), когда сумма двух больших индексов превышает 2^31 - 1.",
+      },
+    ],
+    checklist: [
+      "Объявлены указатели left = 0 и right = arr.length - 1",
+      "Использован цикл while (left <= right)",
+      "Корректно рассчитывается индекс середины mid",
+      "Возвращается индекс найденного элемента или -1",
+    ],
+  },
+  {
+    id: "js_while_7",
+    group: "Циклы",
+    subgroup: "while",
+    title: "7. Обход односвязного списка",
+    desc: "Напишите функцию sumLinkedList(head), которая принимает голову односвязного списка ({ value, next }) и возвращает сумму значений всех его узлов с помощью цикла while (current !== null). Пример: { value: 10, next: { value: 20, next: { value: 30, next: null } } } → 60.",
+    isRaw: true,
+    candidate: SumLinkedListCandidateRaw,
+    rawCandidate: SumLinkedListCandidateRaw,
+    solution: SumLinkedListSolutionRaw,
+    rawSolution: SumLinkedListSolutionRaw,
+    filepath: "src/javascript/tasks/0_while/7_SumLinkedList.js",
+    solutions: [
+      {
+        title: "Вариант 1: Итеративный обход через указатель current",
+        isRecommended: true,
+        badge: "Безопасно для памяти O(1)",
+        recommendationNote: "Итеративный обход гарантирует O(N) время и O(1) память, не создавая фреймов в стеке вызовов и предотвращая ошибку RangeError: Maximum call stack size exceeded.",
+        rawSolution: SumLinkedListSolutionRaw,
+        filepath: "src/javascript/solutions/0_while/7_SumLinkedList.js",
+      },
+      {
+        title: "Вариант 2: Рекурсивный обход",
+        isRecommended: false,
+        badge: "Декларативный синтаксис",
+        recommendationNote: "Рекурсия требует O(N) дополнительной памяти в стеке вызовов и опасна переполнением стека на длинных списках (>10 000 элементов).",
+        rawSolution: SumLinkedListRecursionSolutionRaw,
+        filepath: "src/javascript/solutions/0_while/7_SumLinkedList_Recursion.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Связный список (JavaScript.ru)",
+        urlTitle: "Структуры данных — Односвязные списки",
+        url: "https://learn.javascript.ru/recursion#svyaznyy-spisok",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "В чем преимущества итеративного обхода списка циклом while перед рекурсией?",
+        answer: "Итеративный обход работает в O(1) памяти без создания дополнительных стековых фреймов, что исключает риск переполнения стека вызовов (Stack Overflow) при работе с большими списками данных.",
+      },
+    ],
+    checklist: [
+      "Объявлена функция sumLinkedList(head)",
+      "Использован указатель current и цикл while (current !== null)",
+      "Указатель сдвигается на каждой итерации: current = current.next",
+      "Возвращается накопленная сумма узлов",
+    ],
+  },
+  {
+    id: "js_while_8",
+    group: "Циклы",
+    subgroup: "while",
+    title: "8. Слияние двух отсортированных массивов",
+    desc: "Напишите функцию mergeSortedArrays(arr1, arr2), которая принимает два отсортированных по возрастанию массива чисел и объединяет их в один отсортированный массив с помощью цикла while за один линейный проход O(N + M). Пример: mergeSortedArrays([1, 4, 7], [2, 5, 8, 9]) → [1, 2, 4, 5, 7, 8, 9].",
+    isRaw: true,
+    candidate: MergeSortedArraysCandidateRaw,
+    rawCandidate: MergeSortedArraysCandidateRaw,
+    solution: MergeSortedArraysSolutionRaw,
+    rawSolution: MergeSortedArraysSolutionRaw,
+    filepath: "src/javascript/tasks/0_while/8_MergeSortedArrays.js",
+    solutions: [
+      {
+        title: "Вариант 1: Линейное слияние двумя указателями",
+        isRecommended: true,
+        badge: "Оптимально на собеседовании: O(N + M)",
+        recommendationNote: "Классический паттерн двух указателей сравнивает текущие наименьшие элементы за линейное время O(N + M), являясь фундаментом алгоритма Merge Sort.",
+        rawSolution: MergeSortedArraysSolutionRaw,
+        filepath: "src/javascript/solutions/0_while/8_MergeSortedArrays.js",
+      },
+      {
+        title: "Вариант 2: Объединение через спред и sort()",
+        isRecommended: false,
+        badge: "Неоптимально: O((N + M) log(N + M))",
+        recommendationNote: "Повторная сортировка массива игнорирует уже имеющуюся упорядоченность исходных массивов и работает значительно медленнее.",
+        rawSolution: MergeSortedArraysSortSolutionRaw,
+        filepath: "src/javascript/solutions/0_while/8_MergeSortedArrays_Sort.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Сортировка слиянием (Merge Sort)",
+        urlTitle: "Алгоритм Merge Sort на JavaScript",
+        url: "https://doka.guide/js/algorithms/",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему слияние двумя указателями эффективнее конкатенации и вызова .sort()?",
+        answer: "Исходные массивы уже отсортированы. Два указателя выполняют слияние за строго линейное время O(N + M), тогда как .sort() выполняет полное сравнение за O((N + M) log(N + M)).",
+      },
+      {
+        question: "Зачем после основного цикла while нужны дополнительные циклы while (i < arr1.length) и while (j < arr2.length)?",
+        answer: "Один из массивов может закончиться раньше другого. Оставшиеся элементы второго массива уже отсортированы и их необходимо дописать в конец результирующего массива.",
+      },
+    ],
+    checklist: [
+      "Объявлена функция mergeSortedArrays(arr1, arr2)",
+      "Использованы указатели i и j с циклом while (i < arr1.length && j < arr2.length)",
+      "Добавлены остаточные элементы через добивающие циклы",
+      "Возвращается отсортированный массив за O(N + M)",
+    ],
+  },
+];
 
 export const JS_LOOPS_TASKS = [
   {
@@ -8509,6 +8934,7 @@ export const JS_STRING_DOM_UTILS_TASKS = [
 
 export const JS_TASKS = [
   // 1. Базовый синтаксис и строки
+  ...JS_WHILE_TASKS,
   ...JS_LOOPS_TASKS,
   ...JS_FOR_OF_TASKS,
   ...JS_STRING_DOM_UTILS_TASKS,

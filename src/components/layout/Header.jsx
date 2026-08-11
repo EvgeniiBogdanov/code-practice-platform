@@ -23,11 +23,15 @@ import {
 } from "lucide-react";
 import { JS_TASKS } from "../../javascript/data/tasksData";
 import { getGroupMeta } from "../../javascript/data/groupConfig";
+import { ALGO_TASKS } from "../../algorithms/data/tasksData";
+import { getAlgoGroupMeta } from "../../algorithms/data/groupConfig";
 
 export const Header = ({
   sidebarOpen,
   setSidebarOpen,
   activeSection,
+  sectionDropdownOpen,
+  setSectionDropdownOpen,
   headerSectionDropdownOpen,
   setHeaderSectionDropdownOpen,
   headerSectionDropdownRef,
@@ -77,6 +81,7 @@ export const Header = ({
   const subgroupDropdownRef = React.useRef(null);
 
   const closeAllDropdowns = () => {
+    if (setSectionDropdownOpen) setSectionDropdownOpen(false);
     if (setHeaderSectionDropdownOpen) setHeaderSectionDropdownOpen(false);
     if (setCategoryDropdownOpen) setCategoryDropdownOpen(false);
     if (setTaskDropdownOpen) setTaskDropdownOpen(false);
@@ -167,6 +172,11 @@ export const Header = ({
     setAlgoDropdownOpen,
   ]);
 
+  const isTaskSolved = (id) => {
+    const val = completedTasks[id] ?? completedTasks[String(id)];
+    return val === true || val === "solved";
+  };
+
   const renderHeaderSectionDropdownMenu = () => (
     <div className="breadcrumb-dropdown-menu">
       <div className="breadcrumb-dropdown-header">
@@ -207,7 +217,7 @@ export const Header = ({
         >
           <span className="breadcrumb-dropdown-icon"><Brain size={15} style={{ color: "var(--color-accent-purple)" }} /></span>
           <span className="dropdown-item-title">АЛГОРИТМЫ</span>
-          <span className="section-badge soon">0 задач</span>
+          <span className="section-badge active">{ALGO_TASKS.length} задач</span>
         </Link>
       </div>
     </div>
@@ -256,12 +266,14 @@ export const Header = ({
             </>
           )}
 
-          {/* Раздел JavaScript (Finder-style 3 уровня: Группа / Подгруппа / Задача) */}
+          {/* Раздел JavaScript */}
           {activeSection === "javascript" && selectedTask && (() => {
-            const currentGroupMeta = getGroupMeta(selectedTask.group);
+            const currentGroupName = selectedTask.group || "Циклы";
+            const currentGroupMeta = getGroupMeta(currentGroupName);
+            const currentSubgroupName = selectedTask.subgroup || "";
             return (
               <>
-                {/* 1. Группа (например, Циклы, Рекурсия) */}
+                {/* 1. Группа */}
                 <span className="breadcrumb-separator">/</span>
                 <div className="breadcrumb-dropdown-wrapper" ref={groupDropdownRef}>
                   <button
@@ -270,7 +282,7 @@ export const Header = ({
                     title="Выбрать группу задач"
                   >
                     {currentGroupMeta.renderIcon(14)}
-                    <span className="breadcrumb-text-truncate">{selectedTask.group || "Циклы"}</span>
+                    <span className="breadcrumb-text-truncate">{currentGroupName}</span>
                     <ChevronDown size={14} className="breadcrumb-chevron" />
                   </button>
 
@@ -283,15 +295,15 @@ export const Header = ({
                       <div className="breadcrumb-dropdown-list">
                         {Array.from(new Set(JS_TASKS.map((t) => t.group))).map((gName) => {
                           const groupTasks = JS_TASKS.filter((t) => t.group === gName);
-                          const completedCount = groupTasks.filter((t) => completedTasks[t.id]).length;
+                          const completedCount = groupTasks.filter((t) => isTaskSolved(t.id)).length;
                           const isCompleted = completedCount > 0 && completedCount === groupTasks.length;
-                          const isActive = selectedTask.group === gName;
+                          const isActive = currentGroupName === gName;
                           const gMeta = getGroupMeta(gName);
                           return (
                             <Link
                               key={gName}
                               to="/javascript/$taskId"
-                              params={{ taskId: String(groupTasks[0]?.id || "1") }}
+                              params={{ taskId: `group-${gName}` }}
                               search={(prev) => prev}
                               className={`breadcrumb-dropdown-item ${isActive ? "active" : ""}`}
                               onClick={() => {
@@ -318,127 +330,143 @@ export const Header = ({
                   )}
                 </div>
 
-                {/* 2. Подгруппа (например, for, level0) */}
-                <span className="breadcrumb-separator">/</span>
-                <div className="breadcrumb-dropdown-wrapper" ref={subgroupDropdownRef}>
-                  <button
-                    className="breadcrumb-item breadcrumb-task-btn"
-                    onClick={toggleSubgroupDropdown}
-                    title="Выбрать подгруппу задач"
-                  >
-                    <Folder size={14} style={{ color: currentGroupMeta.color, opacity: 0.9 }} />
-                    <span className="breadcrumb-text-truncate">{selectedTask.subgroup || "for"}</span>
-                    <ChevronDown size={14} className="breadcrumb-chevron" />
-                  </button>
+                {/* 2. Подгруппа (только если задача имеет реальную подгруппу) */}
+                {currentSubgroupName && (
+                  <>
+                    <span className="breadcrumb-separator">/</span>
+                    <div className="breadcrumb-dropdown-wrapper" ref={subgroupDropdownRef}>
+                      <button
+                        className="breadcrumb-item breadcrumb-task-btn"
+                        onClick={toggleSubgroupDropdown}
+                        title="Выбрать подгруппу задач"
+                      >
+                        <Folder size={14} style={{ color: currentGroupMeta.color, opacity: 0.9 }} />
+                        <span className="breadcrumb-text-truncate">{currentSubgroupName}</span>
+                        <ChevronDown size={14} className="breadcrumb-chevron" />
+                      </button>
 
-                  {subgroupDropdownOpen && (
-                    <div className="breadcrumb-dropdown-menu">
-                      <div className="breadcrumb-dropdown-header">
-                        <span className="breadcrumb-dropdown-header-icon">
-                          <Folder size={14} style={{ color: currentGroupMeta.color }} />
-                        </span>
-                        <span className="breadcrumb-dropdown-header-title">Подгруппы ({selectedTask.group})</span>
-                      </div>
-                      <div className="breadcrumb-dropdown-list">
-                        {Array.from(
-                          new Set(
-                            JS_TASKS.filter((t) => t.group === selectedTask.group).map(
-                              (t) => t.subgroup
-                            )
-                          )
-                        ).map((subName) => {
-                          const subTasks = JS_TASKS.filter(
-                            (t) => t.group === selectedTask.group && t.subgroup === subName
-                          );
-                          const completedCount = subTasks.filter((t) => completedTasks[t.id]).length;
-                          const isCompleted = completedCount > 0 && completedCount === subTasks.length;
-                          const isActive = selectedTask.subgroup === subName;
-                          return (
-                            <Link
-                              key={subName}
-                              to="/javascript/$taskId"
-                              params={{ taskId: String(subTasks[0]?.id || "1") }}
-                              search={(prev) => prev}
-                              className={`breadcrumb-dropdown-item ${isActive ? "active" : ""}`}
-                              onClick={() => {
-                                closeAllDropdowns();
-                                if (setExpandedJsGroups) {
-                                  setExpandedJsGroups((prev) => ({ ...prev, [selectedTask.group]: true }));
-                                }
-                                if (setExpandedJsSubgroups) {
-                                  const subKey = `${selectedTask.group}/${subName}`;
-                                  setExpandedJsSubgroups((prev) => ({ ...prev, [subKey]: true }));
-                                }
-                                setTimeout(() => {
-                                  const el = document.getElementById(`category-js-${selectedTask.group}`);
-                                  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-                                }, 50);
-                              }}
-                            >
-                              <span className="breadcrumb-dropdown-icon">
-                                <Folder size={14} style={{ color: currentGroupMeta.color, opacity: 0.9 }} />
-                              </span>
-                              <span className="dropdown-item-title">{subName}</span>
-                              <span className={`dropdown-item-count ${isCompleted ? "completed" : ""}`}>
-                                {completedCount}/{subTasks.length}
-                              </span>
-                            </Link>
-                          );
-                        })}
-                      </div>
+                      {subgroupDropdownOpen && (
+                        <div className="breadcrumb-dropdown-menu">
+                          <div className="breadcrumb-dropdown-header">
+                            <span className="breadcrumb-dropdown-header-icon">
+                              <Folder size={14} style={{ color: currentGroupMeta.color }} />
+                            </span>
+                            <span className="breadcrumb-dropdown-header-title">Подгруппы ({currentGroupName})</span>
+                          </div>
+                          <div className="breadcrumb-dropdown-list">
+                            {Array.from(
+                              new Set(
+                                JS_TASKS.filter((t) => t.group === currentGroupName).map(
+                                  (t) => t.subgroup
+                                )
+                              )
+                            ).map((subName) => {
+                              const subTasks = JS_TASKS.filter(
+                                (t) => t.group === currentGroupName && t.subgroup === subName
+                              );
+                              const completedCount = subTasks.filter((t) => isTaskSolved(t.id)).length;
+                              const isCompleted = completedCount > 0 && completedCount === subTasks.length;
+                              const isActive = currentSubgroupName === subName;
+                              const firstSubTask = subTasks[0];
+                              const targetTaskId = firstSubTask
+                                ? String(firstSubTask.id)
+                                : `subgroup-${currentGroupName}-${subName}`;
+                              return (
+                                <Link
+                                  key={subName}
+                                  to="/javascript/$taskId"
+                                  params={{ taskId: targetTaskId }}
+                                  search={(prev) => prev}
+                                  className={`breadcrumb-dropdown-item ${isActive ? "active" : ""}`}
+                                  onClick={() => {
+                                    closeAllDropdowns();
+                                    if (setExpandedJsGroups) {
+                                      setExpandedJsGroups((prev) => ({ ...prev, [currentGroupName]: true }));
+                                    }
+                                    if (setExpandedJsSubgroups) {
+                                      const subKey = `${currentGroupName}/${subName}`;
+                                      setExpandedJsSubgroups((prev) => ({ ...prev, [subKey]: true }));
+                                    }
+                                    setTimeout(() => {
+                                      const el = document.getElementById(
+                                        firstSubTask
+                                          ? `sidebar-task-${firstSubTask.id}`
+                                          : `category-js-${currentGroupName}`
+                                      );
+                                      if (el) el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                                    }, 50);
+                                  }}
+                                >
+                                  <span className="breadcrumb-dropdown-icon">
+                                    <Folder size={14} style={{ color: currentGroupMeta.color, opacity: 0.9 }} />
+                                  </span>
+                                  <span className="dropdown-item-title">{subName}</span>
+                                  <span className={`dropdown-item-count ${isCompleted ? "completed" : ""}`}>
+                                    {completedCount}/{subTasks.length}
+                                  </span>
+                                </Link>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
+                  </>
+                )}
 
-                {/* 3. Задача */}
-                <span className="breadcrumb-separator">/</span>
-                <div className="breadcrumb-dropdown-wrapper" ref={taskDropdownRef}>
-                  <button
-                    className="breadcrumb-item breadcrumb-task-btn"
-                    onClick={toggleTaskDropdown}
-                    title="Выбрать задачу из подгруппы"
-                  >
-                    <span>{taskIcon}</span>
-                    <span className="breadcrumb-text-truncate">{selectedTask?.title}</span>
-                    <ChevronDown size={14} className="breadcrumb-chevron" />
-                  </button>
+                {/* 3. Задача (только если открыта конкретная задача, а не страница папки группы) */}
+                {!selectedTask.isGroupOverview && (
+                  <>
+                    <span className="breadcrumb-separator">/</span>
+                    <div className="breadcrumb-dropdown-wrapper" ref={taskDropdownRef}>
+                      <button
+                        className="breadcrumb-item breadcrumb-task-btn"
+                        onClick={toggleTaskDropdown}
+                        title="Выбрать задачу из подгруппы"
+                      >
+                        <span>{taskIcon}</span>
+                        <span className="breadcrumb-text-truncate">{selectedTask?.title}</span>
+                        <ChevronDown size={14} className="breadcrumb-chevron" />
+                      </button>
 
-                  {taskDropdownOpen && (
-                    <div className="breadcrumb-dropdown-menu">
-                      <div className="breadcrumb-dropdown-header">
-                        <span className="breadcrumb-dropdown-header-icon">
-                          <Folder size={14} style={{ color: currentGroupMeta.color }} />
-                        </span>
-                        <span className="breadcrumb-dropdown-header-title">Задачи {selectedTask.subgroup}</span>
-                      </div>
-                      <div className="breadcrumb-dropdown-list">
-                        {JS_TASKS.filter(
-                          (t) =>
-                            t.group === selectedTask.group &&
-                            t.subgroup === selectedTask.subgroup
-                        ).map((t) => (
-                          <Link
-                            key={t.id}
-                            to="/javascript/$taskId"
-                            params={{ taskId: String(t.id) }}
-                            search={(prev) => prev}
-                            className={`breadcrumb-dropdown-item ${t.id === selectedTask?.id ? "active" : ""}`}
-                            onClick={closeAllDropdowns}
-                          >
-                            <span className="breadcrumb-dropdown-icon">{taskIcon}</span>
-                            <span className="dropdown-item-title">{t.title}</span>
-                            {completedTasks[t.id] &&
-                              (completedTasks[t.id] === "unsolved" ? (
-                                <span className="dropdown-item-unsolved"><X size={12} /></span>
-                              ) : (
-                                <span className="dropdown-item-check"><Check size={12} /></span>
-                              ))}
-                          </Link>
-                        ))}
-                      </div>
+                      {taskDropdownOpen && (
+                        <div className="breadcrumb-dropdown-menu">
+                          <div className="breadcrumb-dropdown-header">
+                            <span className="breadcrumb-dropdown-header-icon">
+                              <Folder size={14} style={{ color: currentGroupMeta.color }} />
+                            </span>
+                            <span className="breadcrumb-dropdown-header-title">Задачи {currentSubgroupName || currentGroupName}</span>
+                          </div>
+                          <div className="breadcrumb-dropdown-list">
+                            {JS_TASKS.filter(
+                              (t) =>
+                                t.group === currentGroupName &&
+                                (!currentSubgroupName || t.subgroup === currentSubgroupName)
+                            ).map((t) => (
+                              <Link
+                                key={t.id}
+                                to="/javascript/$taskId"
+                                params={{ taskId: String(t.id) }}
+                                search={(prev) => prev}
+                                className={`breadcrumb-dropdown-item ${t.id === selectedTask?.id ? "active" : ""}`}
+                                onClick={closeAllDropdowns}
+                              >
+                                <span className="breadcrumb-dropdown-icon">{taskIcon}</span>
+                                <span className="dropdown-item-title">{t.title}</span>
+                                {completedTasks[t.id] &&
+                                  (completedTasks[t.id] === "unsolved" ? (
+                                    <span className="dropdown-item-unsolved"><X size={12} /></span>
+                                  ) : (
+                                    <span className="dropdown-item-check"><Check size={12} /></span>
+                                  ))}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
+                  </>
+                )}
               </>
             );
           })()}
@@ -472,7 +500,7 @@ export const Header = ({
                           <Link
                             key={cat.id}
                             to="/react/$taskId"
-                            params={{ taskId: String(cat.tasks[0]?.id || "1") }}
+                            params={{ taskId: cat.folderId || String(cat.tasks[0]?.id || "1") }}
                             search={(prev) => prev}
                             className={`breadcrumb-dropdown-item ${isActiveCategory ? "active" : ""}`}
                             onClick={() => {
@@ -498,100 +526,165 @@ export const Header = ({
                 )}
               </div>
 
-              <span className="breadcrumb-separator">/</span>
+              {!selectedTask?.isGroupOverview && (
+                <>
+                  <span className="breadcrumb-separator">/</span>
 
-              <div className="breadcrumb-dropdown-wrapper" ref={taskDropdownRef}>
-                <button
-                  className="breadcrumb-item breadcrumb-task-btn"
-                  onClick={toggleTaskDropdown}
-                  title="Выбрать другую задачу из этого раздела"
-                >
-                  <span>{taskIcon}</span>
-                  <span className="breadcrumb-text-truncate">{selectedTask?.title}</span>
-                  <ChevronDown size={14} className="breadcrumb-chevron" />
-                </button>
+                  <div className="breadcrumb-dropdown-wrapper" ref={taskDropdownRef}>
+                    <button
+                      className="breadcrumb-item breadcrumb-task-btn"
+                      onClick={toggleTaskDropdown}
+                      title="Выбрать другую задачу из этого раздела"
+                    >
+                      <span>{taskIcon}</span>
+                      <span className="breadcrumb-text-truncate">{selectedTask?.title}</span>
+                      <ChevronDown size={14} className="breadcrumb-chevron" />
+                    </button>
 
-                {taskDropdownOpen && (
-                  <div className="breadcrumb-dropdown-menu">
-                    <div className="breadcrumb-dropdown-header">
-                      <span className="breadcrumb-dropdown-header-icon">{categoryIcon}</span>
-                      <span className="breadcrumb-dropdown-header-title">{taskCategory || "Задачи"}</span>
-                    </div>
-                    <div className="breadcrumb-dropdown-list">
-                      {currentCategoryTasks.map((t) => (
-                        <Link
-                          key={t.id}
-                          to="/react/$taskId"
-                          params={{ taskId: String(t.id) }}
-                          search={(prev) => prev}
-                          className={`breadcrumb-dropdown-item ${t.id === selectedTask?.id ? "active" : ""}`}
-                          onClick={closeAllDropdowns}
-                        >
-                          <span className="breadcrumb-dropdown-icon">{taskIcon}</span>
-                          <span className="dropdown-item-title">{t.title}</span>
-                          {completedTasks[t.id] &&
-                            (completedTasks[t.id] === "unsolved" ? (
-                              <span className="dropdown-item-unsolved"><X size={12} /></span>
-                            ) : (
-                              <span className="dropdown-item-check"><Check size={12} /></span>
-                            ))}
-                        </Link>
-                      ))}
-                    </div>
+                    {taskDropdownOpen && (
+                      <div className="breadcrumb-dropdown-menu">
+                        <div className="breadcrumb-dropdown-header">
+                          <span className="breadcrumb-dropdown-header-icon">{categoryIcon}</span>
+                          <span className="breadcrumb-dropdown-header-title">{taskCategory || "Задачи"}</span>
+                        </div>
+                        <div className="breadcrumb-dropdown-list">
+                          {currentCategoryTasks.map((t) => (
+                            <Link
+                              key={t.id}
+                              to="/react/$taskId"
+                              params={{ taskId: String(t.id) }}
+                              search={(prev) => prev}
+                              className={`breadcrumb-dropdown-item ${t.id === selectedTask?.id ? "active" : ""}`}
+                              onClick={closeAllDropdowns}
+                            >
+                              <span className="breadcrumb-dropdown-icon">{taskIcon}</span>
+                              <span className="dropdown-item-title">{t.title}</span>
+                              {completedTasks[t.id] &&
+                                (completedTasks[t.id] === "unsolved" ? (
+                                  <span className="dropdown-item-unsolved"><X size={12} /></span>
+                                ) : (
+                                  <span className="dropdown-item-check"><Check size={12} /></span>
+                                ))}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
+                </>
+              )}
             </>
           )}
 
           {/* Раздел Алгоритмы */}
-          {activeSection === "algorithms" && (
-            <>
-              <span className="breadcrumb-separator">/</span>
-              <div className="breadcrumb-dropdown-wrapper" ref={algoDropdownRef}>
-                <button
-                  className="breadcrumb-item breadcrumb-task-btn"
-                  onClick={() => setAlgoDropdownOpen((prev) => !prev)}
-                  title="Просмотреть темы раздела Алгоритмы"
-                >
-                  <FolderTree size={14} />
-                  <span>Алгоритмические задачи</span>
-                  <ChevronDown size={14} className="breadcrumb-chevron" />
-                </button>
+          {activeSection === "algorithms" && (() => {
+            const currentGroup = selectedTask ? selectedTask.group : "Two Pointers";
+            const currentGroupMeta = getAlgoGroupMeta(currentGroup);
+            return (
+              <>
+                {/* 1. Группа */}
+                <span className="breadcrumb-separator">/</span>
+                <div className="breadcrumb-dropdown-wrapper" ref={groupDropdownRef}>
+                  <button
+                    className="breadcrumb-item breadcrumb-task-btn"
+                    onClick={toggleGroupDropdown}
+                    title="Выбрать группу задач"
+                  >
+                    {currentGroupMeta.renderIcon(14)}
+                    <span className="breadcrumb-text-truncate">{currentGroup}</span>
+                    <ChevronDown size={14} className="breadcrumb-chevron" />
+                  </button>
 
-                {algoDropdownOpen && (
-                  <div className="breadcrumb-dropdown-menu">
-                    <div className="breadcrumb-dropdown-header">
-                      <span className="breadcrumb-dropdown-header-icon"><Brain size={14} /></span>
-                      <span className="breadcrumb-dropdown-header-title">Темы раздела Алгоритмы</span>
+                  {groupDropdownOpen && (
+                    <div className="breadcrumb-dropdown-menu">
+                      <div className="breadcrumb-dropdown-header">
+                        <span className="breadcrumb-dropdown-header-icon">{currentGroupMeta.renderIcon(14)}</span>
+                        <span className="breadcrumb-dropdown-header-title">Группы задач Алгоритмы</span>
+                      </div>
+                      <div className="breadcrumb-dropdown-list">
+                        {Array.from(new Set(ALGO_TASKS.map((t) => t.group))).map((gName) => {
+                          const groupTasks = ALGO_TASKS.filter((t) => t.group === gName);
+                          const completedCount = groupTasks.filter((t) => isTaskSolved(t.id)).length;
+                          const isCompleted = completedCount > 0 && completedCount === groupTasks.length;
+                          const isActive = currentGroup === gName;
+                          const gMeta = getAlgoGroupMeta(gName);
+                          return (
+                            <Link
+                              key={gName}
+                              to="/algorithms/$taskId"
+                              params={{ taskId: gMeta.infoId || "group-two-pointers" }}
+                              search={(prev) => prev}
+                              className={`breadcrumb-dropdown-item ${isActive ? "active" : ""}`}
+                              onClick={() => {
+                                closeAllDropdowns();
+                                if (setExpandedJsGroups) {
+                                  setExpandedJsGroups((prev) => ({ ...prev, [gName]: true }));
+                                }
+                              }}
+                            >
+                              <span className="breadcrumb-dropdown-icon">{gMeta.renderIcon(14)}</span>
+                              <span className="dropdown-item-title">{gName}</span>
+                              <span className={`dropdown-item-count ${isCompleted ? "completed" : ""}`}>
+                                {completedCount}/{groupTasks.length}
+                              </span>
+                            </Link>
+                          );
+                        })}
+                      </div>
                     </div>
-                    <div className="breadcrumb-dropdown-list">
-                      <Link to="/algorithms" className="breadcrumb-dropdown-item" onClick={closeAllDropdowns}>
-                        <span className="breadcrumb-dropdown-icon"><FileCode size={14} /></span>
-                        <span className="dropdown-item-title">Два указателя (Two Pointers)</span>
-                        <span className="section-badge soon">Скоро</span>
-                      </Link>
-                      <Link to="/algorithms" className="breadcrumb-dropdown-item" onClick={closeAllDropdowns}>
-                        <span className="breadcrumb-dropdown-icon"><FileCode size={14} /></span>
-                        <span className="dropdown-item-title">Скользящее окно (Sliding Window)</span>
-                        <span className="section-badge soon">Скоро</span>
-                      </Link>
-                      <Link to="/algorithms" className="breadcrumb-dropdown-item" onClick={closeAllDropdowns}>
-                        <span className="breadcrumb-dropdown-icon"><FileCode size={14} /></span>
-                        <span className="dropdown-item-title">Бинарный поиск (Binary Search)</span>
-                        <span className="section-badge soon">Скоро</span>
-                      </Link>
-                      <Link to="/algorithms" className="breadcrumb-dropdown-item" onClick={closeAllDropdowns}>
-                        <span className="breadcrumb-dropdown-icon"><FileCode size={14} /></span>
-                        <span className="dropdown-item-title">Обход деревьев и графов</span>
-                        <span className="section-badge soon">Скоро</span>
-                      </Link>
+                  )}
+                </div>
+
+                {/* 2. Задача (только если открыта конкретная задача) */}
+                {!selectedTask?.isGroupOverview && (
+                  <>
+                    <span className="breadcrumb-separator">/</span>
+                    <div className="breadcrumb-dropdown-wrapper" ref={taskDropdownRef}>
+                      <button
+                        className="breadcrumb-item breadcrumb-task-btn"
+                        onClick={toggleTaskDropdown}
+                        title="Выбрать материал из группы"
+                      >
+                        <span>{taskIcon}</span>
+                        <span className="breadcrumb-text-truncate">{selectedTask?.title}</span>
+                        <ChevronDown size={14} className="breadcrumb-chevron" />
+                      </button>
+
+                      {taskDropdownOpen && (
+                        <div className="breadcrumb-dropdown-menu">
+                          <div className="breadcrumb-dropdown-header">
+                            <span className="breadcrumb-dropdown-header-icon">{currentGroupMeta.renderIcon(14)}</span>
+                            <span className="breadcrumb-dropdown-header-title">Задачи {currentGroup}</span>
+                          </div>
+                          <div className="breadcrumb-dropdown-list">
+                            {ALGO_TASKS.filter((t) => t.group === currentGroup).map((t) => (
+                              <Link
+                                key={t.id}
+                                to="/algorithms/$taskId"
+                                params={{ taskId: String(t.id) }}
+                                search={(prev) => prev}
+                                className={`breadcrumb-dropdown-item ${t.id === selectedTask?.id ? "active" : ""}`}
+                                onClick={closeAllDropdowns}
+                              >
+                                <span className="breadcrumb-dropdown-icon">{taskIcon}</span>
+                                <span className="dropdown-item-title">{t.title}</span>
+                                {completedTasks[t.id] &&
+                                  (completedTasks[t.id] === "unsolved" ? (
+                                    <span className="dropdown-item-unsolved"><X size={12} /></span>
+                                  ) : (
+                                    <span className="dropdown-item-check"><Check size={12} /></span>
+                                  ))}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  </div>
+                  </>
                 )}
-              </div>
-            </>
-          )}
+              </>
+            );
+          })()}
         </nav>
       </div>
 

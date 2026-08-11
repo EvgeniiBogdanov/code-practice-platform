@@ -52,13 +52,15 @@ export const HomeDashboard = ({
   const jsPct = jsTotal > 0 ? Math.round((jsSolved / jsTotal) * 100) : 0;
   const reactPct = reactTotal > 0 ? Math.round((reactSolved / reactTotal) * 100) : 0;
 
+  const algoPct = algoTotal > 0 ? Math.round((algoSolved / algoTotal) * 100) : 0;
+
   return (
     <div className="notion-home-container">
       {/* Notion Page Header */}
       <div className="notion-page-header">
         <h1 className="notion-page-title">Обзор платформы</h1>
         <p className="notion-page-subtitle">
-          Интерактивная платформа для подготовки к собеседованиям и практики решения задач (250+ задач). Встроенный редактор кода и консоль в браузере, песочница для решения, эталонные решения и разборы теории.
+          Интерактивная платформа для подготовки к собеседованиям и практики решения задач (260+ задач). Встроенный редактор кода и веб-консоль, песочница кандидата, эталонные решения и разборы теории.
         </p>
       </div>
 
@@ -71,7 +73,7 @@ export const HomeDashboard = ({
           <div className="notion-callout-content">
             <div className="notion-callout-title">Быстрый старт</div>
             <div className="notion-callout-text">
-              Решайте задачи во встроенном браузере или любимой IDE. Анализируйте код кандидата, изучайте эталонные решения O(N) / O(1) и запускайте код в консоли Node.js.
+              Решайте задачи во встроенном редакторе или любимой IDE. Анализируйте код кандидата, изучайте эталонные решения O(N) / O(1), теоретические разборы и запускайте код в веб-консоли.
             </div>
           </div>
         </div>
@@ -157,12 +159,12 @@ export const HomeDashboard = ({
           </div>
           <div className="notion-stat-val-row">
             <span className="notion-stat-val">
-              0<span className="notion-stat-total">/0</span>
+              {algoSolved}<span className="notion-stat-total">/{algoTotal}</span>
             </span>
-            <span className="notion-stat-badge">Скоро</span>
+            <span className="notion-stat-percent">{algoPct}%</span>
           </div>
           <div className="notion-stat-bar-track">
-            <div className="notion-stat-bar-fill purple" style={{ width: "0%" }} />
+            <div className="notion-stat-bar-fill purple" style={{ width: `${algoPct}%` }} />
           </div>
         </div>
       </div>
@@ -188,16 +190,16 @@ export const HomeDashboard = ({
                 <span className="notion-tag amber">{jsTotal} задач</span>
               </div>
               <p className="notion-card-desc">
-                Замыкания, рекурсия, прототипы, `this`, каррирование, полифилы `Promise`, `Debounce`, `Throttle`, `Event Loop` и утилиты объектов.
+                Циклы (while, for, for...of), замыкания, рекурсия, прототипы, `this`, каррирование, полифилы `Promise`, `Debounce`/`Throttle`, `Event Loop` и утилиты объектов.
               </p>
               <div className="notion-card-tags">
+                <span className="notion-subtag">#loops</span>
                 <span className="notion-subtag">#closures</span>
                 <span className="notion-subtag">#event-loop</span>
                 <span className="notion-subtag">#promises</span>
-                <span className="notion-subtag">#prototypes</span>
               </div>
               <div className="notion-card-footer">
-                <span className="notion-card-progress">{completedJsTotal} из {jsTotal} решено ({jsPct}%)</span>
+                <span className="notion-card-progress">{jsSolved} из {jsTotal} решено ({jsPct}%)</span>
                 <span className="notion-action-btn amber">
                   <span>Открыть</span>
                   <ArrowRight size={13} />
@@ -226,7 +228,7 @@ export const HomeDashboard = ({
                 <span className="notion-subtag">#typescript</span>
               </div>
               <div className="notion-card-footer">
-                <span className="notion-card-progress">{completedTotal} из {totalTasks} решено ({reactPct}%)</span>
+                <span className="notion-card-progress">{reactSolved} из {reactTotal} решено ({reactPct}%)</span>
                 <span className="notion-action-btn blue">
                   <span>Открыть</span>
                   <ArrowRight size={13} />
@@ -243,7 +245,7 @@ export const HomeDashboard = ({
             <div className="notion-card-body">
               <div className="notion-card-header-row">
                 <h3 className="notion-card-title">Алгоритмы</h3>
-                <span className="notion-tag gray">Скоро</span>
+                <span className="notion-tag purple">{algoTotal} задач</span>
               </div>
               <p className="notion-card-desc">
                 Классические алгоритмические задачи с собеседований: два указателя, скользящее окно, бинарный поиск, графы и деревья.
@@ -251,13 +253,13 @@ export const HomeDashboard = ({
               <div className="notion-card-tags">
                 <span className="notion-subtag">#two-pointers</span>
                 <span className="notion-subtag">#sliding-window</span>
-                <span className="notion-subtag">#trees</span>
+                <span className="notion-subtag">#binary-search</span>
               </div>
               <div className="notion-card-footer">
-                <span className="notion-card-progress">В разработке</span>
-                <span className="notion-action-btn disabled">
-                  <Clock size={13} />
-                  <span>Скоро</span>
+                <span className="notion-card-progress">{algoSolved} из {algoTotal} решено ({algoPct}%)</span>
+                <span className="notion-action-btn purple">
+                  <span>Открыть</span>
+                  <ArrowRight size={13} />
                 </span>
               </div>
             </div>
@@ -283,7 +285,7 @@ export const HomeDashboard = ({
               <h4 className="notion-feature-title">Встроенный редактор кода</h4>
             </div>
             <p className="notion-feature-desc">
-              Редактирование JS, TS и React (JSX/TSX) прямо в браузере, поддержка многофайловых задач, подстветка синтаксиса и полноэкранный режим.
+              Редактирование JS, TS и React (JSX/TSX) прямо в браузере, автоформатирование Prettier, подсветка синтаксиса и полноэкранный режим (/open).
             </p>
           </div>
 
@@ -292,10 +294,10 @@ export const HomeDashboard = ({
               <div className="notion-feature-icon-badge amber">
                 <Terminal size={16} />
               </div>
-              <h4 className="notion-feature-title">Интерактивная консоль Node.js</h4>
+              <h4 className="notion-feature-title">Интерактивная веб-консоль</h4>
             </div>
             <p className="notion-feature-desc">
-              Мгновенный запуск кода (Ctrl+Enter) с замером времени выполнения (⚡ ms), умным сворачиванием и выводом всех типов данных.
+              Мгновенный запуск кода (Ctrl+Enter / Cmd+Enter) с замером времени выполнения (⚡ ms), умным сворачиванием и выводом всех типов данных.
             </p>
           </div>
 

@@ -12,12 +12,14 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as AlgorithmsIndexRouteImport } from './routes/algorithms/index'
+import { Route as AlgorithmsTaskIdRouteImport } from './routes/algorithms/$taskId'
 import { Route as JavascriptIndexRouteImport } from './routes/javascript/index'
 import { Route as JavascriptTaskIdRouteImport } from './routes/javascript/$taskId'
 import { Route as OpenIndexRouteImport } from './routes/open/index'
 import { Route as OpenTaskIdRouteImport } from './routes/open/$taskId'
 import { Route as ReactIndexRouteImport } from './routes/react/index'
 import { Route as ReactTaskIdRouteImport } from './routes/react/$taskId'
+import { Route as OpenAlgorithmsTaskIdRouteImport } from './routes/open/algorithms/$taskId'
 import { Route as OpenJavascriptTaskIdRouteImport } from './routes/open/javascript/$taskId'
 import { Route as OpenReactTaskIdRouteImport } from './routes/open/react/$taskId'
 
@@ -34,6 +36,11 @@ const HomeRoute = HomeRouteImport.update({
 const AlgorithmsIndexRoute = AlgorithmsIndexRouteImport.update({
   id: '/algorithms/',
   path: '/algorithms/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AlgorithmsTaskIdRoute = AlgorithmsTaskIdRouteImport.update({
+  id: '/algorithms/$taskId',
+  path: '/algorithms/$taskId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JavascriptIndexRoute = JavascriptIndexRouteImport.update({
@@ -66,6 +73,11 @@ const ReactTaskIdRoute = ReactTaskIdRouteImport.update({
   path: '/react/$taskId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OpenAlgorithmsTaskIdRoute = OpenAlgorithmsTaskIdRouteImport.update({
+  id: '/open/algorithms/$taskId',
+  path: '/open/algorithms/$taskId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OpenJavascriptTaskIdRoute = OpenJavascriptTaskIdRouteImport.update({
   id: '/open/javascript/$taskId',
   path: '/open/javascript/$taskId',
@@ -80,6 +92,7 @@ const OpenReactTaskIdRoute = OpenReactTaskIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/home': typeof HomeRoute
+  '/algorithms/$taskId': typeof AlgorithmsTaskIdRoute
   '/javascript/$taskId': typeof JavascriptTaskIdRoute
   '/open/$taskId': typeof OpenTaskIdRoute
   '/react/$taskId': typeof ReactTaskIdRoute
@@ -87,12 +100,14 @@ export interface FileRoutesByFullPath {
   '/javascript/': typeof JavascriptIndexRoute
   '/open/': typeof OpenIndexRoute
   '/react/': typeof ReactIndexRoute
+  '/open/algorithms/$taskId': typeof OpenAlgorithmsTaskIdRoute
   '/open/javascript/$taskId': typeof OpenJavascriptTaskIdRoute
   '/open/react/$taskId': typeof OpenReactTaskIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/home': typeof HomeRoute
+  '/algorithms/$taskId': typeof AlgorithmsTaskIdRoute
   '/javascript/$taskId': typeof JavascriptTaskIdRoute
   '/open/$taskId': typeof OpenTaskIdRoute
   '/react/$taskId': typeof ReactTaskIdRoute
@@ -100,6 +115,7 @@ export interface FileRoutesByTo {
   '/javascript': typeof JavascriptIndexRoute
   '/open': typeof OpenIndexRoute
   '/react': typeof ReactIndexRoute
+  '/open/algorithms/$taskId': typeof OpenAlgorithmsTaskIdRoute
   '/open/javascript/$taskId': typeof OpenJavascriptTaskIdRoute
   '/open/react/$taskId': typeof OpenReactTaskIdRoute
 }
@@ -107,6 +123,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/home': typeof HomeRoute
+  '/algorithms/$taskId': typeof AlgorithmsTaskIdRoute
   '/javascript/$taskId': typeof JavascriptTaskIdRoute
   '/open/$taskId': typeof OpenTaskIdRoute
   '/react/$taskId': typeof ReactTaskIdRoute
@@ -114,6 +131,7 @@ export interface FileRoutesById {
   '/javascript/': typeof JavascriptIndexRoute
   '/open/': typeof OpenIndexRoute
   '/react/': typeof ReactIndexRoute
+  '/open/algorithms/$taskId': typeof OpenAlgorithmsTaskIdRoute
   '/open/javascript/$taskId': typeof OpenJavascriptTaskIdRoute
   '/open/react/$taskId': typeof OpenReactTaskIdRoute
 }
@@ -122,6 +140,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/home'
+    | '/algorithms/$taskId'
     | '/javascript/$taskId'
     | '/open/$taskId'
     | '/react/$taskId'
@@ -129,12 +148,14 @@ export interface FileRouteTypes {
     | '/javascript/'
     | '/open/'
     | '/react/'
+    | '/open/algorithms/$taskId'
     | '/open/javascript/$taskId'
     | '/open/react/$taskId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/home'
+    | '/algorithms/$taskId'
     | '/javascript/$taskId'
     | '/open/$taskId'
     | '/react/$taskId'
@@ -142,12 +163,14 @@ export interface FileRouteTypes {
     | '/javascript'
     | '/open'
     | '/react'
+    | '/open/algorithms/$taskId'
     | '/open/javascript/$taskId'
     | '/open/react/$taskId'
   id:
     | '__root__'
     | '/'
     | '/home'
+    | '/algorithms/$taskId'
     | '/javascript/$taskId'
     | '/open/$taskId'
     | '/react/$taskId'
@@ -155,6 +178,7 @@ export interface FileRouteTypes {
     | '/javascript/'
     | '/open/'
     | '/react/'
+    | '/open/algorithms/$taskId'
     | '/open/javascript/$taskId'
     | '/open/react/$taskId'
   fileRoutesById: FileRoutesById
@@ -162,6 +186,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   HomeRoute: typeof HomeRoute
+  AlgorithmsTaskIdRoute: typeof AlgorithmsTaskIdRoute
   JavascriptTaskIdRoute: typeof JavascriptTaskIdRoute
   OpenTaskIdRoute: typeof OpenTaskIdRoute
   ReactTaskIdRoute: typeof ReactTaskIdRoute
@@ -169,6 +194,7 @@ export interface RootRouteChildren {
   JavascriptIndexRoute: typeof JavascriptIndexRoute
   OpenIndexRoute: typeof OpenIndexRoute
   ReactIndexRoute: typeof ReactIndexRoute
+  OpenAlgorithmsTaskIdRoute: typeof OpenAlgorithmsTaskIdRoute
   OpenJavascriptTaskIdRoute: typeof OpenJavascriptTaskIdRoute
   OpenReactTaskIdRoute: typeof OpenReactTaskIdRoute
 }
@@ -194,6 +220,13 @@ declare module '@tanstack/react-router' {
       path: '/algorithms'
       fullPath: '/algorithms/'
       preLoaderRoute: typeof AlgorithmsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/algorithms/$taskId': {
+      id: '/algorithms/$taskId'
+      path: '/algorithms/$taskId'
+      fullPath: '/algorithms/$taskId'
+      preLoaderRoute: typeof AlgorithmsTaskIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/javascript/': {
@@ -238,6 +271,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReactTaskIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/open/algorithms/$taskId': {
+      id: '/open/algorithms/$taskId'
+      path: '/open/algorithms/$taskId'
+      fullPath: '/open/algorithms/$taskId'
+      preLoaderRoute: typeof OpenAlgorithmsTaskIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/open/javascript/$taskId': {
       id: '/open/javascript/$taskId'
       path: '/open/javascript/$taskId'
@@ -258,6 +298,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   HomeRoute: HomeRoute,
+  AlgorithmsTaskIdRoute: AlgorithmsTaskIdRoute,
   JavascriptTaskIdRoute: JavascriptTaskIdRoute,
   OpenTaskIdRoute: OpenTaskIdRoute,
   ReactTaskIdRoute: ReactTaskIdRoute,
@@ -265,6 +306,7 @@ const rootRouteChildren: RootRouteChildren = {
   JavascriptIndexRoute: JavascriptIndexRoute,
   OpenIndexRoute: OpenIndexRoute,
   ReactIndexRoute: ReactIndexRoute,
+  OpenAlgorithmsTaskIdRoute: OpenAlgorithmsTaskIdRoute,
   OpenJavascriptTaskIdRoute: OpenJavascriptTaskIdRoute,
   OpenReactTaskIdRoute: OpenReactTaskIdRoute,
 }

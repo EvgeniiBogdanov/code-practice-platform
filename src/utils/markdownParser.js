@@ -1,5 +1,5 @@
 import { marked } from "marked";
-import { highlightJS } from "./codeHighlighter";
+import { highlightJS } from "./codeHighlighter.js";
 
 const escapeHtmlChar = (str) =>
   str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -7,11 +7,11 @@ const escapeHtmlChar = (str) =>
 // Настройка официальной библиотеки marked
 marked.use({
   gfm: true,
-  breaks: true,
+  breaks: false,
   renderer: {
     // Кастомный рендерер блоков кода (для передачи в React-компонент TheoryCodeBlock)
     code({ text, lang }) {
-      const cleanLang = (lang || "javascript").toLowerCase();
+      const cleanLang = (lang || "").trim().split(/\s+/)[0].toLowerCase() || "notepad";
       return `__MD_CODE_BLOCK_START__${cleanLang}__LANG_DELIM__${encodeURIComponent(text)}__MD_CODE_BLOCK_END__`;
     },
     // Безопасная обработка неэкранированных форм HTML (input, select, button) в тексте статей
@@ -29,6 +29,40 @@ marked.use({
       }
       return text;
     },
+    // Кастомный рендерер заголовков для генерации авто-якорей (h1, h2, h3...)
+    heading({ tokens, depth }) {
+      const text = this.parser.parseInline(tokens);
+      const rawText = tokens.map((t) => t.text || "").join("");
+      const slug = rawText
+        .toLowerCase()
+        .replace(/[^\w\u0400-\u04FF\s-]/g, "")
+        .trim()
+        .replace(/[\s_]+/g, "-");
+      return `<h${depth} id="${slug}">${text}</h${depth}>`;
+    },
+    // Кастомный рендерер таблиц GFM (Notion style table)
+    table(token) {
+      const header = token.header
+        .map((cell, i) => {
+          const align = token.align && token.align[i] ? ` style="text-align: ${token.align[i]}"` : "";
+          return `<th${align}>${this.parser.parseInline(cell.tokens)}</th>`;
+        })
+        .join("");
+
+      const rows = token.rows
+        .map((row) => {
+          const cells = row
+            .map((cell, i) => {
+              const align = token.align && token.align[i] ? ` style="text-align: ${token.align[i]}"` : "";
+              return `<td${align}>${this.parser.parseInline(cell.tokens)}</td>`;
+            })
+            .join("");
+          return `<tr>${cells}</tr>`;
+        })
+        .join("");
+
+      return `<div class="notion-table-wrapper"><table class="notion-markdown-table"><thead><tr>${header}</tr></thead><tbody>${rows}</tbody></table></div>`;
+    },
     // Кастомные плашки Notion Callouts для цитат с эмодзи
     blockquote(token) {
       const text = (token.text || "").trim();
@@ -42,7 +76,7 @@ marked.use({
         if (icon === "🚀" || icon === "🔥") alertClass = "important";
         return `<div class="notion-callout-box notion-callout-${alertClass}"><span class="notion-callout-icon">${icon}</span><div class="notion-callout-text"><p>${content}</p></div></div>`;
       }
-      return `blockquote>${this.parser.parse(token.tokens)}</blockquote>`;
+      return `<blockquote>${this.parser.parse(token.tokens)}</blockquote>`;
     },
   },
 });
@@ -53,7 +87,7 @@ export const parseMarkdownBlocks = (markdownText) => {
 
   // Очистка от битых символов юникода (\uFFFD) и устаревших иконок 💡
   const cleanText = markdownText
-    .replace(/\uFFFD\uFE0F?|\uFFFD|/g, "")
+    .replace(/\uFFFD\uFE0F?|\uFFFD/g, "")
     .replace(/💡\s*/g, "");
 
   // Автоматическое объединение оторванных номеров списков (например "1.\nИтерация" -> "1. Итерация")
@@ -103,9 +137,18 @@ export const parseMarkdown = (markdownText) => {
       if (block.type === "markdown") {
         return block.html;
       } else {
-        const lang = block.language || "javascript";
+        const lang = (block.language || "notepad").trim().toLowerCase();
+        const isNotepad =
+          lang === "notepad" ||
+          lang === "text" ||
+          lang === "plaintext" ||
+          lang === "txt" ||
+          lang === "none";
+
         const langName =
-          lang === "jsx" || lang === "react"
+          isNotepad
+            ? "Notepad"
+            : lang === "jsx" || lang === "react"
             ? "React JSX"
             : lang === "tsx"
             ? "React TSX"
@@ -115,8 +158,17 @@ export const parseMarkdown = (markdownText) => {
             ? "HTML"
             : lang === "css"
             ? "CSS"
-            : "JavaScript";
-        const highlighted = highlightJS(block.code);
+            : lang === "json"
+            ? "JSON"
+            : lang === "bash" || lang === "sh" || lang === "shell"
+            ? "Shell"
+            : lang === "js" || lang === "javascript"
+            ? "JavaScript"
+            : lang.charAt(0).toUpperCase() + lang.slice(1);
+
+        const highlighted = isNotepad
+          ? escapeHtmlChar(block.code)
+          : highlightJS(block.code);
         const lines = block.code.split("\n");
         const lineGutter = lines
           .map((_, i) => `<div class="vscode-gutter-line">${i + 1}</div>`)

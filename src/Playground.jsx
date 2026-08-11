@@ -24,7 +24,7 @@ import {
   ALL_TASKS,
 } from "./react/data/tasksData";
 import { JS_TASKS } from "./javascript/data/tasksData";
-
+import { FILE_ICON_COLOR } from "./constants/uiConstants";
 
 import Sidebar from "./components/layout/Sidebar";
 import Header from "./components/layout/Header";
@@ -716,6 +716,7 @@ const Playground = () => {
   }, [activeSection, completedWarmup, totalWarmup, completedRefactoring, totalRefactoring, completedMain, totalMain, completedAdvanced, totalAdvanced, completedReactTs, totalReactTs, completedReactTsPractice, totalReactTsPractice, completedTasks]);
 
   const { taskCategory, categoryIcon, taskIcon, currentCategoryTasks, categoryId } = useMemo(() => {
+    const defaultFileIcon = <FileText size={14} className="node-file-icon" style={{ color: FILE_ICON_COLOR }} />;
     if (JS_TASKS.some((t) => String(t.id) === String(selectedTask?.id))) {
       const match = JS_TASKS.find((t) => String(t.id) === String(selectedTask?.id));
       const categoryName = match?.group && match?.subgroup
@@ -727,24 +728,24 @@ const Playground = () => {
       return {
         taskCategory: categoryName,
         categoryIcon: <Zap size={15} style={{ color: "var(--color-warning)" }} />,
-        taskIcon: <FileText size={14} style={{ color: "var(--text-dimmed)" }} />,
+        taskIcon: defaultFileIcon,
         currentCategoryTasks: subTasks,
         categoryId: `category-js-${categoryName}`,
       };
     }
     if (WARMUP_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "Разминка", categoryIcon: <Flame size={15} style={{ color: "var(--notion-red)" }} />, taskIcon: <FileText size={14} style={{ color: "var(--text-dimmed)" }} />, currentCategoryTasks: WARMUP_TASKS, categoryId: "category-warmup" };
+      return { taskCategory: "Разминка", categoryIcon: <Flame size={15} style={{ color: "var(--notion-red)" }} />, taskIcon: defaultFileIcon, currentCategoryTasks: WARMUP_TASKS, categoryId: "category-warmup" };
     if (REFACTORING_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "Рефакторинг", categoryIcon: <Wrench size={15} style={{ color: "var(--notion-blue)" }} />, taskIcon: <FileText size={14} style={{ color: "var(--text-dimmed)" }} />, currentCategoryTasks: REFACTORING_TASKS, categoryId: "category-refactoring" };
+      return { taskCategory: "Рефакторинг", categoryIcon: <Wrench size={15} style={{ color: "var(--notion-blue)" }} />, taskIcon: defaultFileIcon, currentCategoryTasks: REFACTORING_TASKS, categoryId: "category-refactoring" };
     if (MAIN_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "Middle", categoryIcon: <Rocket size={15} style={{ color: "var(--color-success)" }} />, taskIcon: <FileText size={14} style={{ color: "var(--text-dimmed)" }} />, currentCategoryTasks: MAIN_TASKS, categoryId: "category-middle" };
+      return { taskCategory: "Middle", categoryIcon: <Rocket size={15} style={{ color: "var(--color-success)" }} />, taskIcon: defaultFileIcon, currentCategoryTasks: MAIN_TASKS, categoryId: "category-middle" };
     if (ADVANCED_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "Strong", categoryIcon: <Brain size={15} style={{ color: "var(--color-accent-purple)" }} />, taskIcon: <FileText size={14} style={{ color: "var(--text-dimmed)" }} />, currentCategoryTasks: ADVANCED_TASKS, categoryId: "category-strong" };
+      return { taskCategory: "Strong", categoryIcon: <Brain size={15} style={{ color: "var(--color-accent-purple)" }} />, taskIcon: defaultFileIcon, currentCategoryTasks: ADVANCED_TASKS, categoryId: "category-strong" };
     if (REACT_TS_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "React + TS (Разминка)", categoryIcon: <Zap size={15} style={{ color: "var(--color-warning-light)" }} />, taskIcon: <FileText size={14} style={{ color: "var(--text-dimmed)" }} />, currentCategoryTasks: REACT_TS_TASKS, categoryId: "category-ts" };
+      return { taskCategory: "React + TS (Разминка)", categoryIcon: <Zap size={15} style={{ color: "var(--color-warning-light)" }} />, taskIcon: defaultFileIcon, currentCategoryTasks: REACT_TS_TASKS, categoryId: "category-ts" };
     if (REACT_TS_PRACTICE_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "React + TS (Практика)", categoryIcon: <Zap size={15} style={{ color: "var(--color-warning-light)" }} />, taskIcon: <FileText size={14} style={{ color: "var(--text-dimmed)" }} />, currentCategoryTasks: REACT_TS_PRACTICE_TASKS, categoryId: "category-ts-practice" };
-    return { taskCategory: "", categoryIcon: null, taskIcon: <FileText size={14} style={{ color: "var(--text-dimmed)" }} />, currentCategoryTasks: [], categoryId: "" };
+      return { taskCategory: "React + TS (Практика)", categoryIcon: <Zap size={15} style={{ color: "var(--color-warning-light)" }} />, taskIcon: defaultFileIcon, currentCategoryTasks: REACT_TS_PRACTICE_TASKS, categoryId: "category-ts-practice" };
+    return { taskCategory: "", categoryIcon: null, taskIcon: defaultFileIcon, currentCategoryTasks: [], categoryId: "" };
   }, [selectedTask.id]);
 
   const isTaskVisible = (task) => {

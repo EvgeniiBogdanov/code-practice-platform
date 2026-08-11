@@ -1,8 +1,11 @@
 import React, { useState, useMemo } from "react";
-import { FileCode, Copy, Check } from "lucide-react";
+import { FileCode, FileText, Copy, Check } from "lucide-react";
 import { highlightJS } from "../../utils/codeHighlighter";
 
-export const TheoryCodeBlock = ({ code = "", language = "javascript" }) => {
+const escapeHtmlChar = (str) =>
+  str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+export const TheoryCodeBlock = ({ code = "", language = "notepad" }) => {
   const [copied, setCopied] = useState(false);
 
   const cleanCode = useMemo(() => {
@@ -13,44 +16,55 @@ export const TheoryCodeBlock = ({ code = "", language = "javascript" }) => {
   const lines = useMemo(() => cleanCode.split("\n"), [cleanCode]);
 
   const langInfo = useMemo(() => {
-    const langLower = (language || "javascript").toLowerCase();
+    const langLower = (language || "notepad").trim().toLowerCase();
 
+    if (
+      langLower === "notepad" ||
+      langLower === "text" ||
+      langLower === "plaintext" ||
+      langLower === "txt" ||
+      langLower === "none"
+    ) {
+      return { name: "Notepad", color: "#94a3b8", isNotepad: true };
+    }
     if (langLower === "jsx" || langLower === "react") {
-      return { name: "React JSX", color: "#61dafb" };
+      return { name: "React JSX", color: "#61dafb", isNotepad: false };
     }
     if (langLower === "tsx") {
-      return { name: "React TSX", color: "#61dafb" };
+      return { name: "React TSX", color: "#61dafb", isNotepad: false };
     }
     if (langLower === "ts" || langLower === "typescript") {
-      return { name: "TypeScript", color: "#3178c6" };
+      return { name: "TypeScript", color: "#3178c6", isNotepad: false };
     }
     if (langLower === "html") {
-      return { name: "HTML", color: "#e34c26" };
+      return { name: "HTML", color: "#e34c26", isNotepad: false };
     }
     if (langLower === "css") {
-      return { name: "CSS", color: "#38bdf8" };
+      return { name: "CSS", color: "#38bdf8", isNotepad: false };
     }
     if (langLower === "json") {
-      return { name: "JSON", color: "#a855f7" };
+      return { name: "JSON", color: "#a855f7", isNotepad: false };
     }
     if (langLower === "bash" || langLower === "sh" || langLower === "shell") {
-      return { name: "Shell", color: "#10b981" };
+      return { name: "Shell", color: "#10b981", isNotepad: false };
+    }
+    if (langLower === "js" || langLower === "javascript") {
+      return { name: "JavaScript", color: "#f59e0b", isNotepad: false };
     }
 
-    const isReactCode =
-      /<[a-zA-Z0-9_]+(\s+[^>]*|\s*\/)?>|<\/[a-zA-Z0-9_]+>|<>/m.test(cleanCode) ||
-      /import\s+.*React|from\s+['"]react['"]|export\s+default\s+function/m.test(cleanCode);
-
-    if (isReactCode) {
-      return { name: "React JSX", color: "#61dafb" };
-    }
-
-    return { name: "JavaScript", color: "#f59e0b" };
-  }, [language, cleanCode]);
+    return {
+      name: langLower.charAt(0).toUpperCase() + langLower.slice(1),
+      color: "#94a3b8",
+      isNotepad: false,
+    };
+  }, [language]);
 
   const highlightedHtml = useMemo(() => {
+    if (langInfo.isNotepad) {
+      return escapeHtmlChar(cleanCode || "// Текст отсутствует");
+    }
     return highlightJS(cleanCode || "// Код отсутствует");
-  }, [cleanCode]);
+  }, [cleanCode, langInfo.isNotepad]);
 
   const handleCopy = () => {
     if (!cleanCode) return;
@@ -67,7 +81,11 @@ export const TheoryCodeBlock = ({ code = "", language = "javascript" }) => {
       {/* Шапка редактора: Формат файла */}
       <div className="vscode-editor-header">
         <div className="vscode-editor-single-file">
-          <FileCode size={13} style={{ color: langInfo.color, flexShrink: 0 }} />
+          {langInfo.isNotepad ? (
+            <FileText size={13} style={{ color: langInfo.color, flexShrink: 0 }} />
+          ) : (
+            <FileCode size={13} style={{ color: langInfo.color, flexShrink: 0 }} />
+          )}
           <span className="file-tab-name" style={{ fontWeight: 500 }}>
             {langInfo.name}
           </span>

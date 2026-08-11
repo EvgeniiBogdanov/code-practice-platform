@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useCallback, useTransition, useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   Home,
@@ -27,6 +27,156 @@ import {
 } from "../../react/data/tasksData";
 import { JS_TASKS } from "../../javascript/data/tasksData";
 import { getGroupMeta } from "../../javascript/data/groupConfig";
+import { ALGO_TASKS } from "../../algorithms/data/tasksData";
+import { getAlgoGroupMeta } from "../../algorithms/data/groupConfig";
+import { FILE_ICON_COLOR } from "../../constants/uiConstants";
+
+// ============================================================================
+// Notion-Style Optimized Atomic Sub-Components with React.memo
+// Only the active and clicked items re-render; all other 260+ items skip render
+// ============================================================================
+
+const SidebarTaskItem = React.memo(function SidebarTaskItem({
+  id,
+  to,
+  params,
+  search,
+  title,
+  isActive,
+  status, // "solved" | "unsolved" | null
+  onNavClick,
+  showTooltip,
+  hideTooltip,
+}) {
+  const handleMouseEnter = useCallback(
+    (e) => {
+      showTooltip(e, title);
+    },
+    [showTooltip, title]
+  );
+
+  return (
+    <Link
+      id={`sidebar-task-${id}`}
+      to={to}
+      params={params}
+      search={search}
+      className={`task-btn notion-tree-task-btn ${isActive ? "active" : ""}`}
+      onClick={onNavClick}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={hideTooltip}
+    >
+      <span className="task-btn-title">
+        <FileText size={14} className="node-file-icon" style={{ color: FILE_ICON_COLOR }} />
+        <span className="task-btn-text">{title}</span>
+      </span>
+      {status === "unsolved" && (
+        <span className="dropdown-item-unsolved">
+          <X size={12} />
+        </span>
+      )}
+      {status === "solved" && (
+        <span className="dropdown-item-check">
+          <Check size={12} />
+        </span>
+      )}
+    </Link>
+  );
+});
+
+const SidebarGroupHeader = React.memo(function SidebarGroupHeader({
+  to,
+  params,
+  search,
+  title,
+  icon,
+  chevronExpanded,
+  onToggle,
+  onNavClick,
+  isActive,
+  isCompleted,
+  completedCount,
+  totalCount,
+}) {
+  return (
+    <Link
+      to={to}
+      params={params}
+      search={search}
+      className={`notion-tree-node-header group-header ${isActive ? "active" : ""}`}
+      onClick={onNavClick}
+    >
+      <div
+        className="notion-icon-toggle-wrapper"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onToggle(e);
+        }}
+        title={chevronExpanded ? "Свернуть" : "Развернуть"}
+      >
+        <div className="notion-icon-default">{icon}</div>
+        <div className={`notion-icon-chevron ${chevronExpanded ? "expanded" : ""}`}>
+          <ChevronRight size={13} />
+        </div>
+      </div>
+      <span className="node-title">{title}</span>
+      <span className={`node-count ${isCompleted ? "completed" : ""}`}>
+        {completedCount}/{totalCount}
+      </span>
+    </Link>
+  );
+});
+
+const SidebarSubgroupHeader = React.memo(function SidebarSubgroupHeader({
+  to,
+  params,
+  search,
+  title,
+  color,
+  chevronExpanded,
+  onToggle,
+  onNavClick,
+  isActive,
+  isCompleted,
+  completedCount,
+  totalCount,
+}) {
+  return (
+    <Link
+      to={to}
+      params={params}
+      search={search}
+      className={`notion-tree-node-header subgroup-header ${isActive ? "active" : ""}`}
+      onClick={onNavClick}
+    >
+      <div
+        className="notion-icon-toggle-wrapper"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onToggle(e);
+        }}
+        title={chevronExpanded ? "Свернуть" : "Развернуть"}
+      >
+        <div className="notion-icon-default">
+          <Folder size={14} style={{ color, opacity: 0.85 }} />
+        </div>
+        <div className={`notion-icon-chevron ${chevronExpanded ? "expanded" : ""}`}>
+          <ChevronRight size={13} />
+        </div>
+      </div>
+      <span className="node-title">{title}</span>
+      <span className={`node-count ${isCompleted ? "completed" : ""}`}>
+        {completedCount}/{totalCount}
+      </span>
+    </Link>
+  );
+});
+
+// ============================================================================
+// Main Sidebar Component
+// ============================================================================
 
 export const Sidebar = ({
   sidebarOpen,
@@ -37,6 +187,7 @@ export const Sidebar = ({
   sectionDropdownOpen,
   setSectionDropdownOpen,
   sectionDropdownRef,
+  setHeaderSectionDropdownOpen,
   setStatsModalOpen,
   completedTotal,
   totalTasks,
@@ -80,8 +231,9 @@ export const Sidebar = ({
   hideTooltip,
 }) => {
   const [isResizing, setIsResizing] = React.useState(false);
+  const [, startTransition] = useTransition();
 
-  const startResizing = React.useCallback(
+  const startResizing = useCallback(
     (mouseDownEvent) => {
       mouseDownEvent.preventDefault();
       setIsResizing(true);
@@ -113,7 +265,7 @@ export const Sidebar = ({
     [sidebarWidth, setSidebarWidth]
   );
 
-  const handleResetWidth = React.useCallback(
+  const handleResetWidth = useCallback(
     (e) => {
       e.preventDefault();
       if (setSidebarWidth) {
@@ -123,31 +275,57 @@ export const Sidebar = ({
     [setSidebarWidth]
   );
 
-  const toggleJsGroup = (groupName) => {
-    if (setExpandedJsGroups) {
-      setExpandedJsGroups((prev) => ({
-        ...prev,
-        [groupName]: !prev[groupName],
-      }));
-    }
-  };
+  const toggleJsGroup = useCallback(
+    (groupName) => {
+      if (setExpandedJsGroups) {
+        startTransition(() => {
+          setExpandedJsGroups((prev) => ({
+            ...prev,
+            [groupName]: !prev[groupName],
+          }));
+        });
+      }
+    },
+    [setExpandedJsGroups]
+  );
 
-  const toggleJsSubgroup = (key) => {
-    if (setExpandedJsSubgroups) {
-      setExpandedJsSubgroups((prev) => ({
-        ...prev,
-        [key]: !prev[key],
-      }));
-    }
-  };
+  const toggleJsSubgroup = useCallback(
+    (key) => {
+      if (setExpandedJsSubgroups) {
+        startTransition(() => {
+          setExpandedJsSubgroups((prev) => ({
+            ...prev,
+            [key]: !prev[key],
+          }));
+        });
+      }
+    },
+    [setExpandedJsSubgroups]
+  );
 
-  const handleMobileNavClick = () => {
+  // Stable reference for search={(prev) => prev} to avoid re-renders from new function references
+  const preserveSearch = useCallback((prev) => prev, []);
+
+  const handleMobileNavClick = useCallback(() => {
     if (typeof window !== "undefined" && window.innerWidth <= 768) {
       setSidebarOpen(false);
     }
-  };
+  }, [setSidebarOpen]);
 
-  React.useEffect(() => {
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        sectionDropdownRef?.current &&
+        !sectionDropdownRef.current.contains(event.target)
+      ) {
+        if (setSectionDropdownOpen) setSectionDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [sectionDropdownRef, setSectionDropdownOpen]);
+
+  useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape" && sidebarOpen && typeof window !== "undefined" && window.innerWidth <= 768) {
         setSidebarOpen(false);
@@ -157,8 +335,118 @@ export const Sidebar = ({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [sidebarOpen, setSidebarOpen]);
 
-  const completedJsTotal = JS_TASKS.filter((t) => completedTasks[t.id]).length;
+  const isTaskSolved = useCallback(
+    (id) => {
+      const val = completedTasks[id] ?? completedTasks[String(id)];
+      return val === true || val === "solved";
+    },
+    [completedTasks]
+  );
+
+  const getTaskStatus = useCallback(
+    (id) => {
+      const val = completedTasks[id] ?? completedTasks[String(id)];
+      if (val === true || val === "solved") return "solved";
+      if (val === "unsolved") return "unsolved";
+      return null;
+    },
+    [completedTasks]
+  );
+
+  // Memoized JS data structures & metrics
+  const completedJsTotal = useMemo(() => {
+    return JS_TASKS.filter((t) => isTaskSolved(t.id)).length;
+  }, [isTaskSolved]);
   const totalJsCount = JS_TASKS.length;
+  const jsPercentage = totalJsCount > 0 ? Math.round((completedJsTotal / totalJsCount) * 100) : 0;
+
+  const { jsGroupedMap, jsGroupMetaMap } = useMemo(() => {
+    const map = {};
+    const metaMap = {};
+    JS_TASKS.forEach((task) => {
+      const g = task.group || "JavaScript";
+      const s = task.subgroup || "Общее";
+      if (!map[g]) {
+        map[g] = {};
+        metaMap[g] = getGroupMeta(g);
+      }
+      if (!map[g][s]) map[g][s] = [];
+      map[g][s].push(task);
+    });
+    return { jsGroupedMap: map, jsGroupMetaMap: metaMap };
+  }, []);
+
+  // Memoized Algorithms data structures & metrics
+  const completedAlgoTotal = useMemo(() => {
+    return ALGO_TASKS.filter((t) => isTaskSolved(t.id)).length;
+  }, [isTaskSolved]);
+  const totalAlgoCount = ALGO_TASKS.length;
+  const algoPercentage = totalAlgoCount > 0 ? Math.round((completedAlgoTotal / totalAlgoCount) * 100) : 0;
+
+  const { algoGroupedMap, algoGroupMetaMap } = useMemo(() => {
+    const map = {};
+    const metaMap = {};
+    ALGO_TASKS.forEach((task) => {
+      const g = task.group || "Algorithms";
+      if (!map[g]) {
+        map[g] = [];
+        metaMap[g] = getAlgoGroupMeta(g);
+      }
+      map[g].push(task);
+    });
+    return { algoGroupedMap: map, algoGroupMetaMap: metaMap };
+  }, []);
+
+  const selectedTaskIdStr = selectedTask ? String(selectedTask.id) : "";
+
+  // Category toggle callbacks
+  const handleToggleWarmup = useCallback(
+    (e) => {
+      e.stopPropagation();
+      setWarmupExpanded((prev) => !prev);
+    },
+    [setWarmupExpanded]
+  );
+
+  const handleToggleRefactoring = useCallback(
+    (e) => {
+      e.stopPropagation();
+      setRefactoringExpanded((prev) => !prev);
+    },
+    [setRefactoringExpanded]
+  );
+
+  const handleToggleTasks = useCallback(
+    (e) => {
+      e.stopPropagation();
+      setTasksExpanded((prev) => !prev);
+    },
+    [setTasksExpanded]
+  );
+
+  const handleToggleAdvanced = useCallback(
+    (e) => {
+      e.stopPropagation();
+      setAdvancedExpanded((prev) => !prev);
+    },
+    [setAdvancedExpanded]
+  );
+
+  const handleToggleReactTs = useCallback(
+    (e) => {
+      e.stopPropagation();
+      setReactTsExpanded((prev) => !prev);
+    },
+    [setReactTsExpanded]
+  );
+
+  const handleToggleReactTsPractice = useCallback(
+    (e) => {
+      e.stopPropagation();
+      setReactTsPracticeExpanded((prev) => !prev);
+    },
+    [setReactTsPracticeExpanded]
+  );
 
   const renderSectionDropdown = () => (
     <div className="section-dropdown-menu">
@@ -171,7 +459,8 @@ export const Sidebar = ({
           handleMobileNavClick();
         }}
       >
-        <Home size={15} style={{ color: "var(--color-info-light)" }} /> <span>ГЛАВНАЯ</span> <span className="section-badge soon">Обзор</span>
+        <Home size={15} style={{ color: "var(--color-info-light)" }} /> <span>ГЛАВНАЯ</span>{" "}
+        <span className="section-badge soon">Обзор</span>
       </Link>
       <Link
         to="/javascript"
@@ -181,7 +470,8 @@ export const Sidebar = ({
           handleMobileNavClick();
         }}
       >
-        <Zap size={15} style={{ color: "var(--color-warning)" }} /> <span>JAVASCRIPT</span> <span className="section-badge active">{JS_TASKS.length} задач</span>
+        <Zap size={15} style={{ color: "var(--color-warning)" }} /> <span>JAVASCRIPT</span>{" "}
+        <span className="section-badge active">{JS_TASKS.length} задач</span>
       </Link>
       <Link
         to="/react"
@@ -191,7 +481,8 @@ export const Sidebar = ({
           handleMobileNavClick();
         }}
       >
-        <Code2 size={15} style={{ color: "var(--color-info)" }} /> <span>REACT</span> <span className="section-badge active">260+ задач</span>
+        <Code2 size={15} style={{ color: "var(--color-info)" }} /> <span>REACT</span>{" "}
+        <span className="section-badge active">260+ задач</span>
       </Link>
       <Link
         to="/algorithms"
@@ -201,7 +492,8 @@ export const Sidebar = ({
           handleMobileNavClick();
         }}
       >
-        <Brain size={15} style={{ color: "var(--color-accent-purple)" }} /> <span>АЛГОРИТМЫ</span> <span className="section-badge soon">0 задач</span>
+        <Brain size={15} style={{ color: "var(--color-accent-purple)" }} /> <span>АЛГОРИТМЫ</span>{" "}
+        <span className="section-badge active">{ALGO_TASKS.length} задач</span>
       </Link>
     </div>
   );
@@ -219,13 +511,32 @@ export const Sidebar = ({
         <div className="sidebar-workspace-info-wrapper" ref={sectionDropdownRef}>
           <button
             className="sidebar-workspace-info-btn"
-            onClick={() => setSectionDropdownOpen((prev) => !prev)}
+            onClick={() => {
+              if (setHeaderSectionDropdownOpen) setHeaderSectionDropdownOpen(false);
+              setSectionDropdownOpen((prev) => !prev);
+            }}
             title="Переключить раздел платформы"
           >
-            {activeSection === "home" && <><Home size={15} style={{ color: "#60a5fa" }} /> <span>ГЛАВНАЯ</span></>}
-            {activeSection === "react" && <><Code2 size={15} style={{ color: "#61dafb" }} /> <span>REACT</span></>}
-            {activeSection === "javascript" && <><Zap size={15} style={{ color: "#f59e0b" }} /> <span>JAVASCRIPT</span></>}
-            {activeSection === "algorithms" && <><Brain size={15} style={{ color: "#a855f7" }} /> <span>АЛГОРИТМЫ</span></>}
+            {activeSection === "home" && (
+              <>
+                <Home size={15} style={{ color: "#60a5fa" }} /> <span>ГЛАВНАЯ</span>
+              </>
+            )}
+            {activeSection === "react" && (
+              <>
+                <Code2 size={15} style={{ color: "#61dafb" }} /> <span>REACT</span>
+              </>
+            )}
+            {activeSection === "javascript" && (
+              <>
+                <Zap size={15} style={{ color: "#f59e0b" }} /> <span>JAVASCRIPT</span>
+              </>
+            )}
+            {activeSection === "algorithms" && (
+              <>
+                <Brain size={15} style={{ color: "#a855f7" }} /> <span>АЛГОРИТМЫ</span>
+              </>
+            )}
             <ChevronDown size={13} className="sidebar-section-chevron" />
           </button>
 
@@ -305,45 +616,36 @@ export const Sidebar = ({
 
             {/* Разминка */}
             <div className="notion-tree-group-block" id="category-warmup">
-              <div
-                className="notion-tree-node-header group-header"
-                onClick={() => setWarmupExpanded(!warmupExpanded)}
-              >
-                <ChevronRight
-                  size={13}
-                  className={`sidebar-chevron ${warmupExpanded ? "expanded" : ""}`}
-                />
-                <Flame size={15} style={{ color: "#ff6b6b" }} />
-                <span className="node-title">Разминка</span>
-                <span className={`node-count ${completedWarmup > 0 && completedWarmup === totalWarmup ? "completed" : ""}`}>
-                  {completedWarmup}/{totalWarmup}
-                </span>
-              </div>
+              <SidebarGroupHeader
+                to="/react/$taskId"
+                params={{ taskId: "group-warmup" }}
+                search={preserveSearch}
+                title="Разминка"
+                icon={<Flame size={15} style={{ color: "#ff6b6b" }} />}
+                chevronExpanded={warmupExpanded}
+                onToggle={handleToggleWarmup}
+                onNavClick={handleMobileNavClick}
+                isActive={selectedTaskIdStr === "group-warmup"}
+                isCompleted={completedWarmup > 0 && completedWarmup === totalWarmup}
+                completedCount={completedWarmup}
+                totalCount={totalWarmup}
+              />
               <div className={`task-list-wrapper ${warmupExpanded ? "expanded" : ""}`}>
                 <div className="task-list-inner notion-tree-tasks-container">
                   {WARMUP_TASKS.filter(isTaskVisible).map((task) => (
-                    <Link
+                    <SidebarTaskItem
                       key={task.id}
-                      id={`sidebar-task-${task.id}`}
+                      id={task.id}
                       to="/react/$taskId"
                       params={{ taskId: String(task.id) }}
-                      search={(prev) => prev}
-                      className={`task-btn notion-tree-task-btn ${String(selectedTask?.id) === String(task.id) ? "active" : ""}`}
-                      onClick={handleMobileNavClick}
-                      onMouseEnter={(e) => showTooltip(e, task.title)}
-                      onMouseLeave={hideTooltip}
-                    >
-                      <span className="task-btn-title">
-                        <FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} />
-                        <span className="task-btn-text">{task.title}</span>
-                      </span>
-                      {completedTasks[task.id] &&
-                        (completedTasks[task.id] === "unsolved" ? (
-                          <span className="dropdown-item-unsolved"><X size={12} /></span>
-                        ) : (
-                          <span className="dropdown-item-check"><Check size={12} /></span>
-                        ))}
-                    </Link>
+                      search={preserveSearch}
+                      title={task.title}
+                      isActive={selectedTaskIdStr === String(task.id)}
+                      status={getTaskStatus(task.id)}
+                      onNavClick={handleMobileNavClick}
+                      showTooltip={showTooltip}
+                      hideTooltip={hideTooltip}
+                    />
                   ))}
                 </div>
               </div>
@@ -351,45 +653,36 @@ export const Sidebar = ({
 
             {/* Рефакторинг */}
             <div className="notion-tree-group-block" id="category-refactoring">
-              <div
-                className="notion-tree-node-header group-header"
-                onClick={() => setRefactoringExpanded(!refactoringExpanded)}
-              >
-                <ChevronRight
-                  size={13}
-                  className={`sidebar-chevron ${refactoringExpanded ? "expanded" : ""}`}
-                />
-                <Wrench size={15} style={{ color: "#3b82f6" }} />
-                <span className="node-title">Рефакторинг</span>
-                <span className={`node-count ${completedRefactoring > 0 && completedRefactoring === totalRefactoring ? "completed" : ""}`}>
-                  {completedRefactoring}/{totalRefactoring}
-                </span>
-              </div>
+              <SidebarGroupHeader
+                to="/react/$taskId"
+                params={{ taskId: "group-refactoring" }}
+                search={preserveSearch}
+                title="Рефакторинг"
+                icon={<Wrench size={15} style={{ color: "#3b82f6" }} />}
+                chevronExpanded={refactoringExpanded}
+                onToggle={handleToggleRefactoring}
+                onNavClick={handleMobileNavClick}
+                isActive={selectedTaskIdStr === "group-refactoring"}
+                isCompleted={completedRefactoring > 0 && completedRefactoring === totalRefactoring}
+                completedCount={completedRefactoring}
+                totalCount={totalRefactoring}
+              />
               <div className={`task-list-wrapper ${refactoringExpanded ? "expanded" : ""}`}>
                 <div className="task-list-inner notion-tree-tasks-container">
                   {REFACTORING_TASKS.filter(isTaskVisible).map((task) => (
-                    <Link
+                    <SidebarTaskItem
                       key={task.id}
-                      id={`sidebar-task-${task.id}`}
+                      id={task.id}
                       to="/react/$taskId"
                       params={{ taskId: String(task.id) }}
-                      search={(prev) => prev}
-                      className={`task-btn notion-tree-task-btn ${String(selectedTask?.id) === String(task.id) ? "active" : ""}`}
-                      onClick={handleMobileNavClick}
-                      onMouseEnter={(e) => showTooltip(e, task.title)}
-                      onMouseLeave={hideTooltip}
-                    >
-                      <span className="task-btn-title">
-                        <FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} />
-                        <span className="task-btn-text">{task.title}</span>
-                      </span>
-                      {completedTasks[task.id] &&
-                        (completedTasks[task.id] === "unsolved" ? (
-                          <span className="dropdown-item-unsolved"><X size={12} /></span>
-                        ) : (
-                          <span className="dropdown-item-check"><Check size={12} /></span>
-                        ))}
-                    </Link>
+                      search={preserveSearch}
+                      title={task.title}
+                      isActive={selectedTaskIdStr === String(task.id)}
+                      status={getTaskStatus(task.id)}
+                      onNavClick={handleMobileNavClick}
+                      showTooltip={showTooltip}
+                      hideTooltip={hideTooltip}
+                    />
                   ))}
                 </div>
               </div>
@@ -397,45 +690,36 @@ export const Sidebar = ({
 
             {/* Основные задачи (Middle) */}
             <div className="notion-tree-group-block" id="category-middle">
-              <div
-                className="notion-tree-node-header group-header"
-                onClick={() => setTasksExpanded(!tasksExpanded)}
-              >
-                <ChevronRight
-                  size={13}
-                  className={`sidebar-chevron ${tasksExpanded ? "expanded" : ""}`}
-                />
-                <Rocket size={15} style={{ color: "#10b981" }} />
-                <span className="node-title">Middle</span>
-                <span className={`node-count ${completedMain > 0 && completedMain === totalMain ? "completed" : ""}`}>
-                  {completedMain}/{totalMain}
-                </span>
-              </div>
+              <SidebarGroupHeader
+                to="/react/$taskId"
+                params={{ taskId: "group-middle" }}
+                search={preserveSearch}
+                title="Middle"
+                icon={<Rocket size={15} style={{ color: "#10b981" }} />}
+                chevronExpanded={tasksExpanded}
+                onToggle={handleToggleTasks}
+                onNavClick={handleMobileNavClick}
+                isActive={selectedTaskIdStr === "group-middle"}
+                isCompleted={completedMain > 0 && completedMain === totalMain}
+                completedCount={completedMain}
+                totalCount={totalMain}
+              />
               <div className={`task-list-wrapper ${tasksExpanded ? "expanded" : ""}`}>
                 <div className="task-list-inner notion-tree-tasks-container">
                   {MAIN_TASKS.filter(isTaskVisible).map((task) => (
-                    <Link
+                    <SidebarTaskItem
                       key={task.id}
-                      id={`sidebar-task-${task.id}`}
+                      id={task.id}
                       to="/react/$taskId"
                       params={{ taskId: String(task.id) }}
-                      search={(prev) => prev}
-                      className={`task-btn notion-tree-task-btn ${String(selectedTask?.id) === String(task.id) ? "active" : ""}`}
-                      onClick={handleMobileNavClick}
-                      onMouseEnter={(e) => showTooltip(e, task.title)}
-                      onMouseLeave={hideTooltip}
-                    >
-                      <span className="task-btn-title">
-                        <FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} />
-                        <span className="task-btn-text">{task.title}</span>
-                      </span>
-                      {completedTasks[task.id] &&
-                        (completedTasks[task.id] === "unsolved" ? (
-                          <span className="dropdown-item-unsolved"><X size={12} /></span>
-                        ) : (
-                          <span className="dropdown-item-check"><Check size={12} /></span>
-                        ))}
-                    </Link>
+                      search={preserveSearch}
+                      title={task.title}
+                      isActive={selectedTaskIdStr === String(task.id)}
+                      status={getTaskStatus(task.id)}
+                      onNavClick={handleMobileNavClick}
+                      showTooltip={showTooltip}
+                      hideTooltip={hideTooltip}
+                    />
                   ))}
                 </div>
               </div>
@@ -443,45 +727,36 @@ export const Sidebar = ({
 
             {/* Сложные задачи (Strong) */}
             <div className="notion-tree-group-block" id="category-strong">
-              <div
-                className="notion-tree-node-header group-header"
-                onClick={() => setAdvancedExpanded(!advancedExpanded)}
-              >
-                <ChevronRight
-                  size={13}
-                  className={`sidebar-chevron ${advancedExpanded ? "expanded" : ""}`}
-                />
-                <Brain size={15} style={{ color: "#a855f7" }} />
-                <span className="node-title">Strong</span>
-                <span className={`node-count ${completedAdvanced > 0 && completedAdvanced === totalAdvanced ? "completed" : ""}`}>
-                  {completedAdvanced}/{totalAdvanced}
-                </span>
-              </div>
+              <SidebarGroupHeader
+                to="/react/$taskId"
+                params={{ taskId: "group-strong" }}
+                search={preserveSearch}
+                title="Strong"
+                icon={<Brain size={15} style={{ color: "#a855f7" }} />}
+                chevronExpanded={advancedExpanded}
+                onToggle={handleToggleAdvanced}
+                onNavClick={handleMobileNavClick}
+                isActive={selectedTaskIdStr === "group-strong"}
+                isCompleted={completedAdvanced > 0 && completedAdvanced === totalAdvanced}
+                completedCount={completedAdvanced}
+                totalCount={totalAdvanced}
+              />
               <div className={`task-list-wrapper ${advancedExpanded ? "expanded" : ""}`}>
                 <div className="task-list-inner notion-tree-tasks-container">
                   {ADVANCED_TASKS.filter(isTaskVisible).map((task) => (
-                    <Link
+                    <SidebarTaskItem
                       key={task.id}
-                      id={`sidebar-task-${task.id}`}
+                      id={task.id}
                       to="/react/$taskId"
                       params={{ taskId: String(task.id) }}
-                      search={(prev) => prev}
-                      className={`task-btn notion-tree-task-btn ${String(selectedTask?.id) === String(task.id) ? "active" : ""}`}
-                      onClick={handleMobileNavClick}
-                      onMouseEnter={(e) => showTooltip(e, task.title)}
-                      onMouseLeave={hideTooltip}
-                    >
-                      <span className="task-btn-title">
-                        <FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} />
-                        <span className="task-btn-text">{task.title}</span>
-                      </span>
-                      {completedTasks[task.id] &&
-                        (completedTasks[task.id] === "unsolved" ? (
-                          <span className="dropdown-item-unsolved"><X size={12} /></span>
-                        ) : (
-                          <span className="dropdown-item-check"><Check size={12} /></span>
-                        ))}
-                    </Link>
+                      search={preserveSearch}
+                      title={task.title}
+                      isActive={selectedTaskIdStr === String(task.id)}
+                      status={getTaskStatus(task.id)}
+                      onNavClick={handleMobileNavClick}
+                      showTooltip={showTooltip}
+                      hideTooltip={hideTooltip}
+                    />
                   ))}
                 </div>
               </div>
@@ -489,45 +764,36 @@ export const Sidebar = ({
 
             {/* React + TypeScript (Разминка) */}
             <div className="notion-tree-group-block" id="category-ts">
-              <div
-                className="notion-tree-node-header group-header"
-                onClick={() => setReactTsExpanded(!reactTsExpanded)}
-              >
-                <ChevronRight
-                  size={13}
-                  className={`sidebar-chevron ${reactTsExpanded ? "expanded" : ""}`}
-                />
-                <Zap size={15} style={{ color: "#eab308" }} />
-                <span className="node-title">React + TS (Разминка)</span>
-                <span className={`node-count ${completedReactTs > 0 && completedReactTs === totalReactTs ? "completed" : ""}`}>
-                  {completedReactTs}/{totalReactTs}
-                </span>
-              </div>
+              <SidebarGroupHeader
+                to="/react/$taskId"
+                params={{ taskId: "group-ts" }}
+                search={preserveSearch}
+                title="React + TS (Разминка)"
+                icon={<Zap size={15} style={{ color: "#eab308" }} />}
+                chevronExpanded={reactTsExpanded}
+                onToggle={handleToggleReactTs}
+                onNavClick={handleMobileNavClick}
+                isActive={selectedTaskIdStr === "group-ts"}
+                isCompleted={completedReactTs > 0 && completedReactTs === totalReactTs}
+                completedCount={completedReactTs}
+                totalCount={totalReactTs}
+              />
               <div className={`task-list-wrapper ${reactTsExpanded ? "expanded" : ""}`}>
                 <div className="task-list-inner notion-tree-tasks-container">
                   {REACT_TS_TASKS.filter(isTaskVisible).map((task) => (
-                    <Link
+                    <SidebarTaskItem
                       key={task.id}
-                      id={`sidebar-task-${task.id}`}
+                      id={task.id}
                       to="/react/$taskId"
                       params={{ taskId: String(task.id) }}
-                      search={(prev) => prev}
-                      className={`task-btn notion-tree-task-btn ${String(selectedTask?.id) === String(task.id) ? "active" : ""}`}
-                      onClick={handleMobileNavClick}
-                      onMouseEnter={(e) => showTooltip(e, task.title)}
-                      onMouseLeave={hideTooltip}
-                    >
-                      <span className="task-btn-title">
-                        <FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} />
-                        <span className="task-btn-text">{task.title}</span>
-                      </span>
-                      {completedTasks[task.id] &&
-                        (completedTasks[task.id] === "unsolved" ? (
-                          <span className="dropdown-item-unsolved"><X size={12} /></span>
-                        ) : (
-                          <span className="dropdown-item-check"><Check size={12} /></span>
-                        ))}
-                    </Link>
+                      search={preserveSearch}
+                      title={task.title}
+                      isActive={selectedTaskIdStr === String(task.id)}
+                      status={getTaskStatus(task.id)}
+                      onNavClick={handleMobileNavClick}
+                      showTooltip={showTooltip}
+                      hideTooltip={hideTooltip}
+                    />
                   ))}
                 </div>
               </div>
@@ -535,225 +801,320 @@ export const Sidebar = ({
 
             {/* React + TypeScript (Практика) */}
             <div className="notion-tree-group-block" id="category-ts-practice">
-              <div
-                className="notion-tree-node-header group-header"
-                onClick={() => setReactTsPracticeExpanded(!reactTsPracticeExpanded)}
-              >
-                <ChevronRight
-                  size={13}
-                  className={`sidebar-chevron ${reactTsPracticeExpanded ? "expanded" : ""}`}
-                />
-                <Zap size={15} style={{ color: "#eab308" }} />
-                <span className="node-title">React + TS (Практика)</span>
-                <span className={`node-count ${completedReactTsPractice > 0 && completedReactTsPractice === totalReactTsPractice ? "completed" : ""}`}>
-                  {completedReactTsPractice}/{totalReactTsPractice}
-                </span>
-              </div>
+              <SidebarGroupHeader
+                to="/react/$taskId"
+                params={{ taskId: "group-ts-practice" }}
+                search={preserveSearch}
+                title="React + TS (Практика)"
+                icon={<Zap size={15} style={{ color: "#eab308" }} />}
+                chevronExpanded={reactTsPracticeExpanded}
+                onToggle={handleToggleReactTsPractice}
+                onNavClick={handleMobileNavClick}
+                isActive={selectedTaskIdStr === "group-ts-practice"}
+                isCompleted={completedReactTsPractice > 0 && completedReactTsPractice === totalReactTsPractice}
+                completedCount={completedReactTsPractice}
+                totalCount={totalReactTsPractice}
+              />
               <div className={`task-list-wrapper ${reactTsPracticeExpanded ? "expanded" : ""}`}>
                 <div className="task-list-inner notion-tree-tasks-container">
                   {REACT_TS_PRACTICE_TASKS.filter(isTaskVisible).map((task) => (
-                    <Link
+                    <SidebarTaskItem
                       key={task.id}
-                      id={`sidebar-task-${task.id}`}
+                      id={task.id}
                       to="/react/$taskId"
                       params={{ taskId: String(task.id) }}
-                      search={(prev) => prev}
-                      className={`task-btn notion-tree-task-btn ${String(selectedTask?.id) === String(task.id) ? "active" : ""}`}
-                      onClick={handleMobileNavClick}
-                      onMouseEnter={(e) => showTooltip(e, task.title)}
-                      onMouseLeave={hideTooltip}
-                    >
-                      <span className="task-btn-title">
-                        <FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} />
-                        <span className="task-btn-text">{task.title}</span>
-                      </span>
-                      {completedTasks[task.id] &&
-                        (completedTasks[task.id] === "unsolved" ? (
-                          <span className="dropdown-item-unsolved"><X size={12} /></span>
-                        ) : (
-                          <span className="dropdown-item-check"><Check size={12} /></span>
-                        ))}
-                    </Link>
+                      search={preserveSearch}
+                      title={task.title}
+                      isActive={selectedTaskIdStr === String(task.id)}
+                      status={getTaskStatus(task.id)}
+                      onNavClick={handleMobileNavClick}
+                      showTooltip={showTooltip}
+                      hideTooltip={hideTooltip}
+                    />
                   ))}
                 </div>
               </div>
             </div>
           </>
         ) : activeSection === "javascript" ? (
-          (() => {
-            const completedJsTotal = JS_TASKS.filter((t) => completedTasks[t.id]).length;
-            const totalJsCount = JS_TASKS.length;
-            const jsPercentage = totalJsCount > 0 ? Math.round((completedJsTotal / totalJsCount) * 100) : 0;
-
-            const jsGroupedMap = {};
-            JS_TASKS.forEach((task) => {
-              const g = task.group || "JavaScript";
-              const s = task.subgroup || "Общее";
-              if (!jsGroupedMap[g]) jsGroupedMap[g] = {};
-              if (!jsGroupedMap[g][s]) jsGroupedMap[g][s] = [];
-              jsGroupedMap[g][s].push(task);
-            });
-
-            return (
-              <>
-                <div
-                  className="sidebar-progress-card"
-                  onClick={() => setStatsModalOpen && setStatsModalOpen(true)}
-                  style={{ cursor: "pointer" }}
-                  title="Открыть расширенную статистику задач JavaScript"
+          <>
+            <div
+              className="sidebar-progress-card"
+              onClick={() => setStatsModalOpen && setStatsModalOpen(true)}
+              style={{ cursor: "pointer" }}
+              title="Открыть расширенную статистику задач JavaScript"
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: "6px",
+                }}
+              >
+                <span
+                  style={{
+                    color: "var(--text-main)",
+                    fontSize: "11px",
+                    fontWeight: "600",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.04em",
+                    fontFamily: "var(--font-sans)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "5px",
+                  }}
                 >
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      marginBottom: "6px",
-                    }}
-                  >
-                    <span
-                      style={{
-                        color: "var(--text-main)",
-                        fontSize: "11px",
-                        fontWeight: "600",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.04em",
-                        fontFamily: "var(--font-sans)",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "5px",
-                      }}
-                    >
-                      <CheckSquare size={13} /> Выполнено задач
-                    </span>
-                    <span
-                      style={{
-                        color: "#f59e0b",
-                        fontSize: "11px",
-                        fontWeight: "bold",
-                        fontFamily: "var(--font-mono)",
-                      }}
-                    >
-                      {completedJsTotal}/{totalJsCount}
-                    </span>
-                  </div>
+                  <CheckSquare size={13} /> Выполнено задач
+                </span>
+                <span
+                  style={{
+                    color: "#f59e0b",
+                    fontSize: "11px",
+                    fontWeight: "bold",
+                    fontFamily: "var(--font-mono)",
+                  }}
+                >
+                  {completedJsTotal}/{totalJsCount}
+                </span>
+              </div>
 
-                  <div
-                    style={{
-                      height: "4px",
-                      background: "var(--border-color)",
-                      borderRadius: "2px",
-                      overflow: "hidden",
+              <div
+                style={{
+                  height: "4px",
+                  background: "var(--border-color)",
+                  borderRadius: "2px",
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    width: `${jsPercentage}%`,
+                    height: "100%",
+                    background: "#f59e0b",
+                    transition: "width 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  }}
+                />
+              </div>
+            </div>
+
+            {Object.entries(jsGroupedMap).map(([groupName, subgroups]) => {
+              const totalGroupTasks = Object.values(subgroups).flat();
+              const completedGroupTasks = totalGroupTasks.filter((t) => isTaskSolved(t.id));
+              const isGroupCompleted =
+                completedGroupTasks.length > 0 && completedGroupTasks.length === totalGroupTasks.length;
+              const isGroupOpen = Boolean(expandedJsGroups[groupName]);
+              const groupMeta = jsGroupMetaMap[groupName] || getGroupMeta(groupName);
+              const isFolderActive =
+                selectedTaskIdStr === `group-${groupName}` ||
+                selectedTaskIdStr === `group-${encodeURIComponent(groupName)}` ||
+                (selectedTask?.isGroupOverview && selectedTask?.group === groupName);
+
+              return (
+                <div className="notion-tree-group-block" key={groupName} id={`category-js-${groupName}`}>
+                  {/* Level 0: Group Header */}
+                  <SidebarGroupHeader
+                    to="/javascript/$taskId"
+                    params={{ taskId: `group-${groupName}` }}
+                    search={preserveSearch}
+                    title={groupName}
+                    icon={groupMeta.renderIcon(15)}
+                    chevronExpanded={isGroupOpen}
+                    onToggle={(e) => {
+                      e.stopPropagation();
+                      toggleJsGroup(groupName);
                     }}
-                  >
-                    <div
-                      style={{
-                        width: `${jsPercentage}%`,
-                        height: "100%",
-                        background: "#f59e0b",
-                        transition: "width 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                      }}
-                    />
+                    onNavClick={handleMobileNavClick}
+                    isActive={isFolderActive}
+                    isCompleted={isGroupCompleted}
+                    completedCount={completedGroupTasks.length}
+                    totalCount={totalGroupTasks.length}
+                  />
+
+                  {/* Level 1: Subgroups container (Smooth Grid Accordion) */}
+                  <div className={`task-list-wrapper ${isGroupOpen ? "expanded" : ""}`}>
+                    <div className="task-list-inner notion-tree-subgroups-container">
+                      {Object.entries(subgroups).map(([subgroupName, tasks]) => {
+                        const subKey = `${groupName}/${subgroupName}`;
+                        const isSubOpen = Boolean(expandedJsSubgroups[subKey]);
+                        const completedSubTasks = tasks.filter((t) => isTaskSolved(t.id));
+                        const isSubCompleted =
+                          completedSubTasks.length > 0 && completedSubTasks.length === tasks.length;
+                        const isSubActive =
+                          selectedTaskIdStr === `subgroup-${subgroupName}` ||
+                          selectedTaskIdStr === `subgroup-${encodeURIComponent(subgroupName)}` ||
+                          selectedTaskIdStr === `subgroup-${groupName}-${subgroupName}` ||
+                          selectedTaskIdStr === `subgroup-${encodeURIComponent(groupName)}-${encodeURIComponent(subgroupName)}`;
+
+                        return (
+                          <div className="notion-tree-subgroup-block" key={subgroupName}>
+                            {/* Level 1: Subgroup Header */}
+                            <SidebarSubgroupHeader
+                              to="/javascript/$taskId"
+                              params={{ taskId: `subgroup-${subgroupName}` }}
+                              search={preserveSearch}
+                              title={subgroupName}
+                              color={groupMeta.color}
+                              chevronExpanded={isSubOpen}
+                              onToggle={(e) => {
+                                e.stopPropagation();
+                                toggleJsSubgroup(subKey);
+                              }}
+                              onNavClick={handleMobileNavClick}
+                              isActive={isSubActive}
+                              isCompleted={isSubCompleted}
+                              completedCount={completedSubTasks.length}
+                              totalCount={tasks.length}
+                            />
+
+                            {/* Level 2: Tasks list container (Smooth Grid Accordion) */}
+                            <div className={`task-list-wrapper ${isSubOpen ? "expanded" : ""}`}>
+                              <div className="task-list-inner notion-tree-tasks-container">
+                                {tasks.filter(isTaskVisible).map((task) => (
+                                  <SidebarTaskItem
+                                    key={task.id}
+                                    id={task.id}
+                                    to="/javascript/$taskId"
+                                    params={{ taskId: String(task.id) }}
+                                    search={preserveSearch}
+                                    title={task.title}
+                                    isActive={selectedTaskIdStr === String(task.id)}
+                                    status={getTaskStatus(task.id)}
+                                    onNavClick={handleMobileNavClick}
+                                    showTooltip={showTooltip}
+                                    hideTooltip={hideTooltip}
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
+              );
+            })}
+          </>
+        ) : activeSection === "algorithms" ? (
+          <>
+            <div
+              className="sidebar-progress-card"
+              onClick={() => setStatsModalOpen && setStatsModalOpen(true)}
+              style={{ cursor: "pointer" }}
+              title="Открыть расширенную статистику задач Алгоритмы"
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: "6px",
+                }}
+              >
+                <span
+                  style={{
+                    color: "var(--text-main)",
+                    fontSize: "11px",
+                    fontWeight: "600",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.04em",
+                    fontFamily: "var(--font-sans)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "5px",
+                  }}
+                >
+                  <CheckSquare size={13} /> Выполнено задач
+                </span>
+                <span
+                  style={{
+                    color: "#a855f7",
+                    fontSize: "11px",
+                    fontWeight: "bold",
+                    fontFamily: "var(--font-mono)",
+                  }}
+                >
+                  {completedAlgoTotal}/{totalAlgoCount}
+                </span>
+              </div>
 
-                {Object.entries(jsGroupedMap).map(([groupName, subgroups]) => {
-                  const totalGroupTasks = Object.values(subgroups).flat();
-                  const completedGroupTasks = totalGroupTasks.filter((t) => completedTasks[t.id]);
-                  const isGroupCompleted = completedGroupTasks.length > 0 && completedGroupTasks.length === totalGroupTasks.length;
-                  const isGroupOpen = Boolean(expandedJsGroups[groupName]);
-                  const groupMeta = getGroupMeta(groupName);
+              <div
+                style={{
+                  height: "4px",
+                  background: "var(--border-color)",
+                  borderRadius: "2px",
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    width: `${algoPercentage}%`,
+                    height: "100%",
+                    background: "#a855f7",
+                    transition: "width 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  }}
+                />
+              </div>
+            </div>
 
-                  return (
-                    <div className="notion-tree-group-block" key={groupName} id={`category-js-${groupName}`}>
-                      {/* Level 0: Group Header */}
-                      <div
-                        className="notion-tree-node-header group-header"
-                        onClick={() => toggleJsGroup(groupName)}
-                      >
-                        <ChevronRight
-                          size={13}
-                          className={`sidebar-chevron ${isGroupOpen ? "expanded" : ""}`}
+            {Object.entries(algoGroupedMap).map(([groupName, tasks]) => {
+              const completedGroupTasks = tasks.filter((t) => isTaskSolved(t.id));
+              const isGroupCompleted =
+                completedGroupTasks.length > 0 && completedGroupTasks.length === tasks.length;
+              const isGroupOpen =
+                expandedJsGroups[groupName] !== undefined ? Boolean(expandedJsGroups[groupName]) : true;
+              const groupMeta = algoGroupMetaMap[groupName] || getAlgoGroupMeta(groupName);
+              const isFolderActive =
+                selectedTaskIdStr === groupMeta.infoId ||
+                (!selectedTask && groupMeta.infoId === "group-two-pointers") ||
+                selectedTask?.isGroupOverview;
+
+              return (
+                <div className="notion-tree-group-block" key={groupName} id={`category-algo-${groupName}`}>
+                  {/* Level 0: Group Header */}
+                  <SidebarGroupHeader
+                    to="/algorithms/$taskId"
+                    params={{ taskId: groupMeta.infoId || "group-two-pointers" }}
+                    search={preserveSearch}
+                    title={groupName}
+                    icon={groupMeta.renderIcon(15)}
+                    chevronExpanded={isGroupOpen}
+                    onToggle={(e) => {
+                      e.stopPropagation();
+                      toggleJsGroup(groupName);
+                    }}
+                    onNavClick={handleMobileNavClick}
+                    isActive={isFolderActive}
+                    isCompleted={isGroupCompleted}
+                    completedCount={completedGroupTasks.length}
+                    totalCount={tasks.length}
+                  />
+
+                  {/* Level 1: Directly Tasks list container */}
+                  <div className={`task-list-wrapper ${isGroupOpen ? "expanded" : ""}`}>
+                    <div className="task-list-inner notion-tree-tasks-container">
+                      {tasks.filter(isTaskVisible).map((task) => (
+                        <SidebarTaskItem
+                          key={task.id}
+                          id={task.id}
+                          to="/algorithms/$taskId"
+                          params={{ taskId: String(task.id) }}
+                          search={preserveSearch}
+                          title={task.title}
+                          isActive={selectedTaskIdStr === String(task.id)}
+                          status={getTaskStatus(task.id)}
+                          onNavClick={handleMobileNavClick}
+                          showTooltip={showTooltip}
+                          hideTooltip={hideTooltip}
                         />
-                        {groupMeta.renderIcon(15)}
-                        <span className="node-title">{groupName}</span>
-                        <span className={`node-count ${isGroupCompleted ? "completed" : ""}`}>
-                          {completedGroupTasks.length}/{totalGroupTasks.length}
-                        </span>
-                      </div>
-
-                      {/* Level 1: Subgroups container (Smooth Grid Accordion) */}
-                      <div className={`task-list-wrapper ${isGroupOpen ? "expanded" : ""}`}>
-                        <div className="task-list-inner notion-tree-subgroups-container">
-                          {Object.entries(subgroups).map(([subgroupName, tasks]) => {
-                            const subKey = `${groupName}/${subgroupName}`;
-                            const isSubOpen = Boolean(expandedJsSubgroups[subKey]);
-                            const completedSubTasks = tasks.filter((t) => completedTasks[t.id]);
-                            const isSubCompleted = completedSubTasks.length > 0 && completedSubTasks.length === tasks.length;
-
-                            return (
-                              <div className="notion-tree-subgroup-block" key={subgroupName}>
-                                {/* Level 1: Subgroup Header */}
-                                <div
-                                  className="notion-tree-node-header subgroup-header"
-                                  onClick={() => toggleJsSubgroup(subKey)}
-                                >
-                                  <ChevronRight
-                                    size={13}
-                                    className={`sidebar-chevron ${isSubOpen ? "expanded" : ""}`}
-                                  />
-                                  <Folder size={14} style={{ color: groupMeta.color, opacity: 0.85 }} />
-                                  <span className="node-title">{subgroupName}</span>
-                                  <span className={`node-count ${isSubCompleted ? "completed" : ""}`}>
-                                    {completedSubTasks.length}/{tasks.length}
-                                  </span>
-                                </div>
-
-                                {/* Level 2: Tasks list container (Smooth Grid Accordion) */}
-                                <div className={`task-list-wrapper ${isSubOpen ? "expanded" : ""}`}>
-                                  <div className="task-list-inner notion-tree-tasks-container">
-                                    {tasks.filter(isTaskVisible).map((task) => (
-                                      <Link
-                                        key={task.id}
-                                        id={`sidebar-task-${task.id}`}
-                                        to="/javascript/$taskId"
-                                        params={{ taskId: String(task.id) }}
-                                        search={(prev) => prev}
-                                        className={`task-btn notion-tree-task-btn ${
-                                          String(selectedTask?.id) === String(task.id) ? "active" : ""
-                                        }`}
-                                        onClick={handleMobileNavClick}
-                                        onMouseEnter={(e) => showTooltip(e, task.title)}
-                                        onMouseLeave={hideTooltip}
-                                      >
-                                        <span className="task-btn-title">
-                                          <FileText size={14} className="node-file-icon" style={{ color: "#94a3b8" }} />
-                                          <span className="task-btn-text">{task.title}</span>
-                                        </span>
-                                        {completedTasks[task.id] &&
-                                          (completedTasks[task.id] === "unsolved" ? (
-                                            <span className="dropdown-item-unsolved">
-                                              <X size={12} />
-                                            </span>
-                                          ) : (
-                                            <span className="dropdown-item-check">
-                                              <Check size={12} />
-                                            </span>
-                                          ))}
-                                      </Link>
-                                    ))}
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
+                      ))}
                     </div>
-                  );
-                })}
-              </>
-            );
-          })()
+                  </div>
+                </div>
+              );
+            })}
+          </>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
             <Link
@@ -774,9 +1135,7 @@ export const Sidebar = ({
               <span className="node-title">JAVASCRIPT</span>
               <span
                 className={`node-count ${
-                  completedJsTotal > 0 && completedJsTotal === totalJsCount
-                    ? "completed"
-                    : ""
+                  completedJsTotal > 0 && completedJsTotal === totalJsCount ? "completed" : ""
                 }`}
               >
                 {completedJsTotal}/{totalJsCount}
@@ -792,9 +1151,7 @@ export const Sidebar = ({
               <span className="node-title">REACT</span>
               <span
                 className={`node-count ${
-                  completedTotal > 0 && completedTotal === totalTasks
-                    ? "completed"
-                    : ""
+                  completedTotal > 0 && completedTotal === totalTasks ? "completed" : ""
                 }`}
               >
                 {completedTotal}/{totalTasks}
@@ -809,10 +1166,11 @@ export const Sidebar = ({
               <Brain size={15} style={{ color: "#a855f7" }} />
               <span className="node-title">АЛГОРИТМЫ</span>
               <span
-                className="node-count"
-                style={{ fontStyle: "italic", opacity: 0.7 }}
+                className={`node-count ${
+                  completedAlgoTotal > 0 && completedAlgoTotal === totalAlgoCount ? "completed" : ""
+                }`}
               >
-                скоро
+                {completedAlgoTotal}/{totalAlgoCount}
               </span>
             </Link>
           </div>
@@ -831,4 +1189,4 @@ export const Sidebar = ({
   );
 };
 
-export default Sidebar;
+export default React.memo(Sidebar);

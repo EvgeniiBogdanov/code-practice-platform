@@ -87,12 +87,19 @@ export const OpenEditorView = ({ task, section = "javascript" }) => {
   // Выход из развернутого режима
   const handleExit = () => {
     const targetSection =
-      section === "javascript" || task.section === "javascript" || String(task.id).startsWith("js")
+      section === "algorithms" || task.section === "algorithms" || String(task.id).startsWith("algo")
+        ? "algorithms"
+        : section === "javascript" || task.section === "javascript" || String(task.id).startsWith("js")
         ? "javascript"
         : "react";
 
     navigate({
-      to: targetSection === "javascript" ? "/javascript/$taskId" : "/react/$taskId",
+      to:
+        targetSection === "algorithms"
+          ? "/algorithms/$taskId"
+          : targetSection === "javascript"
+          ? "/javascript/$taskId"
+          : "/react/$taskId",
       params: { taskId: String(task.id) },
     });
   };

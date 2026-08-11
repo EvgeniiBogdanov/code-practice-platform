@@ -9,6 +9,7 @@ import {
   ListChecks,
 } from "lucide-react";
 import { ALL_TASKS } from "../../react/data/tasksData";
+import { getDifficultyLabel } from "../../utils/difficultyHelpers";
 import CandidateTab from "./CandidateTab";
 import SolutionTab from "./SolutionTab";
 import MaterialsTab from "./MaterialsTab";
@@ -42,7 +43,7 @@ export const TaskView = ({
               {activeTask.title}
               {activeTask.difficulty && (
                 <span className={`difficulty-badge difficulty-${activeTask.difficulty}`}>
-                  {activeTask.difficulty}
+                  {getDifficultyLabel(activeTask.difficulty)}
                 </span>
               )}
             </h2>
