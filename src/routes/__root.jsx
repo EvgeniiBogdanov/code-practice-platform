@@ -177,7 +177,18 @@ const RootLayout = () => {
       const found = allTasksList.find((t) => String(t.id) === String(selectedTaskId));
       if (found) return found;
     }
-    if (activeSection === "javascript" && JS_TASKS.length > 0) return JS_TASKS[0];
+    if (activeSection === "javascript") {
+      const cached = groupTaskCacheRef.current;
+      if (cached && cached.id === "group-Циклы") return cached;
+      const result = {
+        id: "group-Циклы",
+        isGroupOverview: true,
+        group: "Циклы",
+        title: "Циклы",
+      };
+      groupTaskCacheRef.current = result;
+      return result;
+    }
     if (activeSection === "algorithms") {
       const cached = groupTaskCacheRef.current;
       if (cached && cached.id === "group-two-pointers") return cached;
@@ -190,8 +201,28 @@ const RootLayout = () => {
       groupTaskCacheRef.current = result;
       return result;
     }
-    if (activeSection === "react" && WARMUP_TASKS.length > 0) return WARMUP_TASKS[0];
-    return WARMUP_TASKS[0] || null;
+    if (activeSection === "react") {
+      const cached = groupTaskCacheRef.current;
+      if (cached && cached.id === "group-warmup") return cached;
+      const result = {
+        id: "group-warmup",
+        isGroupOverview: true,
+        group: "Разминка",
+        title: "Разминка",
+      };
+      groupTaskCacheRef.current = result;
+      return result;
+    }
+    const cached = groupTaskCacheRef.current;
+    if (cached && cached.id === "group-warmup") return cached;
+    const result = {
+      id: "group-warmup",
+      isGroupOverview: true,
+      group: "Разминка",
+      title: "Разминка",
+    };
+    groupTaskCacheRef.current = result;
+    return result;
   }, [selectedTaskId, activeSection, allTasksList]);
 
   // Сохраняем последний просмотренный id per section
@@ -436,13 +467,13 @@ const RootLayout = () => {
       setReactTsPracticeExpanded(true);
     }
 
-    // JavaScript / Algorithms синхронизация групп и подгрупп
-    if (selectedTask.group) {
+    // JavaScript / Algorithms синхронизация групп и подгрупп (только при открытии задачи, но не при открытии страницы папки)
+    if (selectedTask.group && !selectedTask.isGroupOverview) {
       setExpandedJsGroups((prev) => {
         if (prev[selectedTask.group]) return prev; // already expanded, skip state update
         return { ...prev, [selectedTask.group]: true };
       });
-      if (selectedTask.subgroup && !selectedTask.isGroupOverview) {
+      if (selectedTask.subgroup) {
         const subKey = `${selectedTask.group}/${selectedTask.subgroup}`;
         setExpandedJsSubgroups((prev) => {
           if (prev[subKey]) return prev; // already expanded, skip state update

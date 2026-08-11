@@ -308,9 +308,6 @@ export const Header = ({
                               className={`breadcrumb-dropdown-item ${isActive ? "active" : ""}`}
                               onClick={() => {
                                 closeAllDropdowns();
-                                if (setExpandedJsGroups) {
-                                  setExpandedJsGroups((prev) => ({ ...prev, [gName]: true }));
-                                }
                                 setTimeout(() => {
                                   const el = document.getElementById(`category-js-${gName}`);
                                   if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -615,12 +612,7 @@ export const Header = ({
                               params={{ taskId: gMeta.infoId || "group-two-pointers" }}
                               search={(prev) => prev}
                               className={`breadcrumb-dropdown-item ${isActive ? "active" : ""}`}
-                              onClick={() => {
-                                closeAllDropdowns();
-                                if (setExpandedJsGroups) {
-                                  setExpandedJsGroups((prev) => ({ ...prev, [gName]: true }));
-                                }
-                              }}
+                              onClick={closeAllDropdowns}
                             >
                               <span className="breadcrumb-dropdown-icon">{gMeta.renderIcon(14)}</span>
                               <span className="dropdown-item-title">{gName}</span>
