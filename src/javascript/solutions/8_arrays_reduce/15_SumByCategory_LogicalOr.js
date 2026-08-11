@@ -14,4 +14,5 @@ const sumByCategory = (arr) => {
   }, {});
 };
 
+// Пример вызова:
 console.log(sumByCategory(transactions)); // { food: 450, transport: 120, entertainment: 200 }

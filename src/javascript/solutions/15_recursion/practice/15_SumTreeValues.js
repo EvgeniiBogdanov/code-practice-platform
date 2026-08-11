@@ -24,4 +24,5 @@ const sumTree = (data) => {
   return sum;
 };
 
+// Пример вызова:
 console.log(sumTree(tree)); // 28

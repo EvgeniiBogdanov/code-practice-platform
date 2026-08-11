@@ -1,12 +1,9 @@
-// Вычислить сумму и произведение всех чисел массива одновременно
-// Вывод: { sum: 15, prod: 120 }
-// sum: 15 - это '+'
-// prod - это '*'
+// Одновременное вычисление суммы и произведения
+// Напишите функцию sumAndProduct(numbers), которая возвращает объект { sum, prod }.
 
-const numbers = [1, 2, 3, 4, 5];
-
-const sum = (arr) => {
+const sumAndProduct = (numbers) => {
   // Решение тут
 };
 
-console.log(sum(numbers));
+// Пример вызова:
+console.log(sumAndProduct([1, 2, 3, 4, 5])); // { sum: 15, prod: 120 }

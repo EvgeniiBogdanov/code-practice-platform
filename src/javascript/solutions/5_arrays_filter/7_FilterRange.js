@@ -1,7 +1,6 @@
-const numbers = [10, 25, 40, 60, 5, 70];
+const filterRange = (numbers, min, max) => {
+  return numbers.filter((num) => num >= min && num <= max);
+};
 
-const filterRange = (arr, min, max) =>
-  arr.filter((num) => num >= min && num <= max);
-
-const result = filterRange(numbers, 20, 50);
-console.log(result);
+// Пример вызова:
+console.log(filterRange([10, 25, 30, 55, 40, 5], 20, 50)); // [25, 30, 40]

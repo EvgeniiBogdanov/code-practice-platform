@@ -23,4 +23,5 @@ const recursionTree = (data) => {
   return arr;
 };
 
+// Пример вызова:
 console.log(recursionTree(tree)); // [0, 1, 2, 3, 4, 5]

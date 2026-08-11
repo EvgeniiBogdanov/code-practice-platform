@@ -1,5 +1,3 @@
-// Решение 2: Использование IIFE (Immediately Invoked Function Expression)
-
 for (var i = 0; i < 10; i++) {
   (function (j) {
     setTimeout(function () {

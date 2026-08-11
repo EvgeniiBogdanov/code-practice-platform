@@ -1,19 +1,14 @@
-// Что будет выведено
+// Повторный вызов .bind() на связанной функции
+// Что выведет данный код?
 
-let obj1 = {
-  name: "User 1",
-  getName() {
-    console.log(`name is: ${this.name}`);
-  },
-};
+function getInfo() {
+  return this.title;
+}
 
-let obj2 = {
-  name: "User 2",
-  getName() {
-    console.log(`name is: ${this.name}`);
-  },
-};
+const obj1 = { title: "Книга 1" };
+const obj2 = { title: "Книга 2" };
 
-let fn = obj1.getName.bind(obj2).bind(obj1);
+const bound1 = getInfo.bind(obj1);
+const bound2 = bound1.bind(obj2);
 
-fn();
+console.log(bound2());

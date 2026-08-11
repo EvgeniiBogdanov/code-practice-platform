@@ -1,6 +1,6 @@
-const fruits = ["apple", "banana", "cherry"];
+const toUpperCaseList = (words) => {
+  return words.map((word) => word.toUpperCase());
+};
 
-const toUpperCase = (arr) => arr.map((str) => str.toUpperCase());
-
-const result = toUpperCase(fruits);
-console.log(result);
+// Пример вызова:
+console.log(toUpperCaseList(["cat", "dog", "elephant"])); // ["CAT", "DOG", "ELEPHANT"]

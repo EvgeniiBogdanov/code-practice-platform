@@ -1257,16 +1257,6 @@ export const JS_LOOPS_TASKS = [
     filepath: "src/javascript/tasks/1_loops/5_IsPalindrome.js",
     solutions: [
       {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Оптимальный алгоритм",
-        recommendationNote: "Двууказательный подход O(N/2) без создания промежуточных массивов является наиболее эффективным по памяти O(1).",
-        rawSolution: IsPalindromeLoopSolutionRaw,
-        filepath: "src/javascript/tasks/1_loops/5_IsPalindrome.js",
-      },
-    ],
-    solutions: [
-      {
         title: "Вариант 1: Через цикл for",
         isRecommended: true,
         badge: "Предпочтительно на собеседовании",

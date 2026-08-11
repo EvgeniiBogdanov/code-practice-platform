@@ -1,15 +1,12 @@
-// Напишите debounceAsync(fn, ms), которая откладывает вызов fn
-// на ms миллисекунд. Если функцию вызвали повторно до истечения
-// таймера — предыдущий отложенный вызов отменяется.
-
-const search = (query) =>
-  new Promise((resolve) => setTimeout(() => resolve(`Результаты по "${query}"`), 200));
+// Асинхронный Debounce с отменой предыдущих запросов
+// Напишите debounceAsync(fn, ms), которая задерживает вызов и отменяет незавершенные вызовы.
 
 const debounceAsync = (fn, ms) => {
-  // Ваш код здесь
+  // Решение тут
 };
 
-const debouncedSearch = debounceAsync(search, 300);
-debouncedSearch("a").then(console.log).catch((e) => console.log("a cancelled"));
-debouncedSearch("ab").then(console.log).catch((e) => console.log("ab cancelled"));
-debouncedSearch("abc").then(console.log);
+// Пример вызова:
+const search = (q) => new Promise((r) => setTimeout(() => r(`Result ${q}`), 100));
+const debounced = debounceAsync(search, 200);
+debounced("a").catch(() => {});
+debounced("ab").then(console.log); // "Result ab"

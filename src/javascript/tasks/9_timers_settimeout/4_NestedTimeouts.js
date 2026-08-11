@@ -1,19 +1,17 @@
-// Вопрос: Какой будет порядок вывода и почему?
+// Порядок выполнения вложенных таймеров
+// Какой будет порядок вывода сообщений?
 
-console.log('Start');
+console.log("Start");
 
 setTimeout(() => {
-  console.log('Timeout 1');
-    
+  console.log("Timeout 1");
   setTimeout(() => {
-    console.log('Nested Timeout');
+    console.log("Nested Timeout");
   }, 0);
-    
-  console.log('Between timeouts');
-}, 1000);
+}, 0);
 
 setTimeout(() => {
-  console.log('Timeout 2');
-}, 500);
+  console.log("Timeout 2");
+}, 0);
 
-console.log('End');
+console.log("End");

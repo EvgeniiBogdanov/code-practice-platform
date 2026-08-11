@@ -1,10 +1,18 @@
 const users = [
-  { firstName: "John", lastName: "Doe" },
-  { firstName: "Jane", lastName: "Smith" },
+  { firstName: "Иван", lastName: "Иванов" },
+  { firstName: "Анна", lastName: "Петрова" },
 ];
 
-const getFullNames = (arr) =>
-  arr.map((user) => `${user.firstName} ${user.lastName}`);
+const getFullNames = (users) => {
+  return users.map((user) => ({
+    ...user,
+    fullName: `${user.firstName} ${user.lastName}`,
+  }));
+};
 
-const result = getFullNames(users);
-console.log(result);
+// Пример вызова:
+console.log(getFullNames(users));
+// [
+//   { firstName: "Иван", lastName: "Иванов", fullName: "Иван Иванов" },
+//   { firstName: "Анна", lastName: "Петрова", fullName: "Анна Петрова" }
+// ]

@@ -9,5 +9,8 @@ const fetchUser = (id) =>
   );
 
 async function loadAllSequentially() {
-  // Ваш код здесь
+  // Решение тут
 }
+
+// Пример вызова:
+loadAllSequentially().then(console.log);

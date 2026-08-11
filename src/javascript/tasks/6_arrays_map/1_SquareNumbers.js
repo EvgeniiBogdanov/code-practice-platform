@@ -1,10 +1,9 @@
 // Преобразовать массив чисел в массив их квадратов
-const numbers = [1, 2, 3, 4];
-// Ожидаемый результат: [1, 4, 9, 16]
+// Напишите функцию squareNumbers(numbers), которая возвращает массив квадратов чисел.
 
-// Тут код:
-const squareNumbers = () => {};
+const squareNumbers = (numbers) => {
+  // Решение тут
+};
 
-// Проверка
-const result = squareNumbers(numbers);
-console.log(result);
+// Пример вызова:
+console.log(squareNumbers([1, 2, 3, 4])); // [1, 4, 9, 16]

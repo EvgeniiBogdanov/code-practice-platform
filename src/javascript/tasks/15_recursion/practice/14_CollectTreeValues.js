@@ -1,5 +1,5 @@
-// Собрать массив всех значений value из дерева
-// Результат: [0, 1, 2, 3, 4, 5]
+// Сбор значений из дерева с произвольным числом потомков (N-ary Tree)
+// Напишите функцию recursionTree(data), собирающую массив значений дерева.
 
 const tree = {
   value: 0,
@@ -16,7 +16,8 @@ const tree = {
 };
 
 const recursionTree = (data) => {
-  // Ваш код здесь
+  // Решение тут
 };
 
-console.log(recursionTree(tree));
+// Пример вызова:
+console.log(recursionTree(tree)); // [0, 1, 2, 3, 4, 5]

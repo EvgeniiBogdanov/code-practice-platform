@@ -1,34 +1,18 @@
-function throttle(fn, ms) {
-  let isThrottled = false;
-  let savedArgs = null;
-  let savedThis = null;
+const throttle = (fn, limit) => {
+  let inThrottle = false;
 
-  function wrapper(...args) {
-    if (isThrottled) {
-      savedArgs = args;
-      savedThis = this;
-      return;
+  return function (...args) => {
+    if (!inThrottle) {
+      fn.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => {
+        inThrottle = false;
+      }, limit);
     }
+  };
+};
 
-    fn.apply(this, args);
-    isThrottled = true;
-
-    setTimeout(() => {
-      isThrottled = false;
-      if (savedArgs) {
-        wrapper.apply(savedThis, savedArgs);
-        savedArgs = null;
-        savedThis = null;
-      }
-    }, ms);
-  }
-
-  return wrapper;
-}
-
-// Пример использования:
-const onScroll = throttle((val) => console.log("Scroll:", val), 100);
-
-onScroll(1); // Вызовется сразу (1)
-onScroll(2);
-onScroll(3); // Вызовется через 100 мс с аргументом 3
+// Пример вызова:
+const throttled = throttle((val) => console.log(val), 200);
+throttled("первый");
+throttled("пропущен");

@@ -1,9 +1,9 @@
-// Отсортировать строки в обратном алфавитном порядке
-const fruits = ["banana", "apple", "cherry"];
+// Сортировка строк в обратном алфавитном порядке
+// Напишите функцию sortReverseAlphabetically(words), которая сортирует строки от Я до А (Z to A).
 
-// Тут код:
-const sortReverseAlphabetically = () => {};
+const sortReverseAlphabetically = (words) => {
+  // Решение тут
+};
 
-// Проверка
-const result = sortReverseAlphabetically(fruits);
-console.log(result);
+// Пример вызова:
+console.log(sortReverseAlphabetically(["banana", "apple", "cherry", "date"])); // ["date", "cherry", "banana", "apple"]

@@ -1,14 +1,10 @@
-// Исходная проблема: при передаче fn = obj.getName теряется контекст this.
-// Вывод fn(): "name is: undefined"
-
-// Вариант исправления с bind:
-let obj = {
-  name: "David",
-  getName() {
-    console.log(`name is: ${this.name}`);
+const counter = {
+  count: 10,
+  increment() {
+    this.count++;
+    return this.count;
   },
 };
 
-let fn = obj.getName.bind(obj);
-
-fn(); // "name is: David"
+const inc = counter.increment.bind(counter);
+console.log(inc()); // 11

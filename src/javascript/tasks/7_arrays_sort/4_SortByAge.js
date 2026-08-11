@@ -1,13 +1,20 @@
-// Отсортировать пользователей по возрасту (от младшего к старшему):
+// Сортировка объектов по возрасту
+// Напишите функцию sortByAge(users), которая сортирует пользователей по возрастанию возраста.
+
 const users = [
-  { name: "John", age: 25 },
-  { name: "Jane", age: 20 },
-  { name: "Jack", age: 30 }
+  { name: "Анна", age: 25 },
+  { name: "Иван", age: 20 },
+  { name: "Мария", age: 30 },
 ];
 
-// Тут код:
-const sortByAge = () => {};
+const sortByAge = (users) => {
+  // Решение тут
+};
 
-// Проверка
-const result = sortByAge(users);
-console.log(result);
+// Пример вызова:
+console.log(sortByAge(users));
+// [
+//   { name: "Иван", age: 20 },
+//   { name: "Анна", age: 25 },
+//   { name: "Мария", age: 30 }
+// ]

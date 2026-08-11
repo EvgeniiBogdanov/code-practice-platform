@@ -1,9 +1,9 @@
-// Удалить все falsy значения (false, 0, "", null, undefined, NaN):
-const values = [0, 1, false, 2, "", 3, null, undefined, NaN, 4];
+// Удалить все falsy значения
+// Напишите функцию filterTruthy(arr), которая возвращает массив без falsy значений (false, 0, "", null, undefined, NaN).
 
-// Тут код:
-const filterTruthy = () => {};
+const filterTruthy = (arr) => {
+  // Решение тут
+};
 
-// Проверка
-const result = filterTruthy(values);
-console.log(result);
+// Пример вызова:
+console.log(filterTruthy([0, 1, false, 2, "", 3, "a", "e" * 23, NaN, "s", 34])); // [1, 2, 3, "a", "s", 34]

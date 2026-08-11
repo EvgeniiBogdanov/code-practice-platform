@@ -908,7 +908,11 @@ export const Sidebar = ({
               const isFolderActive =
                 selectedTaskIdStr === `group-${groupName}` ||
                 selectedTaskIdStr === `group-${encodeURIComponent(groupName)}` ||
-                (selectedTask?.isGroupOverview && selectedTask?.group === groupName);
+                (Boolean(selectedTask?.isGroupOverview) &&
+                  !selectedTask?.subgroup &&
+                  (selectedTask?.group === groupName ||
+                    selectedTask?.id === `group-${groupName}` ||
+                    selectedTask?.id === `group-${encodeURIComponent(groupName)}`));
 
               return (
                 <div className="notion-tree-group-block" key={groupName} id={`category-js-${groupName}`}>
@@ -944,7 +948,11 @@ export const Sidebar = ({
                           selectedTaskIdStr === `subgroup-${subgroupName}` ||
                           selectedTaskIdStr === `subgroup-${encodeURIComponent(subgroupName)}` ||
                           selectedTaskIdStr === `subgroup-${groupName}-${subgroupName}` ||
-                          selectedTaskIdStr === `subgroup-${encodeURIComponent(groupName)}-${encodeURIComponent(subgroupName)}`;
+                          selectedTaskIdStr === `subgroup-${encodeURIComponent(groupName)}-${encodeURIComponent(subgroupName)}` ||
+                          (Boolean(selectedTask?.isGroupOverview) &&
+                            Boolean(selectedTask?.subgroup) &&
+                            selectedTask.subgroup === subgroupName &&
+                            (!selectedTask.group || selectedTask.group === groupName));
 
                         return (
                           <div className="notion-tree-subgroup-block" key={subgroupName}>
@@ -1067,8 +1075,12 @@ export const Sidebar = ({
               const groupMeta = algoGroupMetaMap[groupName] || getAlgoGroupMeta(groupName);
               const isFolderActive =
                 selectedTaskIdStr === groupMeta.infoId ||
-                (!selectedTask && groupMeta.infoId === "group-two-pointers") ||
-                selectedTask?.isGroupOverview;
+                selectedTaskIdStr === `group-${groupName}` ||
+                selectedTaskIdStr === `group-${encodeURIComponent(groupName)}` ||
+                (Boolean(selectedTask?.isGroupOverview) &&
+                  !selectedTask?.subgroup &&
+                  (selectedTask?.id === groupMeta.infoId || selectedTask?.group === groupName)) ||
+                (!selectedTask && groupMeta.infoId === "group-two-pointers");
 
               return (
                 <div className="notion-tree-group-block" key={groupName} id={`category-algo-${groupName}`}>

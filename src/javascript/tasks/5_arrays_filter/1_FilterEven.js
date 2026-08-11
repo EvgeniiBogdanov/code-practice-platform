@@ -1,9 +1,9 @@
-// Отфильтровать чётные числа из массива:
-const numbers = [1, 2, 3, 4, 5, 6];
+// Отфильтровать чётные числа из массива
+// Напишите функцию filterEven(numbers), которая возвращает массив, содержащий только четные числа.
 
-// Тут код:
-const filterEven = () => {};
+const filterEven = (numbers) => {
+  // Решение тут
+};
 
-// Проверка
-const result = filterEven(numbers);
-console.log(result);
+// Пример вызова:
+console.log(filterEven([1, 2, 3, 4, 5, 6])); // [2, 4, 6]

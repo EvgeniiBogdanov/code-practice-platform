@@ -1,9 +1,11 @@
-// Проверить, есть ли число 7 в массиве, начиная поиск с индекса 3:
-const arr = [1, 7, 3, 7, 5];
+// Проверка наличия элемента с определенного индекса
+// Напишите функцию hasElemFrom(arr, target, fromIndex), которая проверяет наличие элемента target,
+// начиная с индекса fromIndex.
 
-// Тут код:
-const hasElemFrom = () => {};
+const hasElemFrom = (arr, target, fromIndex) => {
+  // Решение тут
+};
 
-// Проверка
-const result = hasElemFrom(arr, 7, 3);
-console.log(result);
+// Пример вызова:
+console.log(hasElemFrom([1, 2, 3, 4, 5], 3, 2)); // true
+console.log(hasElemFrom([1, 2, 3, 4, 5], 3, 3)); // false

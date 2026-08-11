@@ -1,40 +1,17 @@
-// Глубокое копирование объектов
+const deepClone = (obj) => {
+  if (obj === null || typeof obj !== "object") return obj;
+  if (Array.isArray(obj)) return obj.map((item) => deepClone(item));
 
-const deepClone = (obj, map = new WeakMap()) => {
-  if (obj === null || typeof obj !== "object") {
-    return obj;
-  }
-
-  if (obj instanceof Date) return new Date(obj);
-  if (obj instanceof RegExp) return new RegExp(obj);
-
-  if (map.has(obj)) {
-    return map.get(obj);
-  }
-
-  const copy = Array.isArray(obj) ? [] : {};
-  map.set(obj, copy);
-
+  const result = {};
   for (const key of Object.keys(obj)) {
-    copy[key] = deepClone(obj[key], map);
+    result[key] = deepClone(obj[key]);
   }
-
-  return copy;
+  return result;
 };
 
-const original = {
-  name: "Alice",
-  age: 25,
-  skills: ["JS", "React"],
-  nested: {
-    a: 1,
-  },
-};
-original.self = original;
-
-const copy = deepClone(original);
-
-console.log(copy !== original); // true
-console.log(copy.nested !== original.nested); // true
-console.log(copy.skills !== original.skills); // true
-console.log(copy.self === copy); // true
+// Пример вызова:
+const orig = { a: 1, b: { c: [2, 3] } };
+const copy = deepClone(orig);
+copy.b.c.push(4);
+console.log(orig.b.c.length); // 2
+console.log(copy.b.c.length); // 3

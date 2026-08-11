@@ -1,7 +1,6 @@
-const words = ["apple", "dog", "banana", "cat"];
+const filterWordsWithLetter = (words, letter) => {
+  return words.filter((word) => word.includes(letter));
+};
 
-const filterWordsWithLetter = (arr, letter) =>
-  arr.filter((word) => word.includes(letter));
-
-const result = filterWordsWithLetter(words, "a");
-console.log(result);
+// Пример вызова:
+console.log(filterWordsWithLetter(["apple", "banana", "cherry", "date"], "a")); // ["apple", "banana", "date"]

@@ -9,4 +9,5 @@ async function safeLoad() {
   }
 }
 
+// Пример вызова:
 safeLoad().then(console.log);

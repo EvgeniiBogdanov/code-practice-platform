@@ -1,6 +1,6 @@
-const text = 'hello world hello set world';
+const getUniqueWords = (text) => {
+  return [...new Set(text.split(" "))];
+};
 
-const arr = text.split(' ');
-const unique = [...new Set(arr)];
-
-console.log(unique); // ['hello', 'world', 'set']
+// Пример вызова:
+console.log(getUniqueWords("hello world hello set world")); // ["hello", "world", "set"]

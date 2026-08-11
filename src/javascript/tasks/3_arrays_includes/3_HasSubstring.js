@@ -1,9 +1,10 @@
-// Проверить, содержит ли строка "hello world" подстроку "world":
-const str = "hello world";
+// Проверка наличия подстроки
+// Напишите функцию hasSubstring(str, substr), которая проверяет, содержит ли строка str подстроку substr.
 
-// Тут код:
-const hasSubstring = () => {};
+const hasSubstring = (str, substr) => {
+  // Решение тут
+};
 
-// Проверка
-const result = hasSubstring(str, "world");
-console.log(result);
+// Пример вызова:
+console.log(hasSubstring("hello world", "world")); // true
+console.log(hasSubstring("hello world", "js"));    // false

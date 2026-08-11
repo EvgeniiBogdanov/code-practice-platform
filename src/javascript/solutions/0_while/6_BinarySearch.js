@@ -3,7 +3,7 @@ const binarySearch = (arr, target) => {
   let right = arr.length - 1;
 
   while (left <= right) {
-    const mid = Math.floor(left + (right - left) / 2);
+    const mid = Math.floor((left + right) / 2);
 
     if (arr[mid] === target) {
       return mid;
@@ -18,3 +18,8 @@ const binarySearch = (arr, target) => {
 
   return -1;
 };
+
+// Пример вызова:
+console.log(binarySearch([1, 3, 5, 7, 9, 11], 7)); // 3
+console.log(binarySearch([1, 3, 5, 7, 9, 11], 2)); // -1
+console.log(binarySearch([10, 20, 30], 30));       // 2

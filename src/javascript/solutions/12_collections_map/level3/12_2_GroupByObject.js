@@ -5,16 +5,13 @@ const users = [
 ];
 
 const groupBy = (items, key) => {
-  const map = new Map();
-
-  items.forEach((user) => {
-    const group = user[key];
-
-    if (!map.has(group)) map.set(group, []); 
-    map.get(group).push(user);
-  });
-
-  return Object.fromEntries(map);
+  return items.reduce((acc, item) => {
+    const groupKey = item[key];
+    acc[groupKey] = acc[groupKey] || [];
+    acc[groupKey].push(item);
+    return acc;
+  }, {});
 };
 
+// Пример вызова:
 console.log(groupBy(users, "city"));

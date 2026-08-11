@@ -1,6 +1,6 @@
-const words = ["apple", "hi", "banana", "cat"];
+const sortByLength = (words) => {
+  return [...words].sort((a, b) => a.length - b.length);
+};
 
-const sortByLength = (arr) => arr.sort((a, b) => a.length - b.length);
-
-const result = sortByLength(words);
-console.log(result); // ["hi", "cat", "apple", "banana"]
+// Пример вызова:
+console.log(sortByLength(["elephant", "cat", "dog", "hippopotamus"])); // ["cat", "dog", "elephant", "hippopotamus"]

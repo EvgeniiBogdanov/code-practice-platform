@@ -32,4 +32,5 @@ const getAllPrimitives = (obj) => {
   return arr;
 };
 
+// Пример вызова:
 console.log(getAllPrimitives(obj)); // [8, 1, 2, 7, 10, 4]

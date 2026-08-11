@@ -1,8 +1,5 @@
-const sum = (val1, val2) => {
-  if (val2 !== undefined) return val1 + val2;
+const multiply = (a) => (b) => a * b;
 
-  return (num) => val1 + num;
-};
-
-console.log(sum(1, 2)); // 3
-console.log(sum(1)(2)); // 3
+// Пример вызова:
+console.log(multiply(2)(3)); // 6
+console.log(multiply(4)(5)); // 20

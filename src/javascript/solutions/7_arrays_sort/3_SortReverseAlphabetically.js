@@ -1,6 +1,6 @@
-const fruits = ["banana", "apple", "cherry"];
+const sortReverseAlphabetically = (words) => {
+  return [...words].sort((a, b) => b.localeCompare(a));
+};
 
-const sortReverseAlphabetically = (arr) => arr.sort().reverse();
-
-const result = sortReverseAlphabetically(fruits);
-console.log(result); // ["cherry", "banana", "apple"]
+// Пример вызова:
+console.log(sortReverseAlphabetically(["banana", "apple", "cherry", "date"])); // ["date", "cherry", "banana", "apple"]

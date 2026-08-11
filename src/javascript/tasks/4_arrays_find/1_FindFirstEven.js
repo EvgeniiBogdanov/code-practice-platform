@@ -1,9 +1,10 @@
-// Найти первое чётное число в массиве:
-const numbers = [1, 3, 7, 8, 10];
+// Найти первое чётное число в массиве
+// Напишите функцию findFirstEven(arr), которая возвращает первое чётное число из массива.
 
-// Тут код:
-const findFirstEven = () => {};
+const findFirstEven = (arr) => {
+  // Решение тут
+};
 
-// Проверка
-const result = findFirstEven(numbers);
-console.log(result);
+// Пример вызова:
+console.log(findFirstEven([1, 3, 7, 8, 10])); // 8
+console.log(findFirstEven([1, 3, 5]));        // undefined

@@ -1,24 +1,11 @@
-/** Реализуйте функцию мемоизации, которая кэширует результаты выполнения функции.
- * Функция должна принимать:
- *  - fn: исходную функцию для мемоизации
- *  - ttl: время жизни кэша в миллисекундах (time-to-live)
- * 
- * Примечания:
- *  - Аргументы функции могут быть любого типа (используйте JSON.stringify для ключа)
- *  - Кэш должен автоматически очищаться при превышении ttl
- *  - Выводите в консоль:
- *    - "from cache" при использовании валидного кэша
- *    - "key delete" при удалении устаревшего кэша
- *    - "calculated" при вычислении нового значения
- */
+// Мемоизация с TTL и логированием
+// Напишите функцию memoize(fn, ttl), логирующую статус ("from cache", "calculated").
+
 const memoize = (fn, ttl) => {
-  // Ваш код здесь
+  // Решение тут
 };
 
-const getData = memoize((id) => {
-  return id + Math.random();
-}, 2000);
-
-console.log(getData(1));
-setTimeout(() => console.log(getData(1)), 1000);
-setTimeout(() => console.log(getData(1)), 3000);
+// Пример вызова:
+const getData = memoize((id) => id + 10, 2000);
+console.log(getData(1)); // calculated -> 11
+console.log(getData(1)); // from cache -> 11

@@ -1,11 +1,17 @@
-const sum = (a, b) => {
-  if (b === undefined) {
-    return (num) => a + num;
+function sum(a) {
+  let currentSum = a;
+
+  function f(b) {
+    currentSum += b;
+    return f;
   }
 
-  return a + b;
-};
+  f[Symbol.toPrimitive] = () => currentSum;
+  f.valueOf = () => currentSum;
 
-console.log(sum(1, 2)); // 3
-console.log(sum(1)(2)); // 3
-console.log(sum(5)(10)); // 15
+  return f;
+}
+
+// Пример вызова:
+console.log(Number(sum(1)(2)(3))); // 6
+console.log(+sum(2)(4));           // 6

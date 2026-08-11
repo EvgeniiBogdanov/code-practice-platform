@@ -1,6 +1,6 @@
-const words = ["JavaScript", "React", "Vue", "Next"];
+const getFirstLetters = (words) => {
+  return words.map((word) => word[0]);
+};
 
-const getFirstLetters = (arr) => arr.map((word) => word[0]);
-
-const result = getFirstLetters(words);
-console.log(result);
+// Пример вызова:
+console.log(getFirstLetters(["Hello", "World", "JavaScript"])); // ["H", "W", "J"]

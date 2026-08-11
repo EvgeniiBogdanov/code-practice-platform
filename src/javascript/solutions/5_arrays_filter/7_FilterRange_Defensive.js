@@ -7,4 +7,5 @@ const filterRangeDefensive = (arr, a, b) => {
   return arr.filter((num) => num >= lower && num <= upper);
 };
 
+// Пример вызова:
 console.log(filterRangeDefensive(numbers, 50, 20)); // [25, 40]

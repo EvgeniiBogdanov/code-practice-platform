@@ -1,14 +1,15 @@
-// Посчитать общую стоимость товаров
-// Вывод: 2300
+// Общая стоимость товаров в корзине
+// Напишите функцию totalCartPrice(cart), которая вычисляет общую стоимость товаров.
 
 const cart = [
   { name: "Laptop", price: 1000 },
   { name: "Phone", price: 500 },
-  { name: "Tablet", price: 800 }
+  { name: "Tablet", price: 800 },
 ];
 
-const sum = (arr) => {
+const totalCartPrice = (cart) => {
   // Решение тут
 };
 
-console.log(sum(cart));
+// Пример вызова:
+console.log(totalCartPrice(cart)); // 2300

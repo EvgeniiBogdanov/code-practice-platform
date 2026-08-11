@@ -1,23 +1,17 @@
-// Композиция функций: Pipe и Compose
-// Реализуйте две функции:
-// 1. pipe(...fns) — принимает набор функций и возвращает новую функцию, применяющую их слева направо.
-// 2. compose(...fns) — принимает набор функций и возвращает новую функцию, применяющую их справа налево.
+// Композиция функций (pipe и compose)
+// Напишите функции pipe(...fns) и compose(...fns).
 
-function pipe(...fns) {
-  // Ваш код здесь
-}
+const pipe = (...fns) => {
+  // Решение тут
+};
 
-function compose(...fns) {
-  // Ваш код здесь
-}
+const compose = (...fns) => {
+  // Решение тут
+};
 
-// Пример использования:
+// Пример вызова:
 const add2 = (x) => x + 2;
-const multiply3 = (x) => x * 3;
-const square = (x) => x ** 2;
+const mult3 = (x) => x * 3;
 
-const piped = pipe(add2, multiply3, square);
-console.log(piped(2)); // ((2 + 2) * 3)^2 = (4 * 3)^2 = 12^2 = 144
-
-const composed = compose(square, multiply3, add2);
-console.log(composed(2)); // square(multiply3(add2(2))) = 144
+console.log(pipe(add2, mult3)(5));    // (5 + 2) * 3 = 21
+console.log(compose(mult3, add2)(5)); // (5 + 2) * 3 = 21

@@ -1,13 +1,19 @@
 // Найти только активных пользователей
+// Напишите функцию filterActiveUsers(users), которая возвращает пользователей со статусом isActive: true.
+
 const users = [
-  { name: "John", active: true },
-  { name: "Jane", active: false },
-  { name: "Jack", active: true }
+  { name: "Анна", isActive: true },
+  { name: "Иван", isActive: false },
+  { name: "Мария", isActive: true },
 ];
 
-// Тут код:
-const filterActiveUsers = () => {};
+const filterActiveUsers = (users) => {
+  // Решение тут
+};
 
-// Проверка
-const result = filterActiveUsers(users, true);
-console.log(result);
+// Пример вызова:
+console.log(filterActiveUsers(users));
+// [
+//   { name: "Анна", isActive: true },
+//   { name: "Мария", isActive: true }
+// ]

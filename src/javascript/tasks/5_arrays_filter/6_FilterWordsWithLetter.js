@@ -1,9 +1,9 @@
-// Оставить строки, содержащие букву "a":
-const words = ["apple", "dog", "banana", "cat"];
+// Оставить строки, содержащие букву "a"
+// Напишите функцию filterWordsWithLetter(words, letter), которая возвращает слова, содержащие указанную букву.
 
-// Тут код:
-const filterWordsWithLetter = () => {};
+const filterWordsWithLetter = (words, letter) => {
+  // Решение тут
+};
 
-// Проверка
-const result = filterWordsWithLetter(words, "a");
-console.log(result);
+// Пример вызова:
+console.log(filterWordsWithLetter(["apple", "banana", "cherry", "date"], "a")); // ["apple", "banana", "date"]

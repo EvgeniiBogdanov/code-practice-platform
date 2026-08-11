@@ -1,11 +1,13 @@
-// Что будет выведено и как это исправить?
-let obj = {
-  name: "David",
-  getName() {
-    console.log(`name is: ${this.name}`);
+// Потеря контекста при извлечении метода
+// Что выведет код и как его исправить с помощью bind?
+
+const counter = {
+  count: 10,
+  increment() {
+    this.count++;
+    return this.count;
   },
 };
 
-let fn = obj.getName;
-
-fn();
+const inc = counter.increment.bind(counter);
+console.log(inc());

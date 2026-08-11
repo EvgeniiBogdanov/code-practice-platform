@@ -1,7 +1,8 @@
-// Базовый синтаксис свертки массива с помощью reduce
-const arr = [1, 2, 3];
-const result = arr.reduce((acc, item) => {
-  return acc + item;
+const numbers = [1, 2, 3];
+
+const result = numbers.reduce((acc, curr) => {
+  return acc + curr;
 }, 0);
 
-console.log(result);
+// Пример вызова:
+console.log(result); // 6

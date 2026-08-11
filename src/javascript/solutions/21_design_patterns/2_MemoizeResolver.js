@@ -1,28 +1,24 @@
-// Кэширование и Мемоизация (Memoize with Resolver)
-
 const memoize = (fn, resolver) => {
   const cache = new Map();
-
-  return function (...args) {
-    const key = resolver ? resolver(...args) : args[0];
-
+  return (...args) => {
+    const key = resolver ? resolver(...args) : JSON.stringify(args);
     if (cache.has(key)) {
       return cache.get(key);
     }
-
-    const result = fn.apply(this, args);
+    const result = fn(...args);
     cache.set(key, result);
     return result;
   };
 };
 
+let count = 0;
 const add = (a, b) => {
-  console.log("Computing...");
+  count++;
   return a + b;
 };
-
 const memoizedAdd = memoize(add, (a, b) => `${a}_${b}`);
 
-console.log(memoizedAdd(1, 2)); // Computing... 3
-console.log(memoizedAdd(1, 2)); // 3 (из кэша)
-console.log(memoizedAdd(2, 3)); // Computing... 5
+// Пример вызова:
+console.log(memoizedAdd(2, 3)); // 5
+console.log(memoizedAdd(2, 3)); // 5
+console.log(count);             // 1

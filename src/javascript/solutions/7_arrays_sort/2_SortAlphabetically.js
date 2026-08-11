@@ -1,6 +1,6 @@
-const fruits = ["banana", "apple", "cherry"];
+const sortAlphabetically = (words) => {
+  return [...words].sort((a, b) => a.localeCompare(b));
+};
 
-const sortAlphabetically = (arr) => arr.sort();
-
-const result = sortAlphabetically(fruits);
-console.log(result); // ["apple", "banana", "cherry"]
+// Пример вызова:
+console.log(sortAlphabetically(["banana", "apple", "cherry", "date"])); // ["apple", "banana", "cherry", "date"]

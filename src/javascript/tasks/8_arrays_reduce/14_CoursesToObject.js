@@ -1,14 +1,15 @@
-// Создать объект из массива
-// Вывод: {JavaScript: '30000', React: '40000', HTML + CSS: '25000'}
-let courses = [
-  { course: 'JavaScript', price: '30000' },
-  { course: 'React', price: '40000' },
-  { course: 'HTML + CSS', price: '25000' },
+// Создание объекта курсов из массива
+// Напишите функцию coursesToObject(courses), которая преобразует массив курсов в объект вида { courseName: count }.
+
+const courses = [
+  { count: 12, name: "JS" },
+  { count: 2, name: "React" },
+  { count: 8, name: "Node" },
 ];
 
-// Тут код:
-const coursesToObject = (arr) => {};
+const coursesToObject = (courses) => {
+  // Решение тут
+};
 
-// Проверка
-const result = coursesToObject(courses);
-console.log(result);
+// Пример вызова:
+console.log(coursesToObject(courses)); // { JS: 12, React: 2, Node: 8 }

@@ -6,7 +6,8 @@
 const arr = ["a", "b", "a", "c", "b", "a"];
 
 const countFrequency = (arr) => {
-  // Ваш код здесь
+  // Решение тут
 };
 
+// Пример вызова:
 console.log(countFrequency(arr));

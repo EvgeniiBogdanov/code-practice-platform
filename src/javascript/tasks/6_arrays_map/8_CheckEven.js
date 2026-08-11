@@ -1,10 +1,9 @@
-// Сделать массив булевых значений — четное число или нет
-// Ожидаемый результат: [false, true, false, true, false]
-const numbers = [1, 2, 3, 4, 5];
+// Массив булевых значений чётности
+// Напишите функцию checkEven(numbers), которая возвращает массив boolean значений (true для четных, false для нечетных).
 
-// Тут код:
-const checkEven = () => {};
+const checkEven = (numbers) => {
+  // Решение тут
+};
 
-// Проверка
-const result = checkEven(numbers);
-console.log(result);
+// Пример вызова:
+console.log(checkEven([1, 2, 3, 4, 5])); // [false, true, false, true, false]

@@ -1,10 +1,9 @@
 // Создать массив из первых букв слов
-// Ожидаемый результат: ["J", "R", "V", "N"]
-const words = ["JavaScript", "React", "Vue", "Next"];
+// Напишите функцию getFirstLetters(words), которая возвращает первые буквы каждого слова.
 
-// Тут код:
-const getFirstLetters = () => {};
+const getFirstLetters = (words) => {
+  // Решение тут
+};
 
-// Проверка
-const result = getFirstLetters(words);
-console.log(result);
+// Пример вызова:
+console.log(getFirstLetters(["Hello", "World", "JavaScript"])); // ["H", "W", "J"]

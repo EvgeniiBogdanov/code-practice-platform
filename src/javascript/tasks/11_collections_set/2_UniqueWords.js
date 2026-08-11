@@ -1,4 +1,9 @@
-// Получите массив уникальных слов.
-// Вывод: ['hello', 'world', 'set']
+// Получение уникальных слов из текста
+// Напишите функцию getUniqueWords(text), которая возвращает массив уникальных слов.
 
-const text = 'hello world hello set world';
+const getUniqueWords = (text) => {
+  // Решение тут
+};
+
+// Пример вызова:
+console.log(getUniqueWords("hello world hello set world")); // ["hello", "world", "set"]

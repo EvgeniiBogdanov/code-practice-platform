@@ -1,6 +1,7 @@
-const numbers = [5, 7, 3, -2, -8, 4];
+const findFirstNegative = (arr) => {
+  return arr.find((num) => num < 0);
+};
 
-const findFirstNegative = (arr) => arr.find((num) => num < 0);
-
-const result = findFirstNegative(numbers);
-console.log(result);
+// Пример вызова:
+console.log(findFirstNegative([4, 6, -2, 8, -5])); // -2
+console.log(findFirstNegative([1, 2, 3]));         // undefined

@@ -1,30 +1,24 @@
-/**
- * Решение задачи: Парсер и сериализатор Query String
- */
-function parseQueryString(url) {
-  if (typeof url !== 'string' || !url.trim()) {
-    return {};
-  }
+const parseQueryString = (url) => {
+  if (typeof url !== "string" || !url.trim()) return {};
 
-  const queryStringIndex = url.indexOf('?');
+  const queryStringIndex = url.indexOf("?");
   const queryString = queryStringIndex !== -1 ? url.slice(queryStringIndex + 1) : url;
 
-  if (!queryString || queryString.includes('://') || queryString.includes('/')) {
-    if (queryStringIndex === -1 && (url.startsWith('http') || url.includes('/'))) {
+  if (!queryString || queryString.includes("://") || queryString.includes("/")) {
+    if (queryStringIndex === -1 && (url.startsWith("http") || url.includes("/"))) {
       return {};
     }
   }
 
-  const cleanQuery = queryString.split('#')[0];
+  const cleanQuery = queryString.split("#")[0];
   if (!cleanQuery) return {};
 
   const result = {};
-  const pairs = cleanQuery.split('&');
+  const pairs = cleanQuery.split("&");
 
   for (const pair of pairs) {
     if (!pair) continue;
-
-    const eqIndex = pair.indexOf('=');
+    const eqIndex = pair.indexOf("=");
     let key, value;
 
     if (eqIndex === -1) {
@@ -47,20 +41,14 @@ function parseQueryString(url) {
   }
 
   return result;
-}
+};
 
-function stringifyQuery(obj) {
-  if (!obj || typeof obj !== 'object') {
-    return '';
-  }
-
+const stringifyQuery = (obj) => {
+  if (!obj || typeof obj !== "object") return "";
   const parts = [];
 
   for (const [key, value] of Object.entries(obj)) {
-    if (value === null || value === undefined) {
-      continue;
-    }
-
+    if (value === null || value === undefined) continue;
     const encodedKey = encodeURIComponent(key);
 
     if (Array.isArray(value)) {
@@ -74,15 +62,12 @@ function stringifyQuery(obj) {
     }
   }
 
-  return parts.join('&');
-}
+  return parts.join("&");
+};
 
-// Примеры использования:
-const url = 'https://example.com/search?q=hello%20world&tags=js&tags=web&debug';
-const parsed = parseQueryString(url);
-console.log(parsed);
-// Вывод: { q: 'hello world', tags: ['js', 'web'], debug: true }
+const parsed = parseQueryString("https://example.com?q=hello%20world&tags=js&tags=web&debug");
+console.log(parsed); // { q: "hello world", tags: ["js", "web"], debug: true }
 
+// Пример вызова:
 const stringified = stringifyQuery(parsed);
-console.log(stringified);
-// Вывод: 'q=hello%20world&tags=js&tags=web&debug=true'
+console.log(stringified); // "q=hello%20world&tags=js&tags=web&debug=true"

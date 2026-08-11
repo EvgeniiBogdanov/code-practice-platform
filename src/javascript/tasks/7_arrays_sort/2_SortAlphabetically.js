@@ -1,9 +1,9 @@
-// Отсортировать строки по алфавиту
-const fruits = ["banana", "apple", "cherry"];
+// Сортировка строк по алфавиту
+// Напишите функцию sortAlphabetically(words), которая возвращает массив строк, отсортированный по алфавиту.
 
-// Тут код:
-const sortAlphabetically = () => {};
+const sortAlphabetically = (words) => {
+  // Решение тут
+};
 
-// Проверка
-const result = sortAlphabetically(fruits);
-console.log(result);
+// Пример вызова:
+console.log(sortAlphabetically(["banana", "apple", "cherry", "date"])); // ["apple", "banana", "cherry", "date"]

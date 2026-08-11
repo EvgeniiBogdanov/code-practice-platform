@@ -1,11 +1,12 @@
-// Что выведет код и через какие промежутки времени?
+// Остановка setInterval по счетчику
+// Что выведет следующий код?
 
 let count = 0;
 
 const intervalId = setInterval(() => {
-    count++;
-    console.log(count);
-    if (count === 3) {
-        clearInterval(intervalId);
-    }
+  count++;
+  console.log(count);
+  if (count === 3) {
+    clearInterval(intervalId);
+  }
 }, 1000);

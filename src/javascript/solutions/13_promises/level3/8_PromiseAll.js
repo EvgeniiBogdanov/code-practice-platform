@@ -8,4 +8,5 @@ async function totalParallel() {
   return prices.reduce((sum, p) => sum + p, 0);
 }
 
+// Пример вызова:
 totalParallel().then(console.log); // 440

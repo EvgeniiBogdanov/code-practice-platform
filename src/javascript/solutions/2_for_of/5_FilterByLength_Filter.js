@@ -1,6 +1,7 @@
-// Вариант 2: Через метод массива filter()
-const arr = ["кофе", "сок", "газировка", "вода"];
+const filterByLength = (arr, n) => {
+  return arr.filter((str) => str.length > n);
+};
 
-const filterStr = (arr, num) => arr.filter((str) => str.length > num);
-
-console.log(filterStr(arr, 5));
+// Пример вызова:
+console.log(filterByLength(["кофе", "сок", "газировка", "вода"], 4)); // ["газировка"]
+console.log(filterByLength(["кофе", "сок", "газировка", "вода"], 3)); // ["кофе", "газировка", "вода"]

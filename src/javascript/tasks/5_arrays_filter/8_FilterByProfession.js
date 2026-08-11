@@ -1,17 +1,23 @@
-// Дан массив объектов с информацией о людях
-// Задача: отфильтровать только программистов
+// Фильтрация по профессии
+// Напишите функцию filterByProfession(people, profession), которая возвращает список людей указанной профессии.
+
 const people = [
-  { name: "Анна", profession: "врач", age: 32 },
-  { name: "Иван", profession: "программист", age: 28 },
-  { name: "Мария", profession: "учитель", age: 45 },
-  { name: "Петр", profession: "врач", age: 39 },
-  { name: "Ольга", profession: "дизайнер", age: 26 },
-  { name: "Сергей", profession: "программист", age: 31 }
+  { name: "Иван", profession: "инженер" },
+  { name: "Мария", profession: "дизайнер" },
+  { name: "Петр", profession: "инженер" },
+  { name: "Ольга", profession: "учитель" },
+  { name: "Сергей", profession: "дизайнер" },
+  { name: "Анна", profession: "инженер" },
 ];
 
-// Тут код:
-const filterByProfession = () => {};
+const filterByProfession = (people, profession) => {
+  // Решение тут
+};
 
-// Проверка
-const result = filterByProfession(people, "программист");
-console.log(result);
+// Пример вызова:
+console.log(filterByProfession(people, "инженер"));
+// [
+//   { name: "Иван", profession: "инженер" },
+//   { name: "Петр", profession: "инженер" },
+//   { name: "Анна", profession: "инженер" }
+// ]

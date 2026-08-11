@@ -1,12 +1,12 @@
-// Напишите функцию debounce(...), которая откладывает вызов функции до тех пор,
-// пока не пройдет delay миллисекунд с момента последнего вызова.
+// Реализация функции debounce
+// Напишите функцию debounce(fn, ms), которая задерживает вызов fn на ms миллисекунд.
 
-// Пример использования:
-const debouncedSearch = debounce((query) => {
-  console.log(`Searching for: ${query}`);
-}, 300);
+const debounce = (fn, ms) => {
+  // Решение тут
+};
 
-// При быстром вводе вызовется только один раз
-debouncedSearch('a');
-debouncedSearch('ab');
-debouncedSearch('abc'); // Только этот вызов сработает
+// Пример вызова:
+const log = debounce((msg) => console.log(msg), 300);
+log("a");
+log("b");
+log("c"); // Выведет "c" через 300 мс

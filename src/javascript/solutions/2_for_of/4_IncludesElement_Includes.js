@@ -1,6 +1,7 @@
-// Вариант 2: Через метод массива includes()
-const fruits = ["яблоко", "банан", "апельсин", "груша"];
+const includesElement = (arr, target) => {
+  return arr.includes(target);
+};
 
-const hasElement = (arr, element) => arr.includes(element);
-
-console.log(hasElement(fruits, "банан")); // true
+// Пример вызова:
+console.log(includesElement(["яблоко", "банан", "апельсин", "груша"], "банан")); // true
+console.log(includesElement(["яблоко", "банан", "апельсин", "груша"], "киви"));  // false

@@ -437,12 +437,12 @@ const RootLayout = () => {
     }
 
     // JavaScript / Algorithms синхронизация групп и подгрупп
-    if (selectedTask.group && !selectedTask.isGroupOverview) {
+    if (selectedTask.group) {
       setExpandedJsGroups((prev) => {
         if (prev[selectedTask.group]) return prev; // already expanded, skip state update
         return { ...prev, [selectedTask.group]: true };
       });
-      if (selectedTask.subgroup) {
+      if (selectedTask.subgroup && !selectedTask.isGroupOverview) {
         const subKey = `${selectedTask.group}/${selectedTask.subgroup}`;
         setExpandedJsSubgroups((prev) => {
           if (prev[subKey]) return prev; // already expanded, skip state update

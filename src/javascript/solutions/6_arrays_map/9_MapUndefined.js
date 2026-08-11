@@ -1,8 +1,5 @@
-// В map callback без return возвращает undefined для нечётных элементов
-const arr = [1, 2, 3];
-
-const result = arr.map((num) => {
-  if (num % 2 === 0) return num;
+const numbers = [1, 2, 3];
+const result = numbers.map((num) => {
+  num * 2;
 });
-
-console.log(result); // [undefined, 2, undefined]
+console.log(result); // [undefined, undefined, undefined]

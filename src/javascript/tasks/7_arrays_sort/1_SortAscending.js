@@ -1,9 +1,9 @@
-// Отсортировать массив чисел по возрастанию:
-const numbers = [5, 2, 9, 1, 7];
+// Сортировка чисел по возрастанию
+// Напишите функцию sortAscending(numbers), которая возвращает массив чисел, отсортированный по возрастанию.
 
-// Тут код:
-const sortAscending = () => {};
+const sortAscending = (numbers) => {
+  // Решение тут
+};
 
-// Проверка
-const result = sortAscending(numbers);
-console.log(result);
+// Пример вызова:
+console.log(sortAscending([40, 100, 1, 5, 25, 10])); // [1, 5, 10, 25, 40, 100]

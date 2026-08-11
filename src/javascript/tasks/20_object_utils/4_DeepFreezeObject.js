@@ -1,24 +1,11 @@
-// Заморозка объектов - Deep Freeze
-// Реализуйте функцию deepFreeze(obj), которая рекурсивно замораживает объект и все его вложенные объекты/массивы.
+// Глубокая заморозка объекта (Deep Freeze)
+// Напишите функцию deepFreeze(obj), рекурсивно вызывающую Object.freeze.
 
 const deepFreeze = (obj) => {
-  // Ваш код здесь
+  // Решение тут
 };
 
-const user = {
-  name: "Alex",
-  info: {
-    age: 30,
-    hobbies: ["reading", "coding"],
-  },
-};
-
+// Пример вызова:
+const user = { profile: { name: "Ivan" } };
 deepFreeze(user);
-
-user.name = "Bob"; // Не изменится
-user.info.age = 35; // Не изменится
-
-console.log(user.name); // "Alex"
-console.log(user.info.age); // 30
-console.log(Object.isFrozen(user.info)); // true
-console.log(Object.isFrozen(user.info.hobbies)); // true
+console.log(Object.isFrozen(user.profile)); // true

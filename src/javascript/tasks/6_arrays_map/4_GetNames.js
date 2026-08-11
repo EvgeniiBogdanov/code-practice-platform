@@ -1,14 +1,15 @@
 // Вытащить только имена из массива объектов
-// Ожидаемый результат: ["John", "Jane", "Jack"]
+// Напишите функцию getNames(users), которая возвращает массив имен пользователей.
+
 const users = [
-  { id: 1, name: "John" },
-  { id: 2, name: "Jane" },
-  { id: 3, name: "Jack" }
+  { name: "Анна", age: 25 },
+  { name: "Иван", age: 30 },
+  { name: "Мария", age: 20 },
 ];
 
-// Тут код:
-const getNames = () => {};
+const getNames = (users) => {
+  // Решение тут
+};
 
-// Проверка
-const result = getNames(users);
-console.log(result);
+// Пример вызова:
+console.log(getNames(users)); // ["Анна", "Иван", "Мария"]

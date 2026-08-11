@@ -4,8 +4,9 @@ const cart = [
   { name: "Tablet", price: 800 },
 ];
 
-const sum = (arr) => {
-  return arr.reduce((acc, prod) => acc + prod.price, 0);
+const totalCartPrice = (cart) => {
+  return cart.reduce((acc, prod) => acc + prod.price, 0);
 };
 
-console.log(sum(cart)); // 2300
+// Пример вызова:
+console.log(totalCartPrice(cart)); // 2300

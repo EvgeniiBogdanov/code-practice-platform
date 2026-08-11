@@ -1,5 +1,5 @@
-// Дана структура файловой системы: { name, type: "file"|"folder", children? }.
-// Напишите функцию findFile(node, name), возвращающую true, если файл найден.
+// Поиск файла в файловой структуре
+// Напишите функцию findFile(node, name), которая рекурсивно ищет файл с именем name.
 
 const fs = {
   name: "root",
@@ -18,7 +18,9 @@ const fs = {
 };
 
 const findFile = (node, name) => {
-  // Ваш код здесь
+  // Решение тут
 };
 
+// Пример вызова:
 console.log(findFile(fs, "utils.js")); // true
+console.log(findFile(fs, "test.js"));  // false

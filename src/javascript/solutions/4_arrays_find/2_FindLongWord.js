@@ -1,6 +1,7 @@
-const words = ["cat", "dog", "apple", "hi"];
+const findLongWord = (words, minLength) => {
+  return words.find((word) => word.length > minLength);
+};
 
-const findLongWord = (arr, num) => arr.find((word) => word.length > num);
-
-const result = findLongWord(words, 4);
-console.log(result);
+// Пример вызова:
+console.log(findLongWord(["cat", "elephant", "dog", "tiger"], 4)); // "elephant"
+console.log(findLongWord(["cat", "dog"], 4));                      // undefined

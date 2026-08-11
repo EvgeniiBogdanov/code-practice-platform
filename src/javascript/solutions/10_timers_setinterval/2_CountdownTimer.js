@@ -1,6 +1,6 @@
 const createTimer = (seconds) => {
   let timeLeft = seconds;
-  
+
   const intervalId = setInterval(() => {
     console.log(timeLeft);
     timeLeft--;
@@ -14,4 +14,5 @@ const createTimer = (seconds) => {
   return intervalId;
 };
 
+// Пример вызова:
 createTimer(5);

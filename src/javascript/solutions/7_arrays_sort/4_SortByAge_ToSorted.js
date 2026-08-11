@@ -6,4 +6,5 @@ const users = [
 
 const sortByAgeToSorted = (arr) => arr.toSorted((a, b) => a.age - b.age);
 
+// Пример вызова:
 console.log(sortByAgeToSorted(users));

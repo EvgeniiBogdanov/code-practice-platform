@@ -1,18 +1,18 @@
-// Добавить новое поле в каждый объект
-// Добавить поле "inStock: true"
-// Ожидаемый результат:
-// [
-//   { name: "Laptop", price: 1000, inStock: true },
-//   { name: "Phone", price: 500, inStock: true }
-// ]
+// Добавить поле в каждый объект
+// Напишите функцию addInStock(products), которая возвращает массив продуктов с добавленным полем inStock: true.
+
 const products = [
-  { name: "Laptop", price: 1000 },
-  { name: "Phone", price: 500 }
+  { id: 1, name: "Ноутбук" },
+  { id: 2, name: "Телефон" },
 ];
 
-// Тут код:
-const addInStock = () => {};
+const addInStock = (products) => {
+  // Решение тут
+};
 
-// Проверка
-const result = addInStock(products, "inStock", true);
-console.log(result);
+// Пример вызова:
+console.log(addInStock(products));
+// [
+//   { id: 1, name: "Ноутбук", inStock: true },
+//   { id: 2, name: "Телефон", inStock: true }
+// ]

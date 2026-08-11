@@ -1,15 +1,20 @@
-// Реализуйте класс MyPromise с конструктором (executor),
-// методами then, catch, поддерживающий состояния
-// pending / fulfilled / rejected и цепочку .then().
+// Реализация собственного Promise (MyPromise)
+// Реализуйте класс MyPromise с состояниями pending, fulfilled, rejected и методом then.
 
 class MyPromise {
   constructor(executor) {
-    // Ваш код здесь
+    // Решение тут
   }
+
   then(onFulfilled, onRejected) {
-    // Ваш код здесь
+    // Решение тут
   }
+
   catch(onRejected) {
-    // Ваш код здесь
+    // Решение тут
   }
 }
+
+// Пример вызова:
+new MyPromise((resolve) => setTimeout(() => resolve(42), 100))
+  .then((val) => console.log(val)); // 42

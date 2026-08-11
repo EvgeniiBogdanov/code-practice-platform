@@ -4,10 +4,10 @@
 // Если элемент не найден, возвращает -1.
 
 const binarySearch = (arr, target) => {
-  // Ваш код здесь
+  // Решение тут
 };
 
-// Примеры вызова:
+// Пример вызова:
 console.log(binarySearch([1, 3, 5, 7, 9, 11], 7)); // 3
 console.log(binarySearch([1, 3, 5, 7, 9, 11], 2)); // -1
 console.log(binarySearch([10, 20, 30], 30));       // 2

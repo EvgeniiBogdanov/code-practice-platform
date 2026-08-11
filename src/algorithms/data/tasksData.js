@@ -31,7 +31,7 @@ export const ALGO_TWO_POINTERS_TASKS = [
         badge: "O(n) время / O(1) память",
         recommendationNote: "Два указателя двигаются навстречу друг другу с концов массива, обеспечивая линейную сложность без использования дополнительной памяти.",
         rawSolution: TwoSumIISolutionRaw,
-        filepath: "src/algorithms/tasks/1_two_pointers/1_TwoSumII.js",
+        filepath: "src/algorithms/solutions/1_two_pointers/1_TwoSumII.js",
       },
     ],
     articles: [
@@ -66,7 +66,7 @@ export const ALGO_TWO_POINTERS_TASKS = [
         badge: "O(n) время / O(1) память",
         recommendationNote: "Указатели подтягиваются с краёв к центру, пропуская не буквенно-цифровые символы и сравнивая оставшиеся без учёта регистра.",
         rawSolution: ValidPalindromeSolutionRaw,
-        filepath: "src/algorithms/tasks/1_two_pointers/2_ValidPalindrome.js",
+        filepath: "src/algorithms/solutions/1_two_pointers/2_ValidPalindrome.js",
       },
     ],
     articles: [
@@ -100,7 +100,7 @@ export const ALGO_TWO_POINTERS_TASKS = [
         badge: "O(n²) время / O(1) память",
         recommendationNote: "Сортировка массива позволяет свести задачу 3Sum к Two Sum для каждого элемента и легко пропускать дубликаты.",
         rawSolution: ThreeSumSolutionRaw,
-        filepath: "src/algorithms/tasks/1_two_pointers/3_ThreeSum.js",
+        filepath: "src/algorithms/solutions/1_two_pointers/3_ThreeSum.js",
       },
     ],
     articles: [

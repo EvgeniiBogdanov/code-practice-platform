@@ -1,6 +1,6 @@
-const words = ["apple", "banana", "cat"];
+const getStringLengths = (words) => {
+  return words.map((word) => word.length);
+};
 
-const getStringLengths = (arr) => arr.map((word) => word.length);
-
-const result = getStringLengths(words);
-console.log(result);
+// Пример вызова:
+console.log(getStringLengths(["apple", "banana", "cherry"])); // [5, 6, 6]

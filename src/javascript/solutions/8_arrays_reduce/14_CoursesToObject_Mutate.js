@@ -12,4 +12,5 @@ const coursesToObject = (arr) => {
   }, {});
 };
 
+// Пример вызова:
 console.log(coursesToObject(courses));

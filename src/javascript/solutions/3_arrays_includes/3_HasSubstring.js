@@ -1,6 +1,7 @@
-const str = "hello world";
+const hasSubstring = (str, substr) => {
+  return str.includes(substr);
+};
 
-const hasSubstring = (str, substr) => str.includes(substr);
-
-const result = hasSubstring(str, "world");
-console.log(result);
+// Пример вызова:
+console.log(hasSubstring("hello world", "world")); // true
+console.log(hasSubstring("hello world", "js"));    // false

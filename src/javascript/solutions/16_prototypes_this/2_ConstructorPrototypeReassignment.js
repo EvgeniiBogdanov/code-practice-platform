@@ -2,19 +2,19 @@ function Person(name) {
   this.name = name;
 }
 
-const juan = new Person("Juan");
+Person.prototype.greet = function () {
+  return `Привет, я ${this.name}`;
+};
+
+const anna = new Person("Анна");
 
 Person.prototype = {
-  getName: function () {
-    return this.name;
+  greet() {
+    return `Здравствуйте, я ${this.name}`;
   },
 };
 
-const pedro = new Person("Pedro");
+const ivan = new Person("Иван");
 
-console.log(pedro.getName()); // "Pedro"
-try {
-  console.log(juan.getName());
-} catch (e) {
-  console.log("juan.getName is not a function"); // Ошибка! juan был создан до подмены Person.prototype
-}
+console.log(anna.greet()); // "Привет, я Анна"
+console.log(ivan.greet()); // "Здравствуйте, я Иван"

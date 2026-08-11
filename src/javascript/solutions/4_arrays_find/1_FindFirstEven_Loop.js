@@ -7,4 +7,5 @@ const findFirstEvenLoop = (arr) => {
   return undefined;
 };
 
+// Пример вызова:
 console.log(findFirstEvenLoop(numbers)); // 8

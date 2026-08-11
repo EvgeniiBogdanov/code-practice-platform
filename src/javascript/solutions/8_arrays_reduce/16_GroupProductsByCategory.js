@@ -1,17 +1,20 @@
 const products = [
-  { title: "Laptop", price: 999, category: "Electronics" },
-  { title: "Coffee Mug", price: 15, category: "Kitchen" },
-  { title: "Headphones", price: 150, category: "Electronics" },
-  { title: "Blender", price: 45, category: "Kitchen" },
-  { title: "Novel", price: 20, category: "Books" },
-  { title: "Smartphone", price: 699, category: "Electronics" }
+  { name: "Apple", category: "Fruit" },
+  { name: "Banana", category: "Fruit" },
+  { name: "Carrot", category: "Vegetable" },
 ];
 
-const groupBy = (arr, property) => arr.reduce((acc, obj) => {
-  const key = obj[property];
-  if (!acc[key]) acc[key] = [];
-  acc[key].push(obj);
-  return acc;
-}, {});
+const groupProductsByCategory = (products) => {
+  return products.reduce((acc, product) => {
+    acc[product.category] ??= [];
+    acc[product.category].push(product.name);
+    return acc;
+  }, {});
+};
 
-console.log(groupBy(products, "category"));
+// Пример вызова:
+console.log(groupProductsByCategory(products));
+// {
+//   Fruit: ["Apple", "Banana"],
+//   Vegetable: ["Carrot"]
+// }

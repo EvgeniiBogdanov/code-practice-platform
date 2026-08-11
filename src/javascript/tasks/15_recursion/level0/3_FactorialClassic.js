@@ -1,9 +1,10 @@
-// Напишите функцию factorial(n).
-// Вход → Выход
-// 5 → 120
+// Вычисление факториала числа N
+// Напишите рекурсивную функцию factorial(n), вычисляющую n!.
 
 const factorial = (n) => {
-  // Ваш код здесь
+  // Решение тут
 };
 
-console.log(factorial(5));
+// Пример вызова:
+console.log(factorial(5)); // 120
+console.log(factorial(0)); // 1
