@@ -1,14 +1,16 @@
-// Найти пользователя по имени:
-// { id: 2, name: "Jane" }
+// Найти пользователя по имени
+// Напишите функцию findUserByName(users, name), которая находит объект пользователя с указанным именем.
+
+const findUserByName = (users, name) => {
+  // Решение тут
+};
+
 const users = [
-  { id: 1, name: "John" },
-  { id: 2, name: "Jane" },
-  { id: 3, name: "Jack" }
+  { id: 1, name: "Анна" },
+  { id: 2, name: "Иван" },
+  { id: 3, name: "Мария" },
 ];
 
-// Тут код:
-const findUserByName = () => {};
-
-// Проверка
-const result = findUserByName(users, "Jane");
-console.log(result);
+// Пример вызова:
+console.log(findUserByName(users, "Иван"));   // { id: 2, name: "Иван" }
+console.log(findUserByName(users, "Пётр"));   // undefined

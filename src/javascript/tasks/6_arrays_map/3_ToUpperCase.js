@@ -1,10 +1,9 @@
 // Сделать все строки заглавными
-// Ожидаемый результат: ["APPLE", "BANANA", "CHERRY"]
-const fruits = ["apple", "banana", "cherry"];
+// Напишите функцию toUpperCaseList(words), которая возвращает строки в верхнем регистре.
 
-// Тут код:
-const toUpperCase = () => {};
+const toUpperCaseList = (words) => {
+  // Решение тут
+};
 
-// Проверка
-const result = toUpperCase(fruits);
-console.log(result);
+// Пример вызова:
+console.log(toUpperCaseList(["cat", "dog", "elephant"])); // ["CAT", "DOG", "ELEPHANT"]

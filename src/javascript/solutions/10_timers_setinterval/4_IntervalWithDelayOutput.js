@@ -1,11 +1,10 @@
-console.log('Start');
-
-setInterval(() => {
-  console.log('Interval');
-}, 1000);
+console.log("Start"); // Start
+console.log("End");   // End
 
 setTimeout(() => {
-  console.log('Timeout');
+  console.log("Timeout"); // Timeout (через 500 мс)
 }, 500);
 
-console.log('End');
+setInterval(() => {
+  console.log("Interval"); // Interval (через 1000 мс, 2000 мс...)
+}, 1000);

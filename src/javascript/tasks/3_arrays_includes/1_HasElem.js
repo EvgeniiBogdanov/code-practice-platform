@@ -1,9 +1,10 @@
-// Проверить, есть ли строка "apple" в массиве:
-const fruits = ["banana", "apple", "cherry"];
+// Проверка наличия элемента в массиве
+// Напишите функцию hasElem(arr, target), которая проверяет, есть ли элемент target в массиве.
 
-// Тут код:
-const hasElem = () => {};
+const hasElem = (arr, target) => {
+  // Решение тут
+};
 
-// Проверка
-const result = hasElem(fruits, "apple");
-console.log(result);
+// Пример вызова:
+console.log(hasElem(["banana", "apple", "cherry"], "apple")); // true
+console.log(hasElem(["banana", "apple", "cherry"], "mango")); // false

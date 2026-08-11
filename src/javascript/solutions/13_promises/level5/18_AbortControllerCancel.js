@@ -1,8 +1,14 @@
 const fetchWithCancel = (url, signal) => {
   return new Promise((resolve, reject) => {
-    const timer = setTimeout(() => resolve(`Данные с ${url}`), 500);
+    if (signal?.aborted) {
+      return reject(new Error("Aborted"));
+    }
 
-    signal.addEventListener("abort", () => {
+    const timer = setTimeout(() => {
+      resolve(`Data from ${url}`);
+    }, 200);
+
+    signal?.addEventListener("abort", () => {
       clearTimeout(timer);
       reject(new Error("Aborted"));
     });
@@ -12,6 +18,6 @@ const fetchWithCancel = (url, signal) => {
 const controller = new AbortController();
 fetchWithCancel("/api/data", controller.signal)
   .then(console.log)
-  .catch(console.error); // Error: Aborted
+  .catch(console.error);
 
-setTimeout(() => controller.abort(), 100);
+setTimeout(() => controller.abort(), 50);

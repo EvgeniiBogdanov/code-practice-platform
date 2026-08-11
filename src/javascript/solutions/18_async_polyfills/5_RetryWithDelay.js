@@ -1,30 +1,25 @@
-function retryWithDelay(fn, retries = 3, delay = 1000) {
-  return new Promise((resolve, reject) => {
-    function attempt(attemptsLeft) {
-      fn()
-        .then(resolve)
-        .catch((err) => {
-          if (attemptsLeft <= 0) {
-            return reject(err);
-          }
-          setTimeout(() => attempt(attemptsLeft - 1), delay);
-        });
+const delay = (ms) => new Promise((r) => setTimeout(r, ms));
+
+const retry = async (fn, maxRetries = 3, delayMs = 100) => {
+  let lastError;
+  for (let i = 0; i <= maxRetries; i++) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastError = err;
+      if (i < maxRetries) {
+        await delay(delayMs);
+      }
     }
+  }
+  throw lastError;
+};
 
-    attempt(retries);
-  });
-}
+let tries = 0;
+const operation = () => {
+  tries++;
+  return tries < 3 ? Promise.reject(new Error("Fail")) : Promise.resolve("Success");
+};
 
-// Пример использования:
-let attempts = 0;
-const unstableFetch = () =>
-  new Promise((res, rej) => {
-    attempts += 1;
-    if (attempts < 3) {
-      rej(`Ошибка сети (попытка ${attempts})`);
-    } else {
-      res(`Успех на попытке ${attempts}`);
-    }
-  });
-
-retryWithDelay(unstableFetch, 4, 100).then(console.log).catch(console.error);
+// Пример вызова:
+retry(operation, 5, 50).then(console.log); // "Success"

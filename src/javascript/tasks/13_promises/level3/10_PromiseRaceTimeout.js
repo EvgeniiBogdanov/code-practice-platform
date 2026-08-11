@@ -7,7 +7,8 @@ const slowRequest = new Promise((resolve) =>
 );
 
 const withTimeout = (promise, ms) => {
-  // Ваш код здесь
+  // Решение тут
 };
 
+// Пример вызова:
 withTimeout(slowRequest, 500).then(console.log).catch(console.error);

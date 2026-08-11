@@ -1,28 +1,8 @@
-class Animal {
-  constructor(name) {
-    this.name = name;
-  }
+const proto = { inherited: true };
+const obj = Object.create(proto);
+obj.own = 123;
 
-  sound() {
-    console.log("Some sound");
-  }
-}
-
-class Dog extends Animal {
-  constructor(name, breed) {
-    super(name);
-    this.breed = breed;
-  }
-
-  bark() {
-    console.log("Woof woof!");
-  }
-}
-
-let myDog = new Dog("Buddy", "Labrador");
-
-console.log(myDog.hasOwnProperty("name")); // true (собственное свойство)
-console.log(myDog.hasOwnProperty("sound")); // false (метод прототипа)
-
-console.log("name" in myDog); // true
-console.log("sound" in myDog); // true (проверяет свойство в цепочке прототипов)
+console.log("own" in obj);                    // true
+console.log("inherited" in obj);              // true
+console.log(Object.hasOwn(obj, "own"));       // true
+console.log(Object.hasOwn(obj, "inherited")); // false

@@ -1,10 +1,16 @@
 const users = [
-  { name: "John", active: true },
-  { name: "Jane", active: false },
-  { name: "Jack", active: true },
+  { name: "Анна", isActive: true },
+  { name: "Иван", isActive: false },
+  { name: "Мария", isActive: true },
 ];
 
-const filterActiveUsers = (arr, value) => arr.filter((user) => user.active === value);
+const filterActiveUsers = (users) => {
+  return users.filter((user) => user.isActive);
+};
 
-const result = filterActiveUsers(users, true);
-console.log(result);
+// Пример вызова:
+console.log(filterActiveUsers(users));
+// [
+//   { name: "Анна", isActive: true },
+//   { name: "Мария", isActive: true }
+// ]

@@ -1,14 +1,20 @@
-// Преобразовать массив объектов в объект, где ключ — id, значение — объект
-// Вывод: { 1: {id: 1, name: 'A'}, 2: {id: 2, name: 'B'}, 3: {id: 3, name: 'C'} }
+// Преобразование массива объектов в объект по id
+// Напишите функцию mapUsersById(users), которая превращает массив объектов в объект с ключами id.
 
-const items = [
-  { id: 1, name: "A", price: 100 },
-  { id: 2, name: "B", price: 200 },
-  { id: 3, name: "C", price: 300 },
+const users = [
+  { id: "u1", name: "Alice", age: 25 },
+  { id: "u2", name: "Bob", age: 30 },
+  { id: "u3", name: "Charlie", age: 35 },
 ];
 
-const customMap = (arr) => {
+const mapUsersById = (users) => {
   // Решение тут
 };
 
-console.log(customMap(items));
+// Пример вызова:
+console.log(mapUsersById(users));
+// {
+//   u1: { id: "u1", name: "Alice", age: 25 },
+//   u2: { id: "u2", name: "Bob", age: 30 },
+//   u3: { id: "u3", name: "Charlie", age: 35 }
+// }

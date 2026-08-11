@@ -1,15 +1,17 @@
-// Напишите memoizeAsync(fn), кэширующую результат
-// по аргументам, чтобы повторный вызов с теми же
-// аргументами не выполнял fn заново, а брал из кэша.
+// Асинхронная мемоизация промисов
+// Напишите функцию memoizeAsync(fn), кэширующую результаты асинхронных вызовов.
 
+const memoizeAsync = (fn) => {
+  // Решение тут
+};
+
+// Пример вызова:
 let callCount = 0;
 const fetchSquare = (n) => {
   callCount++;
   return new Promise((resolve) => setTimeout(() => resolve(n * n), 100));
 };
 
-const memoizeAsync = (fn) => {
-  // Ваш код здесь
-};
-
 const memoized = memoizeAsync(fetchSquare);
+memoized(4).then(console.log); // 16
+memoized(4).then(console.log); // 16

@@ -1,53 +1,36 @@
-// Паттерн Наблюдатель (Publish-Subscribe / Event Emitter)
-
 class EventEmitter {
   constructor() {
-    this.events = {};
+    this.events = new Map();
   }
 
   on(event, listener) {
-    if (!this.events[event]) {
-      this.events[event] = [];
+    if (!this.events.has(event)) {
+      this.events.set(event, []);
     }
-    this.events[event].push(listener);
-    return this;
+    this.events.get(event).push(listener);
+    return () => this.off(event, listener);
   }
 
   off(event, listener) {
-    if (!this.events[event]) return this;
-    this.events[event] = this.events[event].filter(
-      (l) => l !== listener && l.originalListener !== listener
-    );
-    return this;
-  }
-
-  once(event, listener) {
-    const onceWrapper = (...args) => {
-      this.off(event, onceWrapper);
-      listener.apply(this, args);
-    };
-    onceWrapper.originalListener = listener;
-    this.on(event, onceWrapper);
-    return this;
+    if (!this.events.has(event)) return;
+    const filtered = this.events.get(event).filter((l) => l !== listener);
+    this.events.set(event, filtered);
   }
 
   emit(event, ...args) {
-    if (!this.events[event]) return false;
-    const listeners = [...this.events[event]];
-    listeners.forEach((listener) => listener.apply(this, args));
-    return true;
+    if (!this.events.has(event)) return;
+    this.events.get(event).forEach((listener) => listener(...args));
+  }
+
+  once(event, listener) {
+    const remove = this.on(event, (...args) => {
+      remove();
+      listener(...args);
+    });
   }
 }
 
+// Пример вызова:
 const emitter = new EventEmitter();
-
-const logData = (data) => console.log("Data:", data);
-emitter.on("message", logData);
-emitter.once("connect", () => console.log("Connected!"));
-
-emitter.emit("message", "Hello World"); // Data: Hello World
-emitter.emit("connect"); // Connected!
-emitter.emit("connect"); // Ничего не выведет (once)
-
-emitter.off("message", logData);
-emitter.emit("message", "Hello World 2"); // Ничего не выведет
+const unsubscribe = emitter.on("event", (data) => console.log("Received:", data));
+emitter.emit("event", "Hello!"); // Received: Hello!

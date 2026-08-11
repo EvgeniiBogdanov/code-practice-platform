@@ -1,6 +1,6 @@
-const values = [0, 1, false, 2, "", 3, null, undefined, NaN, 4];
+const filterTruthy = (arr) => {
+  return arr.filter(Boolean);
+};
 
-const filterTruthy = (arr) => arr.filter(Boolean);
-
-const result = filterTruthy(values);
-console.log(result);
+// Пример вызова:
+console.log(filterTruthy([0, 1, false, 2, "", 3, "a", "e" * 23, NaN, "s", 34])); // [1, 2, 3, "a", "s", 34]

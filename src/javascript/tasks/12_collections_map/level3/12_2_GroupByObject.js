@@ -7,7 +7,8 @@ const users = [
 ];
 
 const groupBy = (items, key) => {
-  // Ваш код здесь
+  // Решение тут
 };
 
+// Пример вызова:
 console.log(groupBy(users, "city"));

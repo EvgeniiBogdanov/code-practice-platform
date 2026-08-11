@@ -6,5 +6,6 @@ const sumTo = (n) => {
   return sum;
 };
 
-const result = sumTo(4);
-console.log(result);
+// Пример вызова:
+console.log(sumTo(4)); // 10
+console.log(sumTo(3)); // 6

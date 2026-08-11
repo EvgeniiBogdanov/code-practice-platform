@@ -5,4 +5,5 @@ const hasElemSet = (arr, el) => {
   return fruitSet.has(el);
 };
 
+// Пример вызова:
 console.log(hasElemSet(fruits, "apple")); // true

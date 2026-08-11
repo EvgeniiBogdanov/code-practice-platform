@@ -1,40 +1,22 @@
-// Реактивность (Observable / Signal)
-
-let currentEffect = null;
-
-const effect = (fn) => {
-  currentEffect = fn;
-  fn();
-  currentEffect = null;
-};
-
 const createSignal = (initialValue) => {
   let value = initialValue;
-  const subscriptions = new Set();
+  const subscribers = new Set();
 
-  const get = () => {
-    if (currentEffect) {
-      subscriptions.add(currentEffect);
-    }
-    return value;
+  const get = () => value;
+  const set = (nextValue) => {
+    value = typeof nextValue === "function" ? nextValue(value) : nextValue;
+    subscribers.forEach((fn) => fn(value));
+  };
+  const subscribe = (fn) => {
+    subscribers.add(fn);
+    return () => subscribers.delete(fn);
   };
 
-  const set = (newValue) => {
-    if (value !== newValue) {
-      value = typeof newValue === "function" ? newValue(value) : newValue;
-      subscriptions.forEach((sub) => sub());
-    }
-  };
-
-  return [get, set];
+  return [get, set, subscribe];
 };
 
-const [count, setCount] = createSignal(0);
-
-effect(() => {
-  console.log("Count changed:", count());
-});
-// Выведет: Count changed: 0
-
-setCount(1); // Выведет: Count changed: 1
-setCount(2); // Выведет: Count changed: 2
+// Пример вызова:
+const [getCount, setCount, subscribe] = createSignal(0);
+subscribe((val) => console.log("Count changed:", val));
+setCount(1); // Count changed: 1
+setCount(2); // Count changed: 2

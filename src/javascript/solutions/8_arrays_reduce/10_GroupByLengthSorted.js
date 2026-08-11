@@ -1,13 +1,17 @@
-const words = ["тест", "привет", "фoo", "бар"];
-
-const groupBy = (arr) => {
-  return arr.reduce((acc, word) => {
-    acc[word.length] ??= [];
-    acc[word.length].push(word);
-    acc[word.length].sort();
-
+const groupByLength = (words) => {
+  return words.reduce((acc, word) => {
+    const len = word.length;
+    acc[len] ??= [];
+    acc[len].push(word);
     return acc;
   }, {});
 };
 
-console.log(groupBy(words));
+// Пример вызова:
+console.log(groupByLength(["стол", "стул", "шкаф", "кот", "дом", "крокодил", "бегемот"]));
+// {
+//   "3": ["кот", "дом"],
+//   "4": ["стол", "стул", "шкаф"],
+//   "7": ["бегемот"],
+//   "8": ["крокодил"]
+// }

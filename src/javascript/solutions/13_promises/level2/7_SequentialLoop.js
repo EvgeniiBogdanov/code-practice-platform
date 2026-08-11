@@ -7,10 +7,11 @@ const fetchUser = (id) =>
 async function loadAllSequentially() {
   const names = [];
   for (const id of ids) {
-    const user = await fetchUser(id); // именно for..of, forEach не сработает с await
+    const user = await fetchUser(id);
     names.push(user.name);
   }
   return names;
 }
 
-loadAllSequentially().then(console.log);
+// Пример вызова:
+loadAllSequentially().then(console.log); // ["User1", "User2", "User3"]

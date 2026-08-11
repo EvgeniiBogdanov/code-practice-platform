@@ -3,3 +3,11 @@ const printNumbers = (n) => {
     console.log(i);
   }
 };
+
+// Пример вызова:
+printNumbers(5);
+// 1
+// 2
+// 3
+// 4
+// 5

@@ -1,10 +1,10 @@
-// Вычислить среднее арифметическое (нельзя делить на длину вне reduce)
-// Вывод: 4.5
+// Вычисление среднего арифметического через reduce
+// Напишите функцию average(numbers), которая вычисляет среднее значение чисел массива.
 
-const scores = [3, 5, 4, 6, 5, 4];
-
-const getStats = (arr) => {
+const average = (numbers) => {
   // Решение тут
 };
 
-console.log(getStats(scores));
+// Пример вызова:
+console.log(average([1, 2, 3, 4, 5])); // 3
+console.log(average([10, 20, 30]));    // 20

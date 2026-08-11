@@ -12,5 +12,5 @@ const id2 = startInterval();
 
 setTimeout(() => {
   clearInterval(id1);
-  console.log('Stopped first interval');
+  console.log("Stopped first interval");
 }, 2500);

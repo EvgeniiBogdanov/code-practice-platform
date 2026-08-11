@@ -1,10 +1,12 @@
-const person = { name: "Vasya", age: 22 };
-const position = { title: "Software Engineer" };
+function User(name) {
+  this.name = name;
+}
 
-person.position = position;
-person.position.salary = 120;
+User.prototype.skills = [];
 
-console.log(person.position); // { title: 'Software Engineer', salary: 120 }
-console.log(position); // { title: 'Software Engineer', salary: 120 }
+const u1 = new User("Иван");
+const u2 = new User("Ольга");
 
-// Объекты присваиваются по ссылке, поэтому модификация person.position меняет исходный position.
+u1.skills.push("JS");
+
+console.log(u2.skills); // ["JS"]

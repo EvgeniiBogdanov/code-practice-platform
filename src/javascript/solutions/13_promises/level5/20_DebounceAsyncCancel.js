@@ -1,8 +1,5 @@
 const CANCELLED = Symbol("cancelled");
 
-const search = (query) =>
-  new Promise((resolve) => setTimeout(() => resolve(`Результаты по "${query}"`), 200));
-
 const debounceAsync = (fn, ms) => {
   let timer = null;
   let currentReject = null;
@@ -28,12 +25,8 @@ const debounceAsync = (fn, ms) => {
   };
 };
 
-const debouncedSearch = debounceAsync(search, 300);
-
-debouncedSearch("a").catch((e) => {
-  if (e === CANCELLED) console.log("Вызов 'a' отменён");
-});
-debouncedSearch("ab").catch((e) => {
-  if (e === CANCELLED) console.log("Вызов 'ab' отменён");
-});
-debouncedSearch("abc").then(console.log);
+// Пример вызова:
+const search = (q) => new Promise((r) => setTimeout(() => r(`Result ${q}`), 100));
+const debounced = debounceAsync(search, 200);
+debounced("a").catch(() => {});
+debounced("ab").then(console.log); // "Result ab"

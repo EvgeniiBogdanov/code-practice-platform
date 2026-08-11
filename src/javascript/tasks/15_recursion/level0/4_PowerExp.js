@@ -1,9 +1,10 @@
-// Напишите функцию power(base, exp).
-// Вход → Выход
-// power(2, 5) → 32
+// Возведение числа в степень (Power)
+// Напишите рекурсивную функцию power(base, exp), возводящую base в степень exp.
 
 const power = (base, exp) => {
-  // Ваш код здесь
+  // Решение тут
 };
 
-console.log(power(2, 5));
+// Пример вызова:
+console.log(power(2, 5)); // 32
+console.log(power(3, 3)); // 27

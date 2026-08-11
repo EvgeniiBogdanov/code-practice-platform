@@ -1,31 +1,21 @@
-/*
- * Необходимо сгруппировать данные в объект, отсортировав их по странам
- */
-
-/*
-  const result = {
-    Russia: {
-      1: { age: 24, name: "Иван", country: "Russia" },
-      3: { age: 22, name: "Алексей", country: "Russia" },
-      5: { age: 20, name: "Антон", country: "Russia" },
-    },
-    Belarus: {
-      2: { age: 23, name: "Дмитрий", country: "Belarus" },
-      4: { age: 21, name: "Олег", country: "Belarus" },
-    },
-  };
-*/
+// Группировка стран по континентам (задача Сбер)
+// Напишите функцию groupCountries(data), которая группирует страны по континентам.
 
 const data = [
-  { id: 1, age: 24, name: "Иван", country: "Russia" },
-  { id: 2, age: 23, name: "Дмитрий", country: "Belarus" },
-  { id: 3, age: 22, name: "Алексей", country: "Russia" },
-  { id: 4, age: 21, name: "Олег", country: "Belarus" },
-  { id: 5, age: 20, name: "Антон", country: "Russia" },
+  { country: "Russia", continent: "Eurasia" },
+  { country: "China", continent: "Eurasia" },
+  { country: "Canada", continent: "North America" },
+  { country: "Egypt", continent: "Africa" },
 ];
 
 const groupCountries = (data) => {
-  // Ваш код здесь
+  // Решение тут
 };
 
+// Пример вызова:
 console.log(groupCountries(data));
+// {
+//   Eurasia: ["Russia", "China"],
+//   "North America": ["Canada"],
+//   Africa: ["Egypt"]
+// }

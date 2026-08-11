@@ -7,4 +7,5 @@ const items = [
 const customMapFromEntries = (arr) =>
   Object.fromEntries(arr.map(({ id, name }) => [id, { id, name }]));
 
+// Пример вызова:
 console.log(customMapFromEntries(items));

@@ -1,28 +1,15 @@
-// Порядок вывода:
-// start
-// promise1
-// end
-// resolve
-// promise2
-// setTimeout
-
-console.log('start');
+console.log(1); // 1
 
 setTimeout(() => {
-  console.log('setTimeout');
+  console.log(2); // 2
 }, 0);
 
-const promise = new Promise((resolve) => {
-  console.log('promise1');
-  resolve('resolve');
+new Promise((resolve) => {
+  console.log(3); // 3
+  resolve();
+}).then(() => {
+  console.log(4); // 4
 });
 
-promise
-  .then((data) => {
-    console.log(data);
-  })
-  .then(() => {
-    console.log('promise2');
-  });
-
-console.log('end');
+console.log(5); // 5
+// Порядок вывода: 1, 3, 5, 4, 2

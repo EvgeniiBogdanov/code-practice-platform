@@ -1,22 +1,10 @@
-function pipe(...fns) {
-  return function (initialValue) {
-    return fns.reduce((acc, fn) => fn(acc), initialValue);
-  };
-}
+const pipe = (...fns) => (x) => fns.reduce((v, f) => f(v), x);
 
-function compose(...fns) {
-  return function (initialValue) {
-    return fns.reduceRight((acc, fn) => fn(acc), initialValue);
-  };
-}
+const compose = (...fns) => (x) => fns.reduceRight((v, f) => f(v), x);
 
-// Пример использования:
 const add2 = (x) => x + 2;
-const multiply3 = (x) => x * 3;
-const square = (x) => x ** 2;
+const mult3 = (x) => x * 3;
 
-const piped = pipe(add2, multiply3, square);
-console.log(piped(2)); // ((2 + 2) * 3)^2 = (4 * 3)^2 = 12^2 = 144
-
-const composed = compose(square, multiply3, add2);
-console.log(composed(2)); // square(multiply3(add2(2))) = 144
+// Пример вызова:
+console.log(pipe(add2, mult3)(5));    // 21
+console.log(compose(mult3, add2)(5)); // 21

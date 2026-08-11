@@ -1,10 +1,15 @@
-// Вариант 1: С фиксированным полем inStock: true
 const products = [
-  { name: "Laptop", price: 1000 },
-  { name: "Phone", price: 500 },
+  { id: 1, name: "Ноутбук" },
+  { id: 2, name: "Телефон" },
 ];
 
-const addInStock = (arr) => arr.map((product) => ({ ...product, inStock: true }));
+const addInStock = (products) => {
+  return products.map((product) => Object.assign({}, product, { inStock: true }));
+};
 
-const result = addInStock(products);
-console.log(result);
+// Пример вызова:
+console.log(addInStock(products));
+// [
+//   { id: 1, name: "Ноутбук", inStock: true },
+//   { id: 2, name: "Телефон", inStock: true }
+// ]

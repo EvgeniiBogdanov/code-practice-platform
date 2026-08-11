@@ -6,4 +6,5 @@ const users = [
 
 const getNames = (arr) => arr.map(({ name }) => name);
 
+// Пример вызова:
 console.log(getNames(users)); // ["John", "Jane", "Jack"]

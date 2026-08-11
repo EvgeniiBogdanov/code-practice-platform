@@ -1,14 +1,18 @@
-// Изменить структуру объектов
-// Ожидаемый результат:
-// ["John Doe", "Jane Smith"]
+// Формирование полных имен
+// Напишите функцию getFullNames(users), которая возвращает массив объектов с добавленным полем fullName.
+
 const users = [
-  { firstName: "John", lastName: "Doe" },
-  { firstName: "Jane", lastName: "Smith" }
+  { firstName: "Иван", lastName: "Иванов" },
+  { firstName: "Анна", lastName: "Петрова" },
 ];
 
-// Тут код:
-const getFullNames = () => {};
+const getFullNames = (users) => {
+  // Решение тут
+};
 
-// Проверка
-const result = getFullNames(users);
-console.log(result);
+// Пример вызова:
+console.log(getFullNames(users));
+// [
+//   { firstName: "Иван", lastName: "Иванов", fullName: "Иван Иванов" },
+//   { firstName: "Анна", lastName: "Петрова", fullName: "Анна Петрова" }
+// ]

@@ -1,9 +1,10 @@
-// Напишите функцию checkAge(age), которая возвращает Promise.
-// Если age >= 18 — resolve("Доступ разрешён")
-// Если age < 18 — reject("Доступ запрещён")
+// Проверка возраста и отклонение промиса
+// Напишите функцию checkAge(age), возвращающую Promise.
 
 const checkAge = (age) => {
-  // Ваш код здесь
+  // Решение тут
 };
 
-checkAge(15).then(console.log).catch(console.error);
+// Пример вызова:
+checkAge(15).catch(console.error); // "Доступ запрещён"
+checkAge(20).then(console.log);    // "Доступ разрешён"

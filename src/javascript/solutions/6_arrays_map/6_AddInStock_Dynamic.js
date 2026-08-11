@@ -1,15 +1,18 @@
-// Вариант 2: Динамический передаваемый ключ и значение
 const products = [
-  { name: "Laptop", price: 1000 },
-  { name: "Phone", price: 500 },
+  { id: 1, name: "Ноутбук" },
+  { id: 2, name: "Телефон" },
 ];
 
-const addInStock = (arr, key, value) => {
-  return arr.map((prod) => ({
-    ...prod,
-    [key]: value,
+const addInStock = (products) => {
+  return products.map((product) => ({
+    ...product,
+    inStock: true,
   }));
 };
 
-const result = addInStock(products, "inStock", true);
-console.log(result);
+// Пример вызова:
+console.log(addInStock(products));
+// [
+//   { id: 1, name: "Ноутбук", inStock: true },
+//   { id: 2, name: "Телефон", inStock: true }
+// ]

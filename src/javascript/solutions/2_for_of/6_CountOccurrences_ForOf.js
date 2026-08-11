@@ -1,16 +1,13 @@
-// Вариант 1: Через цикл for...of
-const water = ["кофе", "сок", "газировка", "вода", "кофе", "кофе"];
-
-const sumDoubleStr = (arr, str) => {
+const countOccurrences = (arr, word) => {
   let count = 0;
-
   for (const item of arr) {
-    if (item === str) {
+    if (item === word) {
       count++;
     }
   }
   return count;
 };
 
-const result = sumDoubleStr(water, "кофе");
-console.log(result);
+// Пример вызова:
+console.log(countOccurrences(["кофе", "сок", "газировка", "вода", "кофе", "кофе"], "кофе")); // 3
+console.log(countOccurrences(["кофе", "сок", "газировка", "вода"], "чай"));                   // 0

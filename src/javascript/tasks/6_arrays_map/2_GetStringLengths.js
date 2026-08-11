@@ -1,10 +1,9 @@
 // Получить длину строк в массиве
-// Ожидаемый результат: [5, 6, 3]
-const words = ["apple", "banana", "cat"];
+// Напишите функцию getStringLengths(words), которая возвращает массив длин строк.
 
-// Тут код:
-const getStringLengths = () => {};
+const getStringLengths = (words) => {
+  // Решение тут
+};
 
-// Проверка
-const result = getStringLengths(words);
-console.log(result);
+// Пример вызова:
+console.log(getStringLengths(["apple", "banana", "cherry"])); // [5, 6, 6]

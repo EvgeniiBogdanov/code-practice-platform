@@ -1,7 +1,3 @@
-// Смотрите отдельные файлы решений:
-// 1. 6_SumArray_Loop.js (Через цикл for)
-// 2. 6_SumArray_Reduce.js (Через метод reduce)
-
 const arrayNumbers = [5, 10, 2];
 
 const sumNumbers = (arr) => {
@@ -14,5 +10,6 @@ const sumNumbers = (arr) => {
   return sum;
 };
 
+// Пример вызова:
 const result = sumNumbers(arrayNumbers);
 console.log(result);

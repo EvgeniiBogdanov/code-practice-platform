@@ -10,4 +10,5 @@ const products = [
 const groupByNative = (arr, property) =>
   Object.groupBy(arr, (obj) => obj[property]);
 
+// Пример вызова:
 console.log(groupByNative(products, "category"));

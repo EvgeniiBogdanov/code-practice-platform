@@ -6,4 +6,5 @@ const printAll = (map) => {
   }
 };
 
+// Пример вызова:
 printAll(map);

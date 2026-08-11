@@ -1,9 +1,9 @@
-// Отсортировать строки по длине
-const words = ["apple", "hi", "banana", "cat"];
+// Сортировка строк по длине
+// Напишите функцию sortByLength(words), которая сортирует строки от самых коротких к самым длинным.
 
-// Тут код:
-const sortByLength = () => {};
+const sortByLength = (words) => {
+  // Решение тут
+};
 
-// Проверка
-const result = sortByLength(words);
-console.log(result);
+// Пример вызова:
+console.log(sortByLength(["elephant", "cat", "dog", "hippopotamus"])); // ["cat", "dog", "elephant", "hippopotamus"]

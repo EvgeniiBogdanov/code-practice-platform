@@ -4,4 +4,5 @@ const map = new Map([
   ["city", "Москва"],
 ]);
 
+// Пример вызова:
 console.log(map.get("name")); // "Иван"

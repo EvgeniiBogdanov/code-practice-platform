@@ -5,4 +5,5 @@ async function loadUser() {
   return `Привет, ${user.name}`;
 }
 
+// Пример вызова:
 loadUser().then(console.log);

@@ -8,4 +8,5 @@ const countFrequency = (arr) => {
   return map;
 };
 
-console.log(countFrequency(arr));
+// Пример вызова:
+console.log(countFrequency(arr)); // Map(3) { "a" => 3, "b" => 2, "c" => 1 }

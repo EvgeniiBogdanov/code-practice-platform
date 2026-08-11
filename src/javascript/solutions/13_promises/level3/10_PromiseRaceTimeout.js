@@ -9,5 +9,5 @@ const withTimeout = (promise, ms) => {
   return Promise.race([promise, timeout]);
 };
 
+// Пример вызова:
 withTimeout(slowRequest, 500).then(console.log).catch(console.error);
-// Error: Timeout (через 500мс)

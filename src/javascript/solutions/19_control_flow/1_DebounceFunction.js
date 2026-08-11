@@ -1,40 +1,21 @@
-function debounce(fn, ms, options = { leading: false, trailing: true }) {
-  let timerId = null;
-  let lastArgs = null;
-  let lastThis = null;
+const debounce = (fn, wait, immediate = false) => {
+  let timeout;
 
-  function debounced(...args) {
-    lastArgs = args;
-    lastThis = this;
+  return function (...args) => {
+    const callNow = immediate && !timeout;
+    clearTimeout(timeout);
 
-    const isFirstCall = !timerId;
+    timeout = setTimeout(() => {
+      timeout = null;
+      if (!immediate) fn.apply(this, args);
+    }, wait);
 
-    if (timerId) clearTimeout(timerId);
-
-    if (isFirstCall && options.leading) {
-      fn.apply(lastThis, lastArgs);
-    }
-
-    timerId = setTimeout(() => {
-      if (options.trailing && (!isFirstCall || !options.leading)) {
-        fn.apply(lastThis, lastArgs);
-      }
-      timerId = null;
-    }, ms);
-  }
-
-  debounced.cancel = function () {
-    if (timerId) clearTimeout(timerId);
-    timerId = null;
-    lastArgs = null;
-    lastThis = null;
+    if (callNow) fn.apply(this, args);
   };
+};
 
-  return debounced;
-}
-
-// Пример использования:
-const log = debounce((val) => console.log(val), 200, { leading: true });
-log("A");
-log("B");
-log("C");
+// Пример вызова:
+const log = debounce((val) => console.log(val), 200);
+log(1);
+log(2);
+log(3);

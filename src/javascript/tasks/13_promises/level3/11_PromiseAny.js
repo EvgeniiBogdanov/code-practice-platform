@@ -10,5 +10,8 @@ const mirrors = [
 ];
 
 async function getFromAnyMirror() {
-  // Ваш код здесь
+  // Решение тут
 }
+
+// Пример вызова:
+getFromAnyMirror().then(console.log);

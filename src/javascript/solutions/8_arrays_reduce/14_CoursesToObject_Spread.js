@@ -7,4 +7,5 @@ let courses = [
 const coursesToObject = (arr) =>
   arr.reduce((acc, item) => ({ ...acc, [item.course]: item.price }), {});
 
+// Пример вызова:
 console.log(coursesToObject(courses));

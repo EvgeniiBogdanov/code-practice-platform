@@ -9,3 +9,8 @@ const sumOfDigits = (num) => {
 
   return sum;
 };
+
+// Пример вызова:
+console.log(sumOfDigits(1234)); // 10
+console.log(sumOfDigits(5));    // 5
+console.log(sumOfDigits(9081)); // 18

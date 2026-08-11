@@ -9,4 +9,5 @@ const treeDepth = (node) => {
   return 1 + Math.max(treeDepth(node.left), treeDepth(node.right));
 };
 
-console.log(treeDepth(tree));
+// Пример вызова:
+console.log(treeDepth(tree)); // 3

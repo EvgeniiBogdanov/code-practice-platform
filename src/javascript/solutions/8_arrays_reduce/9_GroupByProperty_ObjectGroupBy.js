@@ -4,6 +4,7 @@ const people = [
   { age: 20, name: "Sem" },
 ];
 
-const groupByNative = (arr, key) => Object.groupBy(arr, (item) => item[key]);
+const groupBy = (arr, key) => Object.groupBy(arr, (item) => item[key]);
 
-console.log(groupByNative(people, "age"));
+// Пример вызова:
+console.log(groupBy(people, "age"));

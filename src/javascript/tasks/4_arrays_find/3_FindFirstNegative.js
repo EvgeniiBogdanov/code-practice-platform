@@ -1,9 +1,10 @@
-// Найти первое отрицательное число:
-const numbers = [5, 7, 3, -2, -8, 4];
+// Найти первое отрицательное число
+// Напишите функцию findFirstNegative(arr), которая возвращает первое отрицательное число в массиве.
 
-// Тут код:
-const findFirstNegative = () => {};
+const findFirstNegative = (arr) => {
+  // Решение тут
+};
 
-// Проверка
-const result = findFirstNegative(numbers);
-console.log(result);
+// Пример вызова:
+console.log(findFirstNegative([4, 6, -2, 8, -5])); // -2
+console.log(findFirstNegative([1, 2, 3]));         // undefined

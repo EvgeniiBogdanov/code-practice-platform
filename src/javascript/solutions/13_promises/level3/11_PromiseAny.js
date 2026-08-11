@@ -8,9 +8,9 @@ async function getFromAnyMirror() {
   try {
     return await Promise.any(mirrors);
   } catch (err) {
-    // err — это AggregateError со всеми причинами в err.errors
     return "Все зеркала недоступны";
   }
 }
 
+// Пример вызова:
 getFromAnyMirror().then(console.log); // "ответ от зеркала 2"

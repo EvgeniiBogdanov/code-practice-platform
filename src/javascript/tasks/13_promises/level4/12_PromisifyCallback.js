@@ -1,7 +1,11 @@
-// Дана функция в старом callback-стиле.
-// Напишите promisify(fn), превращающую её в функцию,
-// возвращающую Promise.
+// Превращение callback-функции в Promise (promisify)
+// Напишите функцию promisify(fn), оборачивающую callback вида (err, data) в Promise.
 
+const promisify = (fn) => {
+  // Решение тут
+};
+
+// Пример вызова:
 function readFileCallback(path, callback) {
   setTimeout(() => {
     if (path === "bad.txt") callback(new Error("Файл не найден"));
@@ -9,9 +13,5 @@ function readFileCallback(path, callback) {
   }, 100);
 }
 
-const promisify = (fn) => {
-  // Ваш код здесь
-};
-
 const readFile = promisify(readFileCallback);
-readFile("data.txt").then(console.log).catch(console.error);
+readFile("data.txt").then(console.log).catch(console.error); // "Содержимое data.txt"

@@ -1,6 +1,6 @@
-const numbers = [5, 2, 9, 1, 7];
+const sortAscending = (numbers) => {
+  return [...numbers].sort((a, b) => a - b);
+};
 
-const sortAscending = (arr) => arr.sort((a, b) => a - b);
-
-const result = sortAscending(numbers);
-console.log(result); // [1, 2, 5, 7, 9]
+// Пример вызова:
+console.log(sortAscending([40, 100, 1, 5, 25, 10])); // [1, 5, 10, 25, 40, 100]

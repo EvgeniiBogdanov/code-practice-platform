@@ -1,17 +1,15 @@
-const debounce = (func, delay) => {
+const debounce = (fn, ms) => {
   let timeoutId;
-
   return (...args) => {
-    clearTimeout(timeoutId); // сбрасываем предыдущий таймер
-    timeoutId = setTimeout(() => func(...args), delay); // создаем новый
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      fn(...args);
+    }, ms);
   };
 };
 
-// Пример использования:
-const debouncedSearch = debounce((query) => {
-  console.log(`Searching for: ${query}`);
-}, 300);
-
-debouncedSearch('a');
-debouncedSearch('ab');
-debouncedSearch('abc'); // Только этот вызов сработает через 300мс
+// Пример вызова:
+const log = debounce((msg) => console.log(msg), 300);
+log("a");
+log("b");
+log("c");

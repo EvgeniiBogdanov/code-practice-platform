@@ -1,4 +1,3 @@
-// Вариант 1: Через цикл for (обратный перебор)
 const isPalindrome = (str) => {
   let lowerStr = str.toLowerCase();
   let reverseString = "";
@@ -10,5 +9,6 @@ const isPalindrome = (str) => {
   return reverseString === lowerStr;
 };
 
-const result = isPalindrome("Madam");
-console.log(result);
+// Пример вызова:
+console.log(isPalindrome("Madam")); // true
+console.log(isPalindrome("Hello")); // false

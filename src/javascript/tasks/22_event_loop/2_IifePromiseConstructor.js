@@ -1,8 +1,7 @@
-// Что покажет консоль при выполнении данного кода?
+// IIFE, Promise constructor и синхронный код
+// Что выведет данный код?
 
-setTimeout(() => {
-  console.log(1);
-});
+console.log(1);
 
 const prom1 = new Promise((resolve) => {
   console.log(3);

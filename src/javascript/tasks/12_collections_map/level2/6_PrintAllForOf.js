@@ -1,13 +1,12 @@
-// Напишите функцию printAll(map), которая выводит все пары
-// в формате "ключ: значение", используя цикл for...of
-// Вывод:
-// fruit: apple
-// veg: carrot
+// Перебор Map с помощью for...of
+// Напишите функцию printMapEntries(map), которая выводит в консоль все пары ключ-значение.
 
-const map = new Map([["fruit", "apple"], ["veg", "carrot"]]);
-
-const printAll = (map) => {
-  // Ваш код здесь
+const printMapEntries = (map) => {
+  // Решение тут
 };
 
-printAll(map);
+// Пример вызова:
+const myMap = new Map([["a", 1], ["b", 2]]);
+printMapEntries(myMap);
+// "a: 1"
+// "b: 2"

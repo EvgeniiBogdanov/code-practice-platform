@@ -3,4 +3,6 @@ const power = (base, exp) => {
   return base * power(base, exp - 1);
 };
 
-console.log(power(2, 5));
+// Пример вызова:
+console.log(power(2, 5)); // 32
+console.log(power(3, 3)); // 27

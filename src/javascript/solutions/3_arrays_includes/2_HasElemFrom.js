@@ -1,6 +1,7 @@
-const arr = [1, 7, 3, 7, 5];
+const hasElemFrom = (arr, target, fromIndex) => {
+  return arr.includes(target, fromIndex);
+};
 
-const hasElemFrom = (arr, el, fromIndex) => arr.includes(el, fromIndex);
-
-const result = hasElemFrom(arr, 7, 3);
-console.log(result);
+// Пример вызова:
+console.log(hasElemFrom([1, 2, 3, 4, 5], 3, 2)); // true
+console.log(hasElemFrom([1, 2, 3, 4, 5], 3, 3)); // false

@@ -1,5 +1,6 @@
-const arr = [1, 2, 2, 3, 4, 4, 5];
+const getUnique = (arr) => {
+  return [...new Set(arr)];
+};
 
-const unique = [...new Set(arr)];
-
-console.log(unique); // [1, 2, 3, 4, 5]
+// Пример вызова:
+console.log(getUnique([1, 2, 2, 3, 4, 4, 5])); // [1, 2, 3, 4, 5]

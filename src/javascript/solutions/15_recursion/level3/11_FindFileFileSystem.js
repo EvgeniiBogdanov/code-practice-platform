@@ -23,4 +23,6 @@ const findFile = (node, name) => {
   return false;
 };
 
+// Пример вызова:
 console.log(findFile(fs, "utils.js")); // true
+console.log(findFile(fs, "test.js"));  // false

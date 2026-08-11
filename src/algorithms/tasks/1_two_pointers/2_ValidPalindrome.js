@@ -5,9 +5,10 @@
 // после приведения всех букв к нижнему регистру и удаления всех небуквенно-цифровых символов.
 
 const isPalindrome = (s) => {
-  // Ваш код здесь
+  // Решение тут
 };
 
+// Пример вызова:
 console.log(isPalindrome("A man, a plan, a canal: Panama")); // true
-console.log(isPalindrome("race a car")); // false
-console.log(isPalindrome(" ")); // true
+console.log(isPalindrome("race a car"));                     // false
+console.log(isPalindrome(" "));                               // true

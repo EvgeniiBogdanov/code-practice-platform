@@ -1,12 +1,12 @@
-// Вариант 1: Через цикл for...of
-const fruits = ["яблоко", "банан", "апельсин", "груша"];
-
-const getFindElement = (arr, element) => {
+const includesElement = (arr, target) => {
   for (const item of arr) {
-    if (item === element) return true;
+    if (item === target) {
+      return true;
+    }
   }
-
   return false;
 };
 
-console.log(getFindElement(fruits, "банан"));
+// Пример вызова:
+console.log(includesElement(["яблоко", "банан", "апельсин", "груша"], "банан")); // true
+console.log(includesElement(["яблоко", "банан", "апельсин", "груша"], "киви"));  // false

@@ -1,3 +1,4 @@
+// Глубоко вложенные таймеры и промисы
 // Что покажет консоль при выполнении данного кода?
 
 console.log("begins");
@@ -9,13 +10,13 @@ setTimeout(() => {
   });
 }, 0);
 
-new Promise(function (resolve, reject) {
+new Promise((resolve) => {
   console.log("promise 2");
-  setTimeout(function () {
+  setTimeout(() => {
     console.log("setTimeout 2");
     resolve("resolve 1");
   }, 0);
-}).then(res => {
+}).then((res) => {
   console.log("dot then 1");
   setTimeout(() => {
     console.log(res);

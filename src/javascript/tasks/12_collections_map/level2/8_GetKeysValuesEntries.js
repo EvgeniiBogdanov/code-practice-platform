@@ -1,12 +1,15 @@
-// Дан Map с товарами. Получите отдельно:
-// 1. массив всех ключей
-// 2. массив всех значений
-// 3. массив всех пар [ключ, значение]
+// Получение keys, values и entries из Map
+// Напишите функцию getMapData(map), возвращающую { keys, values, entries }.
 
-const products = new Map([
-  ["bread", 50],
-  ["milk", 80],
-  ["eggs", 120],
-]);
+const getMapData = (map) => {
+  // Решение тут
+};
 
-// Ваш код здесь
+// Пример вызова:
+const myMap = new Map([["a", 1], ["b", 2]]);
+console.log(getMapData(myMap));
+// {
+//   keys: ["a", "b"],
+//   values: [1, 2],
+//   entries: [["a", 1], ["b", 2]]
+// }

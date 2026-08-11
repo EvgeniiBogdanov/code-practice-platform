@@ -1,4 +1,5 @@
-// Что будет выведено в консоль? И как исправить проблему?
+// Замыкание на строковое значение
+// Что выведет вызов log() и как исправить?
 
 function createIncrement() {
   let count = 0;
@@ -7,10 +8,8 @@ function createIncrement() {
     count++;
   }
 
-  let message = `Count is ${count}`;
-
   function log() {
-    console.log(message);
+    console.log(`Count is ${count}`);
   }
 
   return [increment, log];
@@ -20,4 +19,4 @@ const [increment, log] = createIncrement();
 increment();
 increment();
 increment();
-log(); // Что выведет и в чем проблема?
+log();

@@ -1,18 +1,16 @@
-// Порядок вывода:
-// A, E, D, B, C
-
-console.log('A');
+console.log("A"); // A
 
 setTimeout(() => {
-  console.log('B');
+  console.log("B"); // B
 }, 0);
 
 requestAnimationFrame(() => {
-  console.log('C');
+  console.log("C"); // C (фаза рендеринга)
 });
 
 Promise.resolve().then(() => {
-  console.log('D');
+  console.log("D"); // D (микрозадача)
 });
 
-console.log('E');
+console.log("E"); // E
+// Порядок вывода: A, E, D, B, C

@@ -1,6 +1,6 @@
-const words = ["hi", "hello", "cat", "dog"];
+const filterLongWords = (words) => {
+  return words.filter((word) => word.length > 3);
+};
 
-const filterLongWords = (arr, num) => arr.filter((word) => word.length > num);
-
-const result = filterLongWords(words, 3);
-console.log(result);
+// Пример вызова:
+console.log(filterLongWords(["cat", "elephant", "dog", "tiger"])); // ["elephant", "tiger"]

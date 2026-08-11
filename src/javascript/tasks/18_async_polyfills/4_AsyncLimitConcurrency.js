@@ -1,7 +1,10 @@
-// Напишите функцию asyncLimit(tasks, limit), которая принимает массив функций-фабрик,
-// возвращающих Promise, и параллельно запускает не более limit задач одновременно.
-// Возвращает Promise со списком результатов всех задач по порядку.
+// Пул асинхронных задач с ограничением конкурентности
+// Реализуйте функцию asyncPool(limit, items, iteratorFn).
 
-function asyncLimit(tasks, limit) {
-  // Ваш код здесь
-}
+const asyncPool = async (limit, items, iteratorFn) => {
+  // Решение тут
+};
+
+// Пример вызова:
+const delay = (ms) => new Promise((r) => setTimeout(r, ms));
+asyncPool(2, [100, 200, 50, 150], (ms) => delay(ms).then(() => ms)).then(console.log);

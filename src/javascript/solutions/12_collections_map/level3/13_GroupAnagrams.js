@@ -12,4 +12,5 @@ const groupAnagrams = (arr) => {
   return [...map.values()];
 };
 
+// Пример вызова:
 console.log(groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"]));

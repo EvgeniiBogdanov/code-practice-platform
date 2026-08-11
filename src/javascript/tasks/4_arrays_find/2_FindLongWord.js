@@ -1,9 +1,10 @@
-// Найти первую строку длиннее 4 символов:
-const words = ["cat", "dog", "apple", "hi"];
+// Найти первое длинное слово
+// Напишите функцию findLongWord(words, minLength), которая возвращает первое слово длиннее minLength символов.
 
-// Тут код:
-const findLongWord = () => {};
+const findLongWord = (words, minLength) => {
+  // Решение тут
+};
 
-// Проверка
-const result = findLongWord(words, 4);
-console.log(result);
+// Пример вызова:
+console.log(findLongWord(["cat", "elephant", "dog", "tiger"], 4)); // "elephant"
+console.log(findLongWord(["cat", "dog"], 4));                      // undefined

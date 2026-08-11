@@ -1,13 +1,14 @@
+// Порядок вывода setInterval и setTimeout
 // Какой будет порядок вывода в первые 2 секунды?
 
-console.log('Start');
+console.log("Start");
 
 setInterval(() => {
-    console.log('Interval');
+  console.log("Interval");
 }, 1000);
 
 setTimeout(() => {
-    console.log('Timeout');
+  console.log("Timeout");
 }, 500);
 
-console.log('End');
+console.log("End");

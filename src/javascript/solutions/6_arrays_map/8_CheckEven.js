@@ -1,6 +1,6 @@
-const numbers = [1, 2, 3, 4, 5];
+const checkEven = (numbers) => {
+  return numbers.map((num) => num % 2 === 0);
+};
 
-const checkEven = (arr) => arr.map((num) => num % 2 === 0);
-
-const result = checkEven(numbers);
-console.log(result);
+// Пример вызова:
+console.log(checkEven([1, 2, 3, 4, 5])); // [false, true, false, true, false]

@@ -1,36 +1,34 @@
-function promiseRace(promises) {
+const promiseRace = (promises) => {
   return new Promise((resolve, reject) => {
-    for (const item of promises) {
-      Promise.resolve(item).then(resolve, reject);
-    }
+    promises.forEach((p) => Promise.resolve(p).then(resolve, reject));
   });
-}
+};
 
-function promiseAny(promises) {
+const promiseAny = (promises) => {
   return new Promise((resolve, reject) => {
-    const list = Array.from(promises);
-    if (list.length === 0) return reject(new AggregateError([], "All promises were rejected"));
-
-    const errors = new Array(list.length);
+    const errors = [];
     let rejectedCount = 0;
+    const total = promises.length;
 
-    list.forEach((item, index) => {
-      Promise.resolve(item)
+    if (total === 0) {
+      return reject(new AggregateError([], "All promises were rejected"));
+    }
+
+    promises.forEach((p, index) => {
+      Promise.resolve(p)
         .then(resolve)
         .catch((err) => {
           errors[index] = err;
-          rejectedCount += 1;
-          if (rejectedCount === list.length) {
+          rejectedCount++;
+          if (rejectedCount === total) {
             reject(new AggregateError(errors, "All promises were rejected"));
           }
         });
     });
   });
-}
+};
 
-// Пример использования:
-const slow = new Promise((res) => setTimeout(() => res("Slow"), 200));
-const fast = new Promise((res) => setTimeout(() => res("Fast"), 50));
-
-promiseRace([slow, fast]).then(console.log);
-promiseAny([slow, fast]).then(console.log);
+promiseRace([
+  new Promise((r) => setTimeout(() => r("fast"), 50)),
+  new Promise((r) => setTimeout(() => r("slow"), 100)),
+]).then(console.log); // "fast"

@@ -1,5 +1,3 @@
-// Трансформация объектов - Flatten Object
-
 const flattenObject = (obj, prefix = "") => {
   const result = {};
 
@@ -17,21 +15,6 @@ const flattenObject = (obj, prefix = "") => {
   return result;
 };
 
-const nested = {
-  user: {
-    name: "John",
-    address: {
-      city: "Moscow",
-      zip: 101000,
-    },
-  },
-  active: true,
-};
-
-console.log(flattenObject(nested));
-// {
-//   'user.name': 'John',
-//   'user.address.city': 'Moscow',
-//   'user.address.zip': 101000,
-//   'active': true
-// }
+// Пример вызова:
+const nested = { a: { b: { c: 1 } }, d: 2 };
+console.log(flattenObject(nested)); // { "a.b.c": 1, "d": 2 }

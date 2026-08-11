@@ -1,7 +1,12 @@
-// Напишите функцию debounce(fn, ms, options), которая откладывает вызов fn до тех пор,
-// пока не пройдет ms миллисекунд с момента последнего вызова.
-// Опции: { leading: boolean, trailing: boolean }. Также добавьте метод .cancel() для отмены.
+// Реализация Debounce с немедленным вызовом (leading option)
+// Напишите функцию debounce(fn, wait, immediate).
 
-function debounce(fn, ms, options = { leading: false, trailing: true }) {
-  // Ваш код здесь
-}
+const debounce = (fn, wait, immediate = false) => {
+  // Решение тут
+};
+
+// Пример вызова:
+const log = debounce((val) => console.log(val), 200);
+log(1);
+log(2);
+log(3); // Выведет 3 через 200 мс

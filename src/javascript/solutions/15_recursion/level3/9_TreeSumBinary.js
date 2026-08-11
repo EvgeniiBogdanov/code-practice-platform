@@ -9,4 +9,5 @@ const treeSum = (node) => {
   return node.value + treeSum(node.left) + treeSum(node.right);
 };
 
-console.log(treeSum(tree));
+// Пример вызова:
+console.log(treeSum(tree)); // 10

@@ -1,17 +1,18 @@
-// Что покажет консоль при выполнении данного кода в браузере?
+// Очередь requestAnimationFrame vs Macrotasks vs Microtasks
+// Что выведет данный код в браузере?
 
-console.log('A');
+console.log("A");
 
 setTimeout(() => {
-  console.log('B');
+  console.log("B");
 }, 0);
 
 requestAnimationFrame(() => {
-  console.log('C');
+  console.log("C");
 });
 
 Promise.resolve().then(() => {
-  console.log('D');
+  console.log("D");
 });
 
-console.log('E');
+console.log("E");

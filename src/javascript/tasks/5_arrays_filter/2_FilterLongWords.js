@@ -1,9 +1,9 @@
 // Оставить только строки длиннее 3 символов
-const words = ["hi", "hello", "cat", "dog"];
+// Напишите функцию filterLongWords(words), которая возвращает массив строк длиной более 3 символов.
 
-// Тут код:
-const filterLongWords = () => {};
+const filterLongWords = (words) => {
+  // Решение тут
+};
 
-// Проверка
-const result = filterLongWords(words, 3);
-console.log(result);
+// Пример вызова:
+console.log(filterLongWords(["cat", "elephant", "dog", "tiger"])); // ["elephant", "tiger"]

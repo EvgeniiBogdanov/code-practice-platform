@@ -7,5 +7,8 @@ const fetchPrice = (item) =>
 const items = [{ price: 100 }, { price: 250 }, { price: 90 }];
 
 async function totalParallel() {
-  // Ваш код здесь
+  // Решение тут
 }
+
+// Пример вызова:
+totalParallel().then(console.log);

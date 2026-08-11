@@ -1,13 +1,19 @@
-const jobApplications = [
-  { applicant: "Артем", desiredPosition: "JavaScript Developer", skills: ["JS", "React"], status: "review" },
-  { applicant: "Виктория", desiredPosition: "Python Developer", skills: ["Python", "Django"], status: "accepted" },
-  { applicant: "Григорий", desiredPosition: "Java Developer", skills: ["Java", "Spring"], status: "rejected" },
-  { applicant: "Дарья", desiredPosition: "JavaScript Developer", skills: ["JS", "Vue"], status: "review" },
-  { applicant: "Евгений", desiredPosition: "Data Analyst", skills: ["Python", "SQL"], status: "accepted" },
+const candidates = [
+  { name: "Алексей", status: "interview" },
+  { name: "Мария", status: "rejected" },
+  { name: "Дмитрий", status: "review" },
+  { name: "Елена", status: "offer" },
+  { name: "Павел", status: "review" },
 ];
 
-const filterByStatuses = (arr, statuses) =>
-  arr.filter((app) => statuses.includes(app.status));
+const filterByStatuses = (candidates, statuses) => {
+  return candidates.filter((candidate) => statuses.includes(candidate.status));
+};
 
-const result = filterByStatuses(jobApplications, ["review", "accepted"]);
-console.log(result);
+// Пример вызова:
+console.log(filterByStatuses(candidates, ["review", "interview"]));
+// [
+//   { name: "Алексей", status: "interview" },
+//   { name: "Дмитрий", status: "review" },
+//   { name: "Павел", status: "review" }
+// ]

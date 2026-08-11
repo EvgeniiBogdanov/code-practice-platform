@@ -19,5 +19,6 @@ async function splitResults() {
   return { fulfilled, rejected };
 }
 
+// Пример вызова:
 splitResults().then(console.log);
 // { fulfilled: [1, 3], rejected: ["ошибка А", "ошибка Б"] }

@@ -1,15 +1,20 @@
-const items = [
-  { id: 1, name: "A", price: 100 },
-  { id: 2, name: "B", price: 200 },
-  { id: 3, name: "C", price: 300 },
+const users = [
+  { id: "u1", name: "Alice", age: 25 },
+  { id: "u2", name: "Bob", age: 30 },
+  { id: "u3", name: "Charlie", age: 35 },
 ];
 
-const customMap = (arr) => {
-  return arr.reduce((acc, { id, name }) => {
-    acc[id] = { id, name };
-
+const mapUsersById = (users) => {
+  return users.reduce((acc, user) => {
+    acc[user.id] = user;
     return acc;
   }, {});
 };
 
-console.log(customMap(items));
+// Пример вызова:
+console.log(mapUsersById(users));
+// {
+//   u1: { id: "u1", name: "Alice", age: 25 },
+//   u2: { id: "u2", name: "Bob", age: 30 },
+//   u3: { id: "u3", name: "Charlie", age: 35 }
+// }

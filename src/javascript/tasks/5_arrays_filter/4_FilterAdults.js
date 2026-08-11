@@ -1,14 +1,20 @@
-// Оставить только взрослых пользователей (age >= 18):
+// Оставить только совершеннолетних пользователей
+// Напишите функцию filterAdults(users), которая возвращает пользователей в возрасте 18 лет и старше.
+
 const users = [
-  { name: "John", age: 17 },
-  { name: "Jane", age: 20 },
-  { name: "Jack", age: 15 },
-  { name: "Jill", age: 25 }
+  { name: "Анна", age: 17 },
+  { name: "Иван", age: 22 },
+  { name: "Мария", age: 18 },
+  { name: "Пётр", age: 15 },
 ];
 
-// Тут код:
-const filterAdults = () => {};
+const filterAdults = (users) => {
+  // Решение тут
+};
 
-// Проверка
-const result = filterAdults(users, 18);
-console.log(result);
+// Пример вызова:
+console.log(filterAdults(users));
+// [
+//   { name: "Иван", age: 22 },
+//   { name: "Мария", age: 18 }
+// ]

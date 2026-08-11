@@ -1,7 +1,15 @@
-// Напишите функцию retryWithDelay(fn, retries, delay), которая принимает асинхронную функцию fn,
-// максимальное число повторных попыток retries и задержку между ними delay миллисекунд.
-// Если функция завершается ошибкой, она предпринимает новую попытку до исчерпания retries.
+// Повтор выполнения асинхронной функции с задержкой (Retry)
+// Напишите функцию retry(fn, maxRetries, delayMs).
 
-function retryWithDelay(fn, retries = 3, delay = 1000) {
-  // Ваш код здесь
-}
+const retry = async (fn, maxRetries = 3, delayMs = 100) => {
+  // Решение тут
+};
+
+// Пример вызова:
+let tries = 0;
+const operation = () => {
+  tries++;
+  return tries < 3 ? Promise.reject(new Error("Fail")) : Promise.resolve("Success");
+};
+
+retry(operation, 5, 50).then(console.log); // "Success"

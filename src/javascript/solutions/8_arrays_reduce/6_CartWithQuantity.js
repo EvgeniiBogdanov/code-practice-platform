@@ -8,4 +8,5 @@ const totalPrice = (cart) => {
   return cart.reduce((acc, { price, quantity }) => acc + price * quantity, 0);
 };
 
+// Пример вызова:
 console.log(totalPrice(products)); // 540

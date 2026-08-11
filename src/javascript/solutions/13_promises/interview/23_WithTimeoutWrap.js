@@ -8,6 +8,7 @@ function withTimeout(promise, timeoutMs) {
 
 const slowPromise = new Promise((resolve) => setTimeout(() => resolve('done'), 3000));
 
+// Пример вызова:
 withTimeout(slowPromise, 1000)
   .then(console.log)
   .catch((err) => console.log(err.message)); // "TimeoutError"

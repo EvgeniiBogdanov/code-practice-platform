@@ -1,11 +1,17 @@
 const users = [
-  { name: "John", age: 17 },
-  { name: "Jane", age: 20 },
-  { name: "Jack", age: 15 },
-  { name: "Jill", age: 25 },
+  { name: "Анна", age: 17 },
+  { name: "Иван", age: 22 },
+  { name: "Мария", age: 18 },
+  { name: "Пётр", age: 15 },
 ];
 
-const filterAdults = (arr, minAge) => arr.filter((user) => user.age >= minAge);
+const filterAdults = (users) => {
+  return users.filter((user) => user.age >= 18);
+};
 
-const result = filterAdults(users, 18);
-console.log(result);
+// Пример вызова:
+console.log(filterAdults(users));
+// [
+//   { name: "Иван", age: 22 },
+//   { name: "Мария", age: 18 }
+// ]

@@ -1,6 +1,12 @@
-// Напишите вспомогательную функцию promisify(fn), которая преобразует обычную функцию с колбэком
-// вида fn(...args, (err, data) => {}) в функцию, возвращающую Promise.
+// Утилита promisify для Node.js стиля колбэков
+// Напишите функцию promisify(fn), возвращающую функцию, возвращающую Promise.
 
-function promisify(fn) {
-  // Ваш код здесь
-}
+const promisify = (fn) => {
+  // Решение тут
+};
+
+// Пример вызова:
+const mockAsync = (arg, cb) => cb(null, `data: ${arg}`);
+const asyncFn = promisify(mockAsync);
+
+asyncFn("test").then(console.log); // "data: test"

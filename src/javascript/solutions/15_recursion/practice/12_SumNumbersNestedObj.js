@@ -17,9 +17,9 @@ const sumNumbers = (data) => {
   for (const key in data) {
     const value = data[key];
 
-    if (typeof value === 'number') {
+    if (typeof value === "number") {
       sum += value;
-    } else if (typeof value === 'object' && value !== null) {
+    } else if (typeof value === "object" && value !== null) {
       sum += sumNumbers(value);
     }
   }
@@ -27,4 +27,5 @@ const sumNumbers = (data) => {
   return sum;
 };
 
+// Пример вызова:
 console.log(sumNumbers(obj)); // -5

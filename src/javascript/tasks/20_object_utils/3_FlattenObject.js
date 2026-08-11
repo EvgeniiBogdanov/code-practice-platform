@@ -1,26 +1,10 @@
-// Трансформация объектов - Flatten Object
-// Реализуйте функцию flattenObject(obj, prefix), которая превращает вложенный объект в плоский объект.
-// Ключи вложенных свойств должны соединяться через точку (напр. 'user.address.city').
+// Выпрямление вложенного объекта в ключи через точку
+// Напишите функцию flattenObject(obj).
 
 const flattenObject = (obj, prefix = "") => {
-  // Ваш код здесь
+  // Решение тут
 };
 
-const nested = {
-  user: {
-    name: "John",
-    address: {
-      city: "Moscow",
-      zip: 101000,
-    },
-  },
-  active: true,
-};
-
-console.log(flattenObject(nested));
-// {
-//   'user.name': 'John',
-//   'user.address.city': 'Moscow',
-//   'user.address.zip': 101000,
-//   'active': true
-// }
+// Пример вызова:
+const nested = { a: { b: { c: 1 } }, d: 2 };
+console.log(flattenObject(nested)); // { "a.b.c": 1, "d": 2 }

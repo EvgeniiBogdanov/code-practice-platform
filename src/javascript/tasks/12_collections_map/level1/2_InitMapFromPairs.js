@@ -2,6 +2,9 @@
 // массив пар [ключ, значение]:
 // [["name", "Иван"], ["age", 30], ["city", "Москва"]]
 
-const map = null;
+const map = new Map([
+  // Решение тут
+]);
 
-console.log(map?.get("name")); // "Иван"
+// Пример вызова:
+console.log(map.get("name")); // "Иван"

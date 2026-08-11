@@ -1,23 +1,15 @@
-const object = {
-  firstName: "Bill",
-  lastName: "Ivanov",
+// Поведение this в стрелочных и обычных методах объекта
+// Что выведет следующий код?
 
-  sayLastName: () => {
-    console.log(this.lastName);
+const user = {
+  name: "Анна",
+  regularMethod() {
+    return this.name;
   },
-
-  sayName() {
-    console.log(this.firstName);
+  arrowMethod: () => {
+    return this.name;
   },
 };
 
-object.sayName(); //
-object.sayLastName(); //
-
-var b = object.sayName;
-b(); //
-
-object.sayName.bind({ firstName: "Cash" })(); //
-object.sayLastName.bind({ firstName: "Arrow" })(); //
-
-object.sayName.bind({ firstName: "Name1" }).bind({ firstName: "Name2" })(); //
+console.log(user.regularMethod());
+console.log(user.arrowMethod());

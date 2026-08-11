@@ -1,31 +1,11 @@
-// Разница hasOwnProperty и in
-// Что будет выведено в консоль
+// Разница между Object.hasOwn и оператором in
+// Что выведет данный код?
 
-class Animal {
-  constructor(name) {
-    this.name = name;
-  }
+const proto = { inherited: true };
+const obj = Object.create(proto);
+obj.own = 123;
 
-  sound() {
-    console.log("Some sound");
-  }
-}
-
-class Dog extends Animal {
-  constructor(name, breed) {
-    super(name);
-    this.breed = breed;
-  }
-
-  bark() {
-    console.log("Woof woof!");
-  }
-}
-
-let myDog = new Dog("Buddy", "Labrador");
-
-console.log(myDog.hasOwnProperty("name")); // ?
-console.log(myDog.hasOwnProperty("sound")); // ?
-
-console.log("name" in myDog); // ?
-console.log("sound" in myDog); // ?
+console.log("own" in obj);
+console.log("inherited" in obj);
+console.log(Object.hasOwn(obj, "own"));
+console.log(Object.hasOwn(obj, "inherited"));

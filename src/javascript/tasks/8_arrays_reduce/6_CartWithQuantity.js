@@ -1,8 +1,5 @@
-// Напишите функцию totalPrice(cart), которая считает общую стоимость товаров в корзине.
-// Каждый товар имеет price и quantity.
-
-// Вход → Выход
-// 540 (50*2 + 80*1 + 120*3)
+// Стоимость корзины с количеством
+// Напишите функцию totalPrice(cart), которая считает общую стоимость с учётом количества товаров.
 
 const products = [
   { name: "Хлеб", price: 50, quantity: 2 },
@@ -11,7 +8,8 @@ const products = [
 ];
 
 const totalPrice = (cart) => {
-  // Ваш код здесь
+  // Решение тут
 };
 
-console.log(totalPrice(products));
+// Пример вызова:
+console.log(totalPrice(products)); // 540
