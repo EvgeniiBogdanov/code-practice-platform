@@ -24,6 +24,7 @@ import {
   ALL_TASKS,
 } from "./react/data/tasksData";
 import { JS_TASKS } from "./javascript/data/tasksData";
+import { getTaskById } from "./data/tasksRegistry";
 import { FILE_ICON_COLOR } from "./constants/uiConstants";
 
 import Sidebar from "./components/layout/Sidebar";
@@ -40,7 +41,7 @@ const Playground = () => {
     try {
       const savedId = localStorage.getItem("playground_last_selected_task_id");
       if (savedId !== null && savedId !== undefined) {
-        const found = ALL_TASKS.find((t) => String(t.id) === String(savedId));
+        const found = getTaskById(savedId);
         if (found) return found;
       }
     } catch {

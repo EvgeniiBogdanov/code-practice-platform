@@ -2012,7 +2012,7 @@ const sum = (arr) => arr.reduce((acc, curr) => acc + curr, 0);
 
 1. **Проверка условия \`num > 0\`**:
 \`\`\`js
-const printPositiveNumbers = (arr) => {
+const printPositives = (arr) => {
   for (const num of arr) {
     if (num > 0) {
       console.log(num);
@@ -2468,8 +2468,9 @@ const filterByProfession = (arr, profession) =>
 
 1. **Частичный поиск по должности**:
 \`\`\`js
-const findByPosition = (arr, position) =>
-  arr.filter((emp) => emp.position.includes(position));
+const findDevelopers = (team) => {
+  return team.filter((member) => member.position.includes("Developer"));
+};
 \`\`\`
 📌 **Разбор**: Позволяет отбирать и \`Frontend Developer\`, и \`Backend Developer\`, аргументируя единым фильтром \`"Developer"\`.
 
@@ -2557,7 +2558,7 @@ console.log(getStringLengths(words)); // [5, 6, 3]
 \`\`\`js
 const fruits = ["apple", "banana", "cherry"];
 
-const toUpperCase = (arr) => arr.map((str) => str.toUpperCase());
+const toUpperCaseList = (words) => words.map((word) => word.toUpperCase());
 
 console.log(toUpperCase(fruits)); // ["APPLE", "BANANA", "CHERRY"]
 \`\`\`
@@ -2886,7 +2887,7 @@ const cart = [
   { name: "Tablet", price: 800 },
 ];
 
-const sum = (arr) => arr.reduce((acc, prod) => acc + prod.price, 0);
+const totalCartPrice = (cart) => cart.reduce((sum, item) => sum + item.price, 0);
 
 console.log(sum(cart)); // 2300
 \`\`\`
@@ -2904,7 +2905,7 @@ console.log(sum(cart)); // 2300
 \`\`\`js
 const numbers = [1, 2, 3, 4, 5];
 
-const sum = (arr) => {
+const sumAndProduct = (arr) => {
   return arr.reduce((acc, num) => {
     acc.sum += num;
     acc.prod *= num;
@@ -3051,7 +3052,7 @@ console.log(groupBy(people, "age"));
 \`\`\`js
 const words = ["тест", "привет", "фoo", "бар"];
 
-const groupBy = (arr) => {
+const groupByLength = (words) => {
   return arr.reduce((acc, word) => {
     acc[word.length] ??= [];
     acc[word.length].push(word);
@@ -3097,10 +3098,9 @@ const items = [
   { id: 3, name: "C", price: 300 },
 ];
 
-const customMap = (arr) => {
-  return arr.reduce((acc, { id, name }) => {
-    acc[id] = { id, name };
-
+const mapUsersById = (users) => {
+  return users.reduce((acc, user) => {
+    acc[user.id] = user;
     return acc;
   }, {});
 };
@@ -3121,7 +3121,7 @@ console.log(customMap(items));
 \`\`\`js
 const scores = [3, 5, 4, 6, 5, 4];
 
-const getStats = (arr) => {
+const average = (arr) => {
   return arr.reduce((acc, num, index, array) => {
     return acc + num / array.length;
   }, 0);
@@ -3194,23 +3194,24 @@ console.log(sumByCategory(transactions));
 • Отличный пример решения реальных бизнес-задач фильтрации и аналитики.`,
 
   js66: `### 🎯 Суть задачи
-Реализация универсальной функции группировки объектов по произвольному названию поля.
+Группировка названий продуктов по их категории с использованием метода \`reduce()\`.
 
 ### 🛠️ Пошаговые этапы решения:
 
-1. **Универсальный группировщик**:
+1. **Группировка названий по категории**:
 \`\`\`js
-const groupBy = (arr, property) => arr.reduce((acc, obj) => {
-  const key = obj[property];
-  if (!acc[key]) acc[key] = [];
-  acc[key].push(obj);
-  return acc;
-}, {});
+const groupProductsByCategory = (products) => {
+  return products.reduce((acc, product) => {
+    acc[product.category] ??= [];
+    acc[product.category].push(product.name);
+    return acc;
+  }, {});
+};
 \`\`\`
-📌 **Разбор**: Проверка \`if (!acc[key]) acc[key] = []\` инициализирует массив под динамическую категорию, после чего добавляет объект в группу.
+📌 **Разбор**: На каждой итерации проверяется наличие массива для \`product.category\`. В созданный массив добавляется название продукта (\`product.name\`).
 
 ### 📌 Ключевые выводы:
-• Универсальные редюсеры легко переиспользовать с любыми сущностями.`,
+• \`reduce()\` позволяет извлекать конкретные поля объектов (например, \`name\`) и группировать их по значению другого поля (\`category\`).`,
 
   js67: `### 🎯 Суть задачи
 Построение многоуровневой структуры объектов (страна -> id пользователя -> данные) за 1 проход (Company X).

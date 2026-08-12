@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Lock, Eye, Code2, FileCode, Terminal, ArrowDown, ChevronDown, Check } from "lucide-react";
-import { ALL_TASKS } from "../../react/data/tasksData";
+import { getTaskById, resolveTaskSection } from "../../data/tasksRegistry";
 import ErrorBoundary from "../common/ErrorBoundary";
 import CodeEditor from "../common/CodeEditor";
 import JsConsole from "../common/JsConsole";
@@ -19,19 +19,10 @@ export const SolutionTab = ({
 }) => {
   const navigate = useNavigate();
 
-  const currentTask =
-    ALL_TASKS.find((t) => String(t.id) === String(selectedTask.id)) ||
-    selectedTask;
+  const currentTask = getTaskById(selectedTask?.id) || selectedTask;
 
   const handleToggleFullscreen = () => {
-    const targetSection =
-      currentTask.section === "algorithms" ||
-      String(currentTask.id).startsWith("algo") ||
-      currentTask.group === "Two Pointers"
-        ? "algorithms"
-        : currentTask.section === "javascript" || String(currentTask.id).startsWith("js")
-        ? "javascript"
-        : "react";
+    const targetSection = resolveTaskSection(currentTask);
 
     navigate({
       to:
@@ -41,6 +32,7 @@ export const SolutionTab = ({
           ? "/open/javascript/$taskId"
           : "/open/react/$taskId",
       params: { taskId: String(currentTask.id) },
+      search: { tab: "solution" },
     });
   };
 
@@ -148,7 +140,7 @@ export const SolutionTab = ({
     !hasSolutionComponent ||
     currentTask.isRaw ||
     currentTask.section === "javascript" ||
-    String(currentTask.id).startsWith("js") ||
+    currentTask.section === "algorithms" ||
     Boolean(currentTask.filepath && currentTask.filepath.includes("javascript"));
 
   const variantFilepath = activeFile.filepath || activeFile.name || "solution.js";

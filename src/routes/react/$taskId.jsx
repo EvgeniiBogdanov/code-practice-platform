@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { createFileRoute, useParams, useSearch, Link, Navigate } from "@tanstack/react-router";
 import { REACT_TASKS, WARMUP_TASKS } from "../../react/data/tasksData";
 import { REACT_GROUPS_CONFIG } from "../../react/data/groupConfig";
+import { getTaskById } from "../../data/tasksRegistry";
 import TaskView from "../../components/task/TaskView";
 import GroupOverviewView from "../../components/task/GroupOverviewView";
 import { usePractice } from "../../context/PracticeContext";
@@ -37,7 +38,7 @@ function ReactTaskPage() {
     return <GroupOverviewView groupMeta={groupMeta} groupTasks={config.tasks} />;
   }
 
-  const selectedTask = REACT_TASKS.find((t) => String(t.id) === String(taskId));
+  const selectedTask = getTaskById(taskId);
 
   if (!selectedTask) {
     return <Navigate to="/react/$taskId" params={{ taskId: "group-warmup" }} replace />;

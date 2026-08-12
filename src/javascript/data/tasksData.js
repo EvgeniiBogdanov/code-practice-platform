@@ -262,8 +262,8 @@ import GroupProductsByCategoryCandidateRaw from "../tasks/8_arrays_reduce/16_Gro
 import GroupProductsByCategorySolutionRaw from "../solutions/8_arrays_reduce/16_GroupProductsByCategory.js?raw";
 import GroupProductsByCategoryObjectGroupBySolutionRaw from "../solutions/8_arrays_reduce/16_GroupProductsByCategory_ObjectGroupBy.js?raw";
 
-import GroupCountriesSberCandidateRaw from "../tasks/8_arrays_reduce/17_GroupCountriesSber.js?raw";
-import GroupCountriesSberSolutionRaw from "../solutions/8_arrays_reduce/17_GroupCountriesSber.js?raw";
+import GroupCountriesCandidateRaw from "../tasks/8_arrays_reduce/17_GroupCountries.js?raw";
+import GroupCountriesSolutionRaw from "../solutions/8_arrays_reduce/17_GroupCountries.js?raw";
 
 import NoInitialValueCandidateRaw from "../tasks/8_arrays_reduce/18_NoInitialValue.js?raw";
 import NoInitialValueSolutionRaw from "../solutions/8_arrays_reduce/18_NoInitialValue.js?raw";
@@ -4256,8 +4256,8 @@ export const JS_ARRAYS_REDUCE_TASKS = [
     id: "js66",
     group: "Массивы",
     subgroup: "reduce",
-    title: "16. Группировка объектов по свойству",
-    desc: "Напишите универсальную функцию groupBy(arr, property), которая принимает массив объектов и имя свойства для группировки.",
+    title: "16. Группировка названий продуктов по категории",
+    desc: "Напишите функцию groupProductsByCategory(products), которая группирует названия продуктов по их категории.",
     isRaw: true,
     candidate: GroupProductsByCategoryCandidateRaw,
     rawCandidate: GroupProductsByCategoryCandidateRaw,
@@ -4316,19 +4316,19 @@ export const JS_ARRAYS_REDUCE_TASKS = [
     title: "17. Группировка по country и id (Company X)",
     desc: "Сгруппируйте массив пользователей в двухуровневый объект: по странам на 1 уровне и по id пользователей на 2 уровне.",
     isRaw: true,
-    candidate: GroupCountriesSberCandidateRaw,
-    rawCandidate: GroupCountriesSberCandidateRaw,
-    solution: GroupCountriesSberSolutionRaw,
-    rawSolution: GroupCountriesSberSolutionRaw,
-    filepath: "src/javascript/tasks/8_arrays_reduce/17_GroupCountriesSber.js",
+    candidate: GroupCountriesCandidateRaw,
+    rawCandidate: GroupCountriesCandidateRaw,
+    solution: GroupCountriesSolutionRaw,
+    rawSolution: GroupCountriesSolutionRaw,
+    filepath: "src/javascript/tasks/8_arrays_reduce/17_GroupCountries.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
         isRecommended: true,
         badge: "Идиоматичный подход",
         recommendationNote: "Метод reduce() является функциональным стандартом для свертки и агрегации данных в JavaScript без мутации исходного массива.",
-        rawSolution: GroupCountriesSberSolutionRaw,
-        filepath: "src/javascript/tasks/8_arrays_reduce/17_GroupCountriesSber.js",
+        rawSolution: GroupCountriesSolutionRaw,
+        filepath: "src/javascript/tasks/8_arrays_reduce/17_GroupCountries.js",
       },
     ],
     articles: [

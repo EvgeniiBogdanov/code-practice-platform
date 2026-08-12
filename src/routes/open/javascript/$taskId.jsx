@@ -1,15 +1,19 @@
 import React from "react";
-import { createFileRoute, useParams } from "@tanstack/react-router";
-import { JS_TASKS } from "../../../javascript/data/tasksData";
+import { createFileRoute, useParams, useSearch } from "@tanstack/react-router";
 import OpenEditorView from "../../../components/task/OpenEditorView";
+import { getTaskById } from "../../../data/tasksRegistry";
 
 function OpenJavascriptTaskPage() {
   const { taskId } = useParams({ from: "/open/javascript/$taskId" });
-  const selectedTask = JS_TASKS.find((t) => String(t.id) === String(taskId));
+  const search = useSearch({ from: "/open/javascript/$taskId" });
+  const selectedTask = getTaskById(taskId);
 
-  return <OpenEditorView task={selectedTask} section="javascript" />;
+  return <OpenEditorView task={selectedTask} section="javascript" tab={search?.tab || "candidate"} />;
 }
 
 export const Route = createFileRoute("/open/javascript/$taskId")({
+  validateSearch: (search) => ({
+    tab: typeof search?.tab === "string" ? search.tab : "candidate",
+  }),
   component: OpenJavascriptTaskPage,
 });

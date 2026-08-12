@@ -8,7 +8,7 @@ import {
   HelpCircle,
   ListChecks,
 } from "lucide-react";
-import { ALL_TASKS } from "../../react/data/tasksData";
+import { getTaskById } from "../../data/tasksRegistry";
 import { getDifficultyLabel } from "../../utils/difficultyHelpers";
 import CandidateTab from "./CandidateTab";
 import SolutionTab from "./SolutionTab";
@@ -27,9 +27,7 @@ export const TaskView = ({
   checklistState = {},
   toggleChecklistItem,
 }) => {
-  const activeTask =
-    ALL_TASKS.find((t) => String(t.id) === String(selectedTask.id)) ||
-    selectedTask;
+  const activeTask = getTaskById(selectedTask?.id) || selectedTask;
 
   const CandidateComponent = activeTask.candidate;
   const SolutionComponent = activeTask.solution;

@@ -1,14 +1,22 @@
 const products = [
-  { title: "Laptop", price: 999, category: "Electronics" },
-  { title: "Coffee Mug", price: 15, category: "Kitchen" },
-  { title: "Headphones", price: 150, category: "Electronics" },
-  { title: "Blender", price: 45, category: "Kitchen" },
-  { title: "Novel", price: 20, category: "Books" },
-  { title: "Smartphone", price: 699, category: "Electronics" }
+  { name: "Apple", category: "Fruit" },
+  { name: "Banana", category: "Fruit" },
+  { name: "Carrot", category: "Vegetable" },
 ];
 
-const groupByNative = (arr, property) =>
-  Object.groupBy(arr, (obj) => obj[property]);
+const groupProductsByCategory = (products) => {
+  const grouped = Object.groupBy(products, (product) => product.category);
+  return Object.fromEntries(
+    Object.entries(grouped).map(([category, list]) => [
+      category,
+      list.map((item) => item.name),
+    ])
+  );
+};
 
 // Пример вызова:
-console.log(groupByNative(products, "category"));
+console.log(groupProductsByCategory(products));
+// {
+//   Fruit: ["Apple", "Banana"],
+//   Vegetable: ["Carrot"]
+// }

@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { createFileRoute, useParams, useSearch, Link, Navigate } from "@tanstack/react-router";
 import { ALGO_TASKS } from "../../algorithms/data/tasksData";
 import { getAlgoGroupMetaByInfoId } from "../../algorithms/data/groupConfig";
+import { getTaskById } from "../../data/tasksRegistry";
 import TaskView from "../../components/task/TaskView";
 import GroupOverviewView from "../../components/task/GroupOverviewView";
 import { usePractice } from "../../context/PracticeContext";
@@ -27,7 +28,7 @@ function AlgorithmsTaskPage() {
   }
 
   // 2. Иначе ищем конкретную задачу тренажёра
-  const selectedTask = ALGO_TASKS.find((t) => String(t.id) === String(taskId));
+  const selectedTask = getTaskById(taskId);
 
   if (!selectedTask) {
     return <Navigate to="/algorithms/$taskId" params={{ taskId: "group-two-pointers" }} replace />;
