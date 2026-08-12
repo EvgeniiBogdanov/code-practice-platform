@@ -42,10 +42,16 @@ marked.use({
     },
     // Кастомный рендерер таблиц GFM (Notion style table)
     table(token) {
+      const renderCell = (cell) => {
+        // Рендерим инлайн-токены без преобразования в теги <code>
+        const rawHtml = this.parser.parseInline(cell.tokens);
+        return rawHtml.replace(/<\/?code[^>]*>/gi, "");
+      };
+
       const header = token.header
         .map((cell, i) => {
           const align = token.align && token.align[i] ? ` style="text-align: ${token.align[i]}"` : "";
-          return `<th${align}>${this.parser.parseInline(cell.tokens)}</th>`;
+          return `<th${align}>${renderCell(cell)}</th>`;
         })
         .join("");
 
@@ -54,7 +60,7 @@ marked.use({
           const cells = row
             .map((cell, i) => {
               const align = token.align && token.align[i] ? ` style="text-align: ${token.align[i]}"` : "";
-              return `<td${align}>${this.parser.parseInline(cell.tokens)}</td>`;
+              return `<td${align}>${renderCell(cell)}</td>`;
             })
             .join("");
           return `<tr>${cells}</tr>`;

@@ -74,6 +74,18 @@ const RootLayout = () => {
   const navigate = useNavigate();
 
   const isOpenMode = pathname.startsWith("/open") || pathname.includes("/open");
+  const contentAreaRef = useRef(null);
+
+  // Сброс скролла в начало при переходе между страницами/папками/задачами
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (!hash) {
+      if (contentAreaRef.current) {
+        contentAreaRef.current.scrollTop = 0;
+      }
+      window.scrollTo(0, 0);
+    }
+  }, [pathname]);
 
   // Определение текущей активной секции по пути URL
   const activeSection = useMemo(() => {
@@ -1011,7 +1023,7 @@ const RootLayout = () => {
             setTheme={setTheme}
           />
 
-          <main className="content-area">
+          <main className="content-area" ref={contentAreaRef}>
             <Outlet context={outletContext} />
           </main>
         </div>

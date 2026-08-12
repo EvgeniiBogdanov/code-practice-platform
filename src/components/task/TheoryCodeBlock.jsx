@@ -10,7 +10,12 @@ export const TheoryCodeBlock = ({ code = "", language = "notepad" }) => {
 
   const cleanCode = useMemo(() => {
     if (!code) return "";
-    return code.replace(/\r\n/g, "\n").trim();
+    let s = code.replace(/\r\n/g, "\n");
+    // Убираем только пустые строки в начале, сохраняя отступы на первой строке
+    s = s.replace(/^\n+/, "");
+    // Убираем хвостовые пустые строки и пробелы в самом конце блока
+    s = s.replace(/\s+$/, "");
+    return s;
   }, [code]);
 
   const lines = useMemo(() => cleanCode.split("\n"), [cleanCode]);

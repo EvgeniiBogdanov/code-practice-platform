@@ -27,18 +27,18 @@ const getTerminalTheme = (themeName) => {
   const isLight = themeName === "light";
   return isLight
     ? {
-        background: "#ffffff",
-        foreground: "#1f2937",
-        cursor: "#0284c7",
-        selectionBackground: "rgba(2, 132, 199, 0.2)",
-        black: "#f1f5f9",
-        red: "#dc2626",
-        green: "#16a34a",
-        yellow: "#d97706",
-        blue: "#2563eb",
-        magenta: "#9333ea",
-        cyan: "#0284c7",
-        white: "#0f172a",
+        background: "#fbfbfa",
+        foreground: "#37352f",
+        cursor: "#0066cc",
+        selectionBackground: "rgba(0, 102, 204, 0.18)",
+        black: "#f7f6f3",
+        red: "#d32f2f",
+        green: "#2d6a4f",
+        yellow: "#c75d18",
+        blue: "#0066cc",
+        magenta: "#7d449e",
+        cyan: "#0066cc",
+        white: "#37352f",
       }
     : {
         background: "#141414",
@@ -367,7 +367,7 @@ export const JsConsole = ({
       {/* Шапка консоли в едином дизайне с редактором кода */}
       <div className="vscode-editor-header">
         <div className="vscode-editor-single-file">
-          <TerminalIcon size={13} style={{ color: "#38bdf8", flexShrink: 0 }} />
+          <TerminalIcon size={13} style={{ color: "var(--color-info, #38bdf8)", flexShrink: 0 }} />
           <span className="file-tab-name">{customTitle || "Терминал"}</span>
           {logs.length > 0 && <span className="console-counter">{logs.length}</span>}
         </div>

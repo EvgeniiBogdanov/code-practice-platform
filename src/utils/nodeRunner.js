@@ -412,12 +412,107 @@ export const runNodeJsCode = async (codeText, options = {}) => {
       };
     }
 
+    const sandboxHelpers = {
+      createNode: (val = 0, left = null, right = null) => ({ val, left, right }),
+      createTreeNode: (val = 0, left = null, right = null) => ({ val, left, right }),
+      createListNode: (val = 0, next = null) => ({ val, next }),
+      buildTree: (values) => {
+        if (!values || values.length === 0) return null;
+        const root = { val: values[0], left: null, right: null };
+        const queue = [root];
+        let i = 1;
+        while (i < values.length) {
+          const current = queue.shift();
+          const leftVal = values[i++];
+          if (leftVal !== null && leftVal !== undefined) {
+            current.left = { val: leftVal, left: null, right: null };
+            queue.push(current.left);
+          }
+          if (i < values.length) {
+            const rightVal = values[i++];
+            if (rightVal !== null && rightVal !== undefined) {
+              current.right = { val: rightVal, left: null, right: null };
+              queue.push(current.right);
+            }
+          }
+        }
+        return root;
+      },
+      treeToArray: (root) => {
+        if (root === null) return [];
+        const result = [];
+        const queue = [root];
+        while (queue.length > 0) {
+          const node = queue.shift();
+          if (node === null) {
+            result.push(null);
+          } else {
+            result.push(node.val);
+            queue.push(node.left);
+            queue.push(node.right);
+          }
+        }
+        while (result.length > 0 && result[result.length - 1] === null) {
+          result.pop();
+        }
+        return result;
+      },
+      createLinkedList: (arr) => {
+        if (!arr || arr.length === 0) return null;
+        return arr.reduceRight((acc, val) => ({ val, next: acc }), null);
+      },
+      linkedListToArray: (head) => {
+        const res = [];
+        let curr = head;
+        while (curr) {
+          res.push(curr.val);
+          curr = curr.next;
+        }
+        return res;
+      },
+      printLinkedList: (head) => {
+        const res = [];
+        let curr = head;
+        while (curr) {
+          res.push(curr.val);
+          curr = curr.next;
+        }
+        return res;
+      },
+      createLinkedListWithCycle: (arr, pos) => {
+        if (!arr || arr.length === 0) return null;
+        const nodes = arr.map((val) => ({ val, next: null }));
+        for (let i = 0; i < nodes.length - 1; i++) {
+          nodes[i].next = nodes[i + 1];
+        }
+        if (pos >= 0 && pos < nodes.length) {
+          nodes[nodes.length - 1].next = nodes[pos];
+        }
+        return nodes[0];
+      },
+      createListWithCycle: (arr, pos) => {
+        if (!arr || arr.length === 0) return null;
+        const nodes = arr.map((val) => ({ val, next: null }));
+        for (let i = 0; i < nodes.length - 1; i++) {
+          nodes[i].next = nodes[i + 1];
+        }
+        if (pos >= 0 && pos < nodes.length) {
+          nodes[nodes.length - 1].next = nodes[pos];
+        }
+        return nodes[0];
+      },
+    };
+
+    const sandboxRequire = (mod) => {
+      return sandboxHelpers;
+    };
+
     // Оборачиваем код в асинхронную функцию с изолированными переменными среды
     const wrappedCode = `
-      return (async function(console, setTimeout, clearTimeout, setInterval, clearInterval, queueMicrotask) {
+      return (async function(console, setTimeout, clearTimeout, setInterval, clearInterval, queueMicrotask, require) {
         "use strict";
         ${trimmedCode}
-      })(sandboxConsole, sandboxSetTimeout, sandboxClearTimeout, sandboxSetInterval, sandboxClearInterval, sandboxQueueMicrotask);
+      })(sandboxConsole, sandboxSetTimeout, sandboxClearTimeout, sandboxSetInterval, sandboxClearInterval, sandboxQueueMicrotask, sandboxRequire);
     `;
 
     // Создаем функцию исполнения
@@ -428,6 +523,7 @@ export const runNodeJsCode = async (codeText, options = {}) => {
       "sandboxSetInterval",
       "sandboxClearInterval",
       "sandboxQueueMicrotask",
+      "sandboxRequire",
       wrappedCode
     );
 
@@ -438,7 +534,8 @@ export const runNodeJsCode = async (codeText, options = {}) => {
       sandboxClearTimeout,
       sandboxSetInterval,
       sandboxClearInterval,
-      sandboxQueueMicrotask
+      sandboxQueueMicrotask,
+      sandboxRequire
     );
 
     const timeoutPromise = new Promise((_, reject) => {

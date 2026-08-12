@@ -493,6 +493,54 @@ console.log(renderTemplate("Hello {user.name}", { user: { name: "Alex" } }));`,
   ],
 
   // === ALGORITHMS SECTION ===
+  algo_hashmap: [
+    {
+      title: "1. Частотный словарь символов (Map Counter)",
+      code: `const freq = new Map();
+for (const char of str) {
+  freq.set(char, (freq.get(char) || 0) + 1);
+}`,
+      tip: "Паттерн подсчета частоты заменяет вложенные циклы O(N^2) на один проход за O(N).",
+    },
+    {
+      title: "2. Two Sum через Map: поиск пары за O(N)",
+      code: `function twoSum(nums, target) {
+  const map = new Map();
+  for (let i = 0; i < nums.length; i++) {
+    const diff = target - nums[i];
+    if (map.has(diff)) return [map.get(diff), i];
+    map.set(nums[i], i);
+  }
+  return [];
+}`,
+      tip: "Сохраняет значения и их индексы в Map для мгновенной проверки O(1) наличия комплемента.",
+    },
+    {
+      title: "3. Проверка уникальности / дубликатов (Set O(N))",
+      code: `function hasDuplicate(nums) {
+  const seen = new Set();
+  for (const num of nums) {
+    if (seen.has(num)) return true;
+    seen.add(num);
+  }
+  return false;
+}`,
+      tip: "Ранний возврат при обнаружении первого же дубликата экономит время обхода.",
+    },
+    {
+      title: "4. Группировка анаграмм по общему ключу",
+      code: `function groupAnagrams(words) {
+  const map = new Map();
+  for (const word of words) {
+    const key = [...word].sort().join('');
+    if (!map.has(key)) map.set(key, []);
+    map.get(key).push(word);
+  }
+  return [...map.values()];
+}`,
+      tip: "Отсортированная строка выступает в качестве единого канонического ключа группы в Map.",
+    },
+  ],
   algo_twopointers: [
     {
       title: "1. Два указателя: Палиндром (Two Pointers)",
@@ -523,35 +571,259 @@ console.log(renderTemplate("Hello {user.name}", { user: { name: "Alex" } }));`,
   ],
   algo_slidingwindow: [
     {
-      title: "1. Скользящее окно: Максимальная сумма подмассива K",
+      title: "1. Фиксированное окно: Максимальная сумма/среднее подмассива длины K",
       code: `function maxSubarraySum(arr, k) {
-  let maxSum = 0, windowSum = 0;
+  let windowSum = 0;
   for (let i = 0; i < k; i++) windowSum += arr[i];
-  maxSum = windowSum;
+  let maxSum = windowSum;
 
-  for (let i = k; i < arr.length; i++) {
-    windowSum += arr[i] - arr[i - k];
+  for (let right = k; right < arr.length; right++) {
+    windowSum += arr[right] - arr[right - k];
     maxSum = Math.max(maxSum, windowSum);
   }
   return maxSum;
 }`,
-      tip: "Паттерн Sliding Window заменяет вложенные циклы O(N*K) на линейный проход O(N).",
+      tip: "Паттерн фиксированного окна заменяет вложенные циклы O(N*K) на линейный инкрементальный проход O(N).",
+    },
+    {
+      title: "2. Динамическое окно + Set: Самая длинная подстрока без повторов",
+      code: `function lengthOfLongestSubstring(s) {
+  const set = new Set();
+  let left = 0, maxLength = 0;
+
+  for (let right = 0; right < s.length; right++) {
+    while (set.has(s[right])) {
+      set.delete(s[left]);
+      left++;
+    }
+    set.add(s[right]);
+    maxLength = Math.max(maxLength, right - left + 1);
+  }
+  return maxLength;
+}`,
+      tip: "Указатель right расширяет окно, а left сжимает его при обнаружении повтора в Set за O(N) суммарно.",
+    },
+    {
+      title: "3. Динамическое окно сжатия: Минимальная длина с суммой >= target",
+      code: `function minSubArrayLen(target, nums) {
+  let left = 0, sum = 0, minLength = Infinity;
+
+  for (let right = 0; right < nums.length; right++) {
+    sum += nums[right];
+    while (sum >= target) {
+      minLength = Math.min(minLength, right - left + 1);
+      sum -= nums[left];
+      left++;
+    }
+  }
+  return minLength === Infinity ? 0 : minLength;
+}`,
+      tip: "Окно расширяется вправо до достижения условия и жадно сжимается слева для нахождения минимума.",
+    },
+  ],
+  algo_prefixsum: [
+    {
+      title: "1. Построение префиксного массива: Сумма отрезка [L, R] за O(1)",
+      code: `function createNumArray(nums) {
+  const prefix = new Array(nums.length + 1).fill(0);
+  for (let i = 0; i < nums.length; i++) {
+    prefix[i + 1] = prefix[i] + nums[i];
+  }
+  return {
+    sumRange: (left, right) => prefix[right + 1] - prefix[left],
+  };
+}`,
+      tip: "Префиксный массив с нулем в начале позволяет запрашивать сумму любого отрезка за O(1) без if (left === 0).",
+    },
+    {
+      title: "2. Prefix Sum + Map: Число подмассивов с суммой K (с отрицательными числами)",
+      code: `function subarraySum(nums, k) {
+  const map = new Map([[0, 1]]);
+  let count = 0, currentSum = 0;
+
+  for (const num of nums) {
+    currentSum += num;
+    if (map.has(currentSum - k)) {
+      count += map.get(currentSum - k);
+    }
+    map.set(currentSum, (map.get(currentSum) || 0) + 1);
+  }
+  return count;
+}`,
+      tip: "На каждом шаге ищем в Map количество предыдущих префиксов со значением currentSum - k за O(1).",
+    },
+    {
+      title: "3. Баланс префиксов: Поиск опорного индекса (Pivot Index) за O(1) памяти",
+      code: `function pivotIndex(nums) {
+  const totalSum = nums.reduce((a, b) => a + b, 0);
+  let leftSum = 0;
+
+  for (let i = 0; i < nums.length; i++) {
+    const rightSum = totalSum - leftSum - nums[i];
+    if (leftSum === rightSum) return i;
+    leftSum += nums[i];
+  }
+  return -1;
+}`,
+      tip: "Правая сумма вычисляется как totalSum - leftSum - nums[i] без повторного прохода по массиву.",
     },
   ],
   algo_binarysearch: [
     {
-      title: "1. Бинарный поиск (Binary Search O(log N))",
+      title: "1. Классический бинарный поиск (Binary Search O(log N))",
       code: `function binarySearch(arr, target) {
   let left = 0, right = arr.length - 1;
   while (left <= right) {
-    const mid = Math.floor((left + right) / 2);
+    const mid = Math.floor(left + (right - left) / 2);
     if (arr[mid] === target) return mid;
     if (arr[mid] < target) left = mid + 1;
     else right = mid - 1;
   }
   return -1;
 }`,
-      tip: "Применяется ТОЛЬКО на отсортированных массивах. Делит область поиска пополам на каждом шаге.",
+      tip: "Применяется на отсортированных массивах. Отсекает половину данных на каждом шаге за O(log N).",
+    },
+    {
+      title: "2. Позиция вставки (Search Insert Position)",
+      code: `function searchInsert(nums, target) {
+  let left = 0, right = nums.length - 1;
+  while (left <= right) {
+    const mid = Math.floor(left + (right - left) / 2);
+    if (nums[mid] === target) return mid;
+    if (nums[mid] < target) left = mid + 1;
+    else right = mid - 1;
+  }
+  return left; // left указывает на корректную позицию для вставки
+}`,
+      tip: "После выхода из цикла left останавливается на минимальном индексе, куда можно вставить target.",
+    },
+    {
+      title: "3. Поиск границы (First Bad Version / Boundary Search)",
+      code: `function firstBadVersion(n, isBadVersion) {
+  let left = 1, right = n;
+  while (left < right) {
+    const mid = Math.floor(left + (right - left) / 2);
+    if (isBadVersion(mid)) right = mid;
+    else left = mid + 1;
+  }
+  return left;
+}`,
+      tip: "Поиск первой границы перехода false -> true в монотонной функции с условием while (left < right).",
+    },
+    {
+      title: "4. Поиск в повернутом массиве (Search in Rotated Array)",
+      code: `function searchRotated(nums, target) {
+  let left = 0, right = nums.length - 1;
+  while (left <= right) {
+    const mid = Math.floor(left + (right - left) / 2);
+    if (nums[mid] === target) return mid;
+
+    if (nums[left] <= nums[mid]) {
+      if (nums[left] <= target && target < nums[mid]) right = mid - 1;
+      else left = mid + 1;
+    } else {
+      if (nums[mid] < target && target <= nums[right]) left = mid + 1;
+      else right = mid - 1;
+    }
+  }
+  return -1;
+}`,
+      tip: "На каждом шаге одна половина гарантированно отсортирована; проверяем принадлежность target её границам.",
+    },
+  ],
+  algo_stack: [
+    {
+      title: "1. Валидация скобок (Valid Parentheses)",
+      code: `function isValid(s) {
+  const stack = [];
+  const pairs = { '(': ')', '[': ']', '{': '}' };
+  for (const char of s) {
+    if (pairs[char]) stack.push(pairs[char]);
+    else if (stack.pop() !== char) return false;
+  }
+  return stack.length === 0;
+}`,
+      tip: "LIFO-стек: последняя открытая скобка обязана закрыться первой.",
+    },
+    {
+      title: "2. Min Stack за O(1) память и время",
+      code: `function createMinStack() {
+  const stack = [], minStack = [];
+  const push = (val) => {
+    stack.push(val);
+    minStack.push(minStack.length ? Math.min(val, minStack[minStack.length - 1]) : val);
+  };
+  const pop = () => { stack.pop(); minStack.pop(); };
+  const top = () => stack[stack.length - 1];
+  const getMin = () => minStack[minStack.length - 1];
+  return { push, pop, top, getMin };
+}`,
+      tip: "Синхронный вспомогательный стек minStack хранит текущий минимум для каждого уровня.",
+    },
+    {
+      title: "3. Монотонный стек (Next Greater Element / Daily Temperatures)",
+      code: `function dailyTemperatures(temps) {
+  const res = new Array(temps.length).fill(0);
+  const stack = []; // хранит индексы
+  for (let i = 0; i < temps.length; i++) {
+    while (stack.length && temps[i] > temps[stack[stack.length - 1]]) {
+      const prev = stack.pop();
+      res[prev] = i - prev;
+    }
+    stack.push(i);
+  }
+  return res;
+}`,
+      tip: "Монотонно убывающий стек находит ближайший больший элемент справа за общий O(n).",
+    },
+  ],
+  algo_linkedlist: [
+    {
+      title: "1. Разворот списка in-place (Three Pointers)",
+      code: `function reverseList(head) {
+  let prev = null, current = head;
+  while (current) {
+    const nextTemp = current.next;
+    current.next = prev;
+    prev = current;
+    current = nextTemp;
+  }
+  return prev;
+}`,
+      tip: "Разворачивает связи за один проход O(n) с O(1) памяти, сохраняя nextTemp перед мутацией ссылки.",
+    },
+    {
+      title: "2. Слияние отсортированных списков (Dummy Node)",
+      code: `function mergeTwoLists(list1, list2) {
+  const dummy = { val: 0, next: null };
+  let current = dummy;
+  while (list1 && list2) {
+    if (list1.val < list2.val) {
+      current.next = list1;
+      list1 = list1.next;
+    } else {
+      current.next = list2;
+      list2 = list2.next;
+    }
+    current = current.next;
+  }
+  current.next = list1 || list2;
+  return dummy.next;
+}`,
+      tip: "Фиктивный узел dummy избавляет от граничных условий на первом шаге слияния за O(n + m).",
+    },
+    {
+      title: "3. Поиск цикла — Алгоритм Флойда (Tortoise & Hare)",
+      code: `function hasCycle(head) {
+  let slow = head, fast = head;
+  while (fast && fast.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+    if (slow === fast) return true;
+  }
+  return false;
+}`,
+      tip: "Быстрый указатель (2 шага) догоняет медленный (1 шаг) внутри петли за O(n) времени и O(1) памяти.",
     },
   ],
   algo_ds: [
@@ -575,6 +847,213 @@ console.log(renderTemplate("Hello {user.name}", { user: { name: "Alex" } }));`,
   isEmpty() { return this.#items.length === 0; }
 }`,
       tip: "Применяется в алгоритме обхода графа в ширину (BFS).",
+    },
+  ],
+  algo_dfs: [
+    {
+      title: "1. DFS на дереве: Preorder, Inorder, Postorder (Рекурсия)",
+      code: `function dfs(node) {
+  if (!node) return;
+  // Preorder: console.log(node.val);
+  dfs(node.left);
+  // Inorder: console.log(node.val);
+  dfs(node.right);
+  // Postorder: console.log(node.val);
+}`,
+      tip: "Preorder — для копирования/сериализации, Inorder — для отсортированного порядка в BST, Postorder — для удаления/расчета снизу вверх.",
+    },
+    {
+      title: "2. Итеративный DFS со стеком",
+      code: `function dfsIterative(root) {
+  if (!root) return;
+  const stack = [root];
+  while (stack.length > 0) {
+    const node = stack.pop();
+    console.log(node.val);
+    if (node.right) stack.push(node.right);
+    if (node.left) stack.push(node.left);
+  }
+}`,
+      tip: "Правый потомок пушится перед левым, чтобы левый извлекался первым (LIFO).",
+    },
+    {
+      title: "3. Расчет высоты дерева (Bottom-Up DFS)",
+      code: `function maxDepth(root) {
+  if (!root) return 0;
+  return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+}`,
+      tip: "Высота текущего узла вычисляется на обратном ходе рекурсии как максимум высот детей + 1.",
+    },
+    {
+      title: "4. DFS на графе с отслеживанием посещённых (Visited Set)",
+      code: `function dfsGraph(graph, start, visited = new Set()) {
+  visited.add(start);
+  for (const neighbor of graph[start] || []) {
+    if (!visited.has(neighbor)) {
+      dfsGraph(graph, neighbor, visited);
+    }
+  }
+  return visited;
+}`,
+      tip: "Set visited защищает от зацикливания при наличии циклов в графе за O(V + E).",
+    },
+  ],
+  algo_bfs: [
+    {
+      title: "1. Поуровневый обход дерева (Level-Order BFS)",
+      code: `function levelOrder(root) {
+  if (!root) return [];
+  const result = [], queue = [root];
+  while (queue.length > 0) {
+    const levelSize = queue.length, level = [];
+    for (let i = 0; i < levelSize; i++) {
+      const node = queue.shift();
+      level.push(node.val);
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
+    }
+    result.push(level);
+  }
+  return result;
+}`,
+      tip: "Фиксация levelSize = queue.length перед внутренним циклом изолирует текущий уровень дерева.",
+    },
+    {
+      title: "2. BFS на графе: Поиск кратчайшего пути",
+      code: `function shortestPath(graph, start, target) {
+  const queue = [[start, 0]], visited = new Set([start]);
+  while (queue.length > 0) {
+    const [node, dist] = queue.shift();
+    if (node === target) return dist;
+    for (const neighbor of graph[node] || []) {
+      if (!visited.has(neighbor)) {
+        visited.add(neighbor);
+        queue.push([neighbor, dist + 1]);
+      }
+    }
+  }
+  return -1;
+}`,
+      tip: "BFS гарантирует нахождение кратчайшего пути в невзвешенном графе с первой попытки достижения target.",
+    },
+    {
+      title: "3. BFS на 2D-сетке: Алгоритм заливки (Flood Fill / Islands)",
+      code: `function bfsGrid(grid, startR, startC) {
+  const queue = [[startR, startC]];
+  grid[startR][startC] = '0';
+  const dirs = [[-1,0],[1,0],[0,-1],[0,1]];
+  while (queue.length > 0) {
+    const [r, c] = queue.shift();
+    for (const [dr, dc] of dirs) {
+      const nr = r + dr, nc = c + dc;
+      if (nr >= 0 && nr < grid.length && nc >= 0 && nc < grid[0].length && grid[nr][nc] === '1') {
+        grid[nr][nc] = '0';
+        queue.push([nr, nc]);
+      }
+    }
+  }
+}`,
+      tip: "Пометка grid[nr][nc] = '0' при добавлении в очередь предотвращает повторное добавление ячеек.",
+    },
+    {
+      title: "4. Multi-Source BFS: Волновое распространение",
+      code: `function multiSourceBfs(grid) {
+  const queue = [];
+  // 1. Собрать все стартовые очаги
+  for (let r = 0; r < grid.length; r++) {
+    for (let c = 0; c < grid[0].length; c++) {
+      if (grid[r][c] === 2) queue.push([r, c]);
+    }
+  }
+  let steps = 0;
+  // 2. Распространение волн послойно
+  while (queue.length > 0) {
+    const size = queue.length;
+    for (let i = 0; i < size; i++) {
+      const [r, c] = queue.shift();
+      // обработка соседей...
+    }
+    if (queue.length > 0) steps++;
+  }
+  return steps;
+}`,
+      tip: "Multi-Source BFS запускает фронт волны от всех начальных источников одновременно за один проход.",
+    },
+  ],
+  algo_backtracking: [
+    {
+      title: "1. Базовый каркас Backtracking (Choice → Constraint → Goal)",
+      code: `function backtrack(path, choices, result) {
+  if (isGoal(path)) {
+    result.push([...path]); // Важно: сохранять копию!
+    return;
+  }
+  for (const choice of choices) {
+    if (!isValid(choice, path)) continue; // Pruning (отсечение)
+    path.push(choice);                    // 1. Выбор
+    backtrack(path, choices, result);     // 2. Рекурсия
+    path.pop();                           // 3. Откат (Backtrack)
+  }
+}`,
+      tip: "Backtracking = DFS по дереву решений + выбор + рекурсия + откат состояния (pop).",
+    },
+    {
+      title: "2. Генерация всех подмножеств (Subsets / Power Set)",
+      code: `function subsets(nums) {
+  const result = [], path = [];
+  function dfs(start) {
+    result.push([...path]);
+    for (let i = start; i < nums.length; i++) {
+      path.push(nums[i]);
+      dfs(i + 1);
+      path.pop();
+    }
+  }
+  dfs(0);
+  return result;
+}`,
+      tip: "Каждое промежуточное состояние path является валидным подмножеством и сохраняется в result.",
+    },
+    {
+      title: "3. Генерация перестановок (Permutations с used)",
+      code: `function permute(nums) {
+  const result = [], path = [], used = new Array(nums.length).fill(false);
+  function dfs() {
+    if (path.length === nums.length) {
+      result.push([...path]);
+      return;
+    }
+    for (let i = 0; i < nums.length; i++) {
+      if (used[i]) continue;
+      used[i] = true;
+      path.push(nums[i]);
+      dfs();
+      path.pop();
+      used[i] = false;
+    }
+  }
+  dfs();
+  return result;
+}`,
+      tip: "Массив used отслеживает занятые элементы за O(1) и сбрасывается при откате.",
+    },
+    {
+      title: "4. Комбинации с суммой и отсечением (Combination Sum / Pruning)",
+      code: `function combinationSum(candidates, target) {
+  const result = [], path = [];
+  function dfs(start, remaining) {
+    if (remaining === 0) return result.push([...path]);
+    if (remaining < 0) return; // Pruning: сумма превышена
+    for (let i = start; i < candidates.length; i++) {
+      path.push(candidates[i]);
+      dfs(i, remaining - candidates[i]); // i остается для повтора
+      path.pop();
+    }
+  }
+  dfs(0, target);
+  return result;
+}`,
+      tip: "Ранний выход при remaining < 0 мгновенно отсекает бесперспективные ветви дерева.",
     },
   ],
 };
@@ -605,12 +1084,19 @@ export const SECTION_CHEAT_SHEETS = {
   algorithms: {
     title: "Шпаргалка по Алгоритмам",
     categories: [
+      { id: "algo_hashmap", name: "Hash Map & Set" },
       { id: "algo_twopointers", name: "Два указателя" },
       { id: "algo_slidingwindow", name: "Скользящее окно" },
+      { id: "algo_prefixsum", name: "Префиксные суммы" },
       { id: "algo_binarysearch", name: "Бинарный поиск" },
+      { id: "algo_stack", name: "Стек (Stack)" },
+      { id: "algo_linkedlist", name: "Связный список" },
+      { id: "algo_dfs", name: "DFS (Обход в глубину)" },
+      { id: "algo_bfs", name: "BFS (Обход в ширину)" },
+      { id: "algo_backtracking", name: "Backtracking (Перебор с возвратом)" },
       { id: "algo_ds", name: "Структуры данных" },
     ],
-    defaultCategory: "algo_twopointers",
+    defaultCategory: "algo_hashmap",
   },
   home: {
     title: "Общая Шпаргалка",

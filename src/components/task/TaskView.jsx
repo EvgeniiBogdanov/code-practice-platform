@@ -34,13 +34,21 @@ export const TaskView = ({
   const CandidateComponent = activeTask.candidate;
   const SolutionComponent = activeTask.solution;
 
+  React.useEffect(() => {
+    const contentArea = document.querySelector(".content-area");
+    if (contentArea) {
+      contentArea.scrollTop = 0;
+    }
+    window.scrollTo(0, 0);
+  }, [activeTask?.id, activeTab]);
+
   return (
     <div className="content-inner">
       <div className="task-detail-card">
         <div className="task-header-row">
           <div className="task-title-container">
             <h2 className="task-detail-title">
-              {activeTask.title}
+              <span className="task-detail-title-text">{activeTask.title}</span>
               {activeTask.difficulty && (
                 <span className={`difficulty-badge difficulty-${activeTask.difficulty}`}>
                   {getDifficultyLabel(activeTask.difficulty)}
