@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { createFileRoute, useParams, useSearch, Link, Navigate } from "@tanstack/react-router";
 import { JS_TASKS } from "../../javascript/data/tasksData";
 import { getGroupMeta } from "../../javascript/data/groupConfig";
+import { getTaskById } from "../../data/tasksRegistry";
 import TaskView from "../../components/task/TaskView";
 import GroupOverviewView from "../../components/task/GroupOverviewView";
 import { usePractice } from "../../context/PracticeContext";
@@ -51,7 +52,7 @@ function JavascriptTaskPage() {
     return <GroupOverviewView groupMeta={groupMeta} groupTasks={groupTasks} />;
   }
 
-  const selectedTask = JS_TASKS.find((t) => String(t.id) === String(taskId));
+  const selectedTask = getTaskById(taskId);
 
   if (!selectedTask) {
     return <Navigate to="/javascript/$taskId" params={{ taskId: "group-Циклы" }} replace />;

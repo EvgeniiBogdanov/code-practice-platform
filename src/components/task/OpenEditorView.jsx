@@ -15,11 +15,16 @@ import JsConsole from "../common/JsConsole";
 import ErrorBoundary from "../common/ErrorBoundary";
 import { runNodeJsCode, clearRunningTimers } from "../../utils/nodeRunner";
 import { getTaskFiles } from "../../utils/taskFiles";
+import { getTaskById, resolveTaskSection } from "../../data/tasksRegistry";
+import { parseSolutionCodeAndExplanation } from "../../utils/solutionParser";
 
-export const OpenEditorView = ({ task, section = "javascript" }) => {
+export const OpenEditorView = ({ task, section, tab = "candidate" }) => {
   const navigate = useNavigate();
 
-  if (!task) {
+  const currentTask = getTaskById(task?.id) || task;
+  const currentSection = section || resolveTaskSection(currentTask);
+
+  if (!currentTask) {
     return (
       <div className="open-not-found-container">
         <div className="coming-soon-icon" style={{ background: "rgba(239, 68, 68, 0.1)", color: "#ef4444" }}>
@@ -51,25 +56,25 @@ export const OpenEditorView = ({ task, section = "javascript" }) => {
   const [isRunning, setIsRunning] = useState(false);
   const [lastExecution, setLastExecution] = useState(null);
 
-  const CandidateComponent = task.candidate;
-  const hasCandidateComponent =
+  const isSolutionMode = tab === "solution";
+  const CandidateComponent = isSolutionMode ? currentTask.solution : currentTask.candidate;
+  const hasVisualComponent =
     Boolean(CandidateComponent) &&
     typeof CandidateComponent !== "string" &&
-    !task.isRaw;
+    !currentTask.isRaw;
 
-  const files = getTaskFiles(task, "candidate");
+  const files = isSolutionMode ? getTaskFiles(currentTask, "solution") : getTaskFiles(currentTask, "candidate");
   const activeFile = files[activeFileIdx] || files[0] || { name: "main.js", code: "" };
 
   const currentCodeRef = useRef(activeFile.code);
   const consoleWrapperRef = useRef(null);
 
   const isJsTask =
-    !hasCandidateComponent ||
-    task.isRaw ||
-    section === "javascript" ||
-    task.section === "javascript" ||
-    String(task.id).startsWith("js") ||
-    Boolean(task.filepath && task.filepath.includes("javascript"));
+    !hasVisualComponent ||
+    currentTask.isRaw ||
+    currentSection === "javascript" ||
+    currentSection === "algorithms" ||
+    Boolean(currentTask.filepath && currentTask.filepath.includes("javascript"));
 
   // Сброс при смене задачи
   useEffect(() => {
@@ -78,20 +83,15 @@ export const OpenEditorView = ({ task, section = "javascript" }) => {
     setIsRunning(false);
     setLastExecution(null);
     clearRunningTimers();
-  }, [task.id]);
+  }, [currentTask.id]);
 
   useEffect(() => {
     currentCodeRef.current = activeFile.code;
-  }, [activeFileIdx, task.id, activeFile.code]);
+  }, [activeFileIdx, currentTask.id, activeFile.code]);
 
   // Выход из развернутого режима
   const handleExit = () => {
-    const targetSection =
-      section === "algorithms" || task.section === "algorithms" || String(task.id).startsWith("algo")
-        ? "algorithms"
-        : section === "javascript" || task.section === "javascript" || String(task.id).startsWith("js")
-        ? "javascript"
-        : "react";
+    const targetSection = resolveTaskSection(currentTask);
 
     navigate({
       to:
@@ -100,7 +100,8 @@ export const OpenEditorView = ({ task, section = "javascript" }) => {
           : targetSection === "javascript"
           ? "/javascript/$taskId"
           : "/react/$taskId",
-      params: { taskId: String(task.id) },
+      params: { taskId: String(currentTask.id) },
+      search: isSolutionMode ? { tab: "solution" } : undefined,
     });
   };
 
@@ -160,7 +161,7 @@ export const OpenEditorView = ({ task, section = "javascript" }) => {
     <div className="open-editor-container">
       {/* Шапка полноэкранного режима /open с кнопками "Поделиться" и "Свернуть" */}
       <div className="open-editor-top-bar">
-        {hasCandidateComponent ? (
+        {hasVisualComponent ? (
           <div className="view-mode-toggle-bar" style={{ margin: 0 }}>
             <button
               className={`view-mode-btn ${viewMode === "code" ? "active" : ""}`}
@@ -206,7 +207,7 @@ export const OpenEditorView = ({ task, section = "javascript" }) => {
         </div>
       </div>
 
-      {hasCandidateComponent && viewMode === "preview" ? (
+      {hasVisualComponent && viewMode === "preview" ? (
         <div className="open-preview-wrapper">
           <div className="browser-mockup" style={{ flex: 1, display: "flex", flexDirection: "column", height: "100%", margin: 0 }}>
             <div className="browser-mockup-header">

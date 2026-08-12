@@ -1,15 +1,19 @@
 import React from "react";
-import { createFileRoute, useParams } from "@tanstack/react-router";
-import { ALGO_TASKS } from "../../../algorithms/data/tasksData";
+import { createFileRoute, useParams, useSearch } from "@tanstack/react-router";
 import OpenEditorView from "../../../components/task/OpenEditorView";
+import { getTaskById } from "../../../data/tasksRegistry";
 
 function OpenAlgorithmsTaskPage() {
   const { taskId } = useParams({ from: "/open/algorithms/$taskId" });
-  const selectedTask = ALGO_TASKS.find((t) => String(t.id) === String(taskId));
+  const search = useSearch({ from: "/open/algorithms/$taskId" });
+  const selectedTask = getTaskById(taskId);
 
-  return <OpenEditorView task={selectedTask} section="algorithms" />;
+  return <OpenEditorView task={selectedTask} section="algorithms" tab={search?.tab || "candidate"} />;
 }
 
 export const Route = createFileRoute("/open/algorithms/$taskId")({
+  validateSearch: (search) => ({
+    tab: typeof search?.tab === "string" ? search.tab : "candidate",
+  }),
   component: OpenAlgorithmsTaskPage,
 });

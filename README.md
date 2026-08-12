@@ -1,10 +1,10 @@
 <div align="center">
 
-# Code Practice Platform · _`v2.1.5`_
+# Code Practice Platform · _`v2.1.6`_
 
 ### Интерактивная платформа для подготовки к техническим собеседованиям и практики.
 
-260+ реальных задач разной сложности
+280+ реальных задач разной сложности
 
 [![Онлайн-версия](https://img.shields.io/badge/Открыть_online-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://evgeniibogdanov.github.io/code-practice-platform/)
 

@@ -23,8 +23,12 @@ import {
   REACT_TS_TASKS,
   REACT_TS_PRACTICE_TASKS,
   REACT_TASKS,
-  ALL_TASKS,
 } from "../react/data/tasksData";
+import {
+  ALL_TASKS as allTasksList,
+  getTaskById,
+  resolveTaskSection,
+} from "../data/tasksRegistry";
 import { JS_TASKS } from "../javascript/data/tasksData";
 import { ALGO_TASKS } from "../algorithms/data/tasksData";
 import { getAlgoGroupMetaByInfoId } from "../algorithms/data/groupConfig";
@@ -87,26 +91,6 @@ const RootLayout = () => {
     }
   }, [pathname]);
 
-  // Определение текущей активной секции по пути URL
-  const activeSection = useMemo(() => {
-    if (pathname.includes("/react")) return "react";
-    if (pathname.includes("/javascript")) return "javascript";
-    if (pathname.includes("/algorithms")) return "algorithms";
-    return "home";
-  }, [pathname]);
-
-  // Список всех задач
-  const allTasksList = useMemo(() => [
-    ...WARMUP_TASKS.map((t) => ({ ...t, difficulty: "warm-up", category: "Разминка", section: "react" })),
-    ...REFACTORING_TASKS.map((t) => ({ ...t, difficulty: "warm-up", category: "Рефакторинг", section: "react" })),
-    ...MAIN_TASKS.map((t) => ({ ...t, difficulty: "middle", category: "Middle", section: "react" })),
-    ...ADVANCED_TASKS.map((t) => ({ ...t, difficulty: "strong", category: "Strong", section: "react" })),
-    ...REACT_TS_TASKS.map((t) => ({ ...t, difficulty: "ts", category: "React + TS (Разминка)", section: "react" })),
-    ...REACT_TS_PRACTICE_TASKS.map((t) => ({ ...t, difficulty: "ts", category: "React + TS (Практика)", section: "react" })),
-    ...JS_TASKS.map((t) => ({ ...t, group: t.group, subgroup: t.subgroup, category: t.group || "JavaScript", section: "javascript" })),
-    ...ALGO_TASKS.map((t) => ({ ...t, group: t.group, subgroup: t.subgroup, category: t.group || "Algorithms", section: "algorithms" })),
-  ], []);
-
   // Определение выбранной задачи по текущему URL
   const selectedTaskId = useMemo(() => {
     const cleanPath = pathname.replace(/^\/+/, "");
@@ -133,6 +117,17 @@ const RootLayout = () => {
     }
     return null;
   }, [pathname]);
+
+  // Определение текущей активной секции по пути URL
+  const activeSection = useMemo(() => {
+    if (pathname.includes("/react")) return "react";
+    if (pathname.includes("/javascript")) return "javascript";
+    if (pathname.includes("/algorithms")) return "algorithms";
+    if (selectedTaskId && !String(selectedTaskId).startsWith("group-")) {
+      return resolveTaskSection(selectedTaskId);
+    }
+    return "home";
+  }, [pathname, selectedTaskId]);
 
   // Stable cache for group/subgroup overview objects to prevent reference thrashing
   const groupTaskCacheRef = useRef({});
@@ -186,7 +181,7 @@ const RootLayout = () => {
         groupTaskCacheRef.current = result;
         return result;
       }
-      const found = allTasksList.find((t) => String(t.id) === String(selectedTaskId));
+      const found = getTaskById(selectedTaskId);
       if (found) return found;
     }
     if (activeSection === "javascript") {
@@ -235,7 +230,7 @@ const RootLayout = () => {
     };
     groupTaskCacheRef.current = result;
     return result;
-  }, [selectedTaskId, activeSection, allTasksList]);
+  }, [selectedTaskId, activeSection]);
 
   // Сохраняем последний просмотренный id per section
   useEffect(() => {
