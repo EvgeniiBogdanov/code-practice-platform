@@ -108,11 +108,39 @@ export const MaterialsTab = ({ selectedTask }) => {
                 />
               );
             })}
+
+            {hasArticles && (
+              <div
+                className="solution-articles-card"
+                style={{ marginTop: "32px", marginBottom: 0 }}
+              >
+                <div className="solution-articles-header">
+                  <span>📚</span> Полезные материалы и статьи
+                </div>
+                <ul className="solution-articles-list">
+                  {selectedTask.articles.map((art, idx) => (
+                    <li key={idx}>
+                      <span className="article-topic">
+                        {art.title}:
+                      </span>{" "}
+                      <a
+                        href={art.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="article-link"
+                      >
+                        {art.urlTitle || "Читать статью"} ↗
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </article>
       )}
 
-      {hasArticles && (
+      {!hasExplanation && hasArticles && (
         <div
           className="solution-articles-card"
           style={{ marginTop: 0, marginBottom: 0 }}

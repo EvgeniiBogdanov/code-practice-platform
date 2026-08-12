@@ -66,6 +66,14 @@ const Playground = () => {
   const [headerSectionDropdownOpen, setHeaderSectionDropdownOpen] = useState(false);
   const sectionDropdownRef = useRef(null);
   const headerSectionDropdownRef = useRef(null);
+  const contentAreaRef = useRef(null);
+
+  useEffect(() => {
+    if (contentAreaRef.current) {
+      contentAreaRef.current.scrollTop = 0;
+    }
+    window.scrollTo(0, 0);
+  }, [selectedTask?.id, activeSection, activeTab]);
 
   useEffect(() => {
     localStorage.setItem("playground_active_section", activeSection);
@@ -863,7 +871,7 @@ const Playground = () => {
           setTheme={setTheme}
         />
 
-        <main className="content-area">
+        <main className="content-area" ref={contentAreaRef}>
           {activeSection === "home" && (
             <HomeDashboard
               setActiveSection={setActiveSection}

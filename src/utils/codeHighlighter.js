@@ -17,11 +17,18 @@ export const highlightJS = (code) => {
       type: "string",
       regex: /^("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/,
     },
+    // Regex literal: /pattern/flags — must come before number and operator rules.
+    // Only matched when context indicates a regex is valid (not division).
+    // Handled via contextual check in the main loop below.
+    {
+      type: "regex",
+      regex: /^\/(?![*/])(?:\\.|\[(?:\\.|[^\]\\])*\]|[^/\\\n])+\/[gimsuy]*/,
+    },
     // Numbers (including decimals)
     { type: "number", regex: /^\b\d+(?:\.\d+)?\b/ },
     // JSX tag punctuation: </  />  <  >
     { type: "jsx-tag-close", regex: /^<\// },
-    { type: "jsx-tag-self-close", regex: /^\/>/ },
+    { type: "jsx-tag-self-close", regex: /^\/>/  },
     { type: "jsx-tag-open", regex: /^<(?=[a-zA-Z])/ },
     { type: "jsx-tag-end", regex: /^>/ },
     // Arrow operator (must come before generic operator rule)
@@ -82,6 +89,13 @@ export const highlightJS = (code) => {
     { type: "space", regex: /^(\s+)/ },
   ];
 
+  // Token types after which a `/` should be treated as regex start (not division)
+  const REGEX_PRECEDING_TOKENS = new Set([
+    "", // start of input
+    "keyword", "operator", "arrow", "comment", "punct",
+    "jsx-tag-open", "jsx-tag-close", "jsx-tag-end", "jsx-tag-self-close",
+  ]);
+
   let html = "";
   let rest = code;
   let insideJsxTag = false;
@@ -91,6 +105,10 @@ export const highlightJS = (code) => {
     let matched = false;
 
     for (const rule of rules) {
+      // Skip regex rule when context indicates division, not a regex literal
+      if (rule.type === "regex" && !REGEX_PRECEDING_TOKENS.has(lastTokenType)) {
+        continue;
+      }
       const m = rule.regex.exec(rest);
       if (m) {
         matched = true;
@@ -107,6 +125,9 @@ export const highlightJS = (code) => {
         } else if (rule.type === "string") {
           html +=
             '<span class="hl-str">' + escapeHtml(text) + "</span>";
+        } else if (rule.type === "regex") {
+          html +=
+            '<span class="hl-regex">' + escapeHtml(text) + "</span>";
         } else if (rule.type === "number") {
           html +=
             '<span class="hl-num">' + escapeHtml(text) + "</span>";

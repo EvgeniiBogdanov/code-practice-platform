@@ -23,6 +23,7 @@ import { FILE_ICON_COLOR } from "../../constants/uiConstants";
 export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
   const context = usePractice();
   const completedTasks = context?.completedTasks || {};
+  const location = useLocation();
 
   const [statusFilter, setStatusFilter] = useState("all"); // "all" | "completed" | "uncompleted"
   const [viewMode, setViewModeState] = useState(() => {
@@ -121,9 +122,9 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
     }));
   };
 
-  // Автоматический скролл по якорным ссылкам при загрузке или смене хэша
+  // Автоматический скролл по якорным ссылкам при загрузке или смене хэша, либо сброс наверх при открытии папки
   React.useEffect(() => {
-    const handleHashScroll = () => {
+    const handleScrollOrAnchor = () => {
       const hash = window.location.hash;
       if (hash) {
         const id = decodeURIComponent(hash.replace("#", ""));
@@ -132,40 +133,30 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
           setTimeout(() => {
             element.scrollIntoView({ behavior: "smooth", block: "start" });
           }, 50);
+          return;
         }
       }
+      // При переходе в новую тему/папку без якоря сбрасываем скролл в начало статьи
+      const contentArea = document.querySelector(".content-area");
+      if (contentArea) {
+        contentArea.scrollTop = 0;
+      }
+      window.scrollTo(0, 0);
     };
 
-    handleHashScroll();
-    window.addEventListener("hashchange", handleHashScroll);
-    return () => window.removeEventListener("hashchange", handleHashScroll);
-  }, []);
+    handleScrollOrAnchor();
+    window.addEventListener("hashchange", handleScrollOrAnchor);
+    return () => window.removeEventListener("hashchange", handleScrollOrAnchor);
+  }, [groupMeta?.name, groupMeta?.title, location.pathname]);
 
   const firstTask = groupTasks[0];
 
   // Спецификация практических задач темы (Раздел 10)
-  const practiceTasksList = [
-    { id: "algo4", title: "Reverse String", desc: "разворот массива на месте", url: "https://leetcode.com/problems/reverse-string/", isInternal: false },
-    { id: "algo2", title: "Valid Palindrome (LeetCode #125)", desc: "проверка палиндрома с помощью двух указателей", isInternal: true },
-    { id: "algo1", title: "Two Sum II — Input Array Is Sorted (LeetCode #167)", desc: "поиск суммы двух чисел за O(1) памяти", isInternal: true },
-    { id: "algo5", title: "Remove Duplicates from Sorted Array (LeetCode #26)", desc: "удаление дубликатов на месте (slow / fast)", url: "https://leetcode.com/problems/remove-duplicates-from-sorted-array/", isInternal: false },
-    { id: "algo6", title: "Move Zeroes (LeetCode #283)", desc: "сдвиг нулей в конец массива на месте", url: "https://leetcode.com/problems/move-zeroes/", isInternal: false },
-    { id: "algo7", title: "Container With Most Water (LeetCode #11)", desc: "наибольшая площадь между столбиками", url: "https://leetcode.com/problems/container-with-most-water/", isInternal: false },
-    { id: "algo3", title: "3Sum (LeetCode #15)", desc: "усложнённая версия с фиксацией элемента и Two Pointers", isInternal: true },
-    { id: "algo8", title: "Linked List Cycle (LeetCode #141)", desc: "вариант slow/fast для связного списка", url: "https://leetcode.com/problems/linked-list-cycle/", isInternal: false },
-    { id: "algo9", title: "Merge Sorted Array (LeetCode #88)", desc: "два указателя по двум массивам", url: "https://leetcode.com/problems/merge-sorted-array/", isInternal: false },
-  ];
+  const practiceTasksList = groupMeta?.practiceTasksList || [];
 
   // Спецификация полезных материалов (Раздел 11)
-  const articleLinksList = [
-    { title: "Что такое метод двух указателей (two pointers)?", urlTitle: "CodeChick — Разбор метода", url: "https://codechick.io/community/330" },
-    { title: "Two Pointers (Два указателя): разбор техники для начинающих", urlTitle: "SprintCode.pro — Руководство", url: "https://sprintcode.pro/ru/blog/two-pointers" },
-    { title: "Алгосы от Влада, часть 2. Два указателя", urlTitle: "Блог Влада Крыловского", url: "https://krilovskiy.com/posts/algo-patterns-two-pointers/" },
-    { title: "Two Pointers — паттерн", urlTitle: "Habr — Обзор паттерна", url: "https://habr.com/ru/articles/1020222" },
-    { title: "Список задач с тегом \"Two Pointers\"", urlTitle: "LeetCode — Tag List", url: "https://leetcode.com/tag/two-pointers/" },
-  ];
+  const articleLinksList = groupMeta?.articleLinksList || [];
 
-  const location = useLocation();
   const isJs = location.pathname.includes("/javascript");
   const isReact = location.pathname.includes("/react");
   const taskRoute = isJs ? "/javascript/$taskId" : isReact ? "/react/$taskId" : "/algorithms/$taskId";
@@ -520,7 +511,7 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
               }}
             >
               <BookOpen size={20} style={{ color: groupMeta?.color || "#3b82f6", flexShrink: 0 }} />
-              <span>Полное руководство по алгоритмической технике двух указателей</span>
+              <span>{groupMeta?.guideTitle || groupMeta?.desc || `Полное руководство по разделу ${groupMeta?.title || groupMeta?.name}`}</span>
             </h2>
 
             {blocks.map((block, idx) => {

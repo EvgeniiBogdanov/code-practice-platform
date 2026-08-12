@@ -1070,8 +1070,7 @@ export const Sidebar = ({
               const completedGroupTasks = tasks.filter((t) => isTaskSolved(t.id));
               const isGroupCompleted =
                 completedGroupTasks.length > 0 && completedGroupTasks.length === tasks.length;
-              const isGroupOpen =
-                expandedJsGroups[groupName] !== undefined ? Boolean(expandedJsGroups[groupName]) : true;
+              const isGroupOpen = Boolean(expandedJsGroups[groupName]);
               const groupMeta = algoGroupMetaMap[groupName] || getAlgoGroupMeta(groupName);
               const isFolderActive =
                 selectedTaskIdStr === groupMeta.infoId ||
