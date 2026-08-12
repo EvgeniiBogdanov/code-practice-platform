@@ -10,3 +10,6 @@ const loadData = (success) => {
 loadData(true)
   .then(console.log)
   .catch(console.error);
+// Пример вызова:
+// "Загрузка завершена"
+// "Данные получены"

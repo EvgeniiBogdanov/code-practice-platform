@@ -13,3 +13,7 @@ const groupBy = (items, key) => {
 
 // Пример вызова:
 console.log(groupBy(users, "city"));
+// Map(2) {
+//   'Москва' => [ { name: 'Аня', city: 'Москва' }, { name: 'Оля', city: 'Москва' } ],
+//   'Питер' => [ { name: 'Петя', city: 'Питер' } ]
+// }

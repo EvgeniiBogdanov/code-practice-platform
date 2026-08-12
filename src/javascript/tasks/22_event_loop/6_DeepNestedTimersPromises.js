@@ -22,3 +22,4 @@ new Promise((resolve) => {
     console.log(res);
   }, 0);
 });
+// Порядок вывода: begins, promise 2, setTimeout 1, promise 1, setTimeout 2, dot then 1, resolve 1

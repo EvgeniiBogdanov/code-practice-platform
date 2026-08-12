@@ -599,16 +599,3 @@ freq.forEach((value, key) => { ... });
 - задача выглядит как "для каждого элемента найти пару / проверить условие среди остальных" — почти всегда это можно свести к O(n) через словарь вместо O(n²) вложенных циклов.
 
 ---
-
-## 10. Источники
-
-Материал составлен на основе и с опорой на следующие авторитетные ресурсы:
-
-- MDN Web Docs — [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) и [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) (описание поведения, SameValueZero, порядок ключей).
-- MDN Web Docs — [Equality comparisons and sameness](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Equality_comparisons_and_sameness).
-- ECMAScript Language Specification (TC39) — раздел [OrdinaryOwnPropertyKeys](https://tc39.es/ecma262/) (правила порядка перечисления ключей объекта).
-- Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein — _"Introduction to Algorithms"_ (глава про хеш-таблицы: хеш-функции, коллизии, метод цепочек, открытая адресация, амортизированный анализ).
-- Gayle Laakmann McDowell — _"Cracking the Coding Interview"_ (раздел про хеш-таблицы и типовые задачи на частотные словари).
-- V8 Blog / V8.dev — материалы о внутреннем устройстве объектов, hidden classes и оптимизациях движка.
-
----

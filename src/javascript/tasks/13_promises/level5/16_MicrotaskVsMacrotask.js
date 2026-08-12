@@ -10,3 +10,4 @@ Promise.resolve()
   .then(() => console.log("4"));
 
 console.log("5");
+// Порядок вывода: 1, 5, 3, 4, 2

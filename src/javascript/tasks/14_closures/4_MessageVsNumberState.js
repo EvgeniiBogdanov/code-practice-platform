@@ -17,3 +17,5 @@ const log = increment();
 increment();
 increment();
 log();
+// Incremented to 1
+// Number: 3

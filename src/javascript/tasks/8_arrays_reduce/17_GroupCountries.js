@@ -1,5 +1,20 @@
-// Группировка по country и id (Company X)
-// Напишите функцию groupCountries(data), которая группирует пользователей по странам и их id.
+/*
+ * Необходимо сгруппировать данные в объект, отсортировав их по странам
+ */
+
+/*
+  const result = {
+    Russia: {
+      1: { age: 24, name: "Иван", country: "Russia" },
+      3: { age: 22, name: "Алексей", country: "Russia" },
+      5: { age: 20, name: "Антон", country: "Russia" },
+    },
+    Belarus: {
+      2: { age: 23, name: "Дмитрий", country: "Belarus" },
+      4: { age: 21, name: "Олег", country: "Belarus" },
+    },
+  };
+*/
 
 const data = [
   { id: 1, age: 24, name: "Иван", country: "Russia" },
@@ -10,8 +25,7 @@ const data = [
 ];
 
 const groupCountries = (data) => {
-  // Решение тут
+  // Ваш код здесь
 };
 
-// Пример вызова:
 console.log(groupCountries(data));
