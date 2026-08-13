@@ -24,29 +24,6 @@ export const OpenEditorView = ({ task, section, tab = "candidate" }) => {
   const currentTask = getTaskById(task?.id) || task;
   const currentSection = section || resolveTaskSection(currentTask);
 
-  if (!currentTask) {
-    return (
-      <div className="open-not-found-container">
-        <div className="coming-soon-icon" style={{ background: "rgba(239, 68, 68, 0.1)", color: "#ef4444" }}>
-          <FileQuestion size={36} />
-        </div>
-        <h2 className="coming-soon-title" style={{ fontSize: "22px", marginBottom: "8px" }}>
-          Задача не найдена
-        </h2>
-        <p className="coming-soon-desc" style={{ maxWidth: "460px", margin: "0 auto 24px" }}>
-          Запрашиваемая задача не найдена в каталоге или ссылка некорректна.
-        </p>
-        <button
-          onClick={() => navigate({ to: "/home" })}
-          className="home-section-btn"
-          style={{ cursor: "pointer" }}
-        >
-          <Home size={16} /> На Главную
-        </button>
-      </div>
-    );
-  }
-
   const [activeFileIdx, setActiveFileIdx] = useState(0);
   const [viewMode, setViewMode] = useState("code"); // 'code' | 'preview'
   const [linkCopied, setLinkCopied] = useState(false);
@@ -57,13 +34,17 @@ export const OpenEditorView = ({ task, section, tab = "candidate" }) => {
   const [lastExecution, setLastExecution] = useState(null);
 
   const isSolutionMode = tab === "solution";
-  const CandidateComponent = isSolutionMode ? currentTask.solution : currentTask.candidate;
+  const CandidateComponent = isSolutionMode ? currentTask?.solution : currentTask?.candidate;
   const hasVisualComponent =
     Boolean(CandidateComponent) &&
     typeof CandidateComponent !== "string" &&
-    !currentTask.isRaw;
+    !currentTask?.isRaw;
 
-  const files = isSolutionMode ? getTaskFiles(currentTask, "solution") : getTaskFiles(currentTask, "candidate");
+  const files = currentTask
+    ? isSolutionMode
+      ? getTaskFiles(currentTask, "solution")
+      : getTaskFiles(currentTask, "candidate")
+    : [];
   const activeFile = files[activeFileIdx] || files[0] || { name: "main.js", code: "" };
 
   const currentCodeRef = useRef(activeFile.code);
@@ -71,26 +52,28 @@ export const OpenEditorView = ({ task, section, tab = "candidate" }) => {
 
   const isJsTask =
     !hasVisualComponent ||
-    currentTask.isRaw ||
+    currentTask?.isRaw ||
     currentSection === "javascript" ||
     currentSection === "algorithms" ||
-    Boolean(currentTask.filepath && currentTask.filepath.includes("javascript"));
+    Boolean(currentTask?.filepath && currentTask.filepath.includes("javascript"));
 
   // Сброс при смене задачи
   useEffect(() => {
+    if (!currentTask) return;
     setActiveFileIdx(0);
     setConsoleLogs([]);
     setIsRunning(false);
     setLastExecution(null);
     clearRunningTimers();
-  }, [currentTask.id]);
+  }, [currentTask?.id]);
 
   useEffect(() => {
     currentCodeRef.current = activeFile.code;
-  }, [activeFileIdx, currentTask.id, activeFile.code]);
+  }, [activeFileIdx, currentTask?.id, activeFile.code]);
 
   // Выход из развернутого режима
   const handleExit = () => {
+    if (!currentTask) return;
     const targetSection = resolveTaskSection(currentTask);
 
     navigate({
@@ -116,6 +99,29 @@ export const OpenEditorView = ({ task, section, tab = "candidate" }) => {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [currentTask?.id, currentSection]);
+
+  if (!currentTask) {
+    return (
+      <div className="open-not-found-container">
+        <div className="coming-soon-icon" style={{ background: "rgba(239, 68, 68, 0.1)", color: "#ef4444" }}>
+          <FileQuestion size={36} />
+        </div>
+        <h2 className="coming-soon-title" style={{ fontSize: "22px", marginBottom: "8px" }}>
+          Задача не найдена
+        </h2>
+        <p className="coming-soon-desc" style={{ maxWidth: "460px", margin: "0 auto 24px" }}>
+          Запрашиваемая задача не найдена в каталоге или ссылка некорректна.
+        </p>
+        <button
+          onClick={() => navigate({ to: "/home" })}
+          className="home-section-btn"
+          style={{ cursor: "pointer" }}
+        >
+          <Home size={16} /> На Главную
+        </button>
+      </div>
+    );
+  }
 
   // Скопировать прямую ссылку на открытый редактор
   const handleCopyLink = () => {

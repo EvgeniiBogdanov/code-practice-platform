@@ -33,8 +33,6 @@ export const CommandPaletteModal = ({
   const paletteQuery = propPaletteQuery !== undefined ? propPaletteQuery : storePaletteQuery;
   const setPaletteQuery = propSetPaletteQuery || storeSetPaletteQuery;
 
-  if (!paletteOpen) return null;
-
   const deferredQuery = React.useDeferredValue(paletteQuery);
 
   // Filter tasks by current active section (home shows all)
@@ -57,6 +55,8 @@ export const CommandPaletteModal = ({
       );
     });
   }, [sectionTasks, deferredQuery]);
+
+  if (!paletteOpen) return null;
 
   const sectionLabel = activeSection === "home"
     ? "Все разделы"

@@ -47,8 +47,6 @@ export const CheatSheetModal = ({
     }
   }, [cheatSheetOpen, activeSection, currentSectionConfig, cheatCategory, setCheatCategory]);
 
-  if (!cheatSheetOpen) return null;
-
   const deferredCheatSearch = React.useDeferredValue(cheatSearch);
   const currentCategoryData = CHEAT_SHEET_DATA[cheatCategory] || [];
 
@@ -61,6 +59,8 @@ export const CheatSheetModal = ({
         item.code.toLowerCase().includes(q)
     );
   }, [currentCategoryData, deferredCheatSearch]);
+
+  if (!cheatSheetOpen) return null;
 
   return (
     <div className="cheatsheet-drawer-overlay" onClick={() => setCheatSheetOpen(false)}>
