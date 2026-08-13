@@ -1,6 +1,7 @@
 /**
  * tagEngine.js
- * Движок автозакрытия и автопереименования тегов HTML / JSX / React (Auto Close Tag & Auto Rename Tag).
+ * Высокопроизводительный движок автозакрытия и синхронного автопереименования тегов HTML / JSX / React
+ * (Auto Close Tag & Auto Rename Tag) в стиле VS Code / WebStorm.
  */
 
 export const VOID_HTML_TAGS = new Set([
@@ -20,6 +21,141 @@ export const VOID_HTML_TAGS = new Set([
   "wbr",
 ]);
 
+export const KNOWN_HTML_TAGS = new Set([
+  "a",
+  "abbr",
+  "address",
+  "article",
+  "aside",
+  "audio",
+  "b",
+  "base",
+  "bdi",
+  "bdo",
+  "blockquote",
+  "body",
+  "button",
+  "canvas",
+  "caption",
+  "cite",
+  "code",
+  "col",
+  "colgroup",
+  "data",
+  "datalist",
+  "dd",
+  "del",
+  "details",
+  "dfn",
+  "dialog",
+  "div",
+  "dl",
+  "dt",
+  "em",
+  "embed",
+  "fieldset",
+  "figcaption",
+  "figure",
+  "footer",
+  "form",
+  "h1",
+  "h2",
+  "h3",
+  "h4",
+  "h5",
+  "h6",
+  "head",
+  "header",
+  "hgroup",
+  "hr",
+  "html",
+  "i",
+  "iframe",
+  "img",
+  "input",
+  "ins",
+  "kbd",
+  "label",
+  "legend",
+  "li",
+  "link",
+  "main",
+  "map",
+  "mark",
+  "menu",
+  "meta",
+  "meter",
+  "nav",
+  "noscript",
+  "object",
+  "ol",
+  "optgroup",
+  "option",
+  "output",
+  "p",
+  "picture",
+  "portal",
+  "pre",
+  "progress",
+  "q",
+  "rp",
+  "rt",
+  "ruby",
+  "s",
+  "samp",
+  "script",
+  "section",
+  "select",
+  "slot",
+  "small",
+  "source",
+  "span",
+  "strong",
+  "style",
+  "sub",
+  "summary",
+  "sup",
+  "svg",
+  "table",
+  "tbody",
+  "td",
+  "template",
+  "textarea",
+  "tfoot",
+  "th",
+  "thead",
+  "time",
+  "title",
+  "tr",
+  "track",
+  "u",
+  "ul",
+  "var",
+  "video",
+  "wbr",
+  // SVG tags
+  "circle",
+  "clipPath",
+  "defs",
+  "ellipse",
+  "foreignObject",
+  "g",
+  "image",
+  "line",
+  "linearGradient",
+  "mask",
+  "path",
+  "pattern",
+  "polygon",
+  "polyline",
+  "radialGradient",
+  "rect",
+  "stop",
+  "text",
+  "tspan",
+  "use",
+]);
+
 /**
  * Парсинг всех тегов JSX / HTML в документе
  */
@@ -33,14 +169,14 @@ export function parseJsxTags(code) {
   while (i < len) {
     const ch = code[i];
 
-    // Пропуск однострочных комментариев
+    // Пропуск однострочных комментариев //
     if (ch === "/" && code[i + 1] === "/") {
       i += 2;
       while (i < len && code[i] !== "\n") i++;
       continue;
     }
 
-    // Пропуск многострочных комментариев
+    // Пропуск многострочных комментариев /* */
     if (ch === "/" && code[i + 1] === "*") {
       i += 2;
       while (i < len && !(code[i] === "*" && code[i + 1] === "/")) i++;
@@ -48,7 +184,7 @@ export function parseJsxTags(code) {
       continue;
     }
 
-    // Пропуск HTML комментариев
+    // Пропуск HTML комментариев <!-- -->
     if (ch === "<" && code.substring(i, i + 4) === "<!--") {
       i += 4;
       while (i < len && code.substring(i, i + 3) !== "-->") i++;
@@ -56,7 +192,7 @@ export function parseJsxTags(code) {
       continue;
     }
 
-    // Пропуск строковых литералов вне тегов
+    // Пропуск строковых литералов вне тегов ("...", '...', `...`)
     if (ch === '"' || ch === "'" || ch === "`") {
       const quote = ch;
       i++;
@@ -104,7 +240,7 @@ export function parseJsxTags(code) {
         continue;
       }
 
-      // Извлечение имени тега (поддержка букв, цифр, _, $, -, ., :)
+      // Извлечение имени тега (буквы, цифры, _, $, -, ., :)
       const nameStart = i;
       while (i < len && /[a-zA-Z0-9_$.:-]/.test(code[i])) {
         i++;
@@ -138,7 +274,7 @@ export function parseJsxTags(code) {
           continue;
         }
 
-        if (c === '"' || c === "'") {
+        if (c === '"' || c === "'" || c === "`") {
           inAttrString = c;
           i++;
           continue;
@@ -183,7 +319,10 @@ export function parseJsxTags(code) {
           type = "close";
         } else if (isSelfClosing) {
           type = "selfClosing";
-        } else if (VOID_HTML_TAGS.has(tagName.toLowerCase()) && !/^[A-Z]/.test(tagName)) {
+        } else if (
+          VOID_HTML_TAGS.has(tagName.toLowerCase()) &&
+          !/^[A-Z]/.test(tagName)
+        ) {
           type = "selfClosing";
         } else {
           type = "open";
@@ -225,9 +364,17 @@ export function getTagPairs(tags) {
     } else if (tag.type === "close") {
       let matchIdx = -1;
 
-      // 1. Поиск точно совпадающего по имени открывающего тега в стеке
+      // Поиск ближайшего совпадающего открывающего тега в стеке
       for (let i = stack.length - 1; i >= 0; i--) {
-        if (stack[i].name.toLowerCase() === tag.name.toLowerCase()) {
+        if (tag.isFragment && stack[i].isFragment) {
+          matchIdx = i;
+          break;
+        }
+        if (
+          !tag.isFragment &&
+          !stack[i].isFragment &&
+          stack[i].name.toLowerCase() === tag.name.toLowerCase()
+        ) {
           matchIdx = i;
           break;
         }
@@ -237,11 +384,6 @@ export function getTagPairs(tags) {
         const openTag = stack[matchIdx];
         pairs.push({ openTag, closeTag: tag });
         stack.splice(matchIdx, stack.length - matchIdx);
-      } else if (stack.length > 0) {
-        // 2. Если имена отличаются (например, в процессе переименования тега),
-        // верхний открывающий тег в стеке является структурной парой
-        const openTag = stack.pop();
-        pairs.push({ openTag, closeTag: tag });
       }
     }
   }
@@ -252,15 +394,23 @@ export function getTagPairs(tags) {
 /**
  * Поиск диапазона изменений между старым и новым кодом
  */
-function getDiffRange(oldStr, newStr) {
+export function getDiffRange(oldStr, newStr) {
   let start = 0;
-  while (start < oldStr.length && start < newStr.length && oldStr[start] === newStr[start]) {
+  while (
+    start < oldStr.length &&
+    start < newStr.length &&
+    oldStr[start] === newStr[start]
+  ) {
     start++;
   }
 
   let oldEnd = oldStr.length;
   let newEnd = newStr.length;
-  while (oldEnd > start && newEnd > start && oldStr[oldEnd - 1] === newStr[newEnd - 1]) {
+  while (
+    oldEnd > start &&
+    newEnd > start &&
+    oldStr[oldEnd - 1] === newStr[newEnd - 1]
+  ) {
     oldEnd--;
     newEnd--;
   }
@@ -275,6 +425,7 @@ function getDiffRange(oldStr, newStr) {
 
 /**
  * Auto Rename Tag: Синхронное переименование парного тега при редактировании названия
+ * Работает строго в границах имени тега и никогда не ломает разметку при вводе внутри тега.
  */
 export function handleAutoRenameTag(oldCode, newCode, cursorPos) {
   if (!oldCode || !newCode || oldCode === newCode) {
@@ -297,16 +448,19 @@ export function handleAutoRenameTag(oldCode, newCode, cursorPos) {
   for (const pair of pairs) {
     const { openTag, closeTag } = pair;
 
-    // --- Вариант 1: Изменение в открывающем теге <tagName ...> ---
-    const isOpenTagMatch =
-      (oldStart >= openTag.start && oldEnd <= openTag.nameEnd + 1) ||
-      (openTag.isFragment && oldStart >= openTag.start && oldEnd <= openTag.end);
+    // --- Вариант 1: Изменение строго в имени открывающего тега <tagName ...> ---
+    const isOpenTagMatch = openTag.isFragment
+      ? oldStart === openTag.nameStart && oldEnd === openTag.nameStart
+      : oldStart >= openTag.nameStart && oldEnd <= openTag.nameEnd;
 
     if (isOpenTagMatch) {
-      // Ищем новое имя открывающего тега в newCode
+      // Ищем новое имя открывающего тега в newCode от nameStart
       const newNameStart = openTag.nameStart;
       let newNameEnd = newNameStart;
-      while (newNameEnd < newCode.length && /[a-zA-Z0-9_$.:-]/.test(newCode[newNameEnd])) {
+      while (
+        newNameEnd < newCode.length &&
+        /[a-zA-Z0-9_$.:-]/.test(newCode[newNameEnd])
+      ) {
         newNameEnd++;
       }
       const newTagName = newCode.substring(newNameStart, newNameEnd);
@@ -317,8 +471,14 @@ export function handleAutoRenameTag(oldCode, newCode, cursorPos) {
         const closeNameEndInNew = closeTag.nameEnd + delta;
 
         // Проверяем, что в newCode на месте закрывающего тега действительно старое имя
-        const currentCloseName = newCode.substring(closeNameStartInNew, closeNameEndInNew);
-        if (currentCloseName === closeTag.name || (closeTag.isFragment && currentCloseName === "")) {
+        const currentCloseName = newCode.substring(
+          closeNameStartInNew,
+          closeNameEndInNew,
+        );
+        if (
+          currentCloseName === closeTag.name ||
+          (closeTag.isFragment && currentCloseName === "")
+        ) {
           const finalCode =
             newCode.substring(0, closeNameStartInNew) +
             newTagName +
@@ -329,16 +489,19 @@ export function handleAutoRenameTag(oldCode, newCode, cursorPos) {
       }
     }
 
-    // --- Вариант 2: Изменение в закрывающем теге </tagName> ---
-    const isCloseTagMatch =
-      (oldStart >= closeTag.start && oldEnd <= closeTag.nameEnd + 1) ||
-      (closeTag.isFragment && oldStart >= closeTag.start && oldEnd <= closeTag.end);
+    // --- Вариант 2: Изменение строго в имени закрывающего тега </tagName> ---
+    const isCloseTagMatch = closeTag.isFragment
+      ? oldStart === closeTag.nameStart && oldEnd === closeTag.nameStart
+      : oldStart >= closeTag.nameStart && oldEnd <= closeTag.nameEnd;
 
     if (isCloseTagMatch) {
-      // Ищем новое имя закрывающего тега в newCode
+      // Ищем новое имя закрывающего тега в newCode от nameStart
       const newNameStart = closeTag.nameStart;
       let newNameEnd = newNameStart;
-      while (newNameEnd < newCode.length && /[a-zA-Z0-9_$.:-]/.test(newCode[newNameEnd])) {
+      while (
+        newNameEnd < newCode.length &&
+        /[a-zA-Z0-9_$.:-]/.test(newCode[newNameEnd])
+      ) {
         newNameEnd++;
       }
       const newTagName = newCode.substring(newNameStart, newNameEnd);
@@ -348,15 +511,24 @@ export function handleAutoRenameTag(oldCode, newCode, cursorPos) {
         const openNameEndInNew = openTag.nameEnd;
 
         // Проверяем, что в newCode на месте открывающего тега действительно старое имя
-        const currentOpenName = newCode.substring(openNameStartInNew, openNameEndInNew);
-        if (currentOpenName === openTag.name || (openTag.isFragment && currentOpenName === "")) {
+        const currentOpenName = newCode.substring(
+          openNameStartInNew,
+          openNameEndInNew,
+        );
+        if (
+          currentOpenName === openTag.name ||
+          (openTag.isFragment && currentOpenName === "")
+        ) {
           const openDelta = newTagName.length - openTag.name.length;
           const finalCode =
             newCode.substring(0, openNameStartInNew) +
             newTagName +
             newCode.substring(openNameEndInNew);
 
-          return { updatedCode: finalCode, newCursorPos: cursorPos + openDelta };
+          return {
+            updatedCode: finalCode,
+            newCursorPos: cursorPos + openDelta,
+          };
         }
       }
     }
@@ -367,9 +539,10 @@ export function handleAutoRenameTag(oldCode, newCode, cursorPos) {
 
 /**
  * Auto Close Tag: Проверка необходимости вставки закрывающего тега при вводе '>'
+ * Корректно учитывает вложенные выражения {...}, стрелочные функции =>, кавычки и void-теги.
  */
 export function checkAutoCloseTag(textBeforeCursor, textAfterCursor = "") {
-  if (!textBeforeCursor) return null;
+  if (!textBeforeCursor || typeof textBeforeCursor !== "string") return null;
 
   // React Fragment: <>
   if (textBeforeCursor.endsWith("<")) {
@@ -377,15 +550,63 @@ export function checkAutoCloseTag(textBeforeCursor, textAfterCursor = "") {
   }
 
   // Закрывающий тег уже формируется (</tag...) -> не дублировать
-  if (textBeforeCursor.match(/<\/[a-zA-Z0-9_$.:-]*$/)) {
+  if (/<\/[a-zA-Z0-9_$.:-]*$/.test(textBeforeCursor)) {
     return null;
   }
 
-  const match = textBeforeCursor.match(/<([a-zA-Z0-9_$.:-]+)([^>]*)$/);
-  if (!match) return null;
+  // Сканируем назад от курсора для нахождения открывающего '<' текущего тега
+  const len = textBeforeCursor.length;
+  let inString = null;
+  let braceDepth = 0;
+  let tagStart = -1;
 
-  const tagName = match[1];
-  const tagAttrs = match[2];
+  for (let i = len - 1; i >= 0; i--) {
+    const ch = textBeforeCursor[i];
+
+    if (ch === "}" && !inString) {
+      braceDepth++;
+      continue;
+    }
+    if (ch === "{" && !inString) {
+      if (braceDepth > 0) braceDepth--;
+      continue;
+    }
+
+    // Обработка строк внутри атрибутов
+    if (
+      (ch === '"' || ch === "'" || ch === "`") &&
+      textBeforeCursor[i - 1] !== "\\"
+    ) {
+      if (inString === ch) {
+        inString = null;
+      } else if (!inString) {
+        inString = ch;
+      }
+      continue;
+    }
+
+    if (!inString && braceDepth === 0) {
+      if (ch === ">") {
+        // Тег уже был закрыт перед курсором
+        return null;
+      }
+      if (ch === "<") {
+        tagStart = i;
+        break;
+      }
+    }
+  }
+
+  if (tagStart === -1) return null;
+
+  const tagContent = textBeforeCursor.substring(tagStart);
+
+  // Должен начинаться с <tagName (с возможными атрибутами)
+  const tagMatch = tagContent.match(/^<([a-zA-Z0-9_$.:-]+)([\s\S]*)$/);
+  if (!tagMatch) return null;
+
+  const tagName = tagMatch[1];
+  const tagAttrs = tagMatch[2];
 
   // Самозакрывающийся тег с косой чертой />
   if (tagAttrs.trim().endsWith("/")) {
@@ -397,8 +618,29 @@ export function checkAutoCloseTag(textBeforeCursor, textAfterCursor = "") {
     return null;
   }
 
-  // Если непосредственно после курсора уже есть парный закрывающий тег
-  if (textAfterCursor.trim().startsWith(`</${tagName}>`)) {
+  // Проверка на JS операторы сравнения (например, `i < len`, `x < y`)
+  const textBeforeTag = textBeforeCursor.substring(0, tagStart).trimEnd();
+  if (
+    /(===|!==|==|!=|<=|>=|\+|-|\*|\/|%|&&|\|\||\?|:|\b(if|while|for|return|switch|case|typeof|instanceof))\s*\(?$/i.test(
+      textBeforeTag,
+    )
+  ) {
+    const isReactComponent = /^[A-Z]/.test(tagName);
+    const isStandardHtmlTag =
+      KNOWN_HTML_TAGS.has(tagName.toLowerCase()) || tagName.includes("-");
+    if (!isReactComponent && !isStandardHtmlTag) {
+      return null;
+    }
+  }
+
+  // Если непосредственно после курсора уже есть закрывающий тег или символ '>'
+  const trimmedAfter = textAfterCursor.trimStart();
+  if (
+    trimmedAfter.startsWith(`</${tagName}>`) ||
+    trimmedAfter.startsWith(`</${tagName}`) ||
+    trimmedAfter.startsWith("</>") ||
+    trimmedAfter.startsWith(">")
+  ) {
     return null;
   }
 
@@ -429,8 +671,6 @@ export function findLastUnclosedTag(textBeforeCursor) {
       }
       if (idx !== -1) {
         stack.splice(idx, stack.length - idx);
-      } else if (stack.length > 0) {
-        stack.pop();
       }
     }
   }

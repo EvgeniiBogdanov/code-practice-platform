@@ -741,7 +741,10 @@ export const CodeEditor = ({
       const lastLine = textBefore.substring(textBefore.lastIndexOf("\n") + 1);
       const currentIndent = lastLine.match(/^\s*/)[0];
 
-      if (prevChar === "{" && nextChar === "}") {
+      if (
+        (prevChar === "{" && nextChar === "}") ||
+        (prevChar === ">" && nextChar === "<")
+      ) {
         e.preventDefault();
         const extraIndent = currentIndent + "  ";
         const updated =
