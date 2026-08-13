@@ -55,16 +55,16 @@ const NotFoundComponent = () => {
         Запрашиваемый адрес или задача не существует. Возможно, ссылка устарела или содержит опечатку.
       </p>
       <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-        <Link to="/home" className="home-section-btn">
+        <Link to="/home" className="home-section-btn home-section-btn--default">
           <Home size={16} /> На Главную
         </Link>
-        <Link to="/react" className="home-section-btn" style={{ background: "var(--notion-blue)" }}>
+        <Link to="/react" className="home-section-btn home-section-btn--blue">
           <Code2 size={16} /> Раздел React
         </Link>
-        <Link to="/javascript" className="home-section-btn" style={{ background: "#f59e0b" }}>
+        <Link to="/javascript" className="home-section-btn home-section-btn--amber">
           <Zap size={16} /> Раздел JavaScript
         </Link>
-        <Link to="/algorithms" className="home-section-btn" style={{ background: "#a855f7" }}>
+        <Link to="/algorithms" className="home-section-btn home-section-btn--purple">
           <Brain size={16} /> Раздел Алгоритмы
         </Link>
       </div>
@@ -260,10 +260,14 @@ const RootLayout = () => {
     return localStorage.getItem("playground_sidebar_open") !== "false";
   });
   const [sidebarWidth, setSidebarWidth] = useState(() => {
-    if (typeof window === "undefined") return 260;
+    if (typeof window === "undefined") return 280;
     const saved = localStorage.getItem("playground_sidebar_width");
-    const parsed = saved ? parseInt(saved, 10) : 260;
-    return isNaN(parsed) ? 260 : Math.min(Math.max(parsed, 200), 480);
+    if (!saved || saved === "260" || saved === "240" || saved === "230" || saved === "220") {
+      localStorage.setItem("playground_sidebar_width", "280");
+      return 280;
+    }
+    const parsed = parseInt(saved, 10);
+    return isNaN(parsed) ? 280 : Math.min(Math.max(parsed, 220), 480);
   });
 
   const updateSidebarWidth = useCallback((width) => {
@@ -651,7 +655,7 @@ const RootLayout = () => {
     if (activeSection === "react") {
       return {
         title: "Статистика React",
-        icon: <Code2 size={18} style={{ color: "var(--notion-blue)" }} />,
+        icon: <Code2 size={18} style={{ color: "var(--accent-blue)" }} />,
         total: totalTasks,
         solved: solvedCount,
         unsolved: unsolvedCount,
@@ -701,7 +705,7 @@ const RootLayout = () => {
 
       return {
         title: "Общая статистика платформы",
-        icon: <Zap size={18} style={{ color: "var(--notion-blue)" }} />,
+        icon: <Zap size={18} style={{ color: "var(--accent-blue)" }} />,
         total: allTotal,
         solved: allSolved,
         unsolved: allUnsolved,
@@ -808,8 +812,8 @@ const RootLayout = () => {
     }
 
     return [
-      { id: "category-warmup", folderId: "group-warmup", name: "Разминка", icon: <Flame size={15} style={{ color: "var(--notion-red)" }} />, tasks: WARMUP_TASKS, completed: completedWarmup, total: totalWarmup },
-      { id: "category-refactoring", folderId: "group-refactoring", name: "Рефакторинг", icon: <Wrench size={15} style={{ color: "var(--notion-blue)" }} />, tasks: REFACTORING_TASKS, completed: completedRefactoring, total: totalRefactoring },
+      { id: "category-warmup", folderId: "group-warmup", name: "Разминка", icon: <Flame size={15} style={{ color: "var(--accent-red)" }} />, tasks: WARMUP_TASKS, completed: completedWarmup, total: totalWarmup },
+      { id: "category-refactoring", folderId: "group-refactoring", name: "Рефакторинг", icon: <Wrench size={15} style={{ color: "var(--accent-blue)" }} />, tasks: REFACTORING_TASKS, completed: completedRefactoring, total: totalRefactoring },
       { id: "category-middle", folderId: "group-middle", name: "Middle", icon: <Rocket size={15} style={{ color: "var(--color-success)" }} />, tasks: MAIN_TASKS, completed: completedMain, total: totalMain },
       { id: "category-strong", folderId: "group-strong", name: "Strong", icon: <Brain size={15} style={{ color: "var(--color-accent-purple)" }} />, tasks: ADVANCED_TASKS, completed: completedAdvanced, total: totalAdvanced },
       { id: "category-ts", folderId: "group-ts", name: "React + TS (Разминка)", icon: <Zap size={15} style={{ color: "var(--color-warning-light)" }} />, tasks: REACT_TS_TASKS, completed: completedReactTs, total: totalReactTs },
@@ -823,9 +827,9 @@ const RootLayout = () => {
 
     // React categories & groups
     if (selectedTask.id === "group-warmup" || WARMUP_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "Разминка", categoryIcon: <Flame size={15} style={{ color: "var(--notion-red)" }} />, taskIcon: defaultFileIcon, currentCategoryTasks: WARMUP_TASKS, categoryId: "category-warmup" };
+      return { taskCategory: "Разминка", categoryIcon: <Flame size={15} style={{ color: "var(--accent-red)" }} />, taskIcon: defaultFileIcon, currentCategoryTasks: WARMUP_TASKS, categoryId: "category-warmup" };
     if (selectedTask.id === "group-refactoring" || REFACTORING_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "Рефакторинг", categoryIcon: <Wrench size={15} style={{ color: "var(--notion-blue)" }} />, taskIcon: defaultFileIcon, currentCategoryTasks: REFACTORING_TASKS, categoryId: "category-refactoring" };
+      return { taskCategory: "Рефакторинг", categoryIcon: <Wrench size={15} style={{ color: "var(--accent-blue)" }} />, taskIcon: defaultFileIcon, currentCategoryTasks: REFACTORING_TASKS, categoryId: "category-refactoring" };
     if (selectedTask.id === "group-middle" || MAIN_TASKS.some((t) => t.id === selectedTask.id))
       return { taskCategory: "Middle", categoryIcon: <Rocket size={15} style={{ color: "var(--color-success)" }} />, taskIcon: defaultFileIcon, currentCategoryTasks: MAIN_TASKS, categoryId: "category-middle" };
     if (selectedTask.id === "group-strong" || ADVANCED_TASKS.some((t) => t.id === selectedTask.id))
@@ -958,7 +962,7 @@ const RootLayout = () => {
           hideTooltip={hideTooltip}
         />
 
-        {/* Notion-style Mobile Sidebar Overlay Backdrop */}
+        {/* style Mobile Sidebar Overlay Backdrop */}
         {sidebarOpen && (
           <div
             className="sidebar-backdrop"
@@ -1063,7 +1067,7 @@ const RootLayout = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="stats-modal-header">
-                <AlertTriangle size={18} style={{ color: "var(--notion-red, #ef4444)" }} />
+                <AlertTriangle size={18} style={{ color: "var(--accent-red, #ef4444)" }} />
                 <span>Подтверждение сброса</span>
                 <button
                   className="stats-modal-close"
@@ -1078,7 +1082,7 @@ const RootLayout = () => {
                 <div
                   style={{
                     padding: "16px",
-                    background: "var(--notion-red-bg, rgba(239, 68, 68, 0.08))",
+                    background: "var(--accent-red-bg, rgba(239, 68, 68, 0.08))",
                     border: "1px solid var(--border-color)",
                     borderRadius: "var(--radius-md, 8px)",
                     fontSize: "13px",

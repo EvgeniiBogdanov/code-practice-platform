@@ -182,7 +182,7 @@ export const OpenEditorView = ({ task, section, tab = "candidate" }) => {
           </div>
         ) : (
           <div className="open-editor-title-badge">
-            <Code2 size={14} style={{ color: "var(--notion-blue, #3b82f6)" }} />
+            <Code2 size={14} style={{ color: "var(--accent-blue, #3b82f6)" }} />
             <span className="open-editor-title-text">{task.title || "Редактор задачи"}</span>
           </div>
         )}

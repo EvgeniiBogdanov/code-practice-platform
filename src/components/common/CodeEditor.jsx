@@ -30,7 +30,7 @@ import {
 import { lintJavaScriptCode, fixTypoInCode } from "../../utils/codeLinter";
 import { formatJavaScriptCode } from "../../utils/codeFormatter";
 
-const MIN_FONT_SIZE = 14;
+const MIN_FONT_SIZE = 15;
 const MAX_FONT_SIZE = 20;
 const FONT_SIZE_STORAGE_KEY = "playground_editor_font_size";
 
@@ -65,7 +65,10 @@ export const CodeEditor = ({
 
   const [copied, setCopied] = useState(false);
   const [internalIsFullscreen, setInternalIsFullscreen] = useState(false);
-  const isFullscreen = externalIsFullscreen !== undefined ? externalIsFullscreen : internalIsFullscreen;
+  const isFullscreen =
+    externalIsFullscreen !== undefined
+      ? externalIsFullscreen
+      : internalIsFullscreen;
 
   const handleToggleFullscreen = () => {
     if (onToggleFullscreen) {
@@ -88,7 +91,11 @@ export const CodeEditor = ({
   }, [isFullscreen, onToggleFullscreen]);
   const [wordWrap, setWordWrap] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
-  const [cursorPos, setCursorPos] = useState({ line: 1, col: 1, selectedLength: 0 });
+  const [cursorPos, setCursorPos] = useState({
+    line: 1,
+    col: 1,
+    selectedLength: 0,
+  });
 
   // Размер шрифта редактора (мин 13px, макс 20px, по умолчанию 13px, сохранение в localStorage)
   const [fontSize, setFontSize] = useState(() => {
@@ -96,7 +103,11 @@ export const CodeEditor = ({
       const saved = localStorage.getItem(FONT_SIZE_STORAGE_KEY);
       if (saved !== null) {
         const parsed = parseInt(saved, 10);
-        if (!isNaN(parsed) && parsed >= MIN_FONT_SIZE && parsed <= MAX_FONT_SIZE) {
+        if (
+          !isNaN(parsed) &&
+          parsed >= MIN_FONT_SIZE &&
+          parsed <= MAX_FONT_SIZE
+        ) {
           return parsed;
         }
       }
@@ -155,10 +166,18 @@ export const CodeEditor = ({
         visible: true,
         word,
         items,
-        selectedIndex: prev.visible && prev.word === word ? Math.min(prev.selectedIndex, items.length - 1) : 0,
+        selectedIndex:
+          prev.visible && prev.word === word
+            ? Math.min(prev.selectedIndex, items.length - 1)
+            : 0,
       }));
     } else {
-      setCompletionState({ visible: false, word: "", items: [], selectedIndex: 0 });
+      setCompletionState({
+        visible: false,
+        word: "",
+        items: [],
+        selectedIndex: 0,
+      });
     }
   };
 
@@ -169,11 +188,17 @@ export const CodeEditor = ({
     const word = completionState.word;
 
     if (item.kind === "snippet" && item.snippet) {
-      const { newCode, newCursorPos } = expandSnippet(code, cursorIndex, item.snippet, word);
+      const { newCode, newCursorPos } = expandSnippet(
+        code,
+        cursorIndex,
+        item.snippet,
+        word,
+      );
       updateCode(newCode);
       setTimeout(() => {
         if (textareaRef.current) {
-          textareaRef.current.selectionStart = textareaRef.current.selectionEnd = newCursorPos;
+          textareaRef.current.selectionStart =
+            textareaRef.current.selectionEnd = newCursorPos;
           textareaRef.current.focus();
         }
       }, 0);
@@ -187,12 +212,18 @@ export const CodeEditor = ({
       updateCode(newCode);
       setTimeout(() => {
         if (textareaRef.current) {
-          textareaRef.current.selectionStart = textareaRef.current.selectionEnd = newCursorPos;
+          textareaRef.current.selectionStart =
+            textareaRef.current.selectionEnd = newCursorPos;
           textareaRef.current.focus();
         }
       }, 0);
     }
-    setCompletionState({ visible: false, word: "", items: [], selectedIndex: 0 });
+    setCompletionState({
+      visible: false,
+      word: "",
+      items: [],
+      selectedIndex: 0,
+    });
   };
 
   const popoverRef = useRef(null);
@@ -226,7 +257,8 @@ export const CodeEditor = ({
 
   const calculatePopoverPos = () => {
     const textarea = textareaRef.current;
-    if (!textarea) return { visible: false, top: 0, left: 0, placement: "bottom" };
+    if (!textarea)
+      return { visible: false, top: 0, left: 0, placement: "bottom" };
 
     const rect = textarea.getBoundingClientRect();
     const pos = textarea.selectionStart;
@@ -242,20 +274,28 @@ export const CodeEditor = ({
     const paddingLeft = 16;
 
     // Позиция строки внутри текстового поля с учетом скролла
-    const lineTopInTextarea = paddingTop + (lineNum - 1) * lineH - (textarea.scrollTop || 0);
+    const lineTopInTextarea =
+      paddingTop + (lineNum - 1) * lineH - (textarea.scrollTop || 0);
     const lineBottomInTextarea = lineTopInTextarea + lineH;
 
     // Экранные координаты курсора (для fixed portal)
-    const cursorScreenX = rect.left + paddingLeft + colNum * charW - (textarea.scrollLeft || 0);
+    const cursorScreenX =
+      rect.left + paddingLeft + colNum * charW - (textarea.scrollLeft || 0);
     const cursorScreenYBottom = rect.top + lineBottomInTextarea;
     const cursorScreenYTop = rect.top + lineTopInTextarea;
 
     // Если курсор скрыт за пределами видимой области редактора
-    if (cursorScreenYBottom < rect.top - 10 || cursorScreenYTop > rect.bottom + 10) {
+    if (
+      cursorScreenYBottom < rect.top - 10 ||
+      cursorScreenYTop > rect.bottom + 10
+    ) {
       return { visible: false, top: 0, left: 0, placement: "bottom" };
     }
 
-    const popoverEstimatedHeight = Math.min(260, 32 + (completionState.items.length || 1) * 28 + 8);
+    const popoverEstimatedHeight = Math.min(
+      260,
+      32 + (completionState.items.length || 1) * 28 + 8,
+    );
     const popoverWidth = 320;
 
     const spaceBelow = window.innerHeight - cursorScreenYBottom;
@@ -271,7 +311,10 @@ export const CodeEditor = ({
     }
 
     // Защита от выхода за горизонтальные границы экрана
-    const left = Math.max(12, Math.min(cursorScreenX, window.innerWidth - popoverWidth - 16));
+    const left = Math.max(
+      12,
+      Math.min(cursorScreenX, window.innerWidth - popoverWidth - 16),
+    );
 
     return { visible: true, top, left, placement };
   };
@@ -313,7 +356,10 @@ export const CodeEditor = ({
   }, [taskId, initialCode, readOnly]);
 
   const pushHistory = (newCode) => {
-    const nextHistory = historyRef.current.slice(0, historyIndexRef.current + 1);
+    const nextHistory = historyRef.current.slice(
+      0,
+      historyIndexRef.current + 1,
+    );
     if (nextHistory[nextHistory.length - 1] !== newCode) {
       nextHistory.push(newCode);
       if (nextHistory.length > 50) nextHistory.shift();
@@ -386,7 +432,12 @@ export const CodeEditor = ({
   // Быстрое автоматическое исправление опечатки (conts -> const)
   const handleFixTypo = (typoObj) => {
     if (!typoObj) return;
-    const fixed = fixTypoInCode(code, typoObj.line, typoObj.typo, typoObj.correct);
+    const fixed = fixTypoInCode(
+      code,
+      typoObj.line,
+      typoObj.typo,
+      typoObj.correct,
+    );
     updateCode(fixed);
     if (textareaRef.current) {
       textareaRef.current.value = fixed;
@@ -401,7 +452,9 @@ export const CodeEditor = ({
     const textBefore = code.substring(0, pos);
     const line = textBefore.split("\n").length;
     const col = pos - textBefore.lastIndexOf("\n");
-    const selectedLength = Math.abs(textarea.selectionEnd - textarea.selectionStart);
+    const selectedLength = Math.abs(
+      textarea.selectionEnd - textarea.selectionStart,
+    );
     setCursorPos({ line, col, selectedLength });
   };
 
@@ -427,13 +480,15 @@ export const CodeEditor = ({
         e.preventDefault();
         setCompletionState((prev) => ({
           ...prev,
-          selectedIndex: (prev.selectedIndex - 1 + prev.items.length) % prev.items.length,
+          selectedIndex:
+            (prev.selectedIndex - 1 + prev.items.length) % prev.items.length,
         }));
         return;
       }
       if (e.key === "Enter" || e.key === "Tab") {
         e.preventDefault();
-        const selectedItem = completionState.items[completionState.selectedIndex];
+        const selectedItem =
+          completionState.items[completionState.selectedIndex];
         if (selectedItem) {
           handleApplyCompletion(selectedItem);
         }
@@ -441,7 +496,12 @@ export const CodeEditor = ({
       }
       if (e.key === "Escape") {
         e.preventDefault();
-        setCompletionState({ visible: false, word: "", items: [], selectedIndex: 0 });
+        setCompletionState({
+          visible: false,
+          word: "",
+          items: [],
+          selectedIndex: 0,
+        });
         return;
       }
     }
@@ -454,7 +514,10 @@ export const CodeEditor = ({
     }
 
     // 1.1. Форматирование кода через Prettier: Shift+Alt+F или Ctrl+Alt+L
-    if ((e.shiftKey && e.altKey && e.key.toLowerCase() === "f") || ((e.ctrlKey || e.metaKey) && e.altKey && e.key.toLowerCase() === "l")) {
+    if (
+      (e.shiftKey && e.altKey && e.key.toLowerCase() === "f") ||
+      ((e.ctrlKey || e.metaKey) && e.altKey && e.key.toLowerCase() === "l")
+    ) {
       e.preventDefault();
       handleFormat();
       return;
@@ -463,11 +526,17 @@ export const CodeEditor = ({
     // Изменение размера шрифта: Ctrl+ / Ctrl-
     const isIncreaseFont =
       (e.ctrlKey || e.metaKey) &&
-      (e.key === "+" || e.key === "=" || e.code === "Equal" || e.code === "NumpadAdd");
+      (e.key === "+" ||
+        e.key === "=" ||
+        e.code === "Equal" ||
+        e.code === "NumpadAdd");
 
     const isDecreaseFont =
       (e.ctrlKey || e.metaKey) &&
-      (e.key === "-" || e.key === "_" || e.code === "Minus" || e.code === "NumpadSubtract");
+      (e.key === "-" ||
+        e.key === "_" ||
+        e.code === "Minus" ||
+        e.code === "NumpadSubtract");
 
     if (isIncreaseFont) {
       e.preventDefault();
@@ -512,7 +581,9 @@ export const CodeEditor = ({
       } else {
         const textEnd = code.substring(0, end);
         const endLineIdx = textEnd.split("\n").length - 1;
-        const allCommented = lines.slice(curLineIdx, endLineIdx + 1).every((l) => l.trim().startsWith("//") || !l.trim());
+        const allCommented = lines
+          .slice(curLineIdx, endLineIdx + 1)
+          .every((l) => l.trim().startsWith("//") || !l.trim());
 
         for (let i = curLineIdx; i <= endLineIdx; i++) {
           if (allCommented) {
@@ -544,7 +615,8 @@ export const CodeEditor = ({
 
         setTimeout(() => {
           if (textareaRef.current) {
-            textareaRef.current.selectionStart = textareaRef.current.selectionEnd = start + 1;
+            textareaRef.current.selectionStart =
+              textareaRef.current.selectionEnd = start + 1;
           }
         }, 0);
         return;
@@ -559,13 +631,14 @@ export const CodeEditor = ({
         if (unclosedTag !== null) {
           e.preventDefault();
           const insertStr = unclosedTag === "" ? `/>` : `/${unclosedTag}>`;
-          const updated = code.substring(0, start) + insertStr + code.substring(end);
+          const updated =
+            code.substring(0, start) + insertStr + code.substring(end);
           updateCode(updated);
 
           setTimeout(() => {
             if (textareaRef.current) {
-              textareaRef.current.selectionStart = textareaRef.current.selectionEnd =
-                start + insertStr.length;
+              textareaRef.current.selectionStart =
+                textareaRef.current.selectionEnd = start + insertStr.length;
             }
           }, 0);
           return;
@@ -585,7 +658,11 @@ export const CodeEditor = ({
 
     if (pairMap[e.key]) {
       const nextChar = code.charAt(start);
-      if (nextChar === e.key && ["'", '"', "`", ")", "}", "]"].includes(e.key) && start === end) {
+      if (
+        nextChar === e.key &&
+        ["'", '"', "`", ")", "}", "]"].includes(e.key) &&
+        start === end
+      ) {
         e.preventDefault();
         textarea.selectionStart = textarea.selectionEnd = start + 1;
         return;
@@ -595,7 +672,12 @@ export const CodeEditor = ({
       const open = e.key;
       const close = pairMap[open];
       const selected = code.substring(start, end);
-      const updated = code.substring(0, start) + open + selected + close + code.substring(end);
+      const updated =
+        code.substring(0, start) +
+        open +
+        selected +
+        close +
+        code.substring(end);
       updateCode(updated);
 
       setTimeout(() => {
@@ -618,7 +700,8 @@ export const CodeEditor = ({
         (prevChar === "`" && nextChar === "`")
       ) {
         e.preventDefault();
-        const updated = code.substring(0, start - 1) + code.substring(start + 1);
+        const updated =
+          code.substring(0, start - 1) + code.substring(start + 1);
         updateCode(updated);
         setTimeout(() => {
           textarea.selectionStart = textarea.selectionEnd = start - 1;
@@ -639,34 +722,49 @@ export const CodeEditor = ({
         e.preventDefault();
         const extraIndent = currentIndent + "  ";
         const updated =
-          code.substring(0, start) + "\n" + extraIndent + "\n" + currentIndent + code.substring(end);
+          code.substring(0, start) +
+          "\n" +
+          extraIndent +
+          "\n" +
+          currentIndent +
+          code.substring(end);
         updateCode(updated);
 
         setTimeout(() => {
-          textarea.selectionStart = textarea.selectionEnd = start + 1 + extraIndent.length;
+          textarea.selectionStart = textarea.selectionEnd =
+            start + 1 + extraIndent.length;
         }, 0);
         return;
       }
 
-      if (prevChar === "{" || prevChar === "(" || prevChar === "[" || prevChar === ":") {
+      if (
+        prevChar === "{" ||
+        prevChar === "(" ||
+        prevChar === "[" ||
+        prevChar === ":"
+      ) {
         e.preventDefault();
         const extraIndent = currentIndent + "  ";
-        const updated = code.substring(0, start) + "\n" + extraIndent + code.substring(end);
+        const updated =
+          code.substring(0, start) + "\n" + extraIndent + code.substring(end);
         updateCode(updated);
 
         setTimeout(() => {
-          textarea.selectionStart = textarea.selectionEnd = start + 1 + extraIndent.length;
+          textarea.selectionStart = textarea.selectionEnd =
+            start + 1 + extraIndent.length;
         }, 0);
         return;
       }
 
       if (currentIndent.length > 0) {
         e.preventDefault();
-        const updated = code.substring(0, start) + "\n" + currentIndent + code.substring(end);
+        const updated =
+          code.substring(0, start) + "\n" + currentIndent + code.substring(end);
         updateCode(updated);
 
         setTimeout(() => {
-          textarea.selectionStart = textarea.selectionEnd = start + 1 + currentIndent.length;
+          textarea.selectionStart = textarea.selectionEnd =
+            start + 1 + currentIndent.length;
         }, 0);
         return;
       }
@@ -681,17 +779,23 @@ export const CodeEditor = ({
         if (e.shiftKey) {
           const lineStart = code.lastIndexOf("\n", start - 1) + 1;
           if (code.startsWith("  ", lineStart)) {
-            const updated = code.substring(0, lineStart) + code.substring(lineStart + 2);
+            const updated =
+              code.substring(0, lineStart) + code.substring(lineStart + 2);
             updateCode(updated);
             setTimeout(() => {
-              textarea.selectionStart = textarea.selectionEnd = Math.max(lineStart, start - 2);
+              textarea.selectionStart = textarea.selectionEnd = Math.max(
+                lineStart,
+                start - 2,
+              );
             }, 0);
           }
         } else {
-          const updated = code.substring(0, start) + spaces + code.substring(end);
+          const updated =
+            code.substring(0, start) + spaces + code.substring(end);
           updateCode(updated);
           setTimeout(() => {
-            textarea.selectionStart = textarea.selectionEnd = start + spaces.length;
+            textarea.selectionStart = textarea.selectionEnd =
+              start + spaces.length;
           }, 0);
         }
       } else {
@@ -703,12 +807,21 @@ export const CodeEditor = ({
 
         let updatedLines;
         if (e.shiftKey) {
-          updatedLines = lines.map((l) => (l.startsWith("  ") ? l.substring(2) : l.startsWith(" ") ? l.substring(1) : l));
+          updatedLines = lines.map((l) =>
+            l.startsWith("  ")
+              ? l.substring(2)
+              : l.startsWith(" ")
+                ? l.substring(1)
+                : l,
+          );
         } else {
           updatedLines = lines.map((l) => spaces + l);
         }
 
-        const updated = code.substring(0, lineStart) + updatedLines.join("\n") + code.substring(effectiveEnd);
+        const updated =
+          code.substring(0, lineStart) +
+          updatedLines.join("\n") +
+          code.substring(effectiveEnd);
         updateCode(updated);
       }
     }
@@ -744,12 +857,14 @@ export const CodeEditor = ({
       return { name: "React JSX", color: "var(--color-info)" };
     }
     if (fileExt === "ts") {
-      return { name: "TypeScript", color: "var(--notion-blue)" };
+      return { name: "TypeScript", color: "var(--accent-blue)" };
     }
 
     const isReactCode =
       /<[a-zA-Z0-9_]+(\s+[^>]*|\s*\/)?>|<\/[a-zA-Z0-9_]+>|<>/m.test(code) ||
-      /import\s+.*React|from\s+['"]react['"]|export\s+default\s+function/m.test(code);
+      /import\s+.*React|from\s+['"]react['"]|export\s+default\s+function/m.test(
+        code,
+      );
 
     if (cleanPath.includes("react") || isReactCode) {
       return { name: "React JSX", color: "var(--color-info)" };
@@ -765,7 +880,8 @@ export const CodeEditor = ({
   const cleanFilename = title || filepath.split("/").pop() || "main.js";
 
   // Текущая опечатка на активной строке курсора или первая в коде
-  const activeTypo = diagnostics.typoMap[activeLine] || Object.values(diagnostics.typoMap)[0];
+  const activeTypo =
+    diagnostics.typoMap[activeLine] || Object.values(diagnostics.typoMap)[0];
 
   return (
     <div
@@ -811,8 +927,8 @@ export const CodeEditor = ({
                   cleanFilename.endsWith("jsx") || cleanFilename.endsWith("tsx")
                     ? "#61dafb"
                     : cleanFilename.endsWith("ts")
-                    ? "#3178c6"
-                    : "#f59e0b",
+                      ? "#3178c6"
+                      : "#f59e0b",
                 flexShrink: 0,
               }}
             />
@@ -834,7 +950,9 @@ export const CodeEditor = ({
               <button
                 className="vscode-icon-btn"
                 onClick={handleRedo}
-                disabled={historyIndexRef.current >= historyRef.current.length - 1}
+                disabled={
+                  historyIndexRef.current >= historyRef.current.length - 1
+                }
                 data-tooltip="Повторить изменение (Ctrl+Y)"
               >
                 <Redo2 size={14} />
@@ -852,7 +970,11 @@ export const CodeEditor = ({
           <button
             className={`vscode-icon-btn ${wordWrap ? "active" : ""}`}
             onClick={() => setWordWrap((prev) => !prev)}
-            data-tooltip={wordWrap ? "Выключить перенос длинных строк" : "Включить перенос длинных строк"}
+            data-tooltip={
+              wordWrap
+                ? "Выключить перенос длинных строк"
+                : "Включить перенос длинных строк"
+            }
           >
             <WrapText size={14} />
           </button>
@@ -871,7 +993,9 @@ export const CodeEditor = ({
           <button
             className="vscode-icon-btn"
             onClick={handleCopy}
-            data-tooltip={copied ? "Скопировано в буфер обмена" : "Скопировать код решения"}
+            data-tooltip={
+              copied ? "Скопировано в буфер обмена" : "Скопировать код решения"
+            }
           >
             {copied ? (
               <Check size={14} style={{ color: "var(--color-success)" }} />
@@ -910,7 +1034,11 @@ export const CodeEditor = ({
           <button
             className="vscode-icon-btn"
             onClick={handleToggleFullscreen}
-            data-tooltip={isFullscreen ? "Свернуть редактор (Esc)" : "Развернуть редактор (open)"}
+            data-tooltip={
+              isFullscreen
+                ? "Свернуть редактор (Esc)"
+                : "Развернуть редактор (open)"
+            }
           >
             {isFullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
           </button>
@@ -921,9 +1049,13 @@ export const CodeEditor = ({
       {activeTypo && (
         <div className="typo-quickfix-banner">
           <div className="typo-banner-left">
-            <AlertCircle size={13} style={{ color: "var(--color-error-light)" }} />
+            <AlertCircle
+              size={13}
+              style={{ color: "var(--color-error-light)" }}
+            />
             <span className="typo-msg">
-              Стр {activeTypo.line}: Опечатка <code>{activeTypo.typo}</code> вместо <strong>{activeTypo.correct}</strong>
+              Стр {activeTypo.line}: Опечатка <code>{activeTypo.typo}</code>{" "}
+              вместо <strong>{activeTypo.correct}</strong>
             </span>
           </div>
           <button
@@ -938,7 +1070,9 @@ export const CodeEditor = ({
       )}
 
       {/* Рабочая область редактора */}
-      <div className={`vscode-editor-surface ${wordWrap ? "wrap-on" : "wrap-off"}`}>
+      <div
+        className={`vscode-editor-surface ${wordWrap ? "wrap-on" : "wrap-off"}`}
+      >
         {/* Номера строк с адаптивной шириной под количество цифр */}
         {(() => {
           const digits = String(Math.max(lineCount, 1)).length;
@@ -949,11 +1083,16 @@ export const CodeEditor = ({
               ref={gutterRef}
               className="vscode-gutter"
               aria-hidden="true"
-              style={{ width: `${dynamicGutterWidth}px`, minWidth: `${dynamicGutterWidth}px` }}
+              style={{
+                width: `${dynamicGutterWidth}px`,
+                minWidth: `${dynamicGutterWidth}px`,
+              }}
             >
               {Array.from({ length: Math.max(lineCount, 1) }).map((_, i) => {
                 const lineNum = i + 1;
-                const hasError = diagnostics.problems.some((p) => p.line === lineNum && p.severity === "error");
+                const hasError = diagnostics.problems.some(
+                  (p) => p.line === lineNum && p.severity === "error",
+                );
 
                 return (
                   <div
@@ -961,7 +1100,9 @@ export const CodeEditor = ({
                     className={`vscode-gutter-line ${activeLine === lineNum ? "active-line-gutter" : ""} ${
                       hasError ? "gutter-has-error" : ""
                     }`}
-                    title={hasError ? "Ошибка синтаксиса или опечатка на строке" : ""}
+                    title={
+                      hasError ? "Ошибка синтаксиса или опечатка на строке" : ""
+                    }
                   >
                     {hasError && <span className="gutter-error-dot">•</span>}
                     {lineNum}
@@ -985,7 +1126,11 @@ export const CodeEditor = ({
           ) : (
             <div className="vscode-code-stack">
               {/* Слой подсветки синтаксиса */}
-              <pre ref={highlightRef} className="vscode-syntax-layer" aria-hidden="true">
+              <pre
+                ref={highlightRef}
+                className="vscode-syntax-layer"
+                aria-hidden="true"
+              >
                 <code
                   dangerouslySetInnerHTML={{
                     __html: highlightJS(code + "\n"),
@@ -1003,7 +1148,11 @@ export const CodeEditor = ({
                   const pos = e.target.selectionStart;
 
                   // Auto Rename Tag: синхронное переименование парного тега в <></>
-                  const { updatedCode, newCursorPos } = handleAutoRenameTag(code, val, pos);
+                  const { updatedCode, newCursorPos } = handleAutoRenameTag(
+                    code,
+                    val,
+                    pos,
+                  );
 
                   updateCode(updatedCode);
                   updateCursorCoordinates();
@@ -1012,8 +1161,8 @@ export const CodeEditor = ({
                   if (updatedCode !== val) {
                     setTimeout(() => {
                       if (textareaRef.current) {
-                        textareaRef.current.selectionStart = textareaRef.current.selectionEnd =
-                          newCursorPos;
+                        textareaRef.current.selectionStart =
+                          textareaRef.current.selectionEnd = newCursorPos;
                       }
                     }, 0);
                   }
@@ -1021,14 +1170,29 @@ export const CodeEditor = ({
                 onKeyDown={handleKeyDown}
                 onKeyUp={(e) => {
                   updateCursorCoordinates();
-                  if (!["ArrowUp", "ArrowDown", "Enter", "Tab", "Escape"].includes(e.key) && textareaRef.current) {
-                    checkAndTriggerCompletions(code, textareaRef.current.selectionStart);
+                  if (
+                    ![
+                      "ArrowUp",
+                      "ArrowDown",
+                      "Enter",
+                      "Tab",
+                      "Escape",
+                    ].includes(e.key) &&
+                    textareaRef.current
+                  ) {
+                    checkAndTriggerCompletions(
+                      code,
+                      textareaRef.current.selectionStart,
+                    );
                   }
                 }}
                 onClick={() => {
                   updateCursorCoordinates();
                   if (textareaRef.current) {
-                    checkAndTriggerCompletions(code, textareaRef.current.selectionStart);
+                    checkAndTriggerCompletions(
+                      code,
+                      textareaRef.current.selectionStart,
+                    );
                   }
                 }}
                 onSelect={() => {
@@ -1038,13 +1202,21 @@ export const CodeEditor = ({
                   setIsFocused(true);
                   updateCursorCoordinates();
                   if (textareaRef.current) {
-                    checkAndTriggerCompletions(code, textareaRef.current.selectionStart);
+                    checkAndTriggerCompletions(
+                      code,
+                      textareaRef.current.selectionStart,
+                    );
                   }
                 }}
                 onBlur={() => {
                   setIsFocused(false);
                   setTimeout(() => {
-                    setCompletionState({ visible: false, word: "", items: [], selectedIndex: 0 });
+                    setCompletionState({
+                      visible: false,
+                      word: "",
+                      items: [],
+                      selectedIndex: 0,
+                    });
                   }, 200);
                 }}
                 onScroll={handleScroll}
@@ -1056,60 +1228,74 @@ export const CodeEditor = ({
               />
 
               {/* Всплывающее меню подсказок и автодополнения (IntelliSense) через React Portal */}
-              {completionState.visible && completionState.items.length > 0 && (() => {
-                const popoverPos = calculatePopoverPos();
-                if (popoverPos.visible === false) return null;
-                return createPortal(
-                  <div
-                    ref={popoverRef}
-                    className={`autocomplete-popover placement-${popoverPos.placement}`}
-                    style={{
-                      top: `${popoverPos.top}px`,
-                      left: `${popoverPos.left}px`,
-                    }}
-                  >
-                    <div className="autocomplete-header">
-                      <span>Подсказки для "{completionState.word}"</span>
-                      <span className="autocomplete-hint">↑↓ выбор • Enter/Tab вставить</span>
-                    </div>
-                    <div ref={listRef} className="autocomplete-list">
-                      {completionState.items.map((item, idx) => {
-                        const isSelected = idx === completionState.selectedIndex;
-                        return (
-                          <div
-                            key={idx}
-                            className={`autocomplete-item ${isSelected ? "autocomplete-active" : ""}`}
-                            onMouseDown={(e) => {
-                              e.preventDefault();
-                              handleApplyCompletion(item);
-                            }}
-                            onMouseEnter={() => {
-                              setCompletionState((prev) => ({ ...prev, selectedIndex: idx }));
-                            }}
-                          >
-                            <span className={`autocomplete-kind-badge kind-${item.kind}`}>
-                              {item.kind === "snippet" ? (
-                                <Wand2 size={12} />
-                              ) : item.kind === "hook" ? (
-                                <Sparkles size={12} />
-                              ) : item.kind === "keyword" ? (
-                                <Code2 size={12} />
-                              ) : item.kind === "variable" ? (
-                                <Box size={12} />
-                              ) : (
-                                <Globe size={12} />
-                              )}
-                            </span>
-                            <span className="autocomplete-label">{item.label}</span>
-                            <span className="autocomplete-detail">{item.detail}</span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>,
-                  document.body
-                );
-              })()}
+              {completionState.visible &&
+                completionState.items.length > 0 &&
+                (() => {
+                  const popoverPos = calculatePopoverPos();
+                  if (popoverPos.visible === false) return null;
+                  return createPortal(
+                    <div
+                      ref={popoverRef}
+                      className={`autocomplete-popover placement-${popoverPos.placement}`}
+                      style={{
+                        top: `${popoverPos.top}px`,
+                        left: `${popoverPos.left}px`,
+                      }}
+                    >
+                      <div className="autocomplete-header">
+                        <span>Подсказки для "{completionState.word}"</span>
+                        <span className="autocomplete-hint">
+                          ↑↓ выбор • Enter/Tab вставить
+                        </span>
+                      </div>
+                      <div ref={listRef} className="autocomplete-list">
+                        {completionState.items.map((item, idx) => {
+                          const isSelected =
+                            idx === completionState.selectedIndex;
+                          return (
+                            <div
+                              key={idx}
+                              className={`autocomplete-item ${isSelected ? "autocomplete-active" : ""}`}
+                              onMouseDown={(e) => {
+                                e.preventDefault();
+                                handleApplyCompletion(item);
+                              }}
+                              onMouseEnter={() => {
+                                setCompletionState((prev) => ({
+                                  ...prev,
+                                  selectedIndex: idx,
+                                }));
+                              }}
+                            >
+                              <span
+                                className={`autocomplete-kind-badge kind-${item.kind}`}
+                              >
+                                {item.kind === "snippet" ? (
+                                  <Wand2 size={12} />
+                                ) : item.kind === "hook" ? (
+                                  <Sparkles size={12} />
+                                ) : item.kind === "keyword" ? (
+                                  <Code2 size={12} />
+                                ) : item.kind === "variable" ? (
+                                  <Box size={12} />
+                                ) : (
+                                  <Globe size={12} />
+                                )}
+                              </span>
+                              <span className="autocomplete-label">
+                                {item.label}
+                              </span>
+                              <span className="autocomplete-detail">
+                                {item.detail}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>,
+                    document.body,
+                  );
+                })()}
             </div>
           )}
         </div>
@@ -1120,16 +1306,26 @@ export const CodeEditor = ({
         <div className="vscode-status-bar">
           <div className="status-left">
             {diagnostics.errorCount > 0 ? (
-              <span className="status-item status-typo-warning" title="Обнаружена синтаксическая опечатка">
-                <AlertCircle size={11} style={{ color: "var(--color-error-light)" }} />
+              <span
+                className="status-item status-typo-warning"
+                title="Обнаружена синтаксическая опечатка"
+              >
+                <AlertCircle
+                  size={11}
+                  style={{ color: "var(--color-error-light)" }}
+                />
                 <span>
-                  {diagnostics.errorCount} {diagnostics.errorCount === 1 ? "ошибка" : "ошибок"}
+                  {diagnostics.errorCount}{" "}
+                  {diagnostics.errorCount === 1 ? "ошибка" : "ошибок"}
                   {activeTypo && `: ${activeTypo.typo} → ${activeTypo.correct}`}
                 </span>
               </span>
             ) : (
               <span className="status-item status-typo-ok">
-                <CheckCircle2 size={11} style={{ color: "var(--color-success-light)" }} />
+                <CheckCircle2
+                  size={11}
+                  style={{ color: "var(--color-success-light)" }}
+                />
                 <span>Синтаксис корректен</span>
               </span>
             )}
@@ -1141,7 +1337,9 @@ export const CodeEditor = ({
             </span>
             <span className="status-sep">|</span>
             <span className="status-item">
-              {lineCount} {lineCount === 1 ? "строка" : lineCount < 5 ? "строки" : "строк"} ({code.length} симв)
+              {lineCount}{" "}
+              {lineCount === 1 ? "строка" : lineCount < 5 ? "строки" : "строк"}{" "}
+              ({code.length} симв)
             </span>
           </div>
 
@@ -1150,17 +1348,19 @@ export const CodeEditor = ({
             <span className="status-sep">|</span>
             <span className="status-item">UTF-8</span>
             <span className="status-sep">|</span>
-            <span className="status-item lang-tag" title={`Язык синтаксиса: ${langInfo.name}`}>
-              <Code2 size={11} style={{ color: langInfo.color }} /> {langInfo.name}
+            <span
+              className="status-item lang-tag"
+              title={`Язык синтаксиса: ${langInfo.name}`}
+            >
+              <Code2 size={11} style={{ color: langInfo.color }} />{" "}
+              {langInfo.name}
             </span>
           </div>
         </div>
       )}
 
       {bottomConsole && (
-        <div className="vscode-editor-bottom-console">
-          {bottomConsole}
-        </div>
+        <div className="vscode-editor-bottom-console">{bottomConsole}</div>
       )}
     </div>
   );

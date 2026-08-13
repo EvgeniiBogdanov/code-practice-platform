@@ -163,20 +163,14 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
   const sectionName = isJs ? "JavaScript" : isReact ? "React" : "Алгоритмы";
 
   return (
-    <div className="task-view-container notion-article-view" style={{ padding: "28px 36px 80px" }}>
-      <article className="notion-article-page notion-folder-page-wrapper">
-        {/* Notion Folder Header Hero */}
-        <header className="notion-article-header">
-          <div className="notion-folder-hero">
+    <div className="task-view-container article-view" style={{ padding: "28px 36px 80px" }}>
+      <article className="article-page folder-page-wrapper">
+        {/* Standard Folder Header Hero */}
+        <header className="article-header">
+          <div className="folder-hero">
             <div
-              className="notion-folder-emoji-box"
-              style={{
-                background: groupMeta?.bg || "rgba(255, 255, 255, 0.04)",
-                border: "1px solid var(--border-color, rgba(255, 255, 255, 0.08))",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
+              className="folder-emoji-box"
+              style={groupMeta?.bg ? { background: groupMeta.bg } : undefined}
             >
               {groupMeta?.renderIcon ? (
                 groupMeta.renderIcon(26)
@@ -192,7 +186,7 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
 
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", flexWrap: "wrap" }}>
-                <h1 className="notion-folder-hero-title">
+                <h1 className="folder-hero-title">
                   {groupMeta?.name || groupMeta?.title || "Раздел"}
                 </h1>
 
@@ -205,9 +199,9 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                       background: groupMeta?.color || "var(--color-primary, #3b82f6)",
                       color: "#ffffff",
                       padding: "8px 14px",
-                      borderRadius: "8px",
-                      fontSize: "12.5px",
-                      fontWeight: 600,
+                      borderRadius: "10px",
+                      fontSize: "14px",
+                      fontWeight: 500,
                       textDecoration: "none",
                       display: "inline-flex",
                       alignItems: "center",
@@ -220,19 +214,19 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                 )}
               </div>
 
-              <p className="notion-folder-hero-desc" style={{ marginTop: "4px" }}>
+              <p className="folder-hero-desc" style={{ marginTop: "4px" }}>
                 {groupMeta?.desc || `Все практические задачи и упражнения раздела «${groupMeta?.name || "Раздел"}».`}
               </p>
             </div>
           </div>
         </header>
 
-        {/* Notion Database View (Files / Tasks list) */}
-        <div className="notion-database-view-container">
-            {/* Notion Database Controls Toolbar */}
-            <div className="notion-folder-toolbar">
+        {/* Standard Database View (Files / Tasks list) */}
+        <div className="database-view-container">
+            {/* Standard Database Controls Toolbar */}
+            <div className="folder-toolbar">
               {/* Status Filter Pills: Все, Решено, Не решено */}
-              <div className="notion-pill-group" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <div className="pill-group" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                 <button
                   className={`header-action-btn ${statusFilter === "all" ? "active" : ""}`}
                   onClick={() => setStatusFilter("all")}
@@ -254,7 +248,7 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
               </div>
 
               {/* View Switcher: Список vs Карточки */}
-              <div className="notion-db-view-switch" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <div className="db-view-switch" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                 <button
                   className={`header-action-btn ${viewMode === "list" ? "active" : ""}`}
                   onClick={() => setViewMode("list")}
@@ -274,8 +268,8 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
 
             {/* Database Column Header (for List view) */}
             {viewMode === "list" && filteredTasks.length > 0 && (
-              <div className="notion-db-columns-header">
-                <span>Имя задачи / Файл</span>
+              <div className="db-columns-header">
+                <span>Папка / Файл</span>
               </div>
             )}
 
@@ -294,8 +288,8 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                 </button>
               </div>
             ) : viewMode === "list" ? (
-              /* Notion List View — Exact Sidebar Tree System, scaled for page content */
-              <div className="notion-folder-page-tree">
+              /* Standard List View — Exact Sidebar Tree System, scaled for page content */
+              <div className="folder-page-tree">
                 {hasSubgroups ? (
                   Object.entries(groupedSubgroups).map(([subgroupName, tasks]) => {
                     if (tasks.length === 0) return null;
@@ -303,16 +297,16 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                     const completedSubCount = tasks.filter((t) => getTaskStatus(t.id) === "solved").length;
                     const isSubCompleted = tasks.length > 0 && completedSubCount === tasks.length;
                     return (
-                      <div className="notion-tree-group-block" key={subgroupName}>
+                      <div className="tree-group-block" key={subgroupName}>
                         <div
-                          className="notion-tree-node-header subgroup-header"
+                          className="tree-node-header subgroup-header"
                           onClick={() => toggleSubgroupCollapse(subgroupName)}
                         >
-                          <div className="notion-icon-toggle-wrapper">
-                            <div className="notion-icon-default">
+                          <div className="icon-toggle-wrapper">
+                            <div className="icon-default">
                               <Folder size={17} style={{ color: groupMeta?.color || "var(--color-primary, #3b82f6)" }} />
                             </div>
-                            <div className={`notion-icon-chevron ${!isCollapsed ? "expanded" : ""}`}>
+                            <div className={`icon-chevron ${!isCollapsed ? "expanded" : ""}`}>
                               <ChevronRight size={15} />
                             </div>
                           </div>
@@ -329,7 +323,7 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                         </div>
 
                         {!isCollapsed && (
-                          <div className="notion-tree-tasks-container">
+                          <div className="tree-tasks-container">
                             {tasks.map((task) => {
                               const s = getTaskStatus(task.id);
                               const isDone = s === "solved";
@@ -339,7 +333,7 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                                   key={task.id}
                                   to={taskRoute}
                                   params={{ taskId: String(task.id) }}
-                                  className="task-btn notion-tree-task-btn"
+                                  className="task-btn tree-task-btn"
                                 >
                                   <span className="task-btn-title">
                                     <FileText size={16} className="node-file-icon" style={{ color: FILE_ICON_COLOR }} />
@@ -365,7 +359,7 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                     );
                   })
                 ) : (
-                  <div className="notion-tree-tasks-container" style={{ marginLeft: 0, paddingLeft: 0, borderLeft: "none" }}>
+                  <div className="tree-tasks-container" style={{ marginLeft: 0, paddingLeft: 0, borderLeft: "none" }}>
                     {filteredTasks.map((task) => {
                       const s = getTaskStatus(task.id);
                       const isDone = s === "solved";
@@ -375,7 +369,7 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                           key={task.id}
                           to={taskRoute}
                           params={{ taskId: String(task.id) }}
-                          className="task-btn notion-tree-task-btn"
+                          className="task-btn tree-task-btn"
                         >
                           <span className="task-btn-title">
                             <FileText size={16} className="node-file-icon" style={{ color: FILE_ICON_COLOR }} />
@@ -399,8 +393,8 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                 )}
               </div>
             ) : (
-              /* Notion Gallery Cards View */
-              <div className="notion-gallery-grid">
+              /* Standard Gallery Cards View */
+              <div className="gallery-grid">
                 {filteredTasks.map((task) => {
                   const s = getTaskStatus(task.id);
                   const isDone = s === "solved";
@@ -410,7 +404,7 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                       key={task.id}
                       to={taskRoute}
                       params={{ taskId: String(task.id) }}
-                      className="notion-gallery-card"
+                      className="gallery-card"
                     >
                       <div>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" }}>
@@ -491,17 +485,17 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
             )}
           </div>
 
-        {/* Notion Article Body (Rendered if custom _info.md exists) */}
+        {/* Standard Article Body (Rendered if custom _info.md exists) */}
         {blocks.length > 0 && (
           <div
-            className="notion-article-content"
+            className="article-content"
             style={{
               paddingTop: "32px",
               borderTop: "1px solid var(--border-color, rgba(255, 255, 255, 0.08))",
             }}
           >
             <h2
-              className="notion-h2"
+              className="h2-block"
               style={{
                 display: "flex",
                 alignItems: "center",

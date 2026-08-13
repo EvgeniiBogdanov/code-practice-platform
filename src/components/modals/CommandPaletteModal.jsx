@@ -98,7 +98,7 @@ export const CommandPaletteModal = ({
                 onClick={() => handleSelectTask(task)}
               >
                 {activeSection === "home" && (
-                  <span className="palette-item-section-badge" style={{ display: "inline-flex", alignItems: "center", gap: "3px", fontSize: "10px", fontWeight: 600, padding: "1px 6px", borderRadius: "4px", background: "var(--notion-hover)", color: "var(--text-muted)", marginRight: "6px", flexShrink: 0 }}>
+                  <span className="palette-item-section-badge" style={{ display: "inline-flex", alignItems: "center", gap: "3px", fontSize: "10px", fontWeight: 600, padding: "1px 6px", borderRadius: "4px", background: "var(--state-hover)", color: "var(--text-muted)", marginRight: "6px", flexShrink: 0 }}>
                     {sectionMeta.icon} {sectionMeta.label}
                   </span>
                 )}

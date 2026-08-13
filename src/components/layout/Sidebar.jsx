@@ -32,7 +32,7 @@ import { getAlgoGroupMeta } from "../../algorithms/data/groupConfig";
 import { FILE_ICON_COLOR } from "../../constants/uiConstants";
 
 // ============================================================================
-// Notion-Style Optimized Atomic Sub-Components with React.memo
+// Style Optimized Atomic Sub-Components with React.memo
 // Only the active and clicked items re-render; all other 260+ items skip render
 // ============================================================================
 
@@ -61,7 +61,7 @@ const SidebarTaskItem = React.memo(function SidebarTaskItem({
       to={to}
       params={params}
       search={search}
-      className={`task-btn notion-tree-task-btn ${isActive ? "active" : ""}`}
+      className={`task-btn tree-task-btn ${isActive ? "active" : ""}`}
       onClick={onNavClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={hideTooltip}
@@ -103,11 +103,11 @@ const SidebarGroupHeader = React.memo(function SidebarGroupHeader({
       to={to}
       params={params}
       search={search}
-      className={`notion-tree-node-header group-header ${isActive ? "active" : ""}`}
+      className={`tree-node-header group-header ${isActive ? "active" : ""}`}
       onClick={onNavClick}
     >
       <div
-        className="notion-icon-toggle-wrapper"
+        className="icon-toggle-wrapper"
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -115,8 +115,8 @@ const SidebarGroupHeader = React.memo(function SidebarGroupHeader({
         }}
         title={chevronExpanded ? "Свернуть" : "Развернуть"}
       >
-        <div className="notion-icon-default">{icon}</div>
-        <div className={`notion-icon-chevron ${chevronExpanded ? "expanded" : ""}`}>
+        <div className="icon-default">{icon}</div>
+        <div className={`icon-chevron ${chevronExpanded ? "expanded" : ""}`}>
           <ChevronRight size={13} />
         </div>
       </div>
@@ -147,11 +147,11 @@ const SidebarSubgroupHeader = React.memo(function SidebarSubgroupHeader({
       to={to}
       params={params}
       search={search}
-      className={`notion-tree-node-header subgroup-header ${isActive ? "active" : ""}`}
+      className={`tree-node-header subgroup-header ${isActive ? "active" : ""}`}
       onClick={onNavClick}
     >
       <div
-        className="notion-icon-toggle-wrapper"
+        className="icon-toggle-wrapper"
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -159,10 +159,10 @@ const SidebarSubgroupHeader = React.memo(function SidebarSubgroupHeader({
         }}
         title={chevronExpanded ? "Свернуть" : "Развернуть"}
       >
-        <div className="notion-icon-default">
+        <div className="icon-default">
           <Folder size={14} style={{ color, opacity: 0.85 }} />
         </div>
-        <div className={`notion-icon-chevron ${chevronExpanded ? "expanded" : ""}`}>
+        <div className={`icon-chevron ${chevronExpanded ? "expanded" : ""}`}>
           <ChevronRight size={13} />
         </div>
       </div>
@@ -181,7 +181,7 @@ const SidebarSubgroupHeader = React.memo(function SidebarSubgroupHeader({
 export const Sidebar = ({
   sidebarOpen,
   setSidebarOpen,
-  sidebarWidth = 260,
+  sidebarWidth = 280,
   setSidebarWidth,
   activeSection,
   sectionDropdownOpen,
@@ -269,7 +269,7 @@ export const Sidebar = ({
     (e) => {
       e.preventDefault();
       if (setSidebarWidth) {
-        setSidebarWidth(260);
+        setSidebarWidth(280);
       }
     },
     [setSidebarWidth]
@@ -450,7 +450,7 @@ export const Sidebar = ({
 
   const renderSectionDropdown = () => (
     <div className="section-dropdown-menu">
-      <div className="section-dropdown-header">РАЗДЕЛЫ ПРАКТИКИ</div>
+      <div className="section-dropdown-header">Разделы практики</div>
       <Link
         to="/home"
         className={`section-dropdown-item ${activeSection === "home" ? "active" : ""}`}
@@ -459,7 +459,7 @@ export const Sidebar = ({
           handleMobileNavClick();
         }}
       >
-        <Home size={15} style={{ color: "var(--color-info-light)" }} /> <span>ГЛАВНАЯ</span>{" "}
+        <Home size={15} style={{ color: "var(--color-info-light)" }} /> <span>Главная</span>{" "}
         <span className="section-badge soon">Обзор</span>
       </Link>
       <Link
@@ -470,7 +470,7 @@ export const Sidebar = ({
           handleMobileNavClick();
         }}
       >
-        <Zap size={15} style={{ color: "var(--color-warning)" }} /> <span>JAVASCRIPT</span>{" "}
+        <Zap size={15} style={{ color: "var(--color-warning)" }} /> <span>JavaScript</span>{" "}
         <span className="section-badge active">{JS_TASKS.length} задач</span>
       </Link>
       <Link
@@ -481,7 +481,7 @@ export const Sidebar = ({
           handleMobileNavClick();
         }}
       >
-        <Code2 size={15} style={{ color: "var(--color-info)" }} /> <span>REACT</span>{" "}
+        <Code2 size={15} style={{ color: "var(--color-info)" }} /> <span>React</span>{" "}
         <span className="section-badge active">260+ задач</span>
       </Link>
       <Link
@@ -492,7 +492,7 @@ export const Sidebar = ({
           handleMobileNavClick();
         }}
       >
-        <Brain size={15} style={{ color: "var(--color-accent-purple)" }} /> <span>АЛГОРИТМЫ</span>{" "}
+        <Brain size={15} style={{ color: "var(--color-accent-purple)" }} /> <span>Алгоритмы</span>{" "}
         <span className="section-badge active">{ALGO_TASKS.length} задач</span>
       </Link>
     </div>
@@ -519,22 +519,22 @@ export const Sidebar = ({
           >
             {activeSection === "home" && (
               <>
-                <Home size={15} style={{ color: "#60a5fa" }} /> <span>ГЛАВНАЯ</span>
+                <Home size={15} style={{ color: "#60a5fa" }} /> <span>Главная</span>
               </>
             )}
             {activeSection === "react" && (
               <>
-                <Code2 size={15} style={{ color: "#61dafb" }} /> <span>REACT</span>
+                <Code2 size={15} style={{ color: "#61dafb" }} /> <span>React</span>
               </>
             )}
             {activeSection === "javascript" && (
               <>
-                <Zap size={15} style={{ color: "#f59e0b" }} /> <span>JAVASCRIPT</span>
+                <Zap size={15} style={{ color: "#f59e0b" }} /> <span>JavaScript</span>
               </>
             )}
             {activeSection === "algorithms" && (
               <>
-                <Brain size={15} style={{ color: "#a855f7" }} /> <span>АЛГОРИТМЫ</span>
+                <Brain size={15} style={{ color: "#a855f7" }} /> <span>Алгоритмы</span>
               </>
             )}
             <ChevronDown size={13} className="sidebar-section-chevron" />
@@ -571,10 +571,10 @@ export const Sidebar = ({
                 <span
                   style={{
                     color: "var(--text-main)",
-                    fontSize: "11px",
-                    fontWeight: "600",
+                    fontSize: "var(--fs-sidebar-section)",
+                    fontWeight: "var(--fw-semibold)",
                     textTransform: "uppercase",
-                    letterSpacing: "0.04em",
+                    letterSpacing: "var(--ls-section)",
                     fontFamily: "var(--font-sans)",
                     display: "flex",
                     alignItems: "center",
@@ -585,9 +585,9 @@ export const Sidebar = ({
                 </span>
                 <span
                   style={{
-                    color: "var(--notion-blue)",
-                    fontSize: "11px",
-                    fontWeight: "bold",
+                    color: "var(--accent-blue)",
+                    fontSize: "var(--fs-sidebar-badge)",
+                    fontWeight: "var(--fw-bold)",
                     fontFamily: "var(--font-mono)",
                   }}
                 >
@@ -607,7 +607,7 @@ export const Sidebar = ({
                   style={{
                     width: `${percentage}%`,
                     height: "100%",
-                    background: "var(--notion-blue)",
+                    background: "var(--accent-blue)",
                     transition: "width 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                   }}
                 />
@@ -615,7 +615,7 @@ export const Sidebar = ({
             </div>
 
             {/* Разминка */}
-            <div className="notion-tree-group-block" id="category-warmup">
+            <div className="tree-group-block" id="category-warmup">
               <SidebarGroupHeader
                 to="/react/$taskId"
                 params={{ taskId: "group-warmup" }}
@@ -631,7 +631,7 @@ export const Sidebar = ({
                 totalCount={totalWarmup}
               />
               <div className={`task-list-wrapper ${warmupExpanded ? "expanded" : ""}`}>
-                <div className="task-list-inner notion-tree-tasks-container">
+                <div className="task-list-inner tree-tasks-container">
                   {WARMUP_TASKS.filter(isTaskVisible).map((task) => (
                     <SidebarTaskItem
                       key={task.id}
@@ -652,7 +652,7 @@ export const Sidebar = ({
             </div>
 
             {/* Рефакторинг */}
-            <div className="notion-tree-group-block" id="category-refactoring">
+            <div className="tree-group-block" id="category-refactoring">
               <SidebarGroupHeader
                 to="/react/$taskId"
                 params={{ taskId: "group-refactoring" }}
@@ -668,7 +668,7 @@ export const Sidebar = ({
                 totalCount={totalRefactoring}
               />
               <div className={`task-list-wrapper ${refactoringExpanded ? "expanded" : ""}`}>
-                <div className="task-list-inner notion-tree-tasks-container">
+                <div className="task-list-inner tree-tasks-container">
                   {REFACTORING_TASKS.filter(isTaskVisible).map((task) => (
                     <SidebarTaskItem
                       key={task.id}
@@ -689,7 +689,7 @@ export const Sidebar = ({
             </div>
 
             {/* Основные задачи (Middle) */}
-            <div className="notion-tree-group-block" id="category-middle">
+            <div className="tree-group-block" id="category-middle">
               <SidebarGroupHeader
                 to="/react/$taskId"
                 params={{ taskId: "group-middle" }}
@@ -705,7 +705,7 @@ export const Sidebar = ({
                 totalCount={totalMain}
               />
               <div className={`task-list-wrapper ${tasksExpanded ? "expanded" : ""}`}>
-                <div className="task-list-inner notion-tree-tasks-container">
+                <div className="task-list-inner tree-tasks-container">
                   {MAIN_TASKS.filter(isTaskVisible).map((task) => (
                     <SidebarTaskItem
                       key={task.id}
@@ -726,7 +726,7 @@ export const Sidebar = ({
             </div>
 
             {/* Сложные задачи (Strong) */}
-            <div className="notion-tree-group-block" id="category-strong">
+            <div className="tree-group-block" id="category-strong">
               <SidebarGroupHeader
                 to="/react/$taskId"
                 params={{ taskId: "group-strong" }}
@@ -742,7 +742,7 @@ export const Sidebar = ({
                 totalCount={totalAdvanced}
               />
               <div className={`task-list-wrapper ${advancedExpanded ? "expanded" : ""}`}>
-                <div className="task-list-inner notion-tree-tasks-container">
+                <div className="task-list-inner tree-tasks-container">
                   {ADVANCED_TASKS.filter(isTaskVisible).map((task) => (
                     <SidebarTaskItem
                       key={task.id}
@@ -763,7 +763,7 @@ export const Sidebar = ({
             </div>
 
             {/* React + TypeScript (Разминка) */}
-            <div className="notion-tree-group-block" id="category-ts">
+            <div className="tree-group-block" id="category-ts">
               <SidebarGroupHeader
                 to="/react/$taskId"
                 params={{ taskId: "group-ts" }}
@@ -779,7 +779,7 @@ export const Sidebar = ({
                 totalCount={totalReactTs}
               />
               <div className={`task-list-wrapper ${reactTsExpanded ? "expanded" : ""}`}>
-                <div className="task-list-inner notion-tree-tasks-container">
+                <div className="task-list-inner tree-tasks-container">
                   {REACT_TS_TASKS.filter(isTaskVisible).map((task) => (
                     <SidebarTaskItem
                       key={task.id}
@@ -800,7 +800,7 @@ export const Sidebar = ({
             </div>
 
             {/* React + TypeScript (Практика) */}
-            <div className="notion-tree-group-block" id="category-ts-practice">
+            <div className="tree-group-block" id="category-ts-practice">
               <SidebarGroupHeader
                 to="/react/$taskId"
                 params={{ taskId: "group-ts-practice" }}
@@ -816,7 +816,7 @@ export const Sidebar = ({
                 totalCount={totalReactTsPractice}
               />
               <div className={`task-list-wrapper ${reactTsPracticeExpanded ? "expanded" : ""}`}>
-                <div className="task-list-inner notion-tree-tasks-container">
+                <div className="task-list-inner tree-tasks-container">
                   {REACT_TS_PRACTICE_TASKS.filter(isTaskVisible).map((task) => (
                     <SidebarTaskItem
                       key={task.id}
@@ -855,10 +855,10 @@ export const Sidebar = ({
                 <span
                   style={{
                     color: "var(--text-main)",
-                    fontSize: "11px",
-                    fontWeight: "600",
+                    fontSize: "var(--fs-sidebar-section)",
+                    fontWeight: "var(--fw-semibold)",
                     textTransform: "uppercase",
-                    letterSpacing: "0.04em",
+                    letterSpacing: "var(--ls-section)",
                     fontFamily: "var(--font-sans)",
                     display: "flex",
                     alignItems: "center",
@@ -870,8 +870,8 @@ export const Sidebar = ({
                 <span
                   style={{
                     color: "#f59e0b",
-                    fontSize: "11px",
-                    fontWeight: "bold",
+                    fontSize: "var(--fs-sidebar-badge)",
+                    fontWeight: "var(--fw-bold)",
                     fontFamily: "var(--font-mono)",
                   }}
                 >
@@ -915,7 +915,7 @@ export const Sidebar = ({
                     selectedTask?.id === `group-${encodeURIComponent(groupName)}`));
 
               return (
-                <div className="notion-tree-group-block" key={groupName} id={`category-js-${groupName}`}>
+                <div className="tree-group-block" key={groupName} id={`category-js-${groupName}`}>
                   {/* Level 0: Group Header */}
                   <SidebarGroupHeader
                     to="/javascript/$taskId"
@@ -937,7 +937,7 @@ export const Sidebar = ({
 
                   {/* Level 1: Subgroups container (Smooth Grid Accordion) */}
                   <div className={`task-list-wrapper ${isGroupOpen ? "expanded" : ""}`}>
-                    <div className="task-list-inner notion-tree-subgroups-container">
+                    <div className="task-list-inner tree-subgroups-container">
                       {Object.entries(subgroups).map(([subgroupName, tasks]) => {
                         const subKey = `${groupName}/${subgroupName}`;
                         const isSubOpen = Boolean(expandedJsSubgroups[subKey]);
@@ -955,7 +955,7 @@ export const Sidebar = ({
                             (!selectedTask.group || selectedTask.group === groupName));
 
                         return (
-                          <div className="notion-tree-subgroup-block" key={subgroupName}>
+                          <div className="tree-subgroup-block" key={subgroupName}>
                             {/* Level 1: Subgroup Header */}
                             <SidebarSubgroupHeader
                               to="/javascript/$taskId"
@@ -977,7 +977,7 @@ export const Sidebar = ({
 
                             {/* Level 2: Tasks list container (Smooth Grid Accordion) */}
                             <div className={`task-list-wrapper ${isSubOpen ? "expanded" : ""}`}>
-                              <div className="task-list-inner notion-tree-tasks-container">
+                              <div className="task-list-inner tree-tasks-container">
                                 {tasks.filter(isTaskVisible).map((task) => (
                                   <SidebarTaskItem
                                     key={task.id}
@@ -1023,10 +1023,10 @@ export const Sidebar = ({
                 <span
                   style={{
                     color: "var(--text-main)",
-                    fontSize: "11px",
-                    fontWeight: "600",
+                    fontSize: "var(--fs-sidebar-section)",
+                    fontWeight: "var(--fw-semibold)",
                     textTransform: "uppercase",
-                    letterSpacing: "0.04em",
+                    letterSpacing: "var(--ls-section)",
                     fontFamily: "var(--font-sans)",
                     display: "flex",
                     alignItems: "center",
@@ -1038,8 +1038,8 @@ export const Sidebar = ({
                 <span
                   style={{
                     color: "#a855f7",
-                    fontSize: "11px",
-                    fontWeight: "bold",
+                    fontSize: "var(--fs-sidebar-badge)",
+                    fontWeight: "var(--fw-bold)",
                     fontFamily: "var(--font-mono)",
                   }}
                 >
@@ -1082,7 +1082,7 @@ export const Sidebar = ({
                 (!selectedTask && groupMeta.infoId === "group-two-pointers");
 
               return (
-                <div className="notion-tree-group-block" key={groupName} id={`category-algo-${groupName}`}>
+                <div className="tree-group-block" key={groupName} id={`category-algo-${groupName}`}>
                   {/* Level 0: Group Header */}
                   <SidebarGroupHeader
                     to="/algorithms/$taskId"
@@ -1104,7 +1104,7 @@ export const Sidebar = ({
 
                   {/* Level 1: Directly Tasks list container */}
                   <div className={`task-list-wrapper ${isGroupOpen ? "expanded" : ""}`}>
-                    <div className="task-list-inner notion-tree-tasks-container">
+                    <div className="task-list-inner tree-tasks-container">
                       {tasks.filter(isTaskVisible).map((task) => (
                         <SidebarTaskItem
                           key={task.id}
@@ -1130,20 +1130,20 @@ export const Sidebar = ({
           <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
             <Link
               to="/home"
-              className={`notion-tree-node-header group-header ${activeSection === "home" ? "active" : ""}`}
+              className={`tree-node-header group-header ${activeSection === "home" ? "active" : ""}`}
               onClick={handleMobileNavClick}
             >
               <Home size={15} style={{ color: "#60a5fa" }} />
-              <span className="node-title">ГЛАВНАЯ (ОБЗОР)</span>
+              <span className="node-title">Главная (Обзор)</span>
             </Link>
 
             <Link
               to="/javascript"
-              className={`notion-tree-node-header group-header ${activeSection === "javascript" ? "active" : ""}`}
+              className={`tree-node-header group-header ${activeSection === "javascript" ? "active" : ""}`}
               onClick={handleMobileNavClick}
             >
               <Zap size={15} style={{ color: "#f59e0b" }} />
-              <span className="node-title">JAVASCRIPT</span>
+              <span className="node-title">JavaScript</span>
               <span
                 className={`node-count ${
                   completedJsTotal > 0 && completedJsTotal === totalJsCount ? "completed" : ""
@@ -1155,11 +1155,11 @@ export const Sidebar = ({
 
             <Link
               to="/react"
-              className={`notion-tree-node-header group-header ${activeSection === "react" ? "active" : ""}`}
+              className={`tree-node-header group-header ${activeSection === "react" ? "active" : ""}`}
               onClick={handleMobileNavClick}
             >
               <Code2 size={15} style={{ color: "#61dafb" }} />
-              <span className="node-title">REACT</span>
+              <span className="node-title">React</span>
               <span
                 className={`node-count ${
                   completedTotal > 0 && completedTotal === totalTasks ? "completed" : ""
@@ -1171,11 +1171,11 @@ export const Sidebar = ({
 
             <Link
               to="/algorithms"
-              className={`notion-tree-node-header group-header ${activeSection === "algorithms" ? "active" : ""}`}
+              className={`tree-node-header group-header ${activeSection === "algorithms" ? "active" : ""}`}
               onClick={handleMobileNavClick}
             >
               <Brain size={15} style={{ color: "#a855f7" }} />
-              <span className="node-title">АЛГОРИТМЫ</span>
+              <span className="node-title">Алгоритмы</span>
               <span
                 className={`node-count ${
                   completedAlgoTotal > 0 && completedAlgoTotal === totalAlgoCount ? "completed" : ""

@@ -130,7 +130,7 @@ export const StatsModal = ({
                 gap: "8px",
               }}
             >
-              <Clock size={16} style={{ flexShrink: 0, color: "var(--notion-blue)" }} />
+              <Clock size={16} style={{ flexShrink: 0, color: "var(--accent-blue)" }} />
               <span>Этот раздел находится в активной разработке. Практические задачи появятся в скором времени.</span>
             </div>
           )}
