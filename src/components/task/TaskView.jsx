@@ -57,25 +57,46 @@ export const TaskView = ({
           <div className="task-status-actions">
             <button
               type="button"
-              onClick={() => setTaskStatus && setTaskStatus(activeTask.id, "solved")}
+              onClick={() => {
+                if (!setTaskStatus) return;
+                const current = completedTasks[activeTask.id] ?? completedTasks[String(activeTask.id)];
+                const isCurrentlySolved = current === true || current === "solved";
+                setTaskStatus(activeTask.id, isCurrentlySolved ? null : "solved");
+              }}
               className={`status-btn ${
                 completedTasks[activeTask.id] === true ||
                 completedTasks[activeTask.id] === "solved"
                   ? "solved-active"
                   : ""
               }`}
+              title={
+                completedTasks[activeTask.id] === true ||
+                completedTasks[activeTask.id] === "solved"
+                  ? "Нажмите повторно, чтобы снять отметку"
+                  : "Пометить как решённую"
+              }
             >
               Решено
             </button>
 
             <button
               type="button"
-              onClick={() => setTaskStatus && setTaskStatus(activeTask.id, "unsolved")}
+              onClick={() => {
+                if (!setTaskStatus) return;
+                const current = completedTasks[activeTask.id] ?? completedTasks[String(activeTask.id)];
+                const isCurrentlyUnsolved = current === "unsolved";
+                setTaskStatus(activeTask.id, isCurrentlyUnsolved ? null : "unsolved");
+              }}
               className={`status-btn ${
                 completedTasks[activeTask.id] === "unsolved"
                   ? "unsolved-active"
                   : ""
               }`}
+              title={
+                completedTasks[activeTask.id] === "unsolved"
+                  ? "Нажмите повторно, чтобы снять отметку"
+                  : "Пометить как нерешённую"
+              }
             >
               Не решено
             </button>

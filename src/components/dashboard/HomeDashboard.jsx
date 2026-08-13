@@ -28,8 +28,11 @@ export const HomeDashboard = ({
   completedTasks = {},
 }) => {
   // Helper to check if task is solved
-  const isSolved = (id) =>
-    completedTasks && (completedTasks[id] === true || completedTasks[id] === "solved");
+  const isSolved = (id) => {
+    if (!completedTasks) return false;
+    const val = completedTasks[id] ?? completedTasks[String(id)];
+    return val === true || val === "solved";
+  };
 
   // Dynamic calculations across all sections
   const reactList = REACT_TASKS && REACT_TASKS.length > 0 ? REACT_TASKS : WARMUP_TASKS;

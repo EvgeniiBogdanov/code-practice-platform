@@ -29,6 +29,15 @@ import {
 } from "../../utils/tagEngine";
 import { lintJavaScriptCode, fixTypoInCode } from "../../utils/codeLinter";
 import { formatJavaScriptCode } from "../../utils/codeFormatter";
+import { useUIStore } from "../../stores/useUIStore";
+import {
+  getSolution,
+  saveSolutionDebounced,
+  deleteSolution,
+  peekCachedSolution,
+  flushPendingSaves,
+  subscribeToSyncEvents,
+} from "../../services/storage";
 
 const MIN_FONT_SIZE = 15;
 const MAX_FONT_SIZE = 20;
@@ -50,17 +59,11 @@ export const CodeEditor = ({
   onToggleFullscreen,
   extraHeaderActions = null,
 }) => {
-  const storageKey = `playground_js_code_${taskId}`;
-
-  // Восстановление кода из localStorage
+  // Восстановление кода из IndexedDB / L1-кэша памяти
   const [code, setCode] = useState(() => {
     if (readOnly) return initialCode;
-    try {
-      const saved = localStorage.getItem(storageKey);
-      return saved !== null ? saved : initialCode;
-    } catch {
-      return initialCode;
-    }
+    const cached = peekCachedSolution(taskId);
+    return cached !== null ? cached : initialCode;
   });
 
   const [copied, setCopied] = useState(false);
@@ -97,49 +100,9 @@ export const CodeEditor = ({
     selectedLength: 0,
   });
 
-  // Размер шрифта редактора (мин 13px, макс 20px, по умолчанию 13px, сохранение в localStorage)
-  const [fontSize, setFontSize] = useState(() => {
-    try {
-      const saved = localStorage.getItem(FONT_SIZE_STORAGE_KEY);
-      if (saved !== null) {
-        const parsed = parseInt(saved, 10);
-        if (
-          !isNaN(parsed) &&
-          parsed >= MIN_FONT_SIZE &&
-          parsed <= MAX_FONT_SIZE
-        ) {
-          return parsed;
-        }
-      }
-    } catch (err) {
-      console.error("Failed to load font size from localStorage", err);
-    }
-    return MIN_FONT_SIZE;
-  });
-
-  const handleIncreaseFontSize = () => {
-    setFontSize((prev) => {
-      const next = Math.min(MAX_FONT_SIZE, prev + 1);
-      try {
-        localStorage.setItem(FONT_SIZE_STORAGE_KEY, String(next));
-      } catch (err) {
-        console.error("Failed to save font size to localStorage", err);
-      }
-      return next;
-    });
-  };
-
-  const handleDecreaseFontSize = () => {
-    setFontSize((prev) => {
-      const next = Math.max(MIN_FONT_SIZE, prev - 1);
-      try {
-        localStorage.setItem(FONT_SIZE_STORAGE_KEY, String(next));
-      } catch (err) {
-        console.error("Failed to save font size to localStorage", err);
-      }
-      return next;
-    });
-  };
+  const fontSize = useUIStore((state) => state.editorFontSize);
+  const handleIncreaseFontSize = useUIStore((state) => state.increaseFontSize);
+  const handleDecreaseFontSize = useUIStore((state) => state.decreaseFontSize);
 
   // Автоматическая проверка синтаксиса и опечаток (conts -> const, etc.)
   const [diagnostics, setDiagnostics] = useState({
@@ -333,8 +296,10 @@ export const CodeEditor = ({
     setDiagnostics(result);
   }, [code]);
 
-  // Смена задачи
+  // Смена задачи / восстановление сохраненного кода
   useEffect(() => {
+    let isCancelled = false;
+
     if (readOnly) {
       setCode(initialCode);
       historyRef.current = [initialCode];
@@ -342,18 +307,76 @@ export const CodeEditor = ({
       if (onChange) onChange(initialCode);
       return;
     }
-    try {
-      const saved = localStorage.getItem(storageKey);
-      const active = saved !== null ? saved : initialCode;
-      setCode(active);
-      historyRef.current = [active];
+
+    // 1. Проверяем синхронно L1-кэш памяти для мгновенного переключения (0ms)
+    const cached = peekCachedSolution(taskId);
+    if (cached !== null) {
+      setCode(cached);
+      historyRef.current = [cached];
       historyIndexRef.current = 0;
-      if (onChange) onChange(active);
-    } catch {
-      setCode(initialCode);
-      if (onChange) onChange(initialCode);
+      if (onChange) onChange(cached);
+      return;
     }
+
+    setSaveStatus("saved");
+    if (saveStatusTimerRef.current) {
+      clearTimeout(saveStatusTimerRef.current);
+    }
+
+    // 2. Асинхронно запрашиваем из IndexedDB
+    getSolution(taskId, initialCode)
+      .then((loadedCode) => {
+        if (!isCancelled) {
+          const active = loadedCode !== null ? loadedCode : initialCode;
+          setCode(active);
+          historyRef.current = [active];
+          historyIndexRef.current = 0;
+          if (onChange) onChange(active);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to load task code from storage", err);
+        if (!isCancelled) {
+          setCode(initialCode);
+          if (onChange) onChange(initialCode);
+        }
+      });
+
+    return () => {
+      isCancelled = true;
+      flushPendingSaves();
+      if (saveStatusTimerRef.current) {
+        clearTimeout(saveStatusTimerRef.current);
+      }
+    };
   }, [taskId, initialCode, readOnly]);
+
+  // Реакция на глобальный сброс решений (из модалки статистики или другой вкладки)
+  useEffect(() => {
+    const unsubscribe = subscribeToSyncEvents((event) => {
+      if (event.type === "SOLUTIONS_CLEARED") {
+        if (event.all) {
+          setCode(initialCode);
+          historyRef.current = [initialCode];
+          historyIndexRef.current = 0;
+          if (onChange) onChange(initialCode);
+        } else if (event.taskIds && Array.isArray(event.taskIds)) {
+          const stringTaskIds = event.taskIds.map(String);
+          const baseId = String(taskId)
+            .replace(/^(cand_|sol_)/, "")
+            .replace(/_\d+_file_\d+$/, "")
+            .replace(/_file_\d+$/, "");
+          if (stringTaskIds.includes(baseId) || stringTaskIds.includes(String(taskId))) {
+            setCode(initialCode);
+            historyRef.current = [initialCode];
+            historyIndexRef.current = 0;
+            if (onChange) onChange(initialCode);
+          }
+        }
+      }
+    });
+    return () => unsubscribe();
+  }, [taskId, initialCode, onChange]);
 
   const pushHistory = (newCode) => {
     const nextHistory = historyRef.current.slice(
@@ -368,16 +391,20 @@ export const CodeEditor = ({
     }
   };
 
+  const [saveStatus, setSaveStatus] = useState("saved"); // "saving" | "saved"
+  const saveStatusTimerRef = useRef(null);
+
   const updateCode = (newCode, addToHistory = true) => {
     setCode(newCode);
     if (addToHistory) pushHistory(newCode);
     if (onChange) onChange(newCode);
     if (!readOnly && taskId) {
-      try {
-        localStorage.setItem(storageKey, newCode);
-      } catch (err) {
-        console.error("Failed to save code", err);
-      }
+      setSaveStatus("saving");
+      clearTimeout(saveStatusTimerRef.current);
+      saveSolutionDebounced(taskId, newCode);
+      saveStatusTimerRef.current = setTimeout(() => {
+        setSaveStatus("saved");
+      }, 450);
     }
   };
 
@@ -414,11 +441,7 @@ export const CodeEditor = ({
   const handleReset = () => {
     updateCode(initialCode);
     if (taskId) {
-      try {
-        localStorage.removeItem(storageKey);
-      } catch (err) {
-        console.error("Failed to reset code", err);
-      }
+      deleteSolution(taskId);
     }
   };
 
@@ -1305,6 +1328,52 @@ export const CodeEditor = ({
       {!bottomConsole && (
         <div className="vscode-status-bar">
           <div className="status-left">
+            {!readOnly && (
+              <>
+                <span
+                  className={`status-item save-status-indicator ${saveStatus}`}
+                  title={
+                    saveStatus === "saving"
+                      ? "Автосохранение в IndexedDB..."
+                      : "Решение сохранено локально в IndexedDB"
+                  }
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "4px",
+                    color:
+                      saveStatus === "saving"
+                        ? "var(--accent-amber, #f59e0b)"
+                        : "var(--color-success, #10b981)",
+                    fontSize: "11.5px",
+                    fontWeight: 500,
+                    transition: "color 0.2s ease",
+                  }}
+                >
+                  {saveStatus === "saving" ? (
+                    <>
+                      <span
+                        style={{
+                          width: 5,
+                          height: 5,
+                          borderRadius: "50%",
+                          background: "currentColor",
+                          display: "inline-block",
+                        }}
+                      />
+                      Сохранение...
+                    </>
+                  ) : (
+                    <>
+                      <Check size={11} style={{ strokeWidth: 2.5 }} />
+                      Сохранено
+                    </>
+                  )}
+                </span>
+                <span className="status-sep">|</span>
+              </>
+            )}
+
             {diagnostics.errorCount > 0 ? (
               <span
                 className="status-item status-typo-warning"

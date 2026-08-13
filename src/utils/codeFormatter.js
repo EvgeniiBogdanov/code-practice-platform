@@ -1,10 +1,25 @@
 /**
  * codeFormatter.js
- * Форматирование кода через Prettier standalone с безопасным фоллбэком.
+ * Форматирование кода через Prettier standalone с безопасным фоллбэком и ленивой загрузкой.
  */
-import prettier from "prettier/standalone";
-import parserBabel from "prettier/plugins/babel";
-import parserEstree from "prettier/plugins/estree";
+
+// Кэш динамически загруженных модулей Prettier
+let prettierPromise = null;
+
+const loadPrettierModules = async () => {
+  if (!prettierPromise) {
+    prettierPromise = Promise.all([
+      import("prettier/standalone"),
+      import("prettier/plugins/babel"),
+      import("prettier/plugins/estree"),
+    ]).then(([prettierMod, babelMod, estreeMod]) => ({
+      prettier: prettierMod.default || prettierMod,
+      parserBabel: babelMod.default || babelMod,
+      parserEstree: estreeMod.default || estreeMod,
+    }));
+  }
+  return prettierPromise;
+};
 
 export const formatJavaScriptCodeSync = (rawCode) => {
   if (!rawCode || typeof rawCode !== "string") return "";
@@ -112,6 +127,7 @@ export const formatJavaScriptCode = async (rawCode) => {
   if (!rawCode || typeof rawCode !== "string") return "";
 
   try {
+    const { prettier, parserBabel, parserEstree } = await loadPrettierModules();
     const formatted = await prettier.format(rawCode, {
       parser: "babel",
       plugins: [parserBabel, parserEstree],

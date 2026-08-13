@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { BookOpen, Clock, ExternalLink } from "lucide-react";
+import DOMPurify from "dompurify";
 import { TASK_EXPLANATIONS } from "../../taskExplanations";
 import { parseSolutionCodeAndExplanation } from "../../utils/solutionParser";
 import { parseMarkdownBlocks } from "../../utils/markdownParser";
@@ -103,7 +104,7 @@ export const MaterialsTab = ({ selectedTask }) => {
                 <div
                   key={idx}
                   dangerouslySetInnerHTML={{
-                    __html: block.html,
+                    __html: DOMPurify.sanitize(block.html),
                   }}
                 />
               );

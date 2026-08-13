@@ -21,6 +21,7 @@ import {
   FileCode,
   Folder,
 } from "lucide-react";
+import { REACT_TASKS } from "../../react/data/tasksData";
 import { JS_TASKS } from "../../javascript/data/tasksData";
 import { getGroupMeta } from "../../javascript/data/groupConfig";
 import { ALGO_TASKS } from "../../algorithms/data/tasksData";
@@ -208,7 +209,7 @@ export const Header = ({
         >
           <span className="breadcrumb-dropdown-icon"><Code2 size={15} style={{ color: "var(--color-info)" }} /></span>
           <span className="dropdown-item-title">React</span>
-          <span className="section-badge active">260+ задач</span>
+          <span className="section-badge active">{REACT_TASKS.length} задач</span>
         </Link>
         <Link
           to="/algorithms"
