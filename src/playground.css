@@ -732,6 +732,26 @@ body {
   }
 }
 
+/* Notion-Style Pointer Events Overlay during active sidebar drag */
+body.is-resizing-sidebar {
+  user-select: none !important;
+  cursor: col-resize !important;
+}
+
+body.is-resizing-sidebar * {
+  user-select: none !important;
+}
+
+body.is-resizing-sidebar iframe,
+body.is-resizing-sidebar textarea,
+body.is-resizing-sidebar input,
+body.is-resizing-sidebar select,
+body.is-resizing-sidebar .xterm,
+body.is-resizing-sidebar .code-editor-canvas,
+body.is-resizing-sidebar .code-editor-wrapper {
+  pointer-events: none !important;
+}
+
 .sidebar-header {
   height: 44px;
   min-height: 44px;
@@ -979,6 +999,8 @@ body {
   padding: 3px 6px;
   font-size: 13px;
   min-height: 27px;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 27px;
 }
 
 /* Плавный аккордеон категорий задач (style CSS Grid Transition) */
@@ -2666,6 +2688,8 @@ body {
   width: 100%;
   max-width: 100%;
   overflow-wrap: anywhere;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 180px;
   word-break: break-word;
   text-align: left;
 }
@@ -4278,6 +4302,8 @@ body {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   padding: 12px;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 160px;
 }
 
 .cheatsheet-card-header {
@@ -4795,13 +4821,19 @@ svg.lucide,
   color: var(--text-muted);
 }
 
-/* Футер */
 .stats-modal-footer {
   padding: 12px 20px;
   border-top: 1px solid var(--border-color);
   background: var(--bg-sidebar);
   display: flex;
   justify-content: flex-end;
+}
+
+.stats-modal-footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .stats-reset-btn {
@@ -4823,6 +4855,29 @@ svg.lucide,
 
 .stats-reset-btn:hover {
   background: var(--accent-red-bg, rgba(211, 47, 47, 0.12));
+}
+
+.stats-reset-code-btn {
+  background: var(--accent-red-bg, rgba(239, 68, 68, 0.1));
+  border: 1px solid var(--accent-red, #ef4444);
+  color: var(--accent-red, #ef4444);
+  padding: 6px 14px;
+  font-size: 12.5px;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.stats-reset-code-btn:hover {
+  background: var(--accent-red, #ef4444);
+  color: var(--text-on-accent, #ffffff);
 }
 
 /* Light Theme Overrides for Stats Modal */
@@ -5379,6 +5434,8 @@ svg.lucide,
   cursor: pointer;
   transition: border-color 0.15s ease;
   box-shadow: var(--shadow-sm);
+  content-visibility: auto;
+  contain-intrinsic-size: auto 120px;
 }
 
 .gallery-card:not(.disabled):hover {

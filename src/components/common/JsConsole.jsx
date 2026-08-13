@@ -17,6 +17,7 @@ import {
 import { Terminal } from "@xterm/xterm";
 import { FitAddon } from "@xterm/addon-fit";
 import "@xterm/xterm/css/xterm.css";
+import { useUIStore } from "../../stores/useUIStore";
 
 const MIN_FONT_SIZE = 12;
 const MAX_FONT_SIZE = 24;
@@ -107,78 +108,10 @@ export const JsConsole = ({
     }
   }, [isRunning, isCollapsed, onToggleCollapse]);
 
-  const [fontSize, setFontSize] = useState(() => {
-    try {
-      const saved = localStorage.getItem(FONT_SIZE_STORAGE_KEY);
-      if (saved !== null) {
-        const parsed = parseInt(saved, 10);
-        if (!isNaN(parsed) && parsed >= MIN_FONT_SIZE && parsed <= MAX_FONT_SIZE) {
-          return parsed;
-        }
-      }
-    } catch (err) {
-      console.error("Failed to load font size from localStorage", err);
-    }
-    return 13;
-  });
-
-  useEffect(() => {
-    const handleFontSizeSync = (e) => {
-      const newSize = e.detail || (e.key === FONT_SIZE_STORAGE_KEY && parseInt(e.newValue, 10));
-      if (newSize && !isNaN(newSize) && newSize >= MIN_FONT_SIZE && newSize <= MAX_FONT_SIZE) {
-        setFontSize((current) => (current !== newSize ? newSize : current));
-      }
-    };
-    window.addEventListener("editor-font-size-change", handleFontSizeSync);
-    window.addEventListener("storage", handleFontSizeSync);
-    return () => {
-      window.removeEventListener("editor-font-size-change", handleFontSizeSync);
-      window.removeEventListener("storage", handleFontSizeSync);
-    };
-  }, []);
-
-  const handleIncreaseFontSize = () => {
-    const next = Math.min(MAX_FONT_SIZE, fontSize + 1);
-    if (next === fontSize) return;
-    setFontSize(next);
-    try {
-      localStorage.setItem(FONT_SIZE_STORAGE_KEY, String(next));
-      window.dispatchEvent(new CustomEvent("editor-font-size-change", { detail: next }));
-    } catch (err) {
-      console.error("Failed to save font size to localStorage", err);
-    }
-  };
-
-  const handleDecreaseFontSize = () => {
-    const next = Math.max(MIN_FONT_SIZE, fontSize - 1);
-    if (next === fontSize) return;
-    setFontSize(next);
-    try {
-      localStorage.setItem(FONT_SIZE_STORAGE_KEY, String(next));
-      window.dispatchEvent(new CustomEvent("editor-font-size-change", { detail: next }));
-    } catch (err) {
-      console.error("Failed to save font size to localStorage", err);
-    }
-  };
-
-  // Отслеживание светлой/тёмной темы оформления
-  const [currentTheme, setCurrentTheme] = useState(() => {
-    return document.documentElement.getAttribute("data-theme") || "dark";
-  });
-
-  useEffect(() => {
-    const observer = new MutationObserver(() => {
-      const theme = document.documentElement.getAttribute("data-theme") || "dark";
-      setCurrentTheme(theme);
-    });
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["data-theme"],
-    });
-
-    return () => observer.disconnect();
-  }, []);
+  const fontSize = useUIStore((state) => state.editorFontSize);
+  const handleIncreaseFontSize = useUIStore((state) => state.increaseFontSize);
+  const handleDecreaseFontSize = useUIStore((state) => state.decreaseFontSize);
+  const currentTheme = useUIStore((state) => state.theme);
 
   const termContainerRef = useRef(null);
   const xtermRef = useRef(null);
@@ -187,7 +120,7 @@ export const JsConsole = ({
 
   const cleanFilename = filename ? filename.split("/").pop() : "main.js";
 
-  // Инициализация xterm.js терминала
+  // Инициализация xterm.js терминала и адаптивного ResizeObserver
   useEffect(() => {
     if (!termContainerRef.current) return;
 
@@ -209,15 +142,31 @@ export const JsConsole = ({
     xtermRef.current = term;
     fitAddonRef.current = fitAddon;
 
-    setTimeout(() => {
-      try {
-        fitAddon.fit();
-      } catch {
-        // ignore
-      }
-    }, 30);
+    let rafId = null;
+    const handleFit = () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        try {
+          if (termContainerRef.current && termContainerRef.current.clientWidth > 0) {
+            fitAddon.fit();
+          }
+        } catch {
+          // ignore
+        }
+      });
+    };
+
+    handleFit();
+
+    const resizeObserver = new ResizeObserver(() => {
+      handleFit();
+    });
+
+    resizeObserver.observe(termContainerRef.current);
 
     return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      resizeObserver.disconnect();
       try {
         term.dispose();
       } catch {
@@ -227,9 +176,15 @@ export const JsConsole = ({
   }, []);
 
   // Синхронизация темы xterm при переключении светлой/тёмной темы
+  const prevThemeRef = useRef(currentTheme);
   useEffect(() => {
     if (xtermRef.current) {
       xtermRef.current.options.theme = getTerminalTheme(currentTheme);
+      if (prevThemeRef.current !== currentTheme) {
+        prevThemeRef.current = currentTheme;
+        lastRenderedLogCountRef.current = 0;
+        xtermRef.current.clear();
+      }
     }
   }, [currentTheme]);
 
@@ -238,13 +193,13 @@ export const JsConsole = ({
     if (xtermRef.current) {
       xtermRef.current.options.fontSize = fontSize;
       if (fitAddonRef.current && !isCollapsed) {
-        setTimeout(() => {
+        requestAnimationFrame(() => {
           try {
             fitAddonRef.current.fit();
           } catch {
             // ignore
           }
-        }, 50);
+        });
       }
     }
   }, [fontSize, isCollapsed]);
@@ -322,7 +277,7 @@ export const JsConsole = ({
         contentStr = log.args.map((a) => String(a.text || "")).join(" ");
       }
 
-      term.writeln(`${prefix}${color}${contentStr}\x1b[0m \x1b[90m${log.timestamp || ""}\x1b[0m`);
+      term.writeln(`${prefix}${color}${contentStr}\x1b[0m`);
     }
 
     lastRenderedLogCountRef.current = logs.length;
@@ -341,11 +296,27 @@ export const JsConsole = ({
     const textToCopy = logs
       .map((log) => {
         const text = log.text || (log.args ? log.args.map((a) => a.text).join(" ") : "");
-        return `[${log.timestamp}] ${text}`;
+        const prefix = log.type === "error" ? "[Error] " : log.type === "warn" ? "[Warn] " : "";
+        return `${prefix}${text}`;
       })
       .join("\n");
 
-    navigator.clipboard.writeText(textToCopy);
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(textToCopy);
+      } else {
+        const textarea = document.createElement("textarea");
+        textarea.value = textToCopy;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+      }
+    } catch {
+      // ignore
+    }
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };

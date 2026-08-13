@@ -1,16 +1,10 @@
 import React, { useEffect } from "react";
 import { createFileRoute, useParams, useSearch, Link, Navigate } from "@tanstack/react-router";
-import { REACT_TASKS, WARMUP_TASKS } from "../../react/data/tasksData";
 import { REACT_GROUPS_CONFIG } from "../../react/data/groupConfig";
-import { getTaskById } from "../../data/tasksRegistry";
+import { getTaskById, ALL_REACT_TASKS } from "../../data/tasksRegistry";
 import TaskView from "../../components/task/TaskView";
 import GroupOverviewView from "../../components/task/GroupOverviewView";
 import { usePractice } from "../../context/PracticeContext";
-import {
-  FileQuestion,
-  Home,
-  Code2,
-} from "lucide-react";
 
 function ReactTaskPage() {
   const { taskId } = useParams({ from: "/react/$taskId" });
@@ -19,7 +13,7 @@ function ReactTaskPage() {
 
   // Save last selected React task/folder
   useEffect(() => {
-    if (taskId && (REACT_GROUPS_CONFIG[taskId] || REACT_TASKS.some((t) => String(t.id) === String(taskId)))) {
+    if (taskId && (REACT_GROUPS_CONFIG[taskId] || ALL_REACT_TASKS.some((t) => String(t.id) === String(taskId)))) {
       localStorage.setItem("playground_last_selected_task_id_react", taskId);
     }
   }, [taskId]);

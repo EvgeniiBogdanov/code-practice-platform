@@ -13,6 +13,7 @@ import {
   RotateCcw,
   X,
   FileQuestion,
+  Trash2,
 } from "lucide-react";
 
 import {
@@ -26,6 +27,9 @@ import {
 } from "../react/data/tasksData";
 import {
   ALL_TASKS as allTasksList,
+  ALL_REACT_TASKS,
+  ALL_JS_TASKS,
+  ALL_ALGO_TASKS,
   getTaskById,
   resolveTaskSection,
 } from "../data/tasksRegistry";
@@ -41,6 +45,8 @@ import CommandPaletteModal from "../components/modals/CommandPaletteModal";
 import StatsModal from "../components/modals/StatsModal";
 import GlobalTooltip from "../components/common/GlobalTooltip";
 import { PracticeContext } from "../context/PracticeContext";
+import { useGlobalShortcuts } from "../hooks/useGlobalShortcuts";
+import { useUIStore, useTimerStore, useProgressStore } from "../stores";
 
 const NotFoundComponent = () => {
   return (
@@ -314,115 +320,52 @@ const RootLayout = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Тема
-  const [theme, setTheme] = useState(() => {
-    return localStorage.getItem("playground_theme") || "dark";
-  });
-
+  // Инициализация прогресса из IndexedDB через useProgressStore
+  const initProgress = useProgressStore((state) => state.initProgress);
   useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("playground_theme", theme);
-  }, [theme]);
+    initProgress();
+  }, [initProgress]);
 
-  // Завершенные задачи
-  const [completedTasks, setCompletedTasks] = useState(() => {
-    try {
-      const saved = localStorage.getItem("playground_completed_tasks");
-      return saved ? JSON.parse(saved) : {};
-    } catch {
-      return {};
-    }
-  });
+  const completedTasks = useProgressStore((state) => state.completedTasks);
+  const setTaskStatus = useProgressStore((state) => state.setTaskStatus);
+  const checklistState = useProgressStore((state) => state.checklistState);
+  const toggleChecklistItem = useProgressStore((state) => state.toggleChecklistItem);
+  const copiedCodeId = useProgressStore((state) => state.copiedCodeId);
+  const handleCopyCode = useProgressStore((state) => state.handleCopyCode);
+  const handleFullReset = useProgressStore((state) => state.handleFullReset);
 
-  const setTaskStatus = useCallback((taskId, status) => {
-    setCompletedTasks((prev) => {
-      const current = prev[taskId];
-      const isCurrentlyActive =
-        (status === "solved" && (current === true || current === "solved")) ||
-        (status === "unsolved" && current === "unsolved");
-      const newStatus = isCurrentlyActive ? null : status;
-      const updated = { ...prev, [taskId]: newStatus };
-      if (!newStatus) {
-        delete updated[taskId];
-      }
-      localStorage.setItem("playground_completed_tasks", JSON.stringify(updated));
-      return updated;
-    });
-  }, []);
+  // UI Состояния из useUIStore
+  const theme = useUIStore((state) => state.theme);
+  const setTheme = useUIStore((state) => state.setTheme);
 
-  // Чеклист
-  const [checklistState, setChecklistState] = useState(() => {
-    try {
-      const saved = localStorage.getItem("playground_checklist_state");
-      return saved ? JSON.parse(saved) : {};
-    } catch {
-      return {};
-    }
-  });
+  const statsModalOpen = useUIStore((state) => state.statsModalOpen);
+  const setStatsModalOpen = useUIStore((state) => state.setStatsModalOpen);
+  const cheatSheetOpen = useUIStore((state) => state.cheatSheetOpen);
+  const setCheatSheetOpen = useUIStore((state) => state.setCheatSheetOpen);
+  const cheatCategory = useUIStore((state) => state.cheatCategory);
+  const setCheatCategory = useUIStore((state) => state.setCheatCategory);
+  const cheatSearch = useUIStore((state) => state.cheatSearch);
+  const setCheatSearch = useUIStore((state) => state.setCheatSearch);
+  const paletteOpen = useUIStore((state) => state.paletteOpen);
+  const setPaletteOpen = useUIStore((state) => state.setPaletteOpen);
+  const paletteQuery = useUIStore((state) => state.paletteQuery);
+  const setPaletteQuery = useUIStore((state) => state.setPaletteQuery);
+  const resetConfirmOpen = useUIStore((state) => state.resetConfirmOpen);
+  const setResetConfirmOpen = useUIStore((state) => state.setResetConfirmOpen);
+  const closeAllModals = useUIStore((state) => state.closeAllModals);
 
-  const toggleChecklistItem = useCallback((key) => {
-    setChecklistState((prev) => {
-      const updated = { ...prev, [key]: !prev[key] };
-      localStorage.setItem("playground_checklist_state", JSON.stringify(updated));
-      return updated;
-    });
-  }, []);
-
-  // Копирование кода
-  const [copiedCodeId, setCopiedCodeId] = useState(null);
-  const handleCopyCode = useCallback((id, codeText) => {
-    if (!codeText) return;
-    navigator.clipboard.writeText(codeText);
-    setCopiedCodeId(id);
-    setTimeout(() => setCopiedCodeId(null), 2000);
-  }, []);
-
-  // Таймер
-  const [timerSeconds, setTimerSeconds] = useState(null);
-  const [timerRunning, setTimerRunning] = useState(false);
-
-  useEffect(() => {
-    if (!timerRunning || timerSeconds === null || timerSeconds <= 0) return;
-    const interval = setInterval(() => {
-      setTimerSeconds((prev) => {
-        if (prev <= 1) {
-          setTimerRunning(false);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [timerRunning, timerSeconds]);
-
-  const startTimer = useCallback((minutes) => {
-    setTimerSeconds(minutes * 60);
-    setTimerRunning(true);
-  }, []);
-
-  const formatTimer = useCallback((totalSec) => {
-    if (totalSec === null) return "";
-    const m = Math.floor(totalSec / 60);
-    const s = totalSec % 60;
-    return `${m}:${s.toString().padStart(2, "0")}`;
-  }, []);
-
-  // Модалки
-  const [statsModalOpen, setStatsModalOpen] = useState(false);
-  const [cheatSheetOpen, setCheatSheetOpen] = useState(false);
-  const [cheatCategory, setCheatCategory] = useState("hooks");
-  const [cheatSearch, setCheatSearch] = useState("");
-  const [paletteOpen, setPaletteOpen] = useState(false);
-  const [paletteQuery, setPaletteQuery] = useState("");
-  const [resetConfirmOpen, setResetConfirmOpen] = useState(false);
-
-  // Дропдауны
-  const [sectionDropdownOpen, setSectionDropdownOpen] = useState(false);
-  const [headerSectionDropdownOpen, setHeaderSectionDropdownOpen] = useState(false);
-  const [taskDropdownOpen, setTaskDropdownOpen] = useState(false);
-  const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
-  const [jsDropdownOpen, setJsDropdownOpen] = useState(false);
-  const [algoDropdownOpen, setAlgoDropdownOpen] = useState(false);
+  const sectionDropdownOpen = useUIStore((state) => state.sectionDropdownOpen);
+  const setSectionDropdownOpen = useUIStore((state) => state.setSectionDropdownOpen);
+  const headerSectionDropdownOpen = useUIStore((state) => state.headerSectionDropdownOpen);
+  const setHeaderSectionDropdownOpen = useUIStore((state) => state.setHeaderSectionDropdownOpen);
+  const taskDropdownOpen = useUIStore((state) => state.taskDropdownOpen);
+  const setTaskDropdownOpen = useUIStore((state) => state.setTaskDropdownOpen);
+  const categoryDropdownOpen = useUIStore((state) => state.categoryDropdownOpen);
+  const setCategoryDropdownOpen = useUIStore((state) => state.setCategoryDropdownOpen);
+  const jsDropdownOpen = useUIStore((state) => state.jsDropdownOpen);
+  const setJsDropdownOpen = useUIStore((state) => state.setJsDropdownOpen);
+  const algoDropdownOpen = useUIStore((state) => state.algoDropdownOpen);
+  const setAlgoDropdownOpen = useUIStore((state) => state.setAlgoDropdownOpen);
 
   const sectionDropdownRef = useRef(null);
   const headerSectionDropdownRef = useRef(null);
@@ -431,39 +374,35 @@ const RootLayout = () => {
   const jsDropdownRef = useRef(null);
   const algoDropdownRef = useRef(null);
 
-  // Категорийные аккордеоны в Сайдбаре (React)
-  const [warmupExpanded, setWarmupExpanded] = useState(false);
-  const [refactoringExpanded, setRefactoringExpanded] = useState(false);
-  const [tasksExpanded, setTasksExpanded] = useState(false);
-  const [advancedExpanded, setAdvancedExpanded] = useState(false);
-  const [reactTsExpanded, setReactTsExpanded] = useState(false);
-  const [reactTsPracticeExpanded, setReactTsPracticeExpanded] = useState(false);
+  // Категорийные аккордеоны и синхронизация в Сайдбаре (из useUIStore)
+  const warmupExpanded = useUIStore((state) => state.warmupExpanded);
+  const setWarmupExpanded = useUIStore((state) => state.setWarmupExpanded);
+  const refactoringExpanded = useUIStore((state) => state.refactoringExpanded);
+  const setRefactoringExpanded = useUIStore((state) => state.setRefactoringExpanded);
+  const tasksExpanded = useUIStore((state) => state.tasksExpanded);
+  const setTasksExpanded = useUIStore((state) => state.setTasksExpanded);
+  const advancedExpanded = useUIStore((state) => state.advancedExpanded);
+  const setAdvancedExpanded = useUIStore((state) => state.setAdvancedExpanded);
+  const reactTsExpanded = useUIStore((state) => state.reactTsExpanded);
+  const setReactTsExpanded = useUIStore((state) => state.setReactTsExpanded);
+  const reactTsPracticeExpanded = useUIStore((state) => state.reactTsPracticeExpanded);
+  const setReactTsPracticeExpanded = useUIStore((state) => state.setReactTsPracticeExpanded);
+  const expandedJsGroups = useUIStore((state) => state.expandedJsGroups);
+  const setExpandedJsGroups = useUIStore((state) => state.setExpandedJsGroups);
+  const expandedJsSubgroups = useUIStore((state) => state.expandedJsSubgroups);
+  const setExpandedJsSubgroups = useUIStore((state) => state.setExpandedJsSubgroups);
+  const openSingleCategory = useUIStore((state) => state.openSingleCategory);
 
-  // Группы и подгруппы в Сайдбаре (JavaScript)
-  const [expandedJsGroups, setExpandedJsGroups] = useState({});
-  const [expandedJsSubgroups, setExpandedJsSubgroups] = useState({});
-
-  const openSingleCategory = useCallback((targetCategoryId) => {
-    setWarmupExpanded(targetCategoryId === "category-warmup");
-    setRefactoringExpanded(targetCategoryId === "category-refactoring");
-    setTasksExpanded(targetCategoryId === "category-middle");
-    setAdvancedExpanded(targetCategoryId === "category-strong");
-    setReactTsExpanded(targetCategoryId === "category-ts");
-    setReactTsPracticeExpanded(targetCategoryId === "category-ts-practice");
-  }, []);
-
-  // Автоматическая двусторонняя синхронизация открытых папок/категорий в Finder и Сайдбаре
-  // Keyed on selectedTaskId (string) instead of selectedTask (object) to avoid re-fires from reference changes
+  // Синхронизация открытой задачи в сайдбаре
   const prevSyncedTaskIdRef = useRef(null);
   useEffect(() => {
     if (!selectedTask || !selectedTaskId) return;
-    // Skip if we already synced for this exact taskId
     if (prevSyncedTaskIdRef.current === selectedTaskId) return;
     prevSyncedTaskIdRef.current = selectedTaskId;
 
     const taskIdStr = String(selectedTask.id);
 
-    // React синхронизация категорий — use Set lookups for speed
+    // React синхронизация категорий
     if (WARMUP_TASKS.some((t) => String(t.id) === taskIdStr)) {
       setWarmupExpanded(true);
     } else if (REFACTORING_TASKS.some((t) => String(t.id) === taskIdStr)) {
@@ -478,87 +417,49 @@ const RootLayout = () => {
       setReactTsPracticeExpanded(true);
     }
 
-    // JavaScript / Algorithms синхронизация групп и подгрупп (только при открытии задачи, но не при открытии страницы папки)
+    // JavaScript / Algorithms синхронизация групп и подгрупп
     if (selectedTask.group && !selectedTask.isGroupOverview) {
       setExpandedJsGroups((prev) => {
-        if (prev[selectedTask.group]) return prev; // already expanded, skip state update
+        if (prev[selectedTask.group]) return prev;
         return { ...prev, [selectedTask.group]: true };
       });
       if (selectedTask.subgroup) {
         const subKey = `${selectedTask.group}/${selectedTask.subgroup}`;
         setExpandedJsSubgroups((prev) => {
-          if (prev[subKey]) return prev; // already expanded, skip state update
+          if (prev[subKey]) return prev;
           return { ...prev, [subKey]: true };
         });
       }
     }
 
-    // Плавная прокрутка активной задачи в сайдбаре в область видимости
     requestAnimationFrame(() => {
       const el = document.getElementById(`sidebar-task-${selectedTask.id}`);
       if (el) {
         el.scrollIntoView({ behavior: "smooth", block: "nearest" });
       }
     });
-  }, [selectedTaskId]);
+  }, [selectedTaskId, selectedTask, setWarmupExpanded, setRefactoringExpanded, setTasksExpanded, setAdvancedExpanded, setReactTsExpanded, setReactTsPracticeExpanded, setExpandedJsGroups, setExpandedJsSubgroups]);
 
-  // Клавиатурная навигация и Cmd+K
-  useEffect(() => {
-    if (isOpenMode) return;
+  // Таймер практики из useTimerStore
+  const timerSeconds = useTimerStore((state) => state.timerSeconds);
+  const setTimerSeconds = useTimerStore((state) => state.setTimerSeconds);
+  const timerRunning = useTimerStore((state) => state.timerRunning);
+  const setTimerRunning = useTimerStore((state) => state.setTimerRunning);
+  const startTimer = useTimerStore((state) => state.startTimer);
+  const formatTimer = useTimerStore((state) => state.formatTimer);
 
-    const handleKeyDown = (e) => {
-      if (["INPUT", "TEXTAREA", "SELECT"].includes(e.target.tagName)) {
-        if (e.key === "Escape") setPaletteOpen(false);
-        return;
-      }
-
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault();
-        setPaletteOpen((prev) => !prev);
-        setPaletteQuery("");
-        return;
-      }
-
-      if (e.key === "Escape") {
-        setPaletteOpen(false);
-        setStatsModalOpen(false);
-        setCheatSheetOpen(false);
-        setResetConfirmOpen(false);
-        return;
-      }
-
-      if (selectedTask) {
-        const currentIdx = allTasksList.findIndex((t) => String(t.id) === String(selectedTask.id));
-        const tabs = ["candidate", "solution", "materials", "questions", "checklist"];
-        const tabIdx = tabs.indexOf(activeTab);
-
-        if (e.key === "ArrowDown" && currentIdx < allTasksList.length - 1) {
-          e.preventDefault();
-          const nextTask = allTasksList[currentIdx + 1];
-          navigate({
-            to: nextTask.section === "javascript" ? "/javascript/$taskId" : "/react/$taskId",
-            params: { taskId: String(nextTask.id) },
-            search: (prev) => prev,
-          });
-        } else if (e.key === "ArrowUp" && currentIdx > 0) {
-          e.preventDefault();
-          const prevTask = allTasksList[currentIdx - 1];
-          navigate({
-            to: prevTask.section === "javascript" ? "/javascript/$taskId" : "/react/$taskId",
-            params: { taskId: String(prevTask.id) },
-            search: (prev) => prev,
-          });
-        } else if (e.key === "ArrowRight" && tabIdx < tabs.length - 1) {
-          setActiveTab(tabs[tabIdx + 1]);
-        } else if (e.key === "ArrowLeft" && tabIdx > 0) {
-          setActiveTab(tabs[tabIdx - 1]);
-        }
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedTask, activeTab, allTasksList, navigate, setActiveTab]);
+  // Глобальные горячие клавиши (Cmd+K, Esc, навигация по стрелкам)
+  useGlobalShortcuts({
+    isOpenMode,
+    selectedTask,
+    activeTab,
+    allTasksList,
+    navigate,
+    setActiveTab,
+    setPaletteOpen,
+    setPaletteQuery,
+    closeAllModals,
+  });
 
   // Tooltip
   const [tooltip, setTooltip] = useState(null);
@@ -620,10 +521,15 @@ const RootLayout = () => {
     ).length;
   }, [completedTasks]);
 
-  const solvedCount = completedTotal;
-  const unsolvedCount = useMemo(() => {
-    return Object.values(completedTasks).filter((status) => status === "unsolved").length;
+  const reactUnsolvedCount = useMemo(() => {
+    return REACT_TASKS.filter((task) => {
+      const val = completedTasks[task.id] ?? completedTasks[String(task.id)];
+      return val === "unsolved";
+    }).length;
   }, [completedTasks]);
+
+  const solvedCount = completedTotal;
+  const unsolvedCount = reactUnsolvedCount;
 
   const inProgressCount = useMemo(() => {
     const attempted = solvedCount + unsolvedCount;
@@ -638,9 +544,15 @@ const RootLayout = () => {
   const currentSectionStats = useMemo(() => {
     const computeStats = (taskList) => {
       const total = taskList.length;
-      const solved = taskList.filter((t) => completedTasks[t.id] && completedTasks[t.id] !== "unsolved").length;
-      const unsolved = taskList.filter((t) => completedTasks[t.id] === "unsolved").length;
-      const inProg = total - solved - unsolved;
+      const solved = taskList.filter((t) => {
+        const val = completedTasks[t.id] ?? completedTasks[String(t.id)];
+        return val === true || val === "solved";
+      }).length;
+      const unsolved = taskList.filter((t) => {
+        const val = completedTasks[t.id] ?? completedTasks[String(t.id)];
+        return val === "unsolved";
+      }).length;
+      const inProg = Math.max(0, total - solved - unsolved);
       return {
         total,
         solved,
@@ -681,7 +593,10 @@ const RootLayout = () => {
       const groupNames = Array.from(new Set(JS_TASKS.map((t) => t.group)));
       const jsCategories = groupNames.map((gName) => {
         const groupTasks = JS_TASKS.filter((t) => t.group === gName);
-        const count = groupTasks.filter((t) => completedTasks[t.id] && completedTasks[t.id] !== "unsolved").length;
+        const count = groupTasks.filter((t) => {
+          const val = completedTasks[t.id] ?? completedTasks[String(t.id)];
+          return val === true || val === "solved";
+        }).length;
         return { name: gName, completed: count, total: groupTasks.length };
       });
 
@@ -727,7 +642,10 @@ const RootLayout = () => {
     const algoGroupNames = Array.from(new Set(ALGO_TASKS.map((t) => t.group)));
     const algoCategories = algoGroupNames.map((gName) => {
       const groupTasks = ALGO_TASKS.filter((t) => t.group === gName);
-      const count = groupTasks.filter((t) => completedTasks[t.id] && completedTasks[t.id] !== "unsolved").length;
+      const count = groupTasks.filter((t) => {
+        const val = completedTasks[t.id] ?? completedTasks[String(t.id)];
+        return val === true || val === "solved";
+      }).length;
       return { name: gName, completed: count, total: groupTasks.length };
     });
 
@@ -764,24 +682,17 @@ const RootLayout = () => {
     completedTasks,
   ]);
 
-  const handleResetProgress = useCallback(() => {
-    const idsToRemove = new Set(
-      activeSection === "javascript"
-        ? JS_TASKS.map((t) => t.id)
-        : REACT_TASKS.map((t) => t.id)
-    );
-    setCompletedTasks((prev) => {
-      const updated = {};
-      for (const [id, status] of Object.entries(prev)) {
-        if (!idsToRemove.has(id)) {
-          updated[id] = status;
-        }
-      }
-      localStorage.setItem("playground_completed_tasks", JSON.stringify(updated));
-      return updated;
-    });
+  const handleResetSection = useCallback(async () => {
+    await handleFullReset("section", activeSection);
     setResetConfirmOpen(false);
-  }, [activeSection]);
+    setStatsModalOpen(false);
+  }, [handleFullReset, activeSection, setResetConfirmOpen, setStatsModalOpen]);
+
+  const handleResetAll = useCallback(async () => {
+    await handleFullReset("all");
+    setResetConfirmOpen(false);
+    setStatsModalOpen(false);
+  }, [handleFullReset, setResetConfirmOpen, setStatsModalOpen]);
 
   const categoriesList = useMemo(() => {
     if (activeSection === "javascript") {
@@ -1096,33 +1007,48 @@ const RootLayout = () => {
                   <AlertTriangle size={20} style={{ flexShrink: 0, color: "var(--color-error)", marginTop: "2px" }} />
                   <div>
                     <div style={{ fontWeight: 600, marginBottom: "4px", color: "var(--text-main)", fontSize: "14px" }}>
-                      Сбросить статистику раздела {activeSection === "javascript" ? "JavaScript" : "React"}?
+                      Сбросить прогресс и все решения задач?
                     </div>
                     <div style={{ color: "var(--text-muted)", fontSize: "12.5px" }}>
-                      Все отметки о решённых и нерешённых задачах в разделе <strong>{activeSection === "javascript" ? "JavaScript" : "React"}</strong> будут безвозвратно удалены.
+                      Все отметки о выполнении задач (решено / не решено) и весь сохранённый код решений в IndexedDB будут безвозвратно удалены, а задачи вернутся к начальному виду.
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="stats-modal-footer" style={{ gap: "10px" }}>
+              <div className="stats-modal-footer" style={{ gap: "10px", justifyContent: "space-between" }}>
                 <button
                   className="stats-confirm-cancel-btn"
                   onClick={() => setResetConfirmOpen(false)}
                 >
                   Отмена
                 </button>
-                <button
-                  className="stats-reset-btn"
-                  style={{
-                    background: "var(--color-error)",
-                    color: "var(--text-on-accent)",
-                    borderColor: "var(--color-error)",
-                  }}
-                  onClick={handleResetProgress}
-                >
-                  <RotateCcw size={14} /> Подтвердить сброс
-                </button>
+                <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", justifyContent: "flex-end" }}>
+                  <button
+                    className="stats-reset-btn"
+                    style={{
+                      background: "transparent",
+                      color: "var(--color-error)",
+                      borderColor: "var(--color-error)",
+                    }}
+                    onClick={handleResetSection}
+                    title={`Сбросить прогресс и решения раздела ${activeSection}`}
+                  >
+                    <RotateCcw size={14} /> Сбросить раздел ({activeSection === "javascript" ? "JS" : activeSection === "algorithms" ? "Algo" : "React"})
+                  </button>
+                  <button
+                    className="stats-reset-btn"
+                    style={{
+                      background: "var(--color-error)",
+                      color: "var(--text-on-accent, #fff)",
+                      borderColor: "var(--color-error)",
+                    }}
+                    onClick={handleResetAll}
+                    title="Сбросить прогресс и код всех задач на платформе"
+                  >
+                    <Trash2 size={14} /> Сбросить всё на платформе
+                  </button>
+                </div>
               </div>
             </div>
           </div>

@@ -6,6 +6,7 @@ export const parseSolutionCodeAndExplanation = (rawSolutionText) => {
       .replace(/\/\*/g, "")
       .replace(/\*\//g, "")
       .replace(/=== Разбор решения ===/gi, "")
+      .replace(/^###\s*Разбор решения[:\s]*\n*/gi, "")
       .replace(/Разбор решения:/gi, "")
       .trim();
   };
@@ -20,7 +21,7 @@ export const parseSolutionCodeAndExplanation = (rawSolutionText) => {
 
   // 2. Ищем разделитель в конце файла
   const textMatch = rawSolutionText.match(
-    /(?:=== Разбор решения ===|Разбор решения:)[\s\S]*/i,
+    /(?:=== Разбор решения ===|###\s*Разбор решения[:\s]*|Разбор решения:)[\s\S]*/i,
   );
   if (textMatch) {
     const code = rawSolutionText.replace(textMatch[0], "").trim();

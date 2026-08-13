@@ -1,12 +1,21 @@
 import React from "react";
 import { X, CheckCircle2, XCircle, Clock, CheckSquare, RotateCcw } from "lucide-react";
+import { useUIStore } from "../../stores/useUIStore";
 
 export const StatsModal = ({
-  statsModalOpen,
-  setStatsModalOpen,
+  statsModalOpen: propStatsModalOpen,
+  setStatsModalOpen: propSetStatsModalOpen,
   currentSectionStats,
-  setResetConfirmOpen,
+  setResetConfirmOpen: propSetResetConfirmOpen,
 }) => {
+  const storeStatsModalOpen = useUIStore((state) => state.statsModalOpen);
+  const storeSetStatsModalOpen = useUIStore((state) => state.setStatsModalOpen);
+  const storeSetResetConfirmOpen = useUIStore((state) => state.setResetConfirmOpen);
+
+  const statsModalOpen = propStatsModalOpen !== undefined ? propStatsModalOpen : storeStatsModalOpen;
+  const setStatsModalOpen = propSetStatsModalOpen || storeSetStatsModalOpen;
+  const setResetConfirmOpen = propSetResetConfirmOpen || storeSetResetConfirmOpen;
+
   if (!statsModalOpen || !currentSectionStats) return null;
 
   return (
@@ -136,14 +145,14 @@ export const StatsModal = ({
           )}
         </div>
 
-        {/* Футер с кнопкой сброса статистики */}
+        {/* Футер с единой кнопкой сброса прогресса и всех решений */}
         <div className="stats-modal-footer">
           <button
             className="stats-reset-btn"
             onClick={() => setResetConfirmOpen(true)}
-            title="Сбросить статус всех решенных задач"
+            title="Сбросить статус решённых задач и весь сохранённый код решений"
           >
-            <RotateCcw size={14} /> Сбросить статистику
+            <RotateCcw size={14} /> Сбросить прогресс и решения
           </button>
         </div>
       </div>

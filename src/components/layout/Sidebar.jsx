@@ -18,6 +18,7 @@ import {
   Check,
 } from "lucide-react";
 import {
+  REACT_TASKS,
   WARMUP_TASKS,
   REFACTORING_TASKS,
   MAIN_TASKS,
@@ -240,30 +241,46 @@ export const Sidebar = ({
 
       const startX = mouseDownEvent.clientX;
       const startWidth = sidebarWidth;
+      let rafId = null;
+
+      document.body.classList.add("is-resizing-sidebar");
+      document.body.style.cursor = "col-resize";
+      document.body.style.userSelect = "none";
 
       const handleMouseMove = (mouseMoveEvent) => {
-        const deltaX = mouseMoveEvent.clientX - startX;
-        const newWidth = Math.min(Math.max(startWidth + deltaX, 200), 480);
-        if (setSidebarWidth) {
-          setSidebarWidth(newWidth);
-        }
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(() => {
+          const deltaX = mouseMoveEvent.clientX - startX;
+          const newWidth = Math.min(Math.max(startWidth + deltaX, 200), 480);
+          if (setSidebarWidth) {
+            setSidebarWidth(newWidth);
+          }
+        });
       };
 
       const handleMouseUp = () => {
+        if (rafId) cancelAnimationFrame(rafId);
         setIsResizing(false);
         document.removeEventListener("mousemove", handleMouseMove);
         document.removeEventListener("mouseup", handleMouseUp);
+        document.body.classList.remove("is-resizing-sidebar");
         document.body.style.cursor = "";
         document.body.style.userSelect = "";
       };
 
-      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mousemove", handleMouseMove, { passive: true });
       document.addEventListener("mouseup", handleMouseUp);
-      document.body.style.cursor = "col-resize";
-      document.body.style.userSelect = "none";
     },
     [sidebarWidth, setSidebarWidth]
   );
+
+  React.useEffect(() => {
+    return () => {
+      document.body.classList.remove("is-resizing-sidebar");
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+    };
+  }, []);
 
   const handleResetWidth = useCallback(
     (e) => {
@@ -482,7 +499,7 @@ export const Sidebar = ({
         }}
       >
         <Code2 size={15} style={{ color: "var(--color-info)" }} /> <span>React</span>{" "}
-        <span className="section-badge active">260+ задач</span>
+        <span className="section-badge active">{REACT_TASKS.length} задач</span>
       </Link>
       <Link
         to="/algorithms"

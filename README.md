@@ -1,6 +1,6 @@
 <div align="center">
 
-# Code Practice Platform · _`v2.1.7`_
+# Code Practice Platform · _`v2.1.8`_
 
 ### Интерактивная платформа для подготовки к техническим собеседованиям и практики.
 
@@ -65,46 +65,46 @@
 <table>
   <tr>
     <td width="50%" valign="top">
-      <h3>🎯 260+ реальных задач с собеседований</h3>
+      <h3>🎯 280+ реальных задач с собеседований</h3>
       <ul>
-        <li><b>JavaScript:</b> Замыкания, рекурсия, прототипы, <code>this</code>, каррирование, циклы (<code>while</code>, <code>for</code>, <code>for...of</code>), полифилы <code>Promise</code>, <code>Debounce</code>/<code>Throttle</code>, <code>Event Loop</code> и утилиты объектов.</li>
+        <li><b>JavaScript:</b> Замыкания, рекурсия, прототипы, <code>this</code>, каррирование, циклы (<code>while</code>, <code>for</code>), полифилы <code>Promise</code>, <code>Debounce</code>/<code>Throttle</code>, <code>Event Loop</code> и структуры данных.</li>
         <li><b>React:</b> Хуки (<code>useState</code>, <code>useEffect</code>, <code>useMemo</code>, <code>useCallback</code>, <code>useRef</code>), паттерны рефакторинга, оптимизация перерендеров, Redux Toolkit и интеграция с TypeScript.</li>
-        <li><b>Алгоритмы:</b> Классические алгоритмические техники на JS (Два указателя, Скользящее окно, Бинарный поиск, Связные списки и др.).</li>
+        <li><b>Алгоритмы:</b> Классические паттерны (Hash Map, Sliding Window, Prefix Sum, Binary Search, Stack, Linked List, DFS, BFS, Backtracking).</li>
       </ul>
     </td>
     <td width="50%" valign="top">
-      <h3>💻 Встроенный редактор кода в браузере</h3>
-      <p>Решать задачи и многофайловые модули можно непосредственно в браузере без запуска сторонней IDE. Поддержка редактирования JavaScript, TypeScript и React-разметки (JSX / TSX). Вы также можете решать задачи в IDE и комбинировать эти подходы.</p>
+      <h3>💻 Встроенный редактор и изолированный Web Worker</h3>
+      <p>Решение задач прямо в браузере с поддержкой JS, TS и JSX/TSX. Выполнение кода вынесено в изолированный <b>Web Worker</b> со сторожевым таймером, защищающим интерфейс от зависаний при бесконечных циклах (<code>while(true)</code>).</p>
     </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <h3>⚡ Интерактивная консоль JavaScript</h3>
-      <p>Мгновенный запуск кода в браузере (<kbd>Ctrl</kbd> + <kbd>Enter</kbd>) с отслеживанием времени выполнения в миллисекундах (<code>⚡ 6.4ms</code>) и разбором вывода.</p>
+      <h3>💾 Хранилище IndexedDB и синхронизация вкладок</h3>
+      <p>Двухуровневое кэширование (L1 In-Memory + L2 IndexedDB) без лимита в 5 МБ. Мгновенная синхронизация прогресса и решений между вкладками через <code>BroadcastChannel API</code>.</p>
     </td>
+    <td width="50%" valign="top">
+      <h3>⚡ Интерактивная консоль JavaScript (xterm.js)</h3>
+      <p>Мгновенный запуск кода (<kbd>Ctrl</kbd> + <kbd>Enter</kbd>) с замером времени выполнения в миллисекундах (<code>⚡ 6.4ms</code>), потоковым выводом <code>console.*</code> и адаптивным <code>ResizeObserver</code>.</p>
+    </td>
+  </tr>
+  <tr>
     <td width="50%" valign="top">
       <h3>💻 Песочница кандидата (Candidate Code)</h3>
       <p>Запускаемый live-код с багами, недочётами и антипаттернами кандидатов для отработки навыка проведения Code Review.</p>
     </td>
-  </tr>
-  <tr>
     <td width="50%" valign="top">
       <h3>💡 Эталонные решения (Solution Tab)</h3>
       <p>Оптимизированные решения с пометками предпочтительности на собеседованиях, разбором сложности <code>O(N)</code> / <code>O(1)</code> и лучшими практиками.</p>
     </td>
-    <td width="50%" valign="top">
-      <h3>📋 Чек-листы и вопросы интервьюера</h3>
-      <p>Вопросы для самопроверки и список критериев, проверяемых собеседующими.</p>
-    </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <h3>🔍 Поиск по всему приложению (<code>Cmd+K</code>)</h3>
-      <p>Палитра команд для мгновенного поиска любых задач по ключевым словам и темам.</p>
+      <h3>📋 Чек-листы и вопросы интервьюера</h3>
+      <p>Интерактивные чеклисты критериев и список контрольных вопросов, проверяемых собеседующими на реальных интервью.</p>
     </td>
     <td width="50%" valign="top">
-      <h3>🎨 Современный минималистичный дизайн</h3>
-      <p>Поддержка тёмной и светлой темы с удобной типографикой и информационными блоками.</p>
+      <h3>🔍 Поиск (<code>Cmd+K</code>) и Стейт-менеджер Zustand</h3>
+      <p>Палитра команд для мгновенного поиска задач по всей платформе и сверхбыстрое управление состоянием на базе <b>Zustand</b> без лишних перерендеров.</p>
     </td>
   </tr>
 </table>
@@ -116,13 +116,15 @@
 ## 🛠️ Технологический стек
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
   <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React" />
+  <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
+  <img src="https://img.shields.io/badge/Zustand-443e38?style=for-the-badge&logo=react&logoColor=white" alt="Zustand" />
+  <img src="https://img.shields.io/badge/TanStack_Router-FF4154?style=for-the-badge&logo=react&logoColor=white" alt="TanStack Router" />
+  <img src="https://img.shields.io/badge/IndexedDB-336791?style=for-the-badge&logo=sqlite&logoColor=white" alt="IndexedDB" />
+  <img src="https://img.shields.io/badge/Web_Workers-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="Web Workers" />
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript" />
   <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5" />
-  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3" />
-  <img src="https://img.shields.io/badge/GitHub_Pages-222222?style=for-the-badge&logo=githubpages&logoColor=white" alt="GitHub Pages" />
+  <img src="https://img.shields.io/badge/xterm.js-000000?style=for-the-badge&logo=gnubash&logoColor=white" alt="xterm.js" />
   <img src="https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white" alt="Markdown" />
 </p>
 
@@ -134,13 +136,18 @@
 
 Полный список всех изменений задокументирован в файле **[CHANGELOG.md](CHANGELOG.md)**.
 
-### 🚀 [Версия 2.1.3](CHANGELOG.md#v2-1-3)
+### 🚀 [Версия 2.1.8](CHANGELOG.md#v2-1-8)
 
-- **Раздел «Алгоритмы» и подраздел «while»**: Открыт раздел алгоритмической практики, добавлен подраздел циклов `while` в JavaScript (8 задач с теоретическими разборами), обзорные страницы папок с фильтрацией и оптимизация сайдбара.
+- **IndexedDB & Web Worker Sandbox**: Хранение пользовательских решений в IndexedDB без лимита 5 МБ с real-time синхронизацией вкладок (`BroadcastChannel`); изолированное исполнение JS-кода в Web Worker с защитой от бесконечных циклов (`while(true)`).
+- **Zustand & Оптимизация Бандла**: Полная миграция состояния на Zustand, сокращение стартового JS-бандла на **52%** через динамический импорт Prettier и code splitting.
 
-### 🧭 [Версия 2.1](CHANGELOG.md#v2-1-1)
+### 🎨 [Версия 2.1.7](CHANGELOG.md#v2-1-7)
 
-- **Файловый роутинг и Deep Linking**: Интегрирован TanStack Router, добавлен изолированный полноэкранный режим редактора (`/open`) и синхронизация URL.
+- **Design System & Typography**: Внедрена система CSS-токенов типографики Notion, унифицированы интерактивные состояния кнопок и сайдбара.
+
+### ⚡ [Версия 2.1.6](CHANGELOG.md#v2-1-6)
+
+- **Zero-Crutches Architecture**: Единый реестр задач `tasksRegistry.js`, O(1) поиск через `Map`, самодостаточные URL и синхронизация вкладок.
 
 ### 💻 [Версия 2.0](CHANGELOG.md#v2-0-0)
 
@@ -209,10 +216,16 @@ npm run dev
 ```text
 src/
 ├── algorithms/        # Реестр, код, решения и разборы задач по Алгоритмам
-├── components/        # UI-компоненты (Header, Sidebar, дашборд, модалки, вкладки задач)
+├── components/        # UI-компоненты (Header, Sidebar, дашборд, модалки, xterm-консоль, редактор)
+├── context/           # React Context (обратная совместимость)
+├── data/              # Реестр задач (tasksRegistry) и данные шпаргалок
+├── hooks/             # Кастомные React-хуки (таймер, горячие клавиши)
 ├── javascript/        # Реестр, код, решения и разборы задач по JavaScript
 ├── react/             # Реестр, код и компоненты задач по React
 ├── routes/            # Файловая маршрутизация TanStack Router
+├── services/          # Хранилище IndexedDB, кэш, бэкап и BroadcastChannel
+├── stores/            # Хранилища состояния Zustand (UI, Progress, Timer)
+├── utils/             # Web Worker runner, линтеры синтаксиса, автокомплит
 ├── playground.css     # Дизайн-система и CSS-токены
 └── main.jsx           # Точка входа приложения
 ```

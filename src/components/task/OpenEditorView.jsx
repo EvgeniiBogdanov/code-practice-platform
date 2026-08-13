@@ -115,7 +115,7 @@ export const OpenEditorView = ({ task, section, tab = "candidate" }) => {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [task.id, section]);
+  }, [currentTask?.id, currentSection]);
 
   // Скопировать прямую ссылку на открытый редактор
   const handleCopyLink = () => {
@@ -244,9 +244,13 @@ export const OpenEditorView = ({ task, section, tab = "candidate" }) => {
       ) : (
         <div className="open-code-wrapper">
           <CodeEditor
-            key={`open_${task.id}`}
+            key={`open_${task.id}_${tab}`}
             initialCode={activeFile.code}
-            taskId={`cand_${task.id}_file_${activeFileIdx}`}
+            taskId={
+              isSolutionMode
+                ? `sol_${task.id}_0_file_${activeFileIdx}`
+                : `cand_${task.id}_file_${activeFileIdx}`
+            }
             filepath={activeFile.filepath || activeFile.name}
             title={activeFile.name}
             files={files}

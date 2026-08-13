@@ -86,19 +86,21 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
     return { total, completed, remaining, percent };
   }, [groupTasks, completedTasks]);
 
+  const deferredStatusFilter = React.useDeferredValue(statusFilter);
+
   // Фильтрация задач по статусу (Все / Решено / Не решено)
   const filteredTasks = useMemo(() => {
     return groupTasks.filter((task) => {
       const status = getTaskStatus(task.id);
-      if (statusFilter === "completed") {
+      if (deferredStatusFilter === "completed") {
         return status === "solved";
       }
-      if (statusFilter === "uncompleted") {
+      if (deferredStatusFilter === "uncompleted") {
         return status === "unsolved";
       }
       return true;
     });
-  }, [groupTasks, statusFilter, completedTasks]);
+  }, [groupTasks, deferredStatusFilter, completedTasks]);
 
   // Группировка отфильтрованных задач по подгруппам (для JS)
   const groupedSubgroups = useMemo(() => {

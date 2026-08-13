@@ -33,6 +33,48 @@ export default defineConfig({
     react(),
     githubPagesSpaPlugin(),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: (id) => {
+          if (id.includes("node_modules")) {
+            if (id.includes("prettier")) {
+              return "vendor-prettier";
+            }
+            if (id.includes("@xterm")) {
+              return "vendor-xterm";
+            }
+            if (id.includes("marked") || id.includes("dompurify")) {
+              return "vendor-markdown";
+            }
+            if (id.includes("@tanstack")) {
+              return "vendor-router";
+            }
+            if (id.includes("lucide-react")) {
+              return "vendor-icons";
+            }
+            return "vendor-framework";
+          }
+          if (id.includes("/src/react/tasks/") || id.includes("/src/react/solutions/") || id.includes("/src/react/data/")) {
+            return "tasks-react";
+          }
+          if (id.includes("/src/javascript/")) {
+            return "tasks-javascript";
+          }
+          if (id.includes("/src/algorithms/")) {
+            return "tasks-algorithms";
+          }
+          if (id.includes("cheatSheetData.js")) {
+            return "data-cheatsheet";
+          }
+          if (id.includes("taskExplanations.js")) {
+            return "task-explanations";
+          }
+        },
+      },
+    },
+    chunkSizeWarningLimit: 700,
+  },
   server: {
     port: 4000,
     open: true,

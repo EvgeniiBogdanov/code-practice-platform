@@ -11,7 +11,7 @@ export const ChecklistTab = ({
         <div>
           <h3 className="checklist-title">📋 Самопроверка</h3>
           <p className="checklist-subtitle">
-            Убедитесь, что ваше решение соответствует ключевым требованиям задачи и современным практикам React.
+            Убедитесь, что ваше решение соответствует ключевым требованиям задачи и современным лучшим практикам.
           </p>
         </div>
         <div className="checklist-score-badge">
@@ -41,7 +41,7 @@ export const ChecklistTab = ({
         </div>
       ) : (
         <div className="checklist-section">
-          <p style={{ color: 'rgba(255,255,255,0.5)', fontStyle: 'italic' }}>
+          <p style={{ color: "var(--text-muted)", fontStyle: "italic" }}>
             Для данной задачи чек-лист формируется.
           </p>
         </div>

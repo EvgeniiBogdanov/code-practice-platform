@@ -2,18 +2,38 @@ import React, { useEffect } from "react";
 import { Lightbulb, X, Sparkles, Check, Copy } from "lucide-react";
 import { CHEAT_SHEET_DATA, SECTION_CHEAT_SHEETS } from "../../data/cheatSheetData";
 import { highlightJS } from "../../utils/codeHighlighter";
+import { useUIStore } from "../../stores/useUIStore";
+import { useProgressStore } from "../../stores/useProgressStore";
 
 export const CheatSheetModal = ({
-  cheatSheetOpen,
-  setCheatSheetOpen,
-  cheatSearch,
-  setCheatSearch,
-  cheatCategory,
-  setCheatCategory,
-  handleCopyCode,
-  copiedCodeId,
+  cheatSheetOpen: propCheatSheetOpen,
+  setCheatSheetOpen: propSetCheatSheetOpen,
+  cheatSearch: propCheatSearch,
+  setCheatSearch: propSetCheatSearch,
+  cheatCategory: propCheatCategory,
+  setCheatCategory: propSetCheatCategory,
+  handleCopyCode: propHandleCopyCode,
+  copiedCodeId: propCopiedCodeId,
   activeSection = "react",
 }) => {
+  const storeCheatSheetOpen = useUIStore((state) => state.cheatSheetOpen);
+  const storeSetCheatSheetOpen = useUIStore((state) => state.setCheatSheetOpen);
+  const storeCheatSearch = useUIStore((state) => state.cheatSearch);
+  const storeSetCheatSearch = useUIStore((state) => state.setCheatSearch);
+  const storeCheatCategory = useUIStore((state) => state.cheatCategory);
+  const storeSetCheatCategory = useUIStore((state) => state.setCheatCategory);
+
+  const storeHandleCopyCode = useProgressStore((state) => state.handleCopyCode);
+  const storeCopiedCodeId = useProgressStore((state) => state.copiedCodeId);
+
+  const cheatSheetOpen = propCheatSheetOpen !== undefined ? propCheatSheetOpen : storeCheatSheetOpen;
+  const setCheatSheetOpen = propSetCheatSheetOpen || storeSetCheatSheetOpen;
+  const cheatSearch = propCheatSearch !== undefined ? propCheatSearch : storeCheatSearch;
+  const setCheatSearch = propSetCheatSearch || storeSetCheatSearch;
+  const cheatCategory = propCheatCategory !== undefined ? propCheatCategory : storeCheatCategory;
+  const setCheatCategory = propSetCheatCategory || storeSetCheatCategory;
+  const handleCopyCode = propHandleCopyCode || storeHandleCopyCode;
+  const copiedCodeId = propCopiedCodeId !== undefined ? propCopiedCodeId : storeCopiedCodeId;
   const currentSectionConfig =
     SECTION_CHEAT_SHEETS[activeSection] || SECTION_CHEAT_SHEETS.react;
 
@@ -29,12 +49,18 @@ export const CheatSheetModal = ({
 
   if (!cheatSheetOpen) return null;
 
+  const deferredCheatSearch = React.useDeferredValue(cheatSearch);
   const currentCategoryData = CHEAT_SHEET_DATA[cheatCategory] || [];
-  const filteredData = currentCategoryData.filter(
-    (item) =>
-      item.title.toLowerCase().includes(cheatSearch.toLowerCase()) ||
-      item.code.toLowerCase().includes(cheatSearch.toLowerCase())
-  );
+
+  const filteredData = React.useMemo(() => {
+    const q = deferredCheatSearch.trim().toLowerCase();
+    if (!q) return currentCategoryData;
+    return currentCategoryData.filter(
+      (item) =>
+        item.title.toLowerCase().includes(q) ||
+        item.code.toLowerCase().includes(q)
+    );
+  }, [currentCategoryData, deferredCheatSearch]);
 
   return (
     <div className="cheatsheet-drawer-overlay" onClick={() => setCheatSheetOpen(false)}>
