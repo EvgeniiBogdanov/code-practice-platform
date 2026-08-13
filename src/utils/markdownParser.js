@@ -25,7 +25,7 @@ marked.use({
         lower.startsWith("<textarea") ||
         lower.startsWith("<option")
       ) {
-        return `<code class="notion-inline-code">${escapeHtmlChar(text.trim())}</code>`;
+        return `<code class="inline-code-block">${escapeHtmlChar(text.trim())}</code>`;
       }
       return text;
     },
@@ -40,7 +40,7 @@ marked.use({
         .replace(/[\s_]+/g, "-");
       return `<h${depth} id="${slug}">${text}</h${depth}>`;
     },
-    // Кастомный рендерер таблиц GFM (Notion style table)
+    // Кастомный рендерер таблиц GFM (Standard style table)
     table(token) {
       const renderCell = (cell) => {
         // Рендерим инлайн-токены без преобразования в теги <code>
@@ -67,9 +67,9 @@ marked.use({
         })
         .join("");
 
-      return `<div class="notion-table-wrapper"><table class="notion-markdown-table"><thead><tr>${header}</tr></thead><tbody>${rows}</tbody></table></div>`;
+      return `<div class="table-wrapper"><table class="markdown-table"><thead><tr>${header}</tr></thead><tbody>${rows}</tbody></table></div>`;
     },
-    // Кастомные плашки Notion Callouts для цитат с эмодзи
+    // Кастомные плашки Standard Callouts для цитат с эмодзи
     blockquote(token) {
       const text = (token.text || "").trim();
       const match = text.match(/^(⚠️|📌|🚀|🎯|🛠️|ℹ️|🔥)\s*(.*)/s);
@@ -80,7 +80,7 @@ marked.use({
         if (icon === "⚠️") alertClass = "warning";
         if (icon === "📌") alertClass = "tip";
         if (icon === "🚀" || icon === "🔥") alertClass = "important";
-        return `<div class="notion-callout-box notion-callout-${alertClass}"><span class="notion-callout-icon">${icon}</span><div class="notion-callout-text"><p>${content}</p></div></div>`;
+        return `<div class="callout-box callout-${alertClass}"><span class="callout-icon">${icon}</span><div class="callout-text"><p>${content}</p></div></div>`;
       }
       return `<blockquote>${this.parser.parse(token.tokens)}</blockquote>`;
     },

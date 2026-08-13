@@ -189,7 +189,7 @@ export const Header = ({
           onClick={closeAllDropdowns}
         >
           <span className="breadcrumb-dropdown-icon"><Home size={15} style={{ color: "var(--color-info-light)" }} /></span>
-          <span className="dropdown-item-title">ГЛАВНАЯ</span>
+          <span className="dropdown-item-title">Главная</span>
           <span className="section-badge soon">Обзор</span>
         </Link>
         <Link
@@ -198,7 +198,7 @@ export const Header = ({
           onClick={closeAllDropdowns}
         >
           <span className="breadcrumb-dropdown-icon"><Zap size={15} style={{ color: "var(--color-warning)" }} /></span>
-          <span className="dropdown-item-title">JAVASCRIPT</span>
+          <span className="dropdown-item-title">JavaScript</span>
           <span className="section-badge active">{JS_TASKS.length} задач</span>
         </Link>
         <Link
@@ -207,7 +207,7 @@ export const Header = ({
           onClick={closeAllDropdowns}
         >
           <span className="breadcrumb-dropdown-icon"><Code2 size={15} style={{ color: "var(--color-info)" }} /></span>
-          <span className="dropdown-item-title">REACT</span>
+          <span className="dropdown-item-title">React</span>
           <span className="section-badge active">260+ задач</span>
         </Link>
         <Link
@@ -216,7 +216,7 @@ export const Header = ({
           onClick={closeAllDropdowns}
         >
           <span className="breadcrumb-dropdown-icon"><Brain size={15} style={{ color: "var(--color-accent-purple)" }} /></span>
-          <span className="dropdown-item-title">АЛГОРИТМЫ</span>
+          <span className="dropdown-item-title">Алгоритмы</span>
           <span className="section-badge active">{ALGO_TASKS.length} задач</span>
         </Link>
       </div>
@@ -234,7 +234,7 @@ export const Header = ({
           {sidebarOpen ? <PanelLeftClose size={16} /> : <PanelLeftOpen size={16} />}
         </button>
 
-        {/* Интерактивные кликабельные хлебные крошки Notion-style (macOS Finder Emulation) */}
+        {/* Интерактивные кликабельные хлебные крошки style (macOS Finder Emulation) */}
         <nav className="header-breadcrumbs" aria-label="Хлебные крошки Finder">
           {/* Селектор раздела платформы в крошках */}
           <div className="breadcrumb-dropdown-wrapper" ref={headerSectionDropdownRef}>
@@ -243,10 +243,10 @@ export const Header = ({
               onClick={toggleSectionDropdown}
               title="Переключить раздел практики"
             >
-              {activeSection === "home" && <><Home size={15} style={{ color: "#60a5fa" }} /> <span className="breadcrumb-text-truncate">ГЛАВНАЯ</span></>}
-              {activeSection === "react" && <><Code2 size={15} style={{ color: "#61dafb" }} /> <span className="breadcrumb-text-truncate">REACT</span></>}
-              {activeSection === "javascript" && <><Zap size={15} style={{ color: "#f59e0b" }} /> <span className="breadcrumb-text-truncate">JAVASCRIPT</span></>}
-              {activeSection === "algorithms" && <><Brain size={15} style={{ color: "#a855f7" }} /> <span className="breadcrumb-text-truncate">АЛГОРИТМЫ</span></>}
+              {activeSection === "home" && <><Home size={15} style={{ color: "#60a5fa" }} /> <span className="breadcrumb-text-truncate">Главная</span></>}
+              {activeSection === "react" && <><Code2 size={15} style={{ color: "#61dafb" }} /> <span className="breadcrumb-text-truncate">React</span></>}
+              {activeSection === "javascript" && <><Zap size={15} style={{ color: "#f59e0b" }} /> <span className="breadcrumb-text-truncate">JavaScript</span></>}
+              {activeSection === "algorithms" && <><Brain size={15} style={{ color: "#a855f7" }} /> <span className="breadcrumb-text-truncate">Алгоритмы</span></>}
               <ChevronDown size={14} className="breadcrumb-chevron" />
             </button>
 

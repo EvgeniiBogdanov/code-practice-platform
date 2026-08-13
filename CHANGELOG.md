@@ -2,7 +2,34 @@
 
 Все ключевые изменения, новые функции и исправления платформы задокументированы в этом файле.
 
+## <a id="v2-1-7"></a>🎨 v2.1.7 — Design System, Рефакторинг UI и Полировка
+
+### 🖋 Notion Typography System
+
+- Введены CSS-токены типографики в `:root`: размеры (`--fs-*`), насыщенность (`--fw-*`), межстрочный интервал (`--lh-*`), трекинг (`--ls-*`).
+- Шрифтовая шкала по спецификации: заголовок страницы `40px`, H1 `30px`, H2 `24px`, H3 `20px`, тело `16px`, подпись `12px`, инлайн-код `13.6px`.
+- Sidebar: элементы групп `14px`, заголовки секций `12px / 600`, счётчики задач `11px`.
+- Markdown-парсер: все блоки (заголовки, параграфы, списки, код, таблицы, callouts) переведены на токены, ручные значения удалены.
+- Подключён шрифт **Inter** через Google Fonts, `--font-sans` обновлён.
+
+### 🎨 Дизайн-система и интерактивные состояния
+
+- Унифицированы `--state-hover` / `--state-active` / `--state-selected` — единые токены для sidebar, folder-toolbar, header и всех кнопок.
+- Кнопки `.folder-toolbar`: `font-size: 12px`; `.header-right` / `.header-action-btn`: `font-size: 14px`; `.timer-select` / `.timer-display`: `font-size: 14px`.
+- Радиусы кнопок (`border-radius`) переведены на `var(--radius-sm)` / `var(--radius-md)`, жёсткие значения удалены (включая `.icon-toggle-wrapper`).
+
+### 🧩 Компоненты и UX
+
+- **Шпаргалка**: кнопка копирования переработана по образцу `theory-code-editor` — появляется при наведении. Карточки `.cheatsheet-tip` пересмотрены в стиле Notion (по образцу `solution-articles-card`).
+- **Кнопки статуса задачи** (`task-status-actions`): убраны иконки в активном состоянии — только смена цвета.
+- **`.home-section-btn`**: тусклый фон по умолчанию → яркий цвет при наведении (паттерн `.action-btn.blue`). Добавлены модификаторы `--blue`, `--amber`, `--purple`, `--default`. Убраны inline-стили.
+- **`.sidebar-chevron`** и **`.icon-toggle-wrapper`**: `border-radius` переведены на `var(--radius-sm)`.
+- Удалён `text-transform: uppercase` у `.sidebar-title`; сами заголовки групп приведены к нормальному регистру во всех файлах.
+
+---
+
 ## <a id="v2-1-6"></a>🚀 v2.1.6 — Архитектура Роутинга Редактора (Zero-Crutches Architecture) и Аудит Задач JavaScript
+
 
 ### ⚡ Архитектура Роутинга Редактора и Исправление Роутов (Zero-Crutches Architecture)
 

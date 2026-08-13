@@ -60,23 +60,23 @@ export const MaterialsTab = ({ selectedTask }) => {
   return (
     <div className="materials-tab-container" style={{ display: "flex", flexDirection: "column", gap: "6px", width: "100%" }}>
       {hasExplanation && (
-        <article className="notion-article-page">
-          {/* Notion Page Header */}
-          <header className="notion-article-header">
-            <div className="notion-article-header-top">
-              <div className="notion-article-header-info" style={{ flex: 1 }}>
-                <h1 className="notion-article-title">
+        <article className="article-page">
+          {/* Standard Page Header */}
+          <header className="article-header">
+            <div className="article-header-top">
+              <div className="article-header-info" style={{ flex: 1 }}>
+                <h1 className="article-title">
                   Разбор решения: {selectedTask.title}
                 </h1>
-                <div className="notion-article-meta" style={{ marginTop: "8px" }}>
-                  <span className="notion-meta-badge notion-badge-blue">
+                <div className="article-meta" style={{ marginTop: "8px" }}>
+                  <span className="meta-badge badge-blue">
                     <BookOpen size={12} /> Разбор решения
                   </span>
-                  <span className="notion-meta-badge notion-badge-yellow">
+                  <span className="meta-badge badge-yellow">
                     <Clock size={12} /> ~{readingTimeMinutes} мин чтения
                   </span>
                   {hasArticles && (
-                    <span className="notion-meta-badge notion-badge-purple">
+                    <span className="meta-badge badge-purple">
                       <ExternalLink size={12} /> Ссылки на материалы и статьи
                     </span>
                   )}
@@ -85,10 +85,10 @@ export const MaterialsTab = ({ selectedTask }) => {
             </div>
           </header>
 
-          <hr className="notion-article-divider" />
+          <hr className="article-divider" />
 
-          {/* Notion Article Body */}
-          <div className="notion-article-content">
+          {/* Standard Article Body */}
+          <div className="article-content">
             {blocks.map((block, idx) => {
               if (block.type === "code") {
                 return (

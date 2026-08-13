@@ -1,5 +1,5 @@
 /* ==========================================================================
-   2026 MODERN CSS RESET & NOTION NATIVE CONTROLS BASELINE SYSTEM
+   2026 MODERN CSS RESET & STANDARD NATIVE CONTROLS BASELINE SYSTEM
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -30,7 +30,7 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: var(--text-main, rgba(255, 255, 255, 0.9));
+  color: var(--text-main, #ffffff);
   background-color: var(--bg-app, #191919);
   font-size: 14px;
 }
@@ -131,7 +131,7 @@ ul, ol {
 }
 
 /* --------------------------------------------------------------------------
-   3. Notion-Style Native Form Controls (Adaptive Base Rules)
+   3. Style Native Form Controls (Adaptive Base Rules)
    -------------------------------------------------------------------------- */
 
 /* Text Inputs (handles all typed and untyped inputs, search, password, etc.) */
@@ -186,7 +186,7 @@ textarea:not(.vscode-input-textarea):hover {
 /* Input Focus State */
 input:not([type="checkbox"]):not([type="radio"]):focus,
 textarea:not(.vscode-input-textarea):focus {
-  border-color: var(--notion-blue, #2383e2);
+  border-color: var(--accent-blue, #2383e2);
   background-color: var(--bg-input-focus, #2a2a2a);
   box-shadow: var(--shadow-glow-blue);
 }
@@ -194,7 +194,7 @@ textarea:not(.vscode-input-textarea):focus {
 /* Invalid Input State */
 input:invalid:not(:placeholder-shown),
 textarea:not(.vscode-input-textarea):invalid:not(:placeholder-shown) {
-  border-color: var(--notion-red, #e54d42);
+  border-color: var(--accent-red, #e54d42);
   box-shadow: var(--shadow-glow-red);
 }
 
@@ -242,7 +242,7 @@ select:hover {
 }
 
 select:focus {
-  border-color: var(--notion-blue, #2383e2);
+  border-color: var(--accent-blue, #2383e2);
   box-shadow: var(--shadow-glow-blue);
 }
 
@@ -281,8 +281,8 @@ input[type="checkbox"]:hover {
 }
 
 input[type="checkbox"]:checked {
-  background-color: var(--notion-blue, #2383e2);
-  border-color: var(--notion-blue, #2383e2);
+  background-color: var(--accent-blue, #2383e2);
+  border-color: var(--accent-blue, #2383e2);
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>');
   background-position: center;
   background-repeat: no-repeat;
@@ -315,8 +315,8 @@ input[type="radio"]:hover {
 }
 
 input[type="radio"]:checked {
-  background-color: var(--notion-blue, #2383e2);
-  border-color: var(--notion-blue, #2383e2);
+  background-color: var(--accent-blue, #2383e2);
+  border-color: var(--accent-blue, #2383e2);
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="12"/></svg>');
   background-position: center;
   background-repeat: no-repeat;
@@ -338,7 +338,7 @@ input[type="reset"],
   font-weight: var(--fw-medium, 500);
   line-height: var(--lh-tight, 1.2);
   color: var(--text-main, rgba(255, 255, 255, 0.9));
-  background-color: var(--notion-hover, rgba(255, 255, 255, 0.06));
+  background-color: var(--state-hover, rgba(255, 255, 255, 0.06));
   border: 1px solid var(--border-color, rgba(255, 255, 255, 0.14));
   border-radius: var(--radius-sm, 5px);
   cursor: pointer;
@@ -352,7 +352,7 @@ input[type="button"]:hover,
 input[type="submit"]:hover,
 input[type="reset"]:hover,
 .btn:hover {
-  background-color: var(--notion-active, rgba(255, 255, 255, 0.1));
+  background-color: var(--state-active, rgba(255, 255, 255, 0.1));
   border-color: var(--border-strong, rgba(255, 255, 255, 0.22));
 }
 
@@ -361,7 +361,7 @@ input[type="button"]:active,
 input[type="submit"]:active,
 input[type="reset"]:active,
 .btn:active {
-  background-color: var(--notion-selected, rgba(255, 255, 255, 0.14));
+  background-color: var(--state-selected, rgba(255, 255, 255, 0.14));
   transform: translateY(0.5px);
 }
 
@@ -374,7 +374,7 @@ input[type="submit"]:focus-visible,
 
 /* Button Variants */
 button.btn-primary, .btn-primary {
-  background-color: var(--notion-blue, #2383e2);
+  background-color: var(--accent-blue, #2383e2);
   color: var(--text-on-accent, #ffffff);
   border-color: transparent;
 }
@@ -385,7 +385,7 @@ button.btn-primary:hover, .btn-primary:hover {
 }
 
 button.btn-danger, .btn-danger {
-  background-color: var(--notion-red, #e54d42);
+  background-color: var(--accent-red, #e54d42);
   color: var(--text-on-accent, #ffffff);
   border-color: transparent;
 }
@@ -631,7 +631,7 @@ button:disabled,
 
 [data-theme="light"] input:not([type="checkbox"]):not([type="radio"]):not(.vscode-input-textarea):focus,
 [data-theme="light"] textarea:not(.vscode-input-textarea):focus {
-  border-color: var(--notion-blue);
+  border-color: var(--accent-blue);
   background-color: var(--bg-input-focus);
   box-shadow: var(--shadow-glow-blue);
 }
@@ -650,7 +650,7 @@ button:disabled,
 }
 
 [data-theme="light"] select:focus {
-  border-color: var(--notion-blue);
+  border-color: var(--accent-blue);
   box-shadow: var(--shadow-glow-blue);
 }
 
@@ -674,8 +674,8 @@ button:disabled,
 
 [data-theme="light"] input[type="checkbox"]:checked,
 [data-theme="light"] input[type="radio"]:checked {
-  background-color: var(--notion-blue);
-  border-color: var(--notion-blue);
+  background-color: var(--accent-blue);
+  border-color: var(--accent-blue);
 }
 
 

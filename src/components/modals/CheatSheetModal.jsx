@@ -78,30 +78,35 @@ export const CheatSheetModal = ({
               <div key={idx} className="cheatsheet-card">
                 <div className="cheatsheet-card-header">
                   <h4>{item.title}</h4>
+                </div>
+                <div className="cheatsheet-code-block">
+                  <pre className="code-preview-block" style={{ fontSize: "12.5px", padding: "12px", margin: "8px 0" }}>
+                    <code
+                      dangerouslySetInnerHTML={{
+                        __html: highlightJS(item.code),
+                      }}
+                    />
+                  </pre>
                   <button
-                    className="code-copy-btn"
-                    style={{ opacity: 1, position: "static" }}
+                    className={`code-copy-btn ${copiedCodeId === `cheat-${cheatCategory}-${idx}` ? "copied" : ""}`}
                     onClick={() => handleCopyCode(`cheat-${cheatCategory}-${idx}`, item.code)}
                     title={copiedCodeId === `cheat-${cheatCategory}-${idx}` ? "Скопировано!" : "Копировать код"}
                   >
                     {copiedCodeId === `cheat-${cheatCategory}-${idx}` ? (
-                      <Check size={13} style={{ color: "#10b981" }} />
+                      <Check size={13} />
                     ) : (
                       <Copy size={13} />
                     )}
                   </button>
                 </div>
-                <pre className="code-preview-block" style={{ fontSize: "12.5px", padding: "12px", margin: "8px 0" }}>
-                  <code
-                    dangerouslySetInnerHTML={{
-                      __html: highlightJS(item.code),
-                    }}
-                  />
-                </pre>
                 {item.tip && (
-                  <p className="cheatsheet-tip">
-                    <Sparkles size={14} style={{ color: "#e3b341", marginRight: 4, verticalAlign: "middle" }} /> <strong>Лайфхак для интервью:</strong> {item.tip}
-                  </p>
+                  <div className="cheatsheet-tip">
+                    <div className="cheatsheet-tip-header">
+                      <Sparkles size={14} />
+                      <span>Лайфхак для интервью</span>
+                    </div>
+                    <div className="cheatsheet-tip-content">{item.tip}</div>
+                  </div>
                 )}
               </div>
             ))

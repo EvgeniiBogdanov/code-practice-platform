@@ -1,7 +1,7 @@
 {
-  "name": "code-practice-platform",
+  "name": "Code-Practice-Platform",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.1.7",
   "type": "module",
   "scripts": {
     "dev": "vite",

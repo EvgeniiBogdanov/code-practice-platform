@@ -119,10 +119,10 @@ export const TheoryCodeBlock = ({ code = "", language = "notepad" }) => {
         })()}
 
         <div className="vscode-canvas" style={{ position: "relative" }}>
-          {/* Notion-style плавающая иконка скопировать без текста вверху справа */}
+          {/* style плавающая иконка скопировать без текста вверху справа */}
           <button
             type="button"
-            className={`notion-code-copy-btn ${copied ? "copied" : ""}`}
+            className={`code-copy-btn ${copied ? "copied" : ""}`}
             onClick={handleCopy}
             title={copied ? "Скопировано в буфер обмена" : "Скопировать код"}
             aria-label="Скопировать код"

@@ -87,10 +87,14 @@ const Playground = () => {
     return localStorage.getItem("playground_sidebar_open") !== "false";
   });
   const [sidebarWidth, setSidebarWidth] = useState(() => {
-    if (typeof window === "undefined") return 260;
+    if (typeof window === "undefined") return 280;
     const saved = localStorage.getItem("playground_sidebar_width");
-    const parsed = saved ? parseInt(saved, 10) : 260;
-    return isNaN(parsed) ? 260 : Math.min(Math.max(parsed, 200), 480);
+    if (!saved || saved === "260" || saved === "240" || saved === "230" || saved === "220") {
+      localStorage.setItem("playground_sidebar_width", "280");
+      return 280;
+    }
+    const parsed = parseInt(saved, 10);
+    return isNaN(parsed) ? 280 : Math.min(Math.max(parsed, 220), 480);
   });
 
   const updateSidebarWidth = useCallback((width) => {
@@ -373,7 +377,7 @@ const Playground = () => {
 
   const renderSectionDropdownMenu = (closeFn) => (
     <div className="section-dropdown-menu">
-      <div className="section-dropdown-header">РАЗДЕЛЫ ПРАКТИКИ</div>
+      <div className="section-dropdown-header">Разделы практики</div>
       <button
         className={`section-dropdown-item ${activeSection === "home" ? "active" : ""}`}
         onClick={() => {
@@ -381,7 +385,7 @@ const Playground = () => {
           closeFn();
         }}
       >
-        <Home size={15} style={{ color: "var(--color-info-light)" }} /> <span>ГЛАВНАЯ</span> <span className="section-badge soon">Обзор</span>
+        <Home size={15} style={{ color: "var(--color-info-light)" }} /> <span>Главная</span> <span className="section-badge soon">Обзор</span>
       </button>
       <button
         className={`section-dropdown-item ${activeSection === "javascript" ? "active" : ""}`}
@@ -394,7 +398,7 @@ const Playground = () => {
           closeFn();
         }}
       >
-        <Zap size={15} style={{ color: "var(--color-warning)" }} /> <span>JAVASCRIPT</span> <span className="section-badge active">{JS_TASKS.length} задач</span>
+        <Zap size={15} style={{ color: "var(--color-warning)" }} /> <span>JavaScript</span> <span className="section-badge active">{JS_TASKS.length} задач</span>
       </button>
       <button
         className={`section-dropdown-item ${activeSection === "react" ? "active" : ""}`}
@@ -407,7 +411,7 @@ const Playground = () => {
           closeFn();
         }}
       >
-        <Code2 size={15} style={{ color: "var(--color-info)" }} /> <span>REACT</span> <span className="section-badge active">{totalTasks} задач</span>
+        <Code2 size={15} style={{ color: "var(--color-info)" }} /> <span>React</span> <span className="section-badge active">{totalTasks} задач</span>
       </button>
       <button
         className={`section-dropdown-item ${activeSection === "algorithms" ? "active" : ""}`}
@@ -416,7 +420,7 @@ const Playground = () => {
           closeFn();
         }}
       >
-        <Brain size={15} style={{ color: "var(--color-accent-purple)" }} /> <span>АЛГОРИТМЫ</span> <span className="section-badge soon">0 задач</span>
+        <Brain size={15} style={{ color: "var(--color-accent-purple)" }} /> <span>Алгоритмы</span> <span className="section-badge soon">0 задач</span>
       </button>
     </div>
   );
@@ -433,7 +437,7 @@ const Playground = () => {
           }}
         >
           <span><Home size={15} style={{ color: "var(--color-info-light)" }} /></span>
-          <span className="dropdown-item-title">ГЛАВНАЯ</span>
+          <span className="dropdown-item-title">Главная</span>
           <span className="section-badge soon">Обзор</span>
         </button>
         <button
@@ -448,7 +452,7 @@ const Playground = () => {
           }}
         >
           <span><Zap size={15} style={{ color: "var(--color-warning)" }} /></span>
-          <span className="dropdown-item-title">JAVASCRIPT</span>
+          <span className="dropdown-item-title">JavaScript</span>
           <span className="section-badge active">{JS_TASKS.length} задач</span>
         </button>
         <button
@@ -463,7 +467,7 @@ const Playground = () => {
           }}
         >
           <span><Code2 size={15} style={{ color: "var(--color-info)" }} /></span>
-          <span className="dropdown-item-title">REACT</span>
+          <span className="dropdown-item-title">React</span>
           <span className="section-badge active">{totalTasks} задач</span>
         </button>
         <button
@@ -474,7 +478,7 @@ const Playground = () => {
           }}
         >
           <span><Brain size={15} style={{ color: "var(--color-accent-purple)" }} /></span>
-          <span className="dropdown-item-title">АЛГОРИТМЫ</span>
+          <span className="dropdown-item-title">Алгоритмы</span>
           <span className="section-badge soon">0 задач</span>
         </button>
       </div>
@@ -552,7 +556,7 @@ const Playground = () => {
     if (activeSection === "react") {
       return {
         title: "Статистика React",
-        icon: <Code2 size={18} style={{ color: "var(--notion-blue)" }} />,
+        icon: <Code2 size={18} style={{ color: "var(--accent-blue)" }} />,
         total: totalTasks,
         solved: solvedCount,
         unsolved: unsolvedCount,
@@ -604,7 +608,7 @@ const Playground = () => {
 
       return {
         title: "Общая статистика платформы",
-        icon: <Zap size={18} style={{ color: "var(--notion-blue)" }} />,
+        icon: <Zap size={18} style={{ color: "var(--accent-blue)" }} />,
         total: allTotal,
         solved: allSolved,
         unsolved: allUnsolved,
@@ -715,8 +719,8 @@ const Playground = () => {
     }
 
     return [
-      { id: "category-warmup", name: "Разминка", icon: <Flame size={15} style={{ color: "var(--notion-red)" }} />, tasks: WARMUP_TASKS, completed: completedWarmup, total: totalWarmup },
-      { id: "category-refactoring", name: "Рефакторинг", icon: <Wrench size={15} style={{ color: "var(--notion-blue)" }} />, tasks: REFACTORING_TASKS, completed: completedRefactoring, total: totalRefactoring },
+      { id: "category-warmup", name: "Разминка", icon: <Flame size={15} style={{ color: "var(--accent-red)" }} />, tasks: WARMUP_TASKS, completed: completedWarmup, total: totalWarmup },
+      { id: "category-refactoring", name: "Рефакторинг", icon: <Wrench size={15} style={{ color: "var(--accent-blue)" }} />, tasks: REFACTORING_TASKS, completed: completedRefactoring, total: totalRefactoring },
       { id: "category-middle", name: "Middle", icon: <Rocket size={15} style={{ color: "var(--color-success)" }} />, tasks: MAIN_TASKS, completed: completedMain, total: totalMain },
       { id: "category-strong", name: "Strong", icon: <Brain size={15} style={{ color: "var(--color-accent-purple)" }} />, tasks: ADVANCED_TASKS, completed: completedAdvanced, total: totalAdvanced },
       { id: "category-ts", name: "React + TS (Разминка)", icon: <Zap size={15} style={{ color: "var(--color-warning-light)" }} />, tasks: REACT_TS_TASKS, completed: completedReactTs, total: totalReactTs },
@@ -743,9 +747,9 @@ const Playground = () => {
       };
     }
     if (WARMUP_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "Разминка", categoryIcon: <Flame size={15} style={{ color: "var(--notion-red)" }} />, taskIcon: defaultFileIcon, currentCategoryTasks: WARMUP_TASKS, categoryId: "category-warmup" };
+      return { taskCategory: "Разминка", categoryIcon: <Flame size={15} style={{ color: "var(--accent-red)" }} />, taskIcon: defaultFileIcon, currentCategoryTasks: WARMUP_TASKS, categoryId: "category-warmup" };
     if (REFACTORING_TASKS.some((t) => t.id === selectedTask.id))
-      return { taskCategory: "Рефакторинг", categoryIcon: <Wrench size={15} style={{ color: "var(--notion-blue)" }} />, taskIcon: defaultFileIcon, currentCategoryTasks: REFACTORING_TASKS, categoryId: "category-refactoring" };
+      return { taskCategory: "Рефакторинг", categoryIcon: <Wrench size={15} style={{ color: "var(--accent-blue)" }} />, taskIcon: defaultFileIcon, currentCategoryTasks: REFACTORING_TASKS, categoryId: "category-refactoring" };
     if (MAIN_TASKS.some((t) => t.id === selectedTask.id))
       return { taskCategory: "Middle", categoryIcon: <Rocket size={15} style={{ color: "var(--color-success)" }} />, taskIcon: defaultFileIcon, currentCategoryTasks: MAIN_TASKS, categoryId: "category-middle" };
     if (ADVANCED_TASKS.some((t) => t.id === selectedTask.id))
@@ -816,7 +820,7 @@ const Playground = () => {
         hideTooltip={hideTooltip}
       />
 
-      {/* Notion-style Mobile Sidebar Overlay Backdrop */}
+      {/* style Mobile Sidebar Overlay Backdrop */}
       {sidebarOpen && (
         <div
           className="sidebar-backdrop"
@@ -974,7 +978,7 @@ const Playground = () => {
           >
             <div className="stats-modal-header">
               <div className="stats-modal-title">
-                <AlertTriangle size={18} style={{ color: "var(--notion-red, #ef4444)" }} />
+                <AlertTriangle size={18} style={{ color: "var(--accent-red, #ef4444)" }} />
                 <span>Подтверждение сброса</span>
               </div>
               <button
@@ -990,7 +994,7 @@ const Playground = () => {
               <div
                 style={{
                   padding: "16px",
-                  background: "var(--notion-red-bg, rgba(239, 68, 68, 0.08))",
+                  background: "var(--accent-red-bg, rgba(239, 68, 68, 0.08))",
                   border: "1px solid var(--border-color)",
                   borderRadius: "var(--radius-md, 8px)",
                   fontSize: "13px",

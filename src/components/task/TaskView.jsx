@@ -65,14 +65,7 @@ export const TaskView = ({
                   : ""
               }`}
             >
-              {completedTasks[activeTask.id] === true ||
-              completedTasks[activeTask.id] === "solved" ? (
-                <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", whiteSpace: "nowrap" }}>
-                  <CheckCircle2 size={14} /> Решено
-                </span>
-              ) : (
-                "Решено"
-              )}
+              Решено
             </button>
 
             <button
@@ -84,13 +77,7 @@ export const TaskView = ({
                   : ""
               }`}
             >
-              {completedTasks[activeTask.id] === "unsolved" ? (
-                <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", whiteSpace: "nowrap" }}>
-                  <XCircle size={14} /> Не решено
-                </span>
-              ) : (
-                "Не решено"
-              )}
+              Не решено
             </button>
           </div>
         </div>
@@ -103,7 +90,7 @@ export const TaskView = ({
               className={`tab-link tab-candidate ${activeTab === "candidate" ? "active" : ""}`}
             >
               <Play size={14} className="tab-icon" />
-              <span>Песочница кандидата</span>
+              <span>Задача</span>
             </button>
             <button
               type="button"
