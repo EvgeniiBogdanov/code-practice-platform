@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-const MIN_FONT_SIZE = 12;
-const MAX_FONT_SIZE = 24;
+export const MIN_FONT_SIZE = 12;
+export const MAX_FONT_SIZE = 24;
 
 const getInitialTheme = () => {
   if (typeof window === "undefined") return "dark";
@@ -37,6 +37,7 @@ export const useUIStore = create(
       sidebarOpen: true,
       sidebarWidth: 280,
       editorFontSize: 13,
+      consoleFontSize: 13,
       consoleCollapsed: true,
 
       // --- Modals ---
@@ -108,14 +109,40 @@ export const useUIStore = create(
         const clamped = Math.min(MAX_FONT_SIZE, Math.max(MIN_FONT_SIZE, size));
         set({ editorFontSize: clamped });
       },
+      increaseEditorFontSize: () => {
+        set((state) => ({
+          editorFontSize: Math.min(MAX_FONT_SIZE, (state.editorFontSize || 13) + 1),
+        }));
+      },
+      decreaseEditorFontSize: () => {
+        set((state) => ({
+          editorFontSize: Math.max(MIN_FONT_SIZE, (state.editorFontSize || 13) - 1),
+        }));
+      },
       increaseFontSize: () => {
         set((state) => ({
-          editorFontSize: Math.min(MAX_FONT_SIZE, state.editorFontSize + 1),
+          editorFontSize: Math.min(MAX_FONT_SIZE, (state.editorFontSize || 13) + 1),
         }));
       },
       decreaseFontSize: () => {
         set((state) => ({
-          editorFontSize: Math.max(MIN_FONT_SIZE, state.editorFontSize - 1),
+          editorFontSize: Math.max(MIN_FONT_SIZE, (state.editorFontSize || 13) - 1),
+        }));
+      },
+
+      // Console Font Size Actions
+      setConsoleFontSize: (size) => {
+        const clamped = Math.min(MAX_FONT_SIZE, Math.max(MIN_FONT_SIZE, size));
+        set({ consoleFontSize: clamped });
+      },
+      increaseConsoleFontSize: () => {
+        set((state) => ({
+          consoleFontSize: Math.min(MAX_FONT_SIZE, (state.consoleFontSize || 13) + 1),
+        }));
+      },
+      decreaseConsoleFontSize: () => {
+        set((state) => ({
+          consoleFontSize: Math.max(MIN_FONT_SIZE, (state.consoleFontSize || 13) - 1),
         }));
       },
 
@@ -266,6 +293,7 @@ export const useUIStore = create(
         sidebarOpen: state.sidebarOpen,
         sidebarWidth: state.sidebarWidth,
         editorFontSize: state.editorFontSize,
+        consoleFontSize: state.consoleFontSize,
         consoleCollapsed: state.consoleCollapsed,
       }),
       onRehydrateStorage: () => (state) => {

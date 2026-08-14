@@ -365,10 +365,7 @@ export const Header = ({
                               const completedCount = subTasks.filter((t) => isTaskSolved(t.id)).length;
                               const isCompleted = completedCount > 0 && completedCount === subTasks.length;
                               const isActive = currentSubgroupName === subName;
-                              const firstSubTask = subTasks[0];
-                              const targetTaskId = firstSubTask
-                                ? String(firstSubTask.id)
-                                : `subgroup-${currentGroupName}-${subName}`;
+                              const targetTaskId = `subgroup-${subName}`;
                               return (
                                 <Link
                                   key={subName}
@@ -378,19 +375,10 @@ export const Header = ({
                                   className={`breadcrumb-dropdown-item ${isActive ? "active" : ""}`}
                                   onClick={() => {
                                     closeAllDropdowns();
-                                    if (setExpandedJsGroups) {
-                                      setExpandedJsGroups((prev) => ({ ...prev, [currentGroupName]: true }));
-                                    }
-                                    if (setExpandedJsSubgroups) {
-                                      const subKey = `${currentGroupName}/${subName}`;
-                                      setExpandedJsSubgroups((prev) => ({ ...prev, [subKey]: true }));
-                                    }
                                     setTimeout(() => {
-                                      const el = document.getElementById(
-                                        firstSubTask
-                                          ? `sidebar-task-${firstSubTask.id}`
-                                          : `category-js-${currentGroupName}`
-                                      );
+                                      const el =
+                                        document.getElementById(`category-subgroup-${currentGroupName}-${subName}`) ||
+                                        document.getElementById(`category-js-${currentGroupName}`);
                                       if (el) el.scrollIntoView({ behavior: "smooth", block: "nearest" });
                                     }, 50);
                                   }}

@@ -162,7 +162,16 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
   const isJs = location.pathname.includes("/javascript");
   const isReact = location.pathname.includes("/react");
   const taskRoute = isJs ? "/javascript/$taskId" : isReact ? "/react/$taskId" : "/algorithms/$taskId";
-  const sectionName = isJs ? "JavaScript" : isReact ? "React" : "Алгоритмы";
+  
+  // Цвет кнопки строго соответствует цвету иконки конкретной открытой папки
+  const folderColor = groupMeta?.color || (isJs ? "#f59e0b" : isReact ? "var(--accent-blue, #3b82f6)" : "#a855f7");
+  const folderBg = groupMeta?.bg || `color-mix(in srgb, ${folderColor} 12%, transparent)`;
+  const isLightColor =
+    folderColor === "#f59e0b" ||
+    folderColor === "#fbbf24" ||
+    folderColor === "#eab308" ||
+    folderColor?.toLowerCase?.() === "#f59e0b";
+  const hoverTextColor = isLightColor ? "#1c1917" : "#ffffff";
 
   return (
     <div className="task-view-container article-view" style={{ padding: "28px 36px 80px" }}>
@@ -198,17 +207,11 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                     params={{ taskId: String(firstTask.id) }}
                     className="home-section-btn"
                     style={{
-                      background: groupMeta?.color || "var(--color-primary, #3b82f6)",
-                      color: "#ffffff",
-                      padding: "8px 14px",
-                      borderRadius: "10px",
-                      fontSize: "14px",
-                      fontWeight: 500,
-                      textDecoration: "none",
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: "6px",
-                      boxShadow: "none",
+                      "--btn-color": folderColor,
+                      "--btn-bg": folderBg,
+                      "--btn-hover-bg": folderColor,
+                      "--btn-text": folderColor,
+                      "--btn-hover-text": hoverTextColor,
                     }}
                   >
                     <span>Решать задачи</span> <ArrowRight size={14} />

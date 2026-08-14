@@ -972,7 +972,11 @@ export const Sidebar = ({
                             (!selectedTask.group || selectedTask.group === groupName));
 
                         return (
-                          <div className="tree-subgroup-block" key={subgroupName}>
+                          <div
+                            className="tree-subgroup-block"
+                            key={subgroupName}
+                            id={`category-subgroup-${groupName}-${subgroupName}`}
+                          >
                             {/* Level 1: Subgroup Header */}
                             <SidebarSubgroupHeader
                               to="/javascript/$taskId"

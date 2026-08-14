@@ -1,4 +1,4 @@
-import { runNodeJsCode, formatNodeValue } from "../src/utils/nodeRunner.js";
+import { runNodeJsCode, formatNodeValue } from "./nodeRunner.js";
 
 async function testRunner() {
   console.log("Starting nodeRunner tests...");
