@@ -21,7 +21,12 @@ import {
   Globe,
 } from "lucide-react";
 import { highlightJS } from "../../utils/codeHighlighter";
-import { getCompletions, expandSnippet } from "../../utils/snippetsEngine";
+import {
+  getCompletions,
+  expandSnippet,
+  expandImportStatement,
+  addImportToFile,
+} from "../../utils/snippetsEngine";
 import {
   checkAutoCloseTag,
   findLastUnclosedTag,
@@ -39,7 +44,7 @@ import {
   subscribeToSyncEvents,
 } from "../../services/storage";
 
-const MIN_FONT_SIZE = 15;
+const MIN_FONT_SIZE = 14;
 const MAX_FONT_SIZE = 20;
 const FONT_SIZE_STORAGE_KEY = "playground_editor_font_size";
 
@@ -101,8 +106,12 @@ export const CodeEditor = ({
   });
 
   const fontSize = useUIStore((state) => state.editorFontSize);
-  const handleIncreaseFontSize = useUIStore((state) => state.increaseFontSize);
-  const handleDecreaseFontSize = useUIStore((state) => state.decreaseFontSize);
+  const handleIncreaseFontSize = useUIStore(
+    (state) => state.increaseEditorFontSize,
+  );
+  const handleDecreaseFontSize = useUIStore(
+    (state) => state.decreaseEditorFontSize,
+  );
 
   // Автоматическая проверка синтаксиса и опечаток (conts -> const, etc.)
   const [diagnostics, setDiagnostics] = useState({
@@ -121,13 +130,22 @@ export const CodeEditor = ({
     selectedIndex: 0,
   });
 
-  const checkAndTriggerCompletions = (currentCode, cursorIdx) => {
+  const checkAndTriggerCompletions = (
+    currentCode,
+    cursorIdx,
+    force = false,
+  ) => {
     if (readOnly) return;
-    const { word, items } = getCompletions(currentCode, cursorIdx);
-    if (items.length > 0 && word.length >= 1) {
+    const { word, items } = getCompletions(currentCode, cursorIdx, {
+      files,
+      filepath,
+      title,
+      force,
+    });
+    if (items.length > 0) {
       setCompletionState((prev) => ({
         visible: true,
-        word,
+        word: word || "",
         items,
         selectedIndex:
           prev.visible && prev.word === word
@@ -150,37 +168,109 @@ export const CodeEditor = ({
     const cursorIndex = textarea.selectionStart;
     const word = completionState.word;
 
-    if (item.kind === "snippet" && item.snippet) {
-      const { newCode, newCursorPos } = expandSnippet(
+    let newCode = code;
+    let newCursorPos = cursorIndex;
+
+    // 1. Позиционная замена диапазона (для строк импорта / модулей)
+    if (item.replaceStart !== undefined && item.replaceEnd !== undefined) {
+      const before = code.substring(0, item.replaceStart);
+      const after = code.substring(item.replaceEnd);
+      const insertText = item.insertText;
+      newCode = before + insertText + after;
+
+      if (item.cursorOffset !== undefined) {
+        newCursorPos = item.replaceStart + item.cursorOffset;
+      } else if (insertText.endsWith("'',") || insertText.endsWith("''")) {
+        newCursorPos = item.replaceStart + insertText.indexOf("''") + 1;
+      } else if (
+        insertText.endsWith('="",') ||
+        insertText.endsWith('=""') ||
+        insertText.endsWith("={}")
+      ) {
+        newCursorPos = item.replaceStart + insertText.length - 1;
+      } else if (insertText.endsWith("={{}}")) {
+        newCursorPos = item.replaceStart + insertText.length - 2;
+      } else if (insertText.endsWith("();")) {
+        newCursorPos = item.replaceStart + insertText.length - 2;
+      } else if (insertText.endsWith("()") || insertText.endsWith("<>")) {
+        newCursorPos = item.replaceStart + insertText.length - 1;
+      } else {
+        newCursorPos = item.replaceStart + insertText.length;
+      }
+
+      // Если требуется авто-импорт в заголовок файла
+      if (item.autoImport) {
+        const importRes = addImportToFile(
+          newCode,
+          item.autoImport.symbol,
+          item.autoImport.module,
+          item.autoImport.isDefault,
+        );
+        if (importRes.insertedLength > 0) {
+          newCode = importRes.newCode;
+          if (importRes.insertIndex <= item.replaceStart) {
+            newCursorPos += importRes.insertedLength;
+          }
+        }
+      }
+    }
+    // 2. Сниппеты
+    else if (item.kind === "snippet" && item.snippet) {
+      const { newCode: expandedCode, newCursorPos: expCursor } = expandSnippet(
         code,
         cursorIndex,
         item.snippet,
         word,
+        { filepath, title },
       );
-      updateCode(newCode);
-      setTimeout(() => {
-        if (textareaRef.current) {
-          textareaRef.current.selectionStart =
-            textareaRef.current.selectionEnd = newCursorPos;
-          textareaRef.current.focus();
+      newCode = expandedCode;
+      newCursorPos = expCursor;
+
+      if (item.autoImport) {
+        const importRes = addImportToFile(
+          newCode,
+          item.autoImport.symbol,
+          item.autoImport.module,
+          item.autoImport.isDefault,
+        );
+        if (importRes.insertedLength > 0) {
+          newCode = importRes.newCode;
+          newCursorPos += importRes.insertedLength;
         }
-      }, 0);
-    } else {
+      }
+    }
+    // 3. Стандартная замена слова (хуки, переменные, ключевые слова с Auto-Import)
+    else {
       const startReplace = Math.max(0, cursorIndex - word.length);
       const before = code.substring(0, startReplace);
       const after = code.substring(cursorIndex);
       const insertText = item.insertText;
-      const newCode = before + insertText + after;
-      const newCursorPos = startReplace + insertText.length;
-      updateCode(newCode);
-      setTimeout(() => {
-        if (textareaRef.current) {
-          textareaRef.current.selectionStart =
-            textareaRef.current.selectionEnd = newCursorPos;
-          textareaRef.current.focus();
+      newCode = before + insertText + after;
+      newCursorPos = startReplace + insertText.length;
+
+      if (item.autoImport) {
+        const importRes = addImportToFile(
+          newCode,
+          item.autoImport.symbol,
+          item.autoImport.module,
+          item.autoImport.isDefault,
+        );
+        if (importRes.insertedLength > 0) {
+          newCode = importRes.newCode;
+          newCursorPos += importRes.insertedLength;
         }
-      }, 0);
+      }
     }
+
+    updateCode(newCode);
+    setTimeout(() => {
+      if (textareaRef.current) {
+        textareaRef.current.selectionStart = textareaRef.current.selectionEnd =
+          newCursorPos;
+        textareaRef.current.focus();
+      }
+    }, 0);
+
     setCompletionState({
       visible: false,
       word: "",
@@ -366,7 +456,10 @@ export const CodeEditor = ({
             .replace(/^(cand_|sol_)/, "")
             .replace(/_\d+_file_\d+$/, "")
             .replace(/_file_\d+$/, "");
-          if (stringTaskIds.includes(baseId) || stringTaskIds.includes(String(taskId))) {
+          if (
+            stringTaskIds.includes(baseId) ||
+            stringTaskIds.includes(String(taskId))
+          ) {
             setCode(initialCode);
             historyRef.current = [initialCode];
             historyIndexRef.current = 0;
@@ -527,6 +620,16 @@ export const CodeEditor = ({
         });
         return;
       }
+    }
+
+    // 0.1. Ручной вызов подсказок (IntelliSense): Ctrl+Space или Cmd+I / Cmd+Space
+    if (
+      (e.ctrlKey || e.metaKey) &&
+      (e.code === "Space" || e.key === " " || e.key.toLowerCase() === "i")
+    ) {
+      e.preventDefault();
+      checkAndTriggerCompletions(code, start, true);
+      return;
     }
 
     // 1. Горячие клавиши запуска: Ctrl+Enter
@@ -816,6 +919,36 @@ export const CodeEditor = ({
             }, 0);
           }
         } else {
+          // Проверяем: не является ли текущая строка незавершенным импортом (import {useState}, import React, etc.)
+          const textBefore = code.substring(0, start);
+          const lineStart = textBefore.lastIndexOf("\n") + 1;
+          const lineEnd = code.indexOf("\n", start);
+          const effectiveEnd = lineEnd === -1 ? code.length : lineEnd;
+          const currentLine = code.substring(lineStart, effectiveEnd);
+          const currentFilepath = title || filepath || "main.jsx";
+
+          const expandedImport = expandImportStatement(
+            currentLine,
+            files,
+            currentFilepath,
+          );
+
+          if (expandedImport) {
+            const updated =
+              code.substring(0, lineStart) +
+              expandedImport +
+              code.substring(effectiveEnd);
+            updateCode(updated);
+            setTimeout(() => {
+              if (textareaRef.current) {
+                textareaRef.current.selectionStart =
+                  textareaRef.current.selectionEnd =
+                    lineStart + expandedImport.length;
+              }
+            }, 0);
+            return;
+          }
+
           const updated =
             code.substring(0, start) + spaces + code.substring(end);
           updateCode(updated);
@@ -1303,6 +1436,12 @@ export const CodeEditor = ({
                                 ) : item.kind === "keyword" ? (
                                   <Code2 size={12} />
                                 ) : item.kind === "variable" ? (
+                                  <Box size={12} />
+                                ) : item.kind === "import" ? (
+                                  <FileCode size={12} />
+                                ) : item.kind === "method" ? (
+                                  <Code2 size={12} />
+                                ) : item.kind === "property" ? (
                                   <Box size={12} />
                                 ) : (
                                   <Globe size={12} />

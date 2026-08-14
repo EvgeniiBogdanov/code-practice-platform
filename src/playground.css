@@ -5759,66 +5759,71 @@ svg.lucide,
 }
 
 .home-section-btn {
+  --btn-color: var(--accent-blue, #2383e2);
+  --btn-bg: rgba(35, 131, 226, 0.12);
+  --btn-hover-bg: var(--btn-color);
+  --btn-text: var(--btn-color);
+  --btn-hover-text: #ffffff;
+
   display: inline-flex;
   align-items: center;
   gap: 7px;
   padding: 8px 16px;
-  background: rgba(35, 131, 226, 0.12);
-  color: var(--accent-blue, #2383e2);
+  background: var(--btn-bg);
+  color: var(--btn-text);
   border: none;
-  border-radius: var(--radius-md);
-  font-size: 14px;
-  font-weight: 500;
+  border-radius: var(--radius-lg, 10px);
+  font-size: 13.5px;
+  font-weight: 600;
   font-family: var(--font-sans);
   cursor: pointer;
   text-decoration: none;
-  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.15s ease, color 0.15s ease;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
 .home-section-btn:hover {
-  background: var(--accent-blue, #2383e2);
-  color: #ffffff;
-  transform: scale(1.06) rotate(-2deg) translateY(-2px);
+  background: var(--btn-hover-bg);
+  color: var(--btn-hover-text);
 }
 
-/* Blue */
-.home-section-btn.home-section-btn--blue {
-  background: rgba(35, 131, 226, 0.12);
-  color: var(--accent-blue, #2383e2);
-}
-.home-section-btn.home-section-btn--blue:hover {
-  background: var(--accent-blue, #2383e2);
-  color: #ffffff;
+/* Blue / React */
+.home-section-btn.home-section-btn--blue,
+.home-section-btn.blue {
+  --btn-color: var(--accent-blue, #3b82f6);
+  --btn-bg: rgba(35, 131, 226, 0.12);
+  --btn-hover-bg: var(--accent-blue, #2383e2);
+  --btn-text: var(--accent-blue, #3b82f6);
+  --btn-hover-text: #ffffff;
 }
 
 /* Amber / JavaScript */
-.home-section-btn.home-section-btn--amber {
-  background: rgba(245, 158, 11, 0.12);
-  color: #f59e0b;
-}
-.home-section-btn.home-section-btn--amber:hover {
-  background: #f59e0b;
-  color: #1c1917;
+.home-section-btn.home-section-btn--amber,
+.home-section-btn.amber {
+  --btn-color: #f59e0b;
+  --btn-bg: rgba(245, 158, 11, 0.12);
+  --btn-hover-bg: #f59e0b;
+  --btn-text: #f59e0b;
+  --btn-hover-text: #1c1917;
 }
 
 /* Purple / Algorithms */
-.home-section-btn.home-section-btn--purple {
-  background: rgba(168, 85, 247, 0.12);
-  color: #a855f7;
-}
-.home-section-btn.home-section-btn--purple:hover {
-  background: #a855f7;
-  color: #ffffff;
+.home-section-btn.home-section-btn--purple,
+.home-section-btn.purple {
+  --btn-color: #a855f7;
+  --btn-bg: rgba(168, 85, 247, 0.12);
+  --btn-hover-bg: #a855f7;
+  --btn-text: #a855f7;
+  --btn-hover-text: #ffffff;
 }
 
 /* Default / Home */
-.home-section-btn.home-section-btn--default {
-  background: var(--state-hover);
-  color: var(--text-muted);
-}
-.home-section-btn.home-section-btn--default:hover {
-  background: var(--state-active);
-  color: var(--text-main);
+.home-section-btn.home-section-btn--default,
+.home-section-btn.default {
+  --btn-color: var(--text-main);
+  --btn-bg: var(--state-hover);
+  --btn-hover-bg: var(--state-active);
+  --btn-text: var(--text-muted);
+  --btn-hover-text: var(--text-main);
 }
 
 .home-section-btn-disabled {
@@ -5835,11 +5840,10 @@ svg.lucide,
   font-family: var(--font-sans);
   cursor: pointer;
   text-decoration: none;
-  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.15s ease;
+  transition: background 0.15s ease;
 }
 
 .home-section-btn-disabled:hover {
-  transform: scale(1.06) rotate(-2deg);
   background: var(--state-active);
 }
 
@@ -8308,7 +8312,7 @@ svg.lucide,
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
   display: flex;
   flex-direction: column;
-  font-size: var(--editor-font-size, 13px);
+  font-size: var(--console-font-size, var(--editor-font-size, 13px));
 }
 
 .vscode-terminal-header {
@@ -8435,10 +8439,10 @@ svg.lucide,
 
 .vscode-terminal-body {
   height: auto;
-  min-height: 50px;
+  min-height: 0;
   max-height: 360px;
   overflow-y: auto;
-  padding: 4px 10px;
+  padding: 4px 8px;
   background: #141414;
   font-family: var(--font-mono);
   font-size: inherit;
@@ -8883,6 +8887,31 @@ svg.lucide,
 .autocomplete-kind-badge.kind-global {
   background: rgba(59, 130, 246, 0.2);
   color: #60a5fa;
+}
+
+.autocomplete-kind-badge.kind-import {
+  background: rgba(99, 102, 241, 0.2);
+  color: #818cf8;
+}
+
+.autocomplete-kind-badge.kind-module {
+  background: rgba(236, 72, 153, 0.2);
+  color: #f472b6;
+}
+
+.autocomplete-kind-badge.kind-type {
+  background: rgba(20, 184, 166, 0.2);
+  color: #2dd4bf;
+}
+
+.autocomplete-kind-badge.kind-method {
+  background: rgba(168, 85, 247, 0.2);
+  color: #c084fc;
+}
+
+.autocomplete-kind-badge.kind-property {
+  background: rgba(14, 165, 233, 0.2);
+  color: #38bdf8;
 }
 
 .autocomplete-label {

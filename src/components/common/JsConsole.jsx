@@ -108,9 +108,9 @@ export const JsConsole = ({
     }
   }, [isRunning, isCollapsed, onToggleCollapse]);
 
-  const fontSize = useUIStore((state) => state.editorFontSize);
-  const handleIncreaseFontSize = useUIStore((state) => state.increaseFontSize);
-  const handleDecreaseFontSize = useUIStore((state) => state.decreaseFontSize);
+  const fontSize = useUIStore((state) => state.consoleFontSize ?? 13);
+  const handleIncreaseFontSize = useUIStore((state) => state.increaseConsoleFontSize);
+  const handleDecreaseFontSize = useUIStore((state) => state.decreaseConsoleFontSize);
   const currentTheme = useUIStore((state) => state.theme);
 
   const termContainerRef = useRef(null);
@@ -220,9 +220,9 @@ export const JsConsole = ({
 
     const lineCount =
       logs.length === 0 && !isRunning && !lastExecution
-        ? 3
-        : Math.max(3, totalPhysicalLines + (lastExecution ? 2 : 1) + 1);
-    const contentRows = Math.min(Math.max(3, lineCount), 18);
+        ? 2
+        : 1 + totalPhysicalLines + (lastExecution ? 1 : 0);
+    const contentRows = Math.min(Math.max(1, lineCount), 20);
 
     try {
       term.resize(term.cols || 80, contentRows);
@@ -237,18 +237,18 @@ export const JsConsole = ({
     if (logs.length === 0 && !isRunning && !lastExecution) {
       term.clear();
       term.writeln(`\x1b[36m$ node ${cleanFilename}\x1b[0m`);
-      term.writeln(`\x1b[90m// Нажмите «Запустить» (Ctrl+Enter) для выполнения кода...\x1b[0m`);
+      term.write(`\x1b[90m// Нажмите «Запустить» (Ctrl+Enter) для выполнения кода...\x1b[0m`);
       lastRenderedLogCountRef.current = 0;
       return;
     }
 
-    if (logs.length < lastRenderedLogCountRef.current) {
+    if (logs.length < lastRenderedLogCountRef.current || (logs.length === 0 && isRunning)) {
       term.clear();
       term.writeln(`\x1b[36m$ node ${cleanFilename}\x1b[0m`);
       lastRenderedLogCountRef.current = 0;
     }
 
-    if (lastRenderedLogCountRef.current === 0 && logs.length > 0) {
+    if (lastRenderedLogCountRef.current === 0 && (logs.length > 0 || lastExecution)) {
       term.clear();
       term.writeln(`\x1b[36m$ node ${cleanFilename}\x1b[0m`);
     }
@@ -284,9 +284,9 @@ export const JsConsole = ({
 
     if (lastExecution) {
       if (lastExecution.exitCode === 0) {
-        term.writeln(`\x1b[32m✔ Process exited with code 0 (${lastExecution.durationMs || 0}ms)\x1b[0m`);
+        term.write(`\x1b[32m✔ Process exited with code 0 (${lastExecution.durationMs || 0}ms)\x1b[0m`);
       } else {
-        term.writeln(`\x1b[31m✖ Process exited with error code ${lastExecution.exitCode} (${lastExecution.durationMs || 0}ms)\x1b[0m`);
+        term.write(`\x1b[31m✖ Process exited with error code ${lastExecution.exitCode} (${lastExecution.durationMs || 0}ms)\x1b[0m`);
       }
     }
   }, [logs, isRunning, lastExecution, cleanFilename, currentTheme]);
@@ -333,13 +333,16 @@ export const JsConsole = ({
   return (
     <div
       className={`js-console-container vscode-terminal-panel ${isCollapsed ? "console-collapsed" : ""}`}
-      style={{ "--editor-font-size": `${fontSize}px` }}
+      style={{
+        "--console-font-size": `${fontSize}px`,
+        "--editor-font-size": `${fontSize}px`,
+      }}
     >
       {/* Шапка консоли в едином дизайне с редактором кода */}
       <div className="vscode-editor-header">
         <div className="vscode-editor-single-file">
           <TerminalIcon size={13} style={{ color: "var(--color-info, #38bdf8)", flexShrink: 0 }} />
-          <span className="file-tab-name">{customTitle || "Терминал"}</span>
+          <span className="file-tab-name">{customTitle || "Консоль"}</span>
           {logs.length > 0 && <span className="console-counter">{logs.length}</span>}
         </div>
 
@@ -366,7 +369,7 @@ export const JsConsole = ({
             className="vscode-icon-btn"
             onClick={handleClearTerminal}
             disabled={logs.length === 0 && !lastExecution}
-            data-tooltip="Очистить вывод терминала"
+            data-tooltip="Очистить вывод консоли"
             aria-label="Очистить"
           >
             <Trash2 size={14} />
@@ -376,7 +379,7 @@ export const JsConsole = ({
             className="vscode-icon-btn"
             onClick={handleCopyLogs}
             disabled={logs.length === 0}
-            data-tooltip={copied ? "Вывод скопирован!" : "Скопировать вывод терминала"}
+            data-tooltip={copied ? "Вывод скопирован!" : "Скопировать вывод консоли"}
             aria-label="Копировать"
           >
             {copied ? (
@@ -390,7 +393,11 @@ export const JsConsole = ({
             className="vscode-icon-btn"
             onClick={handleDecreaseFontSize}
             disabled={fontSize <= MIN_FONT_SIZE}
-            data-tooltip={`Уменьшить шрифт терминала (${fontSize}px)`}
+            data-tooltip={
+              fontSize <= MIN_FONT_SIZE
+                ? `Минимальный размер шрифта (${MIN_FONT_SIZE}px)`
+                : `Уменьшить шрифт консоли (${fontSize}px)`
+            }
           >
             <ZoomOut size={14} />
           </button>
@@ -399,7 +406,11 @@ export const JsConsole = ({
             className="vscode-icon-btn"
             onClick={handleIncreaseFontSize}
             disabled={fontSize >= MAX_FONT_SIZE}
-            data-tooltip={`Увеличить шрифт терминала (${fontSize}px)`}
+            data-tooltip={
+              fontSize >= MAX_FONT_SIZE
+                ? `Максимальный размер шрифта (${MAX_FONT_SIZE}px)`
+                : `Увеличить шрифт консоли (${fontSize}px)`
+            }
           >
             <ZoomIn size={14} />
           </button>
@@ -417,7 +428,7 @@ export const JsConsole = ({
 
       {/* Холст интерактивного Web Terminal */}
       <div className="js-console-body vscode-terminal-body">
-        <div ref={termContainerRef} className="xterm-view-container" style={{ width: "100%", height: "100%", padding: "4px 8px" }} />
+        <div ref={termContainerRef} className="xterm-view-container" style={{ width: "100%", height: "100%", padding: 0 }} />
       </div>
 
       {/* Статус-бар консоли в едином дизайне с редактором кода */}
