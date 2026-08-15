@@ -14,15 +14,23 @@ import {
   Zap,
   Check,
   X,
+  Calendar,
+  RotateCcw,
+  Flame,
+  Minus,
+  Clock,
 } from "lucide-react";
 import { parseMarkdownBlocks } from "../../utils/markdownParser";
 import TheoryCodeBlock from "./TheoryCodeBlock";
 import { usePractice } from "../../context/PracticeContext";
 import { FILE_ICON_COLOR } from "../../constants/uiConstants";
+import { useReviewStore } from "../../stores/useReviewStore";
+import { formatNextReviewDate, isTaskDue } from "../../utils/spacedRepetition";
 
 export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
   const context = usePractice();
   const completedTasks = context?.completedTasks || {};
+  const reviews = useReviewStore((state) => state.reviews);
   const location = useLocation();
 
   const [statusFilter, setStatusFilter] = useState("all"); // "all" | "completed" | "uncompleted"
@@ -44,6 +52,23 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
     }
   };
   const [collapsedSubgroups, setCollapsedSubgroups] = useState({});
+
+  // Helper для форматирования даты последнего решения
+  const formatLastSolved = (timestamp) => {
+    if (!timestamp) return null;
+    const d = new Date(timestamp);
+    const now = new Date();
+    const isToday = d.toDateString() === now.toDateString();
+    if (isToday) return "Сегодня";
+    const yesterday = new Date(now);
+    yesterday.setDate(now.getDate() - 1);
+    if (d.toDateString() === yesterday.toDateString()) return "Вчера";
+    const months = [
+      "янв", "фев", "мар", "апр", "мая", "июн",
+      "июл", "авг", "сен", "окт", "ноя", "дек"
+    ];
+    return `${d.getDate()} ${months[d.getMonth()]}`;
+  };
 
   // Helper для определения точного статуса задачи
   const getTaskStatus = (taskId) => {
@@ -274,7 +299,12 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
             {/* Database Column Header (for List view) */}
             {viewMode === "list" && filteredTasks.length > 0 && (
               <div className="db-columns-header">
-                <span>Папка / Файл</span>
+                <span className="db-col-name">Папка / Файл</span>
+                <div className="db-col-meta">
+                  <span className="db-col-last-solved">Решение</span>
+                  <span className="db-col-next-review">Повторение</span>
+                  <span className="db-col-status">Статус</span>
+                </div>
               </div>
             )}
 
@@ -333,28 +363,87 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                               const s = getTaskStatus(task.id);
                               const isDone = s === "solved";
                               const isUnsolved = s === "unsolved";
+
+                              const taskReview = reviews[String(task.id)] || reviews[task.id];
+                              const lastReviewedAt = taskReview?.lastReviewedAt;
+                              const nextReviewAt = taskReview?.nextReviewAt;
+                              const isDue = isTaskDue(taskReview);
+                              const intervalDays = taskReview?.intervalDays;
+
                               return (
                                 <Link
                                   key={task.id}
                                   to={taskRoute}
                                   params={{ taskId: String(task.id) }}
-                                  className="task-btn tree-task-btn"
+                                  className={`task-btn tree-task-btn ${isDue ? "task-is-due" : ""}`}
                                 >
                                   <span className="task-btn-title">
-                                    <FileText size={16} className="node-file-icon" style={{ color: FILE_ICON_COLOR }} />
+                                    {isDue ? (
+                                      <Flame size={16} className="node-file-icon flame-pulse-icon" style={{ color: "#ef4444" }} />
+                                    ) : (
+                                      <FileText size={16} className="node-file-icon" style={{ color: FILE_ICON_COLOR }} />
+                                    )}
                                     <span className="task-btn-text">{task.title}</span>
                                   </span>
 
-                                  {isDone && (
-                                    <span className="dropdown-item-check" title="Решено">
-                                      <Check size={14} />
+                                  <div className="task-row-meta">
+                                    {/* Бейдж даты последнего решения */}
+                                    {lastReviewedAt ? (
+                                      <span
+                                        className="folder-task-badge badge-last-solved"
+                                        title={`Дата последнего решения: ${new Date(lastReviewedAt).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })}`}
+                                      >
+                                        <Calendar size={11} className="badge-icon" />
+                                        <span>{formatLastSolved(lastReviewedAt)}</span>
+                                      </span>
+                                    ) : (
+                                      <span className="folder-task-badge badge-empty" title="Ещё не решалась">
+                                        <Minus size={13} className="folder-empty-dash" />
+                                      </span>
+                                    )}
+
+                                    {/* Бейдж сколько до повторного решения задачи */}
+                                    {isDue ? (
+                                      <span
+                                        className="folder-task-badge badge-next-due"
+                                        title="Срок повторения подошел! Пора повторить сегодня"
+                                      >
+                                        <Flame size={11} className="flame-pulse-icon" />
+                                        <span>Пора повторить</span>
+                                      </span>
+                                    ) : nextReviewAt ? (
+                                      <span
+                                        className="folder-task-badge badge-next-scheduled"
+                                        title={`Следующее повторение: ${formatNextReviewDate(nextReviewAt)} (интервал: ${intervalDays} дн.)`}
+                                      >
+                                        <RotateCcw size={11} className="badge-icon" />
+                                        <span>{formatNextReviewDate(nextReviewAt)}</span>
+                                      </span>
+                                    ) : (
+                                      <span className="folder-task-badge badge-next-empty" title="Повторение не запланировано">
+                                        <Minus size={13} className="folder-empty-dash" />
+                                      </span>
+                                    )}
+
+                                    {/* Иконка статуса */}
+                                    <span className="task-row-status-icon">
+                                      {isDone && (
+                                        <span className="dropdown-item-check" title="Решено">
+                                          <Check size={14} />
+                                        </span>
+                                      )}
+                                      {isUnsolved && (
+                                        <span className="dropdown-item-unsolved" title="Не решено">
+                                          <X size={14} />
+                                        </span>
+                                      )}
+                                      {!isDone && !isUnsolved && (
+                                        <span className="dropdown-item-empty" title="Не начато">
+                                          <Minus size={13} className="folder-empty-dash" />
+                                        </span>
+                                      )}
                                     </span>
-                                  )}
-                                  {isUnsolved && (
-                                    <span className="dropdown-item-unsolved" title="Не решено">
-                                      <X size={14} />
-                                    </span>
-                                  )}
+                                  </div>
                                 </Link>
                               );
                             })}
@@ -369,28 +458,87 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                       const s = getTaskStatus(task.id);
                       const isDone = s === "solved";
                       const isUnsolved = s === "unsolved";
+
+                      const taskReview = reviews[String(task.id)] || reviews[task.id];
+                      const lastReviewedAt = taskReview?.lastReviewedAt;
+                      const nextReviewAt = taskReview?.nextReviewAt;
+                      const isDue = isTaskDue(taskReview);
+                      const intervalDays = taskReview?.intervalDays;
+
                       return (
                         <Link
                           key={task.id}
                           to={taskRoute}
                           params={{ taskId: String(task.id) }}
-                          className="task-btn tree-task-btn"
+                          className={`task-btn tree-task-btn ${isDue ? "task-is-due" : ""}`}
                         >
                           <span className="task-btn-title">
-                            <FileText size={16} className="node-file-icon" style={{ color: FILE_ICON_COLOR }} />
+                            {isDue ? (
+                              <Flame size={16} className="node-file-icon flame-pulse-icon" style={{ color: "#ef4444" }} />
+                            ) : (
+                              <FileText size={16} className="node-file-icon" style={{ color: FILE_ICON_COLOR }} />
+                            )}
                             <span className="task-btn-text">{task.title}</span>
                           </span>
 
-                          {isDone && (
-                            <span className="dropdown-item-check" title="Решено">
-                              <Check size={14} />
+                          <div className="task-row-meta">
+                            {/* Бейдж даты последнего решения */}
+                            {lastReviewedAt ? (
+                              <span
+                                className="folder-task-badge badge-last-solved"
+                                title={`Дата последнего решения: ${new Date(lastReviewedAt).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })}`}
+                              >
+                                <Calendar size={11} className="badge-icon" />
+                                <span>{formatLastSolved(lastReviewedAt)}</span>
+                              </span>
+                            ) : (
+                              <span className="folder-task-badge badge-empty" title="Ещё не решалась">
+                                <Minus size={13} className="folder-empty-dash" />
+                              </span>
+                            )}
+
+                            {/* Бейдж сколько до повторного решения задачи */}
+                            {isDue ? (
+                              <span
+                                className="folder-task-badge badge-next-due"
+                                title="Срок повторения подошел! Пора повторить сегодня"
+                              >
+                                <Flame size={11} className="flame-pulse-icon" />
+                                <span>Пора повторить</span>
+                              </span>
+                            ) : nextReviewAt ? (
+                              <span
+                                className="folder-task-badge badge-next-scheduled"
+                                title={`Следующее повторение: ${formatNextReviewDate(nextReviewAt)} (интервал: ${intervalDays} дн.)`}
+                              >
+                                <RotateCcw size={11} className="badge-icon" />
+                                <span>{formatNextReviewDate(nextReviewAt)}</span>
+                              </span>
+                            ) : (
+                              <span className="folder-task-badge badge-next-empty" title="Повторение не запланировано">
+                                <Minus size={13} className="folder-empty-dash" />
+                              </span>
+                            )}
+
+                            {/* Иконка статуса */}
+                            <span className="task-row-status-icon">
+                              {isDone && (
+                                <span className="dropdown-item-check" title="Решено">
+                                  <Check size={14} />
+                                </span>
+                              )}
+                              {isUnsolved && (
+                                <span className="dropdown-item-unsolved" title="Не решено">
+                                  <X size={14} />
+                                </span>
+                              )}
+                              {!isDone && !isUnsolved && (
+                                <span className="dropdown-item-empty" title="Не начато">
+                                  <Minus size={13} className="folder-empty-dash" />
+                                </span>
+                              )}
                             </span>
-                          )}
-                          {isUnsolved && (
-                            <span className="dropdown-item-unsolved" title="Не решено">
-                              <X size={14} />
-                            </span>
-                          )}
+                          </div>
                         </Link>
                       );
                     })}
@@ -404,37 +552,57 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                   const s = getTaskStatus(task.id);
                   const isDone = s === "solved";
                   const isUnsolved = s === "unsolved";
+
+                  const taskReview = reviews[String(task.id)] || reviews[task.id];
+                  const lastReviewedAt = taskReview?.lastReviewedAt;
+                  const nextReviewAt = taskReview?.nextReviewAt;
+                  const isDue = isTaskDue(taskReview);
+
                   return (
                     <Link
                       key={task.id}
                       to={taskRoute}
                       params={{ taskId: String(task.id) }}
-                      className="gallery-card"
+                      className={`gallery-card ${isDue ? "task-is-due" : ""}`}
                     >
                       <div>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" }}>
                           <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                            <FileText size={15} className="node-file-icon" style={{ color: FILE_ICON_COLOR, flexShrink: 0 }} />
-                            {task.subgroup && (
-                              <span style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: 500 }}>
-                                {task.subgroup}
-                              </span>
-                            )}
+                            <Folder size={14} style={{ color: groupMeta?.color || "var(--color-primary, #3b82f6)", flexShrink: 0 }} />
+                            <span style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: 500 }}>
+                              {task.subgroup || groupMeta?.title || "Раздел"}
+                            </span>
                           </div>
-                          {isDone && (
-                            <span className="dropdown-item-check" title="Решено">
-                              <Check size={13} />
+
+                          <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                            <span
+                              style={{
+                                fontSize: "12px",
+                                fontWeight: 500,
+                                color: isDone ? "#10b981" : isUnsolved ? "#ef4444" : "var(--text-muted)",
+                              }}
+                            >
+                              {isDone ? "Решено" : isUnsolved ? "Не решено" : "Не начато"}
                             </span>
-                          )}
-                          {isUnsolved && (
-                            <span className="dropdown-item-unsolved" title="Не решено">
-                              <X size={13} />
-                            </span>
-                          )}
+                            {isDone ? (
+                              <span className="dropdown-item-check" title="Решено">
+                                <Check size={13} />
+                              </span>
+                            ) : isUnsolved ? (
+                              <span className="dropdown-item-unsolved" title="Не решено">
+                                <X size={13} />
+                              </span>
+                            ) : null}
+                          </div>
                         </div>
 
-                        <div style={{ fontWeight: 600, fontSize: "14px", color: "var(--text-main)", marginBottom: "6px", lineHeight: 1.4 }}>
-                          {task.title}
+                        <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", fontWeight: 600, fontSize: "14px", color: "var(--text-main)", marginBottom: "6px", lineHeight: 1.4 }}>
+                          {isDue ? (
+                            <Flame size={16} className="node-file-icon flame-pulse-icon" style={{ color: "#ef4444", flexShrink: 0, marginTop: "2px" }} />
+                          ) : (
+                            <FileText size={16} className="node-file-icon" style={{ color: FILE_ICON_COLOR, flexShrink: 0, marginTop: "2px" }} />
+                          )}
+                          <span>{task.title}</span>
                         </div>
 
                         {task.desc && (
@@ -455,34 +623,37 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                         )}
                       </div>
 
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          paddingTop: "10px",
-                          borderTop: "1px solid var(--border-color, rgba(255, 255, 255, 0.08))",
-                          fontSize: "12px",
-                        }}
-                      >
-                        <span
+                      {(lastReviewedAt || nextReviewAt || isDue) && (
+                        <div
                           style={{
-                            fontWeight: 500,
-                            color: isDone ? "#10b981" : isUnsolved ? "#ef4444" : "var(--text-muted)",
+                            paddingTop: "10px",
+                            borderTop: "1px solid var(--border-color, rgba(255, 255, 255, 0.08))",
                           }}
                         >
-                          {isDone ? "Решено" : isUnsolved ? "Не решено" : "Не начато"}
-                        </span>
-                        {isDone ? (
-                          <span className="dropdown-item-check" title="Решено">
-                            <Check size={13} />
-                          </span>
-                        ) : isUnsolved ? (
-                          <span className="dropdown-item-unsolved" title="Не решено">
-                            <X size={13} />
-                          </span>
-                        ) : null}
-                      </div>
+                          <div className="gallery-card-badges-row">
+                            {lastReviewedAt && (
+                              <span
+                                className="folder-task-badge badge-last-solved"
+                                title={`Дата последнего решения: ${new Date(lastReviewedAt).toLocaleDateString("ru-RU")}`}
+                              >
+                                <Calendar size={11} className="badge-icon" />
+                                <span>{formatLastSolved(lastReviewedAt)}</span>
+                              </span>
+                            )}
+                            {isDue ? (
+                              <span className="folder-task-badge badge-next-due">
+                                <Flame size={11} className="flame-pulse-icon" />
+                                <span>Пора повторить</span>
+                              </span>
+                            ) : nextReviewAt ? (
+                              <span className="folder-task-badge badge-next-scheduled">
+                                <RotateCcw size={11} className="badge-icon" />
+                                <span>{formatNextReviewDate(nextReviewAt)}</span>
+                              </span>
+                            ) : null}
+                          </div>
+                        </div>
+                      )}
                     </Link>
                   );
                 })}

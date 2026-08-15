@@ -5,6 +5,7 @@ import { getTaskById, resolveTaskSection } from "../../data/tasksRegistry";
 import CodeEditor from "../common/CodeEditor";
 import JsConsole from "../common/JsConsole";
 import ReactLivePreview from "../common/ReactLivePreview";
+import { Tooltip } from "../common/Tooltip";
 import { parseSolutionCodeAndExplanation } from "../../utils/solutionParser";
 import { runNodeJsCode, clearRunningTimers } from "../../utils/nodeRunner";
 import { getTaskFiles } from "../../utils/taskFiles";
@@ -282,21 +283,22 @@ export const SolutionTab = ({
             }
           />
 
-          {/* Кнопка быстрой перемотки к консоли по IntersectionObserver */}
+          {/* Кнопка быстрой перемотки к консоли */}
           {isJsTask && !isConsoleVisible && (
-            <button
-              className="quick-scroll-console-btn"
-              onClick={() => {
-                consoleWrapperRef.current?.scrollIntoView({
-                  behavior: "smooth",
-                  block: "nearest",
-                });
-              }}
-              title="Перейти к консоли"
-            >
-              <ArrowDown size={13} />
-              <span>Консоль</span>
-            </button>
+            <Tooltip content="Перейти к консоли" side="left" sideOffset={10}>
+              <button
+                className="quick-scroll-console-btn"
+                onClick={() => {
+                  consoleWrapperRef.current?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest",
+                  });
+                }}
+                aria-label="Перейти к консоли"
+              >
+                <ArrowDown size={17} />
+              </button>
+            </Tooltip>
           )}
         </div>
       )}

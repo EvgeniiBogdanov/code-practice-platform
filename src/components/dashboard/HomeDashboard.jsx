@@ -15,10 +15,24 @@ import {
   BookOpen,
   Star,
   ExternalLink,
+  Flame,
+  Sparkles,
+  Award,
+  Calendar,
+  Trophy,
 } from "lucide-react";
 import { JS_TASKS } from "../../javascript/data/tasksData";
 import { REACT_TASKS, WARMUP_TASKS } from "../../react/data/tasksData";
 import { ALL_ALGO_TASKS } from "../../algorithms/data/tasksData";
+import { resolveTaskSection, ALL_TASKS } from "../../data/tasksRegistry";
+import { useReviewStore } from "../../stores/useReviewStore";
+import { getDifficultyLabel } from "../../utils/difficultyHelpers";
+import {
+  getReviewBadgeMeta,
+  formatNextReviewDate,
+  getDueTasksList,
+  calculateMasteryStats,
+} from "../../utils/spacedRepetition";
 
 export const HomeDashboard = ({
   completedTotal,
@@ -56,6 +70,12 @@ export const HomeDashboard = ({
   const reactPct = reactTotal > 0 ? Math.round((reactSolved / reactTotal) * 100) : 0;
 
   const algoPct = algoTotal > 0 ? Math.round((algoSolved / algoTotal) * 100) : 0;
+
+  // Spaced Repetition Store data
+  const reviews = useReviewStore((state) => state.reviews);
+  const isReviewStoreReady = useReviewStore((state) => state.isInitialized);
+  const dueTasks = React.useMemo(() => isReviewStoreReady ? getDueTasksList(ALL_TASKS, reviews) : [], [reviews, isReviewStoreReady]);
+  const masteryStats = React.useMemo(() => isReviewStoreReady ? calculateMasteryStats(ALL_TASKS, reviews) : { dueToday: 0, learning: 0, reviewing: 0, mastered: 0, totalReviewed: 0, unreviewed: 0, totalCount: 0 }, [reviews, isReviewStoreReady]);
 
   return (
     <div className="home-container">
@@ -104,6 +124,145 @@ export const HomeDashboard = ({
           </div>
         </div>
       </div>
+
+      <hr className="divider" />
+
+      {/* Секция: Интервальное повторение (Spaced Repetition / «К повторению сегодня») */}
+      <div className="section-block spaced-repetition-section">
+        <div className="block-header spaced-repetition-header">
+          <div className="block-header-title-group">
+            <Flame size={18} style={{ color: "#ef4444" }} className={dueTasks.length > 0 ? "flame-pulse-icon" : ""} />
+            <h2 className="block-title">
+              {dueTasks.length > 0
+                ? `К повторению сегодня (${dueTasks.length})`
+                : "Интервальное повторение"}
+            </h2>
+          </div>
+          {masteryStats.totalReviewed > 0 && (
+            <span className="mastery-summary-pill">
+              <Trophy size={13} style={{ color: "#10b981" }} />
+              <span>Мастер: {masteryStats.mastered} из {masteryStats.totalReviewed}</span>
+            </span>
+          )}
+        </div>
+
+        {dueTasks.length > 0 ? (
+          <div className="due-tasks-container">
+            <p className="due-tasks-subtitle">
+              Задачи, у которых подошел срок повторения по алгоритму SM-2. Решите их для надежного закрепления в памяти:
+            </p>
+            <div className="due-tasks-grid">
+              {dueTasks.map((task) => {
+                const section = resolveTaskSection(task);
+                const to =
+                  section === "algorithms"
+                    ? "/algorithms/$taskId"
+                    : section === "javascript"
+                    ? "/javascript/$taskId"
+                    : "/react/$taskId";
+                const badge = getReviewBadgeMeta(task.reviewData);
+
+                return (
+                  <Link
+                    key={task.id}
+                    to={to}
+                    params={{ taskId: String(task.id) }}
+                    className="due-task-card"
+                  >
+                    <div className="due-task-header">
+                      <div className="due-task-section-badge">
+                        {section === "javascript" ? (
+                          <span className="mini-tag amber">JS</span>
+                        ) : section === "algorithms" ? (
+                          <span className="mini-tag purple">Algo</span>
+                        ) : (
+                          <span className="mini-tag blue">React</span>
+                        )}
+                        {task.difficulty && (
+                          <span className={`mini-difficulty difficulty-${task.difficulty}`}>
+                            {getDifficultyLabel(task.difficulty)}
+                          </span>
+                        )}
+                      </div>
+                      <span className="due-task-stage-badge">{badge.stageName}</span>
+                    </div>
+
+                    <h4 className="due-task-title">{task.title}</h4>
+
+                    <div className="due-task-footer">
+                      <span className="due-task-status-text">
+                        <Flame size={12} style={{ color: "#ef4444" }} /> Пора повторить
+                      </span>
+                      <span className="due-task-btn">
+                        <span>Повторить</span>
+                        <ArrowRight size={12} />
+                      </span>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        ) : masteryStats.totalReviewed > 0 ? (
+          <div className="due-empty-state-card">
+            <div className="due-empty-icon">
+              <Sparkles size={22} style={{ color: "#10b981" }} />
+            </div>
+            <div className="due-empty-content">
+              <div className="due-empty-title">Все задачи на сегодня повторены!</div>
+              <div className="due-empty-desc">
+                Вы повторили все назначенные задачи. Следующие повторения запланированы в соответствии с вашим графиком.
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="due-onboarding-card">
+            <div className="due-empty-icon">
+              <Brain size={22} style={{ color: "var(--accent-blue)" }} />
+            </div>
+            <div className="due-empty-content">
+              <div className="due-empty-title">Умное интервальное повторение</div>
+              <div className="due-empty-desc">
+                Решайте задачи в каталоге и оценивайте их (Сложно: +1д, Средне: +3д, Легко: +7д). Платформа автоматически построит индивидуальный график повторений (1д → 3д → 7д → 14д → 30д → Мастер).
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Шкала мастерства (Mastery Progress Track) */}
+        {masteryStats.totalReviewed > 0 && (
+          <div className="mastery-track-card">
+            <div className="mastery-track-header">
+              <span className="mastery-track-title">Уровни закрепления в памяти:</span>
+              <span className="mastery-track-count">{masteryStats.totalReviewed} задач в графике</span>
+            </div>
+            <div className="mastery-multi-bar">
+              <div
+                className="mastery-bar-segment segment-learning"
+                style={{ width: `${(masteryStats.learning / masteryStats.totalReviewed) * 100}%` }}
+                title={`Изучение (1-3 дня): ${masteryStats.learning}`}
+              />
+              <div
+                className="mastery-bar-segment segment-reviewing"
+                style={{ width: `${(masteryStats.reviewing / masteryStats.totalReviewed) * 100}%` }}
+                title={`Закрепление (7-14 дней): ${masteryStats.reviewing}`}
+              />
+              <div
+                className="mastery-bar-segment segment-mastered"
+                style={{ width: `${(masteryStats.mastered / masteryStats.totalReviewed) * 100}%` }}
+                title={`Мастер (30+ дней): ${masteryStats.mastered}`}
+              />
+            </div>
+            <div className="mastery-legend">
+              <span className="legend-item"><span className="legend-dot red" /> 1-3 дня ({masteryStats.learning})</span>
+              <span className="legend-item"><span className="legend-dot yellow" /> 7-14 дней ({masteryStats.reviewing})</span>
+              <span className="legend-item"><span className="legend-dot green" /> Мастер ({masteryStats.mastered})</span>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <hr className="divider" />
 
       {/* Standard KPI Summary Row (Database Summary View) */}
       <div className="stats-grid">

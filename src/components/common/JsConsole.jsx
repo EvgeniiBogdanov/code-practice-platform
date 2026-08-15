@@ -15,6 +15,7 @@ import { Terminal } from "@xterm/xterm";
 import { FitAddon } from "@xterm/addon-fit";
 import "@xterm/xterm/css/xterm.css";
 import { useUIStore } from "../../stores/useUIStore";
+import { Tooltip } from "./Tooltip";
 
 const MIN_FONT_SIZE = 12;
 const MAX_FONT_SIZE = 24;
@@ -25,25 +26,33 @@ const getTerminalTheme = (themeName) => {
   const isLight = themeName === "light";
   return isLight
     ? {
-        background: "#fbfbfa",
+        background: "#ffffff",
         foreground: "#37352f",
         cursor: "#0066cc",
         selectionBackground: "rgba(0, 102, 204, 0.18)",
-        black: "#f7f6f3",
+        black: "#37352f",
         red: "#d32f2f",
         green: "#2d6a4f",
         yellow: "#c75d18",
         blue: "#0066cc",
         magenta: "#7d449e",
         cyan: "#0066cc",
-        white: "#37352f",
+        white: "#787774",
+        brightBlack: "#787774",
+        brightRed: "#ef4444",
+        brightGreen: "#10b981",
+        brightYellow: "#b8860b",
+        brightBlue: "#0284c7",
+        brightMagenta: "#7d449e",
+        brightCyan: "#0284c7",
+        brightWhite: "#37352f",
       }
     : {
         background: "#141414",
         foreground: "#cccccc",
         cursor: "#38bdf8",
         selectionBackground: "rgba(56, 189, 248, 0.3)",
-        black: "#141414",
+        black: "#1e1e1e",
         red: "#f87171",
         green: "#34d399",
         yellow: "#fbbf24",
@@ -51,6 +60,14 @@ const getTerminalTheme = (themeName) => {
         magenta: "#c084fc",
         cyan: "#38bdf8",
         white: "#f8fafc",
+        brightBlack: "#64748b",
+        brightRed: "#fca5a5",
+        brightGreen: "#6ee7b7",
+        brightYellow: "#fde047",
+        brightBlue: "#93c5fd",
+        brightMagenta: "#d8b4fe",
+        brightCyan: "#67e8f9",
+        brightWhite: "#ffffff",
       };
 };
 
@@ -253,7 +270,7 @@ export const JsConsole = ({
     for (let i = lastRenderedLogCountRef.current; i < logs.length; i++) {
       const log = logs[i];
       let prefix = "";
-      let color = currentTheme === "light" ? "\x1b[30m" : "\x1b[37m";
+      let color = "";
 
       if (log.type === "error") {
         prefix = "\x1b[31m[Error] ";
@@ -344,82 +361,104 @@ export const JsConsole = ({
         </div>
 
         <div className="vscode-editor-actions">
-          {isRunning && (
-            <span className="js-console-badge badge-running">
-              <Loader2 size={12} className="spin-icon" /> Выполнение...
-            </span>
-          )}
-
-          {onRun && (
-            <button
-              className="vscode-icon-btn"
-              onClick={onRun}
-              disabled={isRunning}
-              data-tooltip="Запустить код в Node.js (Ctrl + Enter)"
-              aria-label="Запустить код"
-            >
-              <Play size={14} style={{ color: "#10b981" }} fill="currentColor" />
-            </button>
-          )}
-
-          <button
-            className="vscode-icon-btn"
-            onClick={handleClearTerminal}
-            disabled={logs.length === 0 && !lastExecution}
-            data-tooltip="Очистить вывод консоли"
-            aria-label="Очистить"
-          >
-            <Trash2 size={14} />
-          </button>
-          
-          <button
-            className="vscode-icon-btn"
-            onClick={handleCopyLogs}
-            disabled={logs.length === 0}
-            data-tooltip={copied ? "Вывод скопирован!" : "Скопировать вывод консоли"}
-            aria-label="Копировать"
-          >
-            {copied ? (
-              <Check size={14} style={{ color: "#10b981" }} />
-            ) : (
-              <Copy size={14} />
+          <Tooltip.Provider delayDuration={500} skipDelayDuration={250}>
+            {isRunning && (
+              <span className="js-console-badge badge-running">
+                <Loader2 size={12} className="spin-icon" /> Выполнение...
+              </span>
             )}
-          </button>
 
-          <button
-            className="vscode-icon-btn"
-            onClick={handleDecreaseFontSize}
-            disabled={fontSize <= MIN_FONT_SIZE}
-            data-tooltip={
-              fontSize <= MIN_FONT_SIZE
-                ? `Минимальный размер шрифта (${MIN_FONT_SIZE}px)`
-                : `Уменьшить шрифт консоли (${fontSize}px)`
-            }
-          >
-            <ZoomOut size={14} />
-          </button>
+            {onRun && (
+              <Tooltip content="Запустить код (Ctrl+Enter)" side="top">
+                <button
+                  className="vscode-icon-btn"
+                  onClick={onRun}
+                  disabled={isRunning}
+                  aria-label="Запустить код"
+                >
+                  <Play size={14} style={{ color: "#10b981" }} fill="currentColor" />
+                </button>
+              </Tooltip>
+            )}
 
-          <button
-            className="vscode-icon-btn"
-            onClick={handleIncreaseFontSize}
-            disabled={fontSize >= MAX_FONT_SIZE}
-            data-tooltip={
-              fontSize >= MAX_FONT_SIZE
-                ? `Максимальный размер шрифта (${MAX_FONT_SIZE}px)`
-                : `Увеличить шрифт консоли (${fontSize}px)`
-            }
-          >
-            <ZoomIn size={14} />
-          </button>
+            <Tooltip content="Очистить вывод консоли" side="top">
+              <button
+                className="vscode-icon-btn"
+                onClick={handleClearTerminal}
+                disabled={logs.length === 0 && !lastExecution}
+                aria-label="Очистить"
+              >
+                <Trash2 size={14} />
+              </button>
+            </Tooltip>
+            
+            <Tooltip
+              content={copied ? "Скопировано!" : "Скопировать вывод консоли"}
+              side="top"
+            >
+              <button
+                className="vscode-icon-btn"
+                onClick={handleCopyLogs}
+                disabled={logs.length === 0}
+                aria-label="Копировать"
+              >
+                {copied ? (
+                  <Check size={14} style={{ color: "#10b981" }} />
+                ) : (
+                  <Copy size={14} />
+                )}
+              </button>
+            </Tooltip>
 
-          <button
-            className="vscode-icon-btn"
-            onClick={handleToggleCollapse}
-            data-tooltip={isCollapsed ? "Развернуть консоль" : "Свернуть консоль"}
-            aria-label={isCollapsed ? "Развернуть консоль" : "Свернуть консоль"}
-          >
-            {isCollapsed ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-          </button>
+            <Tooltip
+              content={
+                fontSize <= MIN_FONT_SIZE
+                  ? `Минимальный размер (${MIN_FONT_SIZE}px)`
+                  : `Уменьшить шрифт (${fontSize}px)`
+              }
+              side="top"
+            >
+              <button
+                className="vscode-icon-btn"
+                onClick={handleDecreaseFontSize}
+                disabled={fontSize <= MIN_FONT_SIZE}
+                aria-label="Уменьшить шрифт"
+              >
+                <ZoomOut size={14} />
+              </button>
+            </Tooltip>
+
+            <Tooltip
+              content={
+                fontSize >= MAX_FONT_SIZE
+                  ? `Максимальный размер (${MAX_FONT_SIZE}px)`
+                  : `Увеличить шрифт (${fontSize}px)`
+              }
+              side="top"
+            >
+              <button
+                className="vscode-icon-btn"
+                onClick={handleIncreaseFontSize}
+                disabled={fontSize >= MAX_FONT_SIZE}
+                aria-label="Увеличить шрифт"
+              >
+                <ZoomIn size={14} />
+              </button>
+            </Tooltip>
+
+            <Tooltip
+              content={isCollapsed ? "Развернуть консоль" : "Свернуть консоль"}
+              side="top"
+            >
+              <button
+                className="vscode-icon-btn"
+                onClick={handleToggleCollapse}
+                aria-label={isCollapsed ? "Развернуть консоль" : "Свернуть консоль"}
+              >
+                {isCollapsed ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+              </button>
+            </Tooltip>
+          </Tooltip.Provider>
         </div>
       </div>
 

@@ -18,6 +18,7 @@ import {
   ALL_JS_TASKS,
   ALL_ALGO_TASKS,
 } from "../data/tasksRegistry";
+import { useReviewStore } from "./useReviewStore";
 
 export const useProgressStore = create((set, get) => ({
   completedTasks: {},
@@ -93,6 +94,15 @@ export const useProgressStore = create((set, get) => ({
       }
       return { completedTasks: updated };
     });
+
+    // Если статус сбрасывается или помечается как 'unsolved', сбрасываем интервальное повторение
+    if (status !== "solved") {
+      try {
+        useReviewStore.getState().removeReview(stringId);
+      } catch (err) {
+        // ignore if not initialized
+      }
+    }
 
     await saveTaskStatusToDB(stringId, status);
     broadcastSyncEvent("TASK_STATUS_CHANGED", { taskId: stringId, status });

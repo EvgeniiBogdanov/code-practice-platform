@@ -20,12 +20,24 @@ import {
   Moon,
   FileCode,
   Folder,
+  Flame,
+  Sparkles,
+  ArrowRight,
+  RotateCcw,
 } from "lucide-react";
 import { REACT_TASKS } from "../../react/data/tasksData";
 import { JS_TASKS } from "../../javascript/data/tasksData";
 import { getGroupMeta } from "../../javascript/data/groupConfig";
 import { ALGO_TASKS } from "../../algorithms/data/tasksData";
 import { getAlgoGroupMeta } from "../../algorithms/data/groupConfig";
+import { ALL_TASKS, resolveTaskSection } from "../../data/tasksRegistry";
+import { useReviewStore } from "../../stores/useReviewStore";
+import {
+  getAllReviewTasksSorted,
+  getReviewBadgeMeta,
+  isTaskDue,
+} from "../../utils/spacedRepetition";
+import { Tooltip } from "../common/Tooltip";
 
 export const Header = ({
   sidebarOpen,
@@ -77,9 +89,43 @@ export const Header = ({
 }) => {
   const [groupDropdownOpen, setGroupDropdownOpen] = React.useState(false);
   const [subgroupDropdownOpen, setSubgroupDropdownOpen] = React.useState(false);
+  const [reviewDropdownOpen, setReviewDropdownOpen] = React.useState(false);
+  const [timerDropdownOpen, setTimerDropdownOpen] = React.useState(false);
 
   const groupDropdownRef = React.useRef(null);
   const subgroupDropdownRef = React.useRef(null);
+  const reviewDropdownRef = React.useRef(null);
+  const timerDropdownRef = React.useRef(null);
+
+  const reviews = useReviewStore((state) => state.reviews);
+  const isReviewStoreReady = useReviewStore((state) => state.isInitialized);
+  const sortedReviewTasks = React.useMemo(() => {
+    if (!isReviewStoreReady) return [];
+    return getAllReviewTasksSorted(ALL_TASKS, reviews);
+  }, [reviews, isReviewStoreReady]);
+  const dueTasksCount = React.useMemo(() => {
+    if (!isReviewStoreReady || !reviews) return 0;
+    let count = 0;
+    for (const rev of Object.values(reviews)) {
+      if (rev && isTaskDue(rev)) count++;
+    }
+    return count;
+  }, [reviews, isReviewStoreReady]);
+
+  const hasAnySolvedTasks = React.useMemo(() => {
+    if (sortedReviewTasks.length > 0) return true;
+    if (completedTasks) {
+      for (const val of Object.values(completedTasks)) {
+        if (val === true || val === "solved") return true;
+      }
+    }
+    if (reviews) {
+      for (const rev of Object.values(reviews)) {
+        if (rev && (rev.stage > 0 || rev.lastReviewedAt)) return true;
+      }
+    }
+    return false;
+  }, [completedTasks, sortedReviewTasks, reviews]);
 
   const closeAllDropdowns = () => {
     if (setSectionDropdownOpen) setSectionDropdownOpen(false);
@@ -89,6 +135,8 @@ export const Header = ({
     setGroupDropdownOpen(false);
     setSubgroupDropdownOpen(false);
     if (setAlgoDropdownOpen) setAlgoDropdownOpen(false);
+    setReviewDropdownOpen(false);
+    setTimerDropdownOpen(false);
   };
 
   const toggleSectionDropdown = () => {
@@ -159,6 +207,18 @@ export const Header = ({
       ) {
         if (setAlgoDropdownOpen) setAlgoDropdownOpen(false);
       }
+      if (
+        reviewDropdownRef?.current &&
+        !reviewDropdownRef.current.contains(event.target)
+      ) {
+        setReviewDropdownOpen(false);
+      }
+      if (
+        timerDropdownRef?.current &&
+        !timerDropdownRef.current.contains(event.target)
+      ) {
+        setTimerDropdownOpen(false);
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
@@ -227,13 +287,15 @@ export const Header = ({
   return (
     <header className="app-header">
       <div className="header-left">
-        <button
-          className={`sidebar-toggle-btn ${sidebarOpen ? "desktop-hidden" : ""}`}
-          onClick={() => setSidebarOpen((prev) => !prev)}
-          title={sidebarOpen ? "Свернуть панель задач" : "Развернуть панель задач"}
-        >
-          {sidebarOpen ? <PanelLeftClose size={16} /> : <PanelLeftOpen size={16} />}
-        </button>
+        <Tooltip content={sidebarOpen ? "Свернуть панель (Cmd+\\)" : "Развернуть панель (Cmd+\\)"} side="bottom">
+          <button
+            className={`sidebar-toggle-btn ${sidebarOpen ? "desktop-hidden" : ""}`}
+            onClick={() => setSidebarOpen((prev) => !prev)}
+            aria-label={sidebarOpen ? "Свернуть панель" : "Развернуть панель"}
+          >
+            {sidebarOpen ? <PanelLeftClose size={16} /> : <PanelLeftOpen size={16} />}
+          </button>
+        </Tooltip>
 
         {/* Интерактивные кликабельные хлебные крошки style (macOS Finder Emulation) */}
         <nav className="header-breadcrumbs" aria-label="Хлебные крошки Finder">
@@ -670,102 +732,259 @@ export const Header = ({
       </div>
 
       <div className="header-right">
-        {/* Кнопка Статистика */}
-        <button
-          className={`header-action-btn ${
-            activeSection === "home" ? "disabled" : statsModalOpen ? "active" : ""
-          }`}
-          onClick={activeSection === "home" ? undefined : () => setStatsModalOpen((prev) => !prev)}
-          disabled={activeSection === "home"}
-          title={
-            activeSection === "home"
-              ? "Статистика недоступна в разделе Главная"
-              : "Открыть подробную статистику выполнения задач"
-          }
-        >
-          <BarChart2 size={15} /> Статистика
-        </button>
-
-        {/* Кнопка Шпаргалки */}
-        <button
-          className={`header-action-btn ${
-            activeSection === "home" ? "disabled" : cheatSheetOpen ? "active" : ""
-          }`}
-          onClick={activeSection === "home" ? undefined : () => setCheatSheetOpen((prev) => !prev)}
-          disabled={activeSection === "home"}
-          title={
-            activeSection === "home"
-              ? "Шпаргалки недоступны в разделе Главная"
-              : "Открыть выпадающую шпаргалку для собеседований"
-          }
-        >
-          <Lightbulb size={15} /> Шпаргалка
-        </button>
-
-        {/* Поиск Cmd+K */}
-        <button
-          className="header-action-btn"
-          onClick={() => setPaletteOpen(true)}
-          title="Быстрый поиск задачи по всему приложению (Cmd+K)"
-        >
-          <Search size={15} /> <kbd className="header-kbd">⌘K</kbd>
-        </button>
-
-        {/* Таймер собеседования */}
-        <div className={`timer-dropdown-container ${activeSection === "home" ? "disabled" : ""}`}>
-          {timerSeconds !== null ? (
-            <div
-              className={`timer-display ${timerSeconds === 0 ? "expired" : ""} ${activeSection === "home" ? "disabled" : ""}`}
-              onClick={
-                activeSection === "home"
-                  ? undefined
-                  : () => {
-                      setTimerRunning(false);
-                      setTimerSeconds(null);
-                    }
-              }
-              title={
-                activeSection === "home"
-                  ? "Таймер недоступен на Главной странице"
-                  : "Нажмите чтобы сбросить таймер"
-              }
+        <Tooltip.Provider delayDuration={140} skipDelayDuration={300}>
+          {/* Кнопка Статистика */}
+          <Tooltip content="Статистика" side="bottom">
+            <button
+              className={`header-action-btn ${
+                activeSection === "home" ? "disabled" : statsModalOpen ? "active" : ""
+              }`}
+              onClick={activeSection === "home" ? undefined : () => setStatsModalOpen((prev) => !prev)}
+              disabled={activeSection === "home"}
+              aria-label="Статистика"
             >
-              <><Clock size={14} /> {formatTimer(timerSeconds)}</>
-            </div>
-          ) : (
-            <div
-              className={`timer-select-wrapper ${activeSection === "home" ? "disabled" : ""}`}
-              title={activeSection === "home" ? "Таймер недоступен на Главной странице" : "Таймер собеседования"}
+              <BarChart2 size={16} />
+            </button>
+          </Tooltip>
+
+          {/* Кнопка Повторение с выпадающим контекстным меню */}
+          <div className="header-review-dropdown-wrapper" ref={reviewDropdownRef}>
+            <Tooltip
+              content={
+                dueTasksCount > 0
+                  ? `Пора повторить (${dueTasksCount})`
+                  : "Интервальное повторение"
+              }
+              side="bottom"
+              disabled={reviewDropdownOpen}
             >
-              <Clock size={14} style={{ opacity: 0.7 }} />
-              <select
-                className="timer-select"
-                disabled={activeSection === "home"}
-                onChange={(e) => {
-                  if (activeSection === "home") return;
-                  const val = parseInt(e.target.value, 10);
-                  if (val > 0) startTimer(val);
-                  e.target.value = "";
+              <button
+                type="button"
+                className={`header-action-btn header-review-btn ${
+                  reviewDropdownOpen ? "active" : ""
+                } ${dueTasksCount > 0 ? "has-due-reviews" : ""}`}
+                onClick={() => {
+                  const next = !reviewDropdownOpen;
+                  closeAllDropdowns();
+                  setReviewDropdownOpen(next);
                 }}
-                defaultValue=""
+                aria-label="Интервальное повторение"
               >
-                <option value="" disabled>Таймер...</option>
-                <option value="15">15 мин</option>
-                <option value="30">30 мин</option>
-                <option value="45">45 мин</option>
-              </select>
-            </div>
-          )}
-        </div>
+                <RotateCcw
+                  size={16}
+                  style={{ color: dueTasksCount > 0 ? "#ef4444" : undefined }}
+                />
+                {dueTasksCount > 0 && (
+                  <span className="header-review-count-badge">{dueTasksCount}</span>
+                )}
+              </button>
+            </Tooltip>
 
-        {/* Переключатель темы */}
-        <button
-          className="header-action-btn"
-          onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
-          title={theme === "dark" ? "Переключить на светлую тему" : "Переключить на тёмную тему"}
-        >
-          {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
-        </button>
+            {reviewDropdownOpen && (
+              <div className="header-review-dropdown-menu">
+                <div className="header-review-dropdown-header">
+                  <div className="header-review-header-title-group">
+                    <RotateCcw size={14} style={{ color: dueTasksCount > 0 ? "#ef4444" : "var(--text-muted)" }} />
+                    <span className="header-review-header-title">К повторению</span>
+                  </div>
+                  <span className="header-review-header-count">
+                    {dueTasksCount > 0
+                      ? `${dueTasksCount} к повторению`
+                      : sortedReviewTasks.length > 0
+                      ? `${sortedReviewTasks.length} в графике`
+                      : hasAnySolvedTasks
+                      ? "Все повторены"
+                      : "0 решено"}
+                  </span>
+                </div>
+
+                {sortedReviewTasks.length > 0 ? (
+                  <div className="header-review-dropdown-list">
+                    {sortedReviewTasks.map((task) => {
+                      const section = resolveTaskSection(task);
+                      const to =
+                        section === "algorithms"
+                          ? "/algorithms/$taskId"
+                          : section === "javascript"
+                          ? "/javascript/$taskId"
+                          : "/react/$taskId";
+                      const badge = getReviewBadgeMeta(task.reviewData);
+
+                      return (
+                        <Link
+                          key={task.id}
+                          to={to}
+                          params={{ taskId: String(task.id) }}
+                          className={`header-review-item ${badge.isDue ? "is-due" : ""}`}
+                          onClick={closeAllDropdowns}
+                        >
+                          <div className="header-review-item-main">
+                            <span className={`header-review-section-tag tag-${section}`}>
+                              {section === "javascript"
+                                ? "JS"
+                                : section === "algorithms"
+                                ? "Algo"
+                                : "React"}
+                            </span>
+                            <span className="header-review-item-title" title={task.title}>
+                              {task.title}
+                            </span>
+                          </div>
+                          <span className={`difficulty-badge ${badge.badgeClass}`}>
+                            {badge.label}
+                          </span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                ) : !hasAnySolvedTasks ? (
+                  <div className="header-review-empty">
+                    <div className="header-review-empty-icon">
+                      <BookOpen size={20} style={{ color: "var(--text-muted)" }} />
+                    </div>
+                    <div className="header-review-empty-text">
+                      <strong>Ещё нет решённых задач</strong>
+                      <span>Решайте задачи в каталоге, чтобы добавлять их в систему интервального повторения</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="header-review-empty">
+                    <div className="header-review-empty-icon">
+                      <Sparkles size={20} style={{ color: "#10b981" }} />
+                    </div>
+                    <div className="header-review-empty-text">
+                      <strong>Все задачи повторены!</strong>
+                      <span>Отличная работа! Новые повторения появятся согласно вашему графику</span>
+                    </div>
+                  </div>
+                )}
+
+                <div className="header-review-dropdown-footer">
+                  <Link
+                    to="/home"
+                    className="header-review-footer-link"
+                    onClick={closeAllDropdowns}
+                  >
+                    <span>Перейти на Главную</span>
+                    <ArrowRight size={12} />
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Кнопка Шпаргалки */}
+          <Tooltip content="Шпаргалка" side="bottom">
+            <button
+              className={`header-action-btn ${
+                activeSection === "home" ? "disabled" : cheatSheetOpen ? "active" : ""
+              }`}
+              onClick={activeSection === "home" ? undefined : () => setCheatSheetOpen((prev) => !prev)}
+              disabled={activeSection === "home"}
+              aria-label="Шпаргалка"
+            >
+              <Lightbulb size={16} />
+            </button>
+          </Tooltip>
+
+          {/* Поиск Cmd+K */}
+          <Tooltip content="Поиск по задачам (⌘K)" side="bottom">
+            <button
+              className="header-action-btn"
+              onClick={() => setPaletteOpen(true)}
+              aria-label="Поиск по задачам (Cmd+K)"
+            >
+              <Search size={16} />
+            </button>
+          </Tooltip>
+
+          {/* Таймер собеседования */}
+          <div
+            className={`timer-dropdown-container ${activeSection === "home" ? "disabled" : ""}`}
+            ref={timerDropdownRef}
+          >
+            {timerSeconds !== null ? (
+              <Tooltip content="Сбросить таймер" side="bottom">
+                <button
+                  type="button"
+                  className={`timer-display ${timerSeconds === 0 ? "expired" : ""} ${activeSection === "home" ? "disabled" : ""}`}
+                  onClick={
+                    activeSection === "home"
+                      ? undefined
+                      : () => {
+                          setTimerRunning(false);
+                          setTimerSeconds(null);
+                        }
+                  }
+                  aria-label="Сбросить таймер"
+                >
+                  <Clock size={14} /> {formatTimer(timerSeconds)}
+                </button>
+              </Tooltip>
+            ) : (
+              <>
+                <Tooltip
+                  content="Таймер собеседования"
+                  side="bottom"
+                  disabled={timerDropdownOpen}
+                >
+                  <button
+                    type="button"
+                    className={`header-action-btn ${timerDropdownOpen ? "active" : ""}`}
+                    onClick={
+                      activeSection === "home"
+                        ? undefined
+                        : () => {
+                            const next = !timerDropdownOpen;
+                            closeAllDropdowns();
+                            setTimerDropdownOpen(next);
+                          }
+                    }
+                    disabled={activeSection === "home"}
+                    aria-label="Таймер собеседования"
+                  >
+                    <Clock size={16} />
+                  </button>
+                </Tooltip>
+
+                {timerDropdownOpen && (
+                  <div className="header-timer-dropdown-menu">
+                    <div className="header-timer-dropdown-header">
+                      <Clock size={13} style={{ color: "var(--text-muted)" }} />
+                      <span>Таймер собеседования</span>
+                    </div>
+                    <div className="header-timer-options-list">
+                      {[15, 30, 45, 60].map((mins) => (
+                        <button
+                          key={mins}
+                          type="button"
+                          className="header-timer-option-item"
+                          onClick={() => {
+                            startTimer(mins);
+                            setTimerDropdownOpen(false);
+                          }}
+                        >
+                          <span>{mins} минут</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+
+          {/* Переключатель темы */}
+          <Tooltip content={theme === "dark" ? "Светлая тема" : "Тёмная тема"} side="bottom">
+            <button
+              className="header-action-btn"
+              onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
+              aria-label={theme === "dark" ? "Переключить на светлую тему" : "Переключить на тёмную тему"}
+            >
+              {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+            </button>
+          </Tooltip>
+        </Tooltip.Provider>
       </div>
     </header>
   );

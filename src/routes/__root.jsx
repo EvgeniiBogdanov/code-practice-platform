@@ -46,7 +46,7 @@ import StatsModal from "../components/modals/StatsModal";
 import GlobalTooltip from "../components/common/GlobalTooltip";
 import { PracticeContext } from "../context/PracticeContext";
 import { useGlobalShortcuts } from "../hooks/useGlobalShortcuts";
-import { useUIStore, useTimerStore, useProgressStore } from "../stores";
+import { useUIStore, useTimerStore, useProgressStore, useReviewStore } from "../stores";
 
 const NotFoundComponent = () => {
   return (
@@ -320,11 +320,15 @@ const RootLayout = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Инициализация прогресса из IndexedDB через useProgressStore
+  // Инициализация прогресса и интервального повторения из IndexedDB
   const initProgress = useProgressStore((state) => state.initProgress);
+  const initReviews = useReviewStore((state) => state.initReviews);
+  const handleResetReviews = useReviewStore((state) => state.handleResetReviews);
+
   useEffect(() => {
     initProgress();
-  }, [initProgress]);
+    initReviews();
+  }, [initProgress, initReviews]);
 
   const completedTasks = useProgressStore((state) => state.completedTasks);
   const setTaskStatus = useProgressStore((state) => state.setTaskStatus);
@@ -460,23 +464,6 @@ const RootLayout = () => {
     setPaletteQuery,
     closeAllModals,
   });
-
-  // Tooltip
-  const [tooltip, setTooltip] = useState(null);
-  const tooltipTimer = useRef(null);
-
-  const showTooltip = useCallback((e, text) => {
-    clearTimeout(tooltipTimer.current);
-    const rect = e.currentTarget.getBoundingClientRect();
-    tooltipTimer.current = setTimeout(() => {
-      setTooltip({ text, x: rect.left + 12, y: rect.top - 4 });
-    }, 650);
-  }, []);
-
-  const hideTooltip = useCallback(() => {
-    clearTimeout(tooltipTimer.current);
-    setTooltip(null);
-  }, []);
 
   // Метрики задач
   const totalWarmup = WARMUP_TASKS.length;
@@ -684,15 +671,23 @@ const RootLayout = () => {
 
   const handleResetSection = useCallback(async () => {
     await handleFullReset("section", activeSection);
+    const sectionTasks =
+      activeSection === "javascript"
+        ? JS_TASKS
+        : activeSection === "algorithms"
+        ? ALL_ALGO_TASKS
+        : REACT_TASKS;
+    await handleResetReviews("section", sectionTasks.map((t) => t.id));
     setResetConfirmOpen(false);
     setStatsModalOpen(false);
-  }, [handleFullReset, activeSection, setResetConfirmOpen, setStatsModalOpen]);
+  }, [handleFullReset, activeSection, handleResetReviews, setResetConfirmOpen, setStatsModalOpen]);
 
   const handleResetAll = useCallback(async () => {
     await handleFullReset("all");
+    await handleResetReviews("all");
     setResetConfirmOpen(false);
     setStatsModalOpen(false);
-  }, [handleFullReset, setResetConfirmOpen, setStatsModalOpen]);
+  }, [handleFullReset, handleResetReviews, setResetConfirmOpen, setStatsModalOpen]);
 
   const categoriesList = useMemo(() => {
     if (activeSection === "javascript") {
@@ -808,11 +803,6 @@ const RootLayout = () => {
           <main className="content-area-open">
             <Outlet context={outletContext} />
           </main>
-          {tooltip && (
-            <div className="fixed-tooltip" style={{ left: tooltip.x, top: tooltip.y }}>
-              {tooltip.text}
-            </div>
-          )}
           <GlobalTooltip />
         </div>
       </PracticeContext.Provider>
@@ -869,8 +859,6 @@ const RootLayout = () => {
           activeTab={activeTab}
           setActiveTab={setActiveTab}
           completedTasks={completedTasks}
-          showTooltip={showTooltip}
-          hideTooltip={hideTooltip}
         />
 
         {/* style Mobile Sidebar Overlay Backdrop */}
@@ -1051,12 +1039,6 @@ const RootLayout = () => {
                 </div>
               </div>
             </div>
-          </div>
-        )}
-
-        {tooltip && (
-          <div className="fixed-tooltip" style={{ left: tooltip.x, top: tooltip.y }}>
-            {tooltip.text}
           </div>
         )}
 
