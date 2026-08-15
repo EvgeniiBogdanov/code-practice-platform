@@ -5,7 +5,7 @@
  * from localStorage into IndexedDB on first load, and frees localStorage quota.
  */
 
-import { dbGet, dbPut, dbPutMany, STORES, isIndexedDBAvailable } from "./db";
+import { dbGet, dbPut, dbPutMany, STORES, isIndexedDBAvailable } from "./db.js";
 
 const MIGRATION_FLAG_KEY = "hasMigratedLocalStorage_v1";
 

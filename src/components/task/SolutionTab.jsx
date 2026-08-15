@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { Lock, Eye, Code2, FileCode, Terminal, ArrowDown, ChevronDown, Check } from "lucide-react";
+import { Eye, Code2, FileCode, ArrowDown, ChevronDown, Check } from "lucide-react";
 import { getTaskById, resolveTaskSection } from "../../data/tasksRegistry";
-import ErrorBoundary from "../common/ErrorBoundary";
 import CodeEditor from "../common/CodeEditor";
 import JsConsole from "../common/JsConsole";
+import ReactLivePreview from "../common/ReactLivePreview";
 import { parseSolutionCodeAndExplanation } from "../../utils/solutionParser";
 import { runNodeJsCode, clearRunningTimers } from "../../utils/nodeRunner";
 import { getTaskFiles } from "../../utils/taskFiles";
@@ -36,11 +36,6 @@ export const SolutionTab = ({
     });
   };
 
-  const hasSolutionComponent =
-    Boolean(SolutionComponent) &&
-    typeof SolutionComponent !== "string" &&
-    !currentTask.isRaw;
-
   const [viewMode, setViewMode] = useState("preview"); // 'preview' | 'code'
   const [activeVariantIndex, setActiveVariantIndex] = useState(0);
   const [activeFileIdx, setActiveFileIdx] = useState(0);
@@ -67,7 +62,15 @@ export const SolutionTab = ({
 
   const currentVariant = solutionVariants[activeVariantIndex] || solutionVariants[0];
   const files = getTaskFiles(currentVariant, "solution");
-  const activeFile = files[activeFileIdx] || files[0];
+  const activeFile = files[activeFileIdx] || files[0] || { name: "solution.jsx", code: "" };
+
+  const currentCodeRef = useRef(activeFile.code);
+
+  const hasSolutionComponent =
+    !currentTask.isRaw &&
+    (currentTask.section === "react" ||
+      (Boolean(SolutionComponent) && typeof SolutionComponent !== "string") ||
+      (files.length > 0 && files.some((f) => /\.(jsx|tsx)$/.test(f.name || f.filepath || ""))));
 
   const rawText = currentVariant.rawSolution || "";
   const { explanation } = parseSolutionCodeAndExplanation(rawText);
@@ -92,6 +95,10 @@ export const SolutionTab = ({
     clearRunningTimers();
   }, [activeVariantIndex]);
 
+  useEffect(() => {
+    currentCodeRef.current = activeFile.code;
+  }, [activeFileIdx, activeVariantIndex, currentTask.id, activeFile.code]);
+
   // IntersectionObserver для отслеживания видимости консоли Node.js
   useEffect(() => {
     const el = consoleWrapperRef.current;
@@ -110,7 +117,8 @@ export const SolutionTab = ({
 
   const handleRunCode = async (codeToExecute) => {
     if (isRunning) return;
-    const codeToRun = codeToExecute !== undefined ? codeToExecute : activeFile.code;
+    const codeToRun = codeToExecute !== undefined ? codeToExecute : currentCodeRef.current;
+    currentCodeRef.current = codeToRun;
 
     setIsRunning(true);
     setConsoleLogs([]);
@@ -230,38 +238,16 @@ export const SolutionTab = ({
       )}
 
       {hasSolutionComponent && viewMode === "preview" ? (
-        <div className="browser-mockup">
-          <div className="browser-mockup-header">
-            <div className="browser-mockup-dots">
-              <span className="browser-dot close" />
-              <span className="browser-dot minimize" />
-              <span
-                className="browser-dot maximize"
-                onClick={handleToggleFullscreen}
-                style={{ cursor: "pointer" }}
-                title="Развернуть во весь экран (/open)"
-              />
-            </div>
-            <div className="browser-mockup-address">
-              <Lock
-                size={12}
-                style={{
-                  marginRight: 4,
-                  display: "inline-block",
-                  verticalAlign: "middle",
-                  color: "#10b981",
-                }}
-              />{" "}
-              localhost:5173/{activeFile.name}
-            </div>
-            <div style={{ width: "52px" }} />
-          </div>
-          <div className="browser-mockup-body">
-            <ErrorBoundary taskKey={`sol-${currentTask.id}`}>
-              <SolutionComponent />
-            </ErrorBoundary>
-          </div>
-        </div>
+        <ReactLivePreview
+          task={currentTask}
+          files={files}
+          activeFileIdx={activeFileIdx}
+          currentCode={currentCodeRef.current}
+          storagePrefix="sol"
+          variantIdx={activeVariantIndex}
+          fallbackComponent={SolutionComponent}
+          onToggleFullscreen={handleToggleFullscreen}
+        />
       ) : (
         /* Чистый и минималистичный редактор решения, расширяющийся по высоте */
         <div className="task-code-section">
@@ -275,6 +261,9 @@ export const SolutionTab = ({
             activeFileIdx={activeFileIdx}
             onFileSelect={setActiveFileIdx}
             onRun={handleRunCode}
+            onChange={(val) => {
+              currentCodeRef.current = val;
+            }}
             readOnly={false}
             onToggleFullscreen={handleToggleFullscreen}
             bottomConsole={
@@ -316,3 +305,4 @@ export const SolutionTab = ({
 };
 
 export default SolutionTab;
+

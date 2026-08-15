@@ -248,8 +248,14 @@ export function parseJsxTags(code) {
       const nameEnd = i;
       const tagName = code.substring(nameStart, nameEnd);
 
-      // Если после '<' нет валидного имени тега (например, операция 'x < y'), пропускаем
-      if (tagName.length === 0) {
+      // Пропуск TypeScript дженериков (type ListProps<T>, interface Props<T>, useRef<T>, Array<T>, Map<K, V>, etc.)
+      const beforeTag = code.substring(0, tagStart).trimEnd();
+      if (
+        !isClosing &&
+        (isTypeScriptGenericContext(code.substring(0, tagStart + 1)) ||
+          /\b(type|interface|class|function)\s+[a-zA-Z0-9_$]*\s*$/.test(beforeTag) ||
+          (tagStart > 0 && /[a-zA-Z0-9_$]/.test(code[tagStart - 1])))
+      ) {
         continue;
       }
 
@@ -364,7 +370,7 @@ export function getTagPairs(tags) {
     } else if (tag.type === "close") {
       let matchIdx = -1;
 
-      // Поиск ближайшего совпадающего открывающего тега в стеке
+      // 1. Поиск точного совпадающего открывающего тега в стеке
       for (let i = stack.length - 1; i >= 0; i--) {
         if (tag.isFragment && stack[i].isFragment) {
           matchIdx = i;
@@ -378,6 +384,12 @@ export function getTagPairs(tags) {
           matchIdx = i;
           break;
         }
+      }
+
+      // 2. Если точного совпадения нет (например, тег переименовывается или преобразуется из фрагмента <d></> или <p></div>),
+      // сопоставляем с вершиной стека открытых тегов на том же уровне
+      if (matchIdx === -1 && stack.length > 0) {
+        matchIdx = stack.length - 1;
       }
 
       if (matchIdx !== -1) {
@@ -538,11 +550,51 @@ export function handleAutoRenameTag(oldCode, newCode, cursorPos) {
 }
 
 /**
+ * Определяет, находится ли курсор/символ '<' в контексте TypeScript дженерика (а не JSX тега)
+ */
+export function isTypeScriptGenericContext(textBeforeCursor) {
+  if (!textBeforeCursor || typeof textBeforeCursor !== "string") return false;
+
+  const lastLt = textBeforeCursor.lastIndexOf("<");
+  if (lastLt === -1) return false;
+
+  const beforeLt = textBeforeCursor.substring(0, lastLt).trimEnd();
+
+  // 1. type Name<, interface Name<, class Name<, function name<
+  if (/\b(type|interface|class|function)\s+[a-zA-Z0-9_$]*\s*$/.test(beforeLt)) {
+    return true;
+  }
+
+  // 2. Идентификатор непосредственно перед '<' (useRef<, Array<, Promise<, Map<, Set<, useState<, etc.)
+  if (lastLt > 0 && /[a-zA-Z0-9_$]/.test(textBeforeCursor[lastLt - 1])) {
+    return true;
+  }
+
+  // 3. Двоеточие типа или ключевые слова TypeScript (props: Props<, as Array<, extends Base<)
+  if (/(?:\:\s*[a-zA-Z0-9_$]*|\b(extends|implements|satisfies|as|readonly|enum|keyof|typeof)\s+[a-zA-Z0-9_$]*)$/.test(beforeLt)) {
+    return true;
+  }
+
+  // 4. Дженерик в стрелочной функции (<T,> или <T extends>)
+  const insideLt = textBeforeCursor.substring(lastLt + 1);
+  if (/^[a-zA-Z0-9_$]+\s*,/.test(insideLt) || /^[a-zA-Z0-9_$]+\s+extends\b/.test(insideLt)) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
  * Auto Close Tag: Проверка необходимости вставки закрывающего тега при вводе '>'
  * Корректно учитывает вложенные выражения {...}, стрелочные функции =>, кавычки и void-теги.
  */
 export function checkAutoCloseTag(textBeforeCursor, textAfterCursor = "") {
   if (!textBeforeCursor || typeof textBeforeCursor !== "string") return null;
+
+  // TypeScript Generic Context (type ListProps<T>, useRef<T>, Array<T>, etc.) -> НЕ закрывать как JSX!
+  if (isTypeScriptGenericContext(textBeforeCursor)) {
+    return null;
+  }
 
   // React Fragment: <>
   if (textBeforeCursor.endsWith("<")) {
@@ -599,6 +651,12 @@ export function checkAutoCloseTag(textBeforeCursor, textAfterCursor = "") {
 
   if (tagStart === -1) return null;
 
+  // 1. Проверка на TypeScript дженерик (useRef<T>, Array<T>, Map<K, V>, etc.)
+  // Если перед '<' стоит символ идентификатора без пробела -> это дженерик, а не JSX тег
+  if (tagStart > 0 && /[a-zA-Z0-9_$]/.test(textBeforeCursor[tagStart - 1])) {
+    return null;
+  }
+
   const tagContent = textBeforeCursor.substring(tagStart);
 
   // Должен начинаться с <tagName (с возможными атрибутами)
@@ -607,6 +665,35 @@ export function checkAutoCloseTag(textBeforeCursor, textAfterCursor = "") {
 
   const tagName = tagMatch[1];
   const tagAttrs = tagMatch[2];
+
+  // 2. Проверка на ключевые слова объявлений типов TypeScript (type, interface, as, extends, etc.)
+  const textBeforeTag = textBeforeCursor.substring(0, tagStart).trimEnd();
+  if (
+    /(?:\b(type|interface|extends|implements|satisfies|as|readonly|enum)\s+[a-zA-Z0-9_$]*|\:\s*[a-zA-Z0-9_$]*)$/i.test(
+      textBeforeTag
+    )
+  ) {
+    return null;
+  }
+
+  // 3. Проверка на стандартные примитивные типы TypeScript
+  const TS_PRIMITIVES = new Set([
+    "string",
+    "number",
+    "boolean",
+    "any",
+    "unknown",
+    "never",
+    "void",
+    "object",
+    "symbol",
+    "bigint",
+    "null",
+    "undefined",
+  ]);
+  if (TS_PRIMITIVES.has(tagName.toLowerCase())) {
+    return null;
+  }
 
   // Самозакрывающийся тег с косой чертой />
   if (tagAttrs.trim().endsWith("/")) {
@@ -619,10 +706,9 @@ export function checkAutoCloseTag(textBeforeCursor, textAfterCursor = "") {
   }
 
   // Проверка на JS операторы сравнения (например, `i < len`, `x < y`)
-  const textBeforeTag = textBeforeCursor.substring(0, tagStart).trimEnd();
   if (
     /(===|!==|==|!=|<=|>=|\+|-|\*|\/|%|&&|\|\||\?|:|\b(if|while|for|return|switch|case|typeof|instanceof))\s*\(?$/i.test(
-      textBeforeTag,
+      textBeforeTag
     )
   ) {
     const isReactComponent = /^[A-Z]/.test(tagName);

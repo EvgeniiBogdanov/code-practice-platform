@@ -1,6 +1,6 @@
 <div align="center">
 
-# Code Practice Platform · _`v2.1.9`_
+# Code Practice Platform · _`v2.2.0`_
 
 ### Интерактивная платформа для подготовки к техническим собеседованиям и практики.
 
@@ -45,7 +45,7 @@
 
 ## 📖 О проекте
 
-<img width="1727" height="966" alt="2-1-7" src="https://github.com/user-attachments/assets/60c5ddd3-7217-4245-8ca4-5e5e5ef44307" />
+<img width="1724" height="887" alt="v2-2-0" src="https://github.com/user-attachments/assets/6678fcbe-41f8-4979-b2d8-e6fc40ccd2cc" />
 
 **Code Practice Platform** — это интерактивная платформа для подготовки к техническим собеседованиям по **React**, **JavaScript** и **Алгоритмам** (от уровня **Junior** до **Senior**). Платформа содержит более **260 практических задач с реальных интервью**, разборы антипаттернов в коде кандидатов, эталонные решения и интерактивные шпаргалки.
 

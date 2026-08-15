@@ -29,7 +29,7 @@ export const ALL_REACT_TASKS = [
   })),
   ...REFACTORING_TASKS.map((t) => ({
     ...t,
-    difficulty: t.difficulty || "warm-up",
+    difficulty: t.difficulty || "refactoring",
     category: t.category || "Рефакторинг",
     section: "react",
   })),

@@ -38,14 +38,14 @@ export default defineConfig({
       output: {
         manualChunks: (id) => {
           if (id.includes("node_modules")) {
+            if (id.includes("sucrase")) {
+              return "vendor-compiler";
+            }
             if (id.includes("prettier")) {
               return "vendor-prettier";
             }
             if (id.includes("@xterm")) {
               return "vendor-xterm";
-            }
-            if (id.includes("marked") || id.includes("dompurify")) {
-              return "vendor-markdown";
             }
             if (id.includes("@tanstack")) {
               return "vendor-router";

@@ -12,6 +12,8 @@ import {
   REACT_JSX_PROPS,
   REACT_CSS_PROPERTIES,
   TS_UTILITY_TYPES,
+  findDefinition,
+  getWordAtPosition,
 } from "./snippetsEngine.js";
 
 let passed = 0;
@@ -262,12 +264,46 @@ assertTrue(
   "Suggests module 'react' after from '"
 );
 
+// 3.7. Module from completion inside existing string 'react'; -> zustand/middleware
+const codeWithReact = "import { create } from 'react';";
+const compFromMod = getCompletions(codeWithReact, 24);
+const zustandMid = compFromMod.items.find((i) => i.prefix === "zustand/middleware");
+assertTrue(Boolean(zustandMid), "Suggests 'zustand/middleware' module");
+const beforeCode = codeWithReact.substring(0, zustandMid.replaceStart);
+const afterCode = codeWithReact.substring(zustandMid.replaceEnd);
+const fullResult = beforeCode + zustandMid.insertText + afterCode;
+assertEqual(
+  fullResult,
+  "import { create } from 'zustand/middleware';",
+  "Replaces 'react'; with 'zustand/middleware'; without producing ';act' or leftover chars"
+);
+
+// 3.8. Module from completion typing 'zus' in import { create } from 'zus
+const codeWithZus = "import { create } from 'zus";
+const compFromZus = getCompletions(codeWithZus, 27);
+const zusItem = compFromZus.items.find((i) => i.prefix === "zustand");
+const beforeZus = codeWithZus.substring(0, zusItem.replaceStart);
+const afterZus = codeWithZus.substring(zusItem.replaceEnd);
+assertEqual(
+  beforeZus + zusItem.insertText + afterZus,
+  "import { create } from 'zustand';",
+  "Replaces 'zus with 'zustand'; cleanly"
+);
+
 const comp5 = getCompletions("function App() {\n  const [val, setVal] = useSt", 46);
 const useStateItem = comp5.items.find((i) => i.prefix === "useState");
 assertTrue(
   Boolean(useStateItem && useStateItem.autoImport && useStateItem.autoImport.module === "react"),
   "Hook suggestion in component body carries autoImport metadata"
 );
+
+// 3.9. Emmet JSX expansion in getCompletions (Этап 5.4)
+const codeEmmet = "return (\n    ul.list>li.item*3";
+const compEmmet = getCompletions(codeEmmet, codeEmmet.length);
+const emmetItem = compEmmet.items.find((i) => i.kind === "snippet" && i.prefix === "ul.list>li.item*3");
+assertTrue(Boolean(emmetItem), "Suggests Emmet expansion for 'ul.list>li.item*3'");
+assertTrue(emmetItem && emmetItem.insertText.includes('<ul className="list">'), "Emmet insertText generates '<ul className=\"list\">'");
+assertTrue(emmetItem && emmetItem.insertText.includes('<li className="item"></li>'), "Emmet insertText generates '<li className=\"item\"></li>'");
 
 console.log("\n--- 4. Fuzzy Matching & CamelCase Acronyms (Этап 1) ---");
 
@@ -456,6 +492,19 @@ assertEqual(
   "Top suggestion for <form onS is 'onSubmit'"
 );
 
+// 6.8. TypeScript Generics Disambiguation (type ListProps<T>, useRef<T>, Array<T>)
+const compGenericType = getCompletions("type ListProps<d", 16);
+assertTrue(
+  !compGenericType.items?.some((i) => i.prefix === "div" || i.label === "<div>"),
+  "Does NOT suggest JSX HTML <div on TypeScript type ListProps<d"
+);
+
+const compGenericRef = getCompletions("const r = useRef<d", 18);
+assertTrue(
+  !compGenericRef.items?.some((i) => i.prefix === "div" || i.label === "<div>"),
+  "Does NOT suggest JSX HTML <div on TypeScript generic useRef<d"
+);
+
 console.log("\n--- 7. CSS Properties in style={{ ... }} & TypeScript Utility Types (Этап 4) ---");
 
 const compCssDisp = getCompletions("<div style={{ disp", 19);
@@ -573,6 +622,52 @@ assertEqual(
   "console.log();",
   "clg expands cleanly to console.log();"
 );
+
+console.log("\n--- 9. Go to Definition & Word Extraction (Этап 2) ---");
+
+// 9.1. getWordAtPosition
+const sampleText = "const [count, setCount] = useState(0);";
+assertEqual(getWordAtPosition(sampleText, 9), "count", "Extracts 'count' at index 9");
+assertEqual(getWordAtPosition(sampleText, 18), "setCount", "Extracts 'setCount' at index 18");
+assertEqual(getWordAtPosition(sampleText, 30), "useState", "Extracts 'useState' at index 30");
+
+// 9.2. findDefinition - Local definition
+const localSampleCode = `import React from 'react';
+
+const myCustomFunction = () => {
+  return 42;
+};
+
+type AppProps = {
+  title: string;
+};
+
+export function MainComponent() {
+  return <div>{myCustomFunction()}</div>;
+}`;
+
+const defFn = findDefinition("myCustomFunction", localSampleCode);
+assertEqual(defFn?.type, "local", "Finds local definition of myCustomFunction");
+assertEqual(defFn?.line, 3, "myCustomFunction definition is on line 3");
+
+const defType = findDefinition("AppProps", localSampleCode);
+assertEqual(defType?.type, "local", "Finds local definition of AppProps");
+assertEqual(defType?.line, 7, "AppProps definition is on line 7");
+
+// 9.3. findDefinition - Task file navigation (Go to File / Component)
+const testTaskFiles = [
+  { name: "App.jsx", code: "export default function App() {}" },
+  { name: "CustomHeader.jsx", code: "export const CustomHeader = () => <header />;\nexport default CustomHeader;" },
+  { name: "usersSlice.js", code: "export const usersSlice = createSlice(...);" },
+];
+
+const defHeader = findDefinition("CustomHeader", localSampleCode, testTaskFiles, "App.jsx");
+assertEqual(defHeader?.type, "file", "Finds task file for CustomHeader");
+assertEqual(defHeader?.fileIndex, 1, "CustomHeader matches file index 1");
+
+const defSlice = findDefinition("usersSlice", localSampleCode, testTaskFiles, "App.jsx");
+assertEqual(defSlice?.type, "file", "Finds task file for usersSlice");
+assertEqual(defSlice?.fileIndex, 2, "usersSlice matches file index 2");
 
 console.log(`\n========================================`);
 console.log(`Tests finished: ${passed} passed, ${failed} failed.`);

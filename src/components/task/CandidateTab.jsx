@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { Lock, Eye, Code2, Terminal, ArrowDown, FileCode } from "lucide-react";
+import { Eye, Code2, ArrowDown } from "lucide-react";
 import { getTaskById, resolveTaskSection } from "../../data/tasksRegistry";
-import ErrorBoundary from "../common/ErrorBoundary";
 import CodeEditor from "../common/CodeEditor";
 import JsConsole from "../common/JsConsole";
+import ReactLivePreview from "../common/ReactLivePreview";
 import { runNodeJsCode, clearRunningTimers } from "../../utils/nodeRunner";
 import { getTaskFiles } from "../../utils/taskFiles";
 
@@ -19,11 +19,13 @@ export const CandidateTab = ({
   const navigate = useNavigate();
 
   const currentTask = getTaskById(selectedTask?.id) || selectedTask;
+  const files = getTaskFiles(currentTask, "candidate");
 
   const hasCandidateComponent =
-    Boolean(CandidateComponent) &&
-    typeof CandidateComponent !== "string" &&
-    !currentTask.isRaw;
+    !currentTask.isRaw &&
+    (currentTask.section === "react" ||
+      (Boolean(CandidateComponent) && typeof CandidateComponent !== "string") ||
+      (files.length > 0 && files.some((f) => /\.(jsx|tsx)$/.test(f.name || f.filepath || ""))));
 
   const [viewMode, setViewMode] = useState("preview"); // 'preview' | 'code'
   const [activeFileIdx, setActiveFileIdx] = useState(0);
@@ -34,8 +36,7 @@ export const CandidateTab = ({
   const [lastExecution, setLastExecution] = useState(null);
   const [isConsoleVisible, setIsConsoleVisible] = useState(true);
 
-  const files = getTaskFiles(currentTask, "candidate");
-  const activeFile = files[activeFileIdx] || files[0];
+  const activeFile = files[activeFileIdx] || files[0] || { name: "index.jsx", code: "" };
 
   const currentCodeRef = useRef(activeFile.code);
   const consoleWrapperRef = useRef(null);
@@ -51,7 +52,7 @@ export const CandidateTab = ({
 
   useEffect(() => {
     currentCodeRef.current = activeFile.code;
-  }, [activeFileIdx, currentTask.id]);
+  }, [activeFileIdx, currentTask.id, activeFile.code]);
 
   // IntersectionObserver для отслеживания видимости консоли Node.js
   useEffect(() => {
@@ -144,42 +145,15 @@ export const CandidateTab = ({
       )}
 
       {hasCandidateComponent && viewMode === "preview" ? (
-        <div className="browser-mockup">
-          <div className="browser-mockup-header">
-            <div className="browser-mockup-dots">
-              <span className="browser-dot close" />
-              <span className="browser-dot minimize" />
-              <span
-                className="browser-dot maximize"
-                onClick={handleToggleFullscreen}
-                style={{ cursor: "pointer" }}
-                title="Развернуть во весь экран (/open)"
-              />
-            </div>
-            <div className="browser-mockup-address">
-              <Lock
-                size={12}
-                style={{
-                  marginRight: 4,
-                  display: "inline-block",
-                  verticalAlign: "middle",
-                  color: "#10b981",
-                }}
-              />{" "}
-              localhost:5173/{activeFile.name}
-            </div>
-            <div style={{ width: "52px" }} />
-          </div>
-          <div className="browser-mockup-body">
-            <ErrorBoundary taskKey={currentTask.id}>
-              {CandidateComponent ? (
-                <CandidateComponent />
-              ) : (
-                <p className="no-component">Компонент не найден</p>
-              )}
-            </ErrorBoundary>
-          </div>
-        </div>
+        <ReactLivePreview
+          task={currentTask}
+          files={files}
+          activeFileIdx={activeFileIdx}
+          currentCode={currentCodeRef.current}
+          storagePrefix="cand"
+          fallbackComponent={CandidateComponent}
+          onToggleFullscreen={handleToggleFullscreen}
+        />
       ) : (
         /* Минималистичный и чистый редактор кода, расширяющийся по высоте */
         <div className="task-code-section">
@@ -237,3 +211,4 @@ export const CandidateTab = ({
 };
 
 export default CandidateTab;
+

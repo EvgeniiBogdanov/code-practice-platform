@@ -8,11 +8,10 @@ import {
   Code2,
   FileQuestion,
   Home,
-  Lock,
 } from "lucide-react";
 import CodeEditor from "../common/CodeEditor";
 import JsConsole from "../common/JsConsole";
-import ErrorBoundary from "../common/ErrorBoundary";
+import ReactLivePreview from "../common/ReactLivePreview";
 import { runNodeJsCode, clearRunningTimers } from "../../utils/nodeRunner";
 import { getTaskFiles } from "../../utils/taskFiles";
 import { getTaskById, resolveTaskSection } from "../../data/tasksRegistry";
@@ -35,10 +34,6 @@ export const OpenEditorView = ({ task, section, tab = "candidate" }) => {
 
   const isSolutionMode = tab === "solution";
   const CandidateComponent = isSolutionMode ? currentTask?.solution : currentTask?.candidate;
-  const hasVisualComponent =
-    Boolean(CandidateComponent) &&
-    typeof CandidateComponent !== "string" &&
-    !currentTask?.isRaw;
 
   const files = currentTask
     ? isSolutionMode
@@ -46,6 +41,12 @@ export const OpenEditorView = ({ task, section, tab = "candidate" }) => {
       : getTaskFiles(currentTask, "candidate")
     : [];
   const activeFile = files[activeFileIdx] || files[0] || { name: "main.js", code: "" };
+
+  const hasVisualComponent =
+    !currentTask?.isRaw &&
+    (currentSection === "react" ||
+      (Boolean(CandidateComponent) && typeof CandidateComponent !== "string") ||
+      (files.length > 0 && files.some((f) => /\.(jsx|tsx)$/.test(f.name || f.filepath || ""))));
 
   const currentCodeRef = useRef(activeFile.code);
   const consoleWrapperRef = useRef(null);
@@ -214,38 +215,17 @@ export const OpenEditorView = ({ task, section, tab = "candidate" }) => {
       </div>
 
       {hasVisualComponent && viewMode === "preview" ? (
-        <div className="open-preview-wrapper">
-          <div className="browser-mockup" style={{ flex: 1, display: "flex", flexDirection: "column", height: "100%", margin: 0 }}>
-            <div className="browser-mockup-header">
-              <div className="browser-mockup-dots">
-                <span className="browser-dot close" />
-                <span className="browser-dot minimize" />
-                <span className="browser-dot maximize" />
-              </div>
-              <div className="browser-mockup-address">
-                <Lock
-                  size={12}
-                  style={{
-                    marginRight: 4,
-                    display: "inline-block",
-                    verticalAlign: "middle",
-                    color: "#10b981",
-                  }}
-                />{" "}
-                localhost:5173/{activeFile.name}
-              </div>
-              <div style={{ width: "52px" }} />
-            </div>
-            <div className="browser-mockup-body" style={{ flex: 1, overflow: "auto" }}>
-              <ErrorBoundary taskKey={`open_${task.id}`}>
-                {CandidateComponent ? (
-                  <CandidateComponent />
-                ) : (
-                  <p className="no-component">Компонент не найден</p>
-                )}
-              </ErrorBoundary>
-            </div>
-          </div>
+        <div className="open-preview-wrapper" style={{ flex: 1, display: "flex", flexDirection: "column", height: "calc(100vh - 58px)", padding: "16px" }}>
+          <ReactLivePreview
+            task={currentTask}
+            files={files}
+            activeFileIdx={activeFileIdx}
+            currentCode={currentCodeRef.current}
+            storagePrefix={isSolutionMode ? "sol" : "cand"}
+            variantIdx={0}
+            fallbackComponent={CandidateComponent}
+            containerStyle={{ flex: 1, display: "flex", flexDirection: "column", height: "100%", margin: 0 }}
+          />
         </div>
       ) : (
         <div className="open-code-wrapper">

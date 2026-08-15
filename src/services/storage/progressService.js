@@ -5,7 +5,7 @@
  * and self-check items in IndexedDB.
  */
 
-import { dbGet, dbPut, dbDelete, dbGetAll, dbClear, dbPutMany, STORES } from "./db";
+import { dbGet, dbPut, dbDelete, dbGetAll, dbClear, dbPutMany, STORES } from "./db.js";
 
 /**
  * Loads all completed task statuses as a dictionary: { [taskId]: 'solved' | 'unsolved' }.

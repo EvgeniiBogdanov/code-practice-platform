@@ -5,9 +5,6 @@ import {
   Trash2,
   Copy,
   Check,
-  Zap,
-  CheckCircle2,
-  AlertCircle,
   Loader2,
   ChevronDown,
   ChevronUp,
@@ -374,7 +371,7 @@ export const JsConsole = ({
           >
             <Trash2 size={14} />
           </button>
-
+          
           <button
             className="vscode-icon-btn"
             onClick={handleCopyLogs}
@@ -421,7 +418,7 @@ export const JsConsole = ({
             data-tooltip={isCollapsed ? "Развернуть консоль" : "Свернуть консоль"}
             aria-label={isCollapsed ? "Развернуть консоль" : "Свернуть консоль"}
           >
-            {isCollapsed ? <ChevronDown size={14} /> : <ChevronUp size={14} />}
+            {isCollapsed ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
           </button>
         </div>
       </div>
@@ -429,61 +426,6 @@ export const JsConsole = ({
       {/* Холст интерактивного Web Terminal */}
       <div className="js-console-body vscode-terminal-body">
         <div ref={termContainerRef} className="xterm-view-container" style={{ width: "100%", height: "100%", padding: 0 }} />
-      </div>
-
-      {/* Статус-бар консоли в едином дизайне с редактором кода */}
-      <div className="vscode-status-bar">
-        <div className="status-left">
-          {isRunning ? (
-            <span className="status-item status-typo-warning">
-              <Loader2 size={11} className="spin-icon" style={{ color: "#38bdf8" }} />
-              <span>Выполнение процесса Node.js...</span>
-            </span>
-          ) : lastExecution ? (
-            lastExecution.exitCode === 0 ? (
-              <span className="status-item status-typo-ok">
-                <CheckCircle2 size={11} style={{ color: "#34d399" }} />
-                <span>Завершено (код 0)</span>
-              </span>
-            ) : (
-              <span className="status-item status-typo-warning">
-                <AlertCircle size={11} style={{ color: "#f87171" }} />
-                <span>Ошибка (код {lastExecution.exitCode})</span>
-              </span>
-            )
-          ) : (
-            <span className="status-item status-typo-ok">
-              <CheckCircle2 size={11} style={{ color: "#34d399" }} />
-              <span>Готов к работе</span>
-            </span>
-          )}
-
-          <span className="status-sep">|</span>
-
-          {lastExecution?.durationMs !== undefined && (
-            <>
-              <span className="status-item">
-                <Zap size={11} style={{ color: "#f59e0b" }} />
-                {lastExecution.durationMs}ms
-              </span>
-              <span className="status-sep">|</span>
-            </>
-          )}
-
-          <span className="status-item">
-            {logs.length} {logs.length === 1 ? "лог" : logs.length < 5 ? "лога" : "логов"}
-          </span>
-        </div>
-
-        <div className="status-right">
-          <span className="status-item">Node.js v20</span>
-          <span className="status-sep">|</span>
-          <span className="status-item">UTF-8</span>
-          <span className="status-sep">|</span>
-          <span className="status-item lang-tag" title="Язык синтаксиса: Terminal">
-            <TerminalIcon size={11} style={{ color: "#38bdf8" }} /> Terminal
-          </span>
-        </div>
       </div>
     </div>
   );

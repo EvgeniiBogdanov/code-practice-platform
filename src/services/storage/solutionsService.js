@@ -8,7 +8,7 @@
  * - Immediate flush on page visibility change or unload
  */
 
-import { dbGet, dbPut, dbDelete, dbGetAll, dbClear, STORES } from "./db";
+import { dbGet, dbPut, dbDelete, dbGetAll, dbClear, STORES } from "./db.js";
 
 // L1 Memory Cache: id -> code string
 const memoryCache = new Map();

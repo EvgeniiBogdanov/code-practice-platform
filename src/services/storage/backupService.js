@@ -5,14 +5,14 @@
  * to a single JSON backup file, and restore it on another machine or browser.
  */
 
-import { getAllSolutions, clearAllSolutions } from "./solutionsService";
+import { getAllSolutions, clearAllSolutions } from "./solutionsService.js";
 import {
   getCompletedTasksFromDB,
   getChecklistStateFromDB,
   saveAllCompletedTasksToDB,
   saveAllChecklistToDB,
-} from "./progressService";
-import { dbPutMany, STORES } from "./db";
+} from "./progressService.js";
+import { dbPutMany, STORES } from "./db.js";
 
 const BACKUP_SCHEMA_VERSION = 1;
 
