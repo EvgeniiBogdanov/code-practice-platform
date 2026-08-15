@@ -45,7 +45,7 @@ export function getBroadcastChannel() {
 
 /**
  * Broadcasts an event to all other open tabs as well as local subscribers in the current tab.
- * @param {'TASK_STATUS_CHANGED' | 'CHECKLIST_CHANGED' | 'SOLUTION_SAVED' | 'SOLUTIONS_CLEARED' | 'PROGRESS_RESET'} type
+ * @param {'TASK_STATUS_CHANGED' | 'CHECKLIST_CHANGED' | 'SOLUTION_SAVED' | 'SOLUTIONS_CLEARED' | 'PROGRESS_RESET' | 'TASK_REVIEWED' | 'REVIEWS_RESET'} type
  * @param {object} payload
  */
 export function broadcastSyncEvent(type, payload = {}) {

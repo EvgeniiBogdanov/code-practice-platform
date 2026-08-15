@@ -1,213 +1,139 @@
 <div align="center">
 
-# Code Practice Platform · _`v2.2.0`_
+# ⚡ Code Practice Platform · `v2.2.1`
 
-### Интерактивная платформа для подготовки к техническим собеседованиям и практики.
+### Интерактивная платформа для подготовки к техническим собеседованиям по фронтенду и алгоритмам.
 
-280+ реальных задач разной сложности
+<br />
 
-[![Онлайн-версия](https://img.shields.io/badge/Открыть_online-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://evgeniibogdanov.github.io/code-practice-platform/)
+<img width="1723" height="881" alt="v2-2-1" src="https://github.com/user-attachments/assets/3c3c866a-dda5-4911-8bc0-2bc8497373d4" />
 
----
+**Code Practice Platform** — это полноценная среда для эффективной подготовки к техническим интервью по **JavaScript**, **React** и **Алгоритмам** (от Junior до Senior). Платформа сочетает интерактивный редактор в браузере, песочницу выполнения кода, систему интервального повторения и базу из более чем **280 задач** с реальных собеседований с эталонными решениями и разбором антипаттернов.
 
-[![GitHub Views](https://komarev.com/ghpvc/?username=EvgeniiBogdanov&repo=code-practice-platform&label=Views&color=0e75b6&style=flat-square)](https://github.com/EvgeniiBogdanov/code-practice-platform)
+<br />
+
+[![Онлайн-версия](https://img.shields.io/badge/Открыть_в_браузере-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://evgeniibogdanov.github.io/code-practice-platform/)
+
+<br />
+
 [![GitHub Stars](https://img.shields.io/github/stars/EvgeniiBogdanov/code-practice-platform?style=flat-square&label=Stars&color=yellow&logo=github)](https://github.com/EvgeniiBogdanov/code-practice-platform/stargazers)
 [![GitHub Forks](https://img.shields.io/github/forks/EvgeniiBogdanov/code-practice-platform?style=flat-square&label=Forks&color=blue&logo=github)](https://github.com/EvgeniiBogdanov/code-practice-platform/network/members)
-[![GitHub Watchers](https://img.shields.io/github/watchers/EvgeniiBogdanov/code-practice-platform?style=flat-square&label=Watchers&color=6e5494)](https://github.com/EvgeniiBogdanov/code-practice-platform/watchers)
-[![GitHub Issues](https://img.shields.io/github/issues/EvgeniiBogdanov/code-practice-platform?style=flat-square&label=Issues&color=red)](https://github.com/EvgeniiBogdanov/code-practice-platform/issues)
-[![GitHub PRs](https://img.shields.io/github/issues-pr/EvgeniiBogdanov/code-practice-platform?style=flat-square&label=PRs&color=orange)](https://github.com/EvgeniiBogdanov/code-practice-platform/pulls)
-
 [![License](https://img.shields.io/github/license/EvgeniiBogdanov/code-practice-platform?style=flat-square&color=green)](LICENSE.md)
 [![Last Commit](https://img.shields.io/github/last-commit/EvgeniiBogdanov/code-practice-platform?style=flat-square&color=blue)](https://github.com/EvgeniiBogdanov/code-practice-platform/commits/main)
-[![Repo Size](https://img.shields.io/github/repo-size/EvgeniiBogdanov/code-practice-platform?style=flat-square&color=purple)](https://github.com/EvgeniiBogdanov/code-practice-platform)
-[![Contributors](https://img.shields.io/github/contributors/EvgeniiBogdanov/code-practice-platform?style=flat-square&color=brightgreen)](https://github.com/EvgeniiBogdanov/code-practice-platform/graphs/contributors)
 [![Language](https://img.shields.io/github/languages/top/EvgeniiBogdanov/code-practice-platform?style=flat-square&color=yellow&logo=javascript)](https://github.com/EvgeniiBogdanov/code-practice-platform)
 
 </div>
 
 ---
 
-## 📖 Оглавление
-
-- [📖 О проекте](#-о-проекте)
-- [⚡ Основные возможности](#-основные-возможности)
-- [🛠️ Технологический стек](#-технологический-стек)
-- [📜 История версий](#-история-версий-и-релизов)
-- [📥 Установка и запуск](#-пошаговая-установка-и-запуск)
-- [⌨️ Горячие клавиши](#-горячие-клавиши-hotkeys)
-- [📂 Структура проекта](#-структура-проекта)
-- [🤝 Как внести вклад](#-как-внести-вклад)
-- [📄 Лицензия](#-лицензия)
-- [👤 Автор](#-автор)
-- [⭐ Поддержать проект](#-поддержать-проект)
-
----
-
-## 📖 О проекте
-
-<img width="1724" height="887" alt="v2-2-0" src="https://github.com/user-attachments/assets/6678fcbe-41f8-4979-b2d8-e6fc40ccd2cc" />
-
-**Code Practice Platform** — это интерактивная платформа для подготовки к техническим собеседованиям по **React**, **JavaScript** и **Алгоритмам** (от уровня **Junior** до **Senior**). Платформа содержит более **260 практических задач с реальных интервью**, разборы антипаттернов в коде кандидатов, эталонные решения и интерактивные шпаргалки.
-
-Теперь решать задачи можно не только в своей IDE, но также и непосредственно в браузере!
-
 > 🌐 **Быстрый доступ:**
 >
-> - **[🚀 Открыть онлайн-версию](https://evgeniibogdanov.github.io/code-practice-platform/)** — _Без локальной установки, редактор в браузере, практика._
-> - **[📥 Перейти к инструкции по локальной установке](#-пошаговая-установка-и-запуск)** — _Для практики в связке с IDE (находите файл в проекте, редактируете, и он синхронизурется с браузером). Или если вы хотите внести свой вклад в код проекта_
-
-<div align="right">[ <a href="#-frontend-interview-playground--practice">⬆ Наверх</a> ]</div>
+> - **[🚀 Открыть онлайн-версию](https://evgeniibogdanov.github.io/code-practice-platform/)** — _Практика прямо в браузере без установки._
+> - **[📥 Локальный запуск](#-пошаговая-установка-и-запуск)** — _Для локальной разработки и практики в связке с IDE._
 
 ---
 
-## ⚡ Основные возможности
+## ✨ Ключевые возможности
 
 <table>
   <tr>
-    <td width="50%" valign="top">
-      <h3>🎯 280+ реальных задач с собеседований</h3>
-      <ul>
-        <li><b>JavaScript:</b> Замыкания, рекурсия, прототипы, <code>this</code>, каррирование, циклы (<code>while</code>, <code>for</code>), полифилы <code>Promise</code>, <code>Debounce</code>/<code>Throttle</code>, <code>Event Loop</code> и структуры данных.</li>
-        <li><b>React:</b> Хуки (<code>useState</code>, <code>useEffect</code>, <code>useMemo</code>, <code>useCallback</code>, <code>useRef</code>), паттерны рефакторинга, оптимизация перерендеров, Redux Toolkit и интеграция с TypeScript.</li>
-        <li><b>Алгоритмы:</b> Классические паттерны (Hash Map, Sliding Window, Prefix Sum, Binary Search, Stack, Linked List, DFS, BFS, Backtracking).</li>
-      </ul>
-    </td>
-    <td width="50%" valign="top">
-      <h3>💻 Встроенный редактор и изолированный Web Worker</h3>
-      <p>Решение задач прямо в браузере с поддержкой JS, TS и JSX/TSX. Выполнение кода вынесено в изолированный <b>Web Worker</b> со сторожевым таймером, защищающим интерфейс от зависаний при бесконечных циклах (<code>while(true)</code>).</p>
+    <td colspan="2" valign="top">
+      <h3>🧠 Умное интервальное повторение (SM-2)</h3>
+      <p>Адаптированный алгоритм интервалов (<code>1д</code> ➔ <code>3д</code> ➔ <code>7д</code> ➔ <code>14д</code> ➔ <code>30д</code> ➔ <code>60+д</code> / Мастер). Оценка сложности решения, персональный график повторений, дашборд прогресса и быстрый доступ к дедлайнам из шапки.</p>
     </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <h3>💾 Хранилище IndexedDB и синхронизация вкладок</h3>
-      <p>Двухуровневое кэширование (L1 In-Memory + L2 IndexedDB) без лимита в 5 МБ. Мгновенная синхронизация прогресса и решений между вкладками через <code>BroadcastChannel API</code>.</p>
+      <h3>⚛️ React Live Runner & Живое Превью</h3>
+      <p>Мгновенная транспиляция JSX/TSX через <code>sucrase</code> (<1ms). Поддержка всех хуков React, Redux Toolkit, Zustand, изоляция таймеров и защита от бесконечных циклов.</p>
     </td>
     <td width="50%" valign="top">
-      <h3>⚡ Интерактивная консоль JavaScript (xterm.js)</h3>
-      <p>Мгновенный запуск кода (<kbd>Ctrl</kbd> + <kbd>Enter</kbd>) с замером времени выполнения в миллисекундах (<code>⚡ 6.4ms</code>), потоковым выводом <code>console.*</code> и адаптивным <code>ResizeObserver</code>.</p>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <h3>💻 Песочница кандидата (Candidate Code)</h3>
-      <p>Запускаемый live-код с багами, недочётами и антипаттернами кандидатов для отработки навыка проведения Code Review.</p>
-    </td>
-    <td width="50%" valign="top">
-      <h3>💡 Эталонные решения (Solution Tab)</h3>
-      <p>Оптимизированные решения с пометками предпочтительности на собеседованиях, разбором сложности <code>O(N)</code> / <code>O(1)</code> и лучшими практиками.</p>
+      <h3>🎯 280+ задач с реальных собеседований</h3>
+      <p>Подробные разборы кода кандидатов, поиск багов, эталонные решения с оценкой сложности <code>O(N)</code> / <code>O(1)</code>, интерактивные чеклисты критериев и вопросы интервьюера.</p>
     </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <h3>📋 Чек-листы и вопросы интервьюера</h3>
-      <p>Интерактивные чеклисты критериев и список контрольных вопросов, проверяемых собеседующими на реальных интервью.</p>
+      <h3>💻 VS Code-Level редактор и IntelliSense</h3>
+      <p>Автодополнение методов и хуков, всплывающие Hover Tooltips с типами TypeScript, Emmet JSX-генератор, быстрый поиск файлов (<code>Cmd+P</code>) и переход к строке (<code>Cmd+G</code>).</p>
     </td>
     <td width="50%" valign="top">
-      <h3>🔍 Поиск (<code>Cmd+K</code>) и Стейт-менеджер Zustand</h3>
-      <p>Палитра команд для мгновенного поиска задач по всей платформе и сверхбыстрое управление состоянием на базе <b>Zustand</b> без лишних перерендеров.</p>
+      <h3>💾 Zero-Lag Dual Storage & Sync</h3>
+      <p>Двухуровневое хранилище (L1 LocalStorage кэш 0 мс + L2 IndexedDB v3) без лимитов памяти и мгновенная межвкладочная синхронизация через <code>BroadcastChannel API</code>.</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>⚡ Интерактивная консоль xterm.js</h3>
+      <p>Запуск кода через изолированный <b>Web Worker</b>, точный замер времени исполнения в миллисекундах (<code>⚡ 4.2ms</code>) и контрастная палитра для светлой и тёмной тем.</p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>🎨 Notion-Style UI & Radix Tooltips</h3>
+      <p>Кастомная система всплывающих подсказок с Warmup Hover, адаптивный таймер собеседования, быстрый поиск <code>Cmd+K</code> и переключение тёмной/светлой темы.</p>
     </td>
   </tr>
 </table>
-
-<div align="right">[ <a href="#-frontend-interview-playground--practice">⬆ Наверх</a> ]</div>
 
 ---
 
 ## 🛠️ Технологический стек
 
 <p align="center">
-  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React" />
-  <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
-  <img src="https://img.shields.io/badge/Zustand-443e38?style=for-the-badge&logo=react&logoColor=white" alt="Zustand" />
+  <img src="https://img.shields.io/badge/React_18-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React 18" />
+  <img src="https://img.shields.io/badge/Vite_5-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite 5" />
+  <img src="https://img.shields.io/badge/Zustand_5-443e38?style=for-the-badge&logo=react&logoColor=white" alt="Zustand 5" />
   <img src="https://img.shields.io/badge/TanStack_Router-FF4154?style=for-the-badge&logo=react&logoColor=white" alt="TanStack Router" />
-  <img src="https://img.shields.io/badge/IndexedDB-336791?style=for-the-badge&logo=sqlite&logoColor=white" alt="IndexedDB" />
+  <img src="https://img.shields.io/badge/IndexedDB_v3-336791?style=for-the-badge&logo=sqlite&logoColor=white" alt="IndexedDB" />
   <img src="https://img.shields.io/badge/Web_Workers-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="Web Workers" />
-  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript" />
-  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
   <img src="https://img.shields.io/badge/xterm.js-000000?style=for-the-badge&logo=gnubash&logoColor=white" alt="xterm.js" />
-  <img src="https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white" alt="Markdown" />
+  <img src="https://img.shields.io/badge/Sucrase-FF5722?style=for-the-badge&logo=babel&logoColor=white" alt="Sucrase" />
+  <img src="https://img.shields.io/badge/Lucide_Icons-F56565?style=for-the-badge&logo=feather&logoColor=white" alt="Lucide Icons" />
 </p>
-
-<div align="right">[ <a href="#-frontend-interview-playground--practice">⬆ Наверх</a> ]</div>
 
 ---
 
-## 📜 История версий и релизов
+## 📜 История версий
 
-Полный список всех изменений задокументирован в файле **[CHANGELOG.md](CHANGELOG.md)**.
+Полная история всех изменений и релизов доступна в файле **[CHANGELOG.md](CHANGELOG.md)**.
 
-### 🚀 [Версия 2.1.8](CHANGELOG.md#v2-1-8)
-
-- **IndexedDB & Web Worker Sandbox**: Хранение пользовательских решений в IndexedDB без лимита 5 МБ с real-time синхронизацией вкладок (`BroadcastChannel`); изолированное исполнение JS-кода в Web Worker с защитой от бесконечных циклов (`while(true)`).
-- **Zustand & Оптимизация Бандла**: Полная миграция состояния на Zustand, сокращение стартового JS-бандла на **52%** через динамический импорт Prettier и code splitting.
-
-### 🎨 [Версия 2.1.7](CHANGELOG.md#v2-1-7)
-
-- **Design System & Typography**: Внедрена система CSS-токенов типографики, унифицированы интерактивные состояния кнопок и сайдбара.
-
-### ⚡ [Версия 2.1.6](CHANGELOG.md#v2-1-6)
-
-- **Zero-Crutches Architecture**: Единый реестр задач `tasksRegistry.js`, O(1) поиск через `Map`, самодостаточные URL и синхронизация вкладок.
-
-### 💻 [Версия 2.0](CHANGELOG.md#v2-0-0)
-
-- **Редактор кода и терминал прямо в браузере**: Возможность практиковаться как в веб-редакторе с запуском кода и выводом в интерактивную консоль, так и локально через IDE.
-
-<div align="right">[ <a href="#-frontend-interview-playground--practice">⬆ Наверх</a> ]</div>
+- **[v2.2.1](CHANGELOG.md#v2-2-1)** — Умное интервальное повторение (SM-2), ступенчатые подсказки (Hints), Radix Tooltip System, редизайн Header и карточек задач.
+- **[v2.2.0](CHANGELOG.md#v2-2-0)** — React Live Runner, TypeScript Live Type Checking, Hover Tooltips с сигнатурами, Emmet JSX & навигация.
+- **[v2.1.8](CHANGELOG.md#v2-1-8)** — Хранилище IndexedDB, Web Worker sandbox, оптимизация размера главного бандла на 85.5%.
+- **[v2.0.0](CHANGELOG.md#v2-0-0)** — Запуск браузерного редактора кода и интерактивной терминальной консоли.
 
 ---
 
 ## 📥 Пошаговая установка и запуск
 
-Следуйте этой инструкции для локального запуска проекта на вашем компьютере.
-
-### 1️⃣ Клонирование репозитория
-
-Откройте терминал (или командную строку) и выполните команду клонирования:
+Для локального запуска выполните следующие команды:
 
 ```bash
+# 1. Клонирование репозитория
 git clone https://github.com/EvgeniiBogdanov/code-practice-platform.git
-```
-
-Перейдите в папку проекта:
-
-```bash
 cd code-practice-platform
-```
 
-### 2️⃣ Установка зависимостей
-
-Установите все необходимые npm-пакеты:
-
-```bash
+# 2. Установка зависимостей
 npm install
-```
 
-### 3️⃣ Запуск в режиме разработки
-
-Запустите локальный сервер разработки Vite:
-
-```bash
+# 3. Запуск сервера разработки
 npm run dev
 ```
 
-После этого в терминале появится ссылка вида `http://localhost:4000/`. Откройте её в вашем браузере. 🎉
-
-<div align="right">[ <a href="#-frontend-interview-playground--practice">⬆ Наверх</a> ]</div>
+Приложение будет доступно по адресу `http://localhost:4000/`.
 
 ---
 
 ## ⌨️ Горячие клавиши (Hotkeys)
 
-| Сочетание клавиш                                                     | Действие                                                    |
-| :------------------------------------------------------------------- | :---------------------------------------------------------- |
-| <kbd>⌘</kbd> + <kbd>K</kbd> / <kbd>Ctrl</kbd> + <kbd>K</kbd>         | Открыть палитру быстрого поиска задач по всем разделам      |
-| <kbd>Ctrl</kbd> + <kbd>Enter</kbd> / <kbd>⌘</kbd> + <kbd>Enter</kbd> | Запустить выполнение кода в веб-консоли                     |
-| <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>F</kbd>                     | Автоматическое форматирование кода (Prettier)               |
-| <kbd>Esc</kbd>                                                       | Закрыть модальное окно / палитру поиска / свернуть редактор |
-| <kbd>↓</kbd> / <kbd>↑</kbd>                                          | Переключение между задачами в списке                        |
-
-<div align="right">[ <a href="#-frontend-interview-playground--practice">⬆ Наверх</a> ]</div>
+| Сочетание клавиш                                                     | Действие                                                      |
+| :------------------------------------------------------------------- | :------------------------------------------------------------ |
+| <kbd>⌘</kbd> + <kbd>K</kbd> / <kbd>Ctrl</kbd> + <kbd>K</kbd>         | Палитра быстрого поиска задач по всем разделам                |
+| <kbd>⌘</kbd> + <kbd>P</kbd> / <kbd>Ctrl</kbd> + <kbd>P</kbd>         | Быстрое переключение файлов многофайловой задачи (Quick Open) |
+| <kbd>⌘</kbd> + <kbd>G</kbd> / <kbd>Ctrl</kbd> + <kbd>G</kbd>         | Переход к заданной строке и колонке кода                      |
+| <kbd>Ctrl</kbd> + <kbd>Enter</kbd> / <kbd>⌘</kbd> + <kbd>Enter</kbd> | Запуск выполнения кода в консоли / песочнице                  |
+| <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>F</kbd>                     | Форматирование кода через Prettier                            |
+| <kbd>Alt</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd>                         | Перемещение текущей строки вверх / вниз                       |
+| <kbd>Esc</kbd>                                                       | Закрыть модальное окно / меню поиска / подсказки              |
 
 ---
 
@@ -215,61 +141,45 @@ npm run dev
 
 ```text
 src/
-├── algorithms/        # Реестр, код, решения и разборы задач по Алгоритмам
-├── components/        # UI-компоненты (Header, Sidebar, дашборд, модалки, xterm-консоль, редактор)
-├── context/           # React Context (обратная совместимость)
-├── data/              # Реестр задач (tasksRegistry) и данные шпаргалок
-├── hooks/             # Кастомные React-хуки (таймер, горячие клавиши)
-├── javascript/        # Реестр, код, решения и разборы задач по JavaScript
-├── react/             # Реестр, код и компоненты задач по React
-├── routes/            # Файловая маршрутизация TanStack Router
-├── services/          # Хранилище IndexedDB, кэш, бэкап и BroadcastChannel
-├── stores/            # Хранилища состояния Zustand (UI, Progress, Timer)
-├── utils/             # Web Worker runner, линтеры синтаксиса, автокомплит
-├── playground.css     # Дизайн-система и CSS-токены
-└── main.jsx           # Точка входа приложения
+├── algorithms/        # Задачи, код, тесты и разборы по алгоритмам
+├── components/        # UI-компоненты (Header, Sidebar, дашборд, Tooltip, консоль, редактор)
+├── data/              # Реестр задач (tasksRegistry) и интерактивные шпаргалки
+├── hooks/             # Кастомные хуки (таймер, горячие клавиши)
+├── javascript/        # Задачи, код, подсказки (jsHints) и разборы по JavaScript
+├── react/             # Live-компоненты, редюсеры и задачи по React
+├── routes/            # Файловая маршрутизация на базе TanStack Router
+├── services/          # Сервисы хранения IndexedDB, LocalStorage кэш, BroadcastChannel
+├── stores/            # Хранилища состояния Zustand (UI, Progress, Review, Timer)
+├── utils/             # Алгоритм SM-2, Web Worker runner, линтеры и сниппеты
+└── playground.css     # Дизайн-система, CSS-токены и адаптивные стили
 ```
-
-<div align="right">[ <a href="#-frontend-interview-playground--practice">⬆ Наверх</a> ]</div>
 
 ---
 
-## 🤝 Как внести вклад
+## 🤝 Вклад в проект (Contributing)
 
-Вклады всегда приветствуются! Если вы хотите улучшить проект:
+Мы приветствуем любые идеи, улучшения и исправления!
 
-1. 🍴 Сделайте форк репозитория
-2. 🌿 Создайте новую ветку: `git checkout -b feature/your-feature`
-3. 💾 Закоммитьте изменения: `git commit -m 'Add some feature'`
-4. 📤 Отправьте ветку: `git push origin feature/your-feature`
-5. 🔄 Откройте Pull Request
-
-Пожалуйста, убедитесь, что ваши изменения не ломают существующий функционал и следуют стилю кода проекта.
-
-<div align="right">[ <a href="#-frontend-interview-playground--practice">⬆ Наверх</a> ]</div>
+1. Сделайте **Fork** репозитория.
+2. Создайте тематическую ветку: `git checkout -b feature/amazing-feature`.
+3. Зафиксируйте изменения: `git commit -m "feat: add some amazing feature"`.
+4. Отправьте ветку в ваш форк: `git push origin feature/amazing-feature`.
+5. Откройте **Pull Request**.
 
 ---
 
 ## 📄 Лицензия
 
-Этот проект распространяется под лицензией [Source-Available Non-Commercial License](LICENSE.md). Вы можете свободно использовать его для личной подготовки и обучения. Коммерческое использование без согласия правообладателя запрещено.
-
-<div align="right">[ <a href="#-frontend-interview-playground--practice">⬆ Наверх</a> ]</div>
+Проект распространяется под лицензией [Source-Available Non-Commercial License](LICENSE.md). Свободно для личного обучения и подготовки к интервью.
 
 ---
 
 ## 👤 Автор
 
-**Евгений Богданов**
+**Евгений Богданов** — [GitHub профиль](https://github.com/EvgeniiBogdanov)
 
-[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/EvgeniiBogdanov)
-
-<div align="right">[ <a href="#-frontend-interview-playground--practice">⬆ Наверх</a> ]</div>
-
----
-
-## ⭐ Поддержать проект
-
-Если проект оказался вам полезным — поставьте ⭐ звёздочку репозиторию! Это лучшая поддержка для open-source проектов.
-
-[![GitHub stars chart](https://bytecrank.com/nastyox/reporoster/php/repostars.php?user=EvgeniiBogdanov&repo=code-practice-platform)](https://github.com/EvgeniiBogdanov/code-practice-platform/stargazers)
+<div align="center">
+  <br />
+  Если платформа помогла вам в подготовке — поддержите проект ⭐ <b>звёздочкой на GitHub</b>!
+  <br /><br />
+</div>

@@ -12,6 +12,7 @@ import {
 import CodeEditor from "../common/CodeEditor";
 import JsConsole from "../common/JsConsole";
 import ReactLivePreview from "../common/ReactLivePreview";
+import { Tooltip } from "../common/Tooltip";
 import { runNodeJsCode, clearRunningTimers } from "../../utils/nodeRunner";
 import { getTaskFiles } from "../../utils/taskFiles";
 import { getTaskById, resolveTaskSection } from "../../data/tasksRegistry";
@@ -170,22 +171,26 @@ export const OpenEditorView = ({ task, section, tab = "candidate" }) => {
       <div className="open-editor-top-bar">
         {hasVisualComponent ? (
           <div className="view-mode-toggle-bar" style={{ margin: 0 }}>
-            <button
-              className={`view-mode-btn ${viewMode === "code" ? "active" : ""}`}
-              onClick={() => setViewMode("code")}
-              title="Просмотр исходного кода задачи"
-            >
-              <Code2 size={12} />
-              <span>Код</span>
-            </button>
-            <button
-              className={`view-mode-btn ${viewMode === "preview" ? "active" : ""}`}
-              onClick={() => setViewMode("preview")}
-              title="Просмотр UI песочницы"
-            >
-              <Eye size={12} />
-              <span>Интерфейс</span>
-            </button>
+            <Tooltip content="Просмотр исходного кода задачи" side="bottom">
+              <button
+                className={`view-mode-btn ${viewMode === "code" ? "active" : ""}`}
+                onClick={() => setViewMode("code")}
+                aria-label="Просмотр исходного кода"
+              >
+                <Code2 size={12} />
+                <span>Код</span>
+              </button>
+            </Tooltip>
+            <Tooltip content="Просмотр UI песочницы" side="bottom">
+              <button
+                className={`view-mode-btn ${viewMode === "preview" ? "active" : ""}`}
+                onClick={() => setViewMode("preview")}
+                aria-label="Просмотр UI песочницы"
+              >
+                <Eye size={12} />
+                <span>Интерфейс</span>
+              </button>
+            </Tooltip>
           </div>
         ) : (
           <div className="open-editor-title-badge">
@@ -195,22 +200,26 @@ export const OpenEditorView = ({ task, section, tab = "candidate" }) => {
         )}
 
         <div className="open-editor-top-actions">
-          <button
-            className="open-share-btn"
-            onClick={handleCopyLink}
-            title="Скопировать ссылку для шеринга задачи (/open)"
-          >
-            {linkCopied ? <Check size={13} style={{ color: "#10b981" }} /> : <Share2 size={13} />}
-            <span>{linkCopied ? "Ссылка скопирована" : "Поделиться"}</span>
-          </button>
-          <button
-            className="open-exit-btn"
-            onClick={handleExit}
-            title="Выйти из полноэкранного режима (Esc)"
-          >
-            <Minimize2 size={14} />
-            <span>Свернуть</span>
-          </button>
+          <Tooltip content={linkCopied ? "Ссылка скопирована!" : "Скопировать ссылку для шеринга задачи (/open)"} side="bottom">
+            <button
+              className="open-share-btn"
+              onClick={handleCopyLink}
+              aria-label="Поделиться"
+            >
+              {linkCopied ? <Check size={13} style={{ color: "#10b981" }} /> : <Share2 size={13} />}
+              <span>{linkCopied ? "Ссылка скопирована" : "Поделиться"}</span>
+            </button>
+          </Tooltip>
+          <Tooltip content="Выйти из полноэкранного режима (Esc)" side="bottom">
+            <button
+              className="open-exit-btn"
+              onClick={handleExit}
+              aria-label="Свернуть"
+            >
+              <Minimize2 size={14} />
+              <span>Свернуть</span>
+            </button>
+          </Tooltip>
         </div>
       </div>
 
@@ -250,13 +259,15 @@ export const OpenEditorView = ({ task, section, tab = "candidate" }) => {
             isFullscreen={true}
             onToggleFullscreen={handleExit}
             extraHeaderActions={
-              <button
-                className="vscode-icon-btn"
-                onClick={handleCopyLink}
-                data-tooltip={linkCopied ? "Ссылка скопирована в буфер обмена" : "Скопировать ссылку задачи (open)"}
-              >
-                {linkCopied ? <Check size={14} style={{ color: "#10b981" }} /> : <Share2 size={14} />}
-              </button>
+              <Tooltip content={linkCopied ? "Ссылка скопирована!" : "Скопировать ссылку задачи"} side="bottom">
+                <button
+                  className="vscode-icon-btn"
+                  onClick={handleCopyLink}
+                  aria-label="Скопировать ссылку"
+                >
+                  {linkCopied ? <Check size={14} style={{ color: "#10b981" }} /> : <Share2 size={14} />}
+                </button>
+              </Tooltip>
             }
             bottomConsole={
               isJsTask ? (

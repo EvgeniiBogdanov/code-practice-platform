@@ -31,6 +31,9 @@ import { getGroupMeta } from "../../javascript/data/groupConfig";
 import { ALGO_TASKS } from "../../algorithms/data/tasksData";
 import { getAlgoGroupMeta } from "../../algorithms/data/groupConfig";
 import { FILE_ICON_COLOR } from "../../constants/uiConstants";
+import { useReviewStore } from "../../stores/useReviewStore";
+import { isTaskDue } from "../../utils/spacedRepetition";
+import { Tooltip } from "../common/Tooltip";
 
 // ============================================================================
 // Style Optimized Atomic Sub-Components with React.memo
@@ -45,43 +48,51 @@ const SidebarTaskItem = React.memo(function SidebarTaskItem({
   title,
   isActive,
   status, // "solved" | "unsolved" | null
+  isDue, // boolean - due for spaced repetition today
   onNavClick,
-  showTooltip,
-  hideTooltip,
 }) {
-  const handleMouseEnter = useCallback(
-    (e) => {
-      showTooltip(e, title);
-    },
-    [showTooltip, title]
-  );
+  const tooltipContent = isDue ? `🔥 ${title} (Пора повторить!)` : title;
 
   return (
-    <Link
-      id={`sidebar-task-${id}`}
-      to={to}
-      params={params}
-      search={search}
-      className={`task-btn tree-task-btn ${isActive ? "active" : ""}`}
-      onClick={onNavClick}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={hideTooltip}
+    <Tooltip
+      content={tooltipContent}
+      side="right"
+      sideOffset={10}
+      delayDuration={450}
     >
-      <span className="task-btn-title">
-        <FileText size={14} className="node-file-icon" style={{ color: FILE_ICON_COLOR }} />
-        <span className="task-btn-text">{title}</span>
-      </span>
-      {status === "unsolved" && (
-        <span className="dropdown-item-unsolved">
-          <X size={12} />
+      <Link
+        id={`sidebar-task-${id}`}
+        to={to}
+        params={params}
+        search={search}
+        className={`task-btn tree-task-btn ${isActive ? "active" : ""} ${isDue ? "task-is-due" : ""}`}
+        onClick={onNavClick}
+      >
+        <span className="task-btn-title">
+          {isDue ? (
+            <Flame size={14} className="node-file-icon flame-pulse-icon" style={{ color: "#ef4444" }} />
+          ) : (
+            <FileText size={14} className="node-file-icon" style={{ color: FILE_ICON_COLOR }} />
+          )}
+          <span className="task-btn-text">{title}</span>
         </span>
-      )}
-      {status === "solved" && (
-        <span className="dropdown-item-check">
-          <Check size={12} />
-        </span>
-      )}
-    </Link>
+        {isDue && (
+          <span className="dropdown-item-due-badge" aria-label="Пора повторить сегодня!">
+            <Flame size={11} style={{ color: "#ef4444" }} />
+          </span>
+        )}
+        {!isDue && status === "unsolved" && (
+          <span className="dropdown-item-unsolved">
+            <X size={12} />
+          </span>
+        )}
+        {!isDue && status === "solved" && (
+          <span className="dropdown-item-check">
+            <Check size={12} />
+          </span>
+        )}
+      </Link>
+    </Tooltip>
   );
 });
 
@@ -361,13 +372,34 @@ export const Sidebar = ({
   );
 
   const getTaskStatus = useCallback(
-    (id) => {
-      const val = completedTasks[id] ?? completedTasks[String(id)];
-      if (val === true || val === "solved") return "solved";
-      if (val === "unsolved") return "unsolved";
-      return null;
+    (taskId) => {
+      if (!completedTasks) return null;
+      return completedTasks[taskId] ?? completedTasks[String(taskId)] ?? null;
     },
     [completedTasks]
+  );
+
+  const reviews = useReviewStore((state) => state.reviews);
+  const isReviewStoreReady = useReviewStore((state) => state.isInitialized);
+  const dueCount = useMemo(() => {
+    if (!isReviewStoreReady || !reviews) return 0;
+    let count = 0;
+    for (const rev of Object.values(reviews)) {
+      if (rev && isTaskDue(rev)) count++;
+    }
+    return count;
+  }, [reviews, isReviewStoreReady]);
+
+  const getTaskReviewInfo = useCallback(
+    (taskId) => {
+      const rev = reviews[String(taskId)];
+      if (!rev) return { isDue: false, isMaster: false };
+      return {
+        isDue: isTaskDue(rev),
+        isMaster: (rev.stage || 0) >= 5,
+      };
+    },
+    [reviews]
   );
 
   // Memoized JS data structures & metrics
@@ -526,57 +558,56 @@ export const Sidebar = ({
     >
       <div className="sidebar-header">
         <div className="sidebar-workspace-info-wrapper" ref={sectionDropdownRef}>
-          <button
-            className="sidebar-workspace-info-btn"
-            onClick={() => {
-              if (setHeaderSectionDropdownOpen) setHeaderSectionDropdownOpen(false);
-              setSectionDropdownOpen((prev) => !prev);
-            }}
-            title="Переключить раздел платформы"
-          >
-            {activeSection === "home" && (
-              <>
-                <Home size={15} style={{ color: "#60a5fa" }} /> <span>Главная</span>
-              </>
-            )}
-            {activeSection === "react" && (
-              <>
-                <Code2 size={15} style={{ color: "#61dafb" }} /> <span>React</span>
-              </>
-            )}
-            {activeSection === "javascript" && (
-              <>
-                <Zap size={15} style={{ color: "#f59e0b" }} /> <span>JavaScript</span>
-              </>
-            )}
-            {activeSection === "algorithms" && (
-              <>
-                <Brain size={15} style={{ color: "#a855f7" }} /> <span>Алгоритмы</span>
-              </>
-            )}
-            <ChevronDown size={13} className="sidebar-section-chevron" />
-          </button>
+          <Tooltip content="Выбрать раздел платформы" side="right" sideOffset={8} delayDuration={400}>
+            <button
+              className="sidebar-workspace-info-btn"
+              onClick={() => {
+                if (setHeaderSectionDropdownOpen) setHeaderSectionDropdownOpen(false);
+                setSectionDropdownOpen((prev) => !prev);
+              }}
+              aria-label="Переключить раздел платформы"
+            >
+              {activeSection === "home" && (
+                <>
+                  <Home size={15} style={{ color: "#60a5fa" }} /> <span>Главная</span>
+                </>
+              )}
+              {activeSection === "react" && (
+                <>
+                  <Code2 size={15} style={{ color: "#61dafb" }} /> <span>React</span>
+                </>
+              )}
+              {activeSection === "javascript" && (
+                <>
+                  <Zap size={15} style={{ color: "#f59e0b" }} /> <span>JavaScript</span>
+                </>
+              )}
+              {activeSection === "algorithms" && (
+                <>
+                  <Brain size={15} style={{ color: "#a855f7" }} /> <span>Алгоритмы</span>
+                </>
+              )}
+              <ChevronDown size={13} className="sidebar-section-chevron" />
+            </button>
+          </Tooltip>
 
           {sectionDropdownOpen && renderSectionDropdown()}
         </div>
-        <button
-          className="sidebar-toggle-btn"
-          onClick={() => setSidebarOpen(false)}
-          title="Свернуть боковую панель"
-        >
-          <PanelLeftClose size={15} />
-        </button>
+        <Tooltip content="Свернуть боковую панель" side="right" sideOffset={8} delayDuration={400}>
+          <button
+            className="sidebar-toggle-btn"
+            onClick={() => setSidebarOpen(false)}
+            aria-label="Свернуть боковую панель"
+          >
+            <PanelLeftClose size={15} />
+          </button>
+        </Tooltip>
       </div>
 
       <div className="sidebar-scroll-content">
         {activeSection === "react" ? (
           <>
-            <div
-              className="sidebar-progress-card"
-              onClick={() => setStatsModalOpen && setStatsModalOpen(true)}
-              style={{ cursor: "pointer" }}
-              title="Открыть расширенную статистику задач"
-            >
+            <div className="sidebar-progress-card">
               <div
                 style={{
                   display: "flex",
@@ -659,6 +690,7 @@ export const Sidebar = ({
                       title={task.title}
                       isActive={selectedTaskIdStr === String(task.id)}
                       status={getTaskStatus(task.id)}
+                      isDue={getTaskReviewInfo(task.id).isDue}
                       onNavClick={handleMobileNavClick}
                       showTooltip={showTooltip}
                       hideTooltip={hideTooltip}
@@ -696,6 +728,7 @@ export const Sidebar = ({
                       title={task.title}
                       isActive={selectedTaskIdStr === String(task.id)}
                       status={getTaskStatus(task.id)}
+                      isDue={getTaskReviewInfo(task.id).isDue}
                       onNavClick={handleMobileNavClick}
                       showTooltip={showTooltip}
                       hideTooltip={hideTooltip}
@@ -733,6 +766,7 @@ export const Sidebar = ({
                       title={task.title}
                       isActive={selectedTaskIdStr === String(task.id)}
                       status={getTaskStatus(task.id)}
+                      isDue={getTaskReviewInfo(task.id).isDue}
                       onNavClick={handleMobileNavClick}
                       showTooltip={showTooltip}
                       hideTooltip={hideTooltip}
@@ -770,6 +804,7 @@ export const Sidebar = ({
                       title={task.title}
                       isActive={selectedTaskIdStr === String(task.id)}
                       status={getTaskStatus(task.id)}
+                      isDue={getTaskReviewInfo(task.id).isDue}
                       onNavClick={handleMobileNavClick}
                       showTooltip={showTooltip}
                       hideTooltip={hideTooltip}
@@ -807,6 +842,7 @@ export const Sidebar = ({
                       title={task.title}
                       isActive={selectedTaskIdStr === String(task.id)}
                       status={getTaskStatus(task.id)}
+                      isDue={getTaskReviewInfo(task.id).isDue}
                       onNavClick={handleMobileNavClick}
                       showTooltip={showTooltip}
                       hideTooltip={hideTooltip}
@@ -844,6 +880,7 @@ export const Sidebar = ({
                       title={task.title}
                       isActive={selectedTaskIdStr === String(task.id)}
                       status={getTaskStatus(task.id)}
+                      isDue={getTaskReviewInfo(task.id).isDue}
                       onNavClick={handleMobileNavClick}
                       showTooltip={showTooltip}
                       hideTooltip={hideTooltip}
@@ -855,12 +892,7 @@ export const Sidebar = ({
           </>
         ) : activeSection === "javascript" ? (
           <>
-            <div
-              className="sidebar-progress-card"
-              onClick={() => setStatsModalOpen && setStatsModalOpen(true)}
-              style={{ cursor: "pointer" }}
-              title="Открыть расширенную статистику задач JavaScript"
-            >
+            <div className="sidebar-progress-card">
               <div
                 style={{
                   display: "flex",
@@ -1009,6 +1041,7 @@ export const Sidebar = ({
                                     title={task.title}
                                     isActive={selectedTaskIdStr === String(task.id)}
                                     status={getTaskStatus(task.id)}
+                                    isDue={getTaskReviewInfo(task.id).isDue}
                                     onNavClick={handleMobileNavClick}
                                     showTooltip={showTooltip}
                                     hideTooltip={hideTooltip}
@@ -1027,12 +1060,7 @@ export const Sidebar = ({
           </>
         ) : activeSection === "algorithms" ? (
           <>
-            <div
-              className="sidebar-progress-card"
-              onClick={() => setStatsModalOpen && setStatsModalOpen(true)}
-              style={{ cursor: "pointer" }}
-              title="Открыть расширенную статистику задач Алгоритмы"
-            >
+            <div className="sidebar-progress-card">
               <div
                 style={{
                   display: "flex",
@@ -1136,6 +1164,7 @@ export const Sidebar = ({
                           title={task.title}
                           isActive={selectedTaskIdStr === String(task.id)}
                           status={getTaskStatus(task.id)}
+                          isDue={getTaskReviewInfo(task.id).isDue}
                           onNavClick={handleMobileNavClick}
                           showTooltip={showTooltip}
                           hideTooltip={hideTooltip}

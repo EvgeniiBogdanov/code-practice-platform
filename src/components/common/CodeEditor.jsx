@@ -42,6 +42,7 @@ import {
   getWordAtPosition,
   fuzzyMatch,
 } from "../../utils/snippetsEngine";
+import { Tooltip } from "./Tooltip";
 import {
   checkAutoCloseTag,
   findLastUnclosedTag,
@@ -1903,186 +1904,225 @@ export const CodeEditor = ({
     (diagnostics.allMissingImports && diagnostics.allMissingImports[0]);
 
   return (
-    <div
-      className={`vscode-ide-editor ${isFullscreen ? "ide-fullscreen" : ""} ${
-        isFocused ? "ide-focused" : ""
-      }`}
-      style={{ "--editor-font-size": `${fontSize}px` }}
-    >
-      {/* Шапка редактора: Слева вкладки файлов (с горизонтальным скроллом), Справа кнопки управления */}
-      <div className="vscode-editor-header">
-        {files && files.length > 0 ? (
-          <div className="vscode-editor-tabs-container">
-            {files.map((file, idx) => {
-              const isActive = activeFileIdx === idx;
-              const ext = file.name.split(".").pop().toLowerCase();
-              const isReact = ext === "jsx" || ext === "tsx";
-              const isTs = ext === "ts";
+    <Tooltip.Provider delayDuration={500} skipDelayDuration={250}>
+      <div
+        className={`vscode-ide-editor ${isFullscreen ? "ide-fullscreen" : ""} ${
+          isFocused ? "ide-focused" : ""
+        }`}
+        style={{ "--editor-font-size": `${fontSize}px` }}
+      >
+        {/* Шапка редактора: Слева вкладки файлов (с горизонтальным скроллом), Справа кнопки управления */}
+        <div className="vscode-editor-header">
+          {files && files.length > 0 ? (
+            <div className="vscode-editor-tabs-container">
+              {files.map((file, idx) => {
+                const isActive = activeFileIdx === idx;
+                const ext = file.name.split(".").pop().toLowerCase();
+                const isReact = ext === "jsx" || ext === "tsx";
+                const isTs = ext === "ts";
 
-              return (
-                <button
-                  key={idx}
-                  className={`vscode-file-tab ${isActive ? "active" : ""}`}
-                  onClick={() => onFileSelect && onFileSelect(idx)}
-                >
-                  <FileCode
-                    size={13}
-                    style={{
-                      color: isReact ? "#61dafb" : isTs ? "#3178c6" : "#f59e0b",
-                      flexShrink: 0,
-                    }}
-                  />
-                  <span className="file-tab-name">{file.name}</span>
-                </button>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="vscode-editor-single-file">
-            <FileCode
-              size={13}
-              style={{
-                color:
-                  cleanFilename.endsWith("jsx") || cleanFilename.endsWith("tsx")
-                    ? "#61dafb"
-                    : cleanFilename.endsWith("ts")
-                      ? "#3178c6"
-                      : "#f59e0b",
-                flexShrink: 0,
-              }}
-            />
-            <span className="file-tab-name">{cleanFilename}</span>
-          </div>
-        )}
-
-        <div className="vscode-editor-actions">
-          {!readOnly && (
-            <>
-              <button
-                className="vscode-icon-btn"
-                onClick={handleUndo}
-                disabled={historyIndexRef.current <= 0}
-                data-tooltip="Отменить изменение (Ctrl+Z)"
-              >
-                <Undo2 size={14} />
-              </button>
-              <button
-                className="vscode-icon-btn"
-                onClick={handleRedo}
-                disabled={
-                  historyIndexRef.current >= historyRef.current.length - 1
-                }
-                data-tooltip="Повторить изменение (Ctrl+Y)"
-              >
-                <Redo2 size={14} />
-              </button>
-              <button
-                className="vscode-icon-btn"
-                onClick={handleFormat}
-                data-tooltip="Отформатировать код (Prettier, Shift+Alt+F)"
-              >
-                <Wand2 size={14} />
-              </button>
-            </>
+                return (
+                  <button
+                    key={idx}
+                    className={`vscode-file-tab ${isActive ? "active" : ""}`}
+                    onClick={() => onFileSelect && onFileSelect(idx)}
+                  >
+                    <FileCode
+                      size={13}
+                      style={{
+                        color: isReact ? "#61dafb" : isTs ? "#3178c6" : "#f59e0b",
+                        flexShrink: 0,
+                      }}
+                    />
+                    <span className="file-tab-name">{file.name}</span>
+                  </button>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="vscode-editor-single-file">
+              <FileCode
+                size={13}
+                style={{
+                  color:
+                    cleanFilename.endsWith("jsx") || cleanFilename.endsWith("tsx")
+                      ? "#61dafb"
+                      : cleanFilename.endsWith("ts")
+                        ? "#3178c6"
+                        : "#f59e0b",
+                  flexShrink: 0,
+                }}
+              />
+              <span className="file-tab-name">{cleanFilename}</span>
+            </div>
           )}
 
-          <button
-            className={`vscode-icon-btn ${wordWrap ? "active" : ""}`}
-            onClick={() => setWordWrap((prev) => !prev)}
-            data-tooltip={
-              wordWrap
-                ? "Выключить перенос длинных строк"
-                : "Включить перенос длинных строк"
-            }
-          >
-            <WrapText size={14} />
-          </button>
-
-          <button
-            className={`vscode-icon-btn ${findState.isOpen ? "active" : ""}`}
-            onClick={() => {
-              if (findState.isOpen) handleCloseFind();
-              else handleOpenFind(false);
-            }}
-            data-tooltip="Поиск и замена в файле (Ctrl+F, Ctrl+H)"
-          >
-            <Search size={14} />
-          </button>
-
-          <button
-            className={`vscode-icon-btn ${quickOpenState.isOpen ? "active" : ""}`}
-            onClick={() => {
-              if (quickOpenState.isOpen) handleCloseQuickOpen();
-              else handleOpenQuickOpen("files");
-            }}
-            data-tooltip="Быстрый переход к файлам и строкам (Ctrl+P, Ctrl+G)"
-          >
-            <FileCode size={14} />
-          </button>
-
-          {isCodeModified && (
-            <button
-              className="vscode-icon-btn"
-              onClick={handleReset}
-              data-tooltip="Сбросить код к исходному шаблону"
-            >
-              <RotateCcw size={14} />
-            </button>
-          )}
-
-          {/* Кнопка копирования: только иконка */}
-          <button
-            className="vscode-icon-btn"
-            onClick={handleCopy}
-            data-tooltip={
-              copied ? "Скопировано в буфер обмена" : "Скопировать код решения"
-            }
-          >
-            {copied ? (
-              <Check size={14} style={{ color: "var(--color-success)" }} />
-            ) : (
-              <Copy size={14} />
+          <div className="vscode-editor-actions">
+            {!readOnly && (
+              <>
+                <Tooltip content="Отменить (Ctrl+Z)" side="bottom">
+                  <button
+                    className="vscode-icon-btn"
+                    onClick={handleUndo}
+                    disabled={historyIndexRef.current <= 0}
+                    aria-label="Отменить (Ctrl+Z)"
+                  >
+                    <Undo2 size={14} />
+                  </button>
+                </Tooltip>
+                <Tooltip content="Повторить (Ctrl+Y)" side="bottom">
+                  <button
+                    className="vscode-icon-btn"
+                    onClick={handleRedo}
+                    disabled={
+                      historyIndexRef.current >= historyRef.current.length - 1
+                    }
+                    aria-label="Повторить (Ctrl+Y)"
+                  >
+                    <Redo2 size={14} />
+                  </button>
+                </Tooltip>
+                <Tooltip content="Форматировать код (Shift+Alt+F)" side="bottom">
+                  <button
+                    className="vscode-icon-btn"
+                    onClick={handleFormat}
+                    aria-label="Форматировать код (Prettier)"
+                  >
+                    <Wand2 size={14} />
+                  </button>
+                </Tooltip>
+              </>
             )}
-          </button>
 
-          <button
-            className="vscode-icon-btn"
-            onClick={handleDecreaseFontSize}
-            disabled={fontSize <= MIN_FONT_SIZE}
-            data-tooltip={
-              fontSize <= MIN_FONT_SIZE
-                ? `Минимальный размер шрифта (${MIN_FONT_SIZE}px)`
-                : `Уменьшить шрифт кода (${fontSize}px, Ctrl -)`
-            }
-          >
-            <ZoomOut size={14} />
-          </button>
-          <button
-            className="vscode-icon-btn"
-            onClick={handleIncreaseFontSize}
-            disabled={fontSize >= MAX_FONT_SIZE}
-            data-tooltip={
-              fontSize >= MAX_FONT_SIZE
-                ? `Максимальный размер шрифта (${MAX_FONT_SIZE}px)`
-                : `Увеличить шрифт кода (${fontSize}px, Ctrl +)`
-            }
-          >
-            <ZoomIn size={14} />
-          </button>
+            <Tooltip
+              content={
+                wordWrap
+                  ? "Выключить перенос строк"
+                  : "Включить перенос строк (Alt+Z)"
+              }
+              side="bottom"
+            >
+              <button
+                className={`vscode-icon-btn ${wordWrap ? "active" : ""}`}
+                onClick={() => setWordWrap((prev) => !prev)}
+                aria-label="Перенос строк"
+              >
+                <WrapText size={14} />
+              </button>
+            </Tooltip>
 
-          {extraHeaderActions}
+            <Tooltip content="Поиск и замена (Ctrl+F)" side="bottom">
+              <button
+                className={`vscode-icon-btn ${findState.isOpen ? "active" : ""}`}
+                onClick={() => {
+                  if (findState.isOpen) handleCloseFind();
+                  else handleOpenFind(false);
+                }}
+                aria-label="Поиск и замена в файле (Ctrl+F)"
+              >
+                <Search size={14} />
+              </button>
+            </Tooltip>
 
-          <button
-            className="vscode-icon-btn"
-            onClick={handleToggleFullscreen}
-            data-tooltip={
-              isFullscreen
-                ? "Свернуть редактор (Esc)"
-                : "Развернуть редактор (open)"
-            }
-          >
-            {isFullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
-          </button>
+            <Tooltip content="Быстрый переход (Ctrl+P)" side="bottom">
+              <button
+                className={`vscode-icon-btn ${quickOpenState.isOpen ? "active" : ""}`}
+                onClick={() => {
+                  if (quickOpenState.isOpen) handleCloseQuickOpen();
+                  else handleOpenQuickOpen("files");
+                }}
+                aria-label="Быстрый переход к файлам и строкам (Ctrl+P)"
+              >
+                <FileCode size={14} />
+              </button>
+            </Tooltip>
+
+            {isCodeModified && (
+              <Tooltip content="Сбросить код к исходному шаблону" side="bottom">
+                <button
+                  className="vscode-icon-btn"
+                  onClick={handleReset}
+                  aria-label="Сбросить код"
+                >
+                  <RotateCcw size={14} />
+                </button>
+              </Tooltip>
+            )}
+
+            {/* Кнопка копирования: только иконка */}
+            <Tooltip
+              content={
+                copied ? "Скопировано в буфер!" : "Скопировать код решения"
+              }
+              side="bottom"
+            >
+              <button
+                className="vscode-icon-btn"
+                onClick={handleCopy}
+                aria-label="Скопировать код"
+              >
+                {copied ? (
+                  <Check size={14} style={{ color: "var(--color-success)" }} />
+                ) : (
+                  <Copy size={14} />
+                )}
+              </button>
+            </Tooltip>
+
+            <Tooltip
+              content={
+                fontSize <= MIN_FONT_SIZE
+                  ? `Минимальный размер (${MIN_FONT_SIZE}px)`
+                  : `Уменьшить шрифт (${fontSize}px, Ctrl -)`
+              }
+              side="bottom"
+            >
+              <button
+                className="vscode-icon-btn"
+                onClick={handleDecreaseFontSize}
+                disabled={fontSize <= MIN_FONT_SIZE}
+                aria-label="Уменьшить шрифт"
+              >
+                <ZoomOut size={14} />
+              </button>
+            </Tooltip>
+
+            <Tooltip
+              content={
+                fontSize >= MAX_FONT_SIZE
+                  ? `Максимальный размер (${MAX_FONT_SIZE}px)`
+                  : `Увеличить шрифт (${fontSize}px, Ctrl +)`
+              }
+              side="bottom"
+            >
+              <button
+                className="vscode-icon-btn"
+                onClick={handleIncreaseFontSize}
+                disabled={fontSize >= MAX_FONT_SIZE}
+                aria-label="Увеличить шрифт"
+              >
+                <ZoomIn size={14} />
+              </button>
+            </Tooltip>
+
+            {extraHeaderActions}
+
+            <Tooltip
+              content={
+                isFullscreen
+                  ? "Свернуть редактор (Esc)"
+                  : "Развернуть редактор (/open)"
+              }
+              side="bottom"
+            >
+              <button
+                className="vscode-icon-btn"
+                onClick={handleToggleFullscreen}
+                aria-label={isFullscreen ? "Свернуть редактор" : "Развернуть редактор"}
+              >
+                {isFullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
+              </button>
+            </Tooltip>
         </div>
       </div>
 
@@ -2099,14 +2139,16 @@ export const CodeEditor = ({
               вместо <strong>{activeTypo.correct}</strong>
             </span>
           </div>
-          <button
-            className="vscode-quickfix-btn typo-fix-btn"
-            onClick={() => handleFixTypo(activeTypo)}
-            title={`Заменить '${activeTypo.typo}' на '${activeTypo.correct}'`}
-          >
-            <Wand2 size={12} />
-            <span>Исправить на {activeTypo.correct}</span>
-          </button>
+          <Tooltip content={`Заменить '${activeTypo.typo}' на '${activeTypo.correct}'`} side="bottom">
+            <button
+              className="vscode-quickfix-btn typo-fix-btn"
+              onClick={() => handleFixTypo(activeTypo)}
+              aria-label={`Заменить '${activeTypo.typo}' на '${activeTypo.correct}'`}
+            >
+              <Wand2 size={12} />
+              <span>Исправить на {activeTypo.correct}</span>
+            </button>
+          </Tooltip>
         </div>
       ) : activeMissingImport ? (
         <div className="vscode-quickfix-banner typo-quickfix-banner">
@@ -2120,18 +2162,23 @@ export const CodeEditor = ({
               <strong className="import-mod-name">'{activeMissingImport.module}'</strong>
             </span>
           </div>
-          <button
-            className="vscode-quickfix-btn typo-fix-btn"
-            onClick={() => handleFixMissingImport(activeMissingImport)}
-            title={`Добавить import ${
+          <Tooltip
+            content={`Добавить import ${
               activeMissingImport.isDefault
                 ? activeMissingImport.symbol
                 : `{ ${activeMissingImport.symbol} }`
             } from '${activeMissingImport.module}'`}
+            side="bottom"
           >
-            <Wand2 size={12} />
-            <span>Добавить импорт ({activeMissingImport.module})</span>
-          </button>
+            <button
+              className="vscode-quickfix-btn typo-fix-btn"
+              onClick={() => handleFixMissingImport(activeMissingImport)}
+              aria-label="Добавить импорт"
+            >
+              <Wand2 size={12} />
+              <span>Добавить импорт ({activeMissingImport.module})</span>
+            </button>
+          </Tooltip>
         </div>
       ) : null}
 
@@ -2148,30 +2195,35 @@ export const CodeEditor = ({
           >
             {/* Верхняя строка: Поиск */}
             <div className="vscode-find-row">
-              <button
-                className="vscode-find-toggle-btn"
-                onClick={() =>
-                  setFindState((prev) => ({
-                    ...prev,
-                    showReplace: !prev.showReplace,
-                  }))
-                }
-                title={
+              <Tooltip
+                content={
                   findState.showReplace
                     ? "Скрыть замену"
                     : "Показать замену (Ctrl+H)"
                 }
+                side="bottom"
               >
-                <ChevronRight
-                  size={14}
-                  style={{
-                    transform: findState.showReplace
-                      ? "rotate(90deg)"
-                      : "none",
-                    transition: "transform 0.15s ease",
-                  }}
-                />
-              </button>
+                <button
+                  className="vscode-find-toggle-btn"
+                  onClick={() =>
+                    setFindState((prev) => ({
+                      ...prev,
+                      showReplace: !prev.showReplace,
+                    }))
+                  }
+                  aria-label="Показать/скрыть замену"
+                >
+                  <ChevronRight
+                    size={14}
+                    style={{
+                      transform: findState.showReplace
+                        ? "rotate(90deg)"
+                        : "none",
+                      transition: "transform 0.15s ease",
+                    }}
+                  />
+                </button>
+              </Tooltip>
 
               <div className="vscode-find-input-wrap">
                 <input
@@ -2218,42 +2270,50 @@ export const CodeEditor = ({
                   }}
                 />
 
-                <button
-                  className={`vscode-find-toggle-btn ${findState.matchCase ? "active" : ""}`}
-                  onClick={() =>
-                    setFindState((prev) => ({
-                      ...prev,
-                      matchCase: !prev.matchCase,
-                    }))
-                  }
-                  title="С учетом регистра (Alt+C)"
-                >
-                  <CaseSensitive size={14} />
-                </button>
-                <button
-                  className={`vscode-find-toggle-btn ${findState.matchWholeWord ? "active" : ""}`}
-                  onClick={() =>
-                    setFindState((prev) => ({
-                      ...prev,
-                      matchWholeWord: !prev.matchWholeWord,
-                    }))
-                  }
-                  title="Слово целиком (Alt+W)"
-                >
-                  <WholeWord size={14} />
-                </button>
-                <button
-                  className={`vscode-find-toggle-btn ${findState.useRegex ? "active" : ""}`}
-                  onClick={() =>
-                    setFindState((prev) => ({
-                      ...prev,
-                      useRegex: !prev.useRegex,
-                    }))
-                  }
-                  title="Использовать регулярное выражение (Alt+R)"
-                >
-                  <Regex size={14} />
-                </button>
+                <Tooltip content="С учетом регистра (Alt+C)" side="bottom">
+                  <button
+                    className={`vscode-find-toggle-btn ${findState.matchCase ? "active" : ""}`}
+                    onClick={() =>
+                      setFindState((prev) => ({
+                        ...prev,
+                        matchCase: !prev.matchCase,
+                      }))
+                    }
+                    aria-label="С учетом регистра"
+                  >
+                    <CaseSensitive size={14} />
+                  </button>
+                </Tooltip>
+
+                <Tooltip content="Слово целиком (Alt+W)" side="bottom">
+                  <button
+                    className={`vscode-find-toggle-btn ${findState.matchWholeWord ? "active" : ""}`}
+                    onClick={() =>
+                      setFindState((prev) => ({
+                        ...prev,
+                        matchWholeWord: !prev.matchWholeWord,
+                      }))
+                    }
+                    aria-label="Слово целиком"
+                  >
+                    <WholeWord size={14} />
+                  </button>
+                </Tooltip>
+
+                <Tooltip content="Использовать регулярное выражение (Alt+R)" side="bottom">
+                  <button
+                    className={`vscode-find-toggle-btn ${findState.useRegex ? "active" : ""}`}
+                    onClick={() =>
+                      setFindState((prev) => ({
+                        ...prev,
+                        useRegex: !prev.useRegex,
+                      }))
+                    }
+                    aria-label="Регулярное выражение"
+                  >
+                    <Regex size={14} />
+                  </button>
+                </Tooltip>
               </div>
 
               <div className="vscode-find-count">
@@ -2264,29 +2324,37 @@ export const CodeEditor = ({
                     : "Нет совп."}
               </div>
 
-              <button
-                className="vscode-find-action-btn"
-                onClick={handleFindPrev}
-                disabled={findMatches.length === 0}
-                title="Предыдущее совпадение (Shift+Enter)"
-              >
-                <ChevronUp size={14} />
-              </button>
-              <button
-                className="vscode-find-action-btn"
-                onClick={handleFindNext}
-                disabled={findMatches.length === 0}
-                title="Следующее совпадение (Enter)"
-              >
-                <ChevronDown size={14} />
-              </button>
-              <button
-                className="vscode-find-action-btn"
-                onClick={handleCloseFind}
-                title="Закрыть (Escape)"
-              >
-                <X size={14} />
-              </button>
+              <Tooltip content="Предыдущее совпадение (Shift+Enter)" side="bottom">
+                <button
+                  className="vscode-find-action-btn"
+                  onClick={handleFindPrev}
+                  disabled={findMatches.length === 0}
+                  aria-label="Предыдущее совпадение"
+                >
+                  <ChevronUp size={14} />
+                </button>
+              </Tooltip>
+
+              <Tooltip content="Следующее совпадение (Enter)" side="bottom">
+                <button
+                  className="vscode-find-action-btn"
+                  onClick={handleFindNext}
+                  disabled={findMatches.length === 0}
+                  aria-label="Следующее совпадение"
+                >
+                  <ChevronDown size={14} />
+                </button>
+              </Tooltip>
+
+              <Tooltip content="Закрыть (Escape)" side="bottom">
+                <button
+                  className="vscode-find-action-btn"
+                  onClick={handleCloseFind}
+                  aria-label="Закрыть поиск"
+                >
+                  <X size={14} />
+                </button>
+              </Tooltip>
             </div>
 
             {/* Нижняя строка: Замена */}
@@ -2322,38 +2390,43 @@ export const CodeEditor = ({
                   />
                 </div>
 
-                <button
-                  className="vscode-replace-btn-text"
-                  onClick={handleReplaceCurrent}
-                  disabled={findMatches.length === 0}
-                  title="Заменить текущее (Enter)"
-                >
-                  <Replace
-                    size={13}
-                    style={{
-                      display: "inline",
-                      verticalAlign: "middle",
-                      marginRight: 4,
-                    }}
-                  />
-                  Заменить
-                </button>
-                <button
-                  className="vscode-replace-btn-text"
-                  onClick={handleReplaceAllMatches}
-                  disabled={findMatches.length === 0}
-                  title="Заменить все совпадения (Ctrl+Alt+Enter)"
-                >
-                  <ReplaceAll
-                    size={13}
-                    style={{
-                      display: "inline",
-                      verticalAlign: "middle",
-                      marginRight: 4,
-                    }}
-                  />
-                  Все
-                </button>
+                <Tooltip content="Заменить текущее (Enter)" side="bottom">
+                  <button
+                    className="vscode-replace-btn-text"
+                    onClick={handleReplaceCurrent}
+                    disabled={findMatches.length === 0}
+                    aria-label="Заменить текущее"
+                  >
+                    <Replace
+                      size={13}
+                      style={{
+                        display: "inline",
+                        verticalAlign: "middle",
+                        marginRight: 4,
+                      }}
+                    />
+                    Заменить
+                  </button>
+                </Tooltip>
+
+                <Tooltip content="Заменить все совпадения (Ctrl+Alt+Enter)" side="bottom">
+                  <button
+                    className="vscode-replace-btn-text"
+                    onClick={handleReplaceAllMatches}
+                    disabled={findMatches.length === 0}
+                    aria-label="Заменить все совпадения"
+                  >
+                    <ReplaceAll
+                      size={13}
+                      style={{
+                        display: "inline",
+                        verticalAlign: "middle",
+                        marginRight: 4,
+                      }}
+                    />
+                    Все
+                  </button>
+                </Tooltip>
               </div>
             )}
           </div>
@@ -2803,77 +2876,86 @@ export const CodeEditor = ({
         <div className="status-left">
           {!readOnly && (
             <>
-              <span
-                className={`status-item save-status-indicator ${saveStatus}`}
-                title={
+              <Tooltip
+                content={
                   saveStatus === "saving"
                     ? "Автосохранение в IndexedDB..."
                     : "Решение сохранено локально в IndexedDB"
                 }
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "4px",
-                  color:
-                    saveStatus === "saving"
-                      ? "var(--accent-amber, #f59e0b)"
-                      : "var(--color-success, #10b981)",
-                  fontSize: "11.5px",
-                  fontWeight: 500,
-                  transition: "color 0.2s ease",
-                }}
+                side="top"
               >
-                {saveStatus === "saving" ? (
-                  <>
-                    <span
-                      style={{
-                        width: 5,
-                        height: 5,
-                        borderRadius: "50%",
-                        background: "currentColor",
-                        display: "inline-block",
-                      }}
-                    />
-                    Сохранение...
-                  </>
-                ) : (
-                  <>
-                    <Check size={11} style={{ strokeWidth: 2.5 }} />
-                    Сохранено
-                  </>
-                )}
-              </span>
+                <span
+                  className={`status-item save-status-indicator ${saveStatus}`}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "4px",
+                    color:
+                      saveStatus === "saving"
+                        ? "var(--accent-amber, #f59e0b)"
+                        : "var(--color-success, #10b981)",
+                    fontSize: "11.5px",
+                    fontWeight: 500,
+                    transition: "color 0.2s ease",
+                    cursor: "default",
+                  }}
+                >
+                  {saveStatus === "saving" ? (
+                    <>
+                      <span
+                        style={{
+                          width: 5,
+                          height: 5,
+                          borderRadius: "50%",
+                          background: "currentColor",
+                          display: "inline-block",
+                        }}
+                      />
+                      Сохранение...
+                    </>
+                  ) : (
+                    <>
+                      <Check size={11} style={{ strokeWidth: 2.5 }} />
+                      Сохранено
+                    </>
+                  )}
+                </span>
+              </Tooltip>
               <span className="status-sep">|</span>
             </>
           )}
 
           {diagnostics.errorCount > 0 ? (
-            <span
-              className="status-item status-typo-warning"
-              title="Обнаружена ошибка синтаксиса, типов или отсутствующий импорт"
+            <Tooltip
+              content="Обнаружена ошибка синтаксиса, типов или отсутствующий импорт"
+              side="top"
             >
-              <AlertCircle
-                size={11}
-                style={{ color: "var(--color-error-light)" }}
-              />
-              <span>
-                {diagnostics.errorCount}{" "}
-                {diagnostics.errorCount === 1 ? "ошибка" : "ошибок"}
-                {activeTypo
-                  ? `: ${activeTypo.typo} → ${activeTypo.correct}`
-                  : activeMissingImport
-                    ? `: не импортирован '${activeMissingImport.symbol}'`
-                    : ""}
+              <span className="status-item status-typo-warning" style={{ cursor: "default" }}>
+                <AlertCircle
+                  size={11}
+                  style={{ color: "var(--color-error-light)" }}
+                />
+                <span>
+                  {diagnostics.errorCount}{" "}
+                  {diagnostics.errorCount === 1 ? "ошибка" : "ошибок"}
+                  {activeTypo
+                    ? `: ${activeTypo.typo} → ${activeTypo.correct}`
+                    : activeMissingImport
+                      ? `: не импортирован '${activeMissingImport.symbol}'`
+                      : ""}
+                </span>
               </span>
-            </span>
+            </Tooltip>
           ) : (
-            <span className="status-item status-typo-ok">
-              <CheckCircle2
-                size={11}
-                style={{ color: "var(--color-success-light)" }}
-              />
-              <span>Синтаксис корректен</span>
-            </span>
+            <Tooltip content="Синтаксис и типы корректны" side="top">
+              <span className="status-item status-typo-ok" style={{ cursor: "default" }}>
+                <CheckCircle2
+                  size={11}
+                  style={{ color: "var(--color-success-light)" }}
+                />
+                <span>Синтаксис корректен</span>
+              </span>
+            </Tooltip>
           )}
 
           <span className="status-sep">|</span>
@@ -2894,16 +2976,19 @@ export const CodeEditor = ({
           <span className="status-sep">|</span>
           <span className="status-item">UTF-8</span>
           <span className="status-sep">|</span>
-          <span
-            className="status-item lang-tag"
-            title={`Язык синтаксиса: ${langInfo.name}`}
-          >
-            <Code2 size={11} style={{ color: langInfo.color }} />{" "}
-            {langInfo.name}
-          </span>
+          <Tooltip content={`Язык синтаксиса: ${langInfo.name}`} side="top">
+            <span
+              className="status-item lang-tag"
+              style={{ cursor: "default" }}
+            >
+              <Code2 size={11} style={{ color: langInfo.color }} />{" "}
+              {langInfo.name}
+            </span>
+          </Tooltip>
         </div>
       </div>
-    </div>
+      </div>
+    </Tooltip.Provider>
   );
 };
 
