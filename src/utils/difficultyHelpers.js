@@ -12,7 +12,10 @@ export const getDifficultyLabel = (difficulty) => {
     case "hard":
       return "Сложная";
     case "warm-up":
-      return "Разминка";
+    case "warmup":
+      return "Warm-up";
+    case "refactoring":
+      return "Refactoring";
     case "middle":
       return "Middle";
     case "strong":

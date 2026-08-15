@@ -14,18 +14,33 @@ import {
   Code2,
   AlertCircle,
   Wand2,
+  Lightbulb,
   ZoomIn,
   ZoomOut,
   Sparkles,
   Box,
   Globe,
+  Search,
+  ChevronUp,
+  ChevronDown,
+  ChevronRight,
+  X,
+  CaseSensitive,
+  WholeWord,
+  Regex,
+  Replace,
+  ReplaceAll,
 } from "lucide-react";
-import { highlightJS } from "../../utils/codeHighlighter";
+import { highlightJS, findMatchingBracketPair } from "../../utils/codeHighlighter";
+import { getHoverInfo, getSignatureHelp } from "../../utils/typeSignatures";
 import {
   getCompletions,
   expandSnippet,
   expandImportStatement,
   addImportToFile,
+  findDefinition,
+  getWordAtPosition,
+  fuzzyMatch,
 } from "../../utils/snippetsEngine";
 import {
   checkAutoCloseTag,
@@ -34,6 +49,7 @@ import {
 } from "../../utils/tagEngine";
 import { lintJavaScriptCode, fixTypoInCode } from "../../utils/codeLinter";
 import { formatJavaScriptCode } from "../../utils/codeFormatter";
+import { isEmmetAbbreviation, expandEmmetAbbreviation } from "../../utils/emmetEngine";
 import { useUIStore } from "../../stores/useUIStore";
 import {
   getSolution,
@@ -47,6 +63,52 @@ import {
 const MIN_FONT_SIZE = 14;
 const MAX_FONT_SIZE = 20;
 const FONT_SIZE_STORAGE_KEY = "playground_editor_font_size";
+
+// Зарезервированные ключевые слова JS/TS (не подсвечиваются как повторы переменных)
+const RESERVED_KEYWORDS = new Set([
+  "const",
+  "let",
+  "var",
+  "function",
+  "return",
+  "import",
+  "export",
+  "from",
+  "default",
+  "if",
+  "else",
+  "for",
+  "while",
+  "do",
+  "switch",
+  "case",
+  "break",
+  "continue",
+  "try",
+  "catch",
+  "finally",
+  "throw",
+  "new",
+  "typeof",
+  "instanceof",
+  "void",
+  "delete",
+  "in",
+  "of",
+  "async",
+  "await",
+  "class",
+  "extends",
+  "super",
+  "this",
+  "null",
+  "undefined",
+  "true",
+  "false",
+  "type",
+  "interface",
+  "as",
+]);
 
 export const CodeEditor = ({
   initialCode = "",
@@ -77,6 +139,54 @@ export const CodeEditor = ({
     externalIsFullscreen !== undefined
       ? externalIsFullscreen
       : internalIsFullscreen;
+
+  // Рефы DOM и истории
+  const textareaRef = useRef(null);
+  const highlightRef = useRef(null);
+  const gutterRef = useRef(null);
+  const historyRef = useRef([initialCode]);
+  const historyIndexRef = useRef(0);
+  const lastHistoryTimeRef = useRef(0);
+  const lastHistoryActionRef = useRef("init");
+  const findInputRef = useRef(null);
+  const replaceInputRef = useRef(null);
+  const hoverTimerRef = useRef(null);
+  const quickOpenInputRef = useRef(null);
+
+  // Состояние встроенного виджета поиска и замены (Find & Replace)
+  const [findState, setFindState] = useState({
+    isOpen: false,
+    showReplace: false,
+    query: "",
+    replaceText: "",
+    matchCase: false,
+    matchWholeWord: false,
+    useRegex: false,
+    currentIndex: -1,
+  });
+
+  // Состояние быстрого переключения файлов и перехода к строке (Quick Open Cmd+P / Cmd+G)
+  const [quickOpenState, setQuickOpenState] = useState({
+    isOpen: false,
+    query: "",
+    selectedIndex: 0,
+    mode: "files", // "files" | "goto"
+  });
+
+  // Состояние всплывающей подсказки типа (Hover Tooltip)
+  const [hoverState, setHoverState] = useState({
+    visible: false,
+    x: 0,
+    y: 0,
+    info: null,
+    symbol: "",
+  });
+
+  // Состояние подсказки параметров функции (Parameter Signature Help)
+  const [signatureHelpState, setSignatureHelpState] = useState({
+    visible: false,
+    info: null,
+  });
 
   const handleToggleFullscreen = () => {
     if (onToggleFullscreen) {
@@ -121,6 +231,155 @@ export const CodeEditor = ({
     isValid: true,
     typoMap: {},
   });
+
+  // Вычисление всех совпадений поискового запроса в коде
+  const findMatches = useMemo(() => {
+    if (!findState.isOpen || !findState.query || !code) return [];
+
+    let regex = null;
+    try {
+      let pattern = findState.query;
+      if (!findState.useRegex) {
+        pattern = pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      }
+      if (findState.matchWholeWord) {
+        pattern = `\\b${pattern}\\b`;
+      }
+      const flags = findState.matchCase ? "g" : "gi";
+      regex = new RegExp(pattern, flags);
+    } catch (e) {
+      return [];
+    }
+
+    const matches = [];
+    let m;
+    while ((m = regex.exec(code)) !== null) {
+      if (m[0].length === 0) {
+        regex.lastIndex++;
+        continue;
+      }
+      const textBefore = code.substring(0, m.index);
+      const line = textBefore.split("\n").length;
+      matches.push({
+        start: m.index,
+        end: m.index + m[0].length,
+        line,
+        text: m[0],
+      });
+      if (!regex.global) break;
+    }
+
+    return matches;
+  }, [
+    code,
+    findState.isOpen,
+    findState.query,
+    findState.matchCase,
+    findState.matchWholeWord,
+    findState.useRegex,
+  ]);
+
+  // Элементы быстрого перехода (Quick Open: файлы задачи или переход к строке)
+  const quickOpenItems = useMemo(() => {
+    if (!quickOpenState.isOpen) return [];
+    const q = quickOpenState.query.trim();
+
+    // 1. Режим перехода к строке: начинается с ':'
+    if (q.startsWith(":")) {
+      const lineMatch = q.match(/^:(\d+)(?::(\d+))?/);
+      const targetLine = lineMatch ? parseInt(lineMatch[1], 10) : null;
+      const targetCol = lineMatch && lineMatch[2] ? parseInt(lineMatch[2], 10) : 1;
+      const totalLines = code.split("\n").length;
+
+      return [
+        {
+          type: "goto",
+          label: targetLine
+            ? `Перейти к строке ${targetLine}${targetCol > 1 ? `, колонке ${targetCol}` : ""}`
+            : "Введите номер строки для перехода (:строка[:колонка])...",
+          targetLine: targetLine ? Math.max(1, Math.min(targetLine, totalLines)) : null,
+          targetCol: targetCol || 1,
+          totalLines,
+          isValid: Boolean(targetLine && targetLine >= 1 && targetLine <= totalLines),
+        },
+      ];
+    }
+
+    // 2. Режим поиска файлов задачи
+    if (!files || files.length === 0) {
+      return [
+        {
+          type: "file",
+          name: filepath || title || "index.jsx",
+          detail: "Текущий файл задачи",
+          fileIndex: 0,
+          isCurrent: true,
+          score: 100,
+        },
+      ];
+    }
+
+    const results = [];
+    for (let i = 0; i < files.length; i++) {
+      const f = files[i];
+      const fileName = f.name || `file_${i}.jsx`;
+      const { match, score } = fuzzyMatch(fileName, q);
+      if (match || !q) {
+        results.push({
+          type: "file",
+          name: fileName,
+          detail: `Файл задачи #${i + 1}`,
+          fileIndex: i,
+          isCurrent: i === activeFileIdx,
+          score: score + (i === activeFileIdx ? 10 : 0),
+        });
+      }
+    }
+
+    results.sort((a, b) => b.score - a.score);
+    return results;
+  }, [quickOpenState.isOpen, quickOpenState.query, files, filepath, title, activeFileIdx, code]);
+
+  // Определение слова под курсором и парных скобок для умной подсветки (Word Highlight & Bracket Match)
+  const highlightOptions = useMemo(() => {
+    if (readOnly || !code) return { highlightWord: "", bracketPair: null };
+    const textarea = textareaRef.current;
+    const currentCursor = textarea ? textarea.selectionStart : 0;
+
+    const bracketPair = isFocused ? findMatchingBracketPair(code, currentCursor) : null;
+
+    let activeWord = "";
+    if (findState.isOpen && findState.query) {
+      activeWord = findState.query;
+    } else if (isFocused) {
+      const word = getWordAtPosition(code, currentCursor);
+      if (
+        word &&
+        /^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(word) &&
+        word.length >= 2 &&
+        !RESERVED_KEYWORDS.has(word)
+      ) {
+        activeWord = word;
+      }
+    }
+
+    return {
+      highlightWord: activeWord,
+      bracketPair,
+      problems: diagnostics.problems,
+      unusedImports: diagnostics.unusedImports,
+    };
+  }, [
+    code,
+    isFocused,
+    cursorPos.line,
+    cursorPos.col,
+    readOnly,
+    findState.isOpen,
+    findState.query,
+    diagnostics.problems,
+    diagnostics.unusedImports,
+  ]);
 
   // Состояние меню автодополнения (IntelliSense Popover)
   const [completionState, setCompletionState] = useState({
@@ -262,7 +521,12 @@ export const CodeEditor = ({
       }
     }
 
-    updateCode(newCode);
+    // Синхронизация парных JSX тегов при автодополнении тегов (Auto Rename Tag: <></> -> <div></div>)
+    const renameRes = handleAutoRenameTag(code, newCode, newCursorPos);
+    newCode = renameRes.updatedCode;
+    newCursorPos = renameRes.newCursorPos;
+
+    updateCode(newCode, "completion");
     setTimeout(() => {
       if (textareaRef.current) {
         textareaRef.current.selectionStart = textareaRef.current.selectionEnd =
@@ -372,19 +636,11 @@ export const CodeEditor = ({
     return { visible: true, top, left, placement };
   };
 
-  // Стек истории для Undo/Redo
-  const historyRef = useRef([initialCode]);
-  const historyIndexRef = useRef(0);
-
-  const textareaRef = useRef(null);
-  const highlightRef = useRef(null);
-  const gutterRef = useRef(null);
-
-  // Живая проверка синтаксиса при изменении кода
+  // Живая проверка синтаксиса и отсутствующих импортов при изменении кода
   useEffect(() => {
-    const result = lintJavaScriptCode(code);
+    const result = lintJavaScriptCode(code, { files, filepath, title });
     setDiagnostics(result);
-  }, [code]);
+  }, [code, files, filepath, title]);
 
   // Смена задачи / восстановление сохраненного кода
   useEffect(() => {
@@ -471,25 +727,46 @@ export const CodeEditor = ({
     return () => unsubscribe();
   }, [taskId, initialCode, onChange]);
 
-  const pushHistory = (newCode) => {
+  const pushHistory = (newCode, actionType = "type") => {
     const nextHistory = historyRef.current.slice(
       0,
       historyIndexRef.current + 1,
     );
-    if (nextHistory[nextHistory.length - 1] !== newCode) {
+    const currentTop = nextHistory[nextHistory.length - 1];
+    if (currentTop === newCode) return;
+
+    const now = Date.now();
+    const timeDelta = now - lastHistoryTimeRef.current;
+    const isContinuousTyping =
+      actionType === "type" &&
+      lastHistoryActionRef.current === "type" &&
+      timeDelta < 800 &&
+      Math.abs(newCode.length - (currentTop ? currentTop.length : 0)) === 1;
+
+    if (isContinuousTyping && historyIndexRef.current > 0) {
+      // Обновляем текущий шаг истории вместо раздувания на каждую букву
+      nextHistory[nextHistory.length - 1] = newCode;
+      historyRef.current = nextHistory;
+    } else {
+      // Создаем новую точку отката (пауза > 800ms, вставка, форматирование, сниппет, перенос строки, удаление блока)
       nextHistory.push(newCode);
-      if (nextHistory.length > 50) nextHistory.shift();
+      if (nextHistory.length > 80) nextHistory.shift();
       historyRef.current = nextHistory;
       historyIndexRef.current = nextHistory.length - 1;
     }
+
+    lastHistoryTimeRef.current = now;
+    lastHistoryActionRef.current = actionType;
   };
 
   const [saveStatus, setSaveStatus] = useState("saved"); // "saving" | "saved"
   const saveStatusTimerRef = useRef(null);
 
-  const updateCode = (newCode, addToHistory = true) => {
+  const updateCode = (newCode, actionType = "type") => {
     setCode(newCode);
-    if (addToHistory) pushHistory(newCode);
+    if (actionType !== false) {
+      pushHistory(newCode, typeof actionType === "string" ? actionType : "type");
+    }
     if (onChange) onChange(newCode);
     if (!readOnly && taskId) {
       setSaveStatus("saving");
@@ -519,12 +796,187 @@ export const CodeEditor = ({
     }
   };
 
+  // Управление виджетом Поиска и Замены (Find & Replace)
+  const handleOpenFind = (showReplace = false) => {
+    if (readOnly) return;
+    const textarea = textareaRef.current;
+    let initialQuery = findState.query;
+
+    if (textarea && textarea.selectionStart !== textarea.selectionEnd) {
+      const selected = code.substring(
+        textarea.selectionStart,
+        textarea.selectionEnd,
+      );
+      if (selected && !selected.includes("\n") && selected.length < 80) {
+        initialQuery = selected;
+      }
+    }
+
+    setFindState((prev) => ({
+      ...prev,
+      isOpen: true,
+      showReplace,
+      query: initialQuery,
+      currentIndex: initialQuery ? 0 : -1,
+    }));
+
+    setTimeout(() => {
+      if (showReplace && replaceInputRef.current && initialQuery) {
+        replaceInputRef.current.focus();
+        replaceInputRef.current.select();
+      } else if (findInputRef.current) {
+        findInputRef.current.focus();
+        findInputRef.current.select();
+      }
+    }, 50);
+  };
+
+  const handleCloseFind = () => {
+    setFindState((prev) => ({ ...prev, isOpen: false }));
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  };
+
+  // Управление быстрым открытием файлов и переходом к строке (Quick Open & Go to Line)
+  const handleOpenQuickOpen = (mode = "files") => {
+    if (readOnly) return;
+    setQuickOpenState({
+      isOpen: true,
+      query: mode === "goto" ? ":" : "",
+      selectedIndex: 0,
+      mode,
+    });
+    setTimeout(() => {
+      quickOpenInputRef.current?.focus();
+      quickOpenInputRef.current?.select();
+    }, 50);
+  };
+
+  const handleCloseQuickOpen = () => {
+    setQuickOpenState({ isOpen: false, query: "", selectedIndex: 0, mode: "files" });
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  };
+
+  const handleJumpToLine = (targetLine, targetCol = 1) => {
+    const textarea = textareaRef.current;
+    if (!textarea || !code) return;
+
+    const lines = code.split("\n");
+    const validLine = Math.max(1, Math.min(targetLine, lines.length));
+    let charIndex = 0;
+    for (let i = 0; i < validLine - 1; i++) {
+      charIndex += lines[i].length + 1;
+    }
+    const lineLen = lines[validLine - 1]?.length || 0;
+    const validCol = Math.max(1, Math.min(targetCol, lineLen + 1));
+    charIndex += (validCol - 1);
+
+    textarea.selectionStart = charIndex;
+    textarea.selectionEnd = charIndex;
+    updateCursorCoordinates();
+
+    const lineH = fontSize * 1.6;
+    const targetScroll = Math.max(0, (validLine - 5) * lineH);
+    textarea.scrollTop = targetScroll;
+    if (highlightRef.current) highlightRef.current.scrollTop = targetScroll;
+    if (gutterRef.current) gutterRef.current.scrollTop = targetScroll;
+  };
+
+  const handleApplyQuickOpen = (item) => {
+    if (!item) return;
+
+    if (item.type === "goto") {
+      if (item.targetLine) {
+        handleJumpToLine(item.targetLine, item.targetCol);
+      }
+    } else if (item.type === "file") {
+      if (typeof onFileSelect === "function" && typeof item.fileIndex === "number") {
+        onFileSelect(item.fileIndex);
+      }
+    }
+
+    handleCloseQuickOpen();
+  };
+
+  const handleSelectFindMatch = (index) => {
+    if (findMatches.length === 0 || index < 0 || index >= findMatches.length)
+      return;
+    setFindState((prev) => ({ ...prev, currentIndex: index }));
+
+    const match = findMatches[index];
+    if (textareaRef.current) {
+      textareaRef.current.selectionStart = match.start;
+      textareaRef.current.selectionEnd = match.end;
+      const lineHeight = 21;
+      textareaRef.current.scrollTop = Math.max(
+        0,
+        (match.line - 5) * lineHeight,
+      );
+    }
+  };
+
+  const handleFindNext = () => {
+    if (findMatches.length === 0) return;
+    const nextIdx = (findState.currentIndex + 1) % findMatches.length;
+    handleSelectFindMatch(nextIdx);
+  };
+
+  const handleFindPrev = () => {
+    if (findMatches.length === 0) return;
+    const prevIdx =
+      (findState.currentIndex - 1 + findMatches.length) % findMatches.length;
+    handleSelectFindMatch(prevIdx);
+  };
+
+  const handleReplaceCurrent = () => {
+    if (findMatches.length === 0 || findState.currentIndex < 0) return;
+    const match = findMatches[findState.currentIndex];
+    if (!match) return;
+
+    const updated =
+      code.substring(0, match.start) +
+      findState.replaceText +
+      code.substring(match.end);
+    updateCode(updated, "replace");
+
+    setTimeout(() => {
+      if (textareaRef.current) {
+        textareaRef.current.selectionStart = match.start;
+        textareaRef.current.selectionEnd =
+          match.start + findState.replaceText.length;
+      }
+    }, 0);
+  };
+
+  const handleReplaceAllMatches = () => {
+    if (findMatches.length === 0 || !findState.query) return;
+
+    let pattern = findState.query;
+    if (!findState.useRegex) {
+      pattern = pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+    if (findState.matchWholeWord) {
+      pattern = `\\b${pattern}\\b`;
+    }
+    const flags = findState.matchCase ? "g" : "gi";
+    try {
+      const regex = new RegExp(pattern, flags);
+      const updated = code.replace(regex, findState.replaceText);
+      updateCode(updated, "replace-all");
+    } catch (e) {
+      console.error("Replace all error", e);
+    }
+  };
+
   const handleFormat = async () => {
     if (!code) return;
     try {
       const formatted = await formatJavaScriptCode(code);
       if (formatted && formatted !== code) {
-        updateCode(formatted);
+        updateCode(formatted, "format");
       }
     } catch (err) {
       console.error("Failed to format code with Prettier", err);
@@ -532,7 +984,7 @@ export const CodeEditor = ({
   };
 
   const handleReset = () => {
-    updateCode(initialCode);
+    updateCode(initialCode, "reset");
     if (taskId) {
       deleteSolution(taskId);
     }
@@ -554,11 +1006,167 @@ export const CodeEditor = ({
       typoObj.typo,
       typoObj.correct,
     );
-    updateCode(fixed);
+    updateCode(fixed, "fix");
     if (textareaRef.current) {
       textareaRef.current.value = fixed;
       textareaRef.current.focus();
     }
+  };
+
+  // Быстрое автоматическое добавление отсутствующего импорта (useState, createSlice, etc.)
+  const handleFixMissingImport = (importObj) => {
+    if (!importObj) return;
+    const res = addImportToFile(
+      code,
+      importObj.symbol,
+      importObj.module,
+      importObj.isDefault,
+    );
+    if (res.insertedLength > 0) {
+      updateCode(res.newCode, "import-fix");
+      if (textareaRef.current) {
+        textareaRef.current.value = res.newCode;
+        textareaRef.current.focus();
+      }
+    }
+  };
+
+  // Переход к определению (Go to Definition / File Navigation: F12 или Cmd+Click)
+  const handleGoToDefinition = (explicitWord = null, explicitPos = null) => {
+    const textarea = textareaRef.current;
+    if (!textarea && explicitPos === null) return;
+    const pos = explicitPos !== null ? explicitPos : textarea.selectionStart;
+    const word = explicitWord || getWordAtPosition(code, pos);
+    if (!word) return;
+
+    const currentFilepath = title || filepath || "main.jsx";
+    const def = findDefinition(word, code, files, currentFilepath);
+
+    if (!def) return;
+
+    if (def.type === "file" && onFileSelect && typeof def.fileIndex === "number") {
+      onFileSelect(def.fileIndex);
+      return;
+    }
+
+    if (def.type === "local" && def.line) {
+      const lines = code.split("\n");
+      let charIndex = 0;
+      for (let i = 0; i < def.line - 1 && i < lines.length; i++) {
+        charIndex += lines[i].length + 1;
+      }
+      charIndex += Math.max(0, (def.col || 1) - 1);
+
+      if (textarea) {
+        textarea.focus();
+        textarea.selectionStart = textarea.selectionEnd = charIndex;
+        const lineHeight = 21;
+        textarea.scrollTop = Math.max(0, (def.line - 5) * lineHeight);
+      }
+    }
+  };
+
+  // Умная вставка с автоматическим добавлением импортов (Auto-Import on Paste)
+  const handlePaste = (e) => {
+    if (readOnly) return;
+    const pastedText = e.clipboardData?.getData("text");
+    if (!pastedText) return;
+
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    e.preventDefault();
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+
+    // Вставляем текст
+    const codeWithPasted = code.substring(0, start) + pastedText + code.substring(end);
+    let finalCode = codeWithPasted;
+
+    // Проверяем отсутствующие импорты в результирующем коде
+    const currentFilepath = title || filepath || "main.jsx";
+    const lintRes = lintJavaScriptCode(finalCode, { files, filepath: currentFilepath });
+
+    if (lintRes.allMissingImports && lintRes.allMissingImports.length > 0) {
+      for (const missing of lintRes.allMissingImports) {
+        const symRegex = new RegExp(`\\b${missing.symbol}\\b`);
+        if (symRegex.test(pastedText)) {
+          const addRes = addImportToFile(finalCode, missing.symbol, missing.module, missing.isDefault);
+          if (addRes.insertedLength > 0 && addRes.newCode) {
+            finalCode = addRes.newCode;
+          }
+        }
+      }
+    }
+
+    updateCode(finalCode, "paste");
+
+    setTimeout(() => {
+      if (textareaRef.current) {
+        const diff = finalCode.length - codeWithPasted.length;
+        const newCursor = start + pastedText.length + diff;
+        textareaRef.current.selectionStart = textareaRef.current.selectionEnd = Math.min(newCursor, finalCode.length);
+      }
+    }, 0);
+  };
+
+  const handleMouseMove = (e) => {
+    if (readOnly || completionState.visible) {
+      if (hoverState.visible) setHoverState((prev) => ({ ...prev, visible: false }));
+      return;
+    }
+
+    if (hoverTimerRef.current) {
+      clearTimeout(hoverTimerRef.current);
+    }
+
+    const clientX = e.clientX;
+    const clientY = e.clientY;
+
+    hoverTimerRef.current = setTimeout(() => {
+      const textarea = textareaRef.current;
+      if (!textarea) return;
+      const rect = textarea.getBoundingClientRect();
+      const x = clientX - rect.left - 16 + (textarea.scrollLeft || 0);
+      const y = clientY - rect.top - 14 + (textarea.scrollTop || 0);
+      const lineH = fontSize * 1.6;
+      const charW = fontSize * 0.6;
+      const lineIdx = Math.floor(y / lineH);
+      const colIdx = Math.round(x / charW);
+      const lines = code.split("\n");
+
+      if (lineIdx < 0 || lineIdx >= lines.length) {
+        setHoverState((prev) => (prev.visible ? { ...prev, visible: false } : prev));
+        return;
+      }
+
+      let charPos = 0;
+      for (let i = 0; i < lineIdx; i++) {
+        charPos += lines[i].length + 1;
+      }
+      charPos += Math.max(0, Math.min(colIdx, lines[lineIdx].length));
+
+      const word = getWordAtPosition(code, charPos);
+      if (word && /^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(word)) {
+        const info = getHoverInfo(word, code, charPos, { files, filepath });
+        if (info) {
+          setHoverState({
+            visible: true,
+            x: Math.min(clientX + 12, window.innerWidth - 450),
+            y: Math.min(clientY + 18, window.innerHeight - 200),
+            info,
+            symbol: word,
+          });
+          return;
+        }
+      }
+      setHoverState((prev) => (prev.visible ? { ...prev, visible: false } : prev));
+    }, 180);
+  };
+
+  const handleMouseLeave = () => {
+    if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+    setHoverState((prev) => (prev.visible ? { ...prev, visible: false } : prev));
   };
 
   const updateCursorCoordinates = () => {
@@ -572,6 +1180,16 @@ export const CodeEditor = ({
       textarea.selectionEnd - textarea.selectionStart,
     );
     setCursorPos({ line, col, selectedLength });
+
+    // Parameter Signature Help
+    if (!readOnly) {
+      const sig = getSignatureHelp(code, pos);
+      if (sig) {
+        setSignatureHelpState({ visible: true, info: sig });
+      } else {
+        setSignatureHelpState((prev) => (prev.visible ? { visible: false, info: null } : prev));
+      }
+    }
   };
 
   // Обработка клавиш: Enter, Tab, скобки, комментарии
@@ -620,6 +1238,59 @@ export const CodeEditor = ({
         });
         return;
       }
+    }
+
+    // 0.3. Встроенный поиск (Find & Replace): Ctrl+F / Cmd+F и Ctrl+H / Cmd+H
+    if (
+      (e.ctrlKey || e.metaKey) &&
+      !e.shiftKey &&
+      !e.altKey &&
+      e.key.toLowerCase() === "f"
+    ) {
+      e.preventDefault();
+      handleOpenFind(false);
+      return;
+    }
+
+    if (
+      (e.ctrlKey || e.metaKey) &&
+      !e.shiftKey &&
+      !e.altKey &&
+      e.key.toLowerCase() === "h"
+    ) {
+      e.preventDefault();
+      handleOpenFind(true);
+      return;
+    }
+
+    // 0.4. Быстрый переход к файлам (Quick Open: Ctrl+P / Cmd+P) и строкам (Go to Line: Ctrl+G / Cmd+G)
+    if (
+      (e.ctrlKey || e.metaKey) &&
+      !e.shiftKey &&
+      !e.altKey &&
+      e.key.toLowerCase() === "p"
+    ) {
+      e.preventDefault();
+      handleOpenQuickOpen("files");
+      return;
+    }
+
+    if (
+      (e.ctrlKey || e.metaKey) &&
+      !e.shiftKey &&
+      !e.altKey &&
+      e.key.toLowerCase() === "g"
+    ) {
+      e.preventDefault();
+      handleOpenQuickOpen("goto");
+      return;
+    }
+
+    // 0.2. Переход к определению (Go to Definition): F12
+    if (e.key === "F12") {
+      e.preventDefault();
+      handleGoToDefinition(null, start);
+      return;
     }
 
     // 0.1. Ручной вызов подсказок (IntelliSense): Ctrl+Space или Cmd+I / Cmd+Space
@@ -721,8 +1392,122 @@ export const CodeEditor = ({
       }
 
       const updated = lines.join("\n");
-      updateCode(updated);
+      updateCode(updated, "comment");
       return;
+    }
+
+    // 3.1. Быстрое удаление строки: Ctrl+Shift+K или Cmd+Shift+K
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      const lineStart = code.lastIndexOf("\n", start - 1) + 1;
+      const lineEnd = code.indexOf("\n", end);
+      let updated = "";
+      let newCursor = lineStart;
+
+      if (lineEnd === -1) {
+        // Последняя строка файла
+        if (lineStart > 0) {
+          updated = code.substring(0, lineStart - 1);
+          newCursor = lineStart - 1;
+        } else {
+          updated = "";
+          newCursor = 0;
+        }
+      } else {
+        updated = code.substring(0, lineStart) + code.substring(lineEnd + 1);
+        newCursor = lineStart;
+      }
+
+      updateCode(updated, "delete-line");
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.selectionStart = textareaRef.current.selectionEnd = Math.min(newCursor, updated.length);
+        }
+      }, 0);
+      return;
+    }
+
+    // 3.2. Перемещение строк вверх/вниз: Alt+ArrowUp / Alt+ArrowDown (Option+Up / Option+Down)
+    const isAltUp = e.altKey && !e.shiftKey && !e.ctrlKey && !e.metaKey && e.key === "ArrowUp";
+    const isAltDown = e.altKey && !e.shiftKey && !e.ctrlKey && !e.metaKey && e.key === "ArrowDown";
+
+    if (isAltUp || isAltDown) {
+      e.preventDefault();
+      const lines = code.split("\n");
+      const firstLineIdx = code.substring(0, start).split("\n").length - 1;
+      const lastLineIdx = code.substring(0, end).split("\n").length - 1;
+
+      if (isAltUp && firstLineIdx > 0) {
+        const targetLine = lines[firstLineIdx - 1];
+        lines.splice(firstLineIdx - 1, 1);
+        lines.splice(lastLineIdx, 0, targetLine);
+        const updated = lines.join("\n");
+        const shift = targetLine.length + 1;
+        updateCode(updated, "move-line");
+        setTimeout(() => {
+          if (textareaRef.current) {
+            textareaRef.current.selectionStart = start - shift;
+            textareaRef.current.selectionEnd = end - shift;
+          }
+        }, 0);
+        return;
+      }
+
+      if (isAltDown && lastLineIdx < lines.length - 1) {
+        const targetLine = lines[lastLineIdx + 1];
+        lines.splice(lastLineIdx + 1, 1);
+        lines.splice(firstLineIdx, 0, targetLine);
+        const updated = lines.join("\n");
+        const shift = targetLine.length + 1;
+        updateCode(updated, "move-line");
+        setTimeout(() => {
+          if (textareaRef.current) {
+            textareaRef.current.selectionStart = start + shift;
+            textareaRef.current.selectionEnd = end + shift;
+          }
+        }, 0);
+        return;
+      }
+    }
+
+    // 3.3. Дублирование строк: Shift+Alt+ArrowUp / Shift+Alt+ArrowDown (Shift+Option+Up/Down)
+    const isDuplicateUp = e.altKey && e.shiftKey && !e.ctrlKey && !e.metaKey && e.key === "ArrowUp";
+    const isDuplicateDown = e.altKey && e.shiftKey && !e.ctrlKey && !e.metaKey && e.key === "ArrowDown";
+
+    if (isDuplicateUp || isDuplicateDown) {
+      e.preventDefault();
+      const lines = code.split("\n");
+      const firstLineIdx = code.substring(0, start).split("\n").length - 1;
+      const lastLineIdx = code.substring(0, end).split("\n").length - 1;
+      const selectedLines = lines.slice(firstLineIdx, lastLineIdx + 1);
+      const selectedBlock = selectedLines.join("\n");
+
+      if (isDuplicateUp) {
+        lines.splice(firstLineIdx, 0, ...selectedLines);
+        const updated = lines.join("\n");
+        updateCode(updated, "duplicate-line");
+        setTimeout(() => {
+          if (textareaRef.current) {
+            textareaRef.current.selectionStart = start;
+            textareaRef.current.selectionEnd = end;
+          }
+        }, 0);
+        return;
+      }
+
+      if (isDuplicateDown) {
+        lines.splice(lastLineIdx + 1, 0, ...selectedLines);
+        const updated = lines.join("\n");
+        const shift = selectedBlock.length + 1;
+        updateCode(updated, "duplicate-line");
+        setTimeout(() => {
+          if (textareaRef.current) {
+            textareaRef.current.selectionStart = start + shift;
+            textareaRef.current.selectionEnd = end + shift;
+          }
+        }, 0);
+        return;
+      }
     }
 
     // 4. Автозакрытие HTML / JSX тегов и фрагментов при нажатии '>'
@@ -737,7 +1522,7 @@ export const CodeEditor = ({
           ? `></>`
           : `></${autoCloseTagResult.tagName}>`;
         const updated = code.substring(0, start) + closeTagStr + textAfter;
-        updateCode(updated);
+        updateCode(updated, "tag");
 
         setTimeout(() => {
           if (textareaRef.current) {
@@ -759,7 +1544,7 @@ export const CodeEditor = ({
           const insertStr = unclosedTag === "" ? `/>` : `/${unclosedTag}>`;
           const updated =
             code.substring(0, start) + insertStr + code.substring(end);
-          updateCode(updated);
+          updateCode(updated, "tag");
 
           setTimeout(() => {
             if (textareaRef.current) {
@@ -772,7 +1557,7 @@ export const CodeEditor = ({
       }
     }
 
-    // 5. Автозакрытие скобок и кавычек
+    // 5. Автозакрытие скобок и кавычек / Оборачивание выделения (Surround Selection)
     const pairMap = {
       "(": ")",
       "{": "}",
@@ -804,11 +1589,15 @@ export const CodeEditor = ({
         selected +
         close +
         code.substring(end);
-      updateCode(updated);
+      updateCode(updated, "bracket");
 
       setTimeout(() => {
-        textarea.selectionStart = start + 1;
-        textarea.selectionEnd = start + 1 + selected.length;
+        if (start === end) {
+          textarea.selectionStart = textarea.selectionEnd = start + 1;
+        } else {
+          textarea.selectionStart = start + 1;
+          textarea.selectionEnd = start + 1 + selected.length;
+        }
       }, 0);
       return;
     }
@@ -828,7 +1617,7 @@ export const CodeEditor = ({
         e.preventDefault();
         const updated =
           code.substring(0, start - 1) + code.substring(start + 1);
-        updateCode(updated);
+        updateCode(updated, "bracket");
         setTimeout(() => {
           textarea.selectionStart = textarea.selectionEnd = start - 1;
         }, 0);
@@ -857,7 +1646,7 @@ export const CodeEditor = ({
           "\n" +
           currentIndent +
           code.substring(end);
-        updateCode(updated);
+        updateCode(updated, "newline");
 
         setTimeout(() => {
           textarea.selectionStart = textarea.selectionEnd =
@@ -876,7 +1665,7 @@ export const CodeEditor = ({
         const extraIndent = currentIndent + "  ";
         const updated =
           code.substring(0, start) + "\n" + extraIndent + code.substring(end);
-        updateCode(updated);
+        updateCode(updated, "newline");
 
         setTimeout(() => {
           textarea.selectionStart = textarea.selectionEnd =
@@ -889,7 +1678,7 @@ export const CodeEditor = ({
         e.preventDefault();
         const updated =
           code.substring(0, start) + "\n" + currentIndent + code.substring(end);
-        updateCode(updated);
+        updateCode(updated, "newline");
 
         setTimeout(() => {
           textarea.selectionStart = textarea.selectionEnd =
@@ -899,90 +1688,156 @@ export const CodeEditor = ({
       }
     }
 
-    // 8. Tab / Shift+Tab (Отступ 2 пробела / Обратный отступ)
+    // 8. Tab / Shift+Tab (Отступ 2 пробела / Обратный отступ / Многострочный отступ)
     if (e.key === "Tab") {
       e.preventDefault();
       const spaces = "  ";
 
+      // 8.1. Одиночный курсор Tab / Shift+Tab
       if (start === end) {
         if (e.shiftKey) {
           const lineStart = code.lastIndexOf("\n", start - 1) + 1;
           if (code.startsWith("  ", lineStart)) {
             const updated =
               code.substring(0, lineStart) + code.substring(lineStart + 2);
-            updateCode(updated);
+            updateCode(updated, "indent");
             setTimeout(() => {
               textarea.selectionStart = textarea.selectionEnd = Math.max(
                 lineStart,
                 start - 2,
               );
             }, 0);
-          }
-        } else {
-          // Проверяем: не является ли текущая строка незавершенным импортом (import {useState}, import React, etc.)
-          const textBefore = code.substring(0, start);
-          const lineStart = textBefore.lastIndexOf("\n") + 1;
-          const lineEnd = code.indexOf("\n", start);
-          const effectiveEnd = lineEnd === -1 ? code.length : lineEnd;
-          const currentLine = code.substring(lineStart, effectiveEnd);
-          const currentFilepath = title || filepath || "main.jsx";
-
-          const expandedImport = expandImportStatement(
-            currentLine,
-            files,
-            currentFilepath,
-          );
-
-          if (expandedImport) {
+          } else if (code.startsWith(" ", lineStart)) {
             const updated =
-              code.substring(0, lineStart) +
-              expandedImport +
-              code.substring(effectiveEnd);
-            updateCode(updated);
+              code.substring(0, lineStart) + code.substring(lineStart + 1);
+            updateCode(updated, "indent");
+            setTimeout(() => {
+              textarea.selectionStart = textarea.selectionEnd = Math.max(
+                lineStart,
+                start - 1,
+              );
+            }, 0);
+          }
+          return;
+        }
+
+        // Проверяем: не является ли текущая строка незавершенным импортом (import {useState}, import React, etc.)
+        const textBefore = code.substring(0, start);
+        const lineStart = textBefore.lastIndexOf("\n") + 1;
+        const lineEnd = code.indexOf("\n", start);
+        const effectiveEnd = lineEnd === -1 ? code.length : lineEnd;
+        const currentLine = code.substring(lineStart, effectiveEnd);
+        const currentFilepath = title || filepath || "main.jsx";
+
+        const expandedImport = expandImportStatement(
+          currentLine,
+          files,
+          currentFilepath,
+        );
+
+        if (expandedImport) {
+          const updated =
+            code.substring(0, lineStart) +
+            expandedImport +
+            code.substring(effectiveEnd);
+          updateCode(updated, "expand-import");
+          setTimeout(() => {
+            if (textareaRef.current) {
+              textareaRef.current.selectionStart =
+                textareaRef.current.selectionEnd =
+                  lineStart + expandedImport.length;
+            }
+          }, 0);
+          return;
+        }
+
+        // 8.2. Проверяем: не является ли слово перед курсором Emmet-аббревиатурой (div.card>button.btn*2)
+        const lineBeforeCursor = code.substring(lineStart, start);
+        const emmetMatch = lineBeforeCursor.match(/([a-zA-Z0-9_$.#:>+*^=$/-]+)$/);
+        if (emmetMatch && isEmmetAbbreviation(emmetMatch[1]) && /[.#>+*\[{]/.test(emmetMatch[1])) {
+          const abbr = emmetMatch[1];
+          const lineIndent = lineBeforeCursor.match(/^(\s*)/)?.[1] || "";
+          const expanded = expandEmmetAbbreviation(abbr, lineIndent);
+          if (expanded) {
+            const repStart = start - abbr.length;
+            const updated = code.substring(0, repStart) + expanded + code.substring(end);
+            updateCode(updated, "emmet");
             setTimeout(() => {
               if (textareaRef.current) {
-                textareaRef.current.selectionStart =
-                  textareaRef.current.selectionEnd =
-                    lineStart + expandedImport.length;
+                const newPos = repStart + expanded.length;
+                textareaRef.current.selectionStart = textareaRef.current.selectionEnd = newPos;
+                updateCursorCoordinates();
               }
             }, 0);
             return;
           }
-
-          const updated =
-            code.substring(0, start) + spaces + code.substring(end);
-          updateCode(updated);
-          setTimeout(() => {
-            textarea.selectionStart = textarea.selectionEnd =
-              start + spaces.length;
-          }, 0);
-        }
-      } else {
-        const lineStart = code.lastIndexOf("\n", start - 1) + 1;
-        const lineEnd = code.indexOf("\n", end);
-        const effectiveEnd = lineEnd === -1 ? code.length : lineEnd;
-        const block = code.substring(lineStart, effectiveEnd);
-        const lines = block.split("\n");
-
-        let updatedLines;
-        if (e.shiftKey) {
-          updatedLines = lines.map((l) =>
-            l.startsWith("  ")
-              ? l.substring(2)
-              : l.startsWith(" ")
-                ? l.substring(1)
-                : l,
-          );
-        } else {
-          updatedLines = lines.map((l) => spaces + l);
         }
 
         const updated =
-          code.substring(0, lineStart) +
-          updatedLines.join("\n") +
-          code.substring(effectiveEnd);
-        updateCode(updated);
+          code.substring(0, start) + spaces + code.substring(end);
+        updateCode(updated, "indent");
+        setTimeout(() => {
+          textarea.selectionStart = textarea.selectionEnd =
+            start + spaces.length;
+        }, 0);
+        return;
       }
+
+      // 8.2. Многострочное выделение Tab / Shift+Tab (Indent / Outdent всего блока)
+      const lineStart = code.lastIndexOf("\n", start - 1) + 1;
+      const lineEnd = code.indexOf("\n", end);
+      const effectiveEnd = lineEnd === -1 ? code.length : lineEnd;
+      const selectedBlock = code.substring(lineStart, effectiveEnd);
+      const lines = selectedBlock.split("\n");
+
+      let firstLineShift = 0;
+      let totalShift = 0;
+
+      let updatedLines;
+      if (e.shiftKey) {
+        updatedLines = lines.map((l, idx) => {
+          let removed = 0;
+          let res = l;
+          if (res.startsWith("  ")) {
+            res = res.substring(2);
+            removed = 2;
+          } else if (res.startsWith(" ")) {
+            res = res.substring(1);
+            removed = 1;
+          }
+          if (idx === 0) firstLineShift = removed;
+          totalShift += removed;
+          return res;
+        });
+      } else {
+        updatedLines = lines.map((l, idx) => {
+          if (idx === 0) firstLineShift = 2;
+          totalShift += 2;
+          return spaces + l;
+        });
+      }
+
+      const updated =
+        code.substring(0, lineStart) +
+        updatedLines.join("\n") +
+        code.substring(effectiveEnd);
+
+      updateCode(updated, "indent");
+
+      const newSelectionStart = e.shiftKey
+        ? Math.max(lineStart, start - firstLineShift)
+        : start + firstLineShift;
+      const newSelectionEnd = e.shiftKey
+        ? Math.max(newSelectionStart, end - totalShift)
+        : end + totalShift;
+
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.selectionStart = newSelectionStart;
+          textareaRef.current.selectionEnd = newSelectionEnd;
+        }
+      }, 0);
+      return;
     }
   };
 
@@ -1041,6 +1896,11 @@ export const CodeEditor = ({
   // Текущая опечатка на активной строке курсора или первая в коде
   const activeTypo =
     diagnostics.typoMap[activeLine] || Object.values(diagnostics.typoMap)[0];
+
+  // Текущий отсутствующий импорт на активной строке курсора или первый в коде
+  const activeMissingImport =
+    (diagnostics.missingImportMap && diagnostics.missingImportMap[activeLine]) ||
+    (diagnostics.allMissingImports && diagnostics.allMissingImports[0]);
 
   return (
     <div
@@ -1138,6 +1998,28 @@ export const CodeEditor = ({
             <WrapText size={14} />
           </button>
 
+          <button
+            className={`vscode-icon-btn ${findState.isOpen ? "active" : ""}`}
+            onClick={() => {
+              if (findState.isOpen) handleCloseFind();
+              else handleOpenFind(false);
+            }}
+            data-tooltip="Поиск и замена в файле (Ctrl+F, Ctrl+H)"
+          >
+            <Search size={14} />
+          </button>
+
+          <button
+            className={`vscode-icon-btn ${quickOpenState.isOpen ? "active" : ""}`}
+            onClick={() => {
+              if (quickOpenState.isOpen) handleCloseQuickOpen();
+              else handleOpenQuickOpen("files");
+            }}
+            data-tooltip="Быстрый переход к файлам и строкам (Ctrl+P, Ctrl+G)"
+          >
+            <FileCode size={14} />
+          </button>
+
           {isCodeModified && (
             <button
               className="vscode-icon-btn"
@@ -1204,21 +2086,21 @@ export const CodeEditor = ({
         </div>
       </div>
 
-      {/* Ненавязчивая плашка быстрого автоисправления опечаток (conts -> const) */}
-      {activeTypo && (
-        <div className="typo-quickfix-banner">
+      {/* Ненавязчивая плашка быстрого автоисправления опечаток и добавления импортов в стиле VS Code */}
+      {activeTypo ? (
+        <div className="vscode-quickfix-banner typo-quickfix-banner">
           <div className="typo-banner-left">
             <AlertCircle
               size={13}
-              style={{ color: "var(--color-error-light)" }}
+              className="vscode-quickfix-icon-error"
             />
             <span className="typo-msg">
-              Стр {activeTypo.line}: Опечатка <code>{activeTypo.typo}</code>{" "}
+              Стр {activeTypo.line}: Опечатка <code className="typo-error-word">{activeTypo.typo}</code>{" "}
               вместо <strong>{activeTypo.correct}</strong>
             </span>
           </div>
           <button
-            className="typo-fix-btn"
+            className="vscode-quickfix-btn typo-fix-btn"
             onClick={() => handleFixTypo(activeTypo)}
             title={`Заменить '${activeTypo.typo}' на '${activeTypo.correct}'`}
           >
@@ -1226,12 +2108,256 @@ export const CodeEditor = ({
             <span>Исправить на {activeTypo.correct}</span>
           </button>
         </div>
-      )}
+      ) : activeMissingImport ? (
+        <div className="vscode-quickfix-banner typo-quickfix-banner">
+          <div className="typo-banner-left">
+            <Lightbulb
+              size={13}
+              className="vscode-quickfix-icon-bulb"
+            />
+            <span className="typo-msg">
+              Стр {activeMissingImport.line}: <code>{activeMissingImport.symbol}</code> не импортирован из{" "}
+              <strong className="import-mod-name">'{activeMissingImport.module}'</strong>
+            </span>
+          </div>
+          <button
+            className="vscode-quickfix-btn typo-fix-btn"
+            onClick={() => handleFixMissingImport(activeMissingImport)}
+            title={`Добавить import ${
+              activeMissingImport.isDefault
+                ? activeMissingImport.symbol
+                : `{ ${activeMissingImport.symbol} }`
+            } from '${activeMissingImport.module}'`}
+          >
+            <Wand2 size={12} />
+            <span>Добавить импорт ({activeMissingImport.module})</span>
+          </button>
+        </div>
+      ) : null}
 
       {/* Рабочая область редактора */}
       <div
         className={`vscode-editor-surface ${wordWrap ? "wrap-on" : "wrap-off"}`}
       >
+        {/* Встроенный плавающий виджет поиска и замены (Find & Replace) */}
+        {findState.isOpen && (
+          <div
+            className="vscode-find-widget"
+            role="search"
+            aria-label="Поиск и замена"
+          >
+            {/* Верхняя строка: Поиск */}
+            <div className="vscode-find-row">
+              <button
+                className="vscode-find-toggle-btn"
+                onClick={() =>
+                  setFindState((prev) => ({
+                    ...prev,
+                    showReplace: !prev.showReplace,
+                  }))
+                }
+                title={
+                  findState.showReplace
+                    ? "Скрыть замену"
+                    : "Показать замену (Ctrl+H)"
+                }
+              >
+                <ChevronRight
+                  size={14}
+                  style={{
+                    transform: findState.showReplace
+                      ? "rotate(90deg)"
+                      : "none",
+                    transition: "transform 0.15s ease",
+                  }}
+                />
+              </button>
+
+              <div className="vscode-find-input-wrap">
+                <input
+                  ref={findInputRef}
+                  type="text"
+                  className="vscode-find-input"
+                  placeholder="Поиск..."
+                  value={findState.query}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setFindState((prev) => ({
+                      ...prev,
+                      query: val,
+                      currentIndex: 0,
+                    }));
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      if (e.shiftKey) handleFindPrev();
+                      else handleFindNext();
+                    } else if (e.key === "Escape") {
+                      e.preventDefault();
+                      handleCloseFind();
+                    } else if (e.altKey && e.key.toLowerCase() === "c") {
+                      e.preventDefault();
+                      setFindState((prev) => ({
+                        ...prev,
+                        matchCase: !prev.matchCase,
+                      }));
+                    } else if (e.altKey && e.key.toLowerCase() === "w") {
+                      e.preventDefault();
+                      setFindState((prev) => ({
+                        ...prev,
+                        matchWholeWord: !prev.matchWholeWord,
+                      }));
+                    } else if (e.altKey && e.key.toLowerCase() === "r") {
+                      e.preventDefault();
+                      setFindState((prev) => ({
+                        ...prev,
+                        useRegex: !prev.useRegex,
+                      }));
+                    }
+                  }}
+                />
+
+                <button
+                  className={`vscode-find-toggle-btn ${findState.matchCase ? "active" : ""}`}
+                  onClick={() =>
+                    setFindState((prev) => ({
+                      ...prev,
+                      matchCase: !prev.matchCase,
+                    }))
+                  }
+                  title="С учетом регистра (Alt+C)"
+                >
+                  <CaseSensitive size={14} />
+                </button>
+                <button
+                  className={`vscode-find-toggle-btn ${findState.matchWholeWord ? "active" : ""}`}
+                  onClick={() =>
+                    setFindState((prev) => ({
+                      ...prev,
+                      matchWholeWord: !prev.matchWholeWord,
+                    }))
+                  }
+                  title="Слово целиком (Alt+W)"
+                >
+                  <WholeWord size={14} />
+                </button>
+                <button
+                  className={`vscode-find-toggle-btn ${findState.useRegex ? "active" : ""}`}
+                  onClick={() =>
+                    setFindState((prev) => ({
+                      ...prev,
+                      useRegex: !prev.useRegex,
+                    }))
+                  }
+                  title="Использовать регулярное выражение (Alt+R)"
+                >
+                  <Regex size={14} />
+                </button>
+              </div>
+
+              <div className="vscode-find-count">
+                {!findState.query
+                  ? "0 совп."
+                  : findMatches.length > 0
+                    ? `${findState.currentIndex + 1} из ${findMatches.length}`
+                    : "Нет совп."}
+              </div>
+
+              <button
+                className="vscode-find-action-btn"
+                onClick={handleFindPrev}
+                disabled={findMatches.length === 0}
+                title="Предыдущее совпадение (Shift+Enter)"
+              >
+                <ChevronUp size={14} />
+              </button>
+              <button
+                className="vscode-find-action-btn"
+                onClick={handleFindNext}
+                disabled={findMatches.length === 0}
+                title="Следующее совпадение (Enter)"
+              >
+                <ChevronDown size={14} />
+              </button>
+              <button
+                className="vscode-find-action-btn"
+                onClick={handleCloseFind}
+                title="Закрыть (Escape)"
+              >
+                <X size={14} />
+              </button>
+            </div>
+
+            {/* Нижняя строка: Замена */}
+            {findState.showReplace && (
+              <div className="vscode-find-row" style={{ paddingLeft: "24px" }}>
+                <div className="vscode-find-input-wrap">
+                  <input
+                    ref={replaceInputRef}
+                    type="text"
+                    className="vscode-find-input"
+                    placeholder="Заменить на..."
+                    value={findState.replaceText}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setFindState((prev) => ({
+                        ...prev,
+                        replaceText: val,
+                      }));
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        if ((e.ctrlKey || e.metaKey) && e.altKey) {
+                          handleReplaceAllMatches();
+                        } else {
+                          handleReplaceCurrent();
+                        }
+                      } else if (e.key === "Escape") {
+                        e.preventDefault();
+                        handleCloseFind();
+                      }
+                    }}
+                  />
+                </div>
+
+                <button
+                  className="vscode-replace-btn-text"
+                  onClick={handleReplaceCurrent}
+                  disabled={findMatches.length === 0}
+                  title="Заменить текущее (Enter)"
+                >
+                  <Replace
+                    size={13}
+                    style={{
+                      display: "inline",
+                      verticalAlign: "middle",
+                      marginRight: 4,
+                    }}
+                  />
+                  Заменить
+                </button>
+                <button
+                  className="vscode-replace-btn-text"
+                  onClick={handleReplaceAllMatches}
+                  disabled={findMatches.length === 0}
+                  title="Заменить все совпадения (Ctrl+Alt+Enter)"
+                >
+                  <ReplaceAll
+                    size={13}
+                    style={{
+                      display: "inline",
+                      verticalAlign: "middle",
+                      marginRight: 4,
+                    }}
+                  />
+                  Все
+                </button>
+              </div>
+            )}
+          </div>
+        )}
         {/* Номера строк с адаптивной шириной под количество цифр */}
         {(() => {
           const digits = String(Math.max(lineCount, 1)).length;
@@ -1292,7 +2418,7 @@ export const CodeEditor = ({
               >
                 <code
                   dangerouslySetInnerHTML={{
-                    __html: highlightJS(code + "\n"),
+                    __html: highlightJS(code + "\n", highlightOptions),
                   }}
                 />
               </pre>
@@ -1333,9 +2459,20 @@ export const CodeEditor = ({
                     ![
                       "ArrowUp",
                       "ArrowDown",
+                      "ArrowLeft",
+                      "ArrowRight",
+                      "Home",
+                      "End",
+                      "PageUp",
+                      "PageDown",
                       "Enter",
                       "Tab",
                       "Escape",
+                      "Control",
+                      "Alt",
+                      "Shift",
+                      "Meta",
+                      "CapsLock",
                     ].includes(e.key) &&
                     textareaRef.current
                   ) {
@@ -1345,13 +2482,23 @@ export const CodeEditor = ({
                     );
                   }
                 }}
-                onClick={() => {
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                onPaste={handlePaste}
+                onClick={(e) => {
                   updateCursorCoordinates();
-                  if (textareaRef.current) {
-                    checkAndTriggerCompletions(
-                      code,
-                      textareaRef.current.selectionStart,
-                    );
+                  if ((e.ctrlKey || e.metaKey) && textareaRef.current) {
+                    handleGoToDefinition(null, textareaRef.current.selectionStart);
+                    return;
+                  }
+                  // При клике мышкой закрываем меню автодополнения, чтобы не мешать просмотру вхождений и текста
+                  if (completionState.visible) {
+                    setCompletionState({
+                      visible: false,
+                      word: "",
+                      items: [],
+                      selectedIndex: 0,
+                    });
                   }
                 }}
                 onSelect={() => {
@@ -1360,12 +2507,6 @@ export const CodeEditor = ({
                 onFocus={() => {
                   setIsFocused(true);
                   updateCursorCoordinates();
-                  if (textareaRef.current) {
-                    checkAndTriggerCompletions(
-                      code,
-                      textareaRef.current.selectionStart,
-                    );
-                  }
                 }}
                 onBlur={() => {
                   setIsFocused(false);
@@ -1385,6 +2526,193 @@ export const CodeEditor = ({
                 autoComplete="off"
                 autoCorrect="off"
               />
+
+              {/* Hover Tooltip Widget через React Portal */}
+              {hoverState.visible && hoverState.info && createPortal(
+                <div
+                  className="vscode-hover-widget"
+                  style={{
+                    top: `${hoverState.y}px`,
+                    left: `${hoverState.x}px`,
+                  }}
+                >
+                  <div className="vscode-hover-header">
+                    {hoverState.info.signature}
+                  </div>
+                  {hoverState.info.description && (
+                    <div className="vscode-hover-body">
+                      {hoverState.info.description}
+                    </div>
+                  )}
+                  <div className="vscode-hover-footer">
+                    <span>{hoverState.info.module ? `Модуль: ${hoverState.info.module}` : "Символ"}</span>
+                    <span>VS Code IntelliSense</span>
+                  </div>
+                </div>,
+                document.body
+              )}
+
+              {/* Parameter Signature Help Widget через React Portal */}
+              {signatureHelpState.visible && signatureHelpState.info && !completionState.visible && (() => {
+                const popoverPos = calculatePopoverPos();
+                if (popoverPos.visible === false) return null;
+                const sig = signatureHelpState.info;
+                const activeIdx = Math.min(sig.activeParameter, sig.parameters.length - 1);
+                const activeParam = sig.parameters[activeIdx];
+
+                return createPortal(
+                  <div
+                    className="vscode-signature-help"
+                    style={{
+                      top: `${Math.max(10, popoverPos.top - (popoverPos.placement === "top" ? 20 : 0))}px`,
+                      left: `${popoverPos.left}px`,
+                    }}
+                  >
+                    <div className="vscode-sig-signature">
+                      {sig.functionName}(
+                      {sig.parameters.map((p, idx) => (
+                        <span key={idx}>
+                          <span className={idx === activeIdx ? "vscode-sig-param-active" : ""}>
+                            {p.name}: {p.type}
+                          </span>
+                          {idx < sig.parameters.length - 1 ? ", " : ""}
+                        </span>
+                      ))}
+                      ): {sig.returns || "void"}
+                    </div>
+                    {activeParam && (
+                      <div className="vscode-sig-doc">
+                        <strong>{activeParam.name}</strong>: {activeParam.doc}
+                      </div>
+                    )}
+                  </div>,
+                  document.body
+                );
+              })()}
+
+              {/* Модальное окно быстрого перехода к файлам и строкам (Quick Open / Go to Line) */}
+              {quickOpenState.isOpen && createPortal(
+                <div
+                  className="vscode-quick-open-overlay"
+                  onMouseDown={(e) => {
+                    if (e.target === e.currentTarget) handleCloseQuickOpen();
+                  }}
+                >
+                  <div className="vscode-quick-open-modal" onMouseDown={(e) => e.stopPropagation()}>
+                    <div className="vscode-quick-open-input-wrap">
+                      <FileCode size={16} style={{ color: "var(--accent-blue, #3b82f6)", flexShrink: 0 }} />
+                      <input
+                        ref={quickOpenInputRef}
+                        className="vscode-quick-open-input"
+                        placeholder={
+                          quickOpenState.query.startsWith(":")
+                            ? "Введите номер строки для перехода (:строка[:колонка])..."
+                            : "Поиск файлов по имени (или введите :строку для перехода)..."
+                        }
+                        value={quickOpenState.query}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setQuickOpenState((prev) => ({
+                            ...prev,
+                            query: val,
+                            selectedIndex: 0,
+                            mode: val.startsWith(":") ? "goto" : "files",
+                          }));
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === "Escape") {
+                            e.preventDefault();
+                            handleCloseQuickOpen();
+                            return;
+                          }
+                          if (e.key === "ArrowDown") {
+                            e.preventDefault();
+                            setQuickOpenState((prev) => ({
+                              ...prev,
+                              selectedIndex: Math.min(
+                                prev.selectedIndex + 1,
+                                Math.max(0, quickOpenItems.length - 1)
+                              ),
+                            }));
+                            return;
+                          }
+                          if (e.key === "ArrowUp") {
+                            e.preventDefault();
+                            setQuickOpenState((prev) => ({
+                              ...prev,
+                              selectedIndex: Math.max(0, prev.selectedIndex - 1),
+                            }));
+                            return;
+                          }
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            const item = quickOpenItems[quickOpenState.selectedIndex] || quickOpenItems[0];
+                            if (item) {
+                              handleApplyQuickOpen(item);
+                            }
+                            return;
+                          }
+                        }}
+                      />
+                      {quickOpenState.query && (
+                        <button
+                          className="vscode-icon-btn"
+                          style={{ padding: 2, height: "auto" }}
+                          onClick={() => setQuickOpenState((prev) => ({ ...prev, query: "", selectedIndex: 0 }))}
+                        >
+                          <X size={13} />
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="vscode-quick-open-list">
+                      {quickOpenItems.length === 0 ? (
+                        <div style={{ padding: "12px 16px", color: "var(--text-muted)", fontSize: "12px", textAlign: "center" }}>
+                          Ничего не найдено
+                        </div>
+                      ) : (
+                        quickOpenItems.map((item, idx) => {
+                          const isSelected = idx === quickOpenState.selectedIndex;
+                          return (
+                            <div
+                              key={idx}
+                              className={`vscode-quick-open-item ${isSelected ? "active" : ""}`}
+                              onMouseDown={(e) => {
+                                e.preventDefault();
+                                handleApplyQuickOpen(item);
+                              }}
+                              onMouseEnter={() => {
+                                setQuickOpenState((prev) => ({ ...prev, selectedIndex: idx }));
+                              }}
+                            >
+                              <div className="vscode-quick-open-item-name">
+                                <FileCode size={14} style={{ opacity: 0.8 }} />
+                                <span>{item.type === "goto" ? item.label : item.name}</span>
+                                {item.isCurrent && (
+                                  <span style={{ fontSize: "10.5px", padding: "1px 5px", borderRadius: "3px", backgroundColor: "rgba(59, 130, 246, 0.2)", color: "#60a5fa" }}>
+                                    текущий
+                                  </span>
+                                )}
+                              </div>
+                              {item.detail && (
+                                <div className="vscode-quick-open-item-detail">
+                                  {item.detail}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })
+                      )}
+                    </div>
+
+                    <div className="vscode-quick-open-footer">
+                      <span>{quickOpenState.query.startsWith(":") ? "Режим перехода к строке" : "Режим выбора файла"}</span>
+                      <span>↑↓ навигация • Enter перейти • Esc закрыть</span>
+                    </div>
+                  </div>
+                </div>,
+                document.body
+              )}
 
               {/* Всплывающее меню подсказок и автодополнения (IntelliSense) через React Portal */}
               {completionState.visible &&
@@ -1466,113 +2794,115 @@ export const CodeEditor = ({
         </div>
       </div>
 
-      {/* Минималистичный статус-бар с проверкой орфографии */}
-      {!bottomConsole && (
-        <div className="vscode-status-bar">
-          <div className="status-left">
-            {!readOnly && (
-              <>
-                <span
-                  className={`status-item save-status-indicator ${saveStatus}`}
-                  title={
-                    saveStatus === "saving"
-                      ? "Автосохранение в IndexedDB..."
-                      : "Решение сохранено локально в IndexedDB"
-                  }
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "4px",
-                    color:
-                      saveStatus === "saving"
-                        ? "var(--accent-amber, #f59e0b)"
-                        : "var(--color-success, #10b981)",
-                    fontSize: "11.5px",
-                    fontWeight: 500,
-                    transition: "color 0.2s ease",
-                  }}
-                >
-                  {saveStatus === "saving" ? (
-                    <>
-                      <span
-                        style={{
-                          width: 5,
-                          height: 5,
-                          borderRadius: "50%",
-                          background: "currentColor",
-                          display: "inline-block",
-                        }}
-                      />
-                      Сохранение...
-                    </>
-                  ) : (
-                    <>
-                      <Check size={11} style={{ strokeWidth: 2.5 }} />
-                      Сохранено
-                    </>
-                  )}
-                </span>
-                <span className="status-sep">|</span>
-              </>
-            )}
-
-            {diagnostics.errorCount > 0 ? (
-              <span
-                className="status-item status-typo-warning"
-                title="Обнаружена синтаксическая опечатка"
-              >
-                <AlertCircle
-                  size={11}
-                  style={{ color: "var(--color-error-light)" }}
-                />
-                <span>
-                  {diagnostics.errorCount}{" "}
-                  {diagnostics.errorCount === 1 ? "ошибка" : "ошибок"}
-                  {activeTypo && `: ${activeTypo.typo} → ${activeTypo.correct}`}
-                </span>
-              </span>
-            ) : (
-              <span className="status-item status-typo-ok">
-                <CheckCircle2
-                  size={11}
-                  style={{ color: "var(--color-success-light)" }}
-                />
-                <span>Синтаксис корректен</span>
-              </span>
-            )}
-
-            <span className="status-sep">|</span>
-
-            <span className="status-item status-coords">
-              Стр {cursorPos.line}, Кол {cursorPos.col}
-            </span>
-            <span className="status-sep">|</span>
-            <span className="status-item">
-              {lineCount}{" "}
-              {lineCount === 1 ? "строка" : lineCount < 5 ? "строки" : "строк"}{" "}
-              ({code.length} симв)
-            </span>
-          </div>
-
-          <div className="status-right">
-            <span className="status-item">Пробелы: 2</span>
-            <span className="status-sep">|</span>
-            <span className="status-item">UTF-8</span>
-            <span className="status-sep">|</span>
-            <span
-              className="status-item lang-tag"
-              title={`Язык синтаксиса: ${langInfo.name}`}
-            >
-              <Code2 size={11} style={{ color: langInfo.color }} />{" "}
-              {langInfo.name}
-            </span>
-          </div>
-        </div>
-      )}
-
       {bottomConsole && (
         <div className="vscode-editor-bottom-console">{bottomConsole}</div>
       )}
+
+      {/* Минималистичный статус-бар с проверкой синтаксиса и координат (всегда отображается внизу) */}
+      <div className="vscode-status-bar">
+        <div className="status-left">
+          {!readOnly && (
+            <>
+              <span
+                className={`status-item save-status-indicator ${saveStatus}`}
+                title={
+                  saveStatus === "saving"
+                    ? "Автосохранение в IndexedDB..."
+                    : "Решение сохранено локально в IndexedDB"
+                }
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  color:
+                    saveStatus === "saving"
+                      ? "var(--accent-amber, #f59e0b)"
+                      : "var(--color-success, #10b981)",
+                  fontSize: "11.5px",
+                  fontWeight: 500,
+                  transition: "color 0.2s ease",
+                }}
+              >
+                {saveStatus === "saving" ? (
+                  <>
+                    <span
+                      style={{
+                        width: 5,
+                        height: 5,
+                        borderRadius: "50%",
+                        background: "currentColor",
+                        display: "inline-block",
+                      }}
+                    />
+                    Сохранение...
+                  </>
+                ) : (
+                  <>
+                    <Check size={11} style={{ strokeWidth: 2.5 }} />
+                    Сохранено
+                  </>
+                )}
+              </span>
+              <span className="status-sep">|</span>
+            </>
+          )}
+
+          {diagnostics.errorCount > 0 ? (
+            <span
+              className="status-item status-typo-warning"
+              title="Обнаружена ошибка синтаксиса, типов или отсутствующий импорт"
+            >
+              <AlertCircle
+                size={11}
+                style={{ color: "var(--color-error-light)" }}
+              />
+              <span>
+                {diagnostics.errorCount}{" "}
+                {diagnostics.errorCount === 1 ? "ошибка" : "ошибок"}
+                {activeTypo
+                  ? `: ${activeTypo.typo} → ${activeTypo.correct}`
+                  : activeMissingImport
+                    ? `: не импортирован '${activeMissingImport.symbol}'`
+                    : ""}
+              </span>
+            </span>
+          ) : (
+            <span className="status-item status-typo-ok">
+              <CheckCircle2
+                size={11}
+                style={{ color: "var(--color-success-light)" }}
+              />
+              <span>Синтаксис корректен</span>
+            </span>
+          )}
+
+          <span className="status-sep">|</span>
+
+          <span className="status-item status-coords">
+            Стр {cursorPos.line}, Кол {cursorPos.col}
+          </span>
+          <span className="status-sep">|</span>
+          <span className="status-item">
+            {lineCount}{" "}
+            {lineCount === 1 ? "строка" : lineCount < 5 ? "строки" : "строк"}{" "}
+            ({code.length} симв)
+          </span>
+        </div>
+
+        <div className="status-right">
+          <span className="status-item">Пробелы: 2</span>
+          <span className="status-sep">|</span>
+          <span className="status-item">UTF-8</span>
+          <span className="status-sep">|</span>
+          <span
+            className="status-item lang-tag"
+            title={`Язык синтаксиса: ${langInfo.name}`}
+          >
+            <Code2 size={11} style={{ color: langInfo.color }} />{" "}
+            {langInfo.name}
+          </span>
+        </div>
+      </div>
     </div>
   );
 };

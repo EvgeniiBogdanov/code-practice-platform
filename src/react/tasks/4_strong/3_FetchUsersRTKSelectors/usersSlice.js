@@ -38,7 +38,7 @@ const usersSlice = createSlice({
         state.error = action.error.message
       })
   }
-})
+});
 
 export const { setSearchQuery } = usersSlice.actions
 

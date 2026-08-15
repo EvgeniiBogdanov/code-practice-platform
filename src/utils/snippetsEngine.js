@@ -5,6 +5,8 @@
  * JSX тегов/пропсов, CSS свойств в style={{ ... }}, TypeScript Utility Types и умных сниппетов.
  */
 
+import { isEmmetAbbreviation, expandEmmetAbbreviation } from "./emmetEngine.js";
+
 // База известных пакетов и их экспортов
 export const KNOWN_MODULES = {
   react: {
@@ -1051,7 +1053,8 @@ export const JS_GLOBALS = [
   "clearInterval",
 ];
 
-export { checkAutoCloseTag } from "./tagEngine.js";
+import { checkAutoCloseTag, isTypeScriptGenericContext } from "./tagEngine.js";
+export { checkAutoCloseTag, isTypeScriptGenericContext };
 
 /**
  * Извлечение информации об экспортированных символах из других файлов задачи (многофайловый режим)
@@ -1265,6 +1268,92 @@ export const addImportToFile = (code, symbolName, moduleSpecifier = "react", isD
 };
 
 /**
+ * Извлекает слово (идентификатор) под указанной позицией курсора
+ */
+export const getWordAtPosition = (text, position) => {
+  if (!text || typeof text !== "string" || position < 0 || position > text.length) return "";
+  let start = position;
+  let end = position;
+
+  // Если курсор стоит сразу после слова, смещаемся на 1 символ назад
+  if (start > 0 && !/[a-zA-Z0-9_$]/.test(text[start]) && /[a-zA-Z0-9_$]/.test(text[start - 1])) {
+    start--;
+    end--;
+  }
+
+  while (start > 0 && /[a-zA-Z0-9_$]/.test(text[start - 1])) {
+    start--;
+  }
+  while (end < text.length && /[a-zA-Z0-9_$]/.test(text[end])) {
+    end++;
+  }
+  return text.substring(start, end);
+};
+
+/**
+ * Ищет определение символа (переменная, функция, тип в текущем файле или экспорт в других файлах задачи)
+ * @param {string} symbol Имя искомого идентификатора
+ * @param {string} currentCode Исходный код текущего файла
+ * @param {Array} taskFiles Список файлов задачи
+ * @param {string} currentFilepath Текущий путь к файлу
+ * @returns {{ type: 'file', fileIndex: number, filename: string } | { type: 'local', line: number, col: number } | null}
+ */
+export const findDefinition = (symbol, currentCode = "", taskFiles = [], currentFilepath = "") => {
+  if (!symbol || typeof symbol !== "string") return null;
+  const cleanSym = symbol.trim();
+  if (!cleanSym) return null;
+
+  // 1. Поиск в файлах задачи (переключение между файлами / Go to File)
+  if (Array.isArray(taskFiles) && taskFiles.length > 0) {
+    for (let i = 0; i < taskFiles.length; i++) {
+      const file = taskFiles[i];
+      if (!file || file.name === currentFilepath || file.filepath === currentFilepath) continue;
+
+      // Проверка совпадения с именем файла (например, CustomHeader -> CustomHeader.jsx)
+      const baseFilename = (file.name || file.filepath || "").replace(/\.[^/.]+$/, "");
+      if (baseFilename.toLowerCase() === cleanSym.toLowerCase()) {
+        return { type: "file", fileIndex: i, filename: file.name || file.filepath };
+      }
+
+      // Проверка экспортов внутри файла
+      if (file.code) {
+        const hasExport =
+          new RegExp(`export\\s+default\\s+(?:function\\s+|class\\s+|const\\s+)?\\b${cleanSym}\\b`).test(file.code) ||
+          new RegExp(`export\\s+(?:const|let|var|function|class|type|interface|enum)\\s+\\b${cleanSym}\\b`).test(file.code) ||
+          new RegExp(`export\\s*\\{[^}]*\\b${cleanSym}\\b[^}]*\\}`).test(file.code);
+
+        if (hasExport) {
+          return { type: "file", fileIndex: i, filename: file.name || file.filepath };
+        }
+      }
+    }
+  }
+
+  // 2. Поиск локального определения в текущем файле (Go to Local Definition)
+  if (currentCode) {
+    const lines = currentCode.split("\n");
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const patterns = [
+        new RegExp(`\\b(?:const|let|var)\\s+(?:\\{[^}]*\\b${cleanSym}\\b[^}]*\\}|\\[[^\\]]*\\b${cleanSym}\\b[^\\]]*\\}|\\b${cleanSym}\\b)`),
+        new RegExp(`\\bfunction\\s*\\*?\\s*\\b${cleanSym}\\b`),
+        new RegExp(`\\bclass\\s+\\b${cleanSym}\\b`),
+        new RegExp(`\\b(?:type|interface|enum)\\s+\\b${cleanSym}\\b`),
+      ];
+
+      for (const pat of patterns) {
+        const m = line.match(pat);
+        if (m) {
+          return { type: "local", line: i + 1, col: (m.index || 0) + 1 };
+        }
+      }
+    }
+  }
+
+  return null;
+};
+
+/**
  * Интеллектуальный поиск подсказок автодополнения
  */
 export const getCompletions = (fullCode, cursorIndex, options = {}) => {
@@ -1291,18 +1380,31 @@ export const getCompletions = (fullCode, cursorIndex, options = {}) => {
   // 1. Контекст строки импорта
   // ==========================================
   if (isImportLine) {
-    // 1.1. Курсор после `from '` или `from "`
-    const fromMatch = currentLineBeforeCursor.match(/from\s+['"]([a-zA-Z0-9_@/.-]*)$/);
-    if (fromMatch) {
-      const query = fromMatch[1];
+    // 1.1. Курсор после `from '`, `from "` или `from `
+    const fromMatch = currentLineBeforeCursor.match(/from\s*(['"]?)([a-zA-Z0-9_@/.-]*)$/);
+    if (fromMatch && currentLineBeforeCursor.includes("from")) {
+      const hasQuote = Boolean(fromMatch[1]);
+      const quoteChar = fromMatch[1] || "'";
+      const query = fromMatch[2] || "";
+
+      // Полный остаток модуля после курсора (буквы, закрывающая кавычка, точка с запятой)
+      const afterMatch = lineAfterCursor.match(/^([a-zA-Z0-9_@/.-]*)(\s*['"]?)(\s*;?)/);
+      const afterTotalLen = afterMatch ? afterMatch[0].length : 0;
+
+      const replaceStart = cursorIndex - query.length;
+      const replaceEnd = cursorIndex + afterTotalLen;
+      const quoteToUse = hasQuote ? quoteChar : "'";
+      const insertSuffix = `${quoteToUse};`;
+
       const moduleCandidates = Object.keys(KNOWN_MODULES).map((mod) => ({
         prefix: mod,
         label: `'${mod}'`,
         detail: `Модуль библиотеки`,
         kind: "module",
-        insertText: mod + "';",
-        replaceStart: cursorIndex - fromMatch[1].length,
-        replaceEnd: cursorIndex + (lineAfterCursor.startsWith("'") || lineAfterCursor.startsWith('"') ? 1 : 0),
+        insertText: hasQuote ? `${mod}${insertSuffix}` : `'${mod}${insertSuffix}`,
+        replaceStart,
+        replaceEnd,
+        cursorOffset: (hasQuote ? `${mod}${insertSuffix}` : `'${mod}${insertSuffix}`).length,
       }));
 
       if (Array.isArray(files)) {
@@ -1314,9 +1416,10 @@ export const getCompletions = (fullCode, cursorIndex, options = {}) => {
               label: `'${rel}'`,
               detail: `Локальный файл: ${f.name}`,
               kind: "module",
-              insertText: rel + "';",
-              replaceStart: cursorIndex - fromMatch[1].length,
-              replaceEnd: cursorIndex + (lineAfterCursor.startsWith("'") || lineAfterCursor.startsWith('"') ? 1 : 0),
+              insertText: hasQuote ? `${rel}${insertSuffix}` : `'${rel}${insertSuffix}`,
+              replaceStart,
+              replaceEnd,
+              cursorOffset: (hasQuote ? `${rel}${insertSuffix}` : `'${rel}${insertSuffix}`).length,
             });
           }
         });
@@ -1333,7 +1436,7 @@ export const getCompletions = (fullCode, cursorIndex, options = {}) => {
       scoredModules.sort((a, b) => b.score - a.score);
 
       return {
-        word: fromMatch[1] || "from",
+        word: query || "from",
         items: scoredModules.slice(0, 10),
       };
     }
@@ -1421,6 +1524,9 @@ export const getCompletions = (fullCode, cursorIndex, options = {}) => {
       const hasFromClause = /from\s+['"]([^'"]+)['"]/.exec(fullCurrentLine);
       const targetModuleName = hasFromClause ? hasFromClause[1] : null;
 
+      const afterIdentMatch = lineAfterCursor.match(/^[a-zA-Z0-9_$]*/);
+      const afterIdentLen = afterIdentMatch ? afterIdentMatch[0].length : 0;
+
       const suggestions = [];
 
       const addNamedExportsFromModule = (modName, modInfo) => {
@@ -1435,10 +1541,10 @@ export const getCompletions = (fullCode, cursorIndex, options = {}) => {
             let cOffset;
 
             if (hasFromClause) {
-              // Линия уже содержит `from '...'` -> заменяем только текущее имя символа
+              // Линия уже содержит `from '...'` -> заменяем только текущее имя символа (с учетом остатка слова)
               insertStr = sym;
               repStart = cursorIndex - currentPart.length;
-              repEnd = cursorIndex;
+              repEnd = cursorIndex + afterIdentLen;
               cOffset = currentPart.length > 0 ? sym.length : undefined;
             } else {
               // Линия НЕ содержит `from '...'` -> разворачиваем полный валидный import statement с from '...'
@@ -1467,12 +1573,9 @@ export const getCompletions = (fullCode, cursorIndex, options = {}) => {
       if (targetModuleName && KNOWN_MODULES[targetModuleName]) {
         addNamedExportsFromModule(targetModuleName, KNOWN_MODULES[targetModuleName]);
       } else {
-        addNamedExportsFromModule("react", KNOWN_MODULES["react"]);
-        addNamedExportsFromModule("@reduxjs/toolkit", KNOWN_MODULES["@reduxjs/toolkit"]);
-        addNamedExportsFromModule("react-redux", KNOWN_MODULES["react-redux"]);
-        addNamedExportsFromModule("@tanstack/react-router", KNOWN_MODULES["@tanstack/react-router"]);
-        addNamedExportsFromModule("react-dom/client", KNOWN_MODULES["react-dom/client"]);
-        addNamedExportsFromModule("zustand", KNOWN_MODULES["zustand"]);
+        for (const [modName, modInfo] of Object.entries(KNOWN_MODULES)) {
+          addNamedExportsFromModule(modName, modInfo);
+        }
 
         const taskExports = getTaskFilesExports(files, currentFilepath);
         for (const [sym, info] of Object.entries(taskExports)) {
@@ -1488,7 +1591,7 @@ export const getCompletions = (fullCode, cursorIndex, options = {}) => {
               if (hasFromClause) {
                 insertStr = sym;
                 repStart = cursorIndex - currentPart.length;
-                repEnd = cursorIndex;
+                repEnd = cursorIndex + afterIdentLen;
                 cOffset = currentPart.length > 0 ? sym.length : undefined;
               } else {
                 const allSyms = [...alreadyImported, sym].join(", ");
@@ -1657,6 +1760,9 @@ export const getCompletions = (fullCode, cursorIndex, options = {}) => {
     }
 
     const scoredMembers = [];
+    const afterMemberMatch = lineAfterCursor.match(/^[a-zA-Z0-9_$]*/);
+    const afterMemberLen = afterMemberMatch ? afterMemberMatch[0].length : 0;
+
     for (const mem of candidateMembers) {
       const { match, score } = fuzzyMatch(mem.label, memberQuery);
       if (match || !memberQuery) {
@@ -1668,7 +1774,7 @@ export const getCompletions = (fullCode, cursorIndex, options = {}) => {
           kind: mem.kind,
           insertText: rawInsert,
           replaceStart: cursorIndex - memberQuery.length,
-          replaceEnd: cursorIndex,
+          replaceEnd: cursorIndex + afterMemberLen,
           score,
         });
       }
@@ -1700,6 +1806,8 @@ export const getCompletions = (fullCode, cursorIndex, options = {}) => {
     const cssPropMatch = styleContent.match(/(?:^|[,;])\s*([a-zA-Z0-9_$]*)$/);
     if (cssPropMatch) {
       const cssQuery = cssPropMatch[1] || "";
+      const afterCssMatch = lineAfterCursor.match(/^[a-zA-Z0-9_$]*/);
+      const afterCssLen = afterCssMatch ? afterCssMatch[0].length : 0;
       const scoredCss = [];
 
       for (const prop of REACT_CSS_PROPERTIES) {
@@ -1712,7 +1820,7 @@ export const getCompletions = (fullCode, cursorIndex, options = {}) => {
             kind: prop.kind,
             insertText: prop.insertText,
             replaceStart: cursorIndex - cssQuery.length,
-            replaceEnd: cursorIndex,
+            replaceEnd: cursorIndex + afterCssLen,
             score: score + 15,
           });
         }
@@ -1732,9 +1840,13 @@ export const getCompletions = (fullCode, cursorIndex, options = {}) => {
   // 4. Контекст JSX: автодополнение тегов (<tag) и пропсов/обработчиков (<div prop=)
   // ==========================================
   // 4.1. Ввод открывающего тега JSX (например: `<d`, `<button`, `<Fragment`, `<`)
-  const tagOpenMatch = currentLineBeforeCursor.match(/<([a-zA-Z0-9_$]*)$/);
+  // Исключаем контекст TypeScript дженериков (type ListProps<T>, interface Props<T>, useRef<T>, Array<T>, etc.)
+  const isGenericContext = isTypeScriptGenericContext(currentLineBeforeCursor);
+  const tagOpenMatch = !isGenericContext && currentLineBeforeCursor.match(/<([a-zA-Z0-9_$]*)$/);
   if (tagOpenMatch) {
     const tagQuery = tagOpenMatch[1];
+    const afterTagMatch = lineAfterCursor.match(/^[a-zA-Z0-9_$]*/);
+    const afterTagLen = afterTagMatch ? afterTagMatch[0].length : 0;
     const scoredTags = [];
 
     // Стандартные JSX элементы
@@ -1748,7 +1860,7 @@ export const getCompletions = (fullCode, cursorIndex, options = {}) => {
           kind: "keyword",
           insertText: el.name,
           replaceStart: cursorIndex - tagQuery.length,
-          replaceEnd: cursorIndex,
+          replaceEnd: cursorIndex + afterTagLen,
           score: score + 10,
         });
       }
@@ -1768,7 +1880,7 @@ export const getCompletions = (fullCode, cursorIndex, options = {}) => {
             insertText: sym,
             autoImport: { symbol: sym, module: info.module, isDefault: info.isDefault },
             replaceStart: cursorIndex - tagQuery.length,
-            replaceEnd: cursorIndex,
+            replaceEnd: cursorIndex + afterTagLen,
             score: score + 15,
           });
         }
@@ -1791,6 +1903,8 @@ export const getCompletions = (fullCode, cursorIndex, options = {}) => {
   if (inTagMatch && !isInsideQuoteOrBrace) {
     const tagName = inTagMatch[1].toLowerCase();
     const propQuery = inTagMatch[2] || "";
+    const afterPropMatch = lineAfterCursor.match(/^[a-zA-Z0-9_$-]*/);
+    const afterPropLen = afterPropMatch ? afterPropMatch[0].length : 0;
 
     let candidateProps = [...REACT_JSX_PROPS.common, ...REACT_JSX_PROPS.events];
 
@@ -1809,7 +1923,7 @@ export const getCompletions = (fullCode, cursorIndex, options = {}) => {
           kind: prop.kind,
           insertText: prop.insertText,
           replaceStart: cursorIndex - propQuery.length,
-          replaceEnd: cursorIndex,
+          replaceEnd: cursorIndex + afterPropLen,
           score,
         });
       }
@@ -1829,6 +1943,36 @@ export const getCompletions = (fullCode, cursorIndex, options = {}) => {
         word: propQuery || "prop",
         items: uniqueProps.slice(0, 12),
       };
+    }
+  }
+
+  // ==========================================
+  // 4.3. Emmet JSX генератор разметки (div.card>button.btn*2)
+  // ==========================================
+  const emmetMatch = currentLineBeforeCursor.match(/([a-zA-Z0-9_$.#:>+*^=$/-]+)$/);
+  if (emmetMatch && isEmmetAbbreviation(emmetMatch[1])) {
+    const abbr = emmetMatch[1];
+    const lineIndentMatch = currentLineBeforeCursor.match(/^(\s*)/);
+    const lineIndent = lineIndentMatch ? lineIndentMatch[1] : "";
+    const expanded = expandEmmetAbbreviation(abbr, lineIndent);
+    if (expanded) {
+      const emmetItem = {
+        prefix: abbr,
+        label: `${abbr} ⚡ (Emmet)`,
+        detail: `Развернуть Emmet JSX разметку`,
+        kind: "snippet",
+        insertText: expanded,
+        replaceStart: cursorIndex - abbr.length,
+        replaceEnd: cursorIndex,
+        score: 130,
+      };
+
+      if (/[.#>+*\[{]/.test(abbr)) {
+        return {
+          word: abbr,
+          items: [emmetItem],
+        };
+      }
     }
   }
 

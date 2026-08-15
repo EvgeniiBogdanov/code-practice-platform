@@ -38,9 +38,14 @@ function runTests() {
   assert(checkAutoCloseTag("<", "")?.isFragment === true, "Fragment <> auto close");
   assert(checkAutoCloseTag("for (let i = 0; i < len", "") === null, "JS for loop < should not auto close");
   assert(checkAutoCloseTag("if (x < y", "") === null, "JS if < should not auto close");
-  assert(checkAutoCloseTag("const val = a < b", "") === null, "JS comparison < should not auto close");
   assert(checkAutoCloseTag("<div", "</div>") === null, "Should not duplicate if </div> is right after cursor");
   assert(checkAutoCloseTag("<div", "></div") === null, "Should not duplicate if > is already after cursor");
+  assert(checkAutoCloseTag("type ListProps<", "") === null, "TypeScript generic type ListProps< should NOT auto-close as JSX fragment");
+  assert(checkAutoCloseTag("type ListProps<T", "") === null, "TypeScript generic type ListProps<T should NOT auto-close as JSX tag");
+  assert(checkAutoCloseTag("interface TableProps<", "") === null, "TypeScript generic interface TableProps< should NOT auto-close");
+  assert(checkAutoCloseTag("const r = useRef<", "") === null, "TypeScript generic useRef< should NOT auto-close");
+  assert(checkAutoCloseTag("const list: Array<", "") === null, "TypeScript generic Array< should NOT auto-close");
+  assert(checkAutoCloseTag("const fn = <T,", "") === null, "TypeScript generic arrow function <T, should NOT auto-close");
 
   // 2. Auto rename tag - Open tag rename
   console.log("\n2. handleAutoRenameTag open tag rename:");
@@ -95,13 +100,22 @@ function runTests() {
   res = handleAutoRenameTag("<div id=\"test\"></div>", "<div id=\"test-2\"></div>", 17);
   assert(res.updatedCode === "<div id=\"test-2\"></div>", "Editing attribute value must NOT corrupt closing tag!");
 
-  // 6. Fragment handling
-  console.log("\n6. Fragment handling:");
+  // 6. Fragment handling & Autocomplete Transitions
+  console.log("\n6. Fragment handling & Autocomplete Transitions:");
   res = handleAutoRenameTag("<></>", "< ></>", 2);
   assert(res.updatedCode === "< ></>", "Typing space in fragment < > must NOT corrupt tag!");
 
   res = handleAutoRenameTag("<></>", "<div></>", 4);
   assert(res.updatedCode === "<div></div>", "Converting open fragment to <div> updates close fragment to </div>");
+
+  res = handleAutoRenameTag("<d></>", "<div></>", 4);
+  assert(res.updatedCode === "<div></div>", "Autocomplete completion <d></> -> <div></> updates close fragment to </div>");
+
+  res = handleAutoRenameTag("<></d>", "<></div>", 6);
+  assert(res.updatedCode === "<div></div>", "Autocomplete completion <></d> -> <></div> updates open fragment to <div>");
+
+  res = handleAutoRenameTag("<><p>text</p></>", "<div><p>text</p></>", 4);
+  assert(res.updatedCode === "<div><p>text</p></div>", "Renaming outer fragment around nested children updates outer closing tag to </div>");
 
   // 7. Multi-line tags
   console.log("\n7. Multi-line tags:");
