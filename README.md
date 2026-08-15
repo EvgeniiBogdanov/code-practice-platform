@@ -63,13 +63,9 @@
     </td>
   </tr>
   <tr>
-    <td width="50%" valign="top">
+    <td colspan="2" valign="top">
       <h3>⚡ Интерактивная консоль xterm.js</h3>
       <p>Запуск кода через изолированный <b>Web Worker</b>, точный замер времени исполнения в миллисекундах (<code>⚡ 4.2ms</code>) и контрастная палитра для светлой и тёмной тем.</p>
-    </td>
-    <td width="50%" valign="top">
-      <h3>🎨 Notion-Style UI & Radix Tooltips</h3>
-      <p>Кастомная система всплывающих подсказок с Warmup Hover, адаптивный таймер собеседования, быстрый поиск <code>Cmd+K</code> и переключение тёмной/светлой темы.</p>
     </td>
   </tr>
 </table>
@@ -96,7 +92,7 @@
 
 Полная история всех изменений и релизов доступна в файле **[CHANGELOG.md](CHANGELOG.md)**.
 
-- **[v2.2.1](CHANGELOG.md#v2-2-1)** — Умное интервальное повторение (SM-2), ступенчатые подсказки (Hints), Radix Tooltip System, редизайн Header и карточек задач.
+- **[v2.2.1](CHANGELOG.md#v2-2-1)** — Умное интервальное повторение (SM-2), ступенчатые подсказки (Hints), система всплывающих подсказок (Tooltip System), редизайн Header и карточек задач.
 - **[v2.2.0](CHANGELOG.md#v2-2-0)** — React Live Runner, TypeScript Live Type Checking, Hover Tooltips с сигнатурами, Emmet JSX & навигация.
 - **[v2.1.8](CHANGELOG.md#v2-1-8)** — Хранилище IndexedDB, Web Worker sandbox, оптимизация размера главного бандла на 85.5%.
 - **[v2.0.0](CHANGELOG.md#v2-0-0)** — Запуск браузерного редактора кода и интерактивной терминальной консоли.
