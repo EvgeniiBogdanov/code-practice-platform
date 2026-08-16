@@ -1,10 +1,11 @@
 import React from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { Search, Code2, Zap, Brain } from "lucide-react";
+import { Search, Code2, Zap, Brain, FileText } from "lucide-react";
 import { getGroupMeta } from "../../javascript/data/groupConfig";
 import { getAlgoGroupMeta } from "../../algorithms/data/groupConfig";
 import { getDifficultyLabel } from "../../utils/difficultyHelpers";
 import { useUIStore } from "../../stores/useUIStore";
+import { FILE_ICON_COLOR } from "../../constants/uiConstants";
 
 const SECTION_LABELS = {
   react: { label: "REACT", icon: <Code2 size={12} style={{ color: "#61dafb" }} /> },
@@ -124,10 +125,11 @@ export const CommandPaletteModal = ({
                 onClick={() => handleSelectTask(task)}
               >
                 {activeSection === "home" && (
-                  <span className="palette-item-section-badge" style={{ display: "inline-flex", alignItems: "center", gap: "3px", fontSize: "10px", fontWeight: 600, padding: "1px 6px", borderRadius: "4px", background: "var(--state-hover)", color: "var(--text-muted)", marginRight: "6px", flexShrink: 0 }}>
+                  <span className="palette-item-section-badge" style={{ display: "inline-flex", alignItems: "center", gap: "3px", fontSize: "10px", fontWeight: 600, padding: "1px 6px", borderRadius: "4px", background: "var(--state-hover)", color: "var(--text-muted)", marginRight: "4px", flexShrink: 0 }}>
                     {sectionMeta.icon} {sectionMeta.label}
                   </span>
                 )}
+                <FileText size={15} className="node-file-icon" style={{ color: FILE_ICON_COLOR, flexShrink: 0 }} />
                 <span className="palette-item-title">{task.title}</span>
 
                 {task.difficulty && (

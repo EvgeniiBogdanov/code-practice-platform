@@ -15,24 +15,18 @@ import {
   BookOpen,
   Star,
   ExternalLink,
-  Flame,
   Sparkles,
   Award,
   Calendar,
   Trophy,
+  RotateCcw,
 } from "lucide-react";
 import { JS_TASKS } from "../../javascript/data/tasksData";
 import { REACT_TASKS, WARMUP_TASKS } from "../../react/data/tasksData";
 import { ALL_ALGO_TASKS } from "../../algorithms/data/tasksData";
-import { resolveTaskSection, ALL_TASKS } from "../../data/tasksRegistry";
+import { ALL_TASKS } from "../../data/tasksRegistry";
 import { useReviewStore } from "../../stores/useReviewStore";
-import { getDifficultyLabel } from "../../utils/difficultyHelpers";
-import {
-  getReviewBadgeMeta,
-  formatNextReviewDate,
-  getDueTasksList,
-  calculateMasteryStats,
-} from "../../utils/spacedRepetition";
+import { calculateMasteryStats } from "../../utils/spacedRepetition";
 
 export const HomeDashboard = ({
   completedTotal,
@@ -74,7 +68,6 @@ export const HomeDashboard = ({
   // Spaced Repetition Store data
   const reviews = useReviewStore((state) => state.reviews);
   const isReviewStoreReady = useReviewStore((state) => state.isInitialized);
-  const dueTasks = React.useMemo(() => isReviewStoreReady ? getDueTasksList(ALL_TASKS, reviews) : [], [reviews, isReviewStoreReady]);
   const masteryStats = React.useMemo(() => isReviewStoreReady ? calculateMasteryStats(ALL_TASKS, reviews) : { dueToday: 0, learning: 0, reviewing: 0, mastered: 0, totalReviewed: 0, unreviewed: 0, totalCount: 0 }, [reviews, isReviewStoreReady]);
 
   return (
@@ -83,7 +76,7 @@ export const HomeDashboard = ({
       <div className="page-main-header">
         <h1 className="page-main-title">Обзор платформы</h1>
         <p className="page-main-subtitle">
-          Интерактивная платформа для подготовки к собеседованиям и практики решения задач (260+ задач). Встроенный редактор кода и веб-консоль, песочница кандидата, эталонные решения и разборы теории.
+          Интерактивная платформа для подготовки к техническим собеседованиям и практики решения задач ({grandTotal > 0 ? `${grandTotal} задач` : "280+ задач"}). Встроенный редактор кода с анализом типов, песочница кандидата, живой запуск React и интерактивная веб-консоль, умное интервальное повторение и эталонные решения.
         </p>
       </div>
 
@@ -96,7 +89,7 @@ export const HomeDashboard = ({
           <div className="callout-content">
             <div className="callout-title">Быстрый старт</div>
             <div className="callout-text">
-              Решайте задачи во встроенном редакторе или любимой IDE. Анализируйте код кандидата, изучайте эталонные решения O(N) / O(1), теоретические разборы и запускайте код в веб-консоли.
+              Решайте задачи во встроенном редакторе или любимой IDE. Анализируйте код кандидата, изучайте эталонные решения O(N) / O(1), проверяйте критерии самопроверки и запускайте код в живой консоли и React-песочнице.
             </div>
           </div>
         </div>
@@ -127,16 +120,12 @@ export const HomeDashboard = ({
 
       <hr className="divider" />
 
-      {/* Секция: Интервальное повторение (Spaced Repetition / «К повторению сегодня») */}
+      {/* Секция: Интервальное повторение (Spaced Repetition) */}
       <div className="section-block spaced-repetition-section">
         <div className="block-header spaced-repetition-header">
           <div className="block-header-title-group">
-            <Flame size={18} style={{ color: "#ef4444" }} className={dueTasks.length > 0 ? "flame-pulse-icon" : ""} />
-            <h2 className="block-title">
-              {dueTasks.length > 0
-                ? `К повторению сегодня (${dueTasks.length})`
-                : "Интервальное повторение"}
-            </h2>
+            <Brain size={18} style={{ color: "var(--accent-blue)" }} />
+            <h2 className="block-title">Интервальное повторение</h2>
           </div>
           {masteryStats.totalReviewed > 0 && (
             <span className="mastery-summary-pill">
@@ -146,91 +135,8 @@ export const HomeDashboard = ({
           )}
         </div>
 
-        {dueTasks.length > 0 ? (
-          <div className="due-tasks-container">
-            <p className="due-tasks-subtitle">
-              Задачи, у которых подошел срок повторения по алгоритму SM-2. Решите их для надежного закрепления в памяти:
-            </p>
-            <div className="due-tasks-grid">
-              {dueTasks.map((task) => {
-                const section = resolveTaskSection(task);
-                const to =
-                  section === "algorithms"
-                    ? "/algorithms/$taskId"
-                    : section === "javascript"
-                    ? "/javascript/$taskId"
-                    : "/react/$taskId";
-                const badge = getReviewBadgeMeta(task.reviewData);
-
-                return (
-                  <Link
-                    key={task.id}
-                    to={to}
-                    params={{ taskId: String(task.id) }}
-                    className="due-task-card"
-                  >
-                    <div className="due-task-header">
-                      <div className="due-task-section-badge">
-                        {section === "javascript" ? (
-                          <span className="mini-tag amber">JS</span>
-                        ) : section === "algorithms" ? (
-                          <span className="mini-tag purple">Algo</span>
-                        ) : (
-                          <span className="mini-tag blue">React</span>
-                        )}
-                        {task.difficulty && (
-                          <span className={`mini-difficulty difficulty-${task.difficulty}`}>
-                            {getDifficultyLabel(task.difficulty)}
-                          </span>
-                        )}
-                      </div>
-                      <span className="due-task-stage-badge">{badge.stageName}</span>
-                    </div>
-
-                    <h4 className="due-task-title">{task.title}</h4>
-
-                    <div className="due-task-footer">
-                      <span className="due-task-status-text">
-                        <Flame size={12} style={{ color: "#ef4444" }} /> Пора повторить
-                      </span>
-                      <span className="due-task-btn">
-                        <span>Повторить</span>
-                        <ArrowRight size={12} />
-                      </span>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        ) : masteryStats.totalReviewed > 0 ? (
-          <div className="due-empty-state-card">
-            <div className="due-empty-icon">
-              <Sparkles size={22} style={{ color: "#10b981" }} />
-            </div>
-            <div className="due-empty-content">
-              <div className="due-empty-title">Все задачи на сегодня повторены!</div>
-              <div className="due-empty-desc">
-                Вы повторили все назначенные задачи. Следующие повторения запланированы в соответствии с вашим графиком.
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="due-onboarding-card">
-            <div className="due-empty-icon">
-              <Brain size={22} style={{ color: "var(--accent-blue)" }} />
-            </div>
-            <div className="due-empty-content">
-              <div className="due-empty-title">Умное интервальное повторение</div>
-              <div className="due-empty-desc">
-                Решайте задачи в каталоге и оценивайте их (Сложно: +1д, Средне: +3д, Легко: +7д). Платформа автоматически построит индивидуальный график повторений (1д → 3д → 7д → 14д → 30д → Мастер).
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Шкала мастерства (Mastery Progress Track) */}
-        {masteryStats.totalReviewed > 0 && (
+        {masteryStats.totalReviewed > 0 ? (
+          /* Шкала мастерства (Mastery Progress Track) */
           <div className="mastery-track-card">
             <div className="mastery-track-header">
               <span className="mastery-track-title">Уровни закрепления в памяти:</span>
@@ -257,6 +163,18 @@ export const HomeDashboard = ({
               <span className="legend-item"><span className="legend-dot red" /> 1-3 дня ({masteryStats.learning})</span>
               <span className="legend-item"><span className="legend-dot yellow" /> 7-14 дней ({masteryStats.reviewing})</span>
               <span className="legend-item"><span className="legend-dot green" /> Мастер ({masteryStats.mastered})</span>
+            </div>
+          </div>
+        ) : (
+          <div className="due-onboarding-card">
+            <div className="due-empty-icon">
+              <Brain size={22} style={{ color: "var(--accent-blue)" }} />
+            </div>
+            <div className="due-empty-content">
+              <div className="due-empty-title">Умное интервальное повторение</div>
+              <div className="due-empty-desc">
+                Решайте задачи в каталоге и оценивайте их (Сложно: +1д, Средне: +3д, Легко: +7д). Платформа автоматически построит индивидуальный график повторений (1д → 3д → 7д → 14д → 30д → Мастер).
+              </div>
             </div>
           </div>
         )}
@@ -381,7 +299,7 @@ export const HomeDashboard = ({
                 <span className="tag blue">{totalTasks} задач</span>
               </div>
               <p className="card-desc">
-                Практика кастомных хуков, паттерны рефакторинга компонентов, оптимизация перерендеров, Redux Toolkit и интеграция с TypeScript.
+                Практика кастомных хуков, паттерны рефакторинга компонентов, оптимизация перерендеров, Redux Toolkit, React Live Runner и TypeScript.
               </p>
               <div className="card-tags">
                 <span className="subtag">#hooks</span>
@@ -410,7 +328,7 @@ export const HomeDashboard = ({
                 <span className="tag purple">{algoTotal} задач</span>
               </div>
               <p className="card-desc">
-                Классические алгоритмические задачи с собеседований: два указателя, скользящее окно, бинарный поиск, графы и деревья.
+                Классические алгоритмические задачи с собеседований: два указателя, скользящее окно, бинарный поиск, графы и деревья с анализом O(N) / O(1).
               </p>
               <div className="card-tags">
                 <span className="subtag">#two-pointers</span>
@@ -444,10 +362,10 @@ export const HomeDashboard = ({
               <div className="feature-icon-badge blue">
                 <Code2 size={16} />
               </div>
-              <h4 className="feature-title">Встроенный редактор кода</h4>
+              <h4 className="feature-title">Редактор и анализ типов</h4>
             </div>
             <p className="feature-desc">
-              Редактирование JS, TS и React (JSX/TSX) прямо в браузере, автоформатирование Prettier, подсветка синтаксиса и полноэкранный режим (/open).
+              Редактирование JS, TS и JSX/TSX с живой проверкой типов на лету, всплывающими подсказками сигнатур, Emmet JSX и автоформатированием Prettier.
             </p>
           </div>
 
@@ -456,10 +374,10 @@ export const HomeDashboard = ({
               <div className="feature-icon-badge amber">
                 <Terminal size={16} />
               </div>
-              <h4 className="feature-title">Интерактивная веб-консоль</h4>
+              <h4 className="feature-title">Веб-консоль и React Runner</h4>
             </div>
             <p className="feature-desc">
-              Мгновенный запуск кода (Ctrl+Enter / Cmd+Enter) с замером времени выполнения (<Zap size={12} style={{ display: "inline", verticalAlign: "middle", marginBottom: "1px" }} /> ms), умным сворачиванием и выводом всех типов данных.
+              Мгновенный запуск кода (Ctrl+Enter) с замером времени (<Zap size={12} style={{ display: "inline", verticalAlign: "middle", marginBottom: "1px" }} /> ms) и живой рендеринг компонентов React с Redux Toolkit, Zustand и защитой от зацикливаний.
             </p>
           </div>
 
@@ -471,7 +389,19 @@ export const HomeDashboard = ({
               <h4 className="feature-title">Песочница кандидата</h4>
             </div>
             <p className="feature-desc">
-              Запускаемый live-код с багами и недочетами реальных кандидатов для отработки навыка проведения Code Review.
+              Запускаемый live-код с реальными багами и недочетами кандидатов для отработки навыка проведения технического Code Review.
+            </p>
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-header">
+              <div className="feature-icon-badge green">
+                <RotateCcw size={16} />
+              </div>
+              <h4 className="feature-title">Интервальное повторение SM-2</h4>
+            </div>
+            <p className="feature-desc">
+              Календарный алгоритм закрепления задач (1д ➔ 3д ➔ 7д ➔ 14д ➔ 30д ➔ Мастер) с учетом часового пояса и автосбросом кода в день повтора.
             </p>
           </div>
 
@@ -483,7 +413,7 @@ export const HomeDashboard = ({
               <h4 className="feature-title">Эталонные решения</h4>
             </div>
             <p className="feature-desc">
-              Оптимизированные решения с разбором сложности O(N) / O(1), выбором нескольких вариантов и лучшими практиками собеседований.
+              Оптимизированные решения с разбором сложности O(N) / O(1), выбором нескольких вариантов реализации и лучшими практиками собеседований.
             </p>
           </div>
 
@@ -492,22 +422,10 @@ export const HomeDashboard = ({
               <div className="feature-icon-badge blue">
                 <ClipboardCheck size={16} />
               </div>
-              <h4 className="feature-title">Чек-листы и вопросы</h4>
+              <h4 className="feature-title">Чек-листы, поиск и таймер</h4>
             </div>
             <p className="feature-desc">
-              Вопросы интервьюера и критерии самопроверки, проверяющие усвоение материала перед выходом на интервью.
-            </p>
-          </div>
-
-          <div className="feature-card">
-            <div className="feature-header">
-              <div className="feature-icon-badge amber">
-                <Lightbulb size={16} />
-              </div>
-              <h4 className="feature-title">Поиск и шпаргалки</h4>
-            </div>
-            <p className="feature-desc">
-              Мгновенный поиск по всей базе задач через Command Palette (Cmd+K / Ctrl+K), модальные шпаргалки и автоматический учет прогресса.
+              Критерии самопроверки и вопросы интервьюера, быстрый поиск задач через Command Palette (Cmd+K), таймер собеседования и шпаргалки.
             </p>
           </div>
         </div>

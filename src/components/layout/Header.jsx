@@ -19,8 +19,8 @@ import {
   Sun,
   Moon,
   FileCode,
+  FileText,
   Folder,
-  Flame,
   Sparkles,
   ArrowRight,
   RotateCcw,
@@ -31,6 +31,7 @@ import { getGroupMeta } from "../../javascript/data/groupConfig";
 import { ALGO_TASKS } from "../../algorithms/data/tasksData";
 import { getAlgoGroupMeta } from "../../algorithms/data/groupConfig";
 import { ALL_TASKS, resolveTaskSection } from "../../data/tasksRegistry";
+import { FILE_ICON_COLOR } from "../../constants/uiConstants";
 import { useReviewStore } from "../../stores/useReviewStore";
 import {
   getAllReviewTasksSorted,
@@ -251,7 +252,7 @@ export const Header = ({
         >
           <span className="breadcrumb-dropdown-icon"><Home size={15} style={{ color: "var(--color-info-light)" }} /></span>
           <span className="dropdown-item-title">Главная</span>
-          <span className="section-badge soon">Обзор</span>
+          <span className="section-badge">Обзор</span>
         </Link>
         <Link
           to="/javascript"
@@ -260,7 +261,7 @@ export const Header = ({
         >
           <span className="breadcrumb-dropdown-icon"><Zap size={15} style={{ color: "var(--color-warning)" }} /></span>
           <span className="dropdown-item-title">JavaScript</span>
-          <span className="section-badge active">{JS_TASKS.length} задач</span>
+          <span className="section-badge">{JS_TASKS.length} задач</span>
         </Link>
         <Link
           to="/react"
@@ -269,7 +270,7 @@ export const Header = ({
         >
           <span className="breadcrumb-dropdown-icon"><Code2 size={15} style={{ color: "var(--color-info)" }} /></span>
           <span className="dropdown-item-title">React</span>
-          <span className="section-badge active">{REACT_TASKS.length} задач</span>
+          <span className="section-badge">{REACT_TASKS.length} задач</span>
         </Link>
         <Link
           to="/algorithms"
@@ -278,7 +279,7 @@ export const Header = ({
         >
           <span className="breadcrumb-dropdown-icon"><Brain size={15} style={{ color: "var(--color-accent-purple)" }} /></span>
           <span className="dropdown-item-title">Алгоритмы</span>
-          <span className="section-badge active">{ALGO_TASKS.length} задач</span>
+          <span className="section-badge">{ALGO_TASKS.length} задач</span>
         </Link>
       </div>
     </div>
@@ -490,25 +491,42 @@ export const Header = ({
                               (t) =>
                                 t.group === currentGroupName &&
                                 (!currentSubgroupName || t.subgroup === currentSubgroupName)
-                            ).map((t) => (
-                              <Link
-                                key={t.id}
-                                to="/javascript/$taskId"
-                                params={{ taskId: String(t.id) }}
-                                search={(prev) => prev}
-                                className={`breadcrumb-dropdown-item ${t.id === selectedTask?.id ? "active" : ""}`}
-                                onClick={closeAllDropdowns}
-                              >
-                                <span className="breadcrumb-dropdown-icon">{taskIcon}</span>
-                                <span className="dropdown-item-title">{t.title}</span>
-                                {completedTasks[t.id] &&
-                                  (completedTasks[t.id] === "unsolved" ? (
-                                    <span className="dropdown-item-unsolved"><X size={12} /></span>
-                                  ) : (
-                                    <span className="dropdown-item-check"><Check size={12} /></span>
-                                  ))}
-                              </Link>
-                            ))}
+                            ).map((t) => {
+                              const isSolved = isTaskSolved(t.id);
+                              const status = completedTasks[t.id] ?? completedTasks[String(t.id)] ?? null;
+                              const taskReview = reviews[String(t.id)] || reviews[t.id];
+                              const isDue = isTaskDue(taskReview);
+                              const isActive = t.id === selectedTask?.id || String(t.id) === String(selectedTask?.id);
+
+                              return (
+                                <Link
+                                  key={t.id}
+                                  to="/javascript/$taskId"
+                                  params={{ taskId: String(t.id) }}
+                                  search={(prev) => prev}
+                                  className={`breadcrumb-dropdown-item ${isActive ? "active" : ""} ${isDue ? "task-is-due" : ""}`}
+                                  onClick={closeAllDropdowns}
+                                >
+                                  <span className="breadcrumb-dropdown-icon">
+                                    <FileText size={14} className="node-file-icon" style={{ color: FILE_ICON_COLOR }} />
+                                  </span>
+                                  <span className="dropdown-item-title">{t.title}</span>
+                                  {isDue ? (
+                                    <span className="dropdown-item-repeat" title="Пора повторить сегодня!">
+                                      <RotateCcw size={12} />
+                                    </span>
+                                  ) : (status === "solved" || isSolved) ? (
+                                    <span className="dropdown-item-check" title="Решено">
+                                      <Check size={12} />
+                                    </span>
+                                  ) : status === "unsolved" ? (
+                                    <span className="dropdown-item-unsolved" title="Не решено">
+                                      <X size={12} />
+                                    </span>
+                                  ) : null}
+                                </Link>
+                              );
+                            })}
                           </div>
                         </div>
                       )}
@@ -596,25 +614,42 @@ export const Header = ({
                           <span className="breadcrumb-dropdown-header-title">{taskCategory || "Задачи"}</span>
                         </div>
                         <div className="breadcrumb-dropdown-list">
-                          {currentCategoryTasks.map((t) => (
-                            <Link
-                              key={t.id}
-                              to="/react/$taskId"
-                              params={{ taskId: String(t.id) }}
-                              search={(prev) => prev}
-                              className={`breadcrumb-dropdown-item ${t.id === selectedTask?.id ? "active" : ""}`}
-                              onClick={closeAllDropdowns}
-                            >
-                              <span className="breadcrumb-dropdown-icon">{taskIcon}</span>
-                              <span className="dropdown-item-title">{t.title}</span>
-                              {completedTasks[t.id] &&
-                                (completedTasks[t.id] === "unsolved" ? (
-                                  <span className="dropdown-item-unsolved"><X size={12} /></span>
-                                ) : (
-                                  <span className="dropdown-item-check"><Check size={12} /></span>
-                                ))}
-                            </Link>
-                          ))}
+                          {currentCategoryTasks.map((t) => {
+                            const isSolved = isTaskSolved(t.id);
+                            const status = completedTasks[t.id] ?? completedTasks[String(t.id)] ?? null;
+                            const taskReview = reviews[String(t.id)] || reviews[t.id];
+                            const isDue = isTaskDue(taskReview);
+                            const isActive = t.id === selectedTask?.id || String(t.id) === String(selectedTask?.id);
+
+                            return (
+                              <Link
+                                key={t.id}
+                                to="/react/$taskId"
+                                params={{ taskId: String(t.id) }}
+                                search={(prev) => prev}
+                                className={`breadcrumb-dropdown-item ${isActive ? "active" : ""} ${isDue ? "task-is-due" : ""}`}
+                                onClick={closeAllDropdowns}
+                              >
+                                <span className="breadcrumb-dropdown-icon">
+                                  <FileText size={14} className="node-file-icon" style={{ color: FILE_ICON_COLOR }} />
+                                </span>
+                                <span className="dropdown-item-title">{t.title}</span>
+                                {isDue ? (
+                                  <span className="dropdown-item-repeat" title="Пора повторить сегодня!">
+                                    <RotateCcw size={12} />
+                                  </span>
+                                ) : (status === "solved" || isSolved) ? (
+                                  <span className="dropdown-item-check" title="Решено">
+                                    <Check size={12} />
+                                  </span>
+                                ) : status === "unsolved" ? (
+                                  <span className="dropdown-item-unsolved" title="Не решено">
+                                    <X size={12} />
+                                  </span>
+                                ) : null}
+                              </Link>
+                            );
+                          })}
                         </div>
                       </div>
                     )}
@@ -700,25 +735,42 @@ export const Header = ({
                             <span className="breadcrumb-dropdown-header-title">Задачи {currentGroup}</span>
                           </div>
                           <div className="breadcrumb-dropdown-list">
-                            {ALGO_TASKS.filter((t) => t.group === currentGroup).map((t) => (
-                              <Link
-                                key={t.id}
-                                to="/algorithms/$taskId"
-                                params={{ taskId: String(t.id) }}
-                                search={(prev) => prev}
-                                className={`breadcrumb-dropdown-item ${t.id === selectedTask?.id ? "active" : ""}`}
-                                onClick={closeAllDropdowns}
-                              >
-                                <span className="breadcrumb-dropdown-icon">{taskIcon}</span>
-                                <span className="dropdown-item-title">{t.title}</span>
-                                {completedTasks[t.id] &&
-                                  (completedTasks[t.id] === "unsolved" ? (
-                                    <span className="dropdown-item-unsolved"><X size={12} /></span>
-                                  ) : (
-                                    <span className="dropdown-item-check"><Check size={12} /></span>
-                                  ))}
-                              </Link>
-                            ))}
+                            {ALGO_TASKS.filter((t) => t.group === currentGroup).map((t) => {
+                              const isSolved = isTaskSolved(t.id);
+                              const status = completedTasks[t.id] ?? completedTasks[String(t.id)] ?? null;
+                              const taskReview = reviews[String(t.id)] || reviews[t.id];
+                              const isDue = isTaskDue(taskReview);
+                              const isActive = t.id === selectedTask?.id || String(t.id) === String(selectedTask?.id);
+
+                              return (
+                                <Link
+                                  key={t.id}
+                                  to="/algorithms/$taskId"
+                                  params={{ taskId: String(t.id) }}
+                                  search={(prev) => prev}
+                                  className={`breadcrumb-dropdown-item ${isActive ? "active" : ""} ${isDue ? "task-is-due" : ""}`}
+                                  onClick={closeAllDropdowns}
+                                >
+                                  <span className="breadcrumb-dropdown-icon">
+                                    <FileText size={14} className="node-file-icon" style={{ color: FILE_ICON_COLOR }} />
+                                  </span>
+                                  <span className="dropdown-item-title">{t.title}</span>
+                                  {isDue ? (
+                                    <span className="dropdown-item-repeat" title="Пора повторить сегодня!">
+                                      <RotateCcw size={12} />
+                                    </span>
+                                  ) : (status === "solved" || isSolved) ? (
+                                    <span className="dropdown-item-check" title="Решено">
+                                      <Check size={12} />
+                                    </span>
+                                  ) : status === "unsolved" ? (
+                                    <span className="dropdown-item-unsolved" title="Не решено">
+                                      <X size={12} />
+                                    </span>
+                                  ) : null}
+                                </Link>
+                              );
+                            })}
                           </div>
                         </div>
                       )}
@@ -772,7 +824,6 @@ export const Header = ({
               >
                 <RotateCcw
                   size={16}
-                  style={{ color: dueTasksCount > 0 ? "#ef4444" : undefined }}
                 />
                 {dueTasksCount > 0 && (
                   <span className="header-review-count-badge">{dueTasksCount}</span>
@@ -784,7 +835,7 @@ export const Header = ({
               <div className="header-review-dropdown-menu">
                 <div className="header-review-dropdown-header">
                   <div className="header-review-header-title-group">
-                    <RotateCcw size={14} style={{ color: dueTasksCount > 0 ? "#ef4444" : "var(--text-muted)" }} />
+                    <RotateCcw size={14} style={{ color: dueTasksCount > 0 ? "#eab308" : "var(--text-muted)" }} />
                     <span className="header-review-header-title">К повторению</span>
                   </div>
                   <span className="header-review-header-count">
@@ -809,16 +860,24 @@ export const Header = ({
                           ? "/javascript/$taskId"
                           : "/react/$taskId";
                       const badge = getReviewBadgeMeta(task.reviewData);
+                      const rating = task.reviewData?.rating;
 
                       return (
                         <Link
                           key={task.id}
                           to={to}
                           params={{ taskId: String(task.id) }}
-                          className={`header-review-item ${badge.isDue ? "is-due" : ""}`}
+                          className={`header-review-item ${badge.isDue ? "is-due" : ""} ${rating ? `rating-gradient-${rating}` : ""}`}
+                          title={rating ? `${task.title} • Оценка сложности: ${rating === "hard" ? "Сложно" : rating === "medium" ? "Средне" : "Легко"}` : task.title}
                           onClick={closeAllDropdowns}
                         >
                           <div className="header-review-item-main">
+                            <FileText size={15} className="node-file-icon" style={{ color: FILE_ICON_COLOR }} />
+                            <span className="header-review-item-title" title={task.title}>
+                              {task.title}
+                            </span>
+                          </div>
+                          <div className="header-review-item-meta">
                             <span className={`header-review-section-tag tag-${section}`}>
                               {section === "javascript"
                                 ? "JS"
@@ -826,13 +885,10 @@ export const Header = ({
                                 ? "Algo"
                                 : "React"}
                             </span>
-                            <span className="header-review-item-title" title={task.title}>
-                              {task.title}
+                            <span className={`difficulty-badge ${badge.badgeClass}`}>
+                              {badge.label}
                             </span>
                           </div>
-                          <span className={`difficulty-badge ${badge.badgeClass}`}>
-                            {badge.label}
-                          </span>
                         </Link>
                       );
                     })}

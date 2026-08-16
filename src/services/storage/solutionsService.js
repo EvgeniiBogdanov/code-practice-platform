@@ -9,6 +9,8 @@
  */
 
 import { dbGet, dbPut, dbDelete, dbGetAll, dbClear, STORES } from "./db.js";
+import { getReviewsFromLocalStorage } from "./reviewService.js";
+import { isTaskDue } from "../../utils/spacedRepetition.js";
 
 // L1 Memory Cache: id -> code string
 const memoryCache = new Map();
@@ -87,19 +89,54 @@ function parseIdMetadata(id) {
   return { taskId, rootTaskId, fileIdx };
 }
 
+
+/**
+ * Checks if a saved solution for a candidate task is from a previous review session
+ * and should be reset because the task is due for repetition today.
+ * @param {string} id
+ * @param {number} [updatedAt]
+ * @returns {boolean}
+ */
+export function shouldResetDueSolution(id, updatedAt) {
+  if (!id || typeof id !== "string" || !id.startsWith("cand_")) return false;
+  const { rootTaskId } = parseIdMetadata(id);
+  if (!rootTaskId) return false;
+
+  const reviews = getReviewsFromLocalStorage();
+  const review = reviews[String(rootTaskId)];
+  if (review && isTaskDue(review)) {
+    // If the solution was saved on or before lastReviewedAt (or without updatedAt),
+    // it belongs to the previous review session and must be reset so the candidate solves from scratch.
+    if (!updatedAt || (review.lastReviewedAt && updatedAt <= review.lastReviewedAt)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 /**
  * Synchronously peeks at the L1 in-memory cache.
- * Returns null if not cached yet.
+ * Returns null if not cached yet or if due for reset.
  * @param {string} id
  * @returns {string | null}
  */
 export function peekCachedSolution(id) {
   if (!id) return null;
-  return memoryCache.has(id) ? memoryCache.get(id) : null;
+  if (memoryCache.has(id)) {
+    const meta = pendingWrites.get(id);
+    if (shouldResetDueSolution(id, meta?.updatedAt)) {
+      memoryCache.delete(id);
+      pendingWrites.delete(id);
+      return null;
+    }
+    return memoryCache.get(id);
+  }
+  return null;
 }
 
 /**
  * Gets a user's saved solution code by ID from memory cache or IndexedDB.
+ * Automatically resets candidate solutions when repetition day has arrived.
  * @param {string} id - Unique identifier (e.g. `cand_${taskId}_file_${fileIdx}`)
  * @param {string} [fallbackCode=null] - Default code if nothing is saved
  * @returns {Promise<string | null>}
@@ -109,6 +146,17 @@ export async function getSolution(id, fallbackCode = null) {
 
   // 1. Check L1 Memory Cache
   if (memoryCache.has(id)) {
+    const meta = pendingWrites.get(id);
+    if (shouldResetDueSolution(id, meta?.updatedAt)) {
+      memoryCache.delete(id);
+      pendingWrites.delete(id);
+      try {
+        await dbDelete(STORES.SOLUTIONS, id);
+      } catch (err) {
+        console.error("[SolutionsService] Error clearing due solution:", id, err);
+      }
+      return fallbackCode;
+    }
     return memoryCache.get(id);
   }
 
@@ -116,6 +164,10 @@ export async function getSolution(id, fallbackCode = null) {
   try {
     const record = await dbGet(STORES.SOLUTIONS, id);
     if (record && typeof record.code === "string") {
+      if (shouldResetDueSolution(id, record.updatedAt)) {
+        await dbDelete(STORES.SOLUTIONS, id);
+        return fallbackCode;
+      }
       memoryCache.set(id, record.code);
       return record.code;
     }

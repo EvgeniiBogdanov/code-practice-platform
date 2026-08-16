@@ -188,11 +188,16 @@ export const TaskView = ({
                   <div className="task-review-desc">
                     {badgeMeta.isDue ? (
                       <span className="desc-due">
-                        Срок повторения подошел! Решите задачу и оцените результат:
+                        Срок повторения настал! Код в редакторе сброшен до начального, чтобы решить задачу заново с нуля. Напишите решение и оцените сложность:
                       </span>
                     ) : taskReview ? (
                       <span className="desc-scheduled">
-                        Следующее повторение: <strong>{formatNextReviewDate(taskReview.nextReviewAt)}</strong> (интервал: {taskReview.intervalDays} дн.) • Кнопки станут активны в день повторения
+                        <div>
+                          Следующее повторение: <strong>{formatNextReviewDate(taskReview.nextReviewAt, taskReview.dueDate)}</strong> (интервал: {taskReview.intervalDays} дн.)
+                        </div>
+                        <div style={{ marginTop: "3px" }}>
+                          В день повторения решение в редакторе сбросится, чтобы решить задачу заново с нуля
+                        </div>
                       </span>
                     ) : (
                       <span className="desc-new">

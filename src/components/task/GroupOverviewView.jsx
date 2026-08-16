@@ -16,7 +16,6 @@ import {
   X,
   Calendar,
   RotateCcw,
-  Flame,
   Minus,
   Clock,
 } from "lucide-react";
@@ -64,8 +63,18 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
     yesterday.setDate(now.getDate() - 1);
     if (d.toDateString() === yesterday.toDateString()) return "Вчера";
     const months = [
-      "янв", "фев", "мар", "апр", "мая", "июн",
-      "июл", "авг", "сен", "окт", "ноя", "дек"
+      "янв",
+      "фев",
+      "мар",
+      "апр",
+      "мая",
+      "июн",
+      "июл",
+      "авг",
+      "сен",
+      "окт",
+      "ноя",
+      "дек",
     ];
     return `${d.getDate()} ${months[d.getMonth()]}`;
   };
@@ -186,11 +195,18 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
 
   const isJs = location.pathname.includes("/javascript");
   const isReact = location.pathname.includes("/react");
-  const taskRoute = isJs ? "/javascript/$taskId" : isReact ? "/react/$taskId" : "/algorithms/$taskId";
-  
+  const taskRoute = isJs
+    ? "/javascript/$taskId"
+    : isReact
+      ? "/react/$taskId"
+      : "/algorithms/$taskId";
+
   // Цвет кнопки строго соответствует цвету иконки конкретной открытой папки
-  const folderColor = groupMeta?.color || (isJs ? "#f59e0b" : isReact ? "var(--accent-blue, #3b82f6)" : "#a855f7");
-  const folderBg = groupMeta?.bg || `color-mix(in srgb, ${folderColor} 12%, transparent)`;
+  const folderColor =
+    groupMeta?.color ||
+    (isJs ? "#f59e0b" : isReact ? "var(--accent-blue, #3b82f6)" : "#a855f7");
+  const folderBg =
+    groupMeta?.bg || `color-mix(in srgb, ${folderColor} 12%, transparent)`;
   const isLightColor =
     folderColor === "#f59e0b" ||
     folderColor === "#fbbf24" ||
@@ -199,7 +215,10 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
   const hoverTextColor = isLightColor ? "#1c1917" : "#ffffff";
 
   return (
-    <div className="task-view-container article-view" style={{ padding: "28px 36px 80px" }}>
+    <div
+      className="task-view-container article-view"
+      style={{ padding: "28px 36px 80px" }}
+    >
       <article className="article-page folder-page-wrapper">
         {/* Standard Folder Header Hero */}
         <header className="article-header">
@@ -216,12 +235,23 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                   style: { color: groupMeta.color || "var(--text-main)" },
                 })
               ) : (
-                <Folder size={26} style={{ color: groupMeta?.color || "var(--color-primary)" }} />
+                <Folder
+                  size={26}
+                  style={{ color: groupMeta?.color || "var(--color-primary)" }}
+                />
               )}
             </div>
 
             <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", flexWrap: "wrap" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: "12px",
+                  flexWrap: "wrap",
+                }}
+              >
                 <h1 className="folder-hero-title">
                   {groupMeta?.name || groupMeta?.title || "Раздел"}
                 </h1>
@@ -245,7 +275,8 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
               </div>
 
               <p className="folder-hero-desc" style={{ marginTop: "4px" }}>
-                {groupMeta?.desc || `Все практические задачи и упражнения раздела «${groupMeta?.name || "Раздел"}».`}
+                {groupMeta?.desc ||
+                  `Все практические задачи и упражнения раздела «${groupMeta?.name || "Раздел"}».`}
               </p>
             </div>
           </div>
@@ -253,84 +284,109 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
 
         {/* Standard Database View (Files / Tasks list) */}
         <div className="database-view-container">
-            {/* Standard Database Controls Toolbar */}
-            <div className="folder-toolbar">
-              {/* Status Filter Pills: Все, Решено, Не решено */}
-              <div className="pill-group" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                <button
-                  className={`header-action-btn ${statusFilter === "all" ? "active" : ""}`}
-                  onClick={() => setStatusFilter("all")}
-                >
-                  Все
-                </button>
-                <button
-                  className={`header-action-btn ${statusFilter === "completed" ? "active" : ""}`}
-                  onClick={() => setStatusFilter("completed")}
-                >
-                  Решено
-                </button>
-                <button
-                  className={`header-action-btn ${statusFilter === "uncompleted" ? "active" : ""}`}
-                  onClick={() => setStatusFilter("uncompleted")}
-                >
-                  Не решено
-                </button>
-              </div>
-
-              {/* View Switcher: Список vs Карточки */}
-              <div className="db-view-switch" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                <button
-                  className={`header-action-btn ${viewMode === "list" ? "active" : ""}`}
-                  onClick={() => setViewMode("list")}
-                  title="Вид: Список"
-                >
-                  <LayoutList size={14} /> Список
-                </button>
-                <button
-                  className={`header-action-btn ${viewMode === "cards" ? "active" : ""}`}
-                  onClick={() => setViewMode("cards")}
-                  title="Вид: Карточки"
-                >
-                  <LayoutGrid size={14} /> Карточки
-                </button>
-              </div>
+          {/* Standard Database Controls Toolbar */}
+          <div className="folder-toolbar">
+            {/* Status Filter Pills: Все, Решено, Не решено */}
+            <div
+              className="pill-group"
+              style={{ display: "flex", alignItems: "center", gap: "6px" }}
+            >
+              <button
+                className={`header-action-btn ${statusFilter === "all" ? "active" : ""}`}
+                onClick={() => setStatusFilter("all")}
+              >
+                Все
+              </button>
+              <button
+                className={`header-action-btn ${statusFilter === "completed" ? "active" : ""}`}
+                onClick={() => setStatusFilter("completed")}
+              >
+                Решено
+              </button>
+              <button
+                className={`header-action-btn ${statusFilter === "uncompleted" ? "active" : ""}`}
+                onClick={() => setStatusFilter("uncompleted")}
+              >
+                Не решено
+              </button>
             </div>
 
-            {/* Database Column Header (for List view) */}
-            {viewMode === "list" && filteredTasks.length > 0 && (
-              <div className="db-columns-header">
-                <span className="db-col-name">Папка / Файл</span>
-                <div className="db-col-meta">
-                  <span className="db-col-last-solved">Решение</span>
-                  <span className="db-col-next-review">Повторение</span>
-                  <span className="db-col-status">Статус</span>
-                </div>
-              </div>
-            )}
+            {/* View Switcher: Список vs Карточки */}
+            <div
+              className="db-view-switch"
+              style={{ display: "flex", alignItems: "center", gap: "6px" }}
+            >
+              <button
+                className={`header-action-btn ${viewMode === "list" ? "active" : ""}`}
+                onClick={() => setViewMode("list")}
+                title="Вид: Список"
+              >
+                <LayoutList size={14} /> Список
+              </button>
+              <button
+                className={`header-action-btn ${viewMode === "cards" ? "active" : ""}`}
+                onClick={() => setViewMode("cards")}
+                title="Вид: Карточки"
+              >
+                <LayoutGrid size={14} /> Карточки
+              </button>
+            </div>
+          </div>
 
-            {/* Render Filtered Tasks */}
-            {filteredTasks.length === 0 ? (
-              <div style={{ textAlign: "center", padding: "54px 20px", color: "var(--text-muted)" }}>
-                <div style={{ fontSize: "15px", fontWeight: 600, color: "var(--text-main)", marginBottom: "4px" }}>
-                  Задач по выбранному фильтру нет
-                </div>
-                <button
-                  onClick={() => setStatusFilter("all")}
-                  className="header-action-btn active"
-                  style={{ marginTop: "12px", display: "inline-flex" }}
-                >
-                  Показать все задачи
-                </button>
+          {/* Database Column Header (for List view) */}
+          {viewMode === "list" && filteredTasks.length > 0 && (
+            <div className="db-columns-header">
+              <span className="db-col-name">Папка / Файл</span>
+              <div className="db-col-meta">
+                <span className="db-col-last-solved">Решение</span>
+                <span className="db-col-next-review">Повторение</span>
+                <span className="db-col-status">Статус</span>
               </div>
-            ) : viewMode === "list" ? (
-              /* Standard List View — Exact Sidebar Tree System, scaled for page content */
-              <div className="folder-page-tree">
-                {hasSubgroups ? (
-                  Object.entries(groupedSubgroups).map(([subgroupName, tasks]) => {
+            </div>
+          )}
+
+          {/* Render Filtered Tasks */}
+          {filteredTasks.length === 0 ? (
+            <div
+              style={{
+                textAlign: "center",
+                padding: "54px 20px",
+                color: "var(--text-muted)",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: "15px",
+                  fontWeight: 600,
+                  color: "var(--text-main)",
+                  marginBottom: "4px",
+                }}
+              >
+                Задач по выбранному фильтру нет
+              </div>
+              <button
+                onClick={() => setStatusFilter("all")}
+                className="header-action-btn active"
+                style={{ marginTop: "12px", display: "inline-flex" }}
+              >
+                Показать все задачи
+              </button>
+            </div>
+          ) : viewMode === "list" ? (
+            /* Standard List View — Exact Sidebar Tree System, scaled for page content */
+            <div className="folder-page-tree">
+              {hasSubgroups ? (
+                Object.entries(groupedSubgroups).map(
+                  ([subgroupName, tasks]) => {
                     if (tasks.length === 0) return null;
-                    const isCollapsed = Boolean(collapsedSubgroups[subgroupName]);
-                    const completedSubCount = tasks.filter((t) => getTaskStatus(t.id) === "solved").length;
-                    const isSubCompleted = tasks.length > 0 && completedSubCount === tasks.length;
+                    const isCollapsed = Boolean(
+                      collapsedSubgroups[subgroupName],
+                    );
+                    const completedSubCount = tasks.filter(
+                      (t) => getTaskStatus(t.id) === "solved",
+                    ).length;
+                    const isSubCompleted =
+                      tasks.length > 0 && completedSubCount === tasks.length;
                     return (
                       <div className="tree-group-block" key={subgroupName}>
                         <div
@@ -339,21 +395,30 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                         >
                           <div className="icon-toggle-wrapper">
                             <div className="icon-default">
-                              <Folder size={17} style={{ color: groupMeta?.color || "var(--color-primary, #3b82f6)" }} />
+                              <Folder
+                                size={17}
+                                style={{
+                                  color:
+                                    groupMeta?.color ||
+                                    "var(--color-primary, #3b82f6)",
+                                }}
+                              />
                             </div>
-                            <div className={`icon-chevron ${!isCollapsed ? "expanded" : ""}`}>
+                            <div
+                              className={`icon-chevron ${!isCollapsed ? "expanded" : ""}`}
+                            >
                               <ChevronRight size={15} />
                             </div>
                           </div>
                           <span className="node-title">{subgroupName}</span>
                           {statusFilter === "all" ? (
-                            <span className={`node-count ${isSubCompleted ? "completed" : ""}`}>
+                            <span
+                              className={`node-count ${isSubCompleted ? "completed" : ""}`}
+                            >
                               {completedSubCount}/{tasks.length}
                             </span>
                           ) : (
-                            <span className="node-count">
-                              {tasks.length}
-                            </span>
+                            <span className="node-count">{tasks.length}</span>
                           )}
                         </div>
 
@@ -364,7 +429,8 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                               const isDone = s === "solved";
                               const isUnsolved = s === "unsolved";
 
-                              const taskReview = reviews[String(task.id)] || reviews[task.id];
+                              const taskReview =
+                                reviews[String(task.id)] || reviews[task.id];
                               const lastReviewedAt = taskReview?.lastReviewedAt;
                               const nextReviewAt = taskReview?.nextReviewAt;
                               const isDue = isTaskDue(taskReview);
@@ -375,15 +441,22 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                                   key={task.id}
                                   to={taskRoute}
                                   params={{ taskId: String(task.id) }}
-                                  className={`task-btn tree-task-btn ${isDue ? "task-is-due" : ""}`}
+                                  className={`task-btn tree-task-btn ${isDue ? "task-is-due" : ""} ${taskReview?.rating ? `rating-gradient-${taskReview.rating}` : ""}`}
+                                  title={
+                                    taskReview?.rating
+                                      ? `${task.title} • Оценка сложности: ${taskReview.rating === "hard" ? "Сложно" : taskReview.rating === "medium" ? "Средне" : "Легко"}`
+                                      : task.title
+                                  }
                                 >
                                   <span className="task-btn-title">
-                                    {isDue ? (
-                                      <Flame size={16} className="node-file-icon flame-pulse-icon" style={{ color: "#ef4444" }} />
-                                    ) : (
-                                      <FileText size={16} className="node-file-icon" style={{ color: FILE_ICON_COLOR }} />
-                                    )}
-                                    <span className="task-btn-text">{task.title}</span>
+                                    <FileText
+                                      size={16}
+                                      className="node-file-icon"
+                                      style={{ color: FILE_ICON_COLOR }}
+                                    />
+                                    <span className="task-btn-text">
+                                      {task.title}
+                                    </span>
                                   </span>
 
                                   <div className="task-row-meta">
@@ -393,12 +466,23 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                                         className="folder-task-badge badge-last-solved"
                                         title={`Дата последнего решения: ${new Date(lastReviewedAt).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })}`}
                                       >
-                                        <Calendar size={11} className="badge-icon" />
-                                        <span>{formatLastSolved(lastReviewedAt)}</span>
+                                        <Calendar
+                                          size={11}
+                                          className="badge-icon"
+                                        />
+                                        <span>
+                                          {formatLastSolved(lastReviewedAt)}
+                                        </span>
                                       </span>
                                     ) : (
-                                      <span className="folder-task-badge badge-empty" title="Ещё не решалась">
-                                        <Minus size={13} className="folder-empty-dash" />
+                                      <span
+                                        className="folder-task-badge badge-empty"
+                                        title="Ещё не решалась"
+                                      >
+                                        <Minus
+                                          size={13}
+                                          className="folder-empty-dash"
+                                        />
                                       </span>
                                     )}
 
@@ -408,38 +492,65 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                                         className="folder-task-badge badge-next-due"
                                         title="Срок повторения подошел! Пора повторить сегодня"
                                       >
-                                        <Flame size={11} className="flame-pulse-icon" />
-                                        <span>Пора повторить</span>
+                                        <span>Повтор</span>
                                       </span>
                                     ) : nextReviewAt ? (
                                       <span
                                         className="folder-task-badge badge-next-scheduled"
                                         title={`Следующее повторение: ${formatNextReviewDate(nextReviewAt)} (интервал: ${intervalDays} дн.)`}
                                       >
-                                        <RotateCcw size={11} className="badge-icon" />
-                                        <span>{formatNextReviewDate(nextReviewAt)}</span>
+                                        <RotateCcw
+                                          size={11}
+                                          className="badge-icon"
+                                        />
+                                        <span>
+                                          {formatNextReviewDate(nextReviewAt)}
+                                        </span>
                                       </span>
                                     ) : (
-                                      <span className="folder-task-badge badge-next-empty" title="Повторение не запланировано">
-                                        <Minus size={13} className="folder-empty-dash" />
+                                      <span
+                                        className="folder-task-badge badge-next-empty"
+                                        title="Повторение не запланировано"
+                                      >
+                                        <Minus
+                                          size={13}
+                                          className="folder-empty-dash"
+                                        />
                                       </span>
                                     )}
 
                                     {/* Иконка статуса */}
                                     <span className="task-row-status-icon">
-                                      {isDone && (
-                                        <span className="dropdown-item-check" title="Решено">
+                                      {isDue ? (
+                                        <span
+                                          className="dropdown-item-repeat"
+                                          title="Пора повторить сегодня!"
+                                        >
+                                          <RotateCcw size={14} />
+                                        </span>
+                                      ) : isDone ? (
+                                        <span
+                                          className="dropdown-item-check"
+                                          title="Решено"
+                                        >
                                           <Check size={14} />
                                         </span>
-                                      )}
-                                      {isUnsolved && (
-                                        <span className="dropdown-item-unsolved" title="Не решено">
+                                      ) : isUnsolved ? (
+                                        <span
+                                          className="dropdown-item-unsolved"
+                                          title="Не решено"
+                                        >
                                           <X size={14} />
                                         </span>
-                                      )}
-                                      {!isDone && !isUnsolved && (
-                                        <span className="dropdown-item-empty" title="Не начато">
-                                          <Minus size={13} className="folder-empty-dash" />
+                                      ) : (
+                                        <span
+                                          className="dropdown-item-empty"
+                                          title="Не начато"
+                                        >
+                                          <Minus
+                                            size={13}
+                                            className="folder-empty-dash"
+                                          />
                                         </span>
                                       )}
                                     </span>
@@ -451,215 +562,312 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                         )}
                       </div>
                     );
-                  })
-                ) : (
-                  <div className="tree-tasks-container" style={{ marginLeft: 0, paddingLeft: 0, borderLeft: "none" }}>
-                    {filteredTasks.map((task) => {
-                      const s = getTaskStatus(task.id);
-                      const isDone = s === "solved";
-                      const isUnsolved = s === "unsolved";
+                  },
+                )
+              ) : (
+                <div
+                  className="tree-tasks-container"
+                  style={{ marginLeft: 0, paddingLeft: 0, borderLeft: "none" }}
+                >
+                  {filteredTasks.map((task) => {
+                    const s = getTaskStatus(task.id);
+                    const isDone = s === "solved";
+                    const isUnsolved = s === "unsolved";
 
-                      const taskReview = reviews[String(task.id)] || reviews[task.id];
-                      const lastReviewedAt = taskReview?.lastReviewedAt;
-                      const nextReviewAt = taskReview?.nextReviewAt;
-                      const isDue = isTaskDue(taskReview);
-                      const intervalDays = taskReview?.intervalDays;
+                    const taskReview =
+                      reviews[String(task.id)] || reviews[task.id];
+                    const lastReviewedAt = taskReview?.lastReviewedAt;
+                    const nextReviewAt = taskReview?.nextReviewAt;
+                    const isDue = isTaskDue(taskReview);
+                    const intervalDays = taskReview?.intervalDays;
 
-                      return (
-                        <Link
-                          key={task.id}
-                          to={taskRoute}
-                          params={{ taskId: String(task.id) }}
-                          className={`task-btn tree-task-btn ${isDue ? "task-is-due" : ""}`}
-                        >
-                          <span className="task-btn-title">
-                            {isDue ? (
-                              <Flame size={16} className="node-file-icon flame-pulse-icon" style={{ color: "#ef4444" }} />
-                            ) : (
-                              <FileText size={16} className="node-file-icon" style={{ color: FILE_ICON_COLOR }} />
-                            )}
-                            <span className="task-btn-text">{task.title}</span>
-                          </span>
+                    return (
+                      <Link
+                        key={task.id}
+                        to={taskRoute}
+                        params={{ taskId: String(task.id) }}
+                        className={`task-btn tree-task-btn ${isDue ? "task-is-due" : ""} ${taskReview?.rating ? `rating-gradient-${taskReview.rating}` : ""}`}
+                        title={
+                          taskReview?.rating
+                            ? `${task.title} • Оценка сложности: ${taskReview.rating === "hard" ? "Сложно" : taskReview.rating === "medium" ? "Средне" : "Легко"}`
+                            : task.title
+                        }
+                      >
+                        <span className="task-btn-title">
+                          <FileText
+                            size={16}
+                            className="node-file-icon"
+                            style={{ color: FILE_ICON_COLOR }}
+                          />
+                          <span className="task-btn-text">{task.title}</span>
+                        </span>
 
-                          <div className="task-row-meta">
-                            {/* Бейдж даты последнего решения */}
-                            {lastReviewedAt ? (
-                              <span
-                                className="folder-task-badge badge-last-solved"
-                                title={`Дата последнего решения: ${new Date(lastReviewedAt).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })}`}
-                              >
-                                <Calendar size={11} className="badge-icon" />
-                                <span>{formatLastSolved(lastReviewedAt)}</span>
-                              </span>
-                            ) : (
-                              <span className="folder-task-badge badge-empty" title="Ещё не решалась">
-                                <Minus size={13} className="folder-empty-dash" />
-                              </span>
-                            )}
-
-                            {/* Бейдж сколько до повторного решения задачи */}
-                            {isDue ? (
-                              <span
-                                className="folder-task-badge badge-next-due"
-                                title="Срок повторения подошел! Пора повторить сегодня"
-                              >
-                                <Flame size={11} className="flame-pulse-icon" />
-                                <span>Пора повторить</span>
-                              </span>
-                            ) : nextReviewAt ? (
-                              <span
-                                className="folder-task-badge badge-next-scheduled"
-                                title={`Следующее повторение: ${formatNextReviewDate(nextReviewAt)} (интервал: ${intervalDays} дн.)`}
-                              >
-                                <RotateCcw size={11} className="badge-icon" />
-                                <span>{formatNextReviewDate(nextReviewAt)}</span>
-                              </span>
-                            ) : (
-                              <span className="folder-task-badge badge-next-empty" title="Повторение не запланировано">
-                                <Minus size={13} className="folder-empty-dash" />
-                              </span>
-                            )}
-
-                            {/* Иконка статуса */}
-                            <span className="task-row-status-icon">
-                              {isDone && (
-                                <span className="dropdown-item-check" title="Решено">
-                                  <Check size={14} />
-                                </span>
-                              )}
-                              {isUnsolved && (
-                                <span className="dropdown-item-unsolved" title="Не решено">
-                                  <X size={14} />
-                                </span>
-                              )}
-                              {!isDone && !isUnsolved && (
-                                <span className="dropdown-item-empty" title="Не начато">
-                                  <Minus size={13} className="folder-empty-dash" />
-                                </span>
-                              )}
-                            </span>
-                          </div>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            ) : (
-              /* Standard Gallery Cards View */
-              <div className="gallery-grid">
-                {filteredTasks.map((task) => {
-                  const s = getTaskStatus(task.id);
-                  const isDone = s === "solved";
-                  const isUnsolved = s === "unsolved";
-
-                  const taskReview = reviews[String(task.id)] || reviews[task.id];
-                  const lastReviewedAt = taskReview?.lastReviewedAt;
-                  const nextReviewAt = taskReview?.nextReviewAt;
-                  const isDue = isTaskDue(taskReview);
-
-                  return (
-                    <Link
-                      key={task.id}
-                      to={taskRoute}
-                      params={{ taskId: String(task.id) }}
-                      className={`gallery-card ${isDue ? "task-is-due" : ""}`}
-                    >
-                      <div>
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" }}>
-                          <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                            <Folder size={14} style={{ color: groupMeta?.color || "var(--color-primary, #3b82f6)", flexShrink: 0 }} />
-                            <span style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: 500 }}>
-                              {task.subgroup || groupMeta?.title || "Раздел"}
-                            </span>
-                          </div>
-
-                          <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                        <div className="task-row-meta">
+                          {/* Бейдж даты последнего решения */}
+                          {lastReviewedAt ? (
                             <span
-                              style={{
-                                fontSize: "12px",
-                                fontWeight: 500,
-                                color: isDone ? "#10b981" : isUnsolved ? "#ef4444" : "var(--text-muted)",
-                              }}
+                              className="folder-task-badge badge-last-solved"
+                              title={`Дата последнего решения: ${new Date(lastReviewedAt).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })}`}
                             >
-                              {isDone ? "Решено" : isUnsolved ? "Не решено" : "Не начато"}
+                              <Calendar size={11} className="badge-icon" />
+                              <span>{formatLastSolved(lastReviewedAt)}</span>
                             </span>
-                            {isDone ? (
-                              <span className="dropdown-item-check" title="Решено">
-                                <Check size={13} />
+                          ) : (
+                            <span
+                              className="folder-task-badge badge-empty"
+                              title="Ещё не решалась"
+                            >
+                              <Minus size={13} className="folder-empty-dash" />
+                            </span>
+                          )}
+
+                          {/* Бейдж сколько до повторного решения задачи */}
+                          {isDue ? (
+                            <span
+                              className="folder-task-badge badge-next-due"
+                              title="Срок повторения подошел! Пора повторить сегодня"
+                            >
+                              <span>Повтор</span>
+                            </span>
+                          ) : nextReviewAt ? (
+                            <span
+                              className="folder-task-badge badge-next-scheduled"
+                              title={`Следующее повторение: ${formatNextReviewDate(nextReviewAt)} (интервал: ${intervalDays} дн.)`}
+                            >
+                              <RotateCcw size={11} className="badge-icon" />
+                              <span>{formatNextReviewDate(nextReviewAt)}</span>
+                            </span>
+                          ) : (
+                            <span
+                              className="folder-task-badge badge-next-empty"
+                              title="Повторение не запланировано"
+                            >
+                              <Minus size={13} className="folder-empty-dash" />
+                            </span>
+                          )}
+
+                          {/* Иконка статуса */}
+                          <span className="task-row-status-icon">
+                            {isDue ? (
+                              <span
+                                className="dropdown-item-repeat"
+                                title="Пора повторить сегодня!"
+                              >
+                                <RotateCcw size={14} />
+                              </span>
+                            ) : isDone ? (
+                              <span
+                                className="dropdown-item-check"
+                                title="Решено"
+                              >
+                                <Check size={14} />
                               </span>
                             ) : isUnsolved ? (
-                              <span className="dropdown-item-unsolved" title="Не решено">
-                                <X size={13} />
-                              </span>
-                            ) : null}
-                          </div>
-                        </div>
-
-                        <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", fontWeight: 600, fontSize: "14px", color: "var(--text-main)", marginBottom: "6px", lineHeight: 1.4 }}>
-                          {isDue ? (
-                            <Flame size={16} className="node-file-icon flame-pulse-icon" style={{ color: "#ef4444", flexShrink: 0, marginTop: "2px" }} />
-                          ) : (
-                            <FileText size={16} className="node-file-icon" style={{ color: FILE_ICON_COLOR, flexShrink: 0, marginTop: "2px" }} />
-                          )}
-                          <span>{task.title}</span>
-                        </div>
-
-                        {task.desc && (
-                          <div
-                            style={{
-                              fontSize: "12px",
-                              color: "var(--text-muted)",
-                              lineHeight: 1.5,
-                              display: "-webkit-box",
-                              WebkitLineClamp: 2,
-                              WebkitBoxOrient: "vertical",
-                              overflow: "hidden",
-                              marginBottom: "12px",
-                            }}
-                          >
-                            {task.desc}
-                          </div>
-                        )}
-                      </div>
-
-                      {(lastReviewedAt || nextReviewAt || isDue) && (
-                        <div
-                          style={{
-                            paddingTop: "10px",
-                            borderTop: "1px solid var(--border-color, rgba(255, 255, 255, 0.08))",
-                          }}
-                        >
-                          <div className="gallery-card-badges-row">
-                            {lastReviewedAt && (
                               <span
-                                className="folder-task-badge badge-last-solved"
-                                title={`Дата последнего решения: ${new Date(lastReviewedAt).toLocaleDateString("ru-RU")}`}
+                                className="dropdown-item-unsolved"
+                                title="Не решено"
                               >
-                                <Calendar size={11} className="badge-icon" />
-                                <span>{formatLastSolved(lastReviewedAt)}</span>
+                                <X size={14} />
+                              </span>
+                            ) : (
+                              <span
+                                className="dropdown-item-empty"
+                                title="Не начато"
+                              >
+                                <Minus
+                                  size={13}
+                                  className="folder-empty-dash"
+                                />
                               </span>
                             )}
-                            {isDue ? (
-                              <span className="folder-task-badge badge-next-due">
-                                <Flame size={11} className="flame-pulse-icon" />
-                                <span>Пора повторить</span>
-                              </span>
-                            ) : nextReviewAt ? (
-                              <span className="folder-task-badge badge-next-scheduled">
-                                <RotateCcw size={11} className="badge-icon" />
-                                <span>{formatNextReviewDate(nextReviewAt)}</span>
-                              </span>
-                            ) : null}
-                          </div>
+                          </span>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          ) : (
+            /* Standard Gallery Cards View */
+            <div className="gallery-grid">
+              {filteredTasks.map((task) => {
+                const s = getTaskStatus(task.id);
+                const isDone = s === "solved";
+                const isUnsolved = s === "unsolved";
+
+                const taskReview = reviews[String(task.id)] || reviews[task.id];
+                const lastReviewedAt = taskReview?.lastReviewedAt;
+                const nextReviewAt = taskReview?.nextReviewAt;
+                const isDue = isTaskDue(taskReview);
+
+                return (
+                  <Link
+                    key={task.id}
+                    to={taskRoute}
+                    params={{ taskId: String(task.id) }}
+                    className={`gallery-card ${isDue ? "task-is-due" : ""} ${taskReview?.rating ? `rating-gradient-${taskReview.rating}` : ""}`}
+                  >
+                    <div>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "6px",
+                          }}
+                        >
+                          <Folder
+                            size={14}
+                            style={{
+                              color:
+                                groupMeta?.color ||
+                                "var(--color-primary, #3b82f6)",
+                              flexShrink: 0,
+                            }}
+                          />
+                          <span
+                            style={{
+                              fontSize: "11px",
+                              color: "var(--text-muted)",
+                              fontWeight: 500,
+                            }}
+                          >
+                            {task.subgroup || groupMeta?.title || "Раздел"}
+                          </span>
+                        </div>
+
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "5px",
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontSize: "12px",
+                              fontWeight: 500,
+                              color: isDone
+                                ? "#10b981"
+                                : isUnsolved
+                                  ? "#ef4444"
+                                  : "var(--text-muted)",
+                            }}
+                          >
+                            {isDone
+                              ? "Решено"
+                              : isUnsolved
+                                ? "Не решено"
+                                : "Не начато"}
+                          </span>
+                          {isDue ? (
+                            <span
+                              className="dropdown-item-repeat"
+                              title="Пора повторить сегодня!"
+                            >
+                              <RotateCcw size={13} />
+                            </span>
+                          ) : isDone ? (
+                            <span
+                              className="dropdown-item-check"
+                              title="Решено"
+                            >
+                              <Check size={13} />
+                            </span>
+                          ) : isUnsolved ? (
+                            <span
+                              className="dropdown-item-unsolved"
+                              title="Не решено"
+                            >
+                              <X size={13} />
+                            </span>
+                          ) : null}
+                        </div>
+                      </div>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                          fontWeight: 600,
+                          fontSize: "14px",
+                          color: "var(--text-main)",
+                          marginBottom: "6px",
+                          lineHeight: 1.4,
+                        }}
+                      >
+                        <FileText
+                          size={16}
+                          className="node-file-icon"
+                          style={{ color: FILE_ICON_COLOR, flexShrink: 0 }}
+                        />
+                        <span>{task.title}</span>
+                      </div>
+
+                      {task.desc && (
+                        <div
+                          style={{
+                            fontSize: "12px",
+                            color: "var(--text-muted)",
+                            lineHeight: 1.5,
+                            display: "-webkit-box",
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: "vertical",
+                            overflow: "hidden",
+                            marginBottom: "12px",
+                          }}
+                        >
+                          {task.desc}
                         </div>
                       )}
-                    </Link>
-                  );
-                })}
-              </div>
-            )}
-          </div>
+                    </div>
+
+                    {(lastReviewedAt || nextReviewAt || isDue) && (
+                      <div
+                        style={{
+                          paddingTop: "10px",
+                          borderTop:
+                            "1px solid var(--border-color, rgba(255, 255, 255, 0.08))",
+                        }}
+                      >
+                        <div className="gallery-card-badges-row">
+                          {lastReviewedAt && (
+                            <span
+                              className="folder-task-badge badge-last-solved"
+                              title={`Дата последнего решения: ${new Date(lastReviewedAt).toLocaleDateString("ru-RU")}`}
+                            >
+                              <Calendar size={11} className="badge-icon" />
+                              <span>{formatLastSolved(lastReviewedAt)}</span>
+                            </span>
+                          )}
+                          {isDue ? (
+                            <span className="folder-task-badge badge-next-due">
+                              <span>Пора повторить</span>
+                            </span>
+                          ) : nextReviewAt ? (
+                            <span className="folder-task-badge badge-next-scheduled">
+                              <RotateCcw size={11} className="badge-icon" />
+                              <span>{formatNextReviewDate(nextReviewAt)}</span>
+                            </span>
+                          ) : null}
+                        </div>
+                      </div>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+        </div>
 
         {/* Standard Article Body (Rendered if custom _info.md exists) */}
         {blocks.length > 0 && (
@@ -667,7 +875,8 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
             className="article-content"
             style={{
               paddingTop: "32px",
-              borderTop: "1px solid var(--border-color, rgba(255, 255, 255, 0.08))",
+              borderTop:
+                "1px solid var(--border-color, rgba(255, 255, 255, 0.08))",
             }}
           >
             <h2
@@ -680,8 +889,15 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                 marginBottom: "20px",
               }}
             >
-              <BookOpen size={20} style={{ color: groupMeta?.color || "#3b82f6", flexShrink: 0 }} />
-              <span>{groupMeta?.guideTitle || groupMeta?.desc || `Полное руководство по разделу ${groupMeta?.title || groupMeta?.name}`}</span>
+              <BookOpen
+                size={20}
+                style={{ color: groupMeta?.color || "#3b82f6", flexShrink: 0 }}
+              />
+              <span>
+                {groupMeta?.guideTitle ||
+                  groupMeta?.desc ||
+                  `Полное руководство по разделу ${groupMeta?.title || groupMeta?.name}`}
+              </span>
             </h2>
 
             {blocks.map((block, idx) => {
@@ -708,12 +924,23 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
 
         {/* Раздел 10 & 11 отображаются для теоретических статей с разбором */}
         {blocks.length > 0 && practiceTasksList.length > 0 && (
-          <div className="solution-practice-card" id="10-практика-задачи-для-закрепления" style={{ marginTop: "32px" }}>
+          <div
+            className="solution-practice-card"
+            id="10-практика-задачи-для-закрепления"
+            style={{ marginTop: "32px" }}
+          >
             <div className="solution-practice-header">
               <span>🎯</span> 10. Практика: задачи для закрепления
             </div>
-            <p style={{ margin: "0 0 12px 0", fontSize: "13px", color: "var(--text-muted)" }}>
-              Рекомендуемый порядок для отработки навыка (от простого к сложному):
+            <p
+              style={{
+                margin: "0 0 12px 0",
+                fontSize: "13px",
+                color: "var(--text-muted)",
+              }}
+            >
+              Рекомендуемый порядок для отработки навыка (от простого к
+              сложному):
             </p>
             <ul className="solution-practice-list">
               {practiceTasksList.map((item, idx) => (
@@ -749,7 +976,11 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
         )}
 
         {blocks.length > 0 && articleLinksList.length > 0 && (
-          <div className="solution-articles-card" id="11-полезные-материалы" style={{ marginTop: "24px" }}>
+          <div
+            className="solution-articles-card"
+            id="11-полезные-материалы"
+            style={{ marginTop: "24px" }}
+          >
             <div className="solution-articles-header">
               <span>📚</span> 11. Полезные материалы
             </div>

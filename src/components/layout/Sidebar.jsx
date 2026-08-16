@@ -16,6 +16,7 @@ import {
   Folder,
   X,
   Check,
+  RotateCcw,
 } from "lucide-react";
 import {
   REACT_TASKS,
@@ -51,7 +52,7 @@ const SidebarTaskItem = React.memo(function SidebarTaskItem({
   isDue, // boolean - due for spaced repetition today
   onNavClick,
 }) {
-  const tooltipContent = isDue ? `🔥 ${title} (Пора повторить!)` : title;
+  const tooltipContent = isDue ? `🔄 ${title} (Пора повторить!)` : title;
 
   return (
     <Tooltip
@@ -69,28 +70,22 @@ const SidebarTaskItem = React.memo(function SidebarTaskItem({
         onClick={onNavClick}
       >
         <span className="task-btn-title">
-          {isDue ? (
-            <Flame size={14} className="node-file-icon flame-pulse-icon" style={{ color: "#ef4444" }} />
-          ) : (
-            <FileText size={14} className="node-file-icon" style={{ color: FILE_ICON_COLOR }} />
-          )}
+          <FileText size={14} className="node-file-icon" style={{ color: FILE_ICON_COLOR }} />
           <span className="task-btn-text">{title}</span>
         </span>
-        {isDue && (
-          <span className="dropdown-item-due-badge" aria-label="Пора повторить сегодня!">
-            <Flame size={11} style={{ color: "#ef4444" }} />
+        {isDue ? (
+          <span className="dropdown-item-repeat" title="Пора повторить сегодня!">
+            <RotateCcw size={12} />
           </span>
-        )}
-        {!isDue && status === "unsolved" && (
-          <span className="dropdown-item-unsolved">
-            <X size={12} />
-          </span>
-        )}
-        {!isDue && status === "solved" && (
-          <span className="dropdown-item-check">
+        ) : status === "solved" ? (
+          <span className="dropdown-item-check" title="Решено">
             <Check size={12} />
           </span>
-        )}
+        ) : status === "unsolved" ? (
+          <span className="dropdown-item-unsolved" title="Не решено">
+            <X size={12} />
+          </span>
+        ) : null}
       </Link>
     </Tooltip>
   );
@@ -393,10 +388,11 @@ export const Sidebar = ({
   const getTaskReviewInfo = useCallback(
     (taskId) => {
       const rev = reviews[String(taskId)];
-      if (!rev) return { isDue: false, isMaster: false };
+      if (!rev) return { isDue: false, isMaster: false, rating: null };
       return {
         isDue: isTaskDue(rev),
         isMaster: (rev.stage || 0) >= 5,
+        rating: rev.rating || null,
       };
     },
     [reviews]
@@ -499,7 +495,7 @@ export const Sidebar = ({
 
   const renderSectionDropdown = () => (
     <div className="section-dropdown-menu">
-      <div className="section-dropdown-header">Разделы практики</div>
+      <div className="section-dropdown-header">Разделы платформы</div>
       <Link
         to="/home"
         className={`section-dropdown-item ${activeSection === "home" ? "active" : ""}`}
@@ -509,7 +505,7 @@ export const Sidebar = ({
         }}
       >
         <Home size={15} style={{ color: "var(--color-info-light)" }} /> <span>Главная</span>{" "}
-        <span className="section-badge soon">Обзор</span>
+        <span className="section-badge">Обзор</span>
       </Link>
       <Link
         to="/javascript"
@@ -520,7 +516,7 @@ export const Sidebar = ({
         }}
       >
         <Zap size={15} style={{ color: "var(--color-warning)" }} /> <span>JavaScript</span>{" "}
-        <span className="section-badge active">{JS_TASKS.length} задач</span>
+        <span className="section-badge">{JS_TASKS.length} задач</span>
       </Link>
       <Link
         to="/react"
@@ -531,7 +527,7 @@ export const Sidebar = ({
         }}
       >
         <Code2 size={15} style={{ color: "var(--color-info)" }} /> <span>React</span>{" "}
-        <span className="section-badge active">{REACT_TASKS.length} задач</span>
+        <span className="section-badge">{REACT_TASKS.length} задач</span>
       </Link>
       <Link
         to="/algorithms"
@@ -542,7 +538,7 @@ export const Sidebar = ({
         }}
       >
         <Brain size={15} style={{ color: "var(--color-accent-purple)" }} /> <span>Алгоритмы</span>{" "}
-        <span className="section-badge active">{ALGO_TASKS.length} задач</span>
+        <span className="section-badge">{ALGO_TASKS.length} задач</span>
       </Link>
     </div>
   );
