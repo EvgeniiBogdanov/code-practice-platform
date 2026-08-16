@@ -2,10 +2,14 @@
  * spacedRepetition.js
  * Алгоритм интервального повторения задач (Modified SM-2 / Leitner System).
  *
+ * Расчет интервалов привязан к календарным дням с учетом локального часового пояса пользователя.
+ * Если задача решена сегодня (в любое время, даже в 23:59), при интервале +1 день срок
+ * повторения наступает на следующий календарный день (начиная с 00:00:00 местного времени).
+ *
  * Уровни интервалов:
- * - Уровень 1: 1 день (+1d)   - Повторить завтра
- * - Уровень 2: 3 дня (+3d)    - Повторить через 3 дня
- * - Уровень 3: 7 дней (+7d)   - Повторить через неделю
+ * - Уровень 1: 1 день (+1d)   - Повторить завтра (следующий календарный день)
+ * - Уровень 2: 3 дня (+3d)    - Повторить через 3 календарных дня
+ * - Уровень 3: 7 дней (+7d)   - Повторить через неделю (7 дней)
  * - Уровень 4: 14 дней (+14d) - Повторить через 2 недели
  * - Уровень 5: 30 дней (+30d) - Повторить через месяц
  * - Уровень 6: 60 дней (+60d) - Мастер (закреплено)
@@ -31,7 +35,49 @@ export const RATINGS = {
 };
 
 /**
+ * Возвращает строковую дату 'YYYY-MM-DD' в текущем локальном часовом поясе пользователя.
+ * @param {Date | number} [dateInput=new Date()]
+ * @returns {string} Например '2026-08-16'
+ */
+export function getLocalDateString(dateInput = new Date()) {
+  const d = typeof dateInput === "number" ? new Date(dateInput) : dateInput;
+  if (!d || isNaN(d.getTime())) return "";
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+/**
+ * Возвращает объект Date, установленный на начало календарного дня (00:00:00.000) по местному времени.
+ * @param {Date | number} [dateInput=new Date()]
+ * @returns {Date}
+ */
+export function getStartOfLocalDay(dateInput = new Date()) {
+  const d = typeof dateInput === "number" ? new Date(dateInput) : new Date(dateInput.getTime());
+  if (!d || isNaN(d.getTime())) return new Date();
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
+/**
+ * Рассчитывает целевую календарную дату повторения с добавлением N дней по местному времени.
+ * @param {Date | number} [fromDate=new Date()] Базовая дата решения
+ * @param {number} [intervalDays=1] Количество календарных дней до следующего повторения
+ * @returns {{ dueDate: string, nextReviewAt: number }}
+ */
+export function calculateNextReviewDay(fromDate = new Date(), intervalDays = 1) {
+  const base = typeof fromDate === "number" ? new Date(fromDate) : fromDate;
+  // Рассчитываем целевой день: год, месяц, день + intervalDays в 00:00:00.000
+  const target = new Date(base.getFullYear(), base.getMonth(), base.getDate() + intervalDays, 0, 0, 0, 0);
+  const dueDate = getLocalDateString(target);
+  const nextReviewAt = target.getTime();
+  return { dueDate, nextReviewAt };
+}
+
+/**
  * Рассчитывает параметры следующего повторения на основе текущего состояния и оценки.
+ * Сохраняет точные даты и таймстампы с привязкой к календарным дням.
  * @param {object | null | undefined} currentReview
  * @param {'hard' | 'medium' | 'easy'} rating
  * @returns {object} Новые параметры повторения
@@ -40,6 +86,7 @@ export function calculateNextReview(currentReview, rating) {
   const prevStage = currentReview?.stage || 0;
   const prevHistory = currentReview?.history || [];
   const now = Date.now();
+  const todayDate = getLocalDateString(now);
 
   let nextStage = 1;
   let intervalDays = 1;
@@ -68,13 +115,22 @@ export function calculateNextReview(currentReview, rating) {
     }
   }
 
-  const nextReviewAt = now + intervalDays * 24 * 60 * 60 * 1000;
+  const { dueDate, nextReviewAt } = calculateNextReviewDay(now, intervalDays);
+
+  let userTimezone = "";
+  try {
+    userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+  } catch {
+    // fallback
+  }
 
   const historyEntry = {
     date: now,
+    localDate: todayDate,
     rating,
     stage: nextStage,
     intervalDays,
+    dueDate,
   };
 
   return {
@@ -82,61 +138,91 @@ export function calculateNextReview(currentReview, rating) {
     stage: nextStage,
     intervalDays,
     lastReviewedAt: now,
-    nextReviewAt,
+    lastReviewedDate: todayDate,
+    dueDate,
+    nextReviewAt, // 00:00:00.000 целевого дня по местному времени
+    userTimezone,
     rating,
     history: [...prevHistory, historyEntry],
   };
 }
 
 /**
- * Проверяет, наступил ли срок повторения задачи (сегодня или ранее).
+ * Проверяет, наступил ли срок повторения задачи (сегодня или ранее) в локальном часовом поясе.
  * @param {object | null | undefined} reviewData
  * @returns {boolean}
  */
 export function isTaskDue(reviewData) {
-  if (!reviewData || !reviewData.nextReviewAt) return false;
-  return reviewData.nextReviewAt <= Date.now();
+  if (!reviewData) return false;
+  if (!reviewData.stage || reviewData.stage === 0) return false;
+
+  const todayStr = getLocalDateString();
+
+  // 1. При наличии явной календарной даты dueDate ('YYYY-MM-DD'):
+  if (reviewData.dueDate) {
+    return todayStr >= reviewData.dueDate;
+  }
+
+  // 2. Обратная совместимость для записей с timestamp (nextReviewAt):
+  if (reviewData.nextReviewAt) {
+    const targetDateStr = getLocalDateString(reviewData.nextReviewAt);
+    const todayStart = getStartOfLocalDay().getTime();
+    return todayStr >= targetDateStr || reviewData.nextReviewAt <= todayStart || reviewData.nextReviewAt <= Date.now();
+  }
+
+  return false;
 }
 
 /**
- * Форматирует дату следующего повторения в понятный русскоязычный текст.
- * @param {number} nextReviewAt Timestamp
+ * Форматирует дату следующего повторения в понятный русскоязычный текст
+ * на основе календарных дней (Сегодня / Завтра / Через N дней).
+ * @param {number | object} nextReviewAtOrReview Timestamp или объект reviewData
+ * @param {string} [dueDateInput] 'YYYY-MM-DD'
  * @returns {string}
  */
-export function formatNextReviewDate(nextReviewAt) {
-  if (!nextReviewAt) return "Не запланировано";
+export function formatNextReviewDate(nextReviewAtOrReview, dueDateInput) {
+  const isObj = nextReviewAtOrReview && typeof nextReviewAtOrReview === "object";
+  const nextReviewAt = isObj ? nextReviewAtOrReview.nextReviewAt : nextReviewAtOrReview;
+  const dueDate = isObj ? nextReviewAtOrReview.dueDate : dueDateInput;
 
-  const now = Date.now();
-  const diffMs = nextReviewAt - now;
-  const diffHours = Math.round(diffMs / (1000 * 60 * 60));
-  const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+  if (!nextReviewAt && !dueDate) return "Не запланировано";
 
-  if (diffMs <= 0) {
+  const todayStr = getLocalDateString();
+  const targetStr = dueDate || (nextReviewAt ? getLocalDateString(nextReviewAt) : "");
+
+  if (!targetStr) return "Не запланировано";
+
+  // Если дата повторения сегодня или в прошлом
+  if (todayStr >= targetStr) {
     return "Пора повторить сегодня!";
   }
 
-  if (diffDays <= 1) {
+  const todayStart = getStartOfLocalDay().getTime();
+  const targetDate = nextReviewAt ? new Date(nextReviewAt) : new Date(`${targetStr}T00:00:00`);
+  const targetStart = getStartOfLocalDay(targetDate).getTime();
+  const diffDays = Math.round((targetStart - todayStart) / (1000 * 60 * 60 * 24));
+
+  if (diffDays <= 0) {
+    return "Пора повторить сегодня!";
+  }
+  if (diffDays === 1) {
     return "Завтра";
   }
-
   if (diffDays === 2) {
     return "Через 2 дня";
   }
-
   if (diffDays <= 4) {
     return `Через ${diffDays} дня`;
   }
-
   if (diffDays <= 14) {
     return `Через ${diffDays} дней`;
   }
 
-  const date = new Date(nextReviewAt);
   const months = [
     "янв", "фев", "мар", "апр", "мая", "июн",
-    "июл", "авг", "сен", "окт", "ноя", "дек"
+    "июл", "авг", "сен", "окт", "ноя", "дек",
   ];
-  return `${date.getDate()} ${months[date.getMonth()]}`;
+  return `${targetDate.getDate()} ${months[targetDate.getMonth()]}`;
 }
 
 /**
@@ -160,12 +246,12 @@ export function getReviewBadgeMeta(reviewData) {
   const stage = reviewData.stage || 1;
   const isMaster = stage >= MAX_STAGE;
 
-  let label = formatNextReviewDate(reviewData.nextReviewAt);
+  let label = formatNextReviewDate(reviewData.nextReviewAt, reviewData.dueDate);
   let badgeClass = "difficulty-refactoring";
 
   if (isDue) {
-    label = "Повторить сегодня";
-    badgeClass = "difficulty-warm-up";
+    label = "Повтор";
+    badgeClass = "difficulty-review-due";
   } else if (isMaster) {
     label = "Мастер";
     badgeClass = "difficulty-middle";
@@ -273,4 +359,5 @@ export function calculateMasteryStats(allTasks = [], reviews = {}) {
     totalCount,
   };
 }
+
 

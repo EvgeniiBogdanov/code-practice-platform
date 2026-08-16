@@ -1,6 +1,6 @@
 <div align="center">
 
-# ⚡ Code Practice Platform · `v2.2.1`
+# ⚡ Code Practice Platform · `v2.2.2`
 
 ### Интерактивная платформа для подготовки к техническим собеседованиям по фронтенду и алгоритмам.
 
@@ -92,7 +92,8 @@
 
 Полная история всех изменений и релизов доступна в файле **[CHANGELOG.md](CHANGELOG.md)**.
 
-- **[v2.2.1](CHANGELOG.md#v2-2-1)** — Умное интервальное повторение (SM-2), ступенчатые подсказки (Hints), система всплывающих подсказок (Tooltip System), редизайн Header и карточек задач.
+- **[v2.2.2](CHANGELOG.md#v2-2-2)** — Календарный SM-2 с учетом таймзоны, автосброс решений в день повтора, унификация меню и UI полировка.
+- **[v2.2.1](CHANGELOG.md#v2-2-1)** — Умное интервальное повторение (SM-2), кастомная система Tooltip (Radix-like), редизайн Header и карточек задач.
 - **[v2.2.0](CHANGELOG.md#v2-2-0)** — React Live Runner, TypeScript Live Type Checking, Hover Tooltips с сигнатурами, Emmet JSX & навигация.
 - **[v2.1.8](CHANGELOG.md#v2-1-8)** — Хранилище IndexedDB, Web Worker sandbox, оптимизация размера главного бандла на 85.5%.
 - **[v2.0.0](CHANGELOG.md#v2-0-0)** — Запуск браузерного редактора кода и интерактивной терминальной консоли.
@@ -129,7 +130,7 @@ npm run dev
 | <kbd>Ctrl</kbd> + <kbd>Enter</kbd> / <kbd>⌘</kbd> + <kbd>Enter</kbd> | Запуск выполнения кода в консоли / песочнице                  |
 | <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>F</kbd>                     | Форматирование кода через Prettier                            |
 | <kbd>Alt</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd>                         | Перемещение текущей строки вверх / вниз                       |
-| <kbd>Esc</kbd>                                                       | Закрыть модальное окно / меню поиска / подсказки              |
+| <kbd>Esc</kbd>                                                       | Закрыть модальное окно / меню поиска                          |
 
 ---
 
@@ -141,7 +142,7 @@ src/
 ├── components/        # UI-компоненты (Header, Sidebar, дашборд, Tooltip, консоль, редактор)
 ├── data/              # Реестр задач (tasksRegistry) и интерактивные шпаргалки
 ├── hooks/             # Кастомные хуки (таймер, горячие клавиши)
-├── javascript/        # Задачи, код, подсказки (jsHints) и разборы по JavaScript
+├── javascript/        # Задачи, код, тесты и разборы по JavaScript
 ├── react/             # Live-компоненты, редюсеры и задачи по React
 ├── routes/            # Файловая маршрутизация на базе TanStack Router
 ├── services/          # Сервисы хранения IndexedDB, LocalStorage кэш, BroadcastChannel
