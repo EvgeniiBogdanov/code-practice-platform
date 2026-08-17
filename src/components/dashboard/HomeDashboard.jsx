@@ -25,8 +25,6 @@ import { JS_TASKS } from "../../javascript/data/tasksData";
 import { REACT_TASKS, WARMUP_TASKS } from "../../react/data/tasksData";
 import { ALL_ALGO_TASKS } from "../../algorithms/data/tasksData";
 import { ALL_TASKS } from "../../data/tasksRegistry";
-import { useReviewStore } from "../../stores/useReviewStore";
-import { calculateMasteryStats } from "../../utils/spacedRepetition";
 
 export const HomeDashboard = ({
   completedTotal,
@@ -65,10 +63,6 @@ export const HomeDashboard = ({
 
   const algoPct = algoTotal > 0 ? Math.round((algoSolved / algoTotal) * 100) : 0;
 
-  // Spaced Repetition Store data
-  const reviews = useReviewStore((state) => state.reviews);
-  const isReviewStoreReady = useReviewStore((state) => state.isInitialized);
-  const masteryStats = React.useMemo(() => isReviewStoreReady ? calculateMasteryStats(ALL_TASKS, reviews) : { dueToday: 0, learning: 0, reviewing: 0, mastered: 0, totalReviewed: 0, unreviewed: 0, totalCount: 0 }, [reviews, isReviewStoreReady]);
 
   return (
     <div className="home-container">
@@ -116,68 +110,6 @@ export const HomeDashboard = ({
             </div>
           </div>
         </div>
-      </div>
-
-      <hr className="divider" />
-
-      {/* Секция: Интервальное повторение (Spaced Repetition) */}
-      <div className="section-block spaced-repetition-section">
-        <div className="block-header spaced-repetition-header">
-          <div className="block-header-title-group">
-            <Brain size={18} style={{ color: "var(--accent-blue)" }} />
-            <h2 className="block-title">Интервальное повторение</h2>
-          </div>
-          {masteryStats.totalReviewed > 0 && (
-            <span className="mastery-summary-pill">
-              <Trophy size={13} style={{ color: "#10b981" }} />
-              <span>Мастер: {masteryStats.mastered} из {masteryStats.totalReviewed}</span>
-            </span>
-          )}
-        </div>
-
-        {masteryStats.totalReviewed > 0 ? (
-          /* Шкала мастерства (Mastery Progress Track) */
-          <div className="mastery-track-card">
-            <div className="mastery-track-header">
-              <span className="mastery-track-title">Уровни закрепления в памяти:</span>
-              <span className="mastery-track-count">{masteryStats.totalReviewed} задач в графике</span>
-            </div>
-            <div className="mastery-multi-bar">
-              <div
-                className="mastery-bar-segment segment-learning"
-                style={{ width: `${(masteryStats.learning / masteryStats.totalReviewed) * 100}%` }}
-                title={`Изучение (1-3 дня): ${masteryStats.learning}`}
-              />
-              <div
-                className="mastery-bar-segment segment-reviewing"
-                style={{ width: `${(masteryStats.reviewing / masteryStats.totalReviewed) * 100}%` }}
-                title={`Закрепление (7-14 дней): ${masteryStats.reviewing}`}
-              />
-              <div
-                className="mastery-bar-segment segment-mastered"
-                style={{ width: `${(masteryStats.mastered / masteryStats.totalReviewed) * 100}%` }}
-                title={`Мастер (30+ дней): ${masteryStats.mastered}`}
-              />
-            </div>
-            <div className="mastery-legend">
-              <span className="legend-item"><span className="legend-dot red" /> 1-3 дня ({masteryStats.learning})</span>
-              <span className="legend-item"><span className="legend-dot yellow" /> 7-14 дней ({masteryStats.reviewing})</span>
-              <span className="legend-item"><span className="legend-dot green" /> Мастер ({masteryStats.mastered})</span>
-            </div>
-          </div>
-        ) : (
-          <div className="due-onboarding-card">
-            <div className="due-empty-icon">
-              <Brain size={22} style={{ color: "var(--accent-blue)" }} />
-            </div>
-            <div className="due-empty-content">
-              <div className="due-empty-title">Умное интервальное повторение</div>
-              <div className="due-empty-desc">
-                Решайте задачи в каталоге и оценивайте их (Сложно: +1д, Средне: +3д, Легко: +7д). Платформа автоматически построит индивидуальный график повторений (1д → 3д → 7д → 14д → 30д → Мастер).
-              </div>
-            </div>
-          </div>
-        )}
       </div>
 
       <hr className="divider" />

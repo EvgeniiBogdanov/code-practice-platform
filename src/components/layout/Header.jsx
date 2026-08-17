@@ -34,9 +34,10 @@ import { ALL_TASKS, resolveTaskSection } from "../../data/tasksRegistry";
 import { FILE_ICON_COLOR } from "../../constants/uiConstants";
 import { useReviewStore } from "../../stores/useReviewStore";
 import {
-  getAllReviewTasksSorted,
+  getDueTasksList,
   getReviewBadgeMeta,
   isTaskDue,
+  getGroupCompletionClass,
 } from "../../utils/spacedRepetition";
 import { Tooltip } from "../common/Tooltip";
 
@@ -100,21 +101,14 @@ export const Header = ({
 
   const reviews = useReviewStore((state) => state.reviews);
   const isReviewStoreReady = useReviewStore((state) => state.isInitialized);
-  const sortedReviewTasks = React.useMemo(() => {
+  const dueReviewTasks = React.useMemo(() => {
     if (!isReviewStoreReady) return [];
-    return getAllReviewTasksSorted(ALL_TASKS, reviews);
+    return getDueTasksList(ALL_TASKS, reviews);
   }, [reviews, isReviewStoreReady]);
-  const dueTasksCount = React.useMemo(() => {
-    if (!isReviewStoreReady || !reviews) return 0;
-    let count = 0;
-    for (const rev of Object.values(reviews)) {
-      if (rev && isTaskDue(rev)) count++;
-    }
-    return count;
-  }, [reviews, isReviewStoreReady]);
+  const dueTasksCount = dueReviewTasks.length;
 
   const hasAnySolvedTasks = React.useMemo(() => {
-    if (sortedReviewTasks.length > 0) return true;
+    if (dueReviewTasks.length > 0) return true;
     if (completedTasks) {
       for (const val of Object.values(completedTasks)) {
         if (val === true || val === "solved") return true;
@@ -126,7 +120,7 @@ export const Header = ({
       }
     }
     return false;
-  }, [completedTasks, sortedReviewTasks, reviews]);
+  }, [completedTasks, dueReviewTasks, reviews]);
 
   const closeAllDropdowns = () => {
     if (setSectionDropdownOpen) setSectionDropdownOpen(false);
@@ -360,7 +354,7 @@ export const Header = ({
                         {Array.from(new Set(JS_TASKS.map((t) => t.group))).map((gName) => {
                           const groupTasks = JS_TASKS.filter((t) => t.group === gName);
                           const completedCount = groupTasks.filter((t) => isTaskSolved(t.id)).length;
-                          const isCompleted = completedCount > 0 && completedCount === groupTasks.length;
+                          const completionClass = getGroupCompletionClass(groupTasks, reviews, completedTasks);
                           const isActive = currentGroupName === gName;
                           const gMeta = getGroupMeta(gName);
                           return (
@@ -380,7 +374,7 @@ export const Header = ({
                             >
                               <span className="breadcrumb-dropdown-icon">{gMeta.renderIcon(14)}</span>
                               <span className="dropdown-item-title">{gName}</span>
-                              <span className={`dropdown-item-count ${isCompleted ? "completed" : ""}`}>
+                              <span className={`dropdown-item-count ${completionClass}`}>
                                 {completedCount}/{groupTasks.length}
                               </span>
                             </Link>
@@ -426,7 +420,7 @@ export const Header = ({
                                 (t) => t.group === currentGroupName && t.subgroup === subName
                               );
                               const completedCount = subTasks.filter((t) => isTaskSolved(t.id)).length;
-                              const isCompleted = completedCount > 0 && completedCount === subTasks.length;
+                              const completionClass = getGroupCompletionClass(subTasks, reviews, completedTasks);
                               const isActive = currentSubgroupName === subName;
                               const targetTaskId = `subgroup-${subName}`;
                               return (
@@ -450,7 +444,7 @@ export const Header = ({
                                     <Folder size={14} style={{ color: currentGroupMeta.color, opacity: 0.9 }} />
                                   </span>
                                   <span className="dropdown-item-title">{subName}</span>
-                                  <span className={`dropdown-item-count ${isCompleted ? "completed" : ""}`}>
+                                  <span className={`dropdown-item-count ${completionClass}`}>
                                     {completedCount}/{subTasks.length}
                                   </span>
                                 </Link>
@@ -561,7 +555,7 @@ export const Header = ({
                     <div className="breadcrumb-dropdown-list">
                       {categoriesList.map((cat) => {
                         const isActiveCategory = cat.id === categoryId;
-                        const isCompleted = cat.completed > 0 && cat.completed === cat.total;
+                        const completionClass = getGroupCompletionClass(cat.tasks || [], reviews, completedTasks);
                         return (
                           <Link
                             key={cat.id}
@@ -581,7 +575,7 @@ export const Header = ({
                           >
                             <span className="breadcrumb-dropdown-icon">{cat.icon}</span>
                             <span className="dropdown-item-title">{cat.name}</span>
-                            <span className={`dropdown-item-count ${isCompleted ? "completed" : ""}`}>
+                            <span className={`dropdown-item-count ${completionClass}`}>
                               {cat.completed}/{cat.total}
                             </span>
                           </Link>
@@ -688,7 +682,7 @@ export const Header = ({
                         {Array.from(new Set(ALGO_TASKS.map((t) => t.group))).map((gName) => {
                           const groupTasks = ALGO_TASKS.filter((t) => t.group === gName);
                           const completedCount = groupTasks.filter((t) => isTaskSolved(t.id)).length;
-                          const isCompleted = completedCount > 0 && completedCount === groupTasks.length;
+                          const completionClass = getGroupCompletionClass(groupTasks, reviews, completedTasks);
                           const isActive = currentGroup === gName;
                           const gMeta = getAlgoGroupMeta(gName);
                           return (
@@ -702,7 +696,7 @@ export const Header = ({
                             >
                               <span className="breadcrumb-dropdown-icon">{gMeta.renderIcon(14)}</span>
                               <span className="dropdown-item-title">{gName}</span>
-                              <span className={`dropdown-item-count ${isCompleted ? "completed" : ""}`}>
+                              <span className={`dropdown-item-count ${completionClass}`}>
                                 {completedCount}/{groupTasks.length}
                               </span>
                             </Link>
@@ -841,17 +835,15 @@ export const Header = ({
                   <span className="header-review-header-count">
                     {dueTasksCount > 0
                       ? `${dueTasksCount} к повторению`
-                      : sortedReviewTasks.length > 0
-                      ? `${sortedReviewTasks.length} в графике`
                       : hasAnySolvedTasks
-                      ? "Все повторены"
+                      ? "Задач нет"
                       : "0 решено"}
                   </span>
                 </div>
 
-                {sortedReviewTasks.length > 0 ? (
+                {dueReviewTasks.length > 0 ? (
                   <div className="header-review-dropdown-list">
-                    {sortedReviewTasks.map((task) => {
+                    {dueReviewTasks.map((task) => {
                       const section = resolveTaskSection(task);
                       const to =
                         section === "algorithms"
@@ -860,15 +852,26 @@ export const Header = ({
                           ? "/javascript/$taskId"
                           : "/react/$taskId";
                       const badge = getReviewBadgeMeta(task.reviewData);
-                      const rating = task.reviewData?.rating;
+                      const diffKey = String(task.difficulty || "").toLowerCase();
+                      const resolvedRating =
+                        task.reviewData?.rating ||
+                        (diffKey === "hard" || diffKey === "strong"
+                          ? "hard"
+                          : diffKey === "medium" || diffKey === "middle" || diffKey === "refactoring" || diffKey === "ts"
+                          ? "medium"
+                          : "easy");
 
                       return (
                         <Link
                           key={task.id}
                           to={to}
                           params={{ taskId: String(task.id) }}
-                          className={`header-review-item ${badge.isDue ? "is-due" : ""} ${rating ? `rating-gradient-${rating}` : ""}`}
-                          title={rating ? `${task.title} • Оценка сложности: ${rating === "hard" ? "Сложно" : rating === "medium" ? "Средне" : "Легко"}` : task.title}
+                          className={`header-review-item ${badge.isDue ? "is-due" : ""} ${resolvedRating ? `rating-gradient-${resolvedRating}` : ""}`}
+                          title={
+                            task.reviewData?.rating
+                              ? `${task.title} • Оценка: ${task.reviewData.rating === "hard" ? "Сложно" : task.reviewData.rating === "medium" ? "Средне" : "Легко"} • Пора повторить`
+                              : `${task.title} • Пора повторить`
+                          }
                           onClick={closeAllDropdowns}
                         >
                           <div className="header-review-item-main">
@@ -909,8 +912,8 @@ export const Header = ({
                       <Sparkles size={20} style={{ color: "#10b981" }} />
                     </div>
                     <div className="header-review-empty-text">
-                      <strong>Все задачи повторены!</strong>
-                      <span>Отличная работа! Новые повторения появятся согласно вашему графику</span>
+                      <strong>Задач для повторения еще нет</strong>
+                      <span>Новые повторения появятся согласно вашему графику</span>
                     </div>
                   </div>
                 )}

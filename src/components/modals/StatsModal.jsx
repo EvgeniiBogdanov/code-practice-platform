@@ -1,6 +1,18 @@
-import React from "react";
-import { X, CheckCircle2, XCircle, Clock, CheckSquare, RotateCcw } from "lucide-react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import {
+  X,
+  Clock,
+  RotateCcw,
+  PieChart as PieChartIcon,
+  Brain,
+} from "lucide-react";
 import { useUIStore } from "../../stores/useUIStore";
+import { useReviewStore } from "../../stores/useReviewStore";
+import { ALL_TASKS } from "../../data/tasksRegistry";
+import { getDueTasksList } from "../../utils/spacedRepetition";
+import { VisxProgressDonut } from "./VisxProgressDonut";
+import { VisxCategoryBars } from "./VisxCategoryBars";
+import { SpacedRepetitionSection } from "../dashboard/SpacedRepetitionSection";
 
 export const StatsModal = ({
   statsModalOpen: propStatsModalOpen,
@@ -8,144 +20,184 @@ export const StatsModal = ({
   currentSectionStats,
   setResetConfirmOpen: propSetResetConfirmOpen,
 }) => {
+  const [activeTab, setActiveTab] = useState("overview"); // "overview" | "spaced-repetition"
+
   const storeStatsModalOpen = useUIStore((state) => state.statsModalOpen);
   const storeSetStatsModalOpen = useUIStore((state) => state.setStatsModalOpen);
   const storeSetResetConfirmOpen = useUIStore((state) => state.setResetConfirmOpen);
 
-  const statsModalOpen = propStatsModalOpen !== undefined ? propStatsModalOpen : storeStatsModalOpen;
+  const reviews = useReviewStore((state) => state.reviews);
+  const isReviewStoreReady = useReviewStore((state) => state.isInitialized);
+
+  const targetTasks = useMemo(() => {
+    return currentSectionStats?.taskList && currentSectionStats.taskList.length > 0
+      ? currentSectionStats.taskList
+      : ALL_TASKS;
+  }, [currentSectionStats?.taskList]);
+
+  const dueTasks = useMemo(() => {
+    return isReviewStoreReady ? getDueTasksList(targetTasks, reviews) : [];
+  }, [reviews, isReviewStoreReady, targetTasks]);
+
+  const statsModalOpen =
+    propStatsModalOpen !== undefined ? propStatsModalOpen : storeStatsModalOpen;
   const setStatsModalOpen = propSetStatsModalOpen || storeSetStatsModalOpen;
   const setResetConfirmOpen = propSetResetConfirmOpen || storeSetResetConfirmOpen;
 
+  // Handle ESC key to close modal
+  const handleKeyDown = useCallback(
+    (e) => {
+      if (e.key === "Escape" && statsModalOpen) {
+        setStatsModalOpen(false);
+      }
+    },
+    [statsModalOpen, setStatsModalOpen]
+  );
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
+
   if (!statsModalOpen || !currentSectionStats) return null;
+
+  const {
+    title = "Статистика",
+    sectionName = "",
+    icon,
+    total = 0,
+    solved = 0,
+    unsolved = 0,
+    inProgress = 0,
+    solvedPct = 0,
+    unsolvedPct = 0,
+    inProgressPct = 0,
+    categories = [],
+    breakdownTitle = "Прогресс по темам и группам:",
+    isDevelopment = false,
+  } = currentSectionStats;
 
   return (
     <div
       className="stats-modal-overlay"
       onClick={() => setStatsModalOpen(false)}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="stats-modal-title"
     >
-      <div
-        className="stats-modal"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="stats-modal" onClick={(e) => e.stopPropagation()}>
+        {/* Header */}
         <div className="stats-modal-header">
-          <div className="stats-modal-title">
-            {currentSectionStats.icon} <span>{currentSectionStats.title}</span>
+          <div className="stats-modal-title" id="stats-modal-title">
+            {icon && <span className="stats-modal-header-icon">{icon}</span>}
+            <span>{title}</span>
           </div>
           <button
             className="stats-modal-close"
             onClick={() => setStatsModalOpen(false)}
             title="Закрыть (Esc)"
+            aria-label="Закрыть"
           >
             <X size={18} />
           </button>
         </div>
 
+        {/* Tab Navigation */}
+        <div className="stats-modal-tabs">
+          <button
+            className={`stats-tab-btn ${activeTab === "overview" ? "active" : ""}`}
+            onClick={() => setActiveTab("overview")}
+          >
+            <PieChartIcon size={14} />
+            <span>Общий прогресс</span>
+          </button>
+          <button
+            className={`stats-tab-btn ${activeTab === "spaced-repetition" ? "active" : ""}`}
+            onClick={() => setActiveTab("spaced-repetition")}
+          >
+            <Brain size={14} />
+            <span>Интервальное повторение (SM-2)</span>
+            {dueTasks.length > 0 && (
+              <span className="stats-tab-due-badge">{dueTasks.length}</span>
+            )}
+          </button>
+        </div>
+
+        {/* Body Content */}
         <div className="stats-modal-body">
-          {/* Общий прогресс-бар */}
-          <div className="stats-main-progress-card">
-            <div className="stats-progress-label-row">
-              <span>Прогресс решения</span>
-              <span className="stats-percent-badge">{currentSectionStats.solvedPct}%</span>
-            </div>
-            
-            {/* Трехцветный полосатый прогресс-бар */}
-            <div className="stats-multi-bar">
-              <div
-                className="stats-bar-segment segment-solved"
-                style={{ width: `${currentSectionStats.solvedPct}%` }}
-                title={`Решено: ${currentSectionStats.solved} (${currentSectionStats.solvedPct}%)`}
-              />
-              <div
-                className="stats-bar-segment segment-unsolved"
-                style={{ width: `${currentSectionStats.unsolvedPct}%` }}
-                title={`Не решено: ${currentSectionStats.unsolved} (${currentSectionStats.unsolvedPct}%)`}
-              />
-              <div
-                className="stats-bar-segment segment-progress"
-                style={{ width: `${currentSectionStats.inProgressPct}%` }}
-                title={`В процессе: ${currentSectionStats.inProgress} (${currentSectionStats.inProgressPct}%)`}
-              />
-            </div>
-          </div>
-
-          {/* Метрики: Решено, Не решено, В процессе, Всего */}
-          <div className="stats-metrics-grid">
-            <div className="stats-metric-card metric-solved">
-              <div className="metric-header">
-                <CheckCircle2 size={15} /> Решено
-              </div>
-              <div className="metric-value">{currentSectionStats.solved}</div>
-              <div className="metric-sub">{currentSectionStats.solvedPct}% от всех задач</div>
-            </div>
-
-            <div className="stats-metric-card metric-unsolved">
-              <div className="metric-header">
-                <XCircle size={15} /> Не решено
-              </div>
-              <div className="metric-value">{currentSectionStats.unsolved}</div>
-              <div className="metric-sub">{currentSectionStats.unsolvedPct}% от всех задач</div>
-            </div>
-
-            <div className="stats-metric-card metric-progress">
-              <div className="metric-header">
-                <Clock size={15} /> В процессе
-              </div>
-              <div className="metric-value">{currentSectionStats.inProgress}</div>
-              <div className="metric-sub">{currentSectionStats.inProgressPct}% осталось решить</div>
-            </div>
-
-            <div className="stats-metric-card metric-total">
-              <div className="metric-header">
-                <CheckSquare size={15} /> Всего задач
-              </div>
-              <div className="metric-value">{currentSectionStats.total}</div>
-              <div className="metric-sub">100% базы раздела</div>
-            </div>
-          </div>
-
-          {/* Разбивка по категориям */}
-          <div className="stats-categories-card">
-            <h4 className="stats-categories-title">{currentSectionStats.breakdownTitle}</h4>
-            <div className="stats-categories-list">
-              {currentSectionStats.categories.map((cat, i) => {
-                const pct = cat.total > 0 ? (cat.completed / cat.total) * 100 : 0;
-                return (
-                  <div className="stats-category-row" key={i}>
-                    <div className="stats-cat-name">{cat.icon} {cat.name}</div>
-                    <div className="stats-cat-bar-wrapper">
-                      <div className="stats-cat-bar" style={{ width: `${pct}%` }} />
-                    </div>
-                    <div className="stats-cat-val">
-                      {cat.note ? cat.note : `${cat.completed}/${cat.total}`}
-                    </div>
+          {/* TAB 1: OVERVIEW */}
+          {activeTab === "overview" && (
+            <>
+              {/* Visx Progress Donut Chart Card */}
+              <div className="stats-donut-card">
+                <div className="stats-donut-chart-wrap">
+                  <VisxProgressDonut
+                    solved={solved}
+                    unsolved={unsolved}
+                    inProgress={inProgress}
+                    total={total}
+                    solvedPct={solvedPct}
+                    height={180}
+                  />
+                </div>
+                <div className="stats-donut-legend">
+                  <div className="donut-legend-item">
+                    <span className="donut-legend-dot green" />
+                    <span className="donut-legend-label">Решено</span>
+                    <span className="donut-legend-val">{solved} ({solvedPct}%)</span>
                   </div>
-                );
-              })}
-            </div>
-          </div>
+                  <div className="donut-legend-item">
+                    <span className="donut-legend-dot red" />
+                    <span className="donut-legend-label">Не решено</span>
+                    <span className="donut-legend-val">{unsolved} ({unsolvedPct}%)</span>
+                  </div>
+                  <div className="donut-legend-item">
+                    <span className="donut-legend-dot blue" />
+                    <span className="donut-legend-label">В процессе</span>
+                    <span className="donut-legend-val">{inProgress} ({inProgressPct}%)</span>
+                  </div>
+                </div>
+              </div>
 
-          {currentSectionStats.isDevelopment && (
-            <div
-              style={{
-                marginTop: "16px",
-                padding: "12px 14px",
-                background: "var(--bg-subtle)",
-                border: "1px solid var(--border-color)",
-                borderRadius: "var(--radius-md)",
-                fontSize: "12.5px",
-                color: "var(--text-muted)",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-              }}
-            >
-              <Clock size={16} style={{ flexShrink: 0, color: "var(--accent-blue)" }} />
-              <span>Этот раздел находится в активной разработке. Практические задачи появятся в скором времени.</span>
-            </div>
+
+              {/* Category Breakdown with Scroll */}
+              {categories && categories.length > 0 && (
+                <div className="stats-categories-card">
+                  <div className="stats-categories-header-row">
+                    <h4 className="stats-categories-title" style={{ margin: 0 }}>
+                      {breakdownTitle}
+                    </h4>
+                    <span className="stats-categories-count-badge">
+                      {categories.length} тем
+                    </span>
+                  </div>
+                  <VisxCategoryBars categories={categories} />
+                </div>
+              )}
+
+              {isDevelopment && (
+                <div className="stats-dev-notice">
+                  <Clock size={16} style={{ flexShrink: 0, color: "var(--accent-blue)" }} />
+                  <span>
+                    Этот раздел находится в активной разработке. Практические задачи появятся в скором времени.
+                  </span>
+                </div>
+              )}
+            </>
+          )}
+
+          {/* TAB 2: SPACED REPETITION (SM-2) */}
+          {activeTab === "spaced-repetition" && (
+            <SpacedRepetitionSection
+              inModal={true}
+              onNavigate={() => setStatsModalOpen(false)}
+              taskList={targetTasks}
+              sectionName={sectionName || title}
+            />
           )}
         </div>
 
-        {/* Футер с единой кнопкой сброса прогресса и всех решений */}
+        {/* Footer */}
         <div className="stats-modal-footer">
           <button
             className="stats-reset-btn"
@@ -161,4 +213,3 @@ export const StatsModal = ({
 };
 
 export default StatsModal;
-

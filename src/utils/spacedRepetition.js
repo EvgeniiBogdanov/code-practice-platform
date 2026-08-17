@@ -279,13 +279,17 @@ export function getDueTasksList(allTasks = [], reviews = {}) {
   if (!allTasks || allTasks.length === 0) return [];
   return allTasks
     .filter((task) => {
-      const rev = reviews[String(task.id)];
+      const taskId = String(task.id);
+      const rev = reviews[taskId] || reviews[task.id];
       return rev && isTaskDue(rev);
     })
-    .map((task) => ({
-      ...task,
-      reviewData: reviews[String(task.id)],
-    }))
+    .map((task) => {
+      const taskId = String(task.id);
+      return {
+        ...task,
+        reviewData: reviews[taskId] || reviews[task.id],
+      };
+    })
     .sort((a, b) => (a.reviewData?.nextReviewAt || 0) - (b.reviewData?.nextReviewAt || 0));
 }
 
@@ -300,13 +304,17 @@ export function getAllReviewTasksSorted(allTasks = [], reviews = {}) {
   if (!allTasks || allTasks.length === 0 || !reviews) return [];
   return allTasks
     .filter((task) => {
-      const rev = reviews[String(task.id)];
+      const taskId = String(task.id);
+      const rev = reviews[taskId] || reviews[task.id];
       return rev && rev.stage > 0;
     })
-    .map((task) => ({
-      ...task,
-      reviewData: reviews[String(task.id)],
-    }))
+    .map((task) => {
+      const taskId = String(task.id);
+      return {
+        ...task,
+        reviewData: reviews[taskId] || reviews[task.id],
+      };
+    })
     .sort((a, b) => {
       const isDueA = isTaskDue(a.reviewData);
       const isDueB = isTaskDue(b.reviewData);
@@ -329,8 +337,10 @@ export function calculateMasteryStats(allTasks = [], reviews = {}) {
   let mastered = 0;   // Stage 5-6
   let totalReviewed = 0;
 
-  if (reviews) {
-    for (const [id, rev] of Object.entries(reviews)) {
+  if (reviews && allTasks && allTasks.length > 0) {
+    for (const task of allTasks) {
+      const taskId = String(task.id);
+      const rev = reviews[taskId] || reviews[task.id];
       if (rev && rev.stage > 0) {
         totalReviewed++;
         if (isTaskDue(rev)) {
@@ -360,4 +370,66 @@ export function calculateMasteryStats(allTasks = [], reviews = {}) {
   };
 }
 
+/**
+ * Pure function: рассчитывает CSS-класс для бейджа .node-count контейнера/группы/подгруппы.
+ * Если все задачи в контейнере решены:
+ * - "completed completed-yellow", если >= 10% задач решено "hard" или >= 20% задач "medium" (или суммарно non-easy >= 20%)
+ * - "completed completed-green", если все/подавляющее большинство задач решено "easy"
+ * Если не все задачи решены -> ""
+ *
+ * @param {Array<object>} tasks - Список задач группы/подгруппы
+ * @param {Record<string, object>} [reviews={}] - Состояние reviews из useReviewStore
+ * @param {Record<string, boolean | string>} [completedTasks={}] - Состояние решённых задач
+ * @returns {string}
+ */
+export function getGroupCompletionClass(tasks = [], reviews = {}, completedTasks = {}) {
+  if (!tasks || tasks.length === 0) return "";
+  const totalCount = tasks.length;
+  let completedCount = 0;
+  let hardCount = 0;
+  let mediumCount = 0;
+  let easyCount = 0;
+
+  for (const task of tasks) {
+    const taskId = String(task.id);
+    const isSolved =
+      completedTasks?.[taskId] === true ||
+      completedTasks?.[taskId] === "solved" ||
+      reviews?.[taskId]?.stage > 0;
+
+    if (isSolved) {
+      completedCount++;
+      const rev = reviews?.[taskId];
+      const rating = rev?.rating;
+
+      if (rating === "hard") {
+        hardCount++;
+      } else if (rating === "medium") {
+        mediumCount++;
+      } else if (rating === "easy") {
+        easyCount++;
+      } else {
+        const d = String(task?.difficulty || "").toLowerCase();
+        if (d === "hard" || d === "strong") {
+          hardCount++;
+        } else if (d === "medium" || d === "middle" || d === "refactoring" || d === "ts") {
+          mediumCount++;
+        } else {
+          easyCount++;
+        }
+      }
+    }
+  }
+
+  if (completedCount < totalCount) return "";
+
+  const hardRatio = hardCount / totalCount;
+  const mediumRatio = mediumCount / totalCount;
+
+  if (hardRatio >= 0.1 || mediumRatio >= 0.2 || (hardCount + mediumCount) / totalCount >= 0.2) {
+    return "completed completed-yellow";
+  }
+
+  return "completed completed-green";
+}
 
