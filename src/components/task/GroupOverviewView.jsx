@@ -24,7 +24,11 @@ import TheoryCodeBlock from "./TheoryCodeBlock";
 import { usePractice } from "../../context/PracticeContext";
 import { FILE_ICON_COLOR } from "../../constants/uiConstants";
 import { useReviewStore } from "../../stores/useReviewStore";
-import { formatNextReviewDate, isTaskDue } from "../../utils/spacedRepetition";
+import {
+  formatNextReviewDate,
+  isTaskDue,
+  getGroupCompletionClass,
+} from "../../utils/spacedRepetition";
 
 export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
   const context = usePractice();
@@ -85,6 +89,58 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
     if (val === true || val === "solved") return "solved";
     if (val === "unsolved") return "unsolved";
     return "unstarted";
+  };
+
+  // Helper для определения CSS-класса градиента задачи:
+  // решено -> сложность: зеленый (easy), желтый (medium), оранжевый (hard)
+  // не решено -> красный (unsolved)
+  const getTaskGradientClass = (task, status, taskReview) => {
+    if (status === "unsolved") {
+      return "rating-gradient-unsolved";
+    }
+    if (status === "solved") {
+      if (taskReview?.rating === "hard") return "rating-gradient-hard";
+      if (taskReview?.rating === "medium") return "rating-gradient-medium";
+      if (taskReview?.rating === "easy") return "rating-gradient-easy";
+
+      // Fallback по сложности задачи, если задача решена, но ревью еще не оценено
+      const d = String(task?.difficulty || "").toLowerCase();
+      if (d === "hard" || d === "strong") return "rating-gradient-hard";
+      if (d === "medium" || d === "middle" || d === "refactoring" || d === "ts") return "rating-gradient-medium";
+      return "rating-gradient-easy";
+    }
+    return "";
+  };
+
+  const getTaskTooltipTitle = (task, status, taskReview) => {
+    if (status === "unsolved") {
+      return `${task.title} • Статус: Не решено`;
+    }
+    if (status === "solved") {
+      const ratingLabel =
+        taskReview?.rating === "hard"
+          ? "Сложно"
+          : taskReview?.rating === "medium"
+            ? "Средне"
+            : taskReview?.rating === "easy"
+              ? "Легко"
+              : null;
+
+      if (ratingLabel) {
+        return `${task.title} • Оценка сложности: ${ratingLabel}`;
+      }
+
+      const d = String(task?.difficulty || "").toLowerCase();
+      const diffLabel =
+        d === "hard" || d === "strong"
+          ? "Сложная"
+          : d === "medium" || d === "middle" || d === "refactoring" || d === "ts"
+            ? "Средняя"
+            : "Легкая";
+
+      return `${task.title} • Решено (${diffLabel})`;
+    }
+    return task.title;
   };
 
   // Очищаем заголовок H1 и секции 10 и 11 из общего текста статьи
@@ -385,15 +441,19 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                     const completedSubCount = tasks.filter(
                       (t) => getTaskStatus(t.id) === "solved",
                     ).length;
-                    const isSubCompleted =
-                      tasks.length > 0 && completedSubCount === tasks.length;
+                    const completionClass = getGroupCompletionClass(
+                      tasks,
+                      reviews,
+                      completedTasks,
+                    );
                     return (
                       <div className="tree-group-block" key={subgroupName}>
-                        <div
-                          className="tree-node-header subgroup-header"
-                          onClick={() => toggleSubgroupCollapse(subgroupName)}
-                        >
-                          <div className="icon-toggle-wrapper">
+                        <div className="tree-node-header subgroup-header">
+                          <div
+                            className="icon-toggle-wrapper"
+                            onClick={() => toggleSubgroupCollapse(subgroupName)}
+                            title={!isCollapsed ? "Свернуть" : "Развернуть"}
+                          >
                             <div className="icon-default">
                               <Folder
                                 size={17}
@@ -413,7 +473,7 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                           <span className="node-title">{subgroupName}</span>
                           {statusFilter === "all" ? (
                             <span
-                              className={`node-count ${isSubCompleted ? "completed" : ""}`}
+                              className={`node-count ${completionClass}`}
                             >
                               {completedSubCount}/{tasks.length}
                             </span>
@@ -436,17 +496,16 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                               const isDue = isTaskDue(taskReview);
                               const intervalDays = taskReview?.intervalDays;
 
+                              const gradientClass = getTaskGradientClass(task, s, taskReview);
+                              const tooltipTitle = getTaskTooltipTitle(task, s, taskReview);
+
                               return (
                                 <Link
                                   key={task.id}
                                   to={taskRoute}
                                   params={{ taskId: String(task.id) }}
-                                  className={`task-btn tree-task-btn ${isDue ? "task-is-due" : ""} ${taskReview?.rating ? `rating-gradient-${taskReview.rating}` : ""}`}
-                                  title={
-                                    taskReview?.rating
-                                      ? `${task.title} • Оценка сложности: ${taskReview.rating === "hard" ? "Сложно" : taskReview.rating === "medium" ? "Средне" : "Легко"}`
-                                      : task.title
-                                  }
+                                  className={`task-btn tree-task-btn ${isDue ? "task-is-due" : ""} ${gradientClass}`}
+                                  title={tooltipTitle}
                                 >
                                   <span className="task-btn-title">
                                     <FileText
@@ -581,17 +640,16 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                     const isDue = isTaskDue(taskReview);
                     const intervalDays = taskReview?.intervalDays;
 
+                    const gradientClass = getTaskGradientClass(task, s, taskReview);
+                    const tooltipTitle = getTaskTooltipTitle(task, s, taskReview);
+
                     return (
                       <Link
                         key={task.id}
                         to={taskRoute}
                         params={{ taskId: String(task.id) }}
-                        className={`task-btn tree-task-btn ${isDue ? "task-is-due" : ""} ${taskReview?.rating ? `rating-gradient-${taskReview.rating}` : ""}`}
-                        title={
-                          taskReview?.rating
-                            ? `${task.title} • Оценка сложности: ${taskReview.rating === "hard" ? "Сложно" : taskReview.rating === "medium" ? "Средне" : "Легко"}`
-                            : task.title
-                        }
+                        className={`task-btn tree-task-btn ${isDue ? "task-is-due" : ""} ${gradientClass}`}
+                        title={tooltipTitle}
                       >
                         <span className="task-btn-title">
                           <FileText
@@ -701,12 +759,16 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                 const nextReviewAt = taskReview?.nextReviewAt;
                 const isDue = isTaskDue(taskReview);
 
+                const gradientClass = getTaskGradientClass(task, s, taskReview);
+                const tooltipTitle = getTaskTooltipTitle(task, s, taskReview);
+
                 return (
                   <Link
                     key={task.id}
                     to={taskRoute}
                     params={{ taskId: String(task.id) }}
-                    className={`gallery-card ${isDue ? "task-is-due" : ""} ${taskReview?.rating ? `rating-gradient-${taskReview.rating}` : ""}`}
+                    className={`gallery-card ${isDue ? "task-is-due" : ""} ${gradientClass}`}
+                    title={tooltipTitle}
                   >
                     <div>
                       <div
@@ -796,21 +858,35 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                       <div
                         style={{
                           display: "flex",
-                          alignItems: "center",
+                          alignItems: "flex-start",
                           gap: "8px",
                           fontWeight: 600,
                           fontSize: "14px",
                           color: "var(--text-main)",
                           marginBottom: "6px",
-                          lineHeight: 1.4,
+                          lineHeight: 1.35,
                         }}
                       >
                         <FileText
                           size={16}
                           className="node-file-icon"
-                          style={{ color: FILE_ICON_COLOR, flexShrink: 0 }}
+                          style={{
+                            color: FILE_ICON_COLOR,
+                            flexShrink: 0,
+                            marginTop: "2px",
+                          }}
                         />
-                        <span>{task.title}</span>
+                        <span
+                          style={{
+                            display: "-webkit-box",
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: "vertical",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                          }}
+                        >
+                          {task.title}
+                        </span>
                       </div>
 
                       {task.desc && (
@@ -818,12 +894,12 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                           style={{
                             fontSize: "12px",
                             color: "var(--text-muted)",
-                            lineHeight: 1.5,
+                            lineHeight: 1.45,
                             display: "-webkit-box",
                             WebkitLineClamp: 2,
                             WebkitBoxOrient: "vertical",
                             overflow: "hidden",
-                            marginBottom: "12px",
+                            marginTop: "2px",
                           }}
                         >
                           {task.desc}

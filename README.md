@@ -1,6 +1,6 @@
 <div align="center">
 
-# ⚡ Code Practice Platform · `v2.2.2`
+# ⚡ Code Practice Platform · `v2.2.3`
 
 ### Интерактивная платформа для подготовки к техническим собеседованиям по фронтенду и алгоритмам.
 

@@ -33,13 +33,30 @@ import { ALGO_TASKS } from "../../algorithms/data/tasksData";
 import { getAlgoGroupMeta } from "../../algorithms/data/groupConfig";
 import { FILE_ICON_COLOR } from "../../constants/uiConstants";
 import { useReviewStore } from "../../stores/useReviewStore";
-import { isTaskDue } from "../../utils/spacedRepetition";
+import { isTaskDue, getGroupCompletionClass } from "../../utils/spacedRepetition";
 import { Tooltip } from "../common/Tooltip";
 
 // ============================================================================
 // Style Optimized Atomic Sub-Components with React.memo
 // Only the active and clicked items re-render; all other 260+ items skip render
 // ============================================================================
+
+const getSidebarTaskGradientClass = (status, difficulty, reviewRating) => {
+  if (status === "unsolved") {
+    return "rating-gradient-unsolved";
+  }
+  if (status === "solved" || status === true) {
+    if (reviewRating === "hard") return "rating-gradient-hard";
+    if (reviewRating === "medium") return "rating-gradient-medium";
+    if (reviewRating === "easy") return "rating-gradient-easy";
+
+    const d = String(difficulty || "").toLowerCase();
+    if (d === "hard" || d === "strong") return "rating-gradient-hard";
+    if (d === "medium" || d === "middle" || d === "refactoring" || d === "ts") return "rating-gradient-medium";
+    return "rating-gradient-easy";
+  }
+  return "";
+};
 
 const SidebarTaskItem = React.memo(function SidebarTaskItem({
   id,
@@ -50,8 +67,11 @@ const SidebarTaskItem = React.memo(function SidebarTaskItem({
   isActive,
   status, // "solved" | "unsolved" | null
   isDue, // boolean - due for spaced repetition today
+  reviewRating,
+  difficulty,
   onNavClick,
 }) {
+  const gradientClass = getSidebarTaskGradientClass(status, difficulty, reviewRating);
   const tooltipContent = isDue ? `🔄 ${title} (Пора повторить!)` : title;
 
   return (
@@ -66,7 +86,7 @@ const SidebarTaskItem = React.memo(function SidebarTaskItem({
         to={to}
         params={params}
         search={search}
-        className={`task-btn tree-task-btn ${isActive ? "active" : ""} ${isDue ? "task-is-due" : ""}`}
+        className={`task-btn tree-task-btn ${isActive ? "active" : ""} ${isDue ? "task-is-due" : ""} ${gradientClass}`}
         onClick={onNavClick}
       >
         <span className="task-btn-title">
@@ -102,9 +122,11 @@ const SidebarGroupHeader = React.memo(function SidebarGroupHeader({
   onNavClick,
   isActive,
   isCompleted,
+  completedClass,
   completedCount,
   totalCount,
 }) {
+  const badgeClass = completedClass !== undefined ? completedClass : isCompleted ? "completed" : "";
   return (
     <Link
       to={to}
@@ -128,7 +150,7 @@ const SidebarGroupHeader = React.memo(function SidebarGroupHeader({
         </div>
       </div>
       <span className="node-title">{title}</span>
-      <span className={`node-count ${isCompleted ? "completed" : ""}`}>
+      <span className={`node-count ${badgeClass}`}>
         {completedCount}/{totalCount}
       </span>
     </Link>
@@ -146,9 +168,11 @@ const SidebarSubgroupHeader = React.memo(function SidebarSubgroupHeader({
   onNavClick,
   isActive,
   isCompleted,
+  completedClass,
   completedCount,
   totalCount,
 }) {
+  const badgeClass = completedClass !== undefined ? completedClass : isCompleted ? "completed" : "";
   return (
     <Link
       to={to}
@@ -174,7 +198,7 @@ const SidebarSubgroupHeader = React.memo(function SidebarSubgroupHeader({
         </div>
       </div>
       <span className="node-title">{title}</span>
-      <span className={`node-count ${isCompleted ? "completed" : ""}`}>
+      <span className={`node-count ${badgeClass}`}>
         {completedCount}/{totalCount}
       </span>
     </Link>
@@ -671,6 +695,7 @@ export const Sidebar = ({
                 onNavClick={handleMobileNavClick}
                 isActive={selectedTaskIdStr === "group-warmup"}
                 isCompleted={completedWarmup > 0 && completedWarmup === totalWarmup}
+                completedClass={getGroupCompletionClass(WARMUP_TASKS, reviews, completedTasks)}
                 completedCount={completedWarmup}
                 totalCount={totalWarmup}
               />
@@ -687,6 +712,8 @@ export const Sidebar = ({
                       isActive={selectedTaskIdStr === String(task.id)}
                       status={getTaskStatus(task.id)}
                       isDue={getTaskReviewInfo(task.id).isDue}
+                      reviewRating={getTaskReviewInfo(task.id).rating}
+                      difficulty={task.difficulty || "warm-up"}
                       onNavClick={handleMobileNavClick}
                       showTooltip={showTooltip}
                       hideTooltip={hideTooltip}
@@ -709,6 +736,7 @@ export const Sidebar = ({
                 onNavClick={handleMobileNavClick}
                 isActive={selectedTaskIdStr === "group-refactoring"}
                 isCompleted={completedRefactoring > 0 && completedRefactoring === totalRefactoring}
+                completedClass={getGroupCompletionClass(REFACTORING_TASKS, reviews, completedTasks)}
                 completedCount={completedRefactoring}
                 totalCount={totalRefactoring}
               />
@@ -725,6 +753,8 @@ export const Sidebar = ({
                       isActive={selectedTaskIdStr === String(task.id)}
                       status={getTaskStatus(task.id)}
                       isDue={getTaskReviewInfo(task.id).isDue}
+                      reviewRating={getTaskReviewInfo(task.id).rating}
+                      difficulty={task.difficulty || "refactoring"}
                       onNavClick={handleMobileNavClick}
                       showTooltip={showTooltip}
                       hideTooltip={hideTooltip}
@@ -747,6 +777,7 @@ export const Sidebar = ({
                 onNavClick={handleMobileNavClick}
                 isActive={selectedTaskIdStr === "group-middle"}
                 isCompleted={completedMain > 0 && completedMain === totalMain}
+                completedClass={getGroupCompletionClass(MAIN_TASKS, reviews, completedTasks)}
                 completedCount={completedMain}
                 totalCount={totalMain}
               />
@@ -763,6 +794,8 @@ export const Sidebar = ({
                       isActive={selectedTaskIdStr === String(task.id)}
                       status={getTaskStatus(task.id)}
                       isDue={getTaskReviewInfo(task.id).isDue}
+                      reviewRating={getTaskReviewInfo(task.id).rating}
+                      difficulty={task.difficulty || "middle"}
                       onNavClick={handleMobileNavClick}
                       showTooltip={showTooltip}
                       hideTooltip={hideTooltip}
@@ -785,6 +818,7 @@ export const Sidebar = ({
                 onNavClick={handleMobileNavClick}
                 isActive={selectedTaskIdStr === "group-strong"}
                 isCompleted={completedAdvanced > 0 && completedAdvanced === totalAdvanced}
+                completedClass={getGroupCompletionClass(ADVANCED_TASKS, reviews, completedTasks)}
                 completedCount={completedAdvanced}
                 totalCount={totalAdvanced}
               />
@@ -801,6 +835,8 @@ export const Sidebar = ({
                       isActive={selectedTaskIdStr === String(task.id)}
                       status={getTaskStatus(task.id)}
                       isDue={getTaskReviewInfo(task.id).isDue}
+                      reviewRating={getTaskReviewInfo(task.id).rating}
+                      difficulty={task.difficulty || "strong"}
                       onNavClick={handleMobileNavClick}
                       showTooltip={showTooltip}
                       hideTooltip={hideTooltip}
@@ -823,6 +859,7 @@ export const Sidebar = ({
                 onNavClick={handleMobileNavClick}
                 isActive={selectedTaskIdStr === "group-ts"}
                 isCompleted={completedReactTs > 0 && completedReactTs === totalReactTs}
+                completedClass={getGroupCompletionClass(REACT_TS_TASKS, reviews, completedTasks)}
                 completedCount={completedReactTs}
                 totalCount={totalReactTs}
               />
@@ -839,6 +876,8 @@ export const Sidebar = ({
                       isActive={selectedTaskIdStr === String(task.id)}
                       status={getTaskStatus(task.id)}
                       isDue={getTaskReviewInfo(task.id).isDue}
+                      reviewRating={getTaskReviewInfo(task.id).rating}
+                      difficulty={task.difficulty || "ts"}
                       onNavClick={handleMobileNavClick}
                       showTooltip={showTooltip}
                       hideTooltip={hideTooltip}
@@ -861,6 +900,7 @@ export const Sidebar = ({
                 onNavClick={handleMobileNavClick}
                 isActive={selectedTaskIdStr === "group-ts-practice"}
                 isCompleted={completedReactTsPractice > 0 && completedReactTsPractice === totalReactTsPractice}
+                completedClass={getGroupCompletionClass(REACT_TS_PRACTICE_TASKS, reviews, completedTasks)}
                 completedCount={completedReactTsPractice}
                 totalCount={totalReactTsPractice}
               />
@@ -877,6 +917,8 @@ export const Sidebar = ({
                       isActive={selectedTaskIdStr === String(task.id)}
                       status={getTaskStatus(task.id)}
                       isDue={getTaskReviewInfo(task.id).isDue}
+                      reviewRating={getTaskReviewInfo(task.id).rating}
+                      difficulty={task.difficulty || "ts"}
                       onNavClick={handleMobileNavClick}
                       showTooltip={showTooltip}
                       hideTooltip={hideTooltip}
@@ -976,6 +1018,7 @@ export const Sidebar = ({
                     onNavClick={handleMobileNavClick}
                     isActive={isFolderActive}
                     isCompleted={isGroupCompleted}
+                    completedClass={getGroupCompletionClass(totalGroupTasks, reviews, completedTasks)}
                     completedCount={completedGroupTasks.length}
                     totalCount={totalGroupTasks.length}
                   />
@@ -1020,6 +1063,7 @@ export const Sidebar = ({
                               onNavClick={handleMobileNavClick}
                               isActive={isSubActive}
                               isCompleted={isSubCompleted}
+                              completedClass={getGroupCompletionClass(tasks, reviews, completedTasks)}
                               completedCount={completedSubTasks.length}
                               totalCount={tasks.length}
                             />
@@ -1038,6 +1082,8 @@ export const Sidebar = ({
                                     isActive={selectedTaskIdStr === String(task.id)}
                                     status={getTaskStatus(task.id)}
                                     isDue={getTaskReviewInfo(task.id).isDue}
+                                    reviewRating={getTaskReviewInfo(task.id).rating}
+                                    difficulty={task.difficulty}
                                     onNavClick={handleMobileNavClick}
                                     showTooltip={showTooltip}
                                     hideTooltip={hideTooltip}
@@ -1143,6 +1189,7 @@ export const Sidebar = ({
                     onNavClick={handleMobileNavClick}
                     isActive={isFolderActive}
                     isCompleted={isGroupCompleted}
+                    completedClass={getGroupCompletionClass(tasks, reviews, completedTasks)}
                     completedCount={completedGroupTasks.length}
                     totalCount={tasks.length}
                   />
@@ -1161,6 +1208,8 @@ export const Sidebar = ({
                           isActive={selectedTaskIdStr === String(task.id)}
                           status={getTaskStatus(task.id)}
                           isDue={getTaskReviewInfo(task.id).isDue}
+                          reviewRating={getTaskReviewInfo(task.id).rating}
+                          difficulty={task.difficulty}
                           onNavClick={handleMobileNavClick}
                           showTooltip={showTooltip}
                           hideTooltip={hideTooltip}
@@ -1191,9 +1240,7 @@ export const Sidebar = ({
               <Zap size={15} style={{ color: "#f59e0b" }} />
               <span className="node-title">JavaScript</span>
               <span
-                className={`node-count ${
-                  completedJsTotal > 0 && completedJsTotal === totalJsCount ? "completed" : ""
-                }`}
+                className={`node-count ${getGroupCompletionClass(JS_TASKS, reviews, completedTasks)}`}
               >
                 {completedJsTotal}/{totalJsCount}
               </span>
@@ -1207,9 +1254,7 @@ export const Sidebar = ({
               <Code2 size={15} style={{ color: "#61dafb" }} />
               <span className="node-title">React</span>
               <span
-                className={`node-count ${
-                  completedTotal > 0 && completedTotal === totalTasks ? "completed" : ""
-                }`}
+                className={`node-count ${getGroupCompletionClass(REACT_TASKS, reviews, completedTasks)}`}
               >
                 {completedTotal}/{totalTasks}
               </span>
@@ -1223,9 +1268,7 @@ export const Sidebar = ({
               <Brain size={15} style={{ color: "#a855f7" }} />
               <span className="node-title">Алгоритмы</span>
               <span
-                className={`node-count ${
-                  completedAlgoTotal > 0 && completedAlgoTotal === totalAlgoCount ? "completed" : ""
-                }`}
+                className={`node-count ${getGroupCompletionClass(ALGO_TASKS, reviews, completedTasks)}`}
               >
                 {completedAlgoTotal}/{totalAlgoCount}
               </span>

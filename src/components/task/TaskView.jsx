@@ -184,6 +184,12 @@ export const TaskView = ({
                         <span>Решено: {formatLastSolved(taskReview.lastReviewedAt)}</span>
                       </span>
                     )}
+                    {!canRate && (
+                      <span className="task-review-locked-badge" title="Кнопки станут активны, когда наступит срок повторения задачи">
+                        <Lock size={12} />
+                        <span>Запланировано</span>
+                      </span>
+                    )}
                   </div>
                   <div className="task-review-desc">
                     {badgeMeta.isDue ? (
@@ -207,35 +213,28 @@ export const TaskView = ({
                   </div>
                 </div>
               </div>
-
-              {!canRate && (
-                <div className="task-review-locked-badge" title="Кнопки станут активны, когда наступит срок повторения задачи">
-                  <Lock size={12} />
-                  <span>Запланировано</span>
-                </div>
-              )}
             </div>
 
             <div className={`task-review-ratings ${!canRate ? "ratings-disabled" : ""}`}>
               <button
                 type="button"
-                className={`review-rate-btn rate-hard ${taskReview?.rating === RATINGS.HARD ? "active" : ""} ${!canRate ? "disabled" : ""}`}
-                onClick={() => handleRate(RATINGS.HARD)}
+                className={`review-rate-btn rate-easy ${taskReview?.rating === RATINGS.EASY ? "active" : ""} ${!canRate ? "disabled" : ""}`}
+                onClick={() => handleRate(RATINGS.EASY)}
                 disabled={!canRate}
                 title={
                   canRate
-                    ? "Трудно / смотрел подсказки — повторить завтра (+1 день)"
+                    ? "Решил уверенно и быстро — повторить через 7 дней"
                     : `Кнопка неактивна до наступления срока повторения (${formatNextReviewDate(taskReview?.nextReviewAt)})`
                 }
               >
                 <div className="rate-btn-content">
                   <div className="rate-btn-title-row">
-                    <AlertCircle size={13} className="rate-icon rate-icon-hard" />
-                    <span className="rate-label">Сложно</span>
+                    <CheckCircle2 size={13} className="rate-icon rate-icon-easy" />
+                    <span className="rate-label">Легко</span>
                   </div>
-                  <span className="rate-interval">+1 день</span>
+                  <span className="rate-interval">+7 дней</span>
                 </div>
-                {taskReview?.rating === RATINGS.HARD && (
+                {taskReview?.rating === RATINGS.EASY && (
                   <span className="rate-current-check" title="Текущая оценка"><Check size={11} /></span>
                 )}
               </button>
@@ -265,23 +264,23 @@ export const TaskView = ({
 
               <button
                 type="button"
-                className={`review-rate-btn rate-easy ${taskReview?.rating === RATINGS.EASY ? "active" : ""} ${!canRate ? "disabled" : ""}`}
-                onClick={() => handleRate(RATINGS.EASY)}
+                className={`review-rate-btn rate-hard ${taskReview?.rating === RATINGS.HARD ? "active" : ""} ${!canRate ? "disabled" : ""}`}
+                onClick={() => handleRate(RATINGS.HARD)}
                 disabled={!canRate}
                 title={
                   canRate
-                    ? "Решил уверенно и быстро — повторить через 7 дней"
+                    ? "Трудно / смотрел подсказки — повторить завтра (+1 день)"
                     : `Кнопка неактивна до наступления срока повторения (${formatNextReviewDate(taskReview?.nextReviewAt)})`
                 }
               >
                 <div className="rate-btn-content">
                   <div className="rate-btn-title-row">
-                    <CheckCircle2 size={13} className="rate-icon rate-icon-easy" />
-                    <span className="rate-label">Легко</span>
+                    <AlertCircle size={13} className="rate-icon rate-icon-hard" />
+                    <span className="rate-label">Сложно</span>
                   </div>
-                  <span className="rate-interval">+7 дней</span>
+                  <span className="rate-interval">+1 день</span>
                 </div>
-                {taskReview?.rating === RATINGS.EASY && (
+                {taskReview?.rating === RATINGS.HARD && (
                   <span className="rate-current-check" title="Текущая оценка"><Check size={11} /></span>
                 )}
               </button>

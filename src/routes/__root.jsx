@@ -552,8 +552,14 @@ const RootLayout = () => {
     };
 
     if (activeSection === "react") {
+      const reactTasks = ALL_REACT_TASKS && ALL_REACT_TASKS.length > 0
+        ? ALL_REACT_TASKS
+        : (REACT_TASKS && REACT_TASKS.length > 0 ? REACT_TASKS : WARMUP_TASKS);
       return {
         title: "Статистика React",
+        sectionName: "React",
+        section: "react",
+        taskList: reactTasks,
         icon: <Code2 size={18} style={{ color: "var(--accent-blue)" }} />,
         total: totalTasks,
         solved: solvedCount,
@@ -576,10 +582,11 @@ const RootLayout = () => {
     }
 
     if (activeSection === "javascript") {
-      const jsStats = computeStats(JS_TASKS);
-      const groupNames = Array.from(new Set(JS_TASKS.map((t) => t.group)));
+      const jsTasks = ALL_JS_TASKS && ALL_JS_TASKS.length > 0 ? ALL_JS_TASKS : JS_TASKS;
+      const jsStats = computeStats(jsTasks);
+      const groupNames = Array.from(new Set(jsTasks.map((t) => t.group)));
       const jsCategories = groupNames.map((gName) => {
-        const groupTasks = JS_TASKS.filter((t) => t.group === gName);
+        const groupTasks = jsTasks.filter((t) => t.group === gName);
         const count = groupTasks.filter((t) => {
           const val = completedTasks[t.id] ?? completedTasks[String(t.id)];
           return val === true || val === "solved";
@@ -589,6 +596,9 @@ const RootLayout = () => {
 
       return {
         title: "Статистика JavaScript",
+        sectionName: "JavaScript",
+        section: "javascript",
+        taskList: jsTasks,
         icon: <Zap size={18} style={{ color: "#f59e0b" }} />,
         ...jsStats,
         isDevelopment: false,
@@ -598,8 +608,10 @@ const RootLayout = () => {
     }
 
     if (activeSection === "home") {
-      const jsStats = computeStats(JS_TASKS);
-      const algoStats = computeStats(ALGO_TASKS);
+      const jsTasks = ALL_JS_TASKS && ALL_JS_TASKS.length > 0 ? ALL_JS_TASKS : JS_TASKS;
+      const algoTasks = ALL_ALGO_TASKS && ALL_ALGO_TASKS.length > 0 ? ALL_ALGO_TASKS : ALGO_TASKS;
+      const jsStats = computeStats(jsTasks);
+      const algoStats = computeStats(algoTasks);
       const allSolved = solvedCount + jsStats.solved + algoStats.solved;
       const allUnsolved = unsolvedCount + jsStats.unsolved + algoStats.unsolved;
       const allTotal = totalTasks + jsStats.total + algoStats.total;
@@ -607,6 +619,9 @@ const RootLayout = () => {
 
       return {
         title: "Общая статистика платформы",
+        sectionName: "Вся платформа",
+        section: "home",
+        taskList: allTasksList,
         icon: <Zap size={18} style={{ color: "var(--accent-blue)" }} />,
         total: allTotal,
         solved: allSolved,
@@ -625,10 +640,11 @@ const RootLayout = () => {
       };
     }
 
-    const algoStats = computeStats(ALGO_TASKS);
-    const algoGroupNames = Array.from(new Set(ALGO_TASKS.map((t) => t.group)));
+    const algoTasks = ALL_ALGO_TASKS && ALL_ALGO_TASKS.length > 0 ? ALL_ALGO_TASKS : ALGO_TASKS;
+    const algoStats = computeStats(algoTasks);
+    const algoGroupNames = Array.from(new Set(algoTasks.map((t) => t.group)));
     const algoCategories = algoGroupNames.map((gName) => {
-      const groupTasks = ALGO_TASKS.filter((t) => t.group === gName);
+      const groupTasks = algoTasks.filter((t) => t.group === gName);
       const count = groupTasks.filter((t) => {
         const val = completedTasks[t.id] ?? completedTasks[String(t.id)];
         return val === true || val === "solved";
@@ -638,6 +654,9 @@ const RootLayout = () => {
 
     return {
       title: "Статистика Алгоритмы",
+      sectionName: "Алгоритмы",
+      section: "algorithms",
+      taskList: algoTasks,
       icon: <Brain size={18} style={{ color: "#a371f7" }} />,
       ...algoStats,
       isDevelopment: false,
