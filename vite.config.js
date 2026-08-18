@@ -24,7 +24,7 @@ function githubPagesSpaPlugin() {
 }
 
 export default defineConfig({
-  base: "/code-practice-platform/",
+  base: process.env.VERCEL ? "/" : "/code-practice-platform/",
   plugins: [
     TanStackRouterVite({
       routesDirectory: "./src/routes",
