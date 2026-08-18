@@ -831,7 +831,7 @@ body.is-resizing-sidebar .code-editor-wrapper {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 8px 6px;
+  padding: 2px 6px 8px 6px;
   scrollbar-gutter: stable;
 }
 
@@ -839,6 +839,7 @@ body.is-resizing-sidebar .code-editor-wrapper {
   background: color-mix(in srgb, var(--state-active) 40%, transparent);
   border-radius: 6px;
   padding: 8px 10px;
+  margin-top: 0;
   margin-bottom: 8px;
   flex-shrink: 0;
   cursor: default;
@@ -7766,6 +7767,38 @@ svg.lucide,
 .badge-running {
   background: rgba(245, 158, 11, 0.15);
   color: #f59e0b;
+  animation: consoleBadgeFadeIn 0.2s ease-out;
+}
+
+.btn-stop-running {
+  animation: consoleBtnStopIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform var(--transition-fast), background var(--transition-fast);
+}
+
+.btn-stop-running:hover {
+  background: rgba(239, 68, 68, 0.16) !important;
+}
+
+@keyframes consoleBadgeFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes consoleBtnStopIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .badge-success {

@@ -1,27 +1,31 @@
 import React, { useRef, useState } from 'react';
 
-// ❌ ОШИБКА / ЗАДАЧА:
-// В компоненте используются два рефа:
-// 1. inputRef — для привязки к HTMLInputElement
-// 2. timerRef — для сохранения id секундомера setInterval
-// 
-// Разработчик написал useRef<number>(null) и удивляется, почему 
-// TypeScript выдает ошибку "Cannot assign to 'current' because it is a read-only property".
-//
-// Требования:
-// Исправьте аннотацию типов дженерика useRef, чтобы timerRef.current был мутируемым (MutableRefObject),
-// а inputRef.current оставался строго привязанным к DOM (RefObject).
+/**
+ * Собеседование: React + TypeScript
+ * 
+ * КОНТЕКСТ:
+ * В компоненте секундомера с полем ввода используются две ссылки через `useRef`:
+ * 1. `inputRef` — для управления фокусом DOM-элемента инпута
+ * 2. `timerRef` — для сохранения и очистки числового идентификатора таймера (`setInterval`)
+ *
+ * ПРОБЛЕМА:
+ * При попытке записать ID таймера в `timerRef.current` компилятор TypeScript выдает ошибку:
+ * "Cannot assign to 'current' because it is a read-only property".
+ *
+ * ТРЕБОВАНИЯ:
+ * 1. Разберитесь в перегрузках хука `useRef` и устраните ошибку компиляции.
+ * 2. Ссылка для таймера должна быть мутируемой и позволять сохранять, обновлять и очищать ID интервала.
+ * 3. DOM-ссылка на инпут должна оставаться строго привязанной к HTML-элементу для безопасного вызова методов фокуса.
+ */
 
 export function TimerWithFocus() {
   const [seconds, setSeconds] = useState(0);
 
   const inputRef = useRef<HTMLInputElement>(null);
   
-  // ❌ Ошибка TypeScript: useRef<number>(null) создаёт Readonly RefObject<number>!
   const timerRef = useRef<number>(null);
 
   const startTimer = () => {
-    // ❌ Ошибка: Cannot assign to 'current' because it is a read-only property
     timerRef.current = window.setInterval(() => {
       setSeconds((prev) => prev + 1);
     }, 1000);

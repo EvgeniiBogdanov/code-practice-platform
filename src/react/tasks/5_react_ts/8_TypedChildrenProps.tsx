@@ -1,17 +1,24 @@
 import React from 'react';
 
-// ❌ ОШИБКА / ЗАДАЧА:
-// Разработчик везде использует тип any для children и не разграничивает случаи, 
-// когда нужен любой рендерящийся фрагмент (ReactNode) или конкретный элемент (ReactElement).
-//
-// Требования:
-// 1. Для компонентов-оберток Card использовать React.PropsWithChildren
-// 2. Для CardHeader ограничить проп icon строго до одного валидного React-элемента (React.ReactElement)
-// 3. Для CardBody использовать React.ReactNode
+/**
+ * Собеседование: React + TypeScript
+ * 
+ * КОНТЕКСТ:
+ * В UI-библиотеке проектируются компоненты карточки: контейнер `Card` и заголовок `CardHeader`.
+ *
+ * ПРОБЛЕМА:
+ * Пропсы `children` и `icon` типизированы через `any`. В слот иконки можно случайно передать строку,
+ * число или null, что нарушает верстку flex-контейнера, а для карточки не используются стандартные соглашения React.
+ *
+ * ТРЕБОВАНИЯ:
+ * 1. Для компонента `Card` обеспечьте стандартную типизацию дочерних элементов (children) средствами React.
+ * 2. Для свойства `icon` в `CardHeader` ограничьте тип строго до одного валидного React-элемента (запретив текст, числа и null).
+ * 3. Обеспечьте возможность передачи любого валидного для React контента в тело карточки.
+ */
 
 type CardHeaderProps = {
   title: string;
-  icon: any; // ❌ Должен быть только валидный React-элемент
+  icon: any;
 };
 
 export function CardHeader({ title, icon }: CardHeaderProps) {
@@ -24,7 +31,7 @@ export function CardHeader({ title, icon }: CardHeaderProps) {
 }
 
 type CardProps = {
-  children: any; // ❌ Неверная типизация
+  children: any;
 };
 
 export function Card({ children }: CardProps) {

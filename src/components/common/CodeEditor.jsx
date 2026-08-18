@@ -51,7 +51,7 @@ import {
 import { lintJavaScriptCode, fixTypoInCode } from "../../utils/codeLinter";
 import { formatJavaScriptCode } from "../../utils/codeFormatter";
 import { isEmmetAbbreviation, expandEmmetAbbreviation } from "../../utils/emmetEngine";
-import { useUIStore } from "../../stores/useUIStore";
+import { useUIStore, MIN_FONT_SIZE, MAX_FONT_SIZE } from "../../stores/useUIStore";
 import {
   getSolution,
   saveSolutionDebounced,
@@ -60,10 +60,6 @@ import {
   flushPendingSaves,
   subscribeToSyncEvents,
 } from "../../services/storage";
-
-const MIN_FONT_SIZE = 14;
-const MAX_FONT_SIZE = 20;
-const FONT_SIZE_STORAGE_KEY = "playground_editor_font_size";
 
 // Зарезервированные ключевые слова JS/TS (не подсвечиваются как повторы переменных)
 const RESERVED_KEYWORDS = new Set([
@@ -216,7 +212,7 @@ export const CodeEditor = ({
     selectedLength: 0,
   });
 
-  const fontSize = useUIStore((state) => state.editorFontSize);
+  const fontSize = useUIStore((state) => state.editorFontSize ?? MIN_FONT_SIZE);
   const handleIncreaseFontSize = useUIStore(
     (state) => state.increaseEditorFontSize,
   );

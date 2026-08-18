@@ -1,6 +1,6 @@
 <div align="center">
 
-# ⚡ Code Practice Platform · `v2.2.3`
+# ⚡ Code Practice Platform · `v2.2.4`
 
 ### Интерактивная платформа для подготовки к техническим собеседованиям по фронтенду и алгоритмам.
 
@@ -12,7 +12,7 @@
 
 <br />
 
-[![Онлайн-версия](https://img.shields.io/badge/Открыть_в_браузере-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://evgeniibogdanov.github.io/code-practice-platform/)
+[![Онлайн-версия](https://img.shields.io/badge/Открыть_в_браузере-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://code-practice-platform-omega.vercel.app/home)
 
 <br />
 

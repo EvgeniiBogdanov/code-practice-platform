@@ -159,11 +159,29 @@ export const OpenEditorView = ({ task, section, tab = "candidate" }) => {
     setIsRunning(false);
   };
 
+  const handleStopCode = () => {
+    clearRunningTimers();
+    setIsRunning(false);
+    setLastExecution({
+      durationMs: 0,
+      exitCode: 130,
+      error: { message: "Выполнение остановлено пользователем" },
+    });
+  };
+
   const handleClearConsole = () => {
     setConsoleLogs([]);
     setLastExecution(null);
     clearRunningTimers();
+    setIsRunning(false);
   };
+
+  // Очистка при размонтировании
+  useEffect(() => {
+    return () => {
+      clearRunningTimers();
+    };
+  }, []);
 
   return (
     <div className="open-editor-container">
@@ -278,6 +296,7 @@ export const OpenEditorView = ({ task, section, tab = "candidate" }) => {
                     lastExecution={lastExecution}
                     filename={activeFile.filepath || activeFile.name}
                     onRun={() => handleRunCode()}
+                    onStop={handleStopCode}
                     onClear={handleClearConsole}
                   />
                 </div>

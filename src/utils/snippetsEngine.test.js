@@ -565,6 +565,47 @@ assertTrue(
   "Suggests ReactNode type on 'ReactN'"
 );
 
+// 7.2. React Namespace Completions (React.)
+const compReactDot = getCompletions("const node: React.", 18);
+assertTrue(
+  compReactDot.items.some((i) => i.prefix === "ReactNode"),
+  "Suggests React.ReactNode on 'React.'"
+);
+assertTrue(
+  compReactDot.items.some((i) => i.prefix === "ChangeEvent"),
+  "Suggests React.ChangeEvent on 'React.'"
+);
+const compReactComp = getCompletions("const props: React.Comp", 23);
+assertTrue(
+  compReactComp.items.some((i) => i.prefix === "ComponentPropsWithoutRef"),
+  "Suggests React.ComponentPropsWithoutRef on 'React.Comp'"
+);
+
+const compReactChange = getCompletions("const handler = (e: React.Change", 32);
+assertTrue(
+  compReactChange.items.some((i) => i.prefix === "ChangeEvent"),
+  "Top suggestion for React.Change is 'ChangeEvent'"
+);
+
+// 7.3. Generic Argument Completions inside <...>
+const compGenericHtmlInput = getCompletions("const handleChange = (e: React.ChangeEvent<HTMLIn", 49);
+assertTrue(
+  compGenericHtmlInput.items.some((i) => i.prefix === "HTMLInputElement"),
+  "Suggests HTMLInputElement inside React.ChangeEvent<HTMLIn"
+);
+
+const compGenericRefNumber = getCompletions("const timerRef = useRef<number", 30);
+assertTrue(
+  compGenericRefNumber.items.some((i) => i.prefix === "number | null" || i.prefix === "number"),
+  "Suggests number | null or number inside useRef<number"
+);
+
+const compGenericTag = getCompletions("type Props = ComponentPropsWithoutRef<'bu", 41);
+assertTrue(
+  compGenericTag.items.some((i) => i.prefix === "'button'"),
+  "Suggests 'button' tag literal inside ComponentPropsWithoutRef<'bu"
+);
+
 console.log("\n--- 8. Smart Snippet Defaults & Clean Expansion (Этап 5) ---");
 
 // 8.1. getComponentNameFromFilepath

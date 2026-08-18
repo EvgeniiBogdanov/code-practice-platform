@@ -266,6 +266,32 @@ assert(
   "lintJavaScriptCode flags <img> missing alt attribute"
 );
 
+// --- 11. Missing TypeScript Type Imports ---
+console.log("\n--- 11. Missing TypeScript Type Imports ---");
+const codeMissingTypes = `
+interface CardProps {
+  children: ReactNode;
+}
+export const Card: FC<CardProps> = ({ children }) => <div>{children}</div>;
+`;
+const res11 = lintJavaScriptCode(codeMissingTypes);
+assert(
+  res11.problems.some((p) => p.rule === "missing-import" && p.symbol === "ReactNode"),
+  "Flags unimported ReactNode as missing import from 'react'"
+);
+assert(
+  res11.problems.some((p) => p.rule === "missing-import" && p.symbol === "FC"),
+  "Flags unimported FC as missing import from 'react'"
+);
+assert(
+  res10.problems.some((p) => p.rule === "react-missing-required-props" && p.message.includes("<CustomBtn>")),
+  "lintJavaScriptCode flags missing required props warning on <CustomBtn>"
+);
+assert(
+  res10.problems.some((p) => p.rule === "jsx-a11y-img-has-alt"),
+  "lintJavaScriptCode flags <img> missing alt attribute"
+);
+
 // --- Summary ---
 console.log("\n========================================");
 console.log(`Tests finished: ${passed} passed, ${failed} failed.`);

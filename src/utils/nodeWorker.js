@@ -8,6 +8,13 @@
  * 3. 0% блокировки главного UI-потока (сохранение 60 FPS).
  */
 
+// Сохраняем нативные функции таймеров и очередей до их переопределения в глобальной области видимости
+const _nativeSetTimeout = typeof self !== "undefined" && self.setTimeout ? self.setTimeout.bind(self) : setTimeout;
+const _nativeClearTimeout = typeof self !== "undefined" && self.clearTimeout ? self.clearTimeout.bind(self) : clearTimeout;
+const _nativeSetInterval = typeof self !== "undefined" && self.setInterval ? self.setInterval.bind(self) : setInterval;
+const _nativeClearInterval = typeof self !== "undefined" && self.clearInterval ? self.clearInterval.bind(self) : clearInterval;
+const _nativeQueueMicrotask = typeof self !== "undefined" && self.queueMicrotask ? self.queueMicrotask.bind(self) : queueMicrotask;
+
 /**
  * Безопасное форматирование значений в стиле Node.js REPL
  */
@@ -305,8 +312,17 @@ self.onmessage = async (event) => {
     },
   };
 
+  let timerCounter = 1;
+  const pendingTimeouts = new Map();
+  const activeIntervals = new Map();
+  const MAX_INTERVAL_RUNS = 200;
+
   const sandboxSetTimeout = (fn, delay = 0, ...args) => {
-    return setTimeout(() => {
+    const virtualId = timerCounter++;
+    const numDelay = Math.max(0, Number(delay) || 0);
+
+    const nativeId = _nativeSetTimeout(() => {
+      pendingTimeouts.delete(virtualId);
       try {
         if (typeof fn === "function") {
           fn(...args);
@@ -315,25 +331,44 @@ self.onmessage = async (event) => {
         }
       } catch (err) {
         sandboxConsole.error(err);
+      } finally {
+        checkAndNotifyComplete();
       }
-    }, Math.max(0, delay));
+    }, numDelay);
+
+    pendingTimeouts.set(virtualId, { nativeId });
+    return virtualId;
   };
 
   const sandboxClearTimeout = (id) => {
-    clearTimeout(id);
+    if (id === undefined || id === null) return;
+    if (pendingTimeouts.has(id)) {
+      const item = pendingTimeouts.get(id);
+      _nativeClearTimeout(item.nativeId);
+      pendingTimeouts.delete(id);
+      checkAndNotifyComplete();
+    } else {
+      _nativeClearTimeout(id);
+    }
   };
 
-  let intervalRunCounts = new Map();
-  const MAX_INTERVAL_RUNS = 200;
-
   const sandboxSetInterval = (fn, delay = 0, ...args) => {
-    const iId = setInterval(() => {
-      const count = (intervalRunCounts.get(iId) || 0) + 1;
-      intervalRunCounts.set(iId, count);
+    const virtualId = timerCounter++;
+    const numDelay = Math.max(10, Number(delay) || 0);
 
-      if (count > MAX_INTERVAL_RUNS) {
-        clearInterval(iId);
+    const nativeId = _nativeSetInterval(() => {
+      const item = activeIntervals.get(virtualId);
+      if (!item) {
+        _nativeClearInterval(nativeId);
+        return;
+      }
+
+      item.runCount = (item.runCount || 0) + 1;
+      if (item.runCount > MAX_INTERVAL_RUNS) {
+        _nativeClearInterval(nativeId);
+        activeIntervals.delete(virtualId);
         sandboxConsole.warn(`[NodeRunner] Интервал остановлен после ${MAX_INTERVAL_RUNS} итераций для предотвращения утечки памяти.`);
+        checkAndNotifyComplete();
         return;
       }
 
@@ -342,21 +377,31 @@ self.onmessage = async (event) => {
           fn(...args);
         }
       } catch (err) {
-        clearInterval(iId);
+        _nativeClearInterval(nativeId);
+        activeIntervals.delete(virtualId);
         sandboxConsole.error(err);
+        checkAndNotifyComplete();
       }
-    }, Math.max(10, delay));
+    }, numDelay);
 
-    return iId;
+    activeIntervals.set(virtualId, { nativeId, runCount: 0 });
+    return virtualId;
   };
 
   const sandboxClearInterval = (id) => {
-    clearInterval(id);
-    intervalRunCounts.delete(id);
+    if (id === undefined || id === null) return;
+    if (activeIntervals.has(id)) {
+      const item = activeIntervals.get(id);
+      _nativeClearInterval(item.nativeId);
+      activeIntervals.delete(id);
+      checkAndNotifyComplete();
+    } else {
+      _nativeClearInterval(id);
+    }
   };
 
   const sandboxQueueMicrotask = (fn) => {
-    queueMicrotask(() => {
+    _nativeQueueMicrotask(() => {
       try {
         if (typeof fn === "function") fn();
       } catch (err) {
@@ -364,6 +409,18 @@ self.onmessage = async (event) => {
       }
     });
   };
+
+  // Переопределяем глобальные таймеры и консоль в контексте воркера
+  try {
+    self.console = sandboxConsole;
+    self.setTimeout = sandboxSetTimeout;
+    self.clearTimeout = sandboxClearTimeout;
+    self.setInterval = sandboxSetInterval;
+    self.clearInterval = sandboxClearInterval;
+    self.queueMicrotask = sandboxQueueMicrotask;
+  } catch {
+    // ignore
+  }
 
   const sandboxHelpers = {
     createNode: (val = 0, left = null, right = null) => ({ val, left, right }),
@@ -460,10 +517,67 @@ self.onmessage = async (event) => {
     return sandboxHelpers;
   };
 
+  const formatSafeResult = (val) => {
+    try {
+      if (typeof val === "function") {
+        return val.name ? `[Function: ${val.name}]` : "[Function (anonymous)]";
+      } else if (typeof val === "symbol") {
+        return val.toString();
+      } else if (typeof val === "bigint") {
+        return `${val}n`;
+      } else {
+        return val;
+      }
+    } catch {
+      return String(val);
+    }
+  };
+
   const startTime = performance.now();
-  let result = undefined;
-  let error = null;
-  let exitCode = 0;
+  let syncFinished = false;
+  let isCompletePosted = false;
+  let syncResult = undefined;
+  let syncError = null;
+
+  const checkAndNotifyComplete = () => {
+    if (!syncFinished || isCompletePosted) return;
+
+    // Если остались активные таймеры или интервалы — не завершаем воркер до их выполнения
+    if (pendingTimeouts.size > 0 || activeIntervals.size > 0) {
+      return;
+    }
+
+    _nativeQueueMicrotask(() => {
+      if (isCompletePosted) return;
+      if (pendingTimeouts.size > 0 || activeIntervals.size > 0) {
+        return;
+      }
+
+      isCompletePosted = true;
+      const durationMs = Math.round((performance.now() - startTime) * 10) / 10;
+      const safeResult = formatSafeResult(syncResult);
+
+      try {
+        self.postMessage({
+          type: "COMPLETE",
+          logs,
+          result: safeResult,
+          error: syncError,
+          durationMs,
+          exitCode: syncError ? 1 : 0,
+        });
+      } catch {
+        self.postMessage({
+          type: "COMPLETE",
+          logs,
+          result: formatNodeValue(syncResult, 0).text,
+          error: syncError,
+          durationMs,
+          exitCode: syncError ? 1 : 0,
+        });
+      }
+    });
+  };
 
   try {
     const trimmedCode = (codeText || "").trim();
@@ -480,10 +594,10 @@ self.onmessage = async (event) => {
     }
 
     const wrappedCode = `
-      return (async function(console, setTimeout, clearTimeout, setInterval, clearInterval, queueMicrotask, require) {
+      return (async function(console, setTimeout, clearTimeout, setInterval, clearInterval, queueMicrotask, require, window, global, globalThis) {
         "use strict";
         ${trimmedCode}
-      })(sandboxConsole, sandboxSetTimeout, sandboxClearTimeout, sandboxSetInterval, sandboxClearInterval, sandboxQueueMicrotask, sandboxRequire);
+      })(sandboxConsole, sandboxSetTimeout, sandboxClearTimeout, sandboxSetInterval, sandboxClearInterval, sandboxQueueMicrotask, sandboxRequire, self, self, self);
     `;
 
     const executor = new Function(
@@ -507,52 +621,16 @@ self.onmessage = async (event) => {
       sandboxRequire
     );
 
-    result = await execPromise;
+    syncResult = await execPromise;
   } catch (err) {
-    error = {
+    syncError = {
       name: err?.name || "Error",
       message: err?.message || String(err),
       stack: err?.stack || "",
     };
-    exitCode = 1;
     pushLog("error", [err instanceof Error ? `${err.name}: ${err.message}` : String(err)]);
-  }
-
-  const durationMs = Math.round((performance.now() - startTime) * 10) / 10;
-
-  let safeResult = undefined;
-  try {
-    if (typeof result === "function") {
-      safeResult = result.name ? `[Function: ${result.name}]` : "[Function (anonymous)]";
-    } else if (typeof result === "symbol") {
-      safeResult = result.toString();
-    } else if (typeof result === "bigint") {
-      safeResult = `${result}n`;
-    } else {
-      safeResult = result;
-    }
-  } catch {
-    safeResult = String(result);
-  }
-
-  try {
-    self.postMessage({
-      type: "COMPLETE",
-      logs,
-      result: safeResult,
-      error,
-      durationMs,
-      exitCode,
-    });
-  } catch {
-    // If structured clone algorithm fails (e.g. non-cloneable objects, proxies), format safely to string
-    self.postMessage({
-      type: "COMPLETE",
-      logs,
-      result: formatNodeValue(result, 0).text,
-      error,
-      durationMs,
-      exitCode,
-    });
+  } finally {
+    syncFinished = true;
+    checkAndNotifyComplete();
   }
 };
