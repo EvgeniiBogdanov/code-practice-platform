@@ -22,7 +22,6 @@ import {
   FileText,
   Folder,
   Sparkles,
-  ArrowRight,
   RotateCcw,
 } from "lucide-react";
 import { REACT_TASKS } from "../../react/data/tasksData";
@@ -917,17 +916,6 @@ export const Header = ({
                     </div>
                   </div>
                 )}
-
-                <div className="header-review-dropdown-footer">
-                  <Link
-                    to="/home"
-                    className="header-review-footer-link"
-                    onClick={closeAllDropdowns}
-                  >
-                    <span>Перейти на Главную</span>
-                    <ArrowRight size={12} />
-                  </Link>
-                </div>
               </div>
             )}
           </div>

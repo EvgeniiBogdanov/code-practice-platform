@@ -325,9 +325,76 @@ export const TYPE_SIGNATURES = {
     description: "Конструирует тип, выбирая все свойства из T и удаляя ключи K.",
     module: "typescript",
   },
+  Exclude: {
+    signature: "type Exclude<T, U> = T extends U ? never : T",
+    description: "Исключает из типа T те подтипы, которые совместимы с типом U.",
+    module: "typescript",
+  },
+  Extract: {
+    signature: "type Extract<T, U> = T extends U ? T : never",
+    description: "Извлекает из типа T те подтипы, которые совместимы с типом U.",
+    module: "typescript",
+  },
+  NonNullable: {
+    signature: "type NonNullable<T> = T & {}",
+    description: "Исключает null и undefined из типа T.",
+    module: "typescript",
+  },
+  ReturnType: {
+    signature: "type ReturnType<T extends (...args: any) => any> = T extends (...args: any) => infer R ? R : any",
+    description: "Извлекает тип возвращаемого значения функции T.",
+    module: "typescript",
+  },
+  Parameters: {
+    signature: "type Parameters<T extends (...args: any) => any> = T extends (...args: infer P) => any ? P : never",
+    description: "Получает кортеж типов параметров функции T.",
+    module: "typescript",
+  },
+  InstanceType: {
+    signature: "type InstanceType<T extends abstract new (...args: any) => any> = T extends abstract new (...args: any) => infer R ? R : any",
+    description: "Получает тип экземпляра функции-конструктора или класса T.",
+    module: "typescript",
+  },
+  Awaited: {
+    signature: "type Awaited<T> = T extends null | undefined ? T : T extends object & { then(onfulfilled: infer F, ...args: infer _): any } ? F extends (value: infer V, ...args: infer _) => any ? Awaited<V> : never : T",
+    description: "Рекурсивно разворачивает тип промиса Promise<T> до базового значения.",
+    module: "typescript",
+  },
+  never: {
+    signature: "type never",
+    description: "Недостижимый тип. Представляет значения, которые никогда не могут произойти (например, для взаимоисключающих пропсов).",
+    module: "typescript",
+  },
+  unknown: {
+    signature: "type unknown",
+    description: "Безопасный аналог any. Любое значение можно присвоить unknown, но операции требуют сужения типа.",
+    module: "typescript",
+  },
+  any: {
+    signature: "type any",
+    description: "Отключает статическую проверку типов TypeScript для переменной.",
+    module: "typescript",
+  },
+  void: {
+    signature: "type void",
+    description: "Обозначает отсутствие возвращаемого значения у функции (undefined).",
+    module: "typescript",
+  },
+
+  // React TypeScript Types
   ReactNode: {
     signature: "type ReactNode = ReactElement | string | number | Iterable<ReactNode> | ReactPortal | boolean | null | undefined",
-    description: "Представляет собой любой допустимый узел, который может быть отрендерен в JSX.",
+    description: "Супертип для всего, что может быть отрендерено в JSX (компоненты, строки, числа, массивы, null).",
+    module: "react",
+  },
+  ReactElement: {
+    signature: "interface ReactElement<P = any, T extends string | JSXElementConstructor<any> = string | JSXElementConstructor<any>>",
+    description: "Строго один экземпляр React JSX-объекта (созданный через JSX или createElement).",
+    module: "react",
+  },
+  ReactPortal: {
+    signature: "interface ReactPortal extends ReactElement",
+    description: "React-элемент, отрендеренный в отдельный DOM-узел через ReactDOM.createPortal.",
     module: "react",
   },
   FC: {
@@ -335,10 +402,157 @@ export const TYPE_SIGNATURES = {
     description: "Тип для функциональных компонентов React, принимающих пропсы P.",
     module: "react",
   },
+  PropsWithChildren: {
+    signature: "type PropsWithChildren<P = unknown> = P & { children?: ReactNode | undefined }",
+    description: "Утилитарный тип React, добавляющий опциональное свойство children?: ReactNode к объекту пропсов.",
+    module: "react",
+  },
+  ChangeEvent: {
+    signature: "interface ChangeEvent<T = Element> extends SyntheticEvent<T>",
+    description: "Синтетическое событие изменения значения поля формы (например, input, select, textarea).",
+    module: "react",
+  },
+  MouseEvent: {
+    signature: "interface MouseEvent<T = Element, E = NativeMouseEvent> extends SyntheticEvent<T, E>",
+    description: "Синтетическое событие клика или перемещения курсора мыши в React.",
+    module: "react",
+  },
+  KeyboardEvent: {
+    signature: "interface KeyboardEvent<T = Element> extends SyntheticEvent<T, NativeKeyboardEvent>",
+    description: "Синтетическое событие нажатия или отпускания клавиши клавиатуры (onKeyDown, onKeyUp).",
+    module: "react",
+  },
+  FormEvent: {
+    signature: "interface FormEvent<T = Element> extends SyntheticEvent<T>",
+    description: "Синтетическое событие отправки формы onSubmit в React.",
+    module: "react",
+  },
+  FocusEvent: {
+    signature: "interface FocusEvent<T = Element, R = Element> extends SyntheticEvent<T, NativeFocusEvent>",
+    description: "Синтетическое событие получения или потери фокуса (onFocus, onBlur).",
+    module: "react",
+  },
+  SyntheticEvent: {
+    signature: "interface SyntheticEvent<T = Element, E = Event>",
+    description: "Кроссбраузерная обертка React над нативным браузерным событием (с e.preventDefault() и e.stopPropagation()).",
+    module: "react",
+  },
+  ComponentPropsWithoutRef: {
+    signature: "type ComponentPropsWithoutRef<T extends ElementType> = PropsWithoutRef<ComponentProps<T>>",
+    description: "Извлекает все нативные HTML-пропсы и атрибуты элемента (например href для 'a' или type для 'button') без ref.",
+    module: "react",
+  },
+  ComponentPropsWithRef: {
+    signature: "type ComponentPropsWithRef<T extends ElementType> = PropsWithRef<ComponentProps<T>>",
+    description: "Извлекает все нативные HTML-пропсы элемента включая свойство ref.",
+    module: "react",
+  },
+  ComponentProps: {
+    signature: "type ComponentProps<T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>>",
+    description: "Извлекает полный тип пропсов компонента или нативного HTML-элемента.",
+    module: "react",
+  },
+  ElementRef: {
+    signature: "type ElementRef<C extends ElementType>",
+    description: "Извлекает тип объекта ссылки (ref) для переданного компонента или HTML-элемента.",
+    module: "react",
+  },
+  ElementType: {
+    signature: "type ElementType<P = any> = { [K in keyof JSX.IntrinsicElements]: P extends JSX.IntrinsicElements[K] ? K : never }[keyof JSX.IntrinsicElements] | ComponentType<P>",
+    description: "Тип для полиморфных компонентов (проп 'as'), принимающий имена HTML-тегов или React-компоненты.",
+    module: "react",
+  },
+  MutableRefObject: {
+    signature: "interface MutableRefObject<T> { current: T; }",
+    description: "Мутируемый ref-объект, свойство .current которого можно перезаписывать (возвращается из useRef при передаче не-null начального значения или союза T | null).",
+    module: "react",
+  },
+  RefObject: {
+    signature: "interface RefObject<T> { readonly current: T | null; }",
+    description: "Ref-объект только для чтения, управляемый React для привязки к DOM-узлам.",
+    module: "react",
+  },
+  ForwardedRef: {
+    signature: "type ForwardedRef<T> = ((instance: T | null) => void) | MutableRefObject<T | null> | null",
+    description: "Тип второго параметра ref в функции рендера forwardRef.",
+    module: "react",
+  },
+  Ref: {
+    signature: "type Ref<T> = RefCallback<T> | RefObject<T> | null",
+    description: "Универсальный тип для пропа ref в React компонентах.",
+    module: "react",
+  },
   CSSProperties: {
     signature: "interface CSSProperties extends CSS.Properties<string | number>",
     description: "Объект стилей для инлайнового пропса style={{ ... }} в React компонентах.",
     module: "react",
+  },
+  Dispatch: {
+    signature: "type Dispatch<A> = (value: A) => void",
+    description: "Тип функции отправки действий или обновления стейта (возвращается из useState и useReducer).",
+    module: "react",
+  },
+  SetStateAction: {
+    signature: "type SetStateAction<S> = S | ((prevState: S) => S)",
+    description: "Значение нового состояния или функция-обновитель, принимающая предыдущее состояние.",
+    module: "react",
+  },
+  Reducer: {
+    signature: "type Reducer<S, A> = (prevState: S, action: A) => S",
+    description: "Чистая функция редьюсера, вычисляющая следующее состояние на основе текущего и действия.",
+    module: "react",
+  },
+  Context: {
+    signature: "interface Context<T> { Provider: Provider<T>; Consumer: Consumer<T>; displayName?: string; }",
+    description: "Объект контекста React, создаваемый с помощью React.createContext().",
+    module: "react",
+  },
+  Key: {
+    signature: "type Key = string | number | bigint",
+    description: "Уникальный идентификатор элемента списка React (проп key).",
+    module: "react",
+  },
+
+  // DOM HTML Elements
+  HTMLInputElement: {
+    signature: "interface HTMLInputElement extends HTMLElement",
+    description: "DOM интерфейс элемента формы <input> (свойства: value, checked, files, focus()).",
+    module: "dom",
+  },
+  HTMLButtonElement: {
+    signature: "interface HTMLButtonElement extends HTMLElement",
+    description: "DOM интерфейс элемента кнопки <button> (свойства: disabled, type, form).",
+    module: "dom",
+  },
+  HTMLSelectElement: {
+    signature: "interface HTMLSelectElement extends HTMLElement",
+    description: "DOM интерфейс выпадающего списка <select> (свойства: value, options, selectedIndex).",
+    module: "dom",
+  },
+  HTMLTextAreaElement: {
+    signature: "interface HTMLTextAreaElement extends HTMLElement",
+    description: "DOM интерфейс многострочного текстового поля <textarea>.",
+    module: "dom",
+  },
+  HTMLFormElement: {
+    signature: "interface HTMLFormElement extends HTMLElement",
+    description: "DOM интерфейс формы <form> (методы: submit(), reset()).",
+    module: "dom",
+  },
+  HTMLAnchorElement: {
+    signature: "interface HTMLAnchorElement extends HTMLElement",
+    description: "DOM интерфейс гиперссылки <a> (свойства: href, target, rel).",
+    module: "dom",
+  },
+  HTMLDivElement: {
+    signature: "interface HTMLDivElement extends HTMLElement",
+    description: "DOM интерфейс контейнера <div>.",
+    module: "dom",
+  },
+  HTMLElement: {
+    signature: "interface HTMLElement extends Element",
+    description: "Базовый интерфейс для всех HTML элементов DOM дерева.",
+    module: "dom",
   },
 };
 
@@ -354,10 +568,19 @@ export const getHoverInfo = (word, code, cursorIndex, context = {}) => {
   if (!word || typeof word !== "string") return null;
 
   const cleanWord = word.trim();
+  const strippedReact = cleanWord.replace(/^React\./, "");
+
   if (TYPE_SIGNATURES[cleanWord]) {
     return {
       symbol: cleanWord,
       ...TYPE_SIGNATURES[cleanWord],
+    };
+  }
+
+  if (TYPE_SIGNATURES[strippedReact]) {
+    return {
+      symbol: cleanWord,
+      ...TYPE_SIGNATURES[strippedReact],
     };
   }
 

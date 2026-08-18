@@ -309,7 +309,7 @@ export const runTestCases = async (codeText, testCases = []) => {
     }
 
     try {
-      const runnerRes = await runNodeJsCode(testExecutionCode, { timeoutMs: 3000 });
+      const runnerRes = await runNodeJsCode(testExecutionCode, { timeoutMs: 8000 });
       if (runnerRes.error) {
         results.push({
           id: idx + 1,

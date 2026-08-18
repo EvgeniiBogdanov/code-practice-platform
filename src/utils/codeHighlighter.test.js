@@ -23,6 +23,17 @@ assert(html1.includes('class="hl-kw"'), "Highlights keyword 'const'");
 assert(html1.includes('class="hl-hook"'), "Highlights React hook 'useState'");
 assert(html1.includes('class="hl-num"'), "Highlights number '0'");
 
+const codeTsx = "type Props = { children: ReactNode; onChange: (e: ChangeEvent<HTMLInputElement>) => void };";
+const htmlTsx = highlightJS(codeTsx);
+assert(htmlTsx.includes('class="hl-type">ReactNode</span>'), "Highlights ReactNode as hl-type");
+assert(htmlTsx.includes('class="hl-type">ChangeEvent</span>'), "Highlights ChangeEvent as hl-type");
+assert(htmlTsx.includes('class="hl-type">HTMLInputElement</span>'), "Highlights HTMLInputElement as hl-type");
+
+const codeTsxOp = "type Keys = keyof T; function isString(x: any): x is string { return true; }";
+const htmlTsxOp = highlightJS(codeTsxOp);
+assert(htmlTsxOp.includes('class="hl-kw">keyof</span>'), "Highlights keyof as hl-kw");
+assert(htmlTsxOp.includes('class="hl-kw">is</span>'), "Highlights type predicate 'is' as hl-kw");
+
 // 2. Word Occurrence Highlighting
 console.log("\n--- 2. Word Occurrence Highlighting ---");
 const code2 = `const count = 1;

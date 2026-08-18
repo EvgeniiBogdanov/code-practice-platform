@@ -46,17 +46,43 @@ export const KNOWN_MODULES = {
       "startTransition",
       // Типы TypeScript
       "FC",
+      "FunctionComponent",
       "ReactNode",
       "ReactElement",
+      "ReactPortal",
       "CSSProperties",
       "ChangeEvent",
       "MouseEvent",
       "KeyboardEvent",
       "FormEvent",
+      "FocusEvent",
+      "PointerEvent",
+      "TouchEvent",
+      "WheelEvent",
+      "SyntheticEvent",
       "RefObject",
+      "MutableRefObject",
+      "ForwardedRef",
+      "Ref",
       "Dispatch",
       "SetStateAction",
       "PropsWithChildren",
+      "ComponentPropsWithoutRef",
+      "ComponentPropsWithRef",
+      "ComponentProps",
+      "ElementRef",
+      "ElementType",
+      "ForwardRefRenderFunction",
+      "Reducer",
+      "ReducerState",
+      "ReducerAction",
+      "Context",
+      "Key",
+      "HTMLAttributes",
+      "InputHTMLAttributes",
+      "ButtonHTMLAttributes",
+      "SelectHTMLAttributes",
+      "AnchorHTMLAttributes",
     ],
   },
   "react-dom": {
@@ -389,6 +415,74 @@ export const JS_MEMBER_COMPLETIONS = {
     { label: "resolve", insertText: "resolve($1)", detail: "(val) => Promise", kind: "method" },
     { label: "reject", insertText: "reject($1)", detail: "(reason) => Promise", kind: "method" },
   ],
+  react: [
+    // TypeScript Types
+    { label: "ReactNode", insertText: "ReactNode", detail: "type ReactNode — валидный узел JSX/React", kind: "type" },
+    { label: "ReactElement", insertText: "ReactElement", detail: "type ReactElement — один JSX элемент", kind: "type" },
+    { label: "FC", insertText: "FC<$1>", detail: "type FC<Props> — функциональный компонент", kind: "type" },
+    { label: "PropsWithChildren", insertText: "PropsWithChildren<$1>", detail: "type PropsWithChildren<P> — пропсы со свойством children", kind: "type" },
+    { label: "ChangeEvent", insertText: "ChangeEvent<HTML$1Element>", detail: "type ChangeEvent<T> — событие изменения формы (input/select)", kind: "type" },
+    { label: "MouseEvent", insertText: "MouseEvent<HTML$1Element>", detail: "type MouseEvent<T> — событие клика мыши (button/div)", kind: "type" },
+    { label: "KeyboardEvent", insertText: "KeyboardEvent<HTML$1Element>", detail: "type KeyboardEvent<T> — событие нажатия клавиши", kind: "type" },
+    { label: "FormEvent", insertText: "FormEvent<HTMLFormElement>", detail: "type FormEvent<T> — событие отправки формы onSubmit", kind: "type" },
+    { label: "FocusEvent", insertText: "FocusEvent<HTML$1Element>", detail: "type FocusEvent<T> — событие фокуса onFocus/onBlur", kind: "type" },
+    { label: "PointerEvent", insertText: "PointerEvent<HTML$1Element>", detail: "type PointerEvent<T> — событие указателя", kind: "type" },
+    { label: "TouchEvent", insertText: "TouchEvent<HTML$1Element>", detail: "type TouchEvent<T> — сенсорное событие", kind: "type" },
+    { label: "SyntheticEvent", insertText: "SyntheticEvent<$1>", detail: "type SyntheticEvent — базовое синтетическое событие React", kind: "type" },
+    { label: "ComponentPropsWithoutRef", insertText: "ComponentPropsWithoutRef<'$1'>", detail: "type ComponentPropsWithoutRef<E> — нативные пропсы без ref", kind: "type" },
+    { label: "ComponentPropsWithRef", insertText: "ComponentPropsWithRef<'$1'>", detail: "type ComponentPropsWithRef<E> — нативные пропсы включая ref", kind: "type" },
+    { label: "ComponentProps", insertText: "ComponentProps<typeof $1>", detail: "type ComponentProps<T> — все пропсы компонента", kind: "type" },
+    { label: "ElementRef", insertText: "ElementRef<typeof $1>", detail: "type ElementRef<T> — тип ref DOM-элемента", kind: "type" },
+    { label: "ElementType", insertText: "ElementType", detail: "type ElementType — тип тега или компонента", kind: "type" },
+    { label: "MutableRefObject", insertText: "MutableRefObject<$1>", detail: "interface MutableRefObject<T> — мутируемый ref (.current = val)", kind: "type" },
+    { label: "RefObject", insertText: "RefObject<$1>", detail: "interface RefObject<T> — read-only DOM ref", kind: "type" },
+    { label: "ForwardedRef", insertText: "ForwardedRef<$1>", detail: "type ForwardedRef<T> — ref аргумент в forwardRef", kind: "type" },
+    { label: "ForwardRefRenderFunction", insertText: "ForwardRefRenderFunction<$1, $2>", detail: "type ForwardRefRenderFunction<T, P>", kind: "type" },
+    { label: "Ref", insertText: "Ref<$1>", detail: "type Ref<T> — реф ссылка", kind: "type" },
+    { label: "CSSProperties", insertText: "CSSProperties", detail: "interface CSSProperties — inline стили style={{}}", kind: "type" },
+    { label: "Dispatch", insertText: "Dispatch<SetStateAction<$1>>", detail: "type Dispatch<A> — функция обновления стейта", kind: "type" },
+    { label: "SetStateAction", insertText: "SetStateAction<$1>", detail: "type SetStateAction<S> — S | ((prev: S) => S)", kind: "type" },
+    { label: "Reducer", insertText: "Reducer<$1, $2>", detail: "type Reducer<S, A> — (state: S, action: A) => S", kind: "type" },
+    { label: "ReducerState", insertText: "ReducerState<$1>", detail: "type ReducerState<R> — извлечение типа стейта", kind: "type" },
+    { label: "ReducerAction", insertText: "ReducerAction<$1>", detail: "type ReducerAction<R> — извлечение типа экшена", kind: "type" },
+    { label: "Context", insertText: "Context<$1>", detail: "interface Context<T> — тип контекста", kind: "type" },
+    { label: "Key", insertText: "Key", detail: "type Key = string | number — тип ключа React", kind: "type" },
+    { label: "HTMLAttributes", insertText: "HTMLAttributes<HTMLElement>", detail: "interface HTMLAttributes<T>", kind: "type" },
+    { label: "InputHTMLAttributes", insertText: "InputHTMLAttributes<HTMLInputElement>", detail: "interface InputHTMLAttributes<T>", kind: "type" },
+    { label: "ButtonHTMLAttributes", insertText: "ButtonHTMLAttributes<HTMLButtonElement>", detail: "interface ButtonHTMLAttributes<T>", kind: "type" },
+    { label: "SelectHTMLAttributes", insertText: "SelectHTMLAttributes<HTMLSelectElement>", detail: "interface SelectHTMLAttributes<T>", kind: "type" },
+    { label: "AnchorHTMLAttributes", insertText: "AnchorHTMLAttributes<HTMLAnchorElement>", detail: "interface AnchorHTMLAttributes<T>", kind: "type" },
+
+    // React Hooks
+    { label: "useState", insertText: "useState($1)", detail: "<S>(initialState) => [state, setState]", kind: "function" },
+    { label: "useEffect", insertText: "useEffect(() => {\n  $1\n}, [$2]);", detail: "(effect, deps) => void", kind: "function" },
+    { label: "useRef", insertText: "useRef<$1>($2);", detail: "<T>(initialValue) => MutableRefObject<T>", kind: "function" },
+    { label: "useMemo", insertText: "useMemo(() => $1, [$2]);", detail: "<T>(factory, deps) => T", kind: "function" },
+    { label: "useCallback", insertText: "useCallback(($1) => {\n  $2\n}, [$3]);", detail: "<T>(callback, deps) => T", kind: "function" },
+    { label: "useContext", insertText: "useContext($1);", detail: "<T>(context) => T", kind: "function" },
+    { label: "useReducer", insertText: "useReducer($1, $2);", detail: "<R>(reducer, initial) => [state, dispatch]", kind: "function" },
+    { label: "useLayoutEffect", insertText: "useLayoutEffect(() => {\n  $1\n}, [$2]);", detail: "(effect, deps) => void (синхронно до paint)", kind: "function" },
+    { label: "useId", insertText: "useId()", detail: "() => string — уникальный доступный ID", kind: "function" },
+    { label: "useTransition", insertText: "useTransition()", detail: "() => [isPending, startTransition]", kind: "function" },
+
+    // React Core APIs & Components
+    { label: "memo", insertText: "memo($1)", detail: "(Component) => MemoComponent", kind: "function" },
+    { label: "forwardRef", insertText: "forwardRef<$1, $2>((props, ref) => {\n  return $3;\n})", detail: "<T, P>(render) => ForwardRefComponent", kind: "function" },
+    { label: "createContext", insertText: "createContext<$1 | null>(null)", detail: "<T>(defaultValue) => Context<T>", kind: "function" },
+    { label: "createRef", insertText: "createRef<$1>()", detail: "<T>() => RefObject<T>", kind: "function" },
+    { label: "cloneElement", insertText: "cloneElement($1, $2)", detail: "(element, props) => ReactElement", kind: "function" },
+    { label: "isValidElement", insertText: "isValidElement($1)", detail: "(object) => boolean", kind: "function" },
+    { label: "Children", insertText: "Children", detail: "утилиты для работы с children", kind: "property" },
+    { label: "Fragment", insertText: "Fragment", detail: "компонент обертка без DOM-узла", kind: "class" },
+    { label: "StrictMode", insertText: "StrictMode", detail: "инструмент для выявления проблем в коде", kind: "class" },
+    { label: "Suspense", insertText: "Suspense", detail: "компонент ожидания асинхронной загрузки", kind: "class" },
+    { label: "lazy", insertText: "lazy(() => import('$1'))", detail: "(factory) => LazyComponent", kind: "function" },
+  ],
+  reactdom: [
+    { label: "createPortal", insertText: "createPortal($1, $2)", detail: "(children, container) => ReactPortal", kind: "function" },
+    { label: "flushSync", insertText: "flushSync(() => {\n  $1\n})", detail: "(fn) => void — принудительный синхронный рендер", kind: "function" },
+    { label: "findDOMNode", insertText: "findDOMNode($1)", detail: "(instance) => Element | null", kind: "function" },
+  ],
 };
 
 // База JSX элементов и тегов
@@ -599,6 +693,7 @@ export const TS_UTILITY_TYPES = [
   { name: "NonNullable", label: "NonNullable<T>", insertText: "NonNullable<$1>", detail: "Исключает null и undefined из типа T", kind: "type" },
   { name: "ReturnType", label: "ReturnType<T>", insertText: "ReturnType<$1>", detail: "Получает тип возвращаемого значения функции T", kind: "type" },
   { name: "Parameters", label: "Parameters<T>", insertText: "Parameters<$1>", detail: "Получает кортеж параметров функции T", kind: "type" },
+  { name: "InstanceType", label: "InstanceType<T>", insertText: "InstanceType<$1>", detail: "Получает тип экземпляра функции-конструктора T", kind: "type" },
   { name: "Awaited", label: "Awaited<T>", insertText: "Awaited<$1>", detail: "Разворачивает тип Promise<T>", kind: "type" },
   { name: "Promise", label: "Promise<T>", insertText: "Promise<$1>", detail: "Тип асинхронного промиса", kind: "type" },
 
@@ -611,8 +706,121 @@ export const TS_UTILITY_TYPES = [
   { name: "MouseEvent", label: "MouseEvent<T>", insertText: "MouseEvent<HTML$1Element>", detail: "Событие мыши в React", kind: "type", autoImport: { symbol: "MouseEvent", module: "react" } },
   { name: "KeyboardEvent", label: "KeyboardEvent<T>", insertText: "KeyboardEvent<HTML$1Element>", detail: "Событие клавиатуры в React", kind: "type", autoImport: { symbol: "KeyboardEvent", module: "react" } },
   { name: "FormEvent", label: "FormEvent<T>", insertText: "FormEvent<HTMLFormElement>", detail: "Событие отправки формы", kind: "type", autoImport: { symbol: "FormEvent", module: "react" } },
+  { name: "FocusEvent", label: "FocusEvent<T>", insertText: "FocusEvent<HTML$1Element>", detail: "Событие фокуса onFocus/onBlur", kind: "type", autoImport: { symbol: "FocusEvent", module: "react" } },
+  { name: "PointerEvent", label: "PointerEvent<T>", insertText: "PointerEvent<HTML$1Element>", detail: "Событие указателя", kind: "type", autoImport: { symbol: "PointerEvent", module: "react" } },
+  { name: "TouchEvent", label: "TouchEvent<T>", insertText: "TouchEvent<HTML$1Element>", detail: "Сенсорное событие", kind: "type", autoImport: { symbol: "TouchEvent", module: "react" } },
+  { name: "SyntheticEvent", label: "SyntheticEvent<T>", insertText: "SyntheticEvent<$1>", detail: "Базовое синтетическое событие React", kind: "type", autoImport: { symbol: "SyntheticEvent", module: "react" } },
   { name: "PropsWithChildren", label: "PropsWithChildren<P>", insertText: "PropsWithChildren<$1>", detail: "Добавляет свойство children к пропсам", kind: "type", autoImport: { symbol: "PropsWithChildren", module: "react" } },
+  { name: "ComponentPropsWithoutRef", label: "ComponentPropsWithoutRef<E>", insertText: "ComponentPropsWithoutRef<'$1'>", detail: "Нативные HTML-пропсы без ref", kind: "type", autoImport: { symbol: "ComponentPropsWithoutRef", module: "react" } },
+  { name: "ComponentPropsWithRef", label: "ComponentPropsWithRef<E>", insertText: "ComponentPropsWithRef<'$1'>", detail: "Нативные HTML-пропсы включая ref", kind: "type", autoImport: { symbol: "ComponentPropsWithRef", module: "react" } },
+  { name: "ComponentProps", label: "ComponentProps<T>", insertText: "ComponentProps<typeof $1>", detail: "Все пропсы компонента", kind: "type", autoImport: { symbol: "ComponentProps", module: "react" } },
+  { name: "ElementRef", label: "ElementRef<T>", insertText: "ElementRef<typeof $1>", detail: "Тип ref для элемента", kind: "type", autoImport: { symbol: "ElementRef", module: "react" } },
+  { name: "ElementType", label: "ElementType", insertText: "ElementType", detail: "Тип тега или компонента", kind: "type", autoImport: { symbol: "ElementType", module: "react" } },
+  { name: "MutableRefObject", label: "MutableRefObject<T>", insertText: "MutableRefObject<$1>", detail: "Мутируемый ref объект (.current = val)", kind: "type", autoImport: { symbol: "MutableRefObject", module: "react" } },
+  { name: "RefObject", label: "RefObject<T>", insertText: "RefObject<$1>", detail: "Read-only DOM ref объект", kind: "type", autoImport: { symbol: "RefObject", module: "react" } },
+  { name: "ForwardedRef", label: "ForwardedRef<T>", insertText: "ForwardedRef<$1>", detail: "Тип ref-параметра в forwardRef", kind: "type", autoImport: { symbol: "ForwardedRef", module: "react" } },
+  { name: "Ref", label: "Ref<T>", insertText: "Ref<$1>", detail: "Тип ссылки ref", kind: "type", autoImport: { symbol: "Ref", module: "react" } },
   { name: "Dispatch", label: "Dispatch<SetStateAction<T>>", insertText: "Dispatch<SetStateAction<$1>>", detail: "Тип функции-сеттера useState", kind: "type", autoImport: { symbol: "Dispatch", module: "react" } },
+  { name: "SetStateAction", label: "SetStateAction<T>", insertText: "SetStateAction<$1>", detail: "T | ((prev: T) => T)", kind: "type", autoImport: { symbol: "SetStateAction", module: "react" } },
+  { name: "Reducer", label: "Reducer<S, A>", insertText: "Reducer<$1, $2>", detail: "(state: S, action: A) => S", kind: "type", autoImport: { symbol: "Reducer", module: "react" } },
+  { name: "ReducerState", label: "ReducerState<R>", insertText: "ReducerState<$1>", detail: "Извлечение типа состояния редьюсера", kind: "type", autoImport: { symbol: "ReducerState", module: "react" } },
+  { name: "ReducerAction", label: "ReducerAction<R>", insertText: "ReducerAction<$1>", detail: "Извлечение типа действия редьюсера", kind: "type", autoImport: { symbol: "ReducerAction", module: "react" } },
+  { name: "Context", label: "Context<T>", insertText: "Context<$1>", detail: "Объект контекста React", kind: "type", autoImport: { symbol: "Context", module: "react" } },
+  { name: "Key", label: "Key", insertText: "Key", detail: "string | number — тип ключа React", kind: "type", autoImport: { symbol: "Key", module: "react" } },
+
+  // HTML Element Types
+  { name: "HTMLInputElement", label: "HTMLInputElement", insertText: "HTMLInputElement", detail: "DOM-элемент <input>", kind: "type" },
+  { name: "HTMLButtonElement", label: "HTMLButtonElement", insertText: "HTMLButtonElement", detail: "DOM-элемент <button>", kind: "type" },
+  { name: "HTMLSelectElement", label: "HTMLSelectElement", insertText: "HTMLSelectElement", detail: "DOM-элемент <select>", kind: "type" },
+  { name: "HTMLTextAreaElement", label: "HTMLTextAreaElement", insertText: "HTMLTextAreaElement", detail: "DOM-элемент <textarea>", kind: "type" },
+  { name: "HTMLFormElement", label: "HTMLFormElement", insertText: "HTMLFormElement", detail: "DOM-элемент <form>", kind: "type" },
+  { name: "HTMLAnchorElement", label: "HTMLAnchorElement", insertText: "HTMLAnchorElement", detail: "DOM-элемент <a>", kind: "type" },
+  { name: "HTMLDivElement", label: "HTMLDivElement", insertText: "HTMLDivElement", detail: "DOM-элемент <div>", kind: "type" },
+  { name: "HTMLSpanElement", label: "HTMLSpanElement", insertText: "HTMLSpanElement", detail: "DOM-элемент <span>", kind: "type" },
+  { name: "HTMLImageElement", label: "HTMLImageElement", insertText: "HTMLImageElement", detail: "DOM-элемент <img>", kind: "type" },
+  { name: "HTMLElement", label: "HTMLElement", insertText: "HTMLElement", detail: "Базовый HTML DOM-элемент", kind: "type" },
+  { name: "HTMLHeadingElement", label: "HTMLHeadingElement", insertText: "HTMLHeadingElement", detail: "DOM-элемент <h1>-<h6>", kind: "type" },
+  { name: "HTMLParagraphElement", label: "HTMLParagraphElement", insertText: "HTMLParagraphElement", detail: "DOM-элемент <p>", kind: "type" },
+  { name: "HTMLTableElement", label: "HTMLTableElement", insertText: "HTMLTableElement", detail: "DOM-элемент <table>", kind: "type" },
+  { name: "HTMLUListElement", label: "HTMLUListElement", insertText: "HTMLUListElement", detail: "DOM-элемент <ul>", kind: "type" },
+  { name: "HTMLOListElement", label: "HTMLOListElement", insertText: "HTMLOListElement", detail: "DOM-элемент <ol>", kind: "type" },
+  { name: "HTMLLIElement", label: "HTMLLIElement", insertText: "HTMLLIElement", detail: "DOM-элемент <li>", kind: "type" },
+  { name: "HTMLCanvasElement", label: "HTMLCanvasElement", insertText: "HTMLCanvasElement", detail: "DOM-элемент <canvas>", kind: "type" },
+  { name: "HTMLDialogElement", label: "HTMLDialogElement", insertText: "HTMLDialogElement", detail: "DOM-элемент <dialog>", kind: "type" },
+];
+
+// База типов для автодополнения внутри дженериков <...>
+export const TS_GENERIC_TYPE_SUGGESTIONS = [
+  // HTML Element Types
+  { name: "HTMLInputElement", label: "HTMLInputElement", insertText: "HTMLInputElement", detail: "DOM-элемент <input>", kind: "type" },
+  { name: "HTMLButtonElement", label: "HTMLButtonElement", insertText: "HTMLButtonElement", detail: "DOM-элемент <button>", kind: "type" },
+  { name: "HTMLSelectElement", label: "HTMLSelectElement", insertText: "HTMLSelectElement", detail: "DOM-элемент <select>", kind: "type" },
+  { name: "HTMLTextAreaElement", label: "HTMLTextAreaElement", insertText: "HTMLTextAreaElement", detail: "DOM-элемент <textarea>", kind: "type" },
+  { name: "HTMLFormElement", label: "HTMLFormElement", insertText: "HTMLFormElement", detail: "DOM-элемент <form>", kind: "type" },
+  { name: "HTMLAnchorElement", label: "HTMLAnchorElement", insertText: "HTMLAnchorElement", detail: "DOM-элемент <a>", kind: "type" },
+  { name: "HTMLDivElement", label: "HTMLDivElement", insertText: "HTMLDivElement", detail: "DOM-элемент <div>", kind: "type" },
+  { name: "HTMLSpanElement", label: "HTMLSpanElement", insertText: "HTMLSpanElement", detail: "DOM-элемент <span>", kind: "type" },
+  { name: "HTMLImageElement", label: "HTMLImageElement", insertText: "HTMLImageElement", detail: "DOM-элемент <img>", kind: "type" },
+  { name: "HTMLElement", label: "HTMLElement", insertText: "HTMLElement", detail: "Базовый HTML DOM-элемент", kind: "type" },
+  { name: "HTMLHeadingElement", label: "HTMLHeadingElement", insertText: "HTMLHeadingElement", detail: "DOM-элемент <h1>-<h6>", kind: "type" },
+  { name: "HTMLParagraphElement", label: "HTMLParagraphElement", insertText: "HTMLParagraphElement", detail: "DOM-элемент <p>", kind: "type" },
+  { name: "HTMLTableElement", label: "HTMLTableElement", insertText: "HTMLTableElement", detail: "DOM-элемент <table>", kind: "type" },
+  { name: "HTMLUListElement", label: "HTMLUListElement", insertText: "HTMLUListElement", detail: "DOM-элемент <ul>", kind: "type" },
+  { name: "HTMLOListElement", label: "HTMLOListElement", insertText: "HTMLOListElement", detail: "DOM-элемент <ol>", kind: "type" },
+  { name: "HTMLLIElement", label: "HTMLLIElement", insertText: "HTMLLIElement", detail: "DOM-элемент <li>", kind: "type" },
+  { name: "HTMLCanvasElement", label: "HTMLCanvasElement", insertText: "HTMLCanvasElement", detail: "DOM-элемент <canvas>", kind: "type" },
+  { name: "HTMLDialogElement", label: "HTMLDialogElement", insertText: "HTMLDialogElement", detail: "DOM-элемент <dialog>", kind: "type" },
+
+  // HTML Tag Literals
+  { name: "'button'", label: "'button'", insertText: "'button'", detail: "Литерал тега кнопки", kind: "keyword" },
+  { name: "'a'", label: "'a'", insertText: "'a'", detail: "Литерал тега ссылки", kind: "keyword" },
+  { name: "'input'", label: "'input'", insertText: "'input'", detail: "Литерал тега инпута", kind: "keyword" },
+  { name: "'select'", label: "'select'", insertText: "'select'", detail: "Литерал тега селекта", kind: "keyword" },
+  { name: "'textarea'", label: "'textarea'", insertText: "'textarea'", detail: "Литерал тега textarea", kind: "keyword" },
+  { name: "'form'", label: "'form'", insertText: "'form'", detail: "Литерал тега формы", kind: "keyword" },
+  { name: "'div'", label: "'div'", insertText: "'div'", detail: "Литерал тега div", kind: "keyword" },
+  { name: "'span'", label: "'span'", insertText: "'span'", detail: "Литерал тега span", kind: "keyword" },
+
+  // Types & Primitives
+  { name: "string", label: "string", insertText: "string", detail: "Примитивный тип строки", kind: "type" },
+  { name: "number", label: "number", insertText: "number", detail: "Примитивный числовой тип", kind: "type" },
+  { name: "boolean", label: "boolean", insertText: "boolean", detail: "Логический тип true / false", kind: "type" },
+  { name: "null", label: "null", insertText: "null", detail: "Значение отсутствия объекта", kind: "type" },
+  { name: "undefined", label: "undefined", insertText: "undefined", detail: "Неопределенное значение", kind: "type" },
+  { name: "number | null", label: "number | null", insertText: "number | null", detail: "Число или null (для мутируемого useRef/таймера)", kind: "type" },
+  { name: "string | null", label: "string | null", insertText: "string | null", detail: "Строка или null", kind: "type" },
+  { name: "string | number", label: "string | number", insertText: "string | number", detail: "Строка или число (тип React.Key)", kind: "type" },
+  { name: "never", label: "never", insertText: "never", detail: "Недостижимый тип (для взаимоисключающих пропсов)", kind: "type" },
+  { name: "unknown", label: "unknown", insertText: "unknown", detail: "Безопасный тип неизвестного значения", kind: "type" },
+  { name: "any", label: "any", insertText: "any", detail: "Произвольный тип (отключение типизации)", kind: "type" },
+  { name: "void", label: "void", insertText: "void", detail: "Отсутствие возвращаемого значения", kind: "type" },
+
+  // React Types
+  { name: "ReactNode", label: "ReactNode", insertText: "ReactNode", detail: "Любой валидный React узел", kind: "type", autoImport: { symbol: "ReactNode", module: "react" } },
+  { name: "ReactElement", label: "ReactElement", insertText: "ReactElement", detail: "Экземпляр JSX-элемента", kind: "type", autoImport: { symbol: "ReactElement", module: "react" } },
+  { name: "PropsWithChildren", label: "PropsWithChildren<P>", insertText: "PropsWithChildren<$1>", detail: "Утилита добавления children", kind: "type", autoImport: { symbol: "PropsWithChildren", module: "react" } },
+  { name: "CSSProperties", label: "CSSProperties", insertText: "CSSProperties", detail: "Свойства inline стилей", kind: "type", autoImport: { symbol: "CSSProperties", module: "react" } },
+  { name: "ElementRef", label: "ElementRef<T>", insertText: "ElementRef<typeof $1>", detail: "Тип ref для элемента", kind: "type", autoImport: { symbol: "ElementRef", module: "react" } },
+  { name: "ComponentPropsWithoutRef", label: "ComponentPropsWithoutRef<E>", insertText: "ComponentPropsWithoutRef<'$1'>", detail: "HTML пропсы без ref", kind: "type", autoImport: { symbol: "ComponentPropsWithoutRef", module: "react" } },
+  { name: "ComponentPropsWithRef", label: "ComponentPropsWithRef<E>", insertText: "ComponentPropsWithRef<'$1'>", detail: "HTML пропсы с ref", kind: "type", autoImport: { symbol: "ComponentPropsWithRef", module: "react" } },
+  { name: "Record", label: "Record<K, T>", insertText: "Record<$1, $2>", detail: "Словарь ключей K со значениями T", kind: "type" },
+  { name: "Omit", label: "Omit<T, K>", insertText: "Omit<$1, '$2'>", detail: "Исключение свойств K из T", kind: "type" },
+  { name: "Pick", label: "Pick<T, K>", insertText: "Pick<$1, '$2'>", detail: "Выбор свойств K из T", kind: "type" },
+];
+
+export const TSX_SNIPPETS = [
+  {
+    prefix: "jsx",
+    label: "jsx → basic <div> wrapper",
+    body: "<div>\n  $1\n</div>",
+    kind: "snippet"
+  },
+  {
+    prefix: "jsxmap",
+    label: "jsxmap → array.map(() => <div />)",
+    body: "{list.map((item) => (\n  <div key={item.id}>\n    {item.name}\n  </div>\n))}",
+    kind: "snippet"
+  }
 ];
 
 export const JS_SNIPPETS = [
@@ -705,8 +913,59 @@ export const JS_SNIPPETS = [
     body: "import { Link, useNavigate } from '@tanstack/react-router';",
     cursorOffset: 57,
   },
+  {
+    prefix: "imptreact",
+    label: "imptreact → import type { FC, ReactNode } from 'react'",
+    detail: "Импорт типов React",
+    kind: "snippet",
+    body: "import type { FC, ReactNode } from 'react';",
+    cursorOffset: 41,
+  },
 
-  // React функциональные компоненты
+  // React TypeScript & функциональные компоненты
+  {
+    prefix: "tsfc",
+    label: "tsfc → TypeScript React Component with Props",
+    detail: "interface Props + FC<Props>",
+    kind: "snippet",
+    body: (compName) =>
+      `interface ${compName}Props {\n  \n}\n\nexport const ${compName}: React.FC<${compName}Props> = ({\n  \n}) => {\n  return (\n    <div>\n      \n    </div>\n  );\n};`,
+  },
+  {
+    prefix: "intf",
+    label: "intf → interface NameProps { ... }",
+    detail: "Интерфейс TypeScript",
+    kind: "snippet",
+    body: "interface $1Props {\n  $2\n}",
+  },
+  {
+    prefix: "type",
+    label: "type → type Name = ...",
+    detail: "Псевдоним типа TypeScript",
+    kind: "snippet",
+    body: "type $1 = $2;",
+  },
+  {
+    prefix: "discu",
+    label: "discu → Discriminated Union State Type",
+    detail: "Размеченное объединение состояний",
+    kind: "snippet",
+    body: "type $1State =\n  | { status: 'idle' }\n  | { status: 'loading' }\n  | { status: 'success'; data: $2 }\n  | { status: 'error'; error: string };",
+  },
+  {
+    prefix: "tguard",
+    label: "tguard → Type Guard (is Type)",
+    detail: "Кастомный предикат типа TypeScript",
+    kind: "snippet",
+    body: "export function is$1(value: any): value is $1 {\n  return Boolean(value && $2);\n}",
+  },
+  {
+    prefix: "tpoly",
+    label: "tpoly → Polymorphic Component Props",
+    detail: "Тип полиморфного компонента с as",
+    kind: "snippet",
+    body: "type $1OwnProps<E extends React.ElementType = 'button'> = {\n  as?: E;\n  $2\n};\n\ntype $1Props<E extends React.ElementType = 'button'> = $1OwnProps<E> &\n  Omit<React.ComponentPropsWithoutRef<E>, keyof $1OwnProps<E>>;",
+  },
   {
     prefix: "rfc",
     label: "rfc → React Functional Component",
@@ -1718,6 +1977,10 @@ export const getCompletions = (fullCode, cursorIndex, options = {}) => {
 
     if (receiverLower === "console") {
       candidateMembers = JS_MEMBER_COMPLETIONS.console;
+    } else if (receiverLower === "react") {
+      candidateMembers = JS_MEMBER_COMPLETIONS.react;
+    } else if (receiverLower === "reactdom") {
+      candidateMembers = JS_MEMBER_COMPLETIONS.reactdom;
     } else if (receiverLower === "math") {
       candidateMembers = JS_MEMBER_COMPLETIONS.math;
     } else if (receiverLower === "object") {
@@ -1837,11 +2100,50 @@ export const getCompletions = (fullCode, cursorIndex, options = {}) => {
   }
 
   // ==========================================
+  // 3.5. Контекст TypeScript дженериков: аргументы типов внутри <...> (например: ChangeEvent<HTMLIn, useRef<HTML, ComponentPropsWithoutRef<'bu)
+  // ==========================================
+  const isGenericContext = isTypeScriptGenericContext(currentLineBeforeCursor);
+  if (isGenericContext) {
+    const genericArgMatch = currentLineBeforeCursor.match(/(?:<|,|\||&)\s*([a-zA-Z0-9_$'"]*)$/);
+    if (genericArgMatch) {
+      const genQuery = genericArgMatch[1] || "";
+      const afterGenMatch = lineAfterCursor.match(/^[a-zA-Z0-9_$'"]*/);
+      const afterGenLen = afterGenMatch ? afterGenMatch[0].length : 0;
+      const scoredGen = [];
+
+      for (const item of TS_GENERIC_TYPE_SUGGESTIONS) {
+        const { match, score } = fuzzyMatch(item.name, genQuery);
+        if (match || !genQuery) {
+          const cleanInsert = item.insertText.replace(/\$1/g, "").replace(/\$2/g, "");
+          scoredGen.push({
+            prefix: item.name,
+            label: item.label,
+            detail: item.detail,
+            kind: item.kind || "type",
+            insertText: cleanInsert,
+            autoImport: item.autoImport,
+            replaceStart: cursorIndex - genQuery.length,
+            replaceEnd: cursorIndex + afterGenLen,
+            score: score + 12,
+          });
+        }
+      }
+
+      if (scoredGen.length > 0) {
+        scoredGen.sort((a, b) => b.score - a.score);
+        return {
+          word: genQuery || "<",
+          items: scoredGen.slice(0, 12),
+        };
+      }
+    }
+  }
+
+  // ==========================================
   // 4. Контекст JSX: автодополнение тегов (<tag) и пропсов/обработчиков (<div prop=)
   // ==========================================
   // 4.1. Ввод открывающего тега JSX (например: `<d`, `<button`, `<Fragment`, `<`)
   // Исключаем контекст TypeScript дженериков (type ListProps<T>, interface Props<T>, useRef<T>, Array<T>, etc.)
-  const isGenericContext = isTypeScriptGenericContext(currentLineBeforeCursor);
   const tagOpenMatch = !isGenericContext && currentLineBeforeCursor.match(/<([a-zA-Z0-9_$]*)$/);
   if (tagOpenMatch) {
     const tagQuery = tagOpenMatch[1];

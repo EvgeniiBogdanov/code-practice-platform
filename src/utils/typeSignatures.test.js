@@ -35,6 +35,26 @@ const hPartial = getHoverInfo("Partial", "type T = Partial<Props>", 12);
 assert(hPartial !== null, "Finds hover info for Partial");
 assert(hPartial.signature.includes("type Partial<T>"), "Contains Partial<T> signature");
 
+const hReactNode = getHoverInfo("React.ReactNode", "children: React.ReactNode", 15);
+assert(hReactNode !== null, "Finds hover info for React.ReactNode");
+assert(hReactNode.signature.includes("type ReactNode"), "Contains ReactNode signature for React.ReactNode");
+
+const hChangeEvent = getHoverInfo("React.ChangeEvent", "e: React.ChangeEvent<HTMLInputElement>", 10);
+assert(hChangeEvent !== null, "Finds hover info for React.ChangeEvent");
+assert(hChangeEvent.signature.includes("interface ChangeEvent"), "Contains ChangeEvent signature for React.ChangeEvent");
+
+const hHtmlInput = getHoverInfo("HTMLInputElement", "e: ChangeEvent<HTMLInputElement>", 20);
+assert(hHtmlInput !== null, "Finds hover info for HTMLInputElement");
+assert(hHtmlInput.signature.includes("interface HTMLInputElement"), "Contains HTMLInputElement signature");
+
+const hCompProps = getHoverInfo("ComponentPropsWithoutRef", "type P = ComponentPropsWithoutRef<'button'>", 15);
+assert(hCompProps !== null, "Finds hover info for ComponentPropsWithoutRef");
+assert(hCompProps.signature.includes("type ComponentPropsWithoutRef"), "Contains ComponentPropsWithoutRef signature");
+
+const hNever = getHoverInfo("never", "count?: never;", 5);
+assert(hNever !== null, "Finds hover info for never");
+assert(hNever.signature.includes("type never"), "Contains never signature");
+
 // 2. Parameter Hints / Signature Help
 console.log("\n--- 2. getSignatureHelp (Parameter Hints) ---");
 

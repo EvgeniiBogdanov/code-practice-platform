@@ -339,6 +339,65 @@ export function checkTypeScriptTypes(code) {
         });
       }
     }
+
+    // 3. Поиск объявлений read-only useRef<T>(null) и попыток перезаписи .current
+    // const timerRef = useRef<number>(null); timerRef.current = 123;
+  }
+
+  // Поиск всех объявлений useRef<T>(null) в файле
+  const refDecls = [];
+  const refDeclRegex = /\b(?:const|let|var)\s+([a-zA-Z0-9_$]+)\s*=\s*(?:React\.)?useRef\s*<([^>]+)>\s*\(\s*null\s*\)/g;
+  for (let lIdx = 0; lIdx < lines.length; lIdx++) {
+    const l = lines[lIdx];
+    let rm;
+    while ((rm = refDeclRegex.exec(l)) !== null) {
+      const refName = rm[1];
+      const genericType = rm[2].trim();
+      if (!genericType.includes("null") && !genericType.includes("undefined")) {
+        refDecls.push({ name: refName, type: genericType, declLine: lIdx + 1 });
+      }
+    }
+  }
+
+  // Проверка присваиваний .current = ... для read-only рефов
+  for (const ref of refDecls) {
+    const assignRegex = new RegExp(`\\b${ref.name}\\.current\\s*=\\s*`);
+    for (let lIdx = 0; lIdx < lines.length; lIdx++) {
+      const l = lines[lIdx];
+      const lineNum = lIdx + 1;
+      const m = assignRegex.exec(l);
+      if (m) {
+        const col = m.index + 1;
+        problems.push({
+          id: `ts-readonly-ref-${lineNum}-${col}`,
+          line: lineNum,
+          col,
+          message: `Cannot assign to 'current' because it is a read-only property. (RefObject<${ref.type}> is read-only). Did you mean 'useRef<${ref.type} | null>(null)'?`,
+          rule: "ts-readonly-ref-assignment",
+          severity: "error",
+        });
+      }
+    }
+  }
+
+  // 4. Проверка синтаксиса TSX для generic стрелочных функций: const id = <T>(x: T) => ...
+  const genericArrowRegex = /=\s*<([A-Z][a-zA-Z0-9_$]*)>\s*\(/g;
+  for (let lIdx = 0; lIdx < lines.length; lIdx++) {
+    const l = lines[lIdx];
+    const lineNum = lIdx + 1;
+    let gm;
+    while ((gm = genericArrowRegex.exec(l)) !== null) {
+      const paramName = gm[1];
+      const col = gm.index + 1;
+      problems.push({
+        id: `ts-generic-comma-${lineNum}-${col}`,
+        line: lineNum,
+        col,
+        message: `In TSX files, generic arrow parameter '<${paramName}>' conflicts with JSX tags. Use '<${paramName},>' or '<${paramName} extends unknown>'.`,
+        rule: "ts-generic-tsx-trailing-comma",
+        severity: "error",
+      });
+    }
   }
 
   return problems;
@@ -347,7 +406,7 @@ export function checkTypeScriptTypes(code) {
 /**
  * Извлекает контракты компонентов и их обязательные пропсы из исходного кода
  * @param {string} code
- * @returns {Record<string, { requiredProps: string[], optionalProps: string[], source: string }>}
+ * @returns {Record<string, { requiredProps: string[], optionalProps: string[], neverProps: string[], source: string }>}
  */
 export function extractComponentContracts(code) {
   const contracts = {};
@@ -362,18 +421,25 @@ export function extractComponentContracts(code) {
     const body = im[2];
     const req = [];
     const opt = [];
+    const neverProps = [];
 
-    const lines = body.split(/[;\n]/);
-    for (const l of lines) {
-      const propMatch = l.match(/^\s*([a-zA-Z0-9_$]+)(\??)\s*:/);
+    const propLines = body.split(/[;\n]/);
+    for (const l of propLines) {
+      const propMatch = l.match(/^\s*([a-zA-Z0-9_$]+)(\??)\s*:\s*([a-zA-Z0-9_$<>\[\]|&\s"'-]+)/);
       if (propMatch) {
         const propName = propMatch[1];
         const isOpt = propMatch[2] === "?";
-        if (isOpt) opt.push(propName);
-        else req.push(propName);
+        const pType = propMatch[3].trim();
+        if (pType === "never") {
+          neverProps.push(propName);
+        } else if (isOpt) {
+          opt.push(propName);
+        } else {
+          req.push(propName);
+        }
       }
     }
-    interfacePropsMap[ifName] = { required: req, optional: opt };
+    interfacePropsMap[ifName] = { required: req, optional: opt, neverProps };
   }
 
   // 2. Поиск функциональных компонентов с деструктуризацией:
@@ -388,6 +454,7 @@ export function extractComponentContracts(code) {
 
     let requiredProps = [];
     let optionalProps = [];
+    let neverProps = [];
 
     if (destructuredParams) {
       const rawProps = splitTopLevelCommas(destructuredParams);
@@ -413,6 +480,7 @@ export function extractComponentContracts(code) {
     if (typedInterface && interfacePropsMap[typedInterface]) {
       requiredProps = Array.from(new Set([...requiredProps, ...interfacePropsMap[typedInterface].required]));
       optionalProps = Array.from(new Set([...optionalProps, ...interfacePropsMap[typedInterface].optional]));
+      neverProps = Array.from(new Set([...neverProps, ...(interfacePropsMap[typedInterface].neverProps || [])]));
     }
 
     // Если интерфейс назван ${compName}Props
@@ -420,12 +488,14 @@ export function extractComponentContracts(code) {
     if (interfacePropsMap[standardIfName]) {
       requiredProps = Array.from(new Set([...requiredProps, ...interfacePropsMap[standardIfName].required]));
       optionalProps = Array.from(new Set([...optionalProps, ...interfacePropsMap[standardIfName].optional]));
+      neverProps = Array.from(new Set([...neverProps, ...(interfacePropsMap[standardIfName].neverProps || [])]));
     }
 
-    if (requiredProps.length > 0 || optionalProps.length > 0) {
+    if (requiredProps.length > 0 || optionalProps.length > 0 || neverProps.length > 0) {
       contracts[compName] = {
         requiredProps,
         optionalProps,
+        neverProps,
         source: "local",
       };
     }
@@ -483,7 +553,7 @@ export function checkComponentProps(code, options = {}) {
       }
 
       const contract = allContracts[compName];
-      if (contract && contract.requiredProps && contract.requiredProps.length > 0) {
+      if (contract) {
         // Парсим переданные пропсы в вызове
         const passedProps = new Set();
         const propRegex = /([a-zA-Z0-9_$]+)(?:=|\s|$)/g;
@@ -495,17 +565,35 @@ export function checkComponentProps(code, options = {}) {
           }
         }
 
+        // Проверяем never props (взаимоисключающие пропсы)
+        if (contract.neverProps && contract.neverProps.length > 0) {
+          for (const np of contract.neverProps) {
+            if (passedProps.has(np)) {
+              problems.push({
+                id: `ts-never-prop-${lineNum}-${col}-${np}`,
+                line: lineNum,
+                col,
+                message: `Type '{ ${Array.from(passedProps).join(", ")} }' is not assignable to type '${compName}Props'. Property '${np}' is incompatible with type 'never'.`,
+                rule: "ts-never-mutual-prop",
+                severity: "error",
+              });
+            }
+          }
+        }
+
         // Проверяем отсутствующие обязательные пропсы
-        const missing = contract.requiredProps.filter((req) => !passedProps.has(req));
-        if (missing.length > 0) {
-          problems.push({
-            id: `missing-props-${lineNum}-${col}-${compName}`,
-            line: lineNum,
-            col,
-            message: `Компонент <${compName}> ожидает обязательные пропсы: ${missing.map((m) => `'${m}'`).join(", ")}`,
-            rule: "react-missing-required-props",
-            severity: "warning",
-          });
+        if (contract.requiredProps && contract.requiredProps.length > 0) {
+          const missing = contract.requiredProps.filter((req) => !passedProps.has(req));
+          if (missing.length > 0) {
+            problems.push({
+              id: `missing-props-${lineNum}-${col}-${compName}`,
+              line: lineNum,
+              col,
+              message: `Компонент <${compName}> ожидает обязательные пропсы: ${missing.map((m) => `'${m}'`).join(", ")}`,
+              rule: "react-missing-required-props",
+              severity: "warning",
+            });
+          }
         }
       }
     }

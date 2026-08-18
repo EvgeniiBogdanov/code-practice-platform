@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-export const MIN_FONT_SIZE = 12;
+export const MIN_FONT_SIZE = 14;
 export const MAX_FONT_SIZE = 24;
 
 const getInitialTheme = () => {
@@ -36,8 +36,8 @@ export const useUIStore = create(
       theme: initialTheme,
       sidebarOpen: true,
       sidebarWidth: 280,
-      editorFontSize: 13,
-      consoleFontSize: 13,
+      editorFontSize: 14,
+      consoleFontSize: 14,
       consoleCollapsed: true,
 
       // --- Modals ---
@@ -111,22 +111,22 @@ export const useUIStore = create(
       },
       increaseEditorFontSize: () => {
         set((state) => ({
-          editorFontSize: Math.min(MAX_FONT_SIZE, (state.editorFontSize || 13) + 1),
+          editorFontSize: Math.min(MAX_FONT_SIZE, (state.editorFontSize || MIN_FONT_SIZE) + 1),
         }));
       },
       decreaseEditorFontSize: () => {
         set((state) => ({
-          editorFontSize: Math.max(MIN_FONT_SIZE, (state.editorFontSize || 13) - 1),
+          editorFontSize: Math.max(MIN_FONT_SIZE, (state.editorFontSize || MIN_FONT_SIZE) - 1),
         }));
       },
       increaseFontSize: () => {
         set((state) => ({
-          editorFontSize: Math.min(MAX_FONT_SIZE, (state.editorFontSize || 13) + 1),
+          editorFontSize: Math.min(MAX_FONT_SIZE, (state.editorFontSize || MIN_FONT_SIZE) + 1),
         }));
       },
       decreaseFontSize: () => {
         set((state) => ({
-          editorFontSize: Math.max(MIN_FONT_SIZE, (state.editorFontSize || 13) - 1),
+          editorFontSize: Math.max(MIN_FONT_SIZE, (state.editorFontSize || MIN_FONT_SIZE) - 1),
         }));
       },
 
@@ -137,12 +137,12 @@ export const useUIStore = create(
       },
       increaseConsoleFontSize: () => {
         set((state) => ({
-          consoleFontSize: Math.min(MAX_FONT_SIZE, (state.consoleFontSize || 13) + 1),
+          consoleFontSize: Math.min(MAX_FONT_SIZE, (state.consoleFontSize || MIN_FONT_SIZE) + 1),
         }));
       },
       decreaseConsoleFontSize: () => {
         set((state) => ({
-          consoleFontSize: Math.max(MIN_FONT_SIZE, (state.consoleFontSize || 13) - 1),
+          consoleFontSize: Math.max(MIN_FONT_SIZE, (state.consoleFontSize || MIN_FONT_SIZE) - 1),
         }));
       },
 
@@ -303,6 +303,14 @@ export const useUIStore = create(
             : "dark";
         if (typeof document !== "undefined") {
           document.documentElement.setAttribute("data-theme", activeTheme);
+        }
+        if (state) {
+          if (typeof state.editorFontSize === "number" && state.editorFontSize < MIN_FONT_SIZE) {
+            state.editorFontSize = MIN_FONT_SIZE;
+          }
+          if (typeof state.consoleFontSize === "number" && state.consoleFontSize < MIN_FONT_SIZE) {
+            state.consoleFontSize = MIN_FONT_SIZE;
+          }
         }
       },
     }

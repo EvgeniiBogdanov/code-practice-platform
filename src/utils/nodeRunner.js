@@ -39,11 +39,11 @@ export const clearRunningTimers = () => {
  * @param {string} codeText Исходный код для выполнения
  * @param {object} options Дополнительные опции
  * @param {function} options.onLog Потоковый колбэк при появлении новых логов
- * @param {number} options.timeoutMs Максимальное время выполнения (по умолчанию 3500ms)
+ * @param {number} options.timeoutMs Максимальное время выполнения (по умолчанию 12000ms для поддержки многосекундных таймеров)
  * @returns {Promise<{ logs: Array, result: any, error: object|null, durationMs: number, exitCode: number }>}
  */
 export const runNodeJsCode = (codeText, options = {}) => {
-  const { onLog, timeoutMs = 3500 } = options;
+  const { onLog, timeoutMs = 12000 } = options;
 
   // Останавливаем предыдущий запуск, если он ещё идёт
   clearRunningTimers();

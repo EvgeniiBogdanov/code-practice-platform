@@ -94,11 +94,29 @@ export const CandidateTab = ({
     setIsRunning(false);
   };
 
+  const handleStopCode = () => {
+    clearRunningTimers();
+    setIsRunning(false);
+    setLastExecution({
+      durationMs: 0,
+      exitCode: 130,
+      error: { message: "Выполнение остановлено пользователем" },
+    });
+  };
+
   const handleClearConsole = () => {
     setConsoleLogs([]);
     setLastExecution(null);
     clearRunningTimers();
+    setIsRunning(false);
   };
+
+  // Очистка при размонтировании
+  useEffect(() => {
+    return () => {
+      clearRunningTimers();
+    };
+  }, []);
 
   const isJsTask =
     !hasCandidateComponent ||
@@ -182,6 +200,7 @@ export const CandidateTab = ({
                     lastExecution={lastExecution}
                     filename={activeFile.filepath || activeFile.name}
                     onRun={() => handleRunCode()}
+                    onStop={handleStopCode}
                     onClear={handleClearConsole}
                   />
                 </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   Terminal as TerminalIcon,
   Play,
+  Square,
   Trash2,
   Copy,
   Check,
@@ -14,12 +15,9 @@ import {
 import { Terminal } from "@xterm/xterm";
 import { FitAddon } from "@xterm/addon-fit";
 import "@xterm/xterm/css/xterm.css";
-import { useUIStore } from "../../stores/useUIStore";
+import { useUIStore, MIN_FONT_SIZE, MAX_FONT_SIZE } from "../../stores/useUIStore";
 import { Tooltip } from "./Tooltip";
 
-const MIN_FONT_SIZE = 12;
-const MAX_FONT_SIZE = 24;
-const FONT_SIZE_STORAGE_KEY = "playground_editor_font_size";
 const CONSOLE_COLLAPSED_STORAGE_KEY = "playground_console_collapsed";
 
 const getTerminalTheme = (themeName) => {
@@ -77,6 +75,7 @@ export const JsConsole = ({
   lastExecution = null,
   filename = "main.js",
   onRun,
+  onStop,
   onClear,
   customTitle,
   isCollapsed: controlledIsCollapsed,
@@ -122,10 +121,46 @@ export const JsConsole = ({
     }
   }, [isRunning, isCollapsed, onToggleCollapse]);
 
-  const fontSize = useUIStore((state) => state.consoleFontSize ?? 13);
+  const fontSize = useUIStore((state) => state.consoleFontSize ?? MIN_FONT_SIZE);
   const handleIncreaseFontSize = useUIStore((state) => state.increaseConsoleFontSize);
   const handleDecreaseFontSize = useUIStore((state) => state.decreaseConsoleFontSize);
   const currentTheme = useUIStore((state) => state.theme);
+
+  // Сглаживание индикации выполнения: предотвращает мигание кнопки Stop и бейджа при быстром (<180мс) выполнении
+  const [showLongRunning, setShowLongRunning] = useState(false);
+  const runningTimerRef = useRef(null);
+  const runningShownAtRef = useRef(0);
+
+  useEffect(() => {
+    if (isRunning) {
+      if (!showLongRunning) {
+        runningTimerRef.current = setTimeout(() => {
+          setShowLongRunning(true);
+          runningShownAtRef.current = Date.now();
+        }, 180);
+      }
+    } else {
+      if (runningTimerRef.current) {
+        clearTimeout(runningTimerRef.current);
+        runningTimerRef.current = null;
+      }
+      if (showLongRunning) {
+        const elapsed = Date.now() - runningShownAtRef.current;
+        const remainingHold = Math.max(0, 250 - elapsed);
+        const hideTimer = setTimeout(() => {
+          setShowLongRunning(false);
+        }, remainingHold);
+        return () => clearTimeout(hideTimer);
+      }
+    }
+
+    return () => {
+      if (runningTimerRef.current) {
+        clearTimeout(runningTimerRef.current);
+        runningTimerRef.current = null;
+      }
+    };
+  }, [isRunning, showLongRunning]);
 
   const termContainerRef = useRef(null);
   const xtermRef = useRef(null);
@@ -362,23 +397,35 @@ export const JsConsole = ({
 
         <div className="vscode-editor-actions">
           <Tooltip.Provider delayDuration={500} skipDelayDuration={250}>
-            {isRunning && (
+            {showLongRunning && (
               <span className="js-console-badge badge-running">
                 <Loader2 size={12} className="spin-icon" /> Выполнение...
               </span>
             )}
 
-            {onRun && (
-              <Tooltip content="Запустить код (Ctrl+Enter)" side="top">
+            {showLongRunning && onStop ? (
+              <Tooltip content="Остановить выполнение (Stop)" side="top">
                 <button
-                  className="vscode-icon-btn"
-                  onClick={onRun}
-                  disabled={isRunning}
-                  aria-label="Запустить код"
+                  className="vscode-icon-btn btn-stop-running"
+                  onClick={onStop}
+                  aria-label="Остановить"
                 >
-                  <Play size={14} style={{ color: "#10b981" }} fill="currentColor" />
+                  <Square size={13} style={{ color: "#ef4444" }} fill="currentColor" />
                 </button>
               </Tooltip>
+            ) : (
+              onRun && (
+                <Tooltip content="Запустить код (Ctrl+Enter)" side="top">
+                  <button
+                    className="vscode-icon-btn"
+                    onClick={onRun}
+                    disabled={isRunning}
+                    aria-label="Запустить код"
+                  >
+                    <Play size={14} style={{ color: "#10b981" }} fill="currentColor" />
+                  </button>
+                </Tooltip>
+              )
             )}
 
             <Tooltip content="Очистить вывод консоли" side="top">

@@ -172,18 +172,18 @@ export const highlightJS = (code, options = {}) => {
     {
       type: "keyword",
       regex:
-        /^\b(const|let|var|function|return|import|export|default|try|catch|finally|async|await|if|else|for|while|do|switch|case|break|continue|throw|new|typeof|instanceof|void|delete|in|of|from|as|type|interface|extends|implements|readonly|public|private|protected|class|static|super|yield|enum|namespace|declare|abstract|satisfies)(?![a-zA-Z0-9_$])/,
+        /^\b(const|let|var|function|return|import|export|default|try|catch|finally|async|await|if|else|for|while|do|switch|case|break|continue|throw|new|typeof|instanceof|void|delete|in|of|from|as|type|interface|extends|implements|readonly|public|private|protected|class|static|super|yield|enum|namespace|declare|abstract|satisfies|is|keyof|infer|asserts)(?![a-zA-Z0-9_$])/,
     },
     // Boolean and special values
     {
       type: "boolean",
       regex: /^\b(true|false|this|self)(?![a-zA-Z0-9_$])/,
     },
-    // Null-ish types
+    // Null-ish & TypeScript / React / DOM types
     {
       type: "type",
       regex:
-        /^\b(string|number|boolean|null|undefined|any|unknown|never|object|symbol|bigint|void)(?![a-zA-Z0-9_$])/,
+        /^\b(string|number|boolean|null|undefined|any|unknown|never|object|symbol|bigint|void|ReactNode|ReactElement|ReactPortal|FC|FunctionComponent|PropsWithChildren|ChangeEvent|MouseEvent|KeyboardEvent|FormEvent|FocusEvent|PointerEvent|TouchEvent|SyntheticEvent|ComponentPropsWithoutRef|ComponentPropsWithRef|ComponentProps|ElementRef|ElementType|MutableRefObject|RefObject|ForwardedRef|Ref|Dispatch|SetStateAction|Reducer|ReducerState|ReducerAction|Context|Key|CSSProperties|HTMLInputElement|HTMLButtonElement|HTMLSelectElement|HTMLTextAreaElement|HTMLFormElement|HTMLAnchorElement|HTMLDivElement|HTMLSpanElement|HTMLImageElement|HTMLElement|Element|Event|Node|Partial|Required|Readonly|Record|Pick|Omit|Exclude|Extract|NonNullable|ReturnType|Parameters|InstanceType|Awaited|Promise)(?![a-zA-Z0-9_$])/,
     },
     // React hooks and API
     {

@@ -103,7 +103,7 @@ assert(contracts.Card.requiredProps.includes("title"), "Card requires 'title'");
 assert(contracts.Card.requiredProps.includes("count"), "Card requires 'count'");
 assert(contracts.Card.optionalProps.includes("subtitle"), "Card has optional 'subtitle'");
 
-// 5. Component Props Checking in JSX
+// 5. Component Props Checking in JSX & Mutually Exclusive Props
 console.log("\n--- 5. Component Props Checking in JSX (checkComponentProps) ---");
 const usageCodeMissing = `
 function App() {
@@ -127,6 +127,53 @@ assert(
 assert(
   propsProblems.some((p) => p.message.includes("<Card>") && p.message.includes("'title'")),
   "Warns about missing required props on <Card />"
+);
+
+// 5.1. Mutually Exclusive Props (never)
+const badgeCompCode = `
+type BadgeProps = { count?: number; dot?: never } | { count?: never; dot?: boolean };
+const Badge = (props: BadgeProps) => <span>Badge</span>;
+`;
+const badgeUsageCode = `
+const View = () => <Badge count={5} dot />;
+`;
+const badgeProblems = checkComponentProps(badgeUsageCode, {
+  files: [{ name: "Badge.tsx", code: badgeCompCode }],
+});
+assert(
+  badgeProblems.some((p) => p.rule === "ts-never-mutual-prop"),
+  "Flags error on mutually exclusive props with never on <Badge count={5} dot />"
+);
+
+// 5.2. useRef read-only vs mutable check
+const refCodeError = `
+const timerRef = useRef<number>(null);
+timerRef.current = 100;
+`;
+const refProblems1 = checkTypeScriptTypes(refCodeError);
+assert(
+  refProblems1.some((p) => p.rule === "ts-readonly-ref-assignment"),
+  "Flags error on assigning to read-only useRef<number>(null)"
+);
+
+const refCodeValid = `
+const timerRef = useRef<number | null>(null);
+timerRef.current = 100;
+`;
+const refProblems2 = checkTypeScriptTypes(refCodeValid);
+assert(
+  !refProblems2.some((p) => p.rule === "ts-readonly-ref-assignment"),
+  "No error on assigning to mutable useRef<number | null>(null)"
+);
+
+// 5.3. TSX generic arrow trailing comma check
+const genericArrowError = `
+const getFirst = <T>(list: T[]): T => list[0];
+`;
+const genericProblems = checkTypeScriptTypes(genericArrowError);
+assert(
+  genericProblems.some((p) => p.rule === "ts-generic-tsx-trailing-comma"),
+  "Flags error on TSX generic arrow function without trailing comma <T>"
 );
 
 // 6. Accessibility & Security checks (img, a)
