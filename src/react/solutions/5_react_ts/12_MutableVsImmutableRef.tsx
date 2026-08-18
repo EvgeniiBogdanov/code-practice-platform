@@ -44,14 +44,3 @@ export function TimerWithFocus() {
 }
 
 export default TimerWithFocus;
-
-/*
-=== Разбор решения ===
-Проблема: В типизации React хук `useRef` имеет 3 ключевые перегрузки:
-1. `useRef<T>(initialValue: T): MutableRefObject<T>` — мутируемый реф для хранения любых переменных.
-2. `useRef<T>(initialValue: T | null): RefObject<T>` — неизменяемый Readonly реф, специально предназначенный для передачи в атрибут `ref={...}` DOM-элементов.
-
-Как надо (React + TS):
-- Передача `useRef<number>(null)` вызывает перегрузку №2, создавая Readonly реф `RefObject<number>`. Попытка записать `timerRef.current = ...` приводит к ошибке `read-only`.
-- Для мутируемого рефа с начальным null нужно явно указывать тип с союзом null внутри дженерика: `useRef<number | null>(null)`. Это вызывает перегрузку №1 (`MutableRefObject`), давая полное право перезаписывать `.current`.
-*/

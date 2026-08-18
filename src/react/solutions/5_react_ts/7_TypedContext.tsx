@@ -57,13 +57,3 @@ function UserProfile() {
     </div>
   );
 }
-
-/*
-=== Разбор решения ===
-Проблема: Использование `createContext({} as AuthContextType)` обманывает TypeScript. Если забыть обернуть компонент в `<AuthProvider>`, `useContext` вернет пустой объект `{}`, и приложение упадёт при вызове `login('...')` с трудноотлавливаемой ошибкой runtime.
-
-Как надо (React + TS):
-1. `createContext<AuthContextType | null>(null)` честно заявляет, что вне провайдера значения нет.
-2. Кастомный хук `useAuth()` проверяет `if (!context) throw new Error(...)` и отсекает `null`.
-3. В результате все компоненты получают чистый тип `AuthContextType` без необходимости писать `context?.login?.()`.
-*/

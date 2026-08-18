@@ -38,13 +38,3 @@ export default function Demo() {
     </Card>
   );
 }
-
-/*
-=== Разбор решения ===
-Проблема: Частая путаница между типом `React.ReactNode` и `React.ReactElement`.
-
-Как надо (React + TS):
-1. **`React.ReactNode`** — базовый супертип для всего, что React может отрендерить: строки, числа, JSX-элементы, массивы, порталы, `null`, `undefined`, `boolean`. Используется в 95% случаев для `children`.
-2. **`React.ReactElement`** — строго один экземпляр React-компонента/JSX-тега (объект `{ type, props, key }`). Не включает строки, числа или `null`.
-3. **`React.PropsWithChildren<P>`** — удобный служебный тип, избавляющий от дублирования `children?: React.ReactNode` в типах каждого контейнера.
-*/

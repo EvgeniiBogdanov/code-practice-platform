@@ -49,14 +49,3 @@ export function EventForm() {
 }
 
 export default EventForm;
-
-/*
-=== Разбор решения ===
-Проблема: Использование `any` для оберток событий `e` приводит к случайным ошибкам при попытке вызова методов вроде `e.target.files` на элементах, где их нет.
-
-Как надо (React + TS):
-1. События в React — это синтетические обертки над нативными событиями: `React.SyntheticEvent<T>`.
-2. `React.ChangeEvent<HTMLInputElement>` — содержит безопасное поле `e.target.value` и `e.target.files`.
-3. `React.FormEvent<HTMLFormElement>` — содержит метод `e.preventDefault()`.
-4. `React.KeyboardEvent<HTMLInputElement>` — содержит строгое поле `e.key`.
-*/
