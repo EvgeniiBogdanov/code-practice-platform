@@ -37,14 +37,25 @@ function createSandboxRunner() {
       let syncResult = undefined;
       let syncError = null;
 
+      let completeTimeoutId = null;
+
       const checkAndNotifyComplete = () => {
         if (!syncFinished || isCompletePosted) return;
 
         if (pendingTimeouts.size > 0 || activeIntervals.size > 0) {
+          if (completeTimeoutId !== null) {
+            clearTimeout(completeTimeoutId);
+            completeTimeoutId = null;
+          }
           return;
         }
 
-        queueMicrotask(() => {
+        if (completeTimeoutId !== null) {
+          clearTimeout(completeTimeoutId);
+        }
+
+        completeTimeoutId = setTimeout(() => {
+          completeTimeoutId = null;
           if (isCompletePosted) return;
           if (pendingTimeouts.size > 0 || activeIntervals.size > 0) {
             return;
@@ -59,7 +70,7 @@ function createSandboxRunner() {
             durationMs,
             exitCode: syncError ? 1 : 0,
           });
-        });
+        }, 0);
       };
 
       const sandboxSetTimeout = (fn, delay = 0, ...args) => {
@@ -397,13 +408,73 @@ async function runTests() {
     assert.deepStrictEqual(res.logs.map(l => l.text), ["c"]);
   });
 
+  // 11. Task 24: Promise chains execution order
+  console.log("\n--- 11. Task 24: Promise chains execution order ---");
+  await test("Correctly executes Task 24 promise chains in order [1, 2, 7, 4, 8]", async () => {
+    const task24Code = `
+      Promise.resolve()
+        .then(() => console.log(1))
+        .then(() => console.log(2))
+        .catch(() => console.log(3))
+        .then(() => console.log(4));
+
+      Promise.reject()
+        .then(() => console.log(5))
+        .then(() => console.log(6))
+        .catch(() => console.log(7))
+        .then(() => console.log(8));
+    `;
+    const res = await runCode(task24Code);
+    assert.strictEqual(res.error, null);
+    assert.strictEqual(res.exitCode, 0);
+    const logTexts = res.logs.map(l => l.text);
+    assert.deepStrictEqual(logTexts, ["1", "2", "7", "4", "8"]);
+  });
+
+  // 12. Microtasks + Macrotasks combined
+  console.log("\n--- 12. Microtasks + Macrotasks combined ---");
+  await test("Preserves correct order with microtasks and macrotasks: sync -> microtasks -> macrotasks", async () => {
+    const mixedCode = `
+      console.log("sync1");
+
+      setTimeout(() => {
+        console.log("timeout1");
+        Promise.resolve().then(() => console.log("promise in timeout"));
+      }, 0);
+
+      Promise.resolve()
+        .then(() => console.log("promise1"))
+        .then(() => console.log("promise2"));
+
+      queueMicrotask(() => {
+        console.log("microtask1");
+      });
+
+      console.log("sync2");
+    `;
+    const res = await runCode(mixedCode);
+    assert.strictEqual(res.error, null);
+    assert.strictEqual(res.exitCode, 0);
+    const logTexts = res.logs.map(l => l.text);
+    assert.deepStrictEqual(logTexts, [
+      "sync1",
+      "sync2",
+      "promise1",
+      "microtask1",
+      "promise2",
+      "timeout1",
+      "promise in timeout"
+    ]);
+  });
+
   console.log("\n========================================");
   console.log(`Tests finished: ${passed} passed, ${failed} failed.`);
   if (failed > 0) {
     process.exit(1);
   } else {
-    console.log("ALL TIMER & CONSOLE TESTS PASSED SUCCESSFULLY! ✓\n");
+    console.log("ALL TIMER, PROMISE & CONSOLE TESTS PASSED SUCCESSFULLY! ✓\n");
   }
 }
 
 runTests();
+

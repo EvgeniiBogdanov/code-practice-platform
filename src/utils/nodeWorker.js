@@ -422,6 +422,26 @@ self.onmessage = async (event) => {
     // ignore
   }
 
+  const handleUnhandledRejection = (event) => {
+    const reason = event?.reason;
+    if (!syncError) {
+      const errorObj = reason instanceof Error ? reason : new Error(String(reason));
+      syncError = {
+        name: errorObj.name || "UnhandledPromiseRejection",
+        message: errorObj.message || String(reason),
+        stack: errorObj.stack || "",
+      };
+    }
+    sandboxConsole.error(reason instanceof Error ? `${reason.name}: ${reason.message}` : `UnhandledPromiseRejection: ${String(reason)}`);
+    checkAndNotifyComplete();
+  };
+
+  try {
+    self.addEventListener("unhandledrejection", handleUnhandledRejection);
+  } catch {
+    // ignore
+  }
+
   const sandboxHelpers = {
     createNode: (val = 0, left = null, right = null) => ({ val, left, right }),
     createTreeNode: (val = 0, left = null, right = null) => ({ val, left, right }),
@@ -538,16 +558,28 @@ self.onmessage = async (event) => {
   let isCompletePosted = false;
   let syncResult = undefined;
   let syncError = null;
+  let completeTimeoutId = null;
 
   const checkAndNotifyComplete = () => {
     if (!syncFinished || isCompletePosted) return;
 
     // Если остались активные таймеры или интервалы — не завершаем воркер до их выполнения
     if (pendingTimeouts.size > 0 || activeIntervals.size > 0) {
+      if (completeTimeoutId !== null) {
+        _nativeClearTimeout(completeTimeoutId);
+        completeTimeoutId = null;
+      }
       return;
     }
 
-    _nativeQueueMicrotask(() => {
+    if (completeTimeoutId !== null) {
+      _nativeClearTimeout(completeTimeoutId);
+    }
+
+    // Используем macrotask (_nativeSetTimeout 0), чтобы дать Event Loop полностью
+    // обработать всю очередь микрозадач (все шаги Promise .then/.catch/.finally, queueMicrotask и т.д.)
+    completeTimeoutId = _nativeSetTimeout(() => {
+      completeTimeoutId = null;
       if (isCompletePosted) return;
       if (pendingTimeouts.size > 0 || activeIntervals.size > 0) {
         return;
@@ -576,7 +608,7 @@ self.onmessage = async (event) => {
           exitCode: syncError ? 1 : 0,
         });
       }
-    });
+    }, 0);
   };
 
   try {

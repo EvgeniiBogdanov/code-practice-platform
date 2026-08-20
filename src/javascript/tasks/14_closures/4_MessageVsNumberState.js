@@ -1,4 +1,3 @@
-// Фиксация значений при создании замыкания
 // Что будет выведено в консоль?
 
 let number = 0;
@@ -17,5 +16,3 @@ const log = increment();
 increment();
 increment();
 log();
-// Incremented to 1
-// Number: 3

@@ -1,8 +1,11 @@
-// Замыкание в обработчиках событий
-// Что выведет следующий код и как его исправить с помощью let?
+// - Что выведется в консоль; - Варианты, как исправить;
+
+const button = document.getElementById("button");
 
 for (var i = 0; i < 3; i++) {
-  setTimeout(() => {
+  button.addEventListener("click", function (e) {
     console.log(i);
-  }, 0);
+  });
 }
+
+button.click();

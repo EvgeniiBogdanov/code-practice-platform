@@ -1,13 +1,10 @@
-const createCounter = (initialValue = 0) => {
-  let count = initialValue;
-  return () => {
-    count++;
-    return count;
-  };
+const createCounter = () => {
+  let count = 0; // Локальная переменная
+
+  return () => ++count; // Возвращаем стрелочную функцию, которая увеличивает и возвращает count
 };
 
-// Пример вызова:
-const counter = createCounter(0);
+const counter = createCounter();
 console.log(counter()); // 1
 console.log(counter()); // 2
 console.log(counter()); // 3

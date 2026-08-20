@@ -14,5 +14,7 @@ const log = increment();
 increment();
 increment();
 log();
-// Incremented to 1
-// Number: 3
+
+// Вывод:
+// "Incremented to 1"
+// "Number: 3"
