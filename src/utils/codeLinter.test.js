@@ -234,6 +234,43 @@ assert(res9.unusedImports.has("useMemo"), "Identifies unused 'useMemo'");
 assert(res9.unusedImports.has("createSlice"), "Identifies unused 'createSlice'");
 assert(!res9.unusedImports.has("useState"), "Does NOT flag used 'useState'");
 
+// Проверка: URL со слешами https:// и шаблонные строки не сбивают поиск использованных импортов (Task 16 regression)
+const task16Regression = `import { useState, useEffect } from "react";
+
+const fetchUsers = async () => {
+  const res = await fetch("https://jsonplaceholder.typicode.com/users");
+  return res.json();
+};
+
+export default function UsersList() {
+  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    fetchUsers().then(setUsers);
+  }, []);
+  return <div>{users.length}</div>;
+}`;
+const res9Task16 = lintJavaScriptCode(task16Regression);
+assert(!res9Task16.unusedImports.has("useState"), "Does NOT flag useState in code with https:// fetch URL");
+assert(!res9Task16.unusedImports.has("useEffect"), "Does NOT flag useEffect in code with https:// fetch URL");
+assert(res9Task16.unusedImports.size === 0, "No unused imports in task 16 regression snippet");
+
+// Проверка: Многострочные импорты
+const multilineImportCode = `import {
+  useState,
+  useEffect,
+  useMemo
+} from "react";
+
+export default function App() {
+  const [x] = useState(0);
+  useEffect(() => {}, []);
+  return <div>{x}</div>;
+}`;
+const res9Multi = lintJavaScriptCode(multilineImportCode);
+assert(!res9Multi.unusedImports.has("useState"), "Does NOT flag useState in multiline import");
+assert(!res9Multi.unusedImports.has("useEffect"), "Does NOT flag useEffect in multiline import");
+assert(res9Multi.unusedImports.has("useMemo"), "Flags unused useMemo in multiline import");
+
 // --- 10. TypeScript Type Checking & Component Props (Этап 6) ---
 console.log("\n--- 10. TypeScript Type Checking & Component Props ---");
 const codeWithTypeAndProps = `import React from 'react';

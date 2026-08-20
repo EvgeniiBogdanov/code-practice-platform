@@ -6,7 +6,7 @@ function createIncrement() {
   }
 
   function log() {
-    console.log(`Count is ${count}`);
+    console.log(`Count is ${count}`); // Вычисляем при вызове
   }
 
   return [increment, log];

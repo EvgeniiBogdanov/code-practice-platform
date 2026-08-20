@@ -1360,20 +1360,34 @@ export const JS_HINTS = {
     },
     "level3": {
       "title": "Псевдокод и сигнатура",
-      "content": "```javascript\nconst map = new Map();\nmap.set(key, value);\nif (map.has(key)) {\n  return map.get(key);\n}\n```"
-    }
-  },
-  "js90": {
+      "content": "```javascript\nconst map = new Map();\nmap  "js125": {
     "level1": {
       "title": "Идея и ментальная модель",
-      "content": "Идея: использование структур данных Map или Set. Set хранит уникальные значения любого типа, Map — пары ключ-значение с ключами любого типа (включая объекты и функции)."
+      "content": "Идея: работа с асинхронным кодом через Promises и async/await. Промис находится в одном из трех состояний: pending, fulfilled или rejected. Микротаски промисов выполняются раньше макротасок таймеров."
     },
     "level2": {
       "title": "Граничные случаи и ловушки",
-      "content": "• Объекты в Map/Set сравниваются по ссылке (SameValueZero), а не по структуре.\n• Методы size, get, set, has, delete работают в среднем за $O(1)$."
+      "content": "• Обязательно обрабатывайте ошибки через .catch() или try/catch в async функциях (unhandled rejection).\n• Параллельные независимые запросы запускайте через Promise.all, а не последовательными await в цикле."
     },
     "level3": {
       "title": "Псевдокод и сигнатура",
+      "content": "```javascript\nasync function handleAsync() {\n  try {\n    const res = await fetchSomething();\n    return res;\n  } catch (err) {\n    console.error(err);\n    throw err;\n  }\n}\n```"
+    }
+  },
+  "js185": {
+    "level1": {
+      "title": "Идея и ментальная модель",
+      "content": "Обе цепочки промисов стартуют синхронно. Колбэки `.then()` и `.catch()` ставятся в очередь микрозадач (Microtask Queue FIFO) и продвигаются по одному шагу за раз, чередуясь между первой и второй цепочкой."
+    },
+    "level2": {
+      "title": "Граничные случаи и ловушки",
+      "content": "• Если состояние промиса не соответствует обработчику (например, `.catch` на resolved-промисе или `.then` без onRejected на rejected-промисе), колбэк пропускается, но проброс статуса всё равно занимает ровно 1 тик микрозадачи!\n• После успешного выполнения `.catch()` (без throw) промис переходит в состояние fulfilled, поэтому следующий за ним `.then()` обязательно выполнится."
+    },
+    "level3": {
+      "title": "Пошаговая трассировка тиков",
+      "content": "Тик 1: then(1) → 1\nТик 2: проброс reject мимо then(5)\nТик 3: then(2) → 2\nТик 4: проброс reject мимо then(6)\nТик 5: проброс resolve мимо catch(3)\nТик 6: catch(7) → 7\nТик 7: then(4) → 4\nТик 8: then(8) → 8\n\nИтоговый вывод: 1, 2, 7, 4, 8"
+    }
+  },�окод и сигнатура",
       "content": "```javascript\nconst map = new Map();\nmap.set(key, value);\nif (map.has(key)) {\n  return map.get(key);\n}\n```"
     }
   },

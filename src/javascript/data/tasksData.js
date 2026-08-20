@@ -458,6 +458,9 @@ import AsyncPoolParallelSolutionRaw from "../solutions/13_promises/interview/22_
 import WithTimeoutWrapCandidateRaw from "../tasks/13_promises/interview/23_WithTimeoutWrap.js?raw";
 import WithTimeoutWrapSolutionRaw from "../solutions/13_promises/interview/23_WithTimeoutWrap.js?raw";
 
+import PromiseChainsExecutionOrderCandidateRaw from "../tasks/13_promises/interview/24_PromiseChainsExecutionOrder.js?raw";
+import PromiseChainsExecutionOrderSolutionRaw from "../solutions/13_promises/interview/24_PromiseChainsExecutionOrder.js?raw";
+
 // JS CLOSURES IMPORTS
 import CounterGeneratorCandidateRaw from "../tasks/14_closures/1_CounterGenerator.js?raw";
 import CounterGeneratorSolutionRaw from "../solutions/14_closures/1_CounterGenerator.js?raw";
@@ -6783,6 +6786,85 @@ export const JS_PROMISES_TASKS = [
       "Использование Promise.race([Promise.resolve(promise), timeoutPromise])",
     ],
   },
+  {
+    id: "js185",
+    group: "Промисы",
+    subgroup: "Собеседования",
+    title: "24. Порядок вывода в Promise-цепочках (Company X)",
+    desc: "Определите точный порядок вывода в консоль при параллельном выполнении двух цепочек промисов с .then() и .catch().",
+    isRaw: true,
+    candidate: PromiseChainsExecutionOrderCandidateRaw,
+    rawCandidate: PromiseChainsExecutionOrderCandidateRaw,
+    solution: PromiseChainsExecutionOrderSolutionRaw,
+    rawSolution: PromiseChainsExecutionOrderSolutionRaw,
+    filepath: "src/javascript/tasks/13_promises/interview/24_PromiseChainsExecutionOrder.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Порядок микротасок",
+        recommendationNote: "Понимание чередования шагов в очереди микрозадач и транзитного проброса статусов является ключевым навыком для прохождения технического интервью.",
+        rawSolution: PromiseChainsExecutionOrderSolutionRaw,
+        filepath: "src/javascript/tasks/13_promises/interview/24_PromiseChainsExecutionOrder.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Разбор порядка вывода промисов и микротасок (YouTube)",
+        urlTitle: "YouTube — Разбор задачи на Promise и Event Loop",
+        url: "https://www.youtube.com/watch?v=DteQDxx5iB8",
+      },
+      {
+        title: "Очередь микрозадач в JavaScript (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Микрозадачи",
+        url: "https://learn.javascript.ru/microtask-queue",
+      },
+      {
+        title: "Цепочки промисов и проброс ошибок (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Цепочка промисов",
+        url: "https://learn.javascript.ru/promise-chaining",
+      },
+      {
+        title: "Промисы в деталях (Doka.guide)",
+        urlTitle: "Дока — Руководство по Promise",
+        url: "https://doka.guide/js/promise/",
+      },
+      {
+        title: "Анатомия Event Loop и Microtask Queue (MDN)",
+        urlTitle: "MDN — В глубь микрозадач и Event Loop",
+        url: "https://developer.mozilla.org/ru/docs/Web/API/HTML_DOM_API/Microtask_guide",
+      },
+      {
+        title: "Как на самом деле работают промисы и микротаски (Хабр)",
+        urlTitle: "Хабр — Полный разбор Event Loop и Promise",
+        url: "https://habr.com/ru/articles/769910/",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему после .catch(() => console.log(7)) управление переходит к следующему .then(() => console.log(8))?",
+        answer: "Метод .catch() перехватывает отклонённый промис. Если переданный колбэк не выбрасывает новую ошибку через throw и не возвращает отклонённый промис, результирующий промис успешно переходит в состояние fulfilled со значением undefined, что приводит к вызову следующего .then().",
+      },
+      {
+        question: "Сколько тиков очереди микрозадач занимает пропуск обработчика .then() или .catch()?",
+        answer: "Пропуск обработчика не происходит мгновенно — проброс статуса (fulfilled или rejected) следующему промису в цепочке ставится в очередь микрозадач и занимает ровно один тик (один шаг очереди).",
+      },
+      {
+        question: "Почему console.log(7) выводится раньше, чем console.log(4)?",
+        answer: "На 5-м тике цепочка A пропускает catch(3) без вызова колбэка. На 6-м тике цепочка B вызывает сработавший catch(7) и выводит 7. Лишь на 7-м тике цепочка A доходит до then(4) и выводит 4.",
+      },
+      {
+        question: "В чём ключевая разница между promise.then(onF, onR) и promise.then(onF).catch(onR)?",
+        answer: "В promise.then(onF, onR) обработчик onR ловит ошибки только исходного promise, но не ловит ошибки, возникшие внутри самого onF. В цепочке .then(onF).catch(onR) блок catch поймает ошибки как исходного промиса, так и самого обработчика onF.",
+      },
+    ],
+    checklist: [
+      "Понимание работы очереди микрозадач (Microtask Queue FIFO)",
+      "Понимание проброса состояния fulfilled/rejected через неподходящие обработчики",
+      "Понимание того, что catch без throw возвращает fulfilled промис",
+      "Точный итоговый порядок вывода: 1, 2, 7, 4, 8",
+    ],
+  },
 ];
 
 export const JS_CLOSURES_TASKS = [
@@ -6805,7 +6887,7 @@ export const JS_CLOSURES_TASKS = [
         badge: "Концепция JS Engine",
         recommendationNote: "Замыкания позволяют функции сохранять доступ к лексическому окружению даже после завершения работы внешней функции.",
         rawSolution: CounterGeneratorSolutionRaw,
-        filepath: "src/javascript/tasks/14_closures/1_CounterGenerator.js",
+        filepath: "src/javascript/solutions/14_closures/1_CounterGenerator.js",
       },
     ],
     articles: [
@@ -6845,7 +6927,7 @@ export const JS_CLOSURES_TASKS = [
         badge: "Концепция JS Engine",
         recommendationNote: "Замыкания позволяют функции сохранять доступ к лексическому окружению даже после завершения работы внешней функции.",
         rawSolution: LoopEventListenersSolutionRaw,
-        filepath: "src/javascript/tasks/14_closures/2_LoopEventListeners.js",
+        filepath: "src/javascript/solutions/14_closures/2_LoopEventListeners.js",
       },
     ],
     articles: [
@@ -6884,7 +6966,7 @@ export const JS_CLOSURES_TASKS = [
         badge: "Концепция JS Engine",
         recommendationNote: "Замыкания позволяют функции сохранять доступ к лексическому окружению даже после завершения работы внешней функции.",
         rawSolution: LoopTimersVarSolutionRaw,
-        filepath: "src/javascript/tasks/14_closures/3_LoopTimersVar.js",
+        filepath: "src/javascript/solutions/14_closures/3_LoopTimersVar.js",
       },
     ],
     articles: [
@@ -6923,7 +7005,7 @@ export const JS_CLOSURES_TASKS = [
         badge: "Концепция JS Engine",
         recommendationNote: "Замыкания позволяют функции сохранять доступ к лексическому окружению даже после завершения работы внешней функции.",
         rawSolution: MessageVsNumberStateSolutionRaw,
-        filepath: "src/javascript/tasks/14_closures/4_MessageVsNumberState.js",
+        filepath: "src/javascript/solutions/14_closures/4_MessageVsNumberState.js",
       },
     ],
     articles: [
@@ -6962,7 +7044,7 @@ export const JS_CLOSURES_TASKS = [
         badge: "Концепция JS Engine",
         recommendationNote: "Замыкания позволяют функции сохранять доступ к лексическому окружению даже после завершения работы внешней функции.",
         rawSolution: CreateIncrementFixSolutionRaw,
-        filepath: "src/javascript/tasks/14_closures/5_CreateIncrementFix.js",
+        filepath: "src/javascript/solutions/14_closures/5_CreateIncrementFix.js",
       },
     ],
     articles: [
@@ -7001,7 +7083,7 @@ export const JS_CLOSURES_TASKS = [
         badge: "Концепция JS Engine",
         recommendationNote: "Замыкания позволяют функции сохранять доступ к лексическому окружению даже после завершения работы внешней функции.",
         rawSolution: ArrayLoopTimeoutSolutionRaw,
-        filepath: "src/javascript/tasks/14_closures/6_ArrayLoopTimeout.js",
+        filepath: "src/javascript/solutions/14_closures/6_ArrayLoopTimeout.js",
       },
     ],
     articles: [

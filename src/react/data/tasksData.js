@@ -59,9 +59,11 @@ import WarmupSolution14 from "../solutions/1_warmup/14_AsyncAwaitFetch.js?raw";
 import WarmupCandidate15 from "../tasks/1_warmup/15_UseEffectBasic.js?raw";
 import WarmupSolution15 from "../solutions/1_warmup/15_UseEffectBasic.js?raw";
 import WarmupCandidate16 from "../tasks/1_warmup/16_UseEffectFetch.jsx";
+import WarmupCandidate16Raw from "../tasks/1_warmup/16_UseEffectFetch.jsx?raw";
 import WarmupSolution16 from "../solutions/1_warmup/16_UseEffectFetch.jsx";
 import WarmupSolution16Raw from "../solutions/1_warmup/16_UseEffectFetch.jsx?raw";
 import WarmupCandidate17 from "../tasks/1_warmup/17_UseEffectAbortController.jsx";
+import WarmupCandidate17Raw from "../tasks/1_warmup/17_UseEffectAbortController.jsx?raw";
 import WarmupSolution17 from "../solutions/1_warmup/17_UseEffectAbortController.jsx";
 import WarmupSolution17Raw from "../solutions/1_warmup/17_UseEffectAbortController.jsx?raw";
 import WarmupCandidate18 from "../tasks/1_warmup/18_UseMemoBasic.js?raw";
@@ -75,9 +77,11 @@ import WarmupSolution21 from "../solutions/1_warmup/21_UseCallbackPractice.jsx?r
 import WarmupCandidate22 from "../tasks/1_warmup/22_UseRefBasic.js?raw";
 import WarmupSolution22 from "../solutions/1_warmup/22_UseRefBasic.js?raw";
 import WarmupCandidate23 from "../tasks/1_warmup/23_UseRefFocus.jsx";
+import WarmupCandidate23Raw from "../tasks/1_warmup/23_UseRefFocus.jsx?raw";
 import WarmupSolution23 from "../solutions/1_warmup/23_UseRefFocus.jsx";
 import WarmupSolution23Raw from "../solutions/1_warmup/23_UseRefFocus.jsx?raw";
 import WarmupCandidate24 from "../tasks/1_warmup/24_UseRefUncontrolledForm.jsx";
+import WarmupCandidate24Raw from "../tasks/1_warmup/24_UseRefUncontrolledForm.jsx?raw";
 import WarmupSolution24 from "../solutions/1_warmup/24_UseRefUncontrolledForm.jsx";
 import WarmupSolution24Raw from "../solutions/1_warmup/24_UseRefUncontrolledForm.jsx?raw";
 
@@ -751,9 +755,20 @@ export const WARMUP_TASKS = [
     title: "16. useEffect (Запрос)",
     desc: "Напишите GET-запрос к API и отрисуйте список имен пользователей в виде <ul><li></li></ul> с использованием useEffect и useState.",
     candidate: WarmupCandidate16,
+    rawCandidate: WarmupCandidate16Raw,
     solution: WarmupSolution16,
     rawSolution: WarmupSolution16Raw,
     filepath: "src/react/tasks/1_warmup/16_UseEffectFetch.jsx",
+    solutions: [
+      {
+        title: "Рекомендуемое решение: GET-запрос в useEffect",
+        isRecommended: true,
+        badge: "Запрос при монтировании",
+        recommendationNote: "Вызов асинхронной функции внутри useEffect с пустым массивом зависимостей гарантирует однократный сетевой запрос при монтировании компонента.",
+        rawSolution: WarmupSolution16Raw,
+        filepath: "src/react/solutions/1_warmup/16_UseEffectFetch.jsx",
+      },
+    ],
     articles: [
       {
         title: "Загрузка данных в useEffect",
@@ -786,9 +801,20 @@ export const WARMUP_TASKS = [
     title: "17. useEffect (AbortController)",
     desc: "Напишите GET-запрос к API с отменой запроса через AbortController в функции очистки useEffect при размонтировании.",
     candidate: WarmupCandidate17,
+    rawCandidate: WarmupCandidate17Raw,
     solution: WarmupSolution17,
     rawSolution: WarmupSolution17Raw,
     filepath: "src/react/tasks/1_warmup/17_UseEffectAbortController.jsx",
+    solutions: [
+      {
+        title: "Рекомендуемое решение: Отмена запроса через AbortController",
+        isRecommended: true,
+        badge: "Отмена через AbortController",
+        recommendationNote: "Отмена сетевого запроса в функции очистки useEffect предотвращает утечки памяти и race conditions при быстром размонтировании компонента.",
+        rawSolution: WarmupSolution17Raw,
+        filepath: "src/react/solutions/1_warmup/17_UseEffectAbortController.jsx",
+      },
+    ],
     articles: [
       {
         title: "Отмена асинхронных операций",
@@ -995,9 +1021,20 @@ export const WARMUP_TASKS = [
     title: "23. useRef (Практика 1)",
     desc: "Напишите компонент, который устанавливает фокус на инпут при клике на кнопку с помощью useRef.",
     candidate: WarmupCandidate23,
+    rawCandidate: WarmupCandidate23Raw,
     solution: WarmupSolution23,
     rawSolution: WarmupSolution23Raw,
     filepath: "src/react/tasks/1_warmup/23_UseRefFocus.jsx",
+    solutions: [
+      {
+        title: "Рекомендуемое решение: Управление фокусом через ref",
+        isRecommended: true,
+        badge: "Управление фокусом через ref",
+        recommendationNote: "Прямой доступ к DOM-элементу через ref.current.focus() без лишних перерендеров всего компонента.",
+        rawSolution: WarmupSolution23Raw,
+        filepath: "src/react/solutions/1_warmup/23_UseRefFocus.jsx",
+      },
+    ],
     articles: [
       {
         title: "Управление DOM через refs",
@@ -1030,9 +1067,20 @@ export const WARMUP_TASKS = [
     title: "24. useRef (Практика 2)",
     desc: "Напишите компонент неконтролируемой формы: считывание значения инпута через ref, вывод в console.log, очистка поля и сброс фокуса.",
     candidate: WarmupCandidate24,
+    rawCandidate: WarmupCandidate24Raw,
     solution: WarmupSolution24,
     rawSolution: WarmupSolution24Raw,
     filepath: "src/react/tasks/1_warmup/24_UseRefUncontrolledForm.jsx",
+    solutions: [
+      {
+        title: "Рекомендуемое решение: Неконтролируемая форма",
+        isRecommended: true,
+        badge: "Неконтролируемая форма",
+        recommendationNote: "Считывание значения напрямую из inputRef.current.value избавляет от накладных расходов useState на каждый введённый символ.",
+        rawSolution: WarmupSolution24Raw,
+        filepath: "src/react/solutions/1_warmup/24_UseRefUncontrolledForm.jsx",
+      },
+    ],
     articles: [
       {
         title: "Ссылки на значения",

@@ -24,7 +24,7 @@ const fetchUsers = async () => {
 const UsersListWithAbort = () => {
     const [users, setUsers] = useState([]);
     const [status, setStatus] = useState("idle");
-    const [erorr, setError] = useState("");
+    const [error, setError] = useState("");
   
     useEffect(() => {
       const loadUsers = async () => {
@@ -32,7 +32,7 @@ const UsersListWithAbort = () => {
           setStatus("load");
           const data = await fetchUsers();
           setUsers(data);
-          setStatus("succes");
+          setStatus("success");
         } catch (e) {
           setError(e.message);
           setStatus("error");

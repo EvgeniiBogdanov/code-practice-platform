@@ -189,15 +189,23 @@ export const KNOWN_SYMBOLS = {
 };
 
 /**
- * Безопасно удаляет комментарии и строки для чистого анализа скобок и ключевых слов
+ * Безопасно удаляет комментарии и строки для чистого анализа скобок, ключевых слов и идентификаторов.
+ * Использует единый регулярный проход O(N), который корректно обрабатывает URL (например, https://)
+ * внутри строк и не ломает парность кавычек.
  */
 export const stripCommentsAndStrings = (code) => {
-  return code
-    .replace(/\/\*[\s\S]*?\*\//g, "")
-    .replace(/\/\/.*$/gm, "")
-    .replace(/'(?:\\.|[^'\\])*'/g, "''")
-    .replace(/"(?:\\.|[^"\\])*"/g, '""')
-    .replace(/`(?:\\.|[^`\\])*`/g, "``");
+  if (!code || typeof code !== "string") return "";
+  return code.replace(
+    /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)|\/\*[\s\S]*?\*\/|\/\/.*$/gm,
+    (match, str) => {
+      if (str) {
+        const newlines = (str.match(/\n/g) || []).length;
+        return '""' + "\n".repeat(newlines);
+      }
+      const newlines = (match.match(/\n/g) || []).length;
+      return "\n".repeat(newlines);
+    }
+  );
 };
 
 /**
@@ -521,58 +529,52 @@ export const findDuplicateDeclarations = (code) => {
  */
 export const findUnusedImports = (code) => {
   const unused = new Set();
-  if (!code || typeof code !== "string") return unused;
+  if (!code || typeof code !== "string" || !code.trim()) return unused;
 
-  const lines = code.split("\n");
-  let inBlockComment = false;
   const importedItems = [];
-  const bodyLines = [];
 
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-    const trimmed = line.trim();
-    if (trimmed.startsWith("/*")) inBlockComment = true;
-    if (inBlockComment) {
-      if (trimmed.includes("*/")) inBlockComment = false;
-      continue;
+  // Парсим все import блоки в исходном коде (однострочные и многострочные)
+  const importBlockRegex = /(?:^|\n)\s*import\s+([\s\S]*?)\s+from\s*['"][^'"]+['"]/g;
+  let match;
+  while ((match = importBlockRegex.exec(code)) !== null) {
+    const importClause = match[1].trim();
+
+    // 1. Default import: import React or import React, { ... }
+    const defaultMatch = importClause.match(/^(?:type\s+)?([a-zA-Z_$][a-zA-Z0-9_$]*)(?:\s*,|\s*$)/);
+    if (defaultMatch && defaultMatch[1] && defaultMatch[1] !== "type") {
+      importedItems.push(defaultMatch[1]);
     }
-    if (trimmed.startsWith("//")) continue;
 
-    if (/^\s*import\b/.test(line)) {
-      // Named imports: { a, b as c }
-      const namedMatch = line.match(/\{([^}]+)\}/);
-      if (namedMatch) {
-        const names = namedMatch[1].split(",");
-        for (const n of names) {
-          const item = n.trim();
-          if (!item) continue;
-          const asMatch = item.match(/(?:type\s+)?([a-zA-Z_$][a-zA-Z0-9_$]*)(?:\s+as\s+([a-zA-Z_$][a-zA-Z0-9_$]*))?/);
-          if (asMatch) {
-            importedItems.push(asMatch[2] || asMatch[1]);
-          }
+    // 2. Namespace import: import * as React
+    const nsMatch = importClause.match(/\*\s+as\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/);
+    if (nsMatch && nsMatch[1]) {
+      importedItems.push(nsMatch[1]);
+    }
+
+    // 3. Named imports: { useState, useEffect as myEff }
+    const namedMatch = importClause.match(/\{([\s\S]*?)\}/);
+    if (namedMatch && namedMatch[1]) {
+      const parts = namedMatch[1].split(",");
+      for (const part of parts) {
+        const item = part.trim();
+        if (!item) continue;
+        const asMatch = item.match(/(?:type\s+)?([a-zA-Z_$][a-zA-Z0-9_$]*)(?:\s+as\s+([a-zA-Z_$][a-zA-Z0-9_$]*))?/);
+        if (asMatch) {
+          importedItems.push(asMatch[2] || asMatch[1]);
         }
       }
-      // Default import: import React from 'react'
-      const defMatch = line.match(/^\s*import\s+(?:type\s+)?([a-zA-Z_$][a-zA-Z0-9_$]*)\s*(?:,|\s+from)/);
-      if (defMatch && defMatch[1] && defMatch[1] !== "type") {
-        importedItems.push(defMatch[1]);
-      }
-    } else {
-      bodyLines.push(line);
     }
   }
 
-  if (importedItems.length === 0 || bodyLines.length === 0) {
+  if (importedItems.length === 0) {
     return unused;
   }
 
-  // Очищаем тело кода от комментариев и строк
-  const bodyCode = bodyLines.join("\n")
-    .replace(/\/\/.*$/gm, "")
-    .replace(/\/\*[\s\S]*?\*\//g, "")
-    .replace(/'(?:\\.|[^'\\])*'/g, "''")
-    .replace(/"(?:\\.|[^"\\])*"/g, '""')
-    .replace(/`(?:\\.|[^`\\])*`/g, "``");
+  // Очищаем код от комментариев и строк безопасно через единый проход
+  const cleanCode = stripCommentsAndStrings(code);
+
+  // Удаляем все import блоки из cleanCode, чтобы искать использование только в теле кода
+  const bodyCode = cleanCode.replace(/(?:^|\n)\s*import\s+[\s\S]*?from\s*""/g, "\n");
 
   for (const sym of importedItems) {
     const regex = new RegExp(`\\b${sym}\\b`);
@@ -625,12 +627,7 @@ export const lintJavaScriptCode = (code, options = {}) => {
     }
 
     // Исключаем комментарии и строковые литералы перед проверкой опечаток
-    const codePart = line
-      .replace(/\/\/.*$/, "")
-      .replace(/\/\*.*?\*\//g, "")
-      .replace(/'(?:\\.|[^'\\])*'/g, "''")
-      .replace(/"(?:\\.|[^"\\])*"/g, '""')
-      .replace(/`(?:\\.|[^`\\])*`/g, "``");
+    const codePart = stripCommentsAndStrings(line);
 
     // Единый проход по скомпилированному мастер-регексу
     TYPO_MASTER_REGEX.lastIndex = 0;
@@ -728,12 +725,7 @@ export const lintJavaScriptCode = (code, options = {}) => {
       }
 
       // Исключаем комментарии и строковые литералы
-      const codePart = line
-        .replace(/\/\/.*$/, "")
-        .replace(/\/\*.*?\*\//g, "")
-        .replace(/'(?:\\.|[^'\\])*'/g, "''")
-        .replace(/"(?:\\.|[^"\\])*"/g, '""')
-        .replace(/`(?:\\.|[^`\\])*`/g, "``");
+      const codePart = stripCommentsAndStrings(line);
 
       // Быстрая проверка наличия подстроки
       if (!codePart.includes(sym)) return;

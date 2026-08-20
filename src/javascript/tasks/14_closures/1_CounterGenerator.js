@@ -1,12 +1,10 @@
-// Генератор счетчика на замыкании
-// Напишите функцию createCounter(initialValue), возвращающую функцию-счетчик.
+// Напиши пример функции Замыкания
 
-const createCounter = (initialValue = 0) => {
-  // Решение тут
+const createCounter = () => {
+  // Ваш код здесь
 };
 
-// Пример вызова:
-const counter = createCounter(0);
+const counter = createCounter();
 console.log(counter()); // 1
 console.log(counter()); // 2
 console.log(counter()); // 3
