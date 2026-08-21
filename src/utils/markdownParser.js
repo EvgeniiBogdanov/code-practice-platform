@@ -91,10 +91,14 @@ marked.use({
 export const parseMarkdownBlocks = (markdownText) => {
   if (!markdownText) return [];
 
-  // Очистка от битых символов юникода (\uFFFD) и устаревших иконок 💡
+  // Очистка от битых символов юникода (\uFFFD), устаревших иконок 💡 и автозамена LaTeX-стрелок
   const cleanText = markdownText
     .replace(/\uFFFD\uFE0F?|\uFFFD/g, "")
-    .replace(/💡\s*/g, "");
+    .replace(/💡\s*/g, "")
+    .replace(/\\?\$?\\rightarrow\$?/g, "→")
+    .replace(/\\?\$?\\leftarrow\$?/g, "←")
+    .replace(/\\?\$?\\Rightarrow\$?/g, "⇒")
+    .replace(/\\?\$?\\Leftrightarrow\$?/g, "⇔");
 
   // Автоматическое объединение оторванных номеров списков (например "1.\nИтерация" -> "1. Итерация")
   const normalizedText = cleanText

@@ -9,6 +9,3 @@ const memoize = (fn, ttl) => {
 const getData = memoize((id) => id + 10, 2000);
 console.log(getData(1)); // calculated -> 11
 console.log(getData(1)); // from cache -> 11
-        // Кэш устарел, удаляем его
-    // Выполняем исходную функцию
-    // Сохраняем результат в кэш

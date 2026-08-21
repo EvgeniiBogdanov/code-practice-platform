@@ -9,4 +9,4 @@ const debounce = (fn, wait, immediate = false) => {
 const log = debounce((val) => console.log(val), 200);
 log(1);
 log(2);
-log(3); // Выведет 3 через 200 мс
+log(3);

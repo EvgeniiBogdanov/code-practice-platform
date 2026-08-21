@@ -9,5 +9,5 @@ const counter = {
   },
 };
 
-const inc = counter.increment.bind(counter);
+const inc = counter.increment;
 console.log(inc());

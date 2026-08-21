@@ -15,4 +15,3 @@ console.log(parsed); // { q: "hello world", tags: ["js", "web"], debug: true }
 
 const stringified = stringifyQuery(parsed);
 console.log(stringified); // "q=hello%20world&tags=js&tags=web&debug=true"
-// Пример вызова:

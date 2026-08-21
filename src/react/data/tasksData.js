@@ -1780,7 +1780,7 @@ export const MAIN_TASKS = [
   {
     id: 8,
     title: "4. Работа с массивами без мутаций",
-    desc: "Реализуйте добавление новых элементов в массив без прямой мутации через .push().",
+    desc: "Реализуйте компонент списка задач с иммутабельным добавлением новых элементов без мутации состояния.",
     candidate: Candidate4,
     rawCandidate: Candidate4Raw,
     solution: Solution4,
@@ -1888,7 +1888,7 @@ export const MAIN_TASKS = [
   {
     id: 10,
     title: "7. Работа с изображением (Company X)",
-    desc: "Реализуйте компонент RefetchImage: заново загружайте картинку через fetch(src), создавайте blob-URL с помощью URL.createObjectURL и освобождайте старый через URL.revokeObjectURL.",
+    desc: "Реализуйте компонент RefetchImage: повторная загрузка изображения по клику через fetch с корректным управлением памятью и освобождением ресурсов.",
     candidate: Candidate7,
     rawCandidate: Candidate7Raw,
     solution: Solution7,
