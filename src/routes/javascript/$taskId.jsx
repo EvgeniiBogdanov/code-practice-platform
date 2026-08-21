@@ -31,7 +31,7 @@ function JavascriptTaskPage() {
         `${t.group}-${t.subgroup}` === rawGroupName
     );
     if (groupTasks.length === 0) {
-      return <Navigate to="/javascript/$taskId" params={{ taskId: "group-Циклы" }} replace />;
+      return <Navigate to="/javascript/$taskId" params={{ taskId: "group-Типы данных" }} replace />;
     }
     const meta = getGroupMeta(rawGroupName);
     const isSub = taskId.startsWith("subgroup-") || Boolean(meta.isSubgroup);
@@ -55,7 +55,7 @@ function JavascriptTaskPage() {
   const selectedTask = getTaskById(taskId);
 
   if (!selectedTask) {
-    return <Navigate to="/javascript/$taskId" params={{ taskId: "group-Циклы" }} replace />;
+    return <Navigate to="/javascript/$taskId" params={{ taskId: "group-Типы данных" }} replace />;
   }
 
   const activeTab = search?.tab || "candidate";

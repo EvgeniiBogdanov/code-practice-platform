@@ -192,12 +192,12 @@ const RootLayout = () => {
     }
     if (activeSection === "javascript") {
       const cached = groupTaskCacheRef.current;
-      if (cached && cached.id === "group-Циклы") return cached;
+      if (cached && cached.id === "group-Типы данных") return cached;
       const result = {
-        id: "group-Циклы",
+        id: "group-Типы данных",
         isGroupOverview: true,
-        group: "Циклы",
-        title: "Циклы",
+        group: "Типы данных",
+        title: "Типы данных",
       };
       groupTaskCacheRef.current = result;
       return result;
@@ -766,7 +766,7 @@ const RootLayout = () => {
 
     // JavaScript categories & groups
     if (JS_TASKS.some((t) => String(t.id) === String(selectedTask.id)) || (activeSection === "javascript" && selectedTask.group)) {
-      const groupName = selectedTask.group || "Циклы";
+      const groupName = selectedTask.group || "Типы данных";
       const subName = selectedTask.subgroup || "";
       const categoryName = subName ? `${groupName} > ${subName}` : groupName;
       const subTasks = JS_TASKS.filter(

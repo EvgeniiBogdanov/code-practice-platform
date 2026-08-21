@@ -325,7 +325,7 @@ export const Header = ({
 
           {/* Раздел JavaScript */}
           {activeSection === "javascript" && selectedTask && (() => {
-            const currentGroupName = selectedTask.group || "Циклы";
+            const currentGroupName = selectedTask.group || "Типы данных";
             const currentGroupMeta = getGroupMeta(currentGroupName);
             const currentSubgroupName = selectedTask.subgroup || "";
             return (

@@ -4,7 +4,7 @@ export const Route = createFileRoute("/javascript/")({
   beforeLoad: () => {
     throw redirect({
       to: "/javascript/$taskId",
-      params: { taskId: "group-Циклы" },
+      params: { taskId: "group-Типы данных" },
     });
   },
 });
