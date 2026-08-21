@@ -1,17 +1,17 @@
-// В чем подвох: Кажется, что мы обновляем состояние, но React почему-то не перерисовывает компонент, 
-// или перерисовывает его с багами.
+// Проведите рефакторинг компонента: найдите ошибку, из-за которой
+// при отключении уведомлений интерфейс не обновляется, и исправьте её.
 
 import React, { useState } from 'react';
 
 export default function UserProfile() {
   const [user, setUser] = useState({
-    name: 'Алексей',
-    role: 'Admin',
-    settings: { theme: 'dark', notifications: true }
+    name: 'Иван',
+    settings: {
+      notifications: true,
+    }
   });
 
   const disableNotifications = () => {
-    // ❌ ОШИБКА ЗДЕСЬ
     const updatedUser = user;
     updatedUser.settings.notifications = false;
     setUser(updatedUser);

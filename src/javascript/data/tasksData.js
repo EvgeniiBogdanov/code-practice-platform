@@ -73,6 +73,33 @@ import CountOccurrencesCandidateRaw from "../tasks/2_for_of/6_CountOccurrences.j
 import CountOccurrencesForOfSolutionRaw from "../solutions/2_for_of/6_CountOccurrences_ForOf.js?raw";
 import CountOccurrencesReduceSolutionRaw from "../solutions/2_for_of/6_CountOccurrences_Reduce.js?raw";
 
+// JS FOR IN TASKS IMPORTS
+import ForInLoopCandidateRaw from "../tasks/2_for_in/1_ForInLoop.js?raw";
+import ForInLoopSolutionRaw from "../solutions/2_for_in/1_ForInLoop.js?raw";
+
+import SumSalariesCandidateRaw from "../tasks/2_for_in/2_SumSalaries.js?raw";
+import SumSalariesForInSolutionRaw from "../solutions/2_for_in/2_SumSalaries_ForIn.js?raw";
+import SumSalariesReduceSolutionRaw from "../solutions/2_for_in/2_SumSalaries_Reduce.js?raw";
+
+import CountPropsCandidateRaw from "../tasks/2_for_in/3_CountProperties.js?raw";
+import CountPropsForInSolutionRaw from "../solutions/2_for_in/3_CountProperties_ForIn.js?raw";
+import CountPropsKeysSolutionRaw from "../solutions/2_for_in/3_CountProperties_Keys.js?raw";
+
+import MultiplyNumericCandidateRaw from "../tasks/2_for_in/4_MultiplyNumeric.js?raw";
+import MultiplyNumericSolutionRaw from "../solutions/2_for_in/4_MultiplyNumeric.js?raw";
+
+import OwnPropertiesOnlyCandidateRaw from "../tasks/2_for_in/5_OwnPropertiesOnly.js?raw";
+import OwnPropertiesOnlyHasOwnSolutionRaw from "../solutions/2_for_in/5_OwnPropertiesOnly_HasOwn.js?raw";
+import OwnPropertiesOnlyHasOwnPropertySolutionRaw from "../solutions/2_for_in/5_OwnPropertiesOnly_HasOwnProperty.js?raw";
+
+import IsEmptyObjectCandidateRaw from "../tasks/2_for_in/6_IsEmptyObject.js?raw";
+import IsEmptyObjectForInSolutionRaw from "../solutions/2_for_in/6_IsEmptyObject_ForIn.js?raw";
+import IsEmptyObjectKeysSolutionRaw from "../solutions/2_for_in/6_IsEmptyObject_Keys.js?raw";
+
+import InvertObjectCandidateRaw from "../tasks/2_for_in/7_InvertObject.js?raw";
+import InvertObjectForInSolutionRaw from "../solutions/2_for_in/7_InvertObject_ForIn.js?raw";
+import InvertObjectEntriesSolutionRaw from "../solutions/2_for_in/7_InvertObject_Entries.js?raw";
+
 // JS ARRAYS INCLUDES IMPORTS
 import HasElemCandidateRaw from "../tasks/3_arrays_includes/1_HasElem.js?raw";
 import HasElemSolutionRaw from "../solutions/3_arrays_includes/1_HasElem.js?raw";
@@ -656,6 +683,16 @@ import QueryStringParserSolutionRaw from "../solutions/23_string_dom_utils/2_Que
 
 import ClassNamesHelperCandidateRaw from "../tasks/23_string_dom_utils/3_ClassNamesHelper.js?raw";
 import ClassNamesHelperSolutionRaw from "../solutions/23_string_dom_utils/3_ClassNamesHelper.js?raw";
+
+// JS TYPES COERCION IMPORTS
+import TypeCoercionBasicsCandidateRaw from "../tasks/24_types_coercion/1_TypeCoercionBasics.js?raw";
+import TypeCoercionBasicsSolutionRaw from "../solutions/24_types_coercion/1_TypeCoercionBasics.js?raw";
+
+import ObjectsAndComparisonsCandidateRaw from "../tasks/24_types_coercion/2_ObjectsAndComparisons.js?raw";
+import ObjectsAndComparisonsSolutionRaw from "../solutions/24_types_coercion/2_ObjectsAndComparisons.js?raw";
+
+import TypeCheckingAndEdgeCasesCandidateRaw from "../tasks/24_types_coercion/3_TypeCheckingAndEdgeCases.js?raw";
+import TypeCheckingAndEdgeCasesSolutionRaw from "../solutions/24_types_coercion/3_TypeCheckingAndEdgeCases.js?raw";
 
 export const JS_WHILE_TASKS = [
   {
@@ -1736,6 +1773,360 @@ export const JS_FOR_OF_TASKS = [
       "Счетчик инициализируется нулем (let count = 0)",
       "Сравнение строгое (item === str)",
       "Возвращается числовых результатов инкрементов",
+    ],
+  },
+];
+
+export const JS_FOR_IN_TASKS = [
+  {
+    id: "js189",
+    group: "Циклы",
+    subgroup: "for in",
+    title: "1. Напиши базовый синтаксис цикла for in",
+    desc: "Напишите базовый синтаксис цикла for...in для итерации по перечислимым свойствам объекта.",
+    isRaw: true,
+    candidate: ForInLoopCandidateRaw,
+    rawCandidate: ForInLoopCandidateRaw,
+    solution: ForInLoopSolutionRaw,
+    rawSolution: ForInLoopSolutionRaw,
+    filepath: "src/javascript/tasks/2_for_in/1_ForInLoop.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Базовый синтаксис",
+        recommendationNote: "Инструкция for (const key in obj) последовательно обходит имена всех перечислимых свойств объекта.",
+        rawSolution: ForInLoopSolutionRaw,
+        filepath: "src/javascript/solutions/2_for_in/1_ForInLoop.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Цикл for...in (MDN Web Docs)",
+        urlTitle: "MDN — Оператор for...in",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Statements/for...in",
+      },
+      {
+        title: "Объекты: основы (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Цикл for..in",
+        url: "https://learn.javascript.ru/object#tsikl-for-in",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "В чем главное различие между for...in и for...of?",
+        answer: "Цикл for...in обходит имена свойств (ключи) любого объекта, включая прототипную цепочку. Цикл for...of обходит значения итерируемых коллекций (Array, Map, Set, String) по протоколу Symbol.iterator.",
+      },
+      {
+        question: "Почему не рекомендуется использовать for...in для перебора массивов?",
+        answer: "for...in обходит все перечислимые свойства (включая добавленные в Array.prototype и нечисловые ключи), возвращает индексы как строки ('0', '1'), и порядок обхода не всегда гарантирован.",
+      },
+    ],
+    checklist: [
+      "Использовано ключевое слово for",
+      "В круглых скобках указана конструкция (const key in user)",
+      "Вывод значений через интерполяцию `${key}: ${user[key]}`",
+    ],
+  },
+  {
+    id: "js190",
+    group: "Циклы",
+    subgroup: "for in",
+    title: "2. Сумма зарплат в объекте",
+    desc: "Напишите функцию sumSalaries(salaries), которая принимает объект с зарплатами и возвращает их общую сумму с помощью цикла for...in. Если объект пуст, функция возвращает 0.",
+    isRaw: true,
+    candidate: SumSalariesCandidateRaw,
+    rawCandidate: SumSalariesCandidateRaw,
+    solution: SumSalariesForInSolutionRaw,
+    rawSolution: SumSalariesForInSolutionRaw,
+    filepath: "src/javascript/tasks/2_for_in/2_SumSalaries.js",
+    solutions: [
+      {
+        title: "Вариант 1: Через цикл for...in",
+        isRecommended: true,
+        badge: "Решение в рамках темы (цикл for...in)",
+        recommendationNote: "Прямой обход свойств объекта с накоплением суммы в переменной-аккумуляторе.",
+        rawSolution: SumSalariesForInSolutionRaw,
+        filepath: "src/javascript/solutions/2_for_in/2_SumSalaries_ForIn.js",
+      },
+      {
+        title: "Вариант 2: Через Object.values() и reduce()",
+        isRecommended: false,
+        badge: "Функциональный подход",
+        recommendationNote: "Object.values извлекает массив значений, который затем суммируется через reduce.",
+        rawSolution: SumSalariesReduceSolutionRaw,
+        filepath: "src/javascript/solutions/2_for_in/2_SumSalaries_Reduce.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Объекты (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Сумма свойств объекта",
+        url: "https://learn.javascript.ru/object#tasks",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Как поведет себя for...in, если передан пустой объект {}?",
+        answer: "Тело цикла не выполнится ни разу, и функция сразу вернет начальное значение суммы 0.",
+      },
+    ],
+    checklist: [
+      "Инициализирован аккумулятор let sum = 0",
+      "Суммирование выполняется через sum += salaries[key]",
+      "Функция корректно возвращает 0 для пустого объекта",
+    ],
+  },
+  {
+    id: "js191",
+    group: "Циклы",
+    subgroup: "for in",
+    title: "3. Подсчет количества свойств объекта",
+    desc: "Напишите функцию countProps(obj), которая подсчитывает и возвращает количество свойств переданного объекта с помощью цикла for...in.",
+    isRaw: true,
+    candidate: CountPropsCandidateRaw,
+    rawCandidate: CountPropsCandidateRaw,
+    solution: CountPropsForInSolutionRaw,
+    rawSolution: CountPropsForInSolutionRaw,
+    filepath: "src/javascript/tasks/2_for_in/3_CountProperties.js",
+    solutions: [
+      {
+        title: "Вариант 1: Через цикл for...in",
+        isRecommended: true,
+        badge: "Решение в рамках темы",
+        recommendationNote: "Инкремент счетчика на каждой итерации цикла for...in.",
+        rawSolution: CountPropsForInSolutionRaw,
+        filepath: "src/javascript/solutions/2_for_in/3_CountProperties_ForIn.js",
+      },
+      {
+        title: "Вариант 2: Через Object.keys().length",
+        isRecommended: false,
+        badge: "Краткий синтаксис",
+        recommendationNote: "Метод Object.keys() возвращает массив собственных перечислимых ключей, длина которого равна количеству свойств.",
+        rawSolution: CountPropsKeysSolutionRaw,
+        filepath: "src/javascript/solutions/2_for_in/3_CountProperties_Keys.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Object.keys (MDN Web Docs)",
+        urlTitle: "MDN — Object.keys()",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/keys",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Считает ли Object.keys() неперечислимые свойства?",
+        answer: "Нет, Object.keys() возвращает только собственные перечислимые строковые свойства. Неперечислимые можно получить через Object.getOwnPropertyNames().",
+      },
+    ],
+    checklist: [
+      "Объявлена переменная счетчика let count = 0",
+      "На каждой итерации выполняется count++",
+      "Возвращается числовое значение",
+    ],
+  },
+  {
+    id: "js192",
+    group: "Циклы",
+    subgroup: "for in",
+    title: "4. Умножение числовых свойств на 2",
+    desc: "Напишите функцию multiplyNumeric(obj), которая перебирает переданный объект и умножает все его числовые свойства на 2, не изменяя остальные свойства.",
+    isRaw: true,
+    candidate: MultiplyNumericCandidateRaw,
+    rawCandidate: MultiplyNumericCandidateRaw,
+    solution: MultiplyNumericSolutionRaw,
+    rawSolution: MultiplyNumericSolutionRaw,
+    filepath: "src/javascript/tasks/2_for_in/4_MultiplyNumeric.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Модификация по условию",
+        recommendationNote: "Проверка typeof obj[key] === 'number' позволяет безопасно фильтровать строковые и булевы свойства.",
+        rawSolution: MultiplyNumericSolutionRaw,
+        filepath: "src/javascript/solutions/2_for_in/4_MultiplyNumeric.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Умножаем все числовые свойства на 2 (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Задача multiplyNumeric",
+        url: "https://learn.javascript.ru/object#umnozhaem-vse-chislovye-svoystva-na-2",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Что вернет typeof NaN и как избежать его удвоения?",
+        answer: "typeof NaN возвращает 'number'. При умножении NaN * 2 получится NaN. Если требуется исключить NaN, можно добавить проверку !Number.isNaN(obj[key]).",
+      },
+    ],
+    checklist: [
+      "Использован цикл for...in для перебора ключей",
+      "Добавлена проверка typeof obj[key] === 'number'",
+      "Значение умножается на 2: obj[key] *= 2",
+      "Функция возвращает модифицированный объект",
+    ],
+  },
+  {
+    id: "js193",
+    group: "Циклы",
+    subgroup: "for in",
+    title: "5. Фильтрация собственных свойств (Object.hasOwn)",
+    desc: "Напишите функцию getOwnValues(obj), которая возвращает массив значений ТОЛЬКО собственных свойств объекта с помощью for...in и Object.hasOwn, игнорируя унаследованные из прототипа свойства.",
+    isRaw: true,
+    candidate: OwnPropertiesOnlyCandidateRaw,
+    rawCandidate: OwnPropertiesOnlyCandidateRaw,
+    solution: OwnPropertiesOnlyHasOwnSolutionRaw,
+    rawSolution: OwnPropertiesOnlyHasOwnSolutionRaw,
+    filepath: "src/javascript/tasks/2_for_in/5_OwnPropertiesOnly.js",
+    solutions: [
+      {
+        title: "Вариант 1: Через Object.hasOwn() (ES2022)",
+        isRecommended: true,
+        badge: "Современный стандарт",
+        recommendationNote: "Статический метод Object.hasOwn() — современная и безопасная замена obj.hasOwnProperty().",
+        rawSolution: OwnPropertiesOnlyHasOwnSolutionRaw,
+        filepath: "src/javascript/solutions/2_for_in/5_OwnPropertiesOnly_HasOwn.js",
+      },
+      {
+        title: "Вариант 2: Через Object.prototype.hasOwnProperty.call()",
+        isRecommended: false,
+        badge: "Классический подход",
+        recommendationNote: "Безопасный вызов hasOwnProperty через call на случай, если объект создан через Object.create(null).",
+        rawSolution: OwnPropertiesOnlyHasOwnPropertySolutionRaw,
+        filepath: "src/javascript/solutions/2_for_in/5_OwnPropertiesOnly_HasOwnProperty.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Object.hasOwn (MDN Web Docs)",
+        urlTitle: "MDN — Object.hasOwn()",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwn",
+      },
+      {
+        title: "Прототипное наследование (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Цикл for..in и hasOwnProperty",
+        url: "https://learn.javascript.ru/prototype-inheritance#tsikl-for-in",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему прямой вызов obj.hasOwnProperty(key) считается небезопасным?",
+        answer: "Объект может быть создан через Object.create(null) (у него нет прототипа Object.prototype) или иметь собственное свойство с именем 'hasOwnProperty', переопределяющее метод.",
+      },
+      {
+        question: "Перебирает ли for...in свойства из цепочки прототипов?",
+        answer: "Да, цикл for...in обходит все перечислимые свойства самого объекта И всех его прототипов в цепочке прототипов.",
+      },
+    ],
+    checklist: [
+      "Использован цикл for...in",
+      "Свойства фильтруются через Object.hasOwn(obj, key)",
+      "Возвращается массив значений собственных свойств",
+    ],
+  },
+  {
+    id: "js194",
+    group: "Циклы",
+    subgroup: "for in",
+    title: "6. Проверка объекта на пустоту (isEmpty)",
+    desc: "Напишите функцию isEmpty(obj), которая возвращает true, если у объекта нет собственных свойств, и false, если есть хотя бы одно.",
+    isRaw: true,
+    candidate: IsEmptyObjectCandidateRaw,
+    rawCandidate: IsEmptyObjectCandidateRaw,
+    solution: IsEmptyObjectForInSolutionRaw,
+    rawSolution: IsEmptyObjectForInSolutionRaw,
+    filepath: "src/javascript/tasks/2_for_in/6_IsEmptyObject.js",
+    solutions: [
+      {
+        title: "Вариант 1: Через цикл for...in (O(1) worst/best)",
+        isRecommended: true,
+        badge: "Максимальная производительность",
+        recommendationNote: "Цикл for...in прерывается мгновенно на первом же ключе, не создавая промежуточных массивов в памяти.",
+        rawSolution: IsEmptyObjectForInSolutionRaw,
+        filepath: "src/javascript/solutions/2_for_in/6_IsEmptyObject_ForIn.js",
+      },
+      {
+        title: "Вариант 2: Через Object.keys()",
+        isRecommended: false,
+        badge: "Лаконичный синтаксис",
+        recommendationNote: "Object.keys(obj).length === 0 выделяет память под массив всех ключей, что неоптимально для больших объектов.",
+        rawSolution: IsEmptyObjectKeysSolutionRaw,
+        filepath: "src/javascript/solutions/2_for_in/6_IsEmptyObject_Keys.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Проверка на пустоту (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Функция isEmpty(obj)",
+        url: "https://learn.javascript.ru/object#proverka-na-pustotu",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему for...in для isEmpty эффективнее, чем Object.keys(obj).length === 0?",
+        answer: "for...in делает ранний возврат на первой же итерации за O(1), в то время как Object.keys() всегда обходит абсолютно весь объект и аллоцирует массив в памяти O(N).",
+      },
+    ],
+    checklist: [
+      "При обнаружении ключа возвращается false",
+      "Если цикл завершился без итераций — возвращается true",
+      "Корректно обрабатывает пустой объект {}",
+    ],
+  },
+  {
+    id: "js195",
+    group: "Циклы",
+    subgroup: "for in",
+    title: "7. Инверсия объекта (ключи и значения)",
+    desc: "Напишите функцию invertObject(obj), которая принимает объект и возвращает новый объект, в котором ключи и значения поменяны местами с помощью for...in.",
+    isRaw: true,
+    candidate: InvertObjectCandidateRaw,
+    rawCandidate: InvertObjectCandidateRaw,
+    solution: InvertObjectForInSolutionRaw,
+    rawSolution: InvertObjectForInSolutionRaw,
+    filepath: "src/javascript/tasks/2_for_in/7_InvertObject.js",
+    solutions: [
+      {
+        title: "Вариант 1: Через цикл for...in",
+        isRecommended: true,
+        badge: "Решение в рамках темы",
+        recommendationNote: "Построение нового объекта путем присвоения inverted[obj[key]] = key.",
+        rawSolution: InvertObjectForInSolutionRaw,
+        filepath: "src/javascript/solutions/2_for_in/7_InvertObject_ForIn.js",
+      },
+      {
+        title: "Вариант 2: Через Object.entries() и Object.fromEntries()",
+        isRecommended: false,
+        badge: "Функциональный подход",
+        recommendationNote: "Преобразование в массив пар, смена позиций [value, key] и сборка обратно в объект.",
+        rawSolution: InvertObjectEntriesSolutionRaw,
+        filepath: "src/javascript/solutions/2_for_in/7_InvertObject_Entries.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Object.entries (MDN Web Docs)",
+        urlTitle: "MDN — Object.entries()",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/entries",
+      },
+      {
+        title: "Object.fromEntries (MDN Web Docs)",
+        urlTitle: "MDN — Object.fromEntries()",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Что произойдет, если в исходном объекте несколько ключей имеют одинаковое значение?",
+        answer: "При инверсии одинаковые значения станут одинаковыми ключами нового объекта, и последующие перезапишут предыдущие (сохранится только последнее соответствие).",
+      },
+    ],
+    checklist: [
+      "Создается новый объект const inverted = {}",
+      "Присвоение выполняется как inverted[obj[key]] = key",
+      "Возвращается новый инвертированный объект",
     ],
   },
 ];
@@ -9004,12 +9395,115 @@ export const JS_STRING_DOM_UTILS_TASKS = [
   },
 ];
 
+export const JS_TYPES_COERCION_TASKS = [
+  {
+    id: "js186",
+    group: "Типы данных",
+    subgroup: "Приведение типов",
+    title: "1. Типы данных и неявное приведение (Type Coercion)",
+    desc: "Определите и объясните результаты вывода базовых типов данных, сравнений (== / ===) и неявного приведения типов.",
+    isRaw: true,
+    candidate: TypeCoercionBasicsCandidateRaw,
+    rawCandidate: TypeCoercionBasicsCandidateRaw,
+    solution: TypeCoercionBasicsSolutionRaw,
+    rawSolution: TypeCoercionBasicsSolutionRaw,
+    filepath: "src/javascript/tasks/24_types_coercion/1_TypeCoercionBasics.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Фундаментальный JS",
+        recommendationNote: "Понимание неявного приведения типов и ссылочной модели необходимо для предотвращения неочевидных багов.",
+        rawSolution: TypeCoercionBasicsSolutionRaw,
+        filepath: "src/javascript/tasks/24_types_coercion/1_TypeCoercionBasics.js",
+      },
+    ],
+    articles: [
+      { title: "Типы данных (LearnJS)", urlTitle: "Учебник JS — Типы данных", url: "https://learn.javascript.ru/types" },
+      { title: "Преобразование типов (LearnJS)", urlTitle: "Учебник JS — Преобразование типов", url: "https://learn.javascript.ru/type-conversions" },
+      { title: "Операторы сравнения (LearnJS)", urlTitle: "Учебник JS — Сравнения", url: "https://learn.javascript.ru/comparison" },
+    ],
+    interviewerQuestions: [
+      { question: "Почему typeof null возвращает 'object'?", answer: "Это исторический баг первой реализации JS, где значения типа object имели тег типа 0, а null представлялся как нулевой указатель (0x00)." },
+      { question: "Как пошагово вычисляется выражение [] == ![]?", answer: "1) ![] дает false, 2) [] == false -> [].toString() дает '', 3) '' == false -> Number('') и Number(false) оба дают 0, 4) 0 == 0 -> true." },
+    ],
+    checklist: ["Понимание разницы между == и ===", "Правила приведения при операторах + и -", "Ссылочное сравнение объектов и массивов"],
+  },
+  {
+    id: "js187",
+    group: "Типы данных",
+    subgroup: "Приведение типов",
+    title: "2. Сложение объектов, массивов и парадоксы сравнения (ToPrimitive)",
+    desc: "Объясните правила сложения объектов ([] + [], [] + {}, {} + []), унарный плюс и краевые случаи сравнения null с нулём.",
+    isRaw: true,
+    candidate: ObjectsAndComparisonsCandidateRaw,
+    rawCandidate: ObjectsAndComparisonsCandidateRaw,
+    solution: ObjectsAndComparisonsSolutionRaw,
+    rawSolution: ObjectsAndComparisonsSolutionRaw,
+    filepath: "src/javascript/tasks/24_types_coercion/2_ObjectsAndComparisons.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "ToPrimitive и реляционные сравнения",
+        recommendationNote: "Алгоритм ToPrimitive вызывает valueOf и toString, а реляционные сравнения (<, >, >=) приводят к числам иначе, чем нестрогое равенство (==).",
+        rawSolution: ObjectsAndComparisonsSolutionRaw,
+        filepath: "src/javascript/tasks/24_types_coercion/2_ObjectsAndComparisons.js",
+      },
+    ],
+    articles: [
+      { title: "Преобразование объектов в примитивы (LearnJS)", urlTitle: "Учебник JS — Symbol.toPrimitive, valueOf, toString", url: "https://learn.javascript.ru/object-toprimitive" },
+      { title: "Неочевидные сравнения в JS (LearnJS)", urlTitle: "Учебник JS — Сравнение разных типов", url: "https://learn.javascript.ru/comparison#sravnenie-raznyh-tipov" },
+    ],
+    interviewerQuestions: [
+      { question: "Почему null >= 0 возвращает true, а null > 0 и null == 0 возвращают false?", answer: "При >= операнды приводятся к числам (0 >= 0 -> true, вычисляется как !(null < 0)). При == действует специальное правило: null равен только undefined." },
+      { question: "Как вычисляется сложение объектов [] + {}?", answer: "Алгоритм ToPrimitive преобразует [] через toString() в '', а {} через toString() в '[object Object]'. Итого '' + '[object Object]' дает '[object Object]'." },
+    ],
+    checklist: ["Алгоритм ToPrimitive (valueOf -> toString)", "Разница между == и реляционными операторами (<, >, <=, >=)", "Унарный плюс для примитивов (true, null, undefined)"],
+  },
+  {
+    id: "js188",
+    group: "Типы данных",
+    subgroup: "Проверка типов",
+    title: "3. Проверка типов, граничные случаи и операторы (Object.is, || vs ??)",
+    desc: "Разберите тонкости сравнения NaN и +0/-0 (Object.is), разницу isNaN vs Number.isNaN, логические операторы (|| vs ??) и надежные методы определения типов.",
+    isRaw: true,
+    candidate: TypeCheckingAndEdgeCasesCandidateRaw,
+    rawCandidate: TypeCheckingAndEdgeCasesCandidateRaw,
+    solution: TypeCheckingAndEdgeCasesSolutionRaw,
+    rawSolution: TypeCheckingAndEdgeCasesSolutionRaw,
+    filepath: "src/javascript/tasks/24_types_coercion/3_TypeCheckingAndEdgeCases.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Проверка типов и граничные случаи",
+        recommendationNote: "Object.is реализует алгоритм SameValue, различая +0 и -0 и считая NaN равным NaN.",
+        rawSolution: TypeCheckingAndEdgeCasesSolutionRaw,
+        filepath: "src/javascript/tasks/24_types_coercion/3_TypeCheckingAndEdgeCases.js",
+      },
+    ],
+    articles: [
+      { title: "Object.is (MDN)", urlTitle: "MDN — Object.is", url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/is" },
+      { title: "Операторы || и ?? (LearnJS)", urlTitle: "Учебник JS — Оператор нулевого слияния '??'", url: "https://learn.javascript.ru/nullish-coalescing-operator" },
+      { title: "Определение типов (LearnJS)", urlTitle: "Учебник JS — Методы проверки типов", url: "https://learn.javascript.ru/type-checking" },
+    ],
+    interviewerQuestions: [
+      { question: "В чем разница между глобальным isNaN() и методом Number.isNaN()?", answer: "Глобальный isNaN('str') сначала приводит аргумент к числу (давая true для любой нечисловой строки). Number.isNaN('str') проверяет строго: тип должен быть number И значение NaN (возвращает false)." },
+      { question: "В чем разница между оператором || и оператором ?? (Nullish Coalescing)?", answer: "Оператор || срабатывает на любые falsy-значения (0, '', false, null, undefined, NaN). Оператор ?? срабатывает только на null и undefined." },
+      { question: "Почему для проверки массивов используют Array.isArray(), а не typeof?", answer: "typeof [] возвращает 'object', так как массивы в JS являются объектами. Array.isArray корректно определяет массив даже между разными фреймами/окнами." },
+    ],
+    checklist: ["Разница между isNaN и Number.isNaN", "Разница между || и ??", "Алгоритм SameValue в Object.is для NaN и +0/-0", "Определение типов через Array.isArray и Object.prototype.toString"],
+  },
+];
+
 export const JS_TASKS = [
-  // 1. Базовый синтаксис и строки
+  // 1. Базовый синтаксис, типы и циклы
+  ...JS_TYPES_COERCION_TASKS,
   ...JS_WHILE_TASKS,
   ...JS_LOOPS_TASKS,
   ...JS_FOR_OF_TASKS,
-  ...JS_STRING_DOM_UTILS_TASKS,
+  ...JS_FOR_IN_TASKS,
 
   // 2. Работа с данными и коллекциями
   ...JS_ARRAYS_INCLUDES_TASKS,
@@ -9020,6 +9514,7 @@ export const JS_TASKS = [
   ...JS_ARRAYS_REDUCE_TASKS,
   ...JS_COLLECTIONS_SET_TASKS,
   ...JS_COLLECTIONS_MAP_TASKS,
+  ...JS_STRING_DOM_UTILS_TASKS,
   ...JS_OBJECT_UTILS_TASKS,
 
   // 3. Фундаментальные механизмы JS

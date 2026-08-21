@@ -1,7 +1,7 @@
 const debounce = (fn, wait, immediate = false) => {
   let timeout;
 
-  return function (...args) => {
+  const debounced = function (...args) {
     const callNow = immediate && !timeout;
     clearTimeout(timeout);
 
@@ -12,6 +12,13 @@ const debounce = (fn, wait, immediate = false) => {
 
     if (callNow) fn.apply(this, args);
   };
+
+  debounced.cancel = () => {
+    clearTimeout(timeout);
+    timeout = null;
+  };
+
+  return debounced;
 };
 
 // Пример вызова:
