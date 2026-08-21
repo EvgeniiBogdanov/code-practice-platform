@@ -18,6 +18,7 @@ import {
   RotateCcw,
   Minus,
   Clock,
+  ExternalLink,
 } from "lucide-react";
 import { parseMarkdownBlocks } from "../../utils/markdownParser";
 import TheoryCodeBlock from "./TheoryCodeBlock";
@@ -157,12 +158,20 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
     return parseMarkdownBlocks(rawText);
   }, [rawText]);
 
-  // Расчет примерного времени чтения (180 слов в минуту)
+  // Реалистичный расчет времени чтения на основе текста и примеров кода статьи
   const readingTimeMinutes = useMemo(() => {
-    if (!rawText) return 5;
-    const wordCount = rawText.split(/\s+/).length;
-    return Math.max(3, Math.ceil(wordCount / 180));
-  }, [rawText]);
+    const text = groupMeta?.infoRaw || rawText || "";
+    if (!text) return 5;
+    const cleanText = text
+      .replace(/```[\s\S]*?```/g, " ")
+      .replace(/#+|_|\*|`|\[.*?\]\(.*?\)/g, " ")
+      .trim();
+    const words = cleanText.split(/\s+/).filter(Boolean).length;
+    const codeBlocks = (text.match(/```[\s\S]*?```/g) || []).length;
+    // Средняя скорость чтения технического текста ~140 слов/мин + ~0.7 мин на внимательный разбор каждого листинга кода
+    const totalMinutes = Math.ceil(words / 140 + codeBlocks * 0.7);
+    return Math.max(1, totalMinutes);
+  }, [groupMeta?.infoRaw, rawText]);
 
   // Статистика решения задач в данном разделе
   const stats = useMemo(() => {
@@ -337,6 +346,33 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
             </div>
           </div>
         </header>
+
+        {/* Meta Badges — отображаются только для папок, где есть статья */}
+        {blocks.length > 0 && (
+          <div
+            className="article-meta"
+            style={{
+              marginBottom: "12px",
+            }}
+          >
+            <span className="meta-badge badge-blue">
+              <BookOpen size={12} /> Теоретическое руководство
+            </span>
+            <span className="meta-badge badge-yellow">
+              <Clock size={12} /> ~{readingTimeMinutes} мин чтения
+            </span>
+            {articleLinksList.length > 0 && (
+              <span className="meta-badge badge-purple">
+                <ExternalLink size={12} /> Полезные материалы и статьи
+              </span>
+            )}
+            {practiceTasksList.length > 0 && (
+              <span className="meta-badge badge-green">
+                <Zap size={12} /> Задачи для закрепления
+              </span>
+            )}
+          </div>
+        )}
 
         {/* Standard Database View (Files / Tasks list) */}
         <div className="database-view-container">
@@ -1030,7 +1066,6 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                       to={taskRoute}
                       params={{ taskId: item.id }}
                       className="article-link"
-                      style={{ color: "#f59e0b", fontWeight: 600 }}
                     >
                       Решать на платформе →
                     </Link>
@@ -1040,7 +1075,6 @@ export const GroupOverviewView = ({ groupMeta, groupTasks = [] }) => {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="article-link"
-                      style={{ color: "#f59e0b" }}
                     >
                       LeetCode ↗
                     </a>

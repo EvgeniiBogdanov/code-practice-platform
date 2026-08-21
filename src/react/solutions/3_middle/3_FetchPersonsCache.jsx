@@ -110,7 +110,13 @@ const CharactersList = () => {
         {!!characters.length &&
           characters.map((char) => (
             <li key={char.id}>
-              <img src={char.image} alt={char.name} />
+              <img
+                src={char.image}
+                alt={char.name}
+                width="50"
+                height="50"
+                style={{ width: "50px", height: "50px", objectFit: "cover", borderRadius: "4px" }}
+              />
               <span>
                 <strong>{char.name}</strong> ({char.status})
               </span>

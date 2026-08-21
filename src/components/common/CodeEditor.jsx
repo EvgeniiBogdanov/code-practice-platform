@@ -148,7 +148,6 @@ export const CodeEditor = ({
   const findInputRef = useRef(null);
   const replaceInputRef = useRef(null);
   const hoverTimerRef = useRef(null);
-  const quickOpenInputRef = useRef(null);
 
   // Состояние встроенного виджета поиска и замены (Find & Replace)
   const [findState, setFindState] = useState({
@@ -160,14 +159,6 @@ export const CodeEditor = ({
     matchWholeWord: false,
     useRegex: false,
     currentIndex: -1,
-  });
-
-  // Состояние быстрого переключения файлов и перехода к строке (Quick Open Cmd+P / Cmd+G)
-  const [quickOpenState, setQuickOpenState] = useState({
-    isOpen: false,
-    query: "",
-    selectedIndex: 0,
-    mode: "files", // "files" | "goto"
   });
 
   // Состояние всплывающей подсказки типа (Hover Tooltip)
@@ -275,67 +266,6 @@ export const CodeEditor = ({
     findState.matchWholeWord,
     findState.useRegex,
   ]);
-
-  // Элементы быстрого перехода (Quick Open: файлы задачи или переход к строке)
-  const quickOpenItems = useMemo(() => {
-    if (!quickOpenState.isOpen) return [];
-    const q = quickOpenState.query.trim();
-
-    // 1. Режим перехода к строке: начинается с ':'
-    if (q.startsWith(":")) {
-      const lineMatch = q.match(/^:(\d+)(?::(\d+))?/);
-      const targetLine = lineMatch ? parseInt(lineMatch[1], 10) : null;
-      const targetCol = lineMatch && lineMatch[2] ? parseInt(lineMatch[2], 10) : 1;
-      const totalLines = code.split("\n").length;
-
-      return [
-        {
-          type: "goto",
-          label: targetLine
-            ? `Перейти к строке ${targetLine}${targetCol > 1 ? `, колонке ${targetCol}` : ""}`
-            : "Введите номер строки для перехода (:строка[:колонка])...",
-          targetLine: targetLine ? Math.max(1, Math.min(targetLine, totalLines)) : null,
-          targetCol: targetCol || 1,
-          totalLines,
-          isValid: Boolean(targetLine && targetLine >= 1 && targetLine <= totalLines),
-        },
-      ];
-    }
-
-    // 2. Режим поиска файлов задачи
-    if (!files || files.length === 0) {
-      return [
-        {
-          type: "file",
-          name: filepath || title || "index.jsx",
-          detail: "Текущий файл задачи",
-          fileIndex: 0,
-          isCurrent: true,
-          score: 100,
-        },
-      ];
-    }
-
-    const results = [];
-    for (let i = 0; i < files.length; i++) {
-      const f = files[i];
-      const fileName = f.name || `file_${i}.jsx`;
-      const { match, score } = fuzzyMatch(fileName, q);
-      if (match || !q) {
-        results.push({
-          type: "file",
-          name: fileName,
-          detail: `Файл задачи #${i + 1}`,
-          fileIndex: i,
-          isCurrent: i === activeFileIdx,
-          score: score + (i === activeFileIdx ? 10 : 0),
-        });
-      }
-    }
-
-    results.sort((a, b) => b.score - a.score);
-    return results;
-  }, [quickOpenState.isOpen, quickOpenState.query, files, filepath, title, activeFileIdx, code]);
 
   // Определение слова под курсором и парных скобок для умной подсветки (Word Highlight & Bracket Match)
   const highlightOptions = useMemo(() => {
@@ -835,69 +765,6 @@ export const CodeEditor = ({
     }
   };
 
-  // Управление быстрым открытием файлов и переходом к строке (Quick Open & Go to Line)
-  const handleOpenQuickOpen = (mode = "files") => {
-    if (readOnly) return;
-    setQuickOpenState({
-      isOpen: true,
-      query: mode === "goto" ? ":" : "",
-      selectedIndex: 0,
-      mode,
-    });
-    setTimeout(() => {
-      quickOpenInputRef.current?.focus();
-      quickOpenInputRef.current?.select();
-    }, 50);
-  };
-
-  const handleCloseQuickOpen = () => {
-    setQuickOpenState({ isOpen: false, query: "", selectedIndex: 0, mode: "files" });
-    if (textareaRef.current) {
-      textareaRef.current.focus();
-    }
-  };
-
-  const handleJumpToLine = (targetLine, targetCol = 1) => {
-    const textarea = textareaRef.current;
-    if (!textarea || !code) return;
-
-    const lines = code.split("\n");
-    const validLine = Math.max(1, Math.min(targetLine, lines.length));
-    let charIndex = 0;
-    for (let i = 0; i < validLine - 1; i++) {
-      charIndex += lines[i].length + 1;
-    }
-    const lineLen = lines[validLine - 1]?.length || 0;
-    const validCol = Math.max(1, Math.min(targetCol, lineLen + 1));
-    charIndex += (validCol - 1);
-
-    textarea.selectionStart = charIndex;
-    textarea.selectionEnd = charIndex;
-    updateCursorCoordinates();
-
-    const lineH = fontSize * 1.6;
-    const targetScroll = Math.max(0, (validLine - 5) * lineH);
-    textarea.scrollTop = targetScroll;
-    if (highlightRef.current) highlightRef.current.scrollTop = targetScroll;
-    if (gutterRef.current) gutterRef.current.scrollTop = targetScroll;
-  };
-
-  const handleApplyQuickOpen = (item) => {
-    if (!item) return;
-
-    if (item.type === "goto") {
-      if (item.targetLine) {
-        handleJumpToLine(item.targetLine, item.targetCol);
-      }
-    } else if (item.type === "file") {
-      if (typeof onFileSelect === "function" && typeof item.fileIndex === "number") {
-        onFileSelect(item.fileIndex);
-      }
-    }
-
-    handleCloseQuickOpen();
-  };
-
   const handleSelectFindMatch = (index) => {
     if (findMatches.length === 0 || index < 0 || index >= findMatches.length)
       return;
@@ -1257,29 +1124,6 @@ export const CodeEditor = ({
     ) {
       e.preventDefault();
       handleOpenFind(true);
-      return;
-    }
-
-    // 0.4. Быстрый переход к файлам (Quick Open: Ctrl+P / Cmd+P) и строкам (Go to Line: Ctrl+G / Cmd+G)
-    if (
-      (e.ctrlKey || e.metaKey) &&
-      !e.shiftKey &&
-      !e.altKey &&
-      e.key.toLowerCase() === "p"
-    ) {
-      e.preventDefault();
-      handleOpenQuickOpen("files");
-      return;
-    }
-
-    if (
-      (e.ctrlKey || e.metaKey) &&
-      !e.shiftKey &&
-      !e.altKey &&
-      e.key.toLowerCase() === "g"
-    ) {
-      e.preventDefault();
-      handleOpenQuickOpen("goto");
       return;
     }
 
@@ -2020,19 +1864,6 @@ export const CodeEditor = ({
               </button>
             </Tooltip>
 
-            <Tooltip content="Быстрый переход (Ctrl+P)" side="bottom">
-              <button
-                className={`vscode-icon-btn ${quickOpenState.isOpen ? "active" : ""}`}
-                onClick={() => {
-                  if (quickOpenState.isOpen) handleCloseQuickOpen();
-                  else handleOpenQuickOpen("files");
-                }}
-                aria-label="Быстрый переход к файлам и строкам (Ctrl+P)"
-              >
-                <FileCode size={14} />
-              </button>
-            </Tooltip>
-
             {isCodeModified && (
               <Tooltip content="Сбросить код к исходному шаблону" side="bottom">
                 <button
@@ -2658,130 +2489,6 @@ export const CodeEditor = ({
                   document.body
                 );
               })()}
-
-              {/* Модальное окно быстрого перехода к файлам и строкам (Quick Open / Go to Line) */}
-              {quickOpenState.isOpen && createPortal(
-                <div
-                  className="vscode-quick-open-overlay"
-                  onMouseDown={(e) => {
-                    if (e.target === e.currentTarget) handleCloseQuickOpen();
-                  }}
-                >
-                  <div className="vscode-quick-open-modal" onMouseDown={(e) => e.stopPropagation()}>
-                    <div className="vscode-quick-open-input-wrap">
-                      <FileCode size={16} style={{ color: "var(--accent-blue, #3b82f6)", flexShrink: 0 }} />
-                      <input
-                        ref={quickOpenInputRef}
-                        className="vscode-quick-open-input"
-                        placeholder={
-                          quickOpenState.query.startsWith(":")
-                            ? "Введите номер строки для перехода (:строка[:колонка])..."
-                            : "Поиск файлов по имени (или введите :строку для перехода)..."
-                        }
-                        value={quickOpenState.query}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          setQuickOpenState((prev) => ({
-                            ...prev,
-                            query: val,
-                            selectedIndex: 0,
-                            mode: val.startsWith(":") ? "goto" : "files",
-                          }));
-                        }}
-                        onKeyDown={(e) => {
-                          if (e.key === "Escape") {
-                            e.preventDefault();
-                            handleCloseQuickOpen();
-                            return;
-                          }
-                          if (e.key === "ArrowDown") {
-                            e.preventDefault();
-                            setQuickOpenState((prev) => ({
-                              ...prev,
-                              selectedIndex: Math.min(
-                                prev.selectedIndex + 1,
-                                Math.max(0, quickOpenItems.length - 1)
-                              ),
-                            }));
-                            return;
-                          }
-                          if (e.key === "ArrowUp") {
-                            e.preventDefault();
-                            setQuickOpenState((prev) => ({
-                              ...prev,
-                              selectedIndex: Math.max(0, prev.selectedIndex - 1),
-                            }));
-                            return;
-                          }
-                          if (e.key === "Enter") {
-                            e.preventDefault();
-                            const item = quickOpenItems[quickOpenState.selectedIndex] || quickOpenItems[0];
-                            if (item) {
-                              handleApplyQuickOpen(item);
-                            }
-                            return;
-                          }
-                        }}
-                      />
-                      {quickOpenState.query && (
-                        <button
-                          className="vscode-icon-btn"
-                          style={{ padding: 2, height: "auto" }}
-                          onClick={() => setQuickOpenState((prev) => ({ ...prev, query: "", selectedIndex: 0 }))}
-                        >
-                          <X size={13} />
-                        </button>
-                      )}
-                    </div>
-
-                    <div className="vscode-quick-open-list">
-                      {quickOpenItems.length === 0 ? (
-                        <div style={{ padding: "12px 16px", color: "var(--text-muted)", fontSize: "12px", textAlign: "center" }}>
-                          Ничего не найдено
-                        </div>
-                      ) : (
-                        quickOpenItems.map((item, idx) => {
-                          const isSelected = idx === quickOpenState.selectedIndex;
-                          return (
-                            <div
-                              key={idx}
-                              className={`vscode-quick-open-item ${isSelected ? "active" : ""}`}
-                              onMouseDown={(e) => {
-                                e.preventDefault();
-                                handleApplyQuickOpen(item);
-                              }}
-                              onMouseEnter={() => {
-                                setQuickOpenState((prev) => ({ ...prev, selectedIndex: idx }));
-                              }}
-                            >
-                              <div className="vscode-quick-open-item-name">
-                                <FileCode size={14} style={{ opacity: 0.8 }} />
-                                <span>{item.type === "goto" ? item.label : item.name}</span>
-                                {item.isCurrent && (
-                                  <span style={{ fontSize: "10.5px", padding: "1px 5px", borderRadius: "3px", backgroundColor: "rgba(59, 130, 246, 0.2)", color: "#60a5fa" }}>
-                                    текущий
-                                  </span>
-                                )}
-                              </div>
-                              {item.detail && (
-                                <div className="vscode-quick-open-item-detail">
-                                  {item.detail}
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })
-                      )}
-                    </div>
-
-                    <div className="vscode-quick-open-footer">
-                      <span>{quickOpenState.query.startsWith(":") ? "Режим перехода к строке" : "Режим выбора файла"}</span>
-                      <span>↑↓ навигация • Enter перейти • Esc закрыть</span>
-                    </div>
-                  </div>
-                </div>,
-                document.body
-              )}
 
               {/* Всплывающее меню подсказок и автодополнения (IntelliSense) через React Portal */}
               {completionState.visible &&

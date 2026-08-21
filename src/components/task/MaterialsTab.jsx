@@ -23,6 +23,11 @@ export const MaterialsTab = ({ selectedTask }) => {
     explanationText = explanationText
       .replace(/^###\s*Разбор решения[:\s]*[^\n]*\n*/gi, "")
       .replace(/^#\s+[^\n]*\n*/g, "")
+      .replace(/^(?:Ссылка на оригинал|Источник|Оригинал)[:\s]*[^\n]*\n*/gim, "")
+      .replace(/^##\s*Уровень сложности\s*\n+[^\n]*\n*/gim, "")
+      .replace(/^Уровень сложности[^\n]*\n*/gim, "")
+      .replace(/\n*##+\s*(?:\d+\.\s*)?Полезные материалы[\s\S]*$/gi, "")
+      .replace(/\n*##+\s*(?:\d+\.\s*)?Материалы по теме[\s\S]*$/gi, "")
       .trim();
   }
 
@@ -31,11 +36,16 @@ export const MaterialsTab = ({ selectedTask }) => {
     return parseMarkdownBlocks(explanationText);
   }, [explanationText]);
 
-  // Оценка времени чтения статьи на основе количества слов
+  // Оценка времени чтения статьи на основе количества слов и блоков кода
   const readingTimeMinutes = useMemo(() => {
     if (!explanationText) return 1;
-    const words = explanationText.trim().split(/\s+/).length;
-    return Math.max(1, Math.ceil(words / 140));
+    const cleanText = explanationText
+      .replace(/```[\s\S]*?```/g, " ")
+      .replace(/#+|_|\*|`|\[.*?\]\(.*?\)/g, " ")
+      .trim();
+    const words = cleanText.split(/\s+/).filter(Boolean).length;
+    const codeBlocks = (explanationText.match(/```[\s\S]*?```/g) || []).length;
+    return Math.max(1, Math.ceil(words / 140 + codeBlocks * 0.7));
   }, [explanationText]);
 
   const hasExplanation = Boolean(explanationText) && blocks.length > 0;

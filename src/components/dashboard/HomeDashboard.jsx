@@ -14,7 +14,6 @@ import {
   FolderGit2,
   BookOpen,
   Star,
-  ExternalLink,
   Sparkles,
   Award,
   Calendar,
@@ -25,6 +24,7 @@ import { JS_TASKS } from "../../javascript/data/tasksData";
 import { REACT_TASKS, WARMUP_TASKS } from "../../react/data/tasksData";
 import { ALL_ALGO_TASKS } from "../../algorithms/data/tasksData";
 import { ALL_TASKS } from "../../data/tasksRegistry";
+import { APP_VERSION } from "../../constants/uiConstants";
 
 export const HomeDashboard = ({
   completedTotal,
@@ -68,7 +68,10 @@ export const HomeDashboard = ({
     <div className="home-container">
       {/* Standard Page Header */}
       <div className="page-main-header">
-        <h1 className="page-main-title">Обзор платформы</h1>
+        <div className="platform-title-row">
+          <h1 className="page-main-title">Code Practice Platform</h1>
+          <span className="platform-version-tag">v{APP_VERSION}</span>
+        </div>
         <p className="page-main-subtitle">
           Интерактивная платформа для подготовки к техническим собеседованиям и практики решения задач ({grandTotal > 0 ? `${grandTotal} задач` : "280+ задач"}). Встроенный редактор кода с анализом типов, песочница кандидата, живой запуск React и интерактивная веб-консоль, умное интервальное повторение и эталонные решения.
         </p>
@@ -93,18 +96,7 @@ export const HomeDashboard = ({
             <Star size={20} style={{ color: "#f59e0b", fill: "rgba(245, 158, 11, 0.2)" }} />
           </div>
           <div className="callout-content">
-            <div className="callout-header-row">
-              <span className="callout-title">Open-Source проект</span>
-              <a
-                href="https://github.com/EvgeniiBogdanov/code-practice-platform"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="callout-badge-link"
-              >
-                <span>GitHub</span>
-                <ExternalLink size={11} />
-              </a>
-            </div>
+            <div className="callout-title">Open-Source проект</div>
             <div className="callout-text">
               Поддержите развитие платформы <a href="https://github.com/EvgeniiBogdanov/code-practice-platform" target="_blank" rel="noopener noreferrer" className="text-link">звездой на GitHub</a> или внесите свой вклад новыми задачами и решениями.
             </div>
@@ -192,7 +184,7 @@ export const HomeDashboard = ({
 
         <div className="gallery-grid">
           {/* JavaScript Card */}
-          <Link to="/javascript" className="gallery-card">
+          <div className="gallery-card">
             <div className="card-cover amber-cover">
               <Zap size={24} style={{ color: "#f59e0b" }} />
             </div>
@@ -212,16 +204,16 @@ export const HomeDashboard = ({
               </div>
               <div className="card-footer">
                 <span className="card-progress">{jsSolved} из {jsTotal} решено ({jsPct}%)</span>
-                <span className="action-btn amber">
+                <Link to="/javascript" className="action-btn amber">
                   <span>Открыть</span>
                   <ArrowRight size={13} />
-                </span>
+                </Link>
               </div>
             </div>
-          </Link>
+          </div>
 
           {/* React Card */}
-          <Link to="/react" className="gallery-card">
+          <div className="gallery-card">
             <div className="card-cover blue-cover">
               <Code2 size={24} style={{ color: "var(--accent-blue)" }} />
             </div>
@@ -241,16 +233,16 @@ export const HomeDashboard = ({
               </div>
               <div className="card-footer">
                 <span className="card-progress">{reactSolved} из {reactTotal} решено ({reactPct}%)</span>
-                <span className="action-btn blue">
+                <Link to="/react" className="action-btn blue">
                   <span>Открыть</span>
                   <ArrowRight size={13} />
-                </span>
+                </Link>
               </div>
             </div>
-          </Link>
+          </div>
 
           {/* Algorithms Card */}
-          <Link to="/algorithms" className="gallery-card">
+          <div className="gallery-card">
             <div className="card-cover purple-cover">
               <Brain size={24} style={{ color: "#a855f7" }} />
             </div>
@@ -269,13 +261,13 @@ export const HomeDashboard = ({
               </div>
               <div className="card-footer">
                 <span className="card-progress">{algoSolved} из {algoTotal} решено ({algoPct}%)</span>
-                <span className="action-btn purple">
+                <Link to="/algorithms" className="action-btn purple">
                   <span>Открыть</span>
                   <ArrowRight size={13} />
-                </span>
+                </Link>
               </div>
             </div>
-          </Link>
+          </div>
         </div>
       </div>
 

@@ -44,6 +44,7 @@ import CheatSheetModal from "../components/modals/CheatSheetModal";
 import CommandPaletteModal from "../components/modals/CommandPaletteModal";
 import StatsModal from "../components/modals/StatsModal";
 import GlobalTooltip from "../components/common/GlobalTooltip";
+import ErrorBoundary from "../components/common/ErrorBoundary";
 import { PracticeContext } from "../context/PracticeContext";
 import { useGlobalShortcuts } from "../hooks/useGlobalShortcuts";
 import { useUIStore, useTimerStore, useProgressStore, useReviewStore } from "../stores";
@@ -820,7 +821,9 @@ const RootLayout = () => {
       <PracticeContext.Provider value={outletContext}>
         <div className="app-container app-container-open">
           <main className="content-area-open">
-            <Outlet context={outletContext} />
+            <ErrorBoundary taskKey={pathname}>
+              <Outlet context={outletContext} />
+            </ErrorBoundary>
           </main>
           <GlobalTooltip />
         </div>
@@ -941,7 +944,9 @@ const RootLayout = () => {
           />
 
           <main className="content-area" ref={contentAreaRef}>
-            <Outlet context={outletContext} />
+            <ErrorBoundary taskKey={pathname}>
+              <Outlet context={outletContext} />
+            </ErrorBoundary>
           </main>
         </div>
 

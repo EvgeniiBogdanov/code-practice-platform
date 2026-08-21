@@ -1,6 +1,6 @@
 <div align="center">
 
-# ⚡ Code Practice Platform · `v2.2.6`
+# ⚡ Code Practice Platform · `v2.2.7`
 
 ### Интерактивная платформа для подготовки к техническим собеседованиям по фронтенду и алгоритмам.
 
@@ -83,7 +83,6 @@
   <img src="https://img.shields.io/badge/Web_Workers-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="Web Workers" />
   <img src="https://img.shields.io/badge/xterm.js-000000?style=for-the-badge&logo=gnubash&logoColor=white" alt="xterm.js" />
   <img src="https://img.shields.io/badge/Sucrase-FF5722?style=for-the-badge&logo=babel&logoColor=white" alt="Sucrase" />
-  <img src="https://img.shields.io/badge/Lucide_Icons-F56565?style=for-the-badge&logo=feather&logoColor=white" alt="Lucide Icons" />
 </p>
 
 ---

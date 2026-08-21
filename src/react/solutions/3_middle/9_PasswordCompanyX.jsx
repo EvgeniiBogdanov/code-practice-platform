@@ -26,34 +26,14 @@ const Password = ({ hideTimeoutMs = 5000 }) => {
   };
 
   return (
-    <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+    <div>
       <input
         type={isVisible ? 'text' : 'password'}
         value={password}
         onChange={handleInputChange}
         placeholder="Введите пароль"
-        style={{
-          padding: '8px 12px',
-          borderRadius: '4px',
-          border: '1px solid #ccc',
-          fontSize: '14px',
-          outline: 'none',
-        }}
       />
-      <button
-        onClick={toggleVisibility}
-        type="button"
-        style={{
-          padding: '8px 14px',
-          borderRadius: '4px',
-          border: '1px solid #0070f3',
-          background: '#0070f3',
-          color: '#ffffff',
-          fontSize: '14px',
-          fontWeight: 500,
-          cursor: 'pointer',
-        }}
-      >
+      <button onClick={toggleVisibility} type="button">
         {isVisible ? 'Скрыть пароль' : 'Показать пароль'}
       </button>
     </div>
