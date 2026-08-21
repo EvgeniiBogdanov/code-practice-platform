@@ -7,6 +7,7 @@ import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const pkg = JSON.parse(fs.readFileSync(path.resolve(__dirname, "package.json"), "utf-8"));
 
 function githubPagesSpaPlugin() {
   return {
@@ -24,6 +25,9 @@ function githubPagesSpaPlugin() {
 }
 
 export default defineConfig({
+  define: {
+    __APP_VERSION__: JSON.stringify(pkg.version),
+  },
   base: process.env.VERCEL ? "/" : "/code-practice-platform/",
   plugins: [
     TanStackRouterVite({

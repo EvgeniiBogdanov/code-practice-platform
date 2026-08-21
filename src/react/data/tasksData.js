@@ -685,6 +685,7 @@ export const WARMUP_TASKS = [
     id: "w14",
     title: "14. async/await (Запрос)",
     desc: "Напишите функцию fetchUsers, которая делает GET-запрос к API по адресу https://jsonplaceholder.typicode.com/users и возвращает список пользователей в виде массива данных.",
+    isRaw: true,
     rawCandidate: WarmupCandidate14,
     rawSolution: WarmupSolution14,
     filepath: "src/react/tasks/1_warmup/14_AsyncAwaitFetch.js",

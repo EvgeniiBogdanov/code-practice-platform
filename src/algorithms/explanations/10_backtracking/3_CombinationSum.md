@@ -1,7 +1,5 @@
 # Combination Sum — разбор задачи
 
-Источник: https://leetcode.com/problems/combination-sum/ (задача №39, сложность Medium)
-
 ## Какой алгоритм используется
 
 **Backtracking (поиск с возвратом / бэктрекинг)**.
@@ -96,9 +94,3 @@ const combinationSum = (candidates, target) => {
 - Память: `O(target / min(candidates))` на глубину рекурсии + место под сам результат.
 
 Для ограничений задачи (`target <= 40`, `candidates[i] >= 2`) это вполне приемлемо.
-
-## Полезные материалы (на русском)
-
-- [Поиск с возвратом (бэктрекинг) — Википедия](https://ru.wikipedia.org/wiki/%D0%9F%D0%BE%D0%B8%D1%81%D0%BA_%D1%81_%D0%B2%D0%BE%D0%B7%D0%B2%D1%80%D0%B0%D1%82%D0%BE%D0%BC) — общее описание метода и области применения.
-- [Habr: разбор алгоритма backtracking с примерами](https://habr.com/ru/companies/otus/articles/746408/) — шаги алгоритма (выбор, проверка, откат) на понятных примерах.
-- [Habr: бэктрекинг для переборных задач](https://habr.com/en/articles/126438) — объяснение сути "откатов" по данным и управлению.

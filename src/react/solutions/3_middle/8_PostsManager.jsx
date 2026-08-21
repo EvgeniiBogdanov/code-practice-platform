@@ -68,8 +68,6 @@ export const PostsManager = ({ url }) => {
         <button type="submit">Добавить</button>
       </form>
 
-      <hr />
-
       {status === 'loading' && <p>Загрузка постов...</p>}
       {status === 'error' && <p>Ошибка: {error}</p>}
 

@@ -1,68 +1,13 @@
-import React, { useState, useMemo, useEffect, Component } from "react";
-import { Lock, RotateCcw, AlertCircle, RefreshCw, Maximize2, Code2 } from "lucide-react";
-import { buildFilesMap, compileReactProject, clearLiveSandboxTimers } from "../../utils/reactLiveRunner";
-
-/**
- * Изолированный ErrorBoundary для перехвата рантайм-ошибок внутри песочницы
- */
-class SandboxErrorBoundary extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
-
-  static getDerivedStateFromError(error) {
-    return { hasError: true, error };
-  }
-
-  componentDidCatch(error, errorInfo) {
-    console.warn("[ReactLivePreview] Runtime error caught in sandbox:", error, errorInfo);
-  }
-
-  componentDidUpdate(prevProps) {
-    if (
-      prevProps.resetKey !== this.props.resetKey ||
-      prevProps.taskKey !== this.props.taskKey
-    ) {
-      this.setState({ hasError: false, error: null });
-    }
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="error-card" style={{ margin: "16px 0", width: "100%" }}>
-          <div className="error-title" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-            <AlertCircle size={16} style={{ color: "#ef4444" }} />
-            <span>Ошибка выполнения React компонента</span>
-          </div>
-          <div className="error-message" style={{ whiteSpace: "pre-wrap", fontFamily: "monospace", fontSize: "13px" }}>
-            {this.state.error?.message || String(this.state.error)}
-          </div>
-          <div style={{ marginTop: "12px", display: "flex", alignItems: "center", gap: "10px" }}>
-            <button
-              type="button"
-              className="view-mode-btn active"
-              style={{ height: "28px", padding: "0 10px", fontSize: "12px" }}
-              onClick={() => this.setState({ hasError: false, error: null })}
-            >
-              <RotateCcw size={12} />
-              <span>Попробовать снова</span>
-            </button>
-            <span style={{ fontSize: "12px", color: "var(--text-secondary, #94a3b8)" }}>
-              Или исправьте логику во вкладке «Код»
-            </span>
-          </div>
-        </div>
-      );
-    }
-    return this.props.children;
-  }
-}
+import React, { useState, useMemo, useEffect } from "react";
+import { Lock, RotateCcw, AlertCircle } from "lucide-react";
+import { buildFilesMap, buildSandboxIframeSrcDoc, clearLiveSandboxTimers } from "../../utils/reactLiveRunner";
+import { useUIStore } from "../../stores/useUIStore";
 
 /**
  * ReactLivePreview
- * Компонент динамической песочницы для предпросмотра React-задач
+ * Компонент динамической песочницы для предпросмотра React-задач.
+ * Выполняется в изолированном iframe с полной изоляцией стилей,
+ * глобального контекста window, перехватом ошибок и защитой от падений родительского интерфейса.
  */
 export const ReactLivePreview = ({
   task,
@@ -72,10 +17,11 @@ export const ReactLivePreview = ({
   storagePrefix = "cand",
   variantIdx = 0,
   fallbackComponent = null,
-  onToggleFullscreen = null,
   containerStyle = {},
 }) => {
   const [reloadKey, setReloadKey] = useState(0);
+  const [iframeHeight, setIframeHeight] = useState(260);
+  const theme = useUIStore((state) => state.theme) || "dark";
 
   const activeFile = files[activeFileIdx] || files[0] || { name: "index.jsx" };
 
@@ -91,17 +37,56 @@ export const ReactLivePreview = ({
     );
   }, [files, storagePrefix, task?.id, activeFileIdx, currentCode, variantIdx, reloadKey]);
 
-  // Выполняем компиляцию
-  const { Component: LiveComponent, error: compileError } = useMemo(() => {
-    return compileReactProject(filesMap, activeFile?.name);
-  }, [filesMap, activeFile?.name]);
+  // Генерируем изолированный srcDoc для iframe песочницы
+  const { srcDoc, error: compileError } = useMemo(() => {
+    return buildSandboxIframeSrcDoc({
+      filesMap,
+      entryFileName: activeFile?.name,
+      theme,
+    });
+  }, [filesMap, activeFile?.name, theme]);
 
-  // Очищаем активные интервалы/таймауты песочницы при перемонтировании или смене задачи
+  // Очищаем активные интервалы/таймауты песочницы при смене задачи
   useEffect(() => {
     return () => {
       clearLiveSandboxTimers();
     };
   }, [task?.id, reloadKey]);
+
+  // Сбрасываем высоту при переключении задачи, вкладки, варианта или файла
+  useEffect(() => {
+    setIframeHeight(260);
+  }, [task?.id, storagePrefix, variantIdx, activeFileIdx]);
+
+  // Слушаем динамическое изменение высоты контента из песочницы
+  useEffect(() => {
+    const handleMessage = (e) => {
+      if (e.data && e.data.type === "SANDBOX_RESIZE" && typeof e.data.height === "number") {
+        const targetH = Math.max(260, Math.ceil(e.data.height));
+        setIframeHeight((prev) => (Math.abs(prev - targetH) > 2 ? targetH : prev));
+      }
+    };
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
+
+  const handleIframeLoad = (e) => {
+    try {
+      const doc = e.target.contentDocument || e.target.contentWindow?.document;
+      if (doc) {
+        const rootEl = doc.getElementById("root");
+        if (rootEl) {
+          const rootRect = rootEl.getBoundingClientRect?.()?.height || 0;
+          const rootScroll = rootEl.scrollHeight || 0;
+          const rootOffset = rootEl.offsetHeight || 0;
+          const rootHeight = Math.max(rootRect, rootScroll, rootOffset);
+          if (rootHeight > 0) {
+            setIframeHeight(Math.max(260, Math.ceil(rootHeight + 48)));
+          }
+        }
+      }
+    } catch (err) {}
+  };
 
   const handleManualReload = (e) => {
     e?.stopPropagation();
@@ -109,106 +94,95 @@ export const ReactLivePreview = ({
     setReloadKey((k) => k + 1);
   };
 
-  const Fallback = fallbackComponent;
-  const isFallbackValid =
-    Boolean(Fallback) && typeof Fallback !== "string";
+  const hasFiles = Object.keys(filesMap).length > 0;
 
   return (
     <div className="browser-mockup" style={{ ...containerStyle }}>
       <div className="browser-mockup-header">
-        <div className="browser-mockup-dots">
-          <span className="browser-dot close" />
-          <span className="browser-dot minimize" />
-          <span
-            className="browser-dot maximize"
-            onClick={onToggleFullscreen}
-            style={onToggleFullscreen ? { cursor: "pointer" } : {}}
-            title={onToggleFullscreen ? "Развернуть во весь экран (/open)" : undefined}
-          />
+        <div className="browser-mockup-left">
+          <div className="browser-mockup-dots">
+            <span className="browser-dot close" />
+            <span className="browser-dot minimize" />
+            <span className="browser-dot maximize" />
+          </div>
         </div>
 
-        <div className="browser-mockup-address" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
-          <Lock
-            size={12}
-            style={{
-              display: "inline-block",
-              color: "#10b981",
-              flexShrink: 0,
-            }}
-          />
-          <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-            localhost:5173/{activeFile.name}
-          </span>
+        <div className="browser-mockup-address">
+          <div className="browser-address-content">
+            <Lock
+              size={11}
+              style={{
+                color: "#10b981",
+                flexShrink: 0,
+              }}
+            />
+            <span className="browser-address-host">preview</span>
+            <span className="browser-address-path">/ {activeFile.name}</span>
+          </div>
+
           <button
             type="button"
             onClick={handleManualReload}
             className="browser-reload-btn"
-            style={{
-              background: "transparent",
-              border: "none",
-              cursor: "pointer",
-              padding: "2px 4px",
-              display: "inline-flex",
-              alignItems: "center",
-              color: "var(--text-secondary, #94a3b8)",
-              borderRadius: "4px",
-            }}
-            title="Перезапустить React компонент"
           >
             <RotateCcw size={11} />
           </button>
         </div>
 
-        <div style={{ width: "52px", display: "flex", justifyContent: "flex-end" }}>
-          {onToggleFullscreen && (
-            <button
-              type="button"
-              onClick={onToggleFullscreen}
-              style={{
-                background: "transparent",
-                border: "none",
-                color: "var(--text-secondary, #94a3b8)",
-                cursor: "pointer",
-                padding: "2px",
-                display: "flex",
-                alignItems: "center",
-              }}
-              title="Развернуть во весь экран"
-            >
-              <Maximize2 size={12} />
-            </button>
-          )}
-        </div>
+        <div className="browser-mockup-right" />
       </div>
 
-      <div className="browser-mockup-body" style={{ flex: 1, overflow: "auto" }}>
+      <div
+        className="browser-mockup-body"
+        style={{
+          padding: 0,
+          minHeight: "260px",
+          height: "auto",
+          overflow: "visible",
+          display: "block",
+          width: "100%",
+        }}
+      >
         {compileError ? (
-          <div className="error-card" style={{ margin: "16px 0", width: "100%" }}>
-            <div className="error-title" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <AlertCircle size={16} style={{ color: "#ef4444" }} />
-              <span>Ошибка синтаксиса в коде задачи</span>
+          <div style={{ padding: "24px" }}>
+            <div className="error-card" style={{ margin: "0", width: "100%" }}>
+              <div className="error-title" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <AlertCircle size={16} style={{ color: "#ef4444" }} />
+                <span>Ошибка синтаксиса в коде задачи</span>
+              </div>
+              <div className="error-message" style={{ whiteSpace: "pre-wrap", fontFamily: "monospace", fontSize: "13px" }}>
+                {compileError.message || String(compileError)}
+              </div>
+              <p className="error-hint" style={{ marginTop: "8px", fontSize: "12px", color: "var(--text-secondary, #94a3b8)" }}>
+                Переключитесь на вкладку «Код», чтобы исправить синтаксическую ошибку.
+              </p>
             </div>
-            <div className="error-message" style={{ whiteSpace: "pre-wrap", fontFamily: "monospace", fontSize: "13px" }}>
-              {compileError.message || String(compileError)}
-            </div>
-            <p className="error-hint" style={{ marginTop: "8px", fontSize: "12px", color: "var(--text-secondary, #94a3b8)" }}>
-              Переключитесь на вкладку «Код», чтобы исправить синтаксическую ошибку.
+          </div>
+        ) : srcDoc ? (
+          <iframe
+            key={`${task?.id}_${storagePrefix}_${variantIdx}_${reloadKey}`}
+            srcDoc={srcDoc}
+            onLoad={handleIframeLoad}
+            title={`Preview: ${activeFile.name}`}
+            scrolling="no"
+            frameBorder="0"
+            style={{
+              width: "100%",
+              height: `${iframeHeight}px`,
+              minHeight: "260px",
+              border: "none",
+              outline: "none",
+              display: "block",
+              overflow: "hidden",
+              background: "transparent",
+            }}
+          />
+        ) : hasFiles ? (
+          <div style={{ padding: "32px 16px", textAlign: "center", color: "var(--text-secondary, #94a3b8)", width: "100%" }}>
+            <p style={{ margin: 0, fontSize: "14px" }}>
+              Загрузка песочницы...
             </p>
           </div>
-        ) : LiveComponent ? (
-          <SandboxErrorBoundary
-            taskKey={`${task?.id}_${storagePrefix}_${variantIdx}`}
-            resetKey={reloadKey}
-          >
-            <LiveComponent />
-          </SandboxErrorBoundary>
-        ) : isFallbackValid ? (
-          <SandboxErrorBoundary
-            taskKey={`${task?.id}_${storagePrefix}_${variantIdx}`}
-            resetKey={reloadKey}
-          >
-            <Fallback />
-          </SandboxErrorBoundary>
         ) : (
           <div style={{ padding: "32px 16px", textAlign: "center", color: "var(--text-secondary, #94a3b8)", width: "100%" }}>
             <p style={{ margin: 0, fontSize: "14px" }}>
