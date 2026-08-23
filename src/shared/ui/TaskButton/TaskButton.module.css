@@ -1,0 +1,63 @@
+.taskButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 14px;
+  height: 34px;
+  border-radius: var(--radius-lg);
+  border: none;
+  background: var(--bg-subtle, rgba(255, 255, 255, 0.05));
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: var(--lh-tight, 1.25);
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background var(--transition-fast, 0.15s ease),
+    color var(--transition-fast, 0.15s ease),
+    transform 0.1s ease;
+}
+
+[data-theme="light"] .taskButton {
+  background: rgba(55, 53, 47, 0.06);
+  color: var(--text-muted, rgba(55, 53, 47, 0.65));
+}
+
+.taskButton:hover:not(:disabled) {
+  background: var(--task-btn-hover-bg, var(--state-hover, rgba(255, 255, 255, 0.09)));
+  color: var(--task-btn-accent, var(--text-main));
+}
+
+[data-theme="light"] .taskButton:hover:not(:disabled) {
+  background: var(--task-btn-hover-bg, rgba(55, 53, 47, 0.1));
+  color: var(--task-btn-accent, var(--text-main, #37352f));
+}
+
+.taskButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.taskButton:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-primary, #3b82f6);
+}
+
+/* Active Status Variants */
+.solvedActive {
+  background: #10b981 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+.unsolvedActive {
+  background: #ef4444 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+}

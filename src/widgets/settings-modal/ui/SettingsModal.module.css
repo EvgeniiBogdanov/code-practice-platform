@@ -1,0 +1,95 @@
+.settingsModalCard {
+  width: 100%;
+  max-width: 540px;
+}
+
+/* Body */
+.settingsModalBody {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+}
+
+/* Setting Card */
+.settingCard {
+  background: var(--bg-subtle, rgba(255, 255, 255, 0.03));
+  border-radius: var(--radius-md, 8px);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+[data-theme="light"] .settingCard {
+  background: #f9f9f8;
+  border-color: rgba(55, 53, 47, 0.1);
+}
+
+.settingCardHeader {
+  display: flex;
+  align-items: flex-start;
+}
+
+.settingCardInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.settingCardTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main, #ffffff);
+  margin: 0;
+  font-family: var(--font-sans);
+}
+
+[data-theme="light"] .settingCardTitle {
+  color: #191919;
+}
+
+.settingCardDesc {
+  font-size: 12.5px;
+  color: var(--text-muted, rgba(255, 255, 255, 0.65));
+  margin: 0;
+  line-height: 1.5;
+  font-family: var(--font-sans);
+}
+
+[data-theme="light"] .settingCardDesc {
+  color: rgba(55, 53, 47, 0.68);
+}
+
+.settingCardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-top: 4px;
+}
+
+/* Confirm Dialog Body */
+.resetConfirmBody {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.resetConfirmText {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text-main, #ffffff);
+  font-family: var(--font-sans);
+}
+
+[data-theme="light"] .resetConfirmText {
+  color: #191919;
+}
+
+.resetConfirmActions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

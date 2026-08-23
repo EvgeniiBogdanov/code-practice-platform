@@ -1,0 +1,206 @@
+.codeViewer {
+  width: 100%;
+  max-width: 100%;
+  margin: 8px 0;
+  background: var(--bg-editor, #1e1e1e);
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  border-radius: var(--radius-md, 8px);
+  overflow: hidden;
+  position: relative;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+[data-theme="light"] .codeViewer {
+  background: #ffffff;
+  border-color: var(--border-color, rgba(55, 53, 47, 0.12));
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  background: var(--bg-sidebar, #202020);
+  border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  height: 32px;
+  min-height: 32px;
+  user-select: none;
+  overflow: hidden;
+}
+
+[data-theme="light"] .header {
+  background: var(--bg-sidebar, #f7f6f3);
+  border-bottom-color: var(--border-color, rgba(55, 53, 47, 0.12));
+}
+
+.fileTab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-main, #ffffff);
+  white-space: nowrap;
+}
+
+[data-theme="light"] .fileTab {
+  color: var(--text-main, #37352f);
+}
+
+.surface {
+  display: flex;
+  position: relative;
+  background: var(--bg-editor, #1e1e1e);
+  min-height: auto;
+  height: auto;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+[data-theme="light"] .surface {
+  background: #ffffff;
+}
+
+.gutter {
+  padding: 14px 8px 14px 0;
+  background: var(--bg-editor, #1e1e1e);
+  border-right: 1px solid var(--border-color, rgba(255, 255, 255, 0.05));
+  user-select: none;
+  color: var(--text-dimmed, #858585);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: right;
+  box-sizing: border-box;
+  overflow: hidden;
+  flex-shrink: 0;
+  height: auto;
+}
+
+[data-theme="light"] .gutter {
+  background: var(--bg-sidebar, #f7f6f3);
+  border-right-color: var(--border-color, rgba(55, 53, 47, 0.12));
+  color: var(--fg-muted, rgba(55, 53, 47, 0.45));
+}
+
+.gutterLine {
+  height: 1.6em;
+  line-height: 1.6;
+  font-size: 14px;
+  font-family: var(--font-mono);
+  padding-right: 4px;
+  box-sizing: border-box;
+}
+
+.canvas {
+  flex: 1;
+  position: relative;
+  min-width: 0;
+  max-width: 100%;
+  height: auto;
+  overflow: hidden;
+  padding: 0;
+}
+
+.preOnly {
+  margin: 0;
+  padding: 14px 16px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-main, #d4d4d4);
+  white-space: pre;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: auto;
+}
+
+[data-theme="light"] .preOnly {
+  color: var(--text-main, #37352f);
+}
+
+.preOnly code {
+  font-family: var(--font-mono) !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  background: transparent !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  color: var(--text-main, #d4d4d4);
+}
+
+[data-theme="light"] .preOnly code {
+  color: var(--text-main, #37352f);
+}
+
+.preOnly code * {
+  font-family: var(--font-mono) !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+}
+
+.copyBtn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.15s ease,
+    background 0.15s ease,
+    color 0.15s ease;
+  width: 26px;
+  height: 26px;
+  border-radius: 5px;
+  border: none;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  user-select: none;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.codeViewer:hover .copyBtn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.copyBtn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+[data-theme="light"] .copyBtn {
+  background: rgba(55, 53, 47, 0.06);
+  color: var(--text-muted, rgba(55, 53, 47, 0.65));
+}
+
+[data-theme="light"] .copyBtn:hover {
+  background: rgba(55, 53, 47, 0.12);
+  color: var(--text-main, #37352f);
+}
+
+.copied {
+  color: #34d399 !important;
+  background: rgba(16, 185, 129, 0.2) !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+[data-theme="light"] .copied {
+  color: #059669 !important;
+  background: rgba(16, 185, 129, 0.15) !important;
+}

@@ -1,0 +1,157 @@
+.checkboxRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 3px 0;
+  position: relative;
+}
+
+.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Hidden native input for A11y */
+.nativeInput {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
+}
+
+/* Custom Checkbox Box (Notion Style) */
+.customBox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+  border-radius: 3px;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  background: transparent;
+  transition:
+    background-color 0.12s ease,
+    border-color 0.12s ease,
+    transform 0.1s ease;
+  margin-top: 2.5px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.checkboxRow:hover:not(.disabled) .customBox {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.65);
+}
+
+.checkboxRow:active:not(.disabled) .customBox {
+  transform: scale(0.92);
+}
+
+[data-theme="light"] .customBox {
+  border-color: rgba(55, 53, 47, 0.35);
+}
+
+[data-theme="light"] .checkboxRow:hover:not(.disabled) .customBox {
+  background: rgba(55, 53, 47, 0.08);
+  border-color: rgba(55, 53, 47, 0.65);
+}
+
+/* Checked States */
+.color-blue.checked .customBox {
+  background: #2383e2 !important;
+  border-color: #2383e2 !important;
+  color: #ffffff;
+}
+
+.color-green.checked .customBox {
+  background: #10b981 !important;
+  border-color: #10b981 !important;
+  color: #ffffff;
+}
+
+.color-purple.checked .customBox {
+  background: #a855f7 !important;
+  border-color: #a855f7 !important;
+  color: #ffffff;
+}
+
+/* Keyboard Focus Ring */
+.nativeInput:focus-visible + .customBox {
+  outline: 2px solid var(--accent-blue, #2383e2);
+  outline-offset: 2px;
+}
+
+/* Checkmark Icon */
+.checkIcon {
+  color: #ffffff;
+  width: 12px;
+  height: 12px;
+  stroke-width: 3;
+  animation: popIn 0.12s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Label text */
+.label {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-main, #ffffff);
+  font-family: var(--font-sans);
+  transition:
+    color 0.15s ease,
+    text-decoration 0.15s ease;
+  flex: 1;
+  min-width: 0;
+}
+
+[data-theme="light"] .label {
+  color: #191919;
+}
+
+/* Strikethrough & Muted on Checked */
+.checked .strikethrough {
+  text-decoration: line-through;
+  color: var(--text-muted, rgba(255, 255, 255, 0.45));
+}
+
+[data-theme="light"] .checked .strikethrough {
+  color: rgba(55, 53, 47, 0.45);
+}
+
+/* Sizes */
+.size-sm .customBox {
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  min-height: 14px;
+  margin-top: 3px;
+}
+
+.size-sm .checkIcon {
+  width: 10px;
+  height: 10px;
+  stroke-width: 3;
+}
+
+.size-sm .label {
+  font-size: 13px;
+}
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

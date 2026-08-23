@@ -1,0 +1,47 @@
+.brandContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.sidebarToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.sidebarToggle:hover {
+  background-color: var(--bg-surface);
+  color: var(--text-main);
+  border-color: var(--border-hover);
+}
+
+.logoLink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  text-decoration: none;
+  color: var(--text-main);
+  font-weight: 700;
+  font-size: var(--fs-base);
+  letter-spacing: -0.3px;
+}
+
+.logoIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, var(--accent-blue), #6366f1);
+  background-color: var(--accent-blue);
+  color: #ffffff;
+}

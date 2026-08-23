@@ -1,0 +1,10 @@
+.nodeTitle {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  font-size: var(--fs-sidebar-item, 14px);
+  font-weight: var(--fw-semibold, 600);
+  letter-spacing: var(--ls-item, -0.01em);
+}

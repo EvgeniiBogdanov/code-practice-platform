@@ -1,0 +1,18 @@
+.actionsContainer {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  user-select: none;
+}
+
+.timerWrapper {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+}
+
+.timerWrapper.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}

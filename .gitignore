@@ -1,17 +1,25 @@
 # Dependencies
 node_modules/
 .pnpm-store/
+.yarn/cache/
+.yarn/unplugged/
+.yarn/build-state.yml
+.yarn/install-state.gz
 
-# Production / Build output
+# Production / Build Output
 dist/
 dist-ssr/
 build/
+out/
 
-# Vite & Tooling Caches
+# Tooling Caches & Artifacts
 .vite/
 .eslintcache
 .stylelintcache
+.prettiercache
 *.tsbuildinfo
+.turbo/
+.cache/
 
 # Logs
 logs/
@@ -28,6 +36,7 @@ lerna-debug.log*
 .env.development.local
 .env.test.local
 .env.production.local
+*.env.local
 
 # Operating System Files
 .DS_Store
@@ -37,10 +46,12 @@ lerna-debug.log*
 .Trashes
 ehthumbs.db
 Thumbs.db
+[Dd]esktop.ini
 
 # IDE & Editor Files
 .vscode/*
 !.vscode/extensions.json
+!.vscode/settings.json
 .idea/
 *.suo
 *.ntvs*
@@ -49,6 +60,10 @@ Thumbs.db
 *.swp
 *.swo
 
-# Temporary & Test files
-.cache/
+# Test & Coverage Output
 coverage/
+.nyc_output/
+
+# Temporary / Scratch Files
+.system_generated/
+scratch/

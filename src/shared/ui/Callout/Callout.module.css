@@ -1,0 +1,256 @@
+.callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 18px;
+  border-radius: var(--radius-md, 8px);
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: left;
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.12));
+  border-left: 4px solid var(--border-color, rgba(255, 255, 255, 0.3));
+  background: var(--bg-surface, rgba(255, 255, 255, 0.04));
+  color: var(--text-main, #ffffff);
+  transition:
+    background-color var(--transition-fast, 0.15s ease),
+    border-color var(--transition-fast, 0.15s ease);
+}
+
+[data-theme="light"] .callout {
+  background: rgba(55, 53, 47, 0.05);
+  border-color: rgba(55, 53, 47, 0.12);
+  border-left-color: rgba(55, 53, 47, 0.35);
+  color: #191919;
+}
+
+/* Icon */
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+  min-width: 20px;
+}
+
+/* Content Container */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Title */
+.title {
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0;
+  color: var(--text-main, #ffffff);
+}
+
+[data-theme="light"] .title {
+  color: #191919;
+}
+
+/* Body text / children */
+.body {
+  font-size: 14px;
+  line-height: 1.6;
+  color: inherit;
+}
+
+.body p {
+  margin: 0 0 6px 0;
+}
+
+.body p:last-child {
+  margin-bottom: 0;
+}
+
+.body ul,
+.body ol {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.body li {
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.body a {
+  color: var(--accent-blue, #3b82f6);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.15s ease;
+}
+
+.body a:hover {
+  opacity: 0.8;
+}
+
+/* ==========================================================================
+   Color Variants (Notion Palettes)
+   ========================================================================== */
+
+/* Purple (Default for Articles / Resources) */
+.color-purple {
+  background: rgba(168, 85, 247, 0.08);
+  border-color: rgba(168, 85, 247, 0.25);
+  border-left-color: #a855f7;
+}
+
+.color-purple .title {
+  color: #c084fc;
+}
+
+[data-theme="light"] .color-purple {
+  background: #faf5ff;
+  border-color: #e9d5ff;
+  border-left-color: #9333ea;
+}
+
+[data-theme="light"] .color-purple .title {
+  color: #7e22ce;
+}
+
+/* Blue (Info / Explanations) */
+.color-blue {
+  background: rgba(35, 131, 226, 0.08);
+  border-color: rgba(35, 131, 226, 0.25);
+  border-left-color: #2383e2;
+}
+
+.color-blue .title {
+  color: #60a5fa;
+}
+
+[data-theme="light"] .color-blue {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  border-left-color: #2563eb;
+}
+
+[data-theme="light"] .color-blue .title {
+  color: #1d4ed8;
+}
+
+/* Green (Success / Tips) */
+.color-green {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.25);
+  border-left-color: #10b981;
+}
+
+.color-green .title {
+  color: #34d399;
+}
+
+[data-theme="light"] .color-green {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  border-left-color: #059669;
+}
+
+[data-theme="light"] .color-green .title {
+  color: #047857;
+}
+
+/* Yellow / Amber (Warnings / Highlights) */
+.color-yellow {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.25);
+  border-left-color: #f59e0b;
+}
+
+.color-yellow .title {
+  color: #fbbf24;
+}
+
+[data-theme="light"] .color-yellow {
+  background: #fffbeb;
+  border-color: #fef3c7;
+  border-left-color: #d97706;
+}
+
+[data-theme="light"] .color-yellow .title {
+  color: #b45309;
+}
+
+/* Orange (Practice / Actions) */
+.color-orange {
+  background: rgba(249, 115, 22, 0.08);
+  border-color: rgba(249, 115, 22, 0.25);
+  border-left-color: #f97316;
+}
+
+.color-orange .title {
+  color: #fb923c;
+}
+
+[data-theme="light"] .color-orange {
+  background: #fff7ed;
+  border-color: #fed7aa;
+  border-left-color: #ea580c;
+}
+
+[data-theme="light"] .color-orange .title {
+  color: #c2410c;
+}
+
+/* Red (Danger / Pitfalls) */
+.color-red {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.25);
+  border-left-color: #ef4444;
+}
+
+.color-red .title {
+  color: #f87171;
+}
+
+[data-theme="light"] .color-red {
+  background: #fef2f2;
+  border-color: #fecaca;
+  border-left-color: #dc2626;
+}
+
+[data-theme="light"] .color-red .title {
+  color: #b91c1c;
+}
+
+/* Gray / Default */
+.color-gray,
+.color-default {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--border-color, rgba(255, 255, 255, 0.12));
+  border-left-color: rgba(255, 255, 255, 0.3);
+}
+
+.color-gray .title,
+.color-default .title {
+  color: var(--text-main, #ffffff);
+}
+
+[data-theme="light"] .color-gray,
+[data-theme="light"] .color-default {
+  background: rgba(55, 53, 47, 0.05);
+  border-color: rgba(55, 53, 47, 0.12);
+  border-left-color: rgba(55, 53, 47, 0.35);
+}
+
+[data-theme="light"] .color-gray .title,
+[data-theme="light"] .color-default .title {
+  color: #191919;
+}

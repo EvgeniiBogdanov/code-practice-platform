@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as EditorRouteImport } from './routes/editor'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as AlgorithmsIndexRouteImport } from './routes/algorithms/index'
 import { Route as AlgorithmsTaskIdRouteImport } from './routes/algorithms/$taskId'
@@ -26,6 +27,11 @@ import { Route as OpenReactTaskIdRouteImport } from './routes/open/react/$taskId
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EditorRoute = EditorRouteImport.update({
+  id: '/editor',
+  path: '/editor',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HomeRoute = HomeRouteImport.update({
@@ -91,6 +97,7 @@ const OpenReactTaskIdRoute = OpenReactTaskIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/editor': typeof EditorRoute
   '/home': typeof HomeRoute
   '/algorithms/$taskId': typeof AlgorithmsTaskIdRoute
   '/javascript/$taskId': typeof JavascriptTaskIdRoute
@@ -106,6 +113,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/editor': typeof EditorRoute
   '/home': typeof HomeRoute
   '/algorithms/$taskId': typeof AlgorithmsTaskIdRoute
   '/javascript/$taskId': typeof JavascriptTaskIdRoute
@@ -122,6 +130,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/editor': typeof EditorRoute
   '/home': typeof HomeRoute
   '/algorithms/$taskId': typeof AlgorithmsTaskIdRoute
   '/javascript/$taskId': typeof JavascriptTaskIdRoute
@@ -139,6 +148,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/editor'
     | '/home'
     | '/algorithms/$taskId'
     | '/javascript/$taskId'
@@ -154,6 +164,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/editor'
     | '/home'
     | '/algorithms/$taskId'
     | '/javascript/$taskId'
@@ -169,6 +180,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/editor'
     | '/home'
     | '/algorithms/$taskId'
     | '/javascript/$taskId'
@@ -185,6 +197,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  EditorRoute: typeof EditorRoute
   HomeRoute: typeof HomeRoute
   AlgorithmsTaskIdRoute: typeof AlgorithmsTaskIdRoute
   JavascriptTaskIdRoute: typeof JavascriptTaskIdRoute
@@ -206,6 +219,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/editor': {
+      id: '/editor'
+      path: '/editor'
+      fullPath: '/editor'
+      preLoaderRoute: typeof EditorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/home': {
@@ -297,6 +317,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  EditorRoute: EditorRoute,
   HomeRoute: HomeRoute,
   AlgorithmsTaskIdRoute: AlgorithmsTaskIdRoute,
   JavascriptTaskIdRoute: JavascriptTaskIdRoute,

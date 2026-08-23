@@ -1,0 +1,255 @@
+.accordionCard {
+  background: var(--bg-subtle, rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--border-color);
+  border-left: 3px solid var(--border-color);
+  border-radius: var(--radius-md, 8px);
+  color: var(--text-main);
+  font-size: 13.5px;
+  line-height: 1.55;
+  box-sizing: border-box;
+  width: 100%;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+[data-theme="light"] .accordionCard {
+  background: var(--bg-subtle, #f4f4f2);
+  border-color: var(--border-color, rgba(55, 53, 47, 0.12));
+  color: var(--text-main, #191919);
+}
+
+/* Size Modifiers */
+.accordionCard.size-xs {
+  border-radius: var(--radius-md, 6px);
+  font-size: 12.5px;
+  margin-bottom: 2px;
+}
+
+.accordionCard.size-sm {
+  border-radius: var(--radius-md, 6px);
+  font-size: 13px;
+}
+
+/* Color Modifiers */
+.color-purple {
+  border-left-color: #a855f7;
+}
+
+.color-purple .icon {
+  color: #a855f7;
+}
+
+[data-theme="light"] .color-purple {
+  border-left-color: #9333ea;
+}
+
+.color-orange {
+  border-left-color: #f59e0b;
+}
+
+.color-orange .icon {
+  color: #f59e0b;
+}
+
+[data-theme="light"] .color-orange {
+  border-left-color: #d97706;
+}
+
+.color-green {
+  border-left-color: #10b981;
+}
+
+.color-green .icon {
+  color: #10b981;
+}
+
+[data-theme="light"] .color-green {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.25);
+  border-left-color: #059669;
+}
+
+.color-blue {
+  border-left-color: #3b82f6;
+}
+
+.color-blue .icon {
+  color: #3b82f6;
+}
+
+[data-theme="light"] .color-blue {
+  border-left-color: #2563eb;
+}
+
+.color-default,
+.color-gray {
+  border-left-color: var(--border-color);
+}
+
+/* Header Toggle Button */
+.toggleBtn {
+  all: unset;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 14px;
+  box-sizing: border-box;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s ease;
+  gap: 10px;
+}
+
+.size-xs .toggleBtn {
+  padding: 5px 10px;
+  gap: 6px;
+}
+
+.size-sm .toggleBtn {
+  padding: 7px 12px;
+  gap: 8px;
+}
+
+.toggleBtn:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="light"] .toggleBtn:hover {
+  background: rgba(55, 53, 47, 0.06);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-main, #ffffff);
+  flex: 1;
+  min-width: 0;
+}
+
+.size-xs .headerLeft {
+  gap: 6px;
+  font-size: 12.5px;
+}
+
+.size-sm .headerLeft {
+  gap: 7px;
+  font-size: 13px;
+}
+
+[data-theme="light"] .headerLeft {
+  color: var(--text-main, #191919);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.size-xs .icon {
+  font-size: 13px;
+}
+
+.title {
+  flex: 1;
+  min-width: 0;
+  line-height: 1.4;
+}
+
+.title strong {
+  font-weight: 600;
+}
+
+.headerRight {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.chevron {
+  transition: transform 0.22s cubic-bezier(0.25, 0.1, 0.25, 1);
+  color: var(--text-muted, rgba(255, 255, 255, 0.75));
+  flex-shrink: 0;
+}
+
+.chevron.noTransition {
+  transition: none !important;
+}
+
+[data-theme="light"] .chevron {
+  color: var(--text-muted, rgba(55, 53, 47, 0.68));
+}
+
+.rotateOpen {
+  transform: rotate(180deg);
+}
+
+/* CSS Grid Transition Accordion Body */
+.contentCollapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+  min-width: 0;
+}
+
+.contentCollapse.expanded {
+  grid-template-rows: 1fr;
+}
+
+.contentCollapse.noTransition {
+  transition: none !important;
+}
+
+.contentInner {
+  overflow: hidden;
+  min-width: 0;
+}
+
+.contentBody {
+  padding: 10px 14px 14px 14px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text-main, #ffffff);
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+  content-visibility: auto;
+}
+
+.size-xs .contentBody {
+  padding: 6px 10px 10px 10px;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.size-sm .contentBody {
+  padding: 8px 12px 12px 12px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+[data-theme="light"] .contentBody {
+  color: rgba(55, 53, 47, 0.85);
+  border-top-color: rgba(55, 53, 47, 0.12);
+}
+
+.contentCollapse.expanded:not(.noTransition) .contentBody {
+  animation: accordionReveal 0.2s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+}
+
+@keyframes accordionReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,64 @@
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 860px) {
+  .kpiGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 540px) {
+  .kpiGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kpiCard {
+  background: var(--bg-card, #252525);
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: var(--shadow-sm);
+  box-sizing: border-box;
+}
+
+[data-theme="light"] .kpiCard {
+  background: var(--bg-popover, #ffffff);
+  border: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.kpiLabel {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.kpiValue {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-main);
+  font-feature-settings: "tnum";
+}
+
+.kpiSolved {
+  color: var(--color-status-solved, #10b981);
+}
+
+.kpiPercent {
+  color: var(--accent-blue, #60a5fa);
+}
+
+.kpiRemaining {
+  color: var(--color-status-due, #f59e0b);
+}

@@ -1,0 +1,53 @@
+/**
+ * Keyword Typo Dictionary
+ */
+
+export const KEYWORD_TYPOS: Record<string, string> = {
+  conts: "const",
+  cosnt: "const",
+  cotns: "const",
+  cnost: "const",
+  cnsot: "const",
+  fucntion: "function",
+  funtion: "function",
+  funciton: "function",
+  fnction: "function",
+  fuction: "function",
+  reutrn: "return",
+  retrun: "return",
+  retun: "return",
+  reurn: "return",
+  asnyc: "async",
+  aync: "async",
+  asnc: "async",
+  awiat: "await",
+  awit: "await",
+  calss: "class",
+  clsas: "class",
+  improt: "import",
+  imprt: "import",
+  exprot: "export",
+  exprt: "export",
+  lenght: "length",
+  lengh: "length",
+  consol: "console",
+  cosnole: "console",
+  cosole: "console",
+  pormise: "Promise",
+  promse: "Promise",
+  stirng: "string",
+  nubmer: "number",
+  bollean: "boolean",
+  usesate: "useState",
+  usestate: "useState",
+  useefect: "useEffect",
+  useeffect: "useEffect",
+  useref: "useRef",
+  usememo: "useMemo",
+  usecallback: "useCallback",
+  usecontext: "useContext",
+  usereducer: "useReducer",
+};
+
+const TYPO_KEYS = Object.keys(KEYWORD_TYPOS).sort((a, b) => b.length - a.length);
+export const TYPO_MASTER_REGEX = new RegExp(`\\b(${TYPO_KEYS.join("|")})\\b`, "gi");

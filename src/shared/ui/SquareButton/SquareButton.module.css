@@ -1,0 +1,58 @@
+.squareButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: var(--radius-lg, 8px);
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  user-select: none;
+  font-family: inherit;
+  transition:
+    background var(--transition-fast, 0.15s ease),
+    color var(--transition-fast, 0.15s ease);
+}
+
+.size_md {
+  width: 32px;
+  height: 30px;
+}
+
+.size_sm {
+  width: 26px;
+  height: 26px;
+}
+
+.squareButton:hover:not(:disabled):not(.disabled) {
+  background: var(--state-hover, rgba(255, 255, 255, 0.08));
+  color: var(--text-main);
+}
+
+[data-theme="light"] .squareButton:hover:not(:disabled):not(.disabled) {
+  background: rgba(55, 53, 47, 0.08);
+  color: var(--text-main, #37352f);
+}
+
+.squareButton.active:not(:disabled):not(.disabled) {
+  background: var(--state-active, rgba(255, 255, 255, 0.12));
+  color: var(--text-main);
+}
+
+[data-theme="light"] .squareButton.active:not(:disabled):not(.disabled) {
+  background: rgba(55, 53, 47, 0.14);
+  color: var(--text-main, #37352f);
+}
+
+.squareButton:disabled,
+.squareButton.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+  background: transparent;
+  color: var(--text-muted);
+}

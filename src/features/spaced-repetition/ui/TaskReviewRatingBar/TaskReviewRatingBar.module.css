@@ -1,0 +1,306 @@
+.taskReviewBanner {
+  border-radius: 10px;
+  background: transparent;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.taskReviewHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.taskReviewInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.taskReviewTexts {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.taskReviewTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 7px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.badgeLevel {
+  background: rgba(59, 130, 246, 0.12);
+  color: var(--accent-blue);
+}
+
+.badgeDue {
+  background: rgba(239, 68, 68, 0.14);
+  color: var(--color-error);
+}
+
+.badgeMaster {
+  background: rgba(16, 185, 129, 0.14);
+  color: var(--color-status-solved);
+}
+
+.lastSolvedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 7px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+}
+
+[data-theme="light"] .lastSolvedBadge {
+  background: rgba(55, 53, 47, 0.06);
+  color: var(--text-muted);
+}
+
+.lockedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 7px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+}
+
+[data-theme="light"] .lockedBadge {
+  background: rgba(55, 53, 47, 0.06);
+  color: var(--text-muted);
+}
+
+.taskReviewDesc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.descDue {
+  color: var(--color-error);
+  font-weight: 500;
+}
+
+.descScheduled {
+  color: var(--text-muted);
+}
+
+.descScheduled strong {
+  color: var(--text-main);
+}
+
+.descHint {
+  font-size: 12px;
+  color: var(--fg-muted);
+  margin-top: 2px;
+}
+
+.descNew {
+  color: var(--text-muted);
+}
+
+.taskReviewRatings {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  width: 100%;
+}
+
+.ratingsDisabled {
+  opacity: 0.6;
+}
+
+.reviewRateBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  min-height: 40px;
+  border-radius: 9px;
+  border: none;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  position: relative;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+[data-theme="light"] .reviewRateBtn {
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(55, 53, 47, 0.06);
+  color: var(--text-main);
+}
+
+.reviewRateBtn.disabled {
+  cursor: not-allowed;
+}
+
+.rateBtnContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  width: 100%;
+}
+
+.rateBtnTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.rateLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-main);
+  line-height: 1.2;
+}
+
+.rateInterval {
+  font-size: 10.5px;
+  font-weight: 400;
+  color: var(--text-muted);
+  line-height: 1.2;
+}
+
+.rateIconEasy {
+  color: #10b981;
+}
+
+.rateIconMedium {
+  color: #eab308;
+}
+
+.rateIconHard {
+  color: #f97316;
+}
+
+.rateCurrentCheck {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--text-main);
+  font-size: 10px;
+}
+
+/* Rate Easy Button States */
+.rateEasy:not(.disabled):hover,
+.rateEasy.active {
+  background: rgba(16, 185, 129, 0.14);
+}
+
+.rateEasy:not(.disabled):hover .rateLabel,
+.rateEasy.active .rateLabel,
+.rateEasy:not(.disabled):hover .rateIconEasy,
+.rateEasy.active .rateIconEasy {
+  color: #10b981;
+}
+
+.rateEasy:not(.disabled):hover .rateInterval,
+.rateEasy.active .rateInterval {
+  color: #34d399;
+}
+
+.rateEasy.active .rateCurrentCheck {
+  background: rgba(16, 185, 129, 0.22);
+  color: #10b981;
+}
+
+/* Rate Medium Button States */
+.rateMedium:not(.disabled):hover,
+.rateMedium.active {
+  background: rgba(234, 179, 8, 0.14);
+}
+
+.rateMedium:not(.disabled):hover .rateLabel,
+.rateMedium.active .rateLabel,
+.rateMedium:not(.disabled):hover .rateIconMedium,
+.rateMedium.active .rateIconMedium {
+  color: #eab308;
+}
+
+.rateMedium:not(.disabled):hover .rateInterval,
+.rateMedium.active .rateInterval {
+  color: #facc15;
+}
+
+.rateMedium.active .rateCurrentCheck {
+  background: rgba(234, 179, 8, 0.22);
+  color: #eab308;
+}
+
+/* Rate Hard Button States */
+.rateHard:not(.disabled):hover,
+.rateHard.active {
+  background: rgba(249, 115, 22, 0.14);
+}
+
+.rateHard:not(.disabled):hover .rateLabel,
+.rateHard.active .rateLabel,
+.rateHard:not(.disabled):hover .rateIconHard,
+.rateHard.active .rateIconHard {
+  color: #f97316;
+}
+
+.rateHard:not(.disabled):hover .rateInterval,
+.rateHard.active .rateInterval {
+  color: #fb923c;
+}
+
+.rateHard.active .rateCurrentCheck {
+  background: rgba(249, 115, 22, 0.22);
+  color: #f97316;
+}
+
+/* Light Theme overrides */
+[data-theme="light"] .rateEasy:not(.disabled):hover,
+[data-theme="light"] .rateEasy.active {
+  background: #ecfdf5;
+}
+
+[data-theme="light"] .rateMedium:not(.disabled):hover,
+[data-theme="light"] .rateMedium.active {
+  background: #fefce8;
+}
+
+[data-theme="light"] .rateHard:not(.disabled):hover,
+[data-theme="light"] .rateHard.active {
+  background: #fff7ed;
+}

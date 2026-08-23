@@ -1,0 +1,26 @@
+.header {
+  height: 44px;
+  min-height: 44px;
+  max-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  flex-shrink: 0;
+  z-index: 100;
+  user-select: none;
+  background-color: var(--bg-app);
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}

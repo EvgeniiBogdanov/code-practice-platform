@@ -1,0 +1,130 @@
+.groupCard {
+  background-color: var(--bg-card);
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme="light"] .groupCard {
+  background-color: var(--bg-popover, #ffffff);
+  border: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.titleGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.countBadge {
+  font-size: 11.5px;
+  font-family: var(--font-sans);
+  color: var(--fg-muted);
+  flex-shrink: 0;
+  padding: 2px 7px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.countBadge.completed,
+.countBadge.completedGreen {
+  color: var(--color-status-solved, #10b981);
+  background: rgba(16, 185, 129, 0.12);
+  font-weight: 600;
+}
+
+.countBadge.completedYellow {
+  color: var(--color-status-due, #f59e0b);
+  background: rgba(245, 158, 11, 0.12);
+  font-weight: 600;
+}
+
+[data-theme="light"] .countBadge {
+  background: rgba(55, 53, 47, 0.06);
+}
+
+.progressBar {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+[data-theme="light"] .progressBar {
+  background: rgba(55, 53, 47, 0.08);
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.footer {
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: none;
+}
+
+.actionBtn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm, 4px);
+  background: transparent;
+  color: var(--text-main);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.actionBtn:hover {
+  background: var(--state-hover);
+  color: var(--accent-blue, #60a5fa);
+  border: none;
+}

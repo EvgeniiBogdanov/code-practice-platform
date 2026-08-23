@@ -37,6 +37,17 @@ export default defineConfig({
     react(),
     githubPagesSpaPlugin(),
   ],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+      "@/app": path.resolve(__dirname, "src/app"),
+      "@/pages": path.resolve(__dirname, "src/pages"),
+      "@/widgets": path.resolve(__dirname, "src/widgets"),
+      "@/features": path.resolve(__dirname, "src/features"),
+      "@/entities": path.resolve(__dirname, "src/entities"),
+      "@/shared": path.resolve(__dirname, "src/shared"),
+    },
+  },
   build: {
     rollupOptions: {
       output: {
@@ -59,19 +70,19 @@ export default defineConfig({
             }
             return "vendor-framework";
           }
-          if (id.includes("/src/react/tasks/") || id.includes("/src/react/solutions/") || id.includes("/src/react/data/")) {
+          if (id.includes("/curriculum/react/")) {
             return "tasks-react";
           }
-          if (id.includes("/src/javascript/")) {
+          if (id.includes("/curriculum/javascript/")) {
             return "tasks-javascript";
           }
-          if (id.includes("/src/algorithms/")) {
+          if (id.includes("/curriculum/algorithms/")) {
             return "tasks-algorithms";
           }
-          if (id.includes("cheatSheetData.js")) {
+          if (id.includes("cheatSheetData")) {
             return "data-cheatsheet";
           }
-          if (id.includes("taskExplanations.js")) {
+          if (id.includes("taskExplanations")) {
             return "task-explanations";
           }
         },

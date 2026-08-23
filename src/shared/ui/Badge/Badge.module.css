@@ -1,0 +1,117 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-radius: 100px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  line-height: 1;
+  vertical-align: middle;
+  align-self: center;
+  white-space: nowrap;
+  border: none !important;
+  box-shadow: none !important;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.uppercase {
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Sizes */
+.size-sm {
+  height: 20px;
+  padding: 0 7px;
+  font-size: 10.5px;
+}
+
+.size-md {
+  height: 22px;
+  padding: 0 9px;
+  font-size: 11px;
+}
+
+.size-lg {
+  height: 24px;
+  padding: 0 11px;
+  font-size: 12px;
+}
+
+/* Variants (Dark & Light Theme Defaults matching v2.2.7) */
+.variant-medium,
+.variant-yellow,
+.variant-ts {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+[data-theme="light"] .variant-medium,
+[data-theme="light"] .variant-yellow,
+[data-theme="light"] .variant-ts {
+  background-color: #fffbeb;
+  color: #d97706;
+}
+
+.variant-easy,
+.variant-green {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+[data-theme="light"] .variant-easy,
+[data-theme="light"] .variant-green {
+  background-color: #ecfdf5;
+  color: #059669;
+}
+
+.variant-hard,
+.variant-red {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+[data-theme="light"] .variant-hard,
+[data-theme="light"] .variant-red {
+  background-color: #fef2f2;
+  color: #dc2626;
+}
+
+.variant-purple {
+  background-color: rgba(168, 85, 247, 0.15);
+  color: #a855f7;
+}
+
+[data-theme="light"] .variant-purple {
+  background-color: #faf5ff;
+  color: #9333ea;
+}
+
+.variant-blue {
+  background-color: rgba(35, 131, 226, 0.15);
+  color: #2383e2;
+}
+
+[data-theme="light"] .variant-blue {
+  background-color: rgba(0, 102, 204, 0.1);
+  color: #0066cc;
+}
+
+.variant-gray {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--text-muted, #94a3b8);
+}
+
+[data-theme="light"] .variant-gray {
+  background-color: rgba(55, 53, 47, 0.08);
+  color: rgba(55, 53, 47, 0.65);
+}

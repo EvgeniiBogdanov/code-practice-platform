@@ -1,0 +1,7 @@
+node_modules
+dist
+.system_generated
+routeTree.gen.ts
+package-lock.json
+src/entities/task/curriculum/**
+src/shared/data/**
