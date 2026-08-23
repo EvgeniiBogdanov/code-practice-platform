@@ -84,62 +84,6 @@
   color: var(--color-status-due, #f59e0b);
 }
 
-/* Due Alert Card */
-.dueAlertCard {
-  background: rgba(245, 158, 11, 0.08);
-  border: none;
-  border-radius: var(--radius-lg);
-  padding: 16px 20px;
-  margin-bottom: 28px;
-  box-shadow: var(--shadow-sm);
-}
-
-.dueAlertHeader {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
-}
-
-.dueAlertTitle {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--color-status-due, #f59e0b);
-}
-
-.dueAlertText {
-  font-size: 13px;
-  color: var(--text-main);
-  margin: 0 0 12px 0;
-  opacity: 0.9;
-}
-
-.dueTasksChips {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.dueChip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border-radius: var(--radius-sm, 6px);
-  background: var(--bg-card, #252525);
-  border: none;
-  color: var(--text-main);
-  font-size: 12.5px;
-  font-weight: 500;
-  text-decoration: none;
-  transition: background var(--transition-fast);
-}
-
-.dueChip:hover {
-  background: var(--state-hover);
-  border: none;
-}
-
 /* Groups Section */
 .groupsSectionHeader {
   display: flex;
@@ -285,7 +229,6 @@
 }
 
 [data-theme="light"] .kpiCard,
-[data-theme="light"] .dueAlertCard,
 [data-theme="light"] .groupCard {
   background: var(--bg-popover, #ffffff);
   border: none;

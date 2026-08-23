@@ -2,7 +2,6 @@ import { memo } from "react";
 import { useSectionOverview } from "../model/useSectionOverview";
 import { SectionHeroHeader } from "./SectionHeroHeader";
 import { SectionKpiGrid } from "./SectionKpiGrid";
-import { SectionDueAlert } from "./SectionDueAlert";
 import { SectionGroupsGrid } from "./SectionGroupsGrid";
 import styles from "./SectionOverviewPage.module.css";
 
@@ -11,7 +10,7 @@ export interface SectionOverviewPageProps {
 }
 
 export const SectionOverviewPage = memo(({ section }: SectionOverviewPageProps) => {
-  const { sectionMeta, stats, groups, dueTasks, isSolved, progressState, reviews, isTaskDue } =
+  const { sectionMeta, stats, groups, isSolved, progressState, reviews, isTaskDue } =
     useSectionOverview(section);
 
   return (
@@ -30,8 +29,6 @@ export const SectionOverviewPage = memo(({ section }: SectionOverviewPageProps) 
         percent={stats.percent}
         remaining={stats.remaining}
       />
-
-      <SectionDueAlert section={sectionMeta.id} dueTasks={dueTasks} />
 
       <SectionGroupsGrid
         section={sectionMeta.id}

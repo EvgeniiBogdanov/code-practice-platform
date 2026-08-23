@@ -304,16 +304,6 @@
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
-  animation: rotateDue 4s linear infinite;
-}
-
-@keyframes rotateDue {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 /* Rating Colors */

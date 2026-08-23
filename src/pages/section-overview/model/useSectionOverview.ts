@@ -192,18 +192,10 @@ export const useSectionOverview = (section: "javascript" | "react" | "algorithms
     });
   }, [section, progressState, reviews]);
 
-  const dueTasks = useMemo(() => {
-    return sectionMeta.tasks.filter((t) => {
-      const rev = reviews[String(t.id)];
-      return isTaskDue(rev);
-    });
-  }, [sectionMeta, reviews]);
-
   return {
     sectionMeta,
     stats,
     groups,
-    dueTasks,
     isSolved,
     progressState,
     reviews,
