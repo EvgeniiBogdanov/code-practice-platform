@@ -1,0 +1,444 @@
+/* CheatSheet Side Drawer Overlay & Panel */
+.drawerOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  z-index: var(--z-modal, 9000);
+  display: flex;
+  justify-content: flex-end;
+  animation: overlayFadeIn 0.2s ease-out;
+}
+
+[data-theme="light"] .drawerOverlay {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.drawer {
+  width: 440px;
+  max-width: 92vw;
+  height: 100%;
+  background: var(--bg-card);
+  box-shadow: var(--shadow-popover);
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 12px;
+  box-sizing: border-box;
+  animation: drawerSlideIn 240ms cubic-bezier(0.16, 1, 0.3, 1);
+  border-left: 1px solid var(--border-color);
+}
+
+[data-theme="light"] .drawer {
+  background: var(--bg-card, #ffffff);
+  border-left: 1px solid var(--border-color);
+  box-shadow: var(--shadow-popover);
+  color: var(--text-main);
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.titleIcon {
+  color: #eab308;
+  flex-shrink: 0;
+}
+
+.closeBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.closeBtn:hover {
+  background: var(--state-hover);
+  color: var(--text-main);
+}
+
+[data-theme="light"] .closeBtn:hover {
+  background: var(--bg-subtle, #f4f4f2);
+  color: var(--text-main);
+}
+
+/* Section Tabs */
+.sectionTabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg-subtle, rgba(255, 255, 255, 0.04));
+  padding: 3px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+[data-theme="light"] .sectionTabs {
+  background: #f4f4f2;
+}
+
+.sectionTabBtn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: var(--radius-md);
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.sectionTabBtn:hover {
+  color: var(--text-main);
+}
+
+.sectionTabBtn.active {
+  background: var(--bg-card);
+  color: var(--text-main);
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme="light"] .sectionTabBtn.active {
+  background: #ffffff;
+}
+
+.iconReact {
+  color: var(--color-react, #38bdf8);
+}
+
+.iconJs {
+  color: var(--color-js, #facc15);
+}
+
+.iconAlgo {
+  color: var(--color-algo, #a855f7);
+}
+
+/* Search input */
+.search {
+  background: var(--bg-subtle, rgba(255, 255, 255, 0.04));
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  outline: none;
+  font-family: var(--font-sans);
+  flex-shrink: 0;
+  transition:
+    border-color var(--transition-fast),
+    background var(--transition-fast);
+}
+
+.search:focus {
+  border-color: var(--accent-blue);
+  background: var(--bg-card);
+}
+
+.search::placeholder {
+  color: var(--text-muted);
+}
+
+[data-theme="light"] .search {
+  background: #ffffff;
+  border-color: rgba(55, 53, 47, 0.2);
+  color: #191919;
+}
+
+[data-theme="light"] .search:focus {
+  border-color: var(--accent-blue, #0066cc);
+  box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.15);
+}
+
+/* Category Tabs */
+.categoryTabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-bottom: 2px;
+  margin-bottom: 2px;
+  flex-shrink: 0;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.categoryTabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tabBtn {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: all var(--transition-fast);
+}
+
+.tabBtn:hover {
+  background: var(--state-hover);
+  color: var(--text-main);
+}
+
+.tabBtn.activeTab {
+  background: var(--accent-blue);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+[data-theme="light"] .tabBtn {
+  background: var(--bg-subtle, #f4f4f2);
+  color: var(--text-muted);
+}
+
+[data-theme="light"] .tabBtn:hover {
+  background: #e8e8e6;
+  color: var(--text-main);
+}
+
+[data-theme="light"] .tabBtn.activeTab {
+  background: var(--accent-blue, #0066cc);
+  color: #ffffff;
+}
+
+/* Content & Cards */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-right: 2px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+[data-theme="light"] .content {
+  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+}
+
+.content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+[data-theme="light"] .content::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.cheatCard {
+  background: var(--bg-subtle, rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 160px;
+}
+
+[data-theme="light"] .cheatCard {
+  background: #ffffff;
+  border-color: var(--border-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-blue);
+  margin: 0;
+}
+
+.cardDesc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* Code block & floating copy button */
+.codeBlockWrapper {
+  position: relative;
+}
+
+.codeCopyBtn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.15s ease,
+    background 0.15s ease,
+    color 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 24px;
+  padding: 0 7px;
+  border-radius: 4px;
+  border: none !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 11px;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  user-select: none;
+  box-shadow: none !important;
+}
+
+.codeBlockWrapper:hover .codeCopyBtn,
+.cheatCard:hover .codeCopyBtn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.codeCopyBtn:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff;
+}
+
+.codeCopyBtn.copied {
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.22) !important;
+}
+
+[data-theme="light"] .codeCopyBtn {
+  background: rgba(0, 0, 0, 0.06) !important;
+  color: var(--text-muted);
+}
+
+[data-theme="light"] .codeCopyBtn:hover {
+  background: rgba(0, 0, 0, 0.12) !important;
+  color: var(--text-main);
+}
+
+[data-theme="light"] .codeCopyBtn.copied {
+  color: #059669;
+  background: rgba(16, 185, 129, 0.15) !important;
+}
+
+/* Notion-Style Callout Block for CheatSheet Tips */
+.cheatsheetTip {
+  padding: 10px 12px;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.22);
+  border-left: 4px solid #f59e0b;
+  border-radius: var(--radius-md, 8px);
+  color: var(--text-main);
+  font-size: 12px;
+  line-height: 1.5;
+  margin-top: 4px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cheatsheetTipHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: #f59e0b;
+  font-size: 12px;
+  font-family: var(--font-sans);
+}
+
+.cheatsheetTipContent {
+  color: var(--text-main);
+  font-size: 12px;
+}
+
+[data-theme="light"] .cheatsheetTip {
+  background: rgba(245, 158, 11, 0.07);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-left: 4px solid #d97706;
+  color: var(--text-main);
+}
+
+[data-theme="light"] .cheatsheetTipHeader {
+  color: #d97706;
+}
+
+.empty {
+  text-align: center;
+  padding: 32px 16px;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-style: italic;
+}
+
+/* Keyframes */
+@keyframes overlayFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes drawerSlideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

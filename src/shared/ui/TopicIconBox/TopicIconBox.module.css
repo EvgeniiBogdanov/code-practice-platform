@@ -1,0 +1,135 @@
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+  user-select: none;
+}
+
+[data-theme="light"] .box {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.hoverable {
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hoverable:hover {
+  transform: scale(1.06) rotate(-2deg);
+}
+
+/* Sizes */
+.size_sm {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.size_md {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  font-size: 20px;
+}
+
+.size_lg {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  font-size: 28px;
+}
+
+/* Color Variants */
+.color_amber {
+  background-color: rgba(245, 158, 11, 0.12);
+  color: #f59e0b;
+}
+
+[data-theme="light"] .color_amber {
+  background-color: rgba(245, 158, 11, 0.12);
+  color: #d97706;
+}
+
+.color_blue {
+  background-color: rgba(59, 130, 246, 0.12);
+  color: #3b82f6;
+}
+
+[data-theme="light"] .color_blue {
+  background-color: rgba(0, 102, 204, 0.1);
+  color: #0066cc;
+}
+
+.color_emerald {
+  background-color: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+}
+
+[data-theme="light"] .color_emerald {
+  background-color: rgba(16, 185, 129, 0.12);
+  color: #059669;
+}
+
+.color_purple {
+  background-color: rgba(168, 85, 247, 0.12);
+  color: #a855f7;
+}
+
+[data-theme="light"] .color_purple {
+  background-color: rgba(168, 85, 247, 0.12);
+  color: #9333ea;
+}
+
+.color_red {
+  background-color: rgba(255, 107, 107, 0.12);
+  color: #ff6b6b;
+}
+
+[data-theme="light"] .color_red {
+  background-color: rgba(255, 107, 107, 0.12);
+  color: #dc2626;
+}
+
+.color_cyan {
+  background-color: rgba(6, 182, 212, 0.12);
+  color: #06b6d4;
+}
+
+[data-theme="light"] .color_cyan {
+  background-color: rgba(6, 182, 212, 0.12);
+  color: #0891b2;
+}
+
+.color_pink {
+  background-color: rgba(236, 72, 153, 0.12);
+  color: #ec4899;
+}
+
+[data-theme="light"] .color_pink {
+  background-color: rgba(236, 72, 153, 0.12);
+  color: #db2777;
+}
+
+.color_orange {
+  background-color: rgba(249, 115, 22, 0.12);
+  color: #f97316;
+}
+
+[data-theme="light"] .color_orange {
+  background-color: rgba(249, 115, 22, 0.12);
+  color: #ea580c;
+}
+
+.color_default {
+  background-color: var(--bg-card, rgba(255, 255, 255, 0.04));
+  color: var(--text-main, #ffffff);
+}
+
+[data-theme="light"] .color_default {
+  background-color: #ffffff;
+  color: var(--text-main, #191919);
+}

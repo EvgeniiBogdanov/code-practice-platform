@@ -15,19 +15,34 @@
         try {
           var raw = localStorage.getItem('playground_ui_settings');
           var theme = 'dark';
+          var sidebarWidth = 280;
           if (raw) {
             var parsed = JSON.parse(raw);
-            if (parsed && parsed.state && (parsed.state.theme === 'light' || parsed.state.theme === 'dark')) {
-              theme = parsed.state.theme;
+            if (parsed && parsed.state) {
+              if (parsed.state.theme === 'light' || parsed.state.theme === 'dark') {
+                theme = parsed.state.theme;
+              }
+              if (typeof parsed.state.sidebarWidth === 'number' && parsed.state.sidebarWidth >= 200 && parsed.state.sidebarWidth <= 480) {
+                sidebarWidth = parsed.state.sidebarWidth;
+              }
             }
           } else {
             var legacy = localStorage.getItem('playground_theme');
             if (legacy === 'light' || legacy === 'dark') theme = legacy;
           }
           document.documentElement.setAttribute('data-theme', theme);
+          document.documentElement.style.setProperty('--sidebar-width', sidebarWidth + 'px');
         } catch (e) {}
       })();
     </script>
+    <style>
+      html, body {
+        background-color: #191919;
+      }
+      html[data-theme="light"], html[data-theme="light"] body {
+        background-color: #fbfbfa;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>

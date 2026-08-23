@@ -1,0 +1,404 @@
+.breadcrumbsContainer {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+  overflow: visible;
+  user-select: none;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+}
+
+.sidebarToggleBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  outline: none;
+  border-radius: var(--radius-md, 4px);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition-standard, 0.15s ease);
+  flex-shrink: 0;
+  margin-right: 4px;
+}
+
+.sidebarToggleBtn:hover {
+  background: var(--state-hover);
+  color: var(--text-main);
+}
+
+.sidebarToggleBtn:active {
+  background: var(--state-active);
+  transform: scale(0.95);
+}
+
+/* Hide toggle button in header on desktop when sidebar is open */
+@media (min-width: 769px) {
+  .desktopHidden {
+    display: none !important;
+  }
+}
+
+/* Always keep visible on mobile */
+@media (max-width: 768px) {
+  .desktopHidden {
+    display: inline-flex !important;
+  }
+}
+
+.dropdownWrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  flex-shrink: 1;
+}
+
+.breadcrumbBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 6px;
+  min-height: 26px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-lg, 6px);
+  color: var(--text-muted);
+  font-size: 13.5px;
+  font-weight: var(--fw-medium, 500);
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition:
+    background var(--transition-fast, 0.15s ease),
+    color var(--transition-fast, 0.15s ease);
+  min-width: 0;
+  max-width: 100%;
+}
+
+.breadcrumbBtn:hover {
+  background: var(--state-hover);
+  color: var(--text-main);
+}
+
+.breadcrumbBtnActive {
+  background: var(--state-active);
+  color: var(--text-main);
+}
+
+.taskActiveBtn {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.staticItem {
+  cursor: default;
+}
+
+.staticItem:hover {
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.itemText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
+  min-width: 0;
+}
+
+.chevron {
+  opacity: 0.5;
+  flex-shrink: 0;
+  margin-left: 1px;
+}
+
+.breadcrumbBtn:hover .chevron {
+  opacity: 0.9;
+}
+
+.separator {
+  color: var(--text-muted);
+  opacity: 0.4;
+  font-size: 12px;
+  margin: 0 1px;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+/* Dropdown menu popup (macOS Finder style) */
+.dropdownMenu {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  min-width: 260px;
+  max-width: 360px;
+  width: max-content;
+  max-height: 380px;
+  background: var(--bg-card, #252525);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md, 8px);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.35),
+    0 1px 4px rgba(0, 0, 0, 0.18);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: breadcrumbFadeIn 0.15s cubic-bezier(0, 0, 0.2, 1);
+}
+
+[data-theme="light"] .dropdownMenu {
+  background: var(--bg-popover, #ffffff);
+  border-color: var(--border-color);
+  box-shadow:
+    0 4px 16px rgba(15, 15, 15, 0.08),
+    0 1px 3px rgba(15, 15, 15, 0.04);
+}
+
+@keyframes breadcrumbFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdownHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-sidebar-section, 11px);
+  font-weight: var(--fw-semibold, 600);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-section, 0.04em);
+  color: var(--text-muted);
+  padding: 8px 10px 5px 10px;
+  user-select: none;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+[data-theme="light"] .dropdownHeader {
+  background: var(--bg-sidebar);
+}
+
+.dropdownHeaderIcon {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.dropdownHeaderTitle {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.dropdownList {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 4px;
+  overflow-y: auto;
+  max-height: 320px;
+}
+
+.dropdownItem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 8px;
+  min-height: 27px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm, 4px);
+  color: var(--text-main);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font-sans);
+  text-decoration: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: background var(--transition-fast);
+}
+
+.dropdownItem:hover {
+  background: var(--state-hover);
+}
+
+.dropdownItem.active {
+  background: var(--state-active);
+  font-weight: 600;
+}
+
+.dropdownItemIcon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+}
+
+.dropdownItemTitle {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  font-size: 13px;
+}
+
+.sectionBadge {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 500;
+  font-family: var(--font-sans);
+  padding: 1px 6px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--fg-muted, rgba(255, 255, 255, 0.55));
+}
+
+[data-theme="light"] .sectionBadge {
+  background: rgba(55, 53, 47, 0.06);
+}
+
+.fileIcon {
+  color: var(--icon-file, #94a3b8);
+  flex-shrink: 0;
+}
+
+/* Status Icons */
+.statusSolved {
+  color: #10b981;
+  font-size: 12px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+}
+
+.statusUnsolved {
+  color: #ef4444;
+  font-size: 12px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+}
+
+.statusDue {
+  color: #eab308;
+  font-size: 12px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  animation: rotateDue 4s linear infinite;
+}
+
+@keyframes rotateDue {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Rating Colors */
+.ratingHard {
+  color: #f97316 !important;
+}
+
+.ratingMedium {
+  color: #eab308 !important;
+}
+
+.ratingEasy {
+  color: #10b981 !important;
+}
+
+.ratingUnsolved {
+  color: #ef4444 !important;
+}
+
+[data-theme="light"] .ratingHard {
+  color: #ea580c !important;
+}
+
+[data-theme="light"] .ratingMedium {
+  color: #ca8a04 !important;
+}
+
+[data-theme="light"] .ratingEasy {
+  color: #16a34a !important;
+}
+
+[data-theme="light"] .ratingUnsolved {
+  color: #dc2626 !important;
+}
+
+/* Section / Icon Colors */
+.icon_home {
+  color: #60a5fa;
+  flex-shrink: 0;
+}
+
+.icon_javascript,
+.iconJs {
+  color: var(--color-js, #f59e0b);
+  flex-shrink: 0;
+}
+
+.icon_react,
+.iconReact {
+  color: var(--color-react, #61dafb);
+  flex-shrink: 0;
+}
+
+.icon_algorithms,
+.iconAlgo {
+  color: var(--color-algo, #a855f7);
+  flex-shrink: 0;
+}
+
+.iconMuted {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.iconFlame {
+  color: #ff6b6b;
+  flex-shrink: 0;
+}
+
+.iconWrench {
+  color: #3b82f6;
+  flex-shrink: 0;
+}
+
+.iconRocket {
+  color: #10b981;
+  flex-shrink: 0;
+}
+
+.iconBrain {
+  color: #a855f7;
+  flex-shrink: 0;
+}
+
+.iconZap {
+  color: #eab308;
+  flex-shrink: 0;
+}

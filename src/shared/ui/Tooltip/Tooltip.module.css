@@ -1,0 +1,149 @@
+.triggerWrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+}
+
+.fullWidth {
+  width: 100%;
+  display: flex;
+}
+
+/* Tooltip Content rendered in Portal */
+.content {
+  position: fixed;
+  z-index: var(--z-tooltip, 1000000);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1, 4px);
+  padding: 5px 9px;
+  border-radius: var(--radius-md, 6px);
+  font-size: var(--fs-caption, 12px);
+  font-weight: 500;
+  line-height: var(--lh-tight, 1.2);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  box-sizing: border-box;
+
+  /* Theme tokens - Dark Mode (Default) */
+  background: var(--bg-card, #252525);
+  color: var(--text-main, #ffffff);
+  border: 1px solid var(--border-strong, rgba(255, 255, 255, 0.16));
+
+  font-family: var(--font-sans);
+  animation-duration: 140ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+[data-theme="light"] .content {
+  background: var(--bg-popover, #ffffff);
+  color: var(--text-main, #37352f);
+  border: 1px solid var(--border-strong, rgba(55, 53, 47, 0.16));
+}
+
+.content[data-side="bottom"] {
+  animation-name: slideAndFadeBottom;
+}
+
+.content[data-side="top"] {
+  animation-name: slideAndFadeTop;
+}
+
+.content[data-side="left"] {
+  animation-name: slideAndFadeLeft;
+}
+
+.content[data-side="right"] {
+  animation-name: slideAndFadeRight;
+}
+
+@keyframes slideAndFadeBottom {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideAndFadeTop {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideAndFadeLeft {
+  from {
+    opacity: 0;
+    transform: translateX(4px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes slideAndFadeRight {
+  from {
+    opacity: 0;
+    transform: translateX(-4px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* Tooltip Arrow */
+.arrow {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: inherit;
+  border: inherit;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.arrow_bottom {
+  top: -4.5px;
+  left: var(--arrow-left, 50%);
+  border-bottom: none;
+  border-right: none;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.arrow_top {
+  bottom: -4.5px;
+  left: var(--arrow-left, 50%);
+  border-top: none;
+  border-left: none;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.arrow_left {
+  right: -4.5px;
+  top: var(--arrow-top, 50%);
+  border-left: none;
+  border-bottom: none;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.arrow_right {
+  left: -4.5px;
+  top: var(--arrow-top, 50%);
+  border-right: none;
+  border-top: none;
+  transform: translateY(-50%) rotate(45deg);
+}

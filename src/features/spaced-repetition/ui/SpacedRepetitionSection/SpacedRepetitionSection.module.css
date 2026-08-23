@@ -1,0 +1,483 @@
+.inModal {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+  min-height: 0;
+  box-sizing: border-box;
+}
+
+.sectionBlock {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* KPI Grid */
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 680px) {
+  .kpiGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.kpiCard {
+  background: var(--bg-subtle, rgba(255, 255, 255, 0.03));
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 6px;
+  box-shadow: var(--shadow-sm);
+  transition: background var(--transition-fast);
+}
+
+.kpiCard:hover {
+  background: var(--state-hover, rgba(255, 255, 255, 0.05));
+}
+
+.kpiCard.hasDue {
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.kpiHeader {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kpiValRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.kpiVal {
+  font-size: 18px;
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+  color: var(--text-main);
+  line-height: 1.1;
+  flex-shrink: 0;
+}
+
+.kpiSub {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: var(--font-mono, monospace);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+}
+
+.kpiProgress {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+[data-theme="light"] .kpiProgress {
+  background: rgba(55, 53, 47, 0.08);
+}
+
+.kpiProgressBar {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.kpiProgressBar.amber {
+  background: #f59e0b;
+}
+
+.kpiProgressBar.red {
+  background: #ef4444;
+}
+
+.kpiProgressBar.green {
+  background: #10b981;
+}
+
+.kpiProgressBar.blue {
+  background: var(--accent-blue, #3b82f6);
+}
+
+/* Tab Bar */
+.tabBar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg-subtle, rgba(255, 255, 255, 0.02));
+  padding: 4px;
+  border-radius: var(--radius-lg);
+  border: none;
+  flex-shrink: 0;
+}
+
+.tabBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all var(--transition-fast);
+  font-family: var(--font-sans);
+}
+
+.tabBtn:hover {
+  color: var(--text-main);
+  background: var(--state-hover);
+}
+
+.tabBtn.active {
+  background: var(--bg-card, #252525);
+  color: var(--text-main);
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme="light"] .tabBtn.active {
+  background: #ffffff;
+  color: #191919;
+}
+
+.tabDueBadge {
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+  padding: 1px 5px;
+  border-radius: 10px;
+  line-height: 1.2;
+}
+
+/* View Content Container */
+.viewContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Distribution View */
+.distributionView {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 16px;
+  align-items: center;
+  background: var(--bg-subtle, rgba(255, 255, 255, 0.02));
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+}
+
+[data-theme="light"] .distributionView {
+  background: var(--bg-card, #fbfbfa);
+}
+
+@media (max-width: 600px) {
+  .distributionView {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chartCol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.legendCol {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.legendHeader {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.stageList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stageItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  background: var(--bg-card, #252525);
+  border: none;
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-fast);
+}
+
+[data-theme="light"] .stageItem {
+  background: #ffffff;
+}
+
+.stageDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.stageDot.green {
+  background: #10b981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.4);
+}
+
+.stageDot.yellow {
+  background: #f59e0b;
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.4);
+}
+
+.stageDot.red {
+  background: #f43f5e;
+  box-shadow: 0 0 6px rgba(244, 63, 94, 0.4);
+}
+
+.stageDot.gray {
+  background: #64748b;
+}
+
+.stageInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.stageTitle {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-main);
+  line-height: 1.2;
+}
+
+.stageDesc {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stageCount {
+  font-size: 13px;
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+  color: var(--text-main);
+  padding: 2px 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-lg);
+}
+
+[data-theme="light"] .stageCount {
+  background: rgba(55, 53, 47, 0.06);
+}
+
+.onboardingHint {
+  margin-top: 4px;
+  padding: 8px 10px;
+  background: rgba(35, 131, 226, 0.08);
+  border-radius: var(--radius-lg);
+  border: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.onboardingHintTitle {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--accent-blue, #3b82f6);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.onboardingHintText {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* Schedule View */
+.scheduleView {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--bg-subtle, rgba(255, 255, 255, 0.02));
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+}
+
+[data-theme="light"] .scheduleView {
+  background: var(--bg-card, #fbfbfa);
+}
+
+.scheduleDesc {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Due Tasks Grid View */
+.dueGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 10px;
+}
+
+.dueCard {
+  background: var(--bg-subtle, rgba(255, 255, 255, 0.03));
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-decoration: none;
+  color: var(--text-main);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
+}
+
+[data-theme="light"] .dueCard {
+  background: #ffffff;
+}
+
+.dueCard:hover {
+  background: rgba(239, 68, 68, 0.08);
+  transform: translateY(-1px);
+}
+
+.dueCardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.dueCardSection {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.sectionDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.dueCardStage {
+  font-size: 10.5px;
+  font-family: var(--font-mono, monospace);
+  color: var(--text-muted);
+}
+
+.dueCardTitle {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text-main);
+  margin-bottom: 10px;
+}
+
+.dueCardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-color, rgba(255, 255, 255, 0.06));
+}
+
+.dueAlertText {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #ef4444;
+}
+
+.dueActionBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--accent-blue, #3b82f6);
+}
+
+/* Empty Due State */
+.emptyDueCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: var(--bg-subtle, rgba(255, 255, 255, 0.02));
+  border: none;
+  border-radius: var(--radius-lg);
+  text-align: center;
+  gap: 6px;
+}
+
+[data-theme="light"] .emptyDueCard {
+  background: var(--bg-card, #fbfbfa);
+}
+
+.emptyDueTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.emptyDueDesc {
+  font-size: 12px;
+  color: var(--text-muted);
+  max-width: 420px;
+  line-height: 1.45;
+}

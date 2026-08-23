@@ -1,0 +1,121 @@
+.codeBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1, 4px);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--text-muted, rgba(255, 255, 255, 0.6));
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.12s ease);
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+  font-family: var(--font-sans);
+  font-size: var(--fs-caption, 12px);
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* Sizes */
+.size_sm {
+  width: 26px;
+  height: 24px;
+  min-width: 26px;
+}
+
+.size_md {
+  width: 28px;
+  height: 26px;
+  min-width: 28px;
+}
+
+.size_xs {
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+}
+
+/* Auto width when text children are present */
+.hasChildren {
+  width: auto;
+  min-width: auto;
+  padding: 0 8px;
+  height: 24px;
+}
+
+/* Hover */
+.codeBtn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-main, #ffffff);
+}
+
+[data-theme="light"] .codeBtn {
+  color: var(--text-muted, rgba(55, 53, 47, 0.68));
+}
+
+[data-theme="light"] .codeBtn:hover:not(:disabled) {
+  background: #ffffff;
+  color: var(--text-main, #37352f);
+}
+
+/* Active State */
+.active,
+.variant_active {
+  background: rgba(56, 189, 248, 0.2);
+  color: #38bdf8;
+}
+
+[data-theme="light"] .active,
+[data-theme="light"] .variant_active {
+  background: var(--accent-blue-bg, rgba(0, 102, 204, 0.1));
+  color: var(--accent-blue, #0066cc);
+}
+
+/* Success / Run Variant */
+.variant_success {
+  color: var(--color-success, #10b981);
+}
+
+.variant_success:hover:not(:disabled) {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+}
+
+[data-theme="light"] .variant_success {
+  color: #059669;
+}
+
+[data-theme="light"] .variant_success:hover:not(:disabled) {
+  background: rgba(16, 185, 129, 0.12);
+  color: #047857;
+}
+
+/* Danger / Stop Variant */
+.variant_danger {
+  color: var(--color-error, #ef4444);
+  background: rgba(239, 68, 68, 0.15);
+}
+
+.variant_danger:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.25);
+  color: #f87171;
+}
+
+[data-theme="light"] .variant_danger {
+  color: #dc2626;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+[data-theme="light"] .variant_danger:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.18);
+  color: #b91c1c;
+}
+
+/* Disabled */
+.codeBtn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
+}

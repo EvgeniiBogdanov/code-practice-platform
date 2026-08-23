@@ -1,0 +1,292 @@
+.editorWrapper {
+  width: 100%;
+  max-width: 100%;
+  background: #1e1e1e;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md, 8px);
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  font-size: var(--editor-font-size, 13px) !important;
+  position: relative;
+}
+
+[data-theme="light"] .editorWrapper {
+  background: #ffffff;
+  border-color: var(--border-color, rgba(55, 53, 47, 0.12));
+  box-shadow: 0 4px 16px rgba(55, 53, 47, 0.06);
+}
+
+.fullscreen {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
+  z-index: 99999 !important;
+  border-radius: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  background: var(--bg-app, #1e1e1e) !important;
+}
+
+.editorBody {
+  display: flex;
+  position: relative;
+  background: #1e1e1e;
+  min-height: 180px;
+  height: auto;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+[data-theme="light"] .editorBody {
+  background: #ffffff;
+}
+
+.fullscreen .editorBody {
+  flex: 1 1 0% !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: hidden !important;
+}
+
+.textLayersWrapper {
+  flex: 1;
+  position: relative;
+  min-width: 0;
+  max-width: 100%;
+  height: auto;
+  min-height: 180px;
+  overflow: hidden;
+}
+
+.fullscreen .textLayersWrapper {
+  height: 100% !important;
+  width: 100% !important;
+  min-height: 0 !important;
+}
+
+.highlightLayer {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 14px 16px;
+  font-family: var(--font-mono);
+  font-size: var(--editor-font-size, 13px) !important;
+  line-height: 1.6;
+  pointer-events: none;
+  box-sizing: border-box;
+  color: #d4d4d4;
+  white-space: pre;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+[data-theme="light"] .highlightLayer {
+  color: var(--text-main, #37352f);
+}
+
+.fullscreen .highlightLayer {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.textarea {
+  all: unset;
+  display: block;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  min-height: 180px !important;
+  margin: 0 !important;
+  padding: 14px 16px !important;
+  background: transparent !important;
+  color: transparent !important;
+  caret-color: #38bdf8 !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  resize: none !important;
+  font-family: var(--font-mono) !important;
+  font-size: var(--editor-font-size, 13px) !important;
+  line-height: 1.6 !important;
+  tab-size: 2 !important;
+  box-sizing: border-box !important;
+  z-index: 2 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  cursor: text !important;
+  white-space: pre !important;
+}
+
+[data-theme="light"] .textarea {
+  caret-color: var(--accent-blue, #0066cc) !important;
+}
+
+.fullscreen .textarea {
+  overflow-y: auto !important;
+}
+
+.textarea::selection {
+  background: rgba(38, 79, 120, 0.75) !important;
+  color: transparent !important;
+}
+
+[data-theme="light"] .textarea::selection {
+  background: rgba(0, 102, 204, 0.18) !important;
+}
+
+.textarea::placeholder {
+  color: rgba(255, 255, 255, 0.25) !important;
+}
+
+[data-theme="light"] .textarea::placeholder {
+  color: var(--text-placeholder, rgba(55, 53, 47, 0.32)) !important;
+}
+
+.wrapOn {
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+}
+
+/* Bottom Console Integration */
+.bottomConsoleWrapper {
+  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="light"] .bottomConsoleWrapper {
+  border-top-color: var(--border-color, rgba(55, 53, 47, 0.12));
+}
+
+.fullscreen .bottomConsoleWrapper {
+  margin-top: 0;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+  flex-shrink: 0;
+  max-height: 40vh;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Status Bar */
+.statusBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 14px;
+  background: #181818;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--text-muted, rgba(255, 255, 255, 0.55));
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.4;
+  user-select: none;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+[data-theme="light"] .statusBar {
+  background: var(--bg-sidebar, #f7f6f3);
+  border-top-color: var(--border-color, rgba(55, 53, 47, 0.12));
+  color: var(--text-muted, rgba(55, 53, 47, 0.68));
+}
+
+.statusLeft,
+.statusRight {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.statusItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 11px;
+  cursor: default;
+}
+
+[data-theme="light"] .statusItem {
+  color: var(--text-muted, rgba(55, 53, 47, 0.68));
+}
+
+.statusSep {
+  color: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="light"] .statusSep {
+  color: var(--border-color, rgba(55, 53, 47, 0.12));
+}
+
+.saveIndicator {
+  color: var(--color-success, #10b981);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11.5px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+  cursor: default;
+}
+
+.saveIndicatorSaving {
+  color: var(--accent-amber, #f59e0b);
+}
+
+.savePulseDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  display: inline-block;
+}
+
+.diagOk {
+  color: var(--color-success-light, #34d399);
+}
+
+.diagErr {
+  color: var(--color-error-light, #f87171);
+}
+
+[data-theme="light"] .diagErr {
+  color: var(--color-error);
+}
+
+.langIconReact {
+  color: #61dafb;
+}
+
+.langIconTs {
+  color: #3178c6;
+}
+
+.langIconJs {
+  color: #f59e0b;
+}
+
+.langIconOther {
+  color: var(--text-main);
+}

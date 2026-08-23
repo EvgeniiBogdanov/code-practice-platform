@@ -1,0 +1,74 @@
+.toggleWrapper {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg, 6px);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background var(--transition-fast, 0.15s ease);
+}
+
+.sizeMd {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-lg, 8px);
+}
+
+.toggleWrapper:hover {
+  background: var(--state-hover, rgba(255, 255, 255, 0.08));
+}
+
+.iconDefault {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.12s ease;
+  opacity: 1;
+}
+
+.iconChevron {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  color: var(--text-muted);
+  transition:
+    opacity 0.12s ease,
+    transform 0.15s cubic-bezier(0.2, 0, 0, 1);
+  pointer-events: none;
+}
+
+.iconChevron.expanded {
+  transform: rotate(90deg);
+}
+
+/* Notion-style hover swap: when hovering parent row or button itself */
+:global(.tree-node-header):hover .iconDefault,
+:global([class*="treeNodeHeader"]):hover .iconDefault,
+:global([class*="subgroupHeader"]):hover .iconDefault,
+:global([class*="groupHeader"]):hover .iconDefault,
+.toggleWrapper:hover .iconDefault {
+  opacity: 0;
+}
+
+:global(.tree-node-header):hover .iconChevron,
+:global([class*="treeNodeHeader"]):hover .iconChevron,
+:global([class*="subgroupHeader"]):hover .iconChevron,
+:global([class*="groupHeader"]):hover .iconChevron,
+.toggleWrapper:hover .iconChevron {
+  opacity: 0.85;
+  pointer-events: auto;
+}
+
+.toggleWrapper:hover .iconChevron {
+  opacity: 1;
+  color: var(--text-main);
+}

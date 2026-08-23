@@ -1,0 +1,644 @@
+.taskViewContainer {
+  padding: 28px 36px 80px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.folderPageWrapper {
+  max-width: 920px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Header Hero */
+.articleHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.folderHero {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+.folderHeroContent {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.heroTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.folderHeroTitle {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--text-main, #ffffff);
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  font-family: var(--font-sans);
+  margin: 0;
+}
+
+[data-theme="light"] .folderHeroTitle {
+  color: #0f172a;
+}
+
+.folderHeroDesc {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-muted, #94a3b8);
+  margin: 0;
+  max-width: 680px;
+}
+
+/* Database Controls Toolbar */
+.folderToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  flex-wrap: wrap;
+}
+
+.pillGroup {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.dbViewSwitch {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Database Table Header Row */
+.dbColumnsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted, rgba(255, 255, 255, 0.45));
+  border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.06));
+  margin-bottom: 6px;
+  user-select: none;
+}
+
+.dbColName {
+  flex: 1;
+  min-width: 0;
+}
+
+.dbColMeta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.dbColLastSolved {
+  width: 100px;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dbColNextReview {
+  width: 110px;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dbColStatus {
+  width: 28px;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Empty State */
+.emptyState {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.emptyTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+/* Tree List View */
+.folderPageTree {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.treeGroupBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.subgroupHeader {
+  padding: 6px 10px;
+  min-height: 34px;
+  border-radius: var(--radius-lg, 8px);
+  gap: 8px;
+  font-size: var(--fs-sidebar-item, 14px);
+  font-weight: var(--fw-semibold, 600);
+}
+
+.folderIcon {
+  opacity: 0.9;
+}
+
+.nodeTitleLink {
+  flex: 1;
+  min-width: 0;
+  text-decoration: none;
+  color: var(--text-main);
+  display: inline-flex;
+  align-items: center;
+}
+
+.nodeTitle {
+  font-size: var(--fs-sidebar-item, 14px);
+  font-weight: var(--fw-semibold, 600);
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: var(--ls-item, -0.01em);
+}
+
+.treeTasksContainer {
+  margin-left: 14px;
+  padding-left: 12px;
+  border-left: 1.5px solid var(--border-color, rgba(255, 255, 255, 0.08));
+}
+
+.treeTaskBtn {
+  padding: 6px 10px;
+  min-height: 34px;
+  border-radius: var(--radius-lg, 8px);
+  font-size: var(--fs-sidebar-item, 14px);
+  content-visibility: auto;
+  contain-intrinsic-size: auto 34px;
+}
+
+.taskBtnTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.nodeFileIcon {
+  flex-shrink: 0;
+  color: var(--icon-file, #94a3b8);
+}
+
+.taskBtnText {
+  font-size: var(--fs-sidebar-item, 14px);
+  font-weight: var(--fw-medium, 500);
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: var(--ls-item, -0.01em);
+}
+
+.taskRowMeta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+
+.badgeLastSolved {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.badgeNextScheduled {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.badgeNextDue {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.badgeIcon {
+  flex-shrink: 0;
+}
+
+.statusSolved {
+  color: var(--color-status-solved, #10b981);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statusUnsolved {
+  color: var(--color-status-unsolved, #ef4444);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statusDue {
+  color: #f59e0b;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statusUnstarted {
+  color: var(--border-hover, rgba(255, 255, 255, 0.2));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Rating gradient difficulty text colors */
+.ratingGradientEasy .taskBtnText {
+  color: #10b981;
+}
+
+.ratingGradientMedium .taskBtnText {
+  color: #eab308;
+}
+
+.ratingGradientHard .taskBtnText {
+  color: #f97316;
+}
+
+.ratingGradientUnsolved .taskBtnText {
+  color: #ef4444;
+}
+
+/* Gallery Grid & Cards */
+.galleryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 14px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+.galleryCard {
+  background: var(--bg-card, #252525);
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-decoration: none;
+  color: var(--text-main, #ffffff);
+  position: relative;
+  overflow: hidden;
+  height: 180px;
+  box-sizing: border-box;
+  box-shadow: var(--shadow-sm);
+  transition: background-color var(--transition-fast, 0.15s ease);
+  cursor: pointer;
+}
+
+.galleryCard:hover {
+  background: var(--state-hover, rgba(255, 255, 255, 0.06));
+}
+
+[data-theme="light"] .galleryCard {
+  background: var(--bg-popover, #ffffff);
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .galleryCard:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+/* Rating / Status Tints (v2.2.7 Parity) */
+.galleryCard.ratingGradientHard {
+  background: rgba(249, 115, 22, 0.09);
+}
+.galleryCard.ratingGradientMedium {
+  background: rgba(234, 179, 8, 0.09);
+}
+.galleryCard.ratingGradientEasy {
+  background: rgba(16, 185, 129, 0.09);
+}
+.galleryCard.ratingGradientUnsolved {
+  background: rgba(239, 68, 68, 0.09);
+}
+
+.galleryCard.ratingGradientHard:hover {
+  background: rgba(249, 115, 22, 0.15);
+}
+.galleryCard.ratingGradientMedium:hover {
+  background: rgba(234, 179, 8, 0.15);
+}
+.galleryCard.ratingGradientEasy:hover {
+  background: rgba(16, 185, 129, 0.15);
+}
+.galleryCard.ratingGradientUnsolved:hover {
+  background: rgba(239, 68, 68, 0.15);
+}
+
+[data-theme="light"] .galleryCard.ratingGradientHard {
+  background: rgba(234, 88, 12, 0.08);
+}
+[data-theme="light"] .galleryCard.ratingGradientMedium {
+  background: rgba(202, 138, 4, 0.08);
+}
+[data-theme="light"] .galleryCard.ratingGradientEasy {
+  background: rgba(22, 163, 74, 0.08);
+}
+[data-theme="light"] .galleryCard.ratingGradientUnsolved {
+  background: rgba(220, 38, 38, 0.08);
+}
+
+[data-theme="light"] .galleryCard.ratingGradientHard:hover {
+  background: rgba(234, 88, 12, 0.13);
+}
+[data-theme="light"] .galleryCard.ratingGradientMedium:hover {
+  background: rgba(202, 138, 4, 0.13);
+}
+[data-theme="light"] .galleryCard.ratingGradientEasy:hover {
+  background: rgba(22, 163, 74, 0.13);
+}
+[data-theme="light"] .galleryCard.ratingGradientUnsolved:hover {
+  background: rgba(220, 38, 38, 0.13);
+}
+
+/* Card Header Row */
+.galleryCardHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  gap: 8px;
+}
+
+.galleryCardFolderInfo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.galleryCardSubgroup {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.galleryCardStatusRow {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+.galleryCardStatusText {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.statusSolved {
+  color: var(--color-status-solved, #10b981);
+}
+
+.statusUnsolved {
+  color: var(--color-status-unsolved, #ef4444);
+}
+
+.statusUnstarted {
+  color: var(--text-muted);
+}
+
+.statusIconSolved {
+  color: var(--color-status-solved, #10b981);
+  display: inline-flex;
+}
+
+.statusIconUnsolved {
+  color: var(--color-status-unsolved, #ef4444);
+  display: inline-flex;
+}
+
+.statusIconDue {
+  color: var(--color-status-due, #f59e0b);
+  display: inline-flex;
+}
+
+.galleryCardTitleRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-main);
+  line-height: 1.35;
+  margin-bottom: 6px;
+}
+
+.galleryCardTitleText {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.galleryCardDesc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-top: 2px;
+}
+
+/* Badges row with evenly stretched badges (flex: 1 1 0) */
+.galleryCardBadgesRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+}
+
+.galleryCardBadge {
+  flex: 1 1 0;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px 6px;
+  border-radius: var(--radius-md, 6px);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.2;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.galleryCardBadge span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.badgeLastSolved {
+  color: var(--text-muted);
+  background: var(--bg-subtle, rgba(255, 255, 255, 0.06));
+}
+
+.badgeNextDue {
+  color: var(--color-status-due, #f59e0b);
+  background: rgba(245, 158, 11, 0.12);
+  font-weight: 600;
+}
+
+.badgeNextScheduled {
+  color: var(--accent-blue, #60a5fa);
+  background: rgba(96, 165, 250, 0.12);
+}
+
+/* Article Content */
+.articleContent {
+  padding-top: 32px;
+  border-top: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.h2Block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 20px 0;
+  font-size: var(--fs-h2, 24px);
+  font-weight: var(--fw-semibold, 600);
+  line-height: var(--lh-heading, 1.3);
+  letter-spacing: var(--ls-h2, -0.01em);
+  color: var(--text-main, #ffffff);
+  font-family: var(--font-sans);
+}
+
+[data-theme="light"] .h2Block {
+  color: #191919;
+}
+
+.articleH2Icon {
+  color: var(--accent-blue, #3b82f6);
+  flex-shrink: 0;
+}
+
+.solutionPracticeList {
+  margin: 8px 0 0 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Section 11 Useful Materials Card */
+.solutionArticlesCard {
+  width: 100%;
+}
+
+.solutionArticlesList {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.articleTopic {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+[data-theme="light"] .articleTopic {
+  color: #191919;
+}
+
+.articleLink {
+  color: var(--accent-blue, #2383e2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity var(--transition-fast, 0.15s ease);
+}
+
+.articleLink:hover {
+  opacity: 0.8;
+}
+
+[data-theme="light"] .articleLink {
+  color: #0066cc;
+}
+
+@media (max-width: 860px) {
+  .dbColLastSolved {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .dbColNextReview {
+    display: none;
+  }
+}

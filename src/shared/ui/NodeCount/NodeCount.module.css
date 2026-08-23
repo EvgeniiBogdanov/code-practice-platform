@@ -1,0 +1,52 @@
+.nodeCount {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  font-size: 11.5px;
+  font-family: var(--font-sans);
+  color: var(--fg-muted, var(--text-muted));
+  padding: 2px 6px;
+  min-height: 18px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  font-weight: 500;
+  background: transparent;
+  flex-shrink: 0;
+  opacity: 0.7;
+  transition:
+    opacity 0.15s ease,
+    background 0.15s ease;
+}
+
+.nodeCount.completed,
+.nodeCount.completedGreen {
+  color: var(--color-status-solved, #10b981);
+  background: rgba(16, 185, 129, 0.12);
+  font-weight: 600;
+  opacity: 1;
+}
+
+.nodeCount.completedYellow,
+.nodeCount.completedMedium {
+  color: var(--color-status-due, #f59e0b);
+  background: rgba(245, 158, 11, 0.12);
+  font-weight: 600;
+  opacity: 1;
+}
+
+[data-theme="light"] .nodeCount {
+  background: transparent;
+}
+
+[data-theme="light"] .nodeCount.completed,
+[data-theme="light"] .nodeCount.completedGreen {
+  color: #16a34a;
+  background: rgba(22, 163, 74, 0.12);
+}
+
+[data-theme="light"] .nodeCount.completedYellow,
+[data-theme="light"] .nodeCount.completedMedium {
+  color: #ca8a04;
+  background: rgba(202, 138, 4, 0.14);
+}

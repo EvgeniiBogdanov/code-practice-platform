@@ -1,0 +1,99 @@
+.sidebarTaskRow {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 32px;
+}
+
+.taskIsDue {
+  position: relative;
+}
+
+.taskTitleGroup {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  flex: 1;
+}
+
+.fileIcon {
+  color: var(--icon-file, #94a3b8);
+  flex-shrink: 0;
+}
+
+.taskTitleText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: var(--fs-sidebar-item, 14px);
+  font-weight: var(--fw-medium, 500);
+  line-height: var(--lh-compact, 1.35);
+  transition: color var(--transition-fast);
+}
+
+/* Rating / Status Color Gradients */
+.ratingHard {
+  color: #f97316 !important;
+}
+
+.ratingMedium {
+  color: #eab308 !important;
+}
+
+.ratingEasy {
+  color: #10b981 !important;
+}
+
+.ratingUnsolved {
+  color: #ef4444 !important;
+}
+
+/* Light theme colors */
+[data-theme="light"] .ratingHard {
+  color: #ea580c !important;
+}
+
+[data-theme="light"] .ratingMedium {
+  color: #ca8a04 !important;
+}
+
+[data-theme="light"] .ratingEasy {
+  color: #16a34a !important;
+}
+
+[data-theme="light"] .ratingUnsolved {
+  color: #dc2626 !important;
+}
+
+.statusIconSolved {
+  color: #10b981;
+  font-size: 12px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+}
+
+.statusIconUnsolved {
+  color: #ef4444;
+  font-size: 12px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+}
+
+.statusIconDue {
+  color: #eab308;
+  font-size: 12px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  animation: rotateDue 4s linear infinite;
+}
+
+@keyframes rotateDue {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

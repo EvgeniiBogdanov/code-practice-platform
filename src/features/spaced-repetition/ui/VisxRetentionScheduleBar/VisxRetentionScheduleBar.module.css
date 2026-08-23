@@ -1,0 +1,23 @@
+.container {
+  width: 100%;
+  position: relative;
+}
+
+.barTrack {
+  fill: var(--bg-surface);
+}
+
+.barEmpty {
+  fill: var(--border-color);
+}
+
+.barCountText {
+  fill: var(--text-main);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 11px;
+}
+
+.barCountDue {
+  fill: var(--color-status-due);
+}

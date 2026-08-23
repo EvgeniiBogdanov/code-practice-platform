@@ -1,0 +1,266 @@
+import React, { useMemo } from "react";
+import { Link } from "@tanstack/react-router";
+import {
+  ChevronDown,
+  FileText,
+  FolderTree,
+  Check,
+  X,
+  RotateCcw,
+  Flame,
+  Wrench,
+  Rocket,
+  Brain,
+  Zap,
+  Code2,
+} from "lucide-react";
+import { useProgressStore, selectIsTaskCompleted } from "@/entities/progress";
+import { useReviewStore, isTaskDue, getGroupCompletionClass } from "@/entities/review";
+import { ALL_REACT_TASKS } from "@/entities/task";
+import { FinderHierarchyProps } from "../model/types";
+import { getRatingClass } from "../lib/getRatingClass";
+import { NodeCount } from "@/shared/ui";
+import styles from "./FinderBreadcrumbs.module.css";
+
+export const FinderReactHierarchy = ({
+  paramId,
+  currentTask,
+  activeDropdown,
+  toggleDropdown,
+  closeAllDropdowns,
+}: FinderHierarchyProps) => {
+  const progressState = useProgressStore();
+  const reviews = useReviewStore((state) => state.reviews);
+
+  const reactCategories = useMemo(
+    () => [
+      {
+        id: "warmup",
+        label: "Разминка",
+        icon: <Flame size={14} className={styles.iconFlame} />,
+        infoId: "group-warmup",
+        tasks: ALL_REACT_TASKS.filter((t) => t.difficulty === "warm-up"),
+      },
+      {
+        id: "refactoring",
+        label: "Рефакторинг",
+        icon: <Wrench size={14} className={styles.iconWrench} />,
+        infoId: "group-refactoring",
+        tasks: ALL_REACT_TASKS.filter((t) => t.difficulty === "refactoring"),
+      },
+      {
+        id: "middle",
+        label: "Middle",
+        icon: <Rocket size={14} className={styles.iconRocket} />,
+        infoId: "group-middle",
+        tasks: ALL_REACT_TASKS.filter((t) => t.difficulty === "middle"),
+      },
+      {
+        id: "strong",
+        label: "Strong",
+        icon: <Brain size={14} className={styles.iconBrain} />,
+        infoId: "group-strong",
+        tasks: ALL_REACT_TASKS.filter((t) => t.difficulty === "strong"),
+      },
+      {
+        id: "ts",
+        label: "React + TS (Разминка)",
+        icon: <Zap size={14} className={styles.iconZap} />,
+        infoId: "group-ts",
+        tasks: ALL_REACT_TASKS.filter((t) => t.category === "React + TS (Разминка)"),
+      },
+      {
+        id: "ts-practice",
+        label: "React + TS (Практика)",
+        icon: <Zap size={14} className={styles.iconZap} />,
+        infoId: "group-ts-practice",
+        tasks: ALL_REACT_TASKS.filter((t) => t.category === "React + TS (Практика)"),
+      },
+    ],
+    []
+  );
+
+  const currentReactCategory = useMemo(() => {
+    if (currentTask) {
+      const cat = reactCategories.find((c) => c.tasks.some((t) => t.id === currentTask.id));
+      if (cat) return cat;
+    }
+    if (paramId) {
+      const cat = reactCategories.find((c) => c.infoId === paramId || c.id === paramId);
+      if (cat) return cat;
+    }
+    return null;
+  }, [currentTask, paramId, reactCategories]);
+
+  return (
+    <>
+      <span className={styles.separator}>/</span>
+
+      {/* 1. Category Breadcrumb */}
+      <div className={styles.dropdownWrapper}>
+        <button
+          type="button"
+          className={[
+            styles.breadcrumbBtn,
+            activeDropdown === "group" && styles.breadcrumbBtnActive,
+          ]
+            .filter(Boolean)
+            .join(" ")}
+          onClick={() => toggleDropdown("group")}
+          title="Выбрать категорию задач React"
+          aria-label="Выбрать категорию задач React"
+        >
+          {currentReactCategory ? (
+            currentReactCategory.icon
+          ) : (
+            <Code2 size={14} className={styles.iconReact} />
+          )}
+          <span className={styles.itemText}>
+            {currentReactCategory?.label || "Все категории React"}
+          </span>
+          <ChevronDown size={13} className={styles.chevron} />
+        </button>
+
+        {activeDropdown === "group" && (
+          <div className={styles.dropdownMenu}>
+            <div className={styles.dropdownHeader}>
+              <span className={styles.dropdownHeaderIcon}>
+                <FolderTree size={14} />
+              </span>
+              <span className={styles.dropdownHeaderTitle}>Группы задач React</span>
+            </div>
+            <div className={styles.dropdownList}>
+              {reactCategories.map((cat) => {
+                const completedCount = cat.tasks.filter((t) =>
+                  selectIsTaskCompleted(progressState, t.id)
+                ).length;
+                const completionClass = getGroupCompletionClass(
+                  cat.tasks,
+                  reviews,
+                  progressState.completedTasks
+                );
+                const isActive = currentReactCategory && cat.id === currentReactCategory.id;
+
+                return (
+                  <Link
+                    key={cat.id}
+                    to="/react/$taskId"
+                    params={{ taskId: cat.infoId }}
+                    className={[styles.dropdownItem, isActive && styles.active]
+                      .filter(Boolean)
+                      .join(" ")}
+                    onClick={() => {
+                      closeAllDropdowns();
+                      setTimeout(() => {
+                        const el = document.getElementById(cat.id);
+                        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                      }, 50);
+                    }}
+                  >
+                    <span className={styles.dropdownItemIcon}>{cat.icon}</span>
+                    <span className={styles.dropdownItemTitle}>{cat.label}</span>
+                    <NodeCount
+                      completed={completedCount}
+                      total={cat.tasks.length}
+                      completedClass={completionClass}
+                    />
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* 2. Task Breadcrumb (only when a specific task is open) */}
+      {currentTask && !currentTask.isGroupOverview && currentReactCategory && (
+        <>
+          <span className={styles.separator}>/</span>
+          <div className={styles.dropdownWrapper}>
+            <button
+              type="button"
+              className={[
+                styles.breadcrumbBtn,
+                styles.taskActiveBtn,
+                activeDropdown === "task" && styles.breadcrumbBtnActive,
+              ]
+                .filter(Boolean)
+                .join(" ")}
+              onClick={() => toggleDropdown("task")}
+              title="Выбрать другую задачу из этого раздела"
+              aria-label="Выбрать другую задачу из этого раздела"
+            >
+              <FileText size={14} className={styles.fileIcon} />
+              <span className={styles.itemText}>{currentTask.title}</span>
+              <ChevronDown size={13} className={styles.chevron} />
+            </button>
+
+            {activeDropdown === "task" && (
+              <div className={styles.dropdownMenu}>
+                <div className={styles.dropdownHeader}>
+                  <span className={styles.dropdownHeaderIcon}>
+                    <FolderTree size={14} />
+                  </span>
+                  <span className={styles.dropdownHeaderTitle}>
+                    Задачи: {currentReactCategory.label}
+                  </span>
+                </div>
+                <div className={styles.dropdownList}>
+                  {currentReactCategory.tasks.map((t) => {
+                    const isSolved = selectIsTaskCompleted(progressState, t.id);
+                    const isUnsolved =
+                      progressState.completedTasks[t.id] === "unsolved" ||
+                      progressState.completedTasks[String(t.id)] === "unsolved";
+                    const rev = reviews[String(t.id)];
+                    const isDueToday = isTaskDue(rev);
+                    const isActive = t.id === currentTask.id;
+                    const ratingClass = getRatingClass(
+                      isSolved,
+                      isUnsolved,
+                      t.difficulty,
+                      rev?.rating
+                    );
+
+                    return (
+                      <Link
+                        key={t.id}
+                        to="/react/$taskId"
+                        params={{ taskId: String(t.id) }}
+                        className={[styles.dropdownItem, isActive && styles.active]
+                          .filter(Boolean)
+                          .join(" ")}
+                        onClick={closeAllDropdowns}
+                      >
+                        <FileText size={14} className={styles.fileIcon} />
+                        <span
+                          className={[styles.dropdownItemTitle, ratingClass]
+                            .filter(Boolean)
+                            .join(" ")}
+                        >
+                          {t.title}
+                        </span>
+                        {isDueToday ? (
+                          <span className={styles.statusDue} title="Пора повторить!">
+                            <RotateCcw size={12} />
+                          </span>
+                        ) : isSolved ? (
+                          <span className={styles.statusSolved} title="Решено">
+                            <Check size={12} />
+                          </span>
+                        ) : isUnsolved ? (
+                          <span className={styles.statusUnsolved} title="Не решено">
+                            <X size={12} />
+                          </span>
+                        ) : null}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+        </>
+      )}
+    </>
+  );
+};

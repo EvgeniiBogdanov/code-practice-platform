@@ -1,0 +1,50 @@
+.navContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  background-color: var(--bg-card);
+  padding: 3px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+}
+
+.navItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: all var(--transition-fast);
+}
+
+.navItem:hover {
+  color: var(--text-main);
+  background-color: var(--bg-surface);
+}
+
+.active {
+  background-color: var(--bg-surface);
+  color: var(--text-main);
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+}
+
+.iconReact {
+  color: #38bdf8;
+}
+
+.iconJs {
+  color: #fbbf24;
+}
+
+.iconAlgo {
+  color: #c084fc;
+}
+
+.iconEditor {
+  color: #34d399;
+}

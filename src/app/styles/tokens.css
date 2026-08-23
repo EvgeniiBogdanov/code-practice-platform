@@ -1,0 +1,380 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+
+:root {
+  /* ==========================================
+     1. TYPOGRAPHY TOKENS
+     ========================================== */
+  --font-sans:
+    "Inter", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+  --font-serif: Lyon-Text, Georgia, YuMincho, "SF Pro Serif", serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", Courier, monospace;
+
+  /* Font Sizes */
+  --fs-page-title: 40px;
+  --fs-h1: 30px;
+  --fs-h2: 24px;
+  --fs-h3: 20px;
+  --fs-h4: 16px;
+  --fs-body: 16px;
+  --fs-body-sm: 14px;
+  --fs-caption: 12px;
+  --fs-inline-code: 13.6px;
+  --fs-block-code: 14px;
+
+  --fs-sidebar-header: 14px;
+  --fs-sidebar-section: 12px;
+  --fs-sidebar-item: 14px;
+  --fs-sidebar-subitem: 14px;
+  --fs-sidebar-badge: 12px;
+  --fs-sidebar-tooltip: 12px;
+
+  --fs-2xs: 9px;
+  --fs-xs: 10px;
+  --fs-sm: var(--fs-sidebar-badge);
+  --fs-base-sm: var(--fs-caption);
+  --fs-base: var(--fs-sidebar-subitem);
+  --fs-md: var(--fs-sidebar-item);
+  --fs-lg: 15px;
+  --fs-xl: var(--fs-h4);
+  --fs-2xl: 18px;
+  --fs-3xl: var(--fs-h3);
+  --fs-4xl: var(--fs-h2);
+  --fs-5xl: var(--fs-h1);
+  --fs-6xl: var(--fs-page-title);
+
+  /* Font Weights */
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-black: 900;
+  --fw-normal: var(--fw-regular);
+
+  /* Line Heights */
+  --lh-tight: 1.2;
+  --lh-heading: 1.3;
+  --lh-compact: 1.35;
+  --lh-code: 1.4;
+  --lh-body: 1.5;
+  --lh-relaxed: 1.6;
+  --lh-none: 1;
+  --lh-snug: var(--lh-compact);
+  --lh-normal: var(--lh-body);
+  --lh-loose: 1.7;
+
+  /* Letter Spacing */
+  --ls-page-title: -0.02em;
+  --ls-h1: -0.015em;
+  --ls-h2: -0.01em;
+  --ls-h3: -0.005em;
+  --ls-item: -0.01em;
+  --ls-section: 0.04em;
+
+  /* ==========================================
+     2. COLOR TOKENS (DARK THEME - DEFAULT)
+     ========================================== */
+  --bg-app: #191919;
+  --bg-sidebar: #202020;
+  --bg-card: #252525;
+  --bg-popover: #252525;
+  --bg-subtle: rgba(255, 255, 255, 0.03);
+  --bg-deep: #141414;
+  --bg-elevated: #2f2f2f;
+  --bg-editor: #1e1e1e;
+  --bg-input: #1c1c1c;
+  --bg-input-hover: #222222;
+  --bg-input-focus: #191919;
+  --bg-tooltip-code: #1c1c1c;
+  --bg-surface: #202020;
+  --bg-overlay: rgba(0, 0, 0, 0.65);
+
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.15);
+  --border-editor: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.22);
+
+  --text-main: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.7);
+  --fg-muted: rgba(255, 255, 255, 0.55);
+  --text-placeholder: rgba(255, 255, 255, 0.38);
+  --text-dimmed: #b0b0b0;
+  --text-secondary: #f1f5f9;
+  --text-on-accent: #ffffff;
+
+  --state-hover: rgba(255, 255, 255, 0.055);
+  --state-active: rgba(255, 255, 255, 0.12);
+  --state-selected: rgba(255, 255, 255, 0.16);
+
+  --accent-blue: #2383e2;
+  --accent-blue-hover: #1a6bbf;
+  --accent-blue-bg: rgba(35, 131, 226, 0.15);
+  --accent-purple: #9065b0;
+  --accent-purple-bg: rgba(144, 101, 176, 0.2);
+  --accent-orange: #d4732a;
+  --accent-orange-bg: rgba(212, 115, 42, 0.2);
+  --accent-green: #448361;
+  --accent-green-bg: rgba(68, 131, 97, 0.2);
+  --accent-red: #e54d42;
+  --accent-red-bg: rgba(229, 77, 66, 0.2);
+  --accent-yellow: #d9a036;
+  --accent-yellow-bg: rgba(217, 160, 54, 0.2);
+  --accent-gray: #9b9b9b;
+  --accent-gray-bg: rgba(155, 155, 155, 0.2);
+
+  /* Section Colors */
+  --color-react: #3b82f6;
+  --color-react-bg: rgba(59, 130, 246, 0.12);
+  --color-react-border: rgba(59, 130, 246, 0.25);
+  --color-js: #f59e0b;
+  --color-js-bg: rgba(245, 158, 11, 0.12);
+  --color-js-border: rgba(245, 158, 11, 0.25);
+  --color-algo: #a855f7;
+  --color-algo-bg: rgba(168, 85, 247, 0.12);
+  --color-algo-border: rgba(168, 85, 247, 0.25);
+  --color-home: var(--text-main);
+
+  /* Status Colors */
+  --color-status-solved: #10b981;
+  --color-status-unsolved: #ef4444;
+  --color-status-due: #eab308;
+
+  /* Icon Colors */
+  --icon-file: #94a3b8;
+
+  /* Spaced Repetition Mastery Levels */
+  --color-mastery-mastered: #10b981;
+  --color-mastery-reviewing: #f59e0b;
+  --color-mastery-learning: #f43f5e;
+  --color-mastery-unreviewed: #64748b;
+
+  /* Tab Colors */
+  --tab-candidate: #10b981;
+  --tab-solution: #3b82f6;
+  --tab-materials: #f59e0b;
+  --tab-questions: #a855f7;
+  --tab-checklist: #06b6d4;
+
+  --color-success: #10b981;
+  --color-success-hover: #059669;
+  --color-success-contrast: #064e3b;
+  --color-success-light: #34d399;
+  --color-error: #ef4444;
+  --color-error-light: #f87171;
+  --color-error-muted: #fca5a5;
+  --color-warning: #f59e0b;
+  --color-warning-light: #fbbf24;
+  --color-info: #38bdf8;
+  --color-info-light: #60a5fa;
+  --color-accent-purple: #a855f7;
+  --color-accent-purple-light: #c084fc;
+  --color-accent-purple-muted: #d2a8ff;
+
+  --dot-close: #ff5f56;
+  --dot-minimize: #ffbd2e;
+  --dot-maximize: #27c93f;
+
+  /* Syntax Highlighting */
+  --hl-comment: #8b949e;
+  --hl-string: #a5d6ff;
+  --hl-number: #79c0ff;
+  --hl-keyword: #ff7b72;
+  --hl-function: #d2a8ff;
+  --hl-tag: #7ee787;
+  --hl-punctuation: #e6edf3;
+  --hl-error: #f85149;
+  --hl-operator: #ff7b72;
+  --hl-type: #79c0ff;
+  --hl-variable: #e6edf3;
+  --hl-regex: #d2a8ff;
+
+  /* ==========================================
+     3. SPACING TOKENS
+     ========================================== */
+  --space-0: 0;
+  --space-px: 1px;
+  --space-0-5: 2px;
+  --space-1: 4px;
+  --space-1-5: 6px;
+  --space-2: 8px;
+  --space-2-5: 10px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* ==========================================
+     4. BORDER RADIUS TOKENS
+     ========================================== */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-full: 9999px;
+
+  /* ==========================================
+     5. SHADOW TOKENS
+     ========================================== */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-popover: 0 15px 35px -5px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.094);
+  --shadow-glow-blue: 0 0 0 2px rgba(35, 131, 226, 0.35);
+  --shadow-glow-red: 0 0 0 2px rgba(229, 77, 66, 0.35);
+  --shadow-glow-green: 0 0 0 2px rgba(16, 185, 129, 0.35);
+
+  /* ==========================================
+     6. Z-INDEX TOKENS
+     ========================================== */
+  --z-base: 10;
+  --z-sticky: 30;
+  --z-fixed: 100;
+  --z-dropdown: 1000;
+  --z-sidebar-backdrop: 1999;
+  --z-sidebar: 2000;
+  --z-modal: 9000;
+  --z-modal-confirm: 9500;
+  --z-drawer: 9800;
+  --z-command-palette: 10000;
+  --z-fullscreen: 99999;
+  --z-portal: 999999;
+  --z-tooltip: 1000000;
+
+  /* ==========================================
+     7. TRANSITION TOKENS
+     ========================================== */
+  --transition-hover: 50ms ease-in-out;
+  --transition-fast: 100ms ease;
+  --transition-standard: 150ms cubic-bezier(0.2, 0, 0, 1);
+  --transition-medium: 200ms cubic-bezier(0.2, 0, 0, 1);
+  --transition-slow: 300ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* ==========================================
+   LIGHT THEME VARIABLES
+   ========================================== */
+[data-theme="light"] {
+  --bg-app: #fbfbfa;
+  --bg-sidebar: #f7f6f3;
+  --bg-card: #ffffff;
+  --bg-popover: #ffffff;
+  --bg-subtle: #f4f4f2;
+  --bg-deep: #ffffff;
+  --bg-elevated: #f9f9f8;
+  --bg-editor: #ffffff;
+  --bg-input: #ffffff;
+  --bg-input-hover: #f9f9f8;
+  --bg-input-focus: #ffffff;
+  --bg-tooltip-code: #f7f6f3;
+  --bg-surface: #f7f6f3;
+  --bg-overlay: rgba(0, 0, 0, 0.4);
+
+  --border-color: rgba(55, 53, 47, 0.12);
+  --border-strong: rgba(55, 53, 47, 0.22);
+  --border-editor: rgba(55, 53, 47, 0.14);
+  --border-hover: rgba(55, 53, 47, 0.32);
+
+  --text-main: #37352f;
+  --text-muted: rgba(55, 53, 47, 0.68);
+  --fg-muted: rgba(55, 53, 47, 0.48);
+  --text-placeholder: rgba(55, 53, 47, 0.32);
+  --text-dimmed: rgba(55, 53, 47, 0.6);
+  --text-secondary: rgba(55, 53, 47, 0.78);
+  --text-on-accent: #ffffff;
+
+  --state-hover: rgba(55, 53, 47, 0.06);
+  --state-active: rgba(55, 53, 47, 0.118);
+  --state-selected: rgba(55, 53, 47, 0.16);
+
+  --accent-blue: #0066cc;
+  --accent-blue-hover: #004ea8;
+  --accent-blue-bg: rgba(0, 102, 204, 0.1);
+  --accent-purple: #7d449e;
+  --accent-purple-bg: rgba(125, 68, 158, 0.12);
+  --accent-orange: #c75d18;
+  --accent-orange-bg: rgba(199, 93, 24, 0.12);
+  --accent-green: #2d6a4f;
+  --accent-green-bg: rgba(45, 106, 79, 0.12);
+  --accent-red: #d32f2f;
+  --accent-red-bg: rgba(211, 47, 47, 0.12);
+  --accent-yellow: #b8860b;
+  --accent-yellow-bg: rgba(184, 134, 11, 0.12);
+  --accent-gray: #787774;
+  --accent-gray-bg: rgba(120, 119, 116, 0.15);
+
+  /* Section Colors Light */
+  --color-react: #0066cc;
+  --color-react-bg: rgba(0, 102, 204, 0.1);
+  --color-react-border: rgba(0, 102, 204, 0.2);
+  --color-js: #c75d18;
+  --color-js-bg: rgba(199, 93, 24, 0.1);
+  --color-js-border: rgba(199, 93, 24, 0.2);
+  --color-algo: #7d449e;
+  --color-algo-bg: rgba(125, 68, 158, 0.1);
+  --color-algo-border: rgba(125, 68, 158, 0.2);
+  --color-home: var(--text-main);
+
+  /* Status Colors Light */
+  --color-status-solved: #059669;
+  --color-status-unsolved: #d32f2f;
+  --color-status-due: #b8860b;
+
+  /* Icon Colors Light */
+  --icon-file: #94a3b8;
+
+  /* Spaced Repetition Mastery Levels Light */
+  --color-mastery-mastered: #059669;
+  --color-mastery-reviewing: #b8860b;
+  --color-mastery-learning: #d32f2f;
+  --color-mastery-unreviewed: #64748b;
+
+  /* Tab Colors Light */
+  --tab-candidate: #059669;
+  --tab-solution: #2563eb;
+  --tab-materials: #d97706;
+  --tab-questions: #9333ea;
+  --tab-checklist: #0891b2;
+
+  --color-success: #059669;
+  --color-success-hover: #047857;
+  --color-success-contrast: #ffffff;
+  --color-success-light: #10b981;
+  --color-error: #d32f2f;
+  --color-error-light: #ef4444;
+  --color-error-muted: #f87171;
+  --color-warning: #c75d18;
+  --color-warning-light: #f59e0b;
+  --color-info: #0066cc;
+  --color-info-light: #0284c7;
+  --color-accent-purple: #7d449e;
+  --color-accent-purple-light: #a855f7;
+  --color-accent-purple-muted: #8250df;
+
+  --shadow-sm: 0 1px 2px rgba(15, 15, 15, 0.05);
+  --shadow-md: 0 4px 12px rgba(15, 15, 15, 0.08);
+  --shadow-lg: 0 8px 24px rgba(15, 15, 15, 0.12);
+  --shadow-popover: 0 12px 32px -4px rgba(15, 15, 15, 0.15), 0 0 0 1px rgba(15, 15, 15, 0.08);
+  --shadow-glow-blue: 0 0 0 2px rgba(0, 102, 204, 0.2);
+  --shadow-glow-red: 0 0 0 2px rgba(211, 47, 47, 0.2);
+  --shadow-glow-green: 0 0 0 2px rgba(45, 106, 79, 0.2);
+
+  --hl-comment: #5c5b56;
+  --hl-string: #0a3069;
+  --hl-number: #0066cc;
+  --hl-keyword: #d32f2f;
+  --hl-function: #7d449e;
+  --hl-tag: #2d6a4f;
+  --hl-punctuation: #37352f;
+  --hl-error: #d32f2f;
+  --hl-operator: #c75d18;
+  --hl-type: #0066cc;
+  --hl-variable: #37352f;
+  --hl-regex: #7d449e;
+}

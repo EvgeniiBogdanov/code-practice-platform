@@ -1,0 +1,90 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.articlePage {
+  position: relative;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 4px 12px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.title {
+  font-family: var(--font-sans);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text-main, #ffffff);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+[data-theme="light"] .title {
+  color: #191919;
+}
+
+.divider {
+  border: 0;
+  height: 1px;
+  background: var(--border-color, rgba(255, 255, 255, 0.12));
+  margin: 12px 0;
+}
+
+[data-theme="light"] .divider {
+  background: rgba(55, 53, 47, 0.12);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.articlesList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.articleTopic {
+  font-weight: 500;
+  color: var(--text-main);
+  font-size: 13.5px;
+}
+
+.articleLink {
+  color: var(--accent-blue);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-size: 13.5px;
+}
+
+.articleLink:hover {
+  opacity: 0.8;
+}
+
+.empty {
+  font-size: 14px;
+  color: var(--fg-muted);
+  font-style: italic;
+  padding: 40px 20px;
+  text-align: center;
+}

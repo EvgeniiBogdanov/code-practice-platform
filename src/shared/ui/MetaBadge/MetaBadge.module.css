@@ -1,0 +1,94 @@
+.metaRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.metaBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-family: var(--font-sans);
+  border: none;
+  user-select: none;
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.text {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Variants - Exact v2.2.7 meta-badge styling (borderless with tint) */
+.variant-default,
+.variant-gray {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-muted, #94a3b8);
+}
+
+[data-theme="light"] .variant-default,
+[data-theme="light"] .variant-gray {
+  background: rgba(55, 53, 47, 0.08);
+  color: rgba(55, 53, 47, 0.65);
+}
+
+.variant-blue {
+  background: rgba(35, 131, 226, 0.15);
+  color: #2383e2;
+}
+
+[data-theme="light"] .variant-blue {
+  background: rgba(0, 102, 204, 0.1);
+  color: #0066cc;
+}
+
+.variant-yellow {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+[data-theme="light"] .variant-yellow {
+  background: rgba(217, 119, 6, 0.12);
+  color: #b45309;
+}
+
+.variant-purple {
+  background: rgba(168, 85, 247, 0.15);
+  color: #a855f7;
+}
+
+[data-theme="light"] .variant-purple {
+  background: rgba(125, 68, 158, 0.12);
+  color: #7d449e;
+}
+
+.variant-green {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+[data-theme="light"] .variant-green {
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
+}
+
+.variant-red {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+[data-theme="light"] .variant-red {
+  background: rgba(220, 38, 38, 0.12);
+  color: #dc2626;
+}

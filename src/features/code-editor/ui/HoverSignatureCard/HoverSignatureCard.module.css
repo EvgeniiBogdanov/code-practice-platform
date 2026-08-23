@@ -1,0 +1,31 @@
+.card {
+  position: absolute;
+  top: var(--popup-top, 0px);
+  left: var(--popup-left, 0px);
+  z-index: var(--z-dropdown);
+  max-width: 380px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 8px 12px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.signature {
+  font-weight: 600;
+  color: var(--accent-blue);
+  word-break: break-all;
+}
+
+.description {
+  font-family: inherit;
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: var(--lh-tight);
+}

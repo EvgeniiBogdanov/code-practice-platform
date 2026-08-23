@@ -1,0 +1,163 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px;
+  background: #181818;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  height: 30px;
+  min-height: 30px;
+  gap: 8px;
+  user-select: none;
+  overflow: hidden;
+}
+
+[data-theme="light"] .toolbar {
+  background: var(--bg-sidebar, #f7f6f3);
+  border-bottom-color: var(--border-color, rgba(55, 53, 47, 0.12));
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  height: 30px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+
+.left::-webkit-scrollbar {
+  height: 2px;
+}
+
+.left::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 2px;
+}
+
+[data-theme="light"] .left {
+  scrollbar-color: rgba(55, 53, 47, 0.2) transparent;
+}
+
+.singleFile {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  height: 24px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-main, #e2e8f0);
+  user-select: none;
+  white-space: nowrap;
+}
+
+[data-theme="light"] .singleFile {
+  color: var(--text-main, #37352f);
+}
+
+.fileTab {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  height: 22px;
+  box-sizing: border-box;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--text-muted, rgba(255, 255, 255, 0.6));
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  white-space: nowrap;
+  min-width: 0;
+  max-width: 180px;
+  overflow: hidden;
+  flex-shrink: 1;
+}
+
+.fileTab:hover {
+  color: var(--text-main, #ffffff);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.fileTab.active {
+  color: var(--text-main, #ffffff);
+  background: var(--bg-card, #2b2b2c);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  font-weight: 500;
+}
+
+[data-theme="light"] .fileTab {
+  color: var(--text-muted, rgba(55, 53, 47, 0.68));
+}
+
+[data-theme="light"] .fileTab:hover {
+  color: var(--text-main, #37352f);
+  background: var(--state-hover, rgba(55, 53, 47, 0.06));
+}
+
+[data-theme="light"] .fileTab.active {
+  color: var(--text-main, #37352f);
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(55, 53, 47, 0.1);
+}
+
+.fileTabName {
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex: 1 1 0%;
+  display: block;
+}
+
+.fileIconReact {
+  color: #61dafb;
+  flex-shrink: 0;
+}
+
+.fileIconTs {
+  color: #3178c6;
+  flex-shrink: 0;
+}
+
+.fileIconJs {
+  color: #f59e0b;
+  flex-shrink: 0;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+  margin-left: 6px;
+  height: 30px;
+}
+
+.copiedCheck {
+  color: var(--color-success, #10b981);
+}
+
+.fontSizeLabel {
+  font-size: 9.5px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--fg-muted);
+  margin: 0 2px;
+  min-width: 20px;
+  text-align: center;
+}

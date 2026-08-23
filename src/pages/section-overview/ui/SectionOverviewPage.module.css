@@ -1,0 +1,385 @@
+.overviewContainer {
+  padding: 32px 40px 60px 40px;
+  max-width: 1060px;
+  margin: 0 auto;
+  font-family: var(--font-sans);
+  color: var(--text-main);
+}
+
+.pageHeader {
+  margin-bottom: 28px;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.mainTitle {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 780px;
+}
+
+/* KPI Grid */
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.kpiCard {
+  background: var(--bg-card, #252525);
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: var(--shadow-sm);
+}
+
+.kpiCard:hover {
+  border: none;
+}
+
+.kpiLabel {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.kpiValue {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-main);
+  font-feature-settings: "tnum";
+}
+
+.kpiSolved {
+  color: var(--color-status-solved, #10b981);
+}
+
+.kpiPercent {
+  color: var(--accent-blue, #60a5fa);
+}
+
+.kpiRemaining {
+  color: var(--color-status-due, #f59e0b);
+}
+
+/* Due Alert Card */
+.dueAlertCard {
+  background: rgba(245, 158, 11, 0.08);
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  margin-bottom: 28px;
+  box-shadow: var(--shadow-sm);
+}
+
+.dueAlertHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.dueAlertTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-status-due, #f59e0b);
+}
+
+.dueAlertText {
+  font-size: 13px;
+  color: var(--text-main);
+  margin: 0 0 12px 0;
+  opacity: 0.9;
+}
+
+.dueTasksChips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.dueChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm, 6px);
+  background: var(--bg-card, #252525);
+  border: none;
+  color: var(--text-main);
+  font-size: 12.5px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background var(--transition-fast);
+}
+
+.dueChip:hover {
+  background: var(--state-hover);
+  border: none;
+}
+
+/* Groups Section */
+.groupsSectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  margin-top: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.groupsSectionTitle {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.groupsSectionCount {
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+.groupsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 16px;
+}
+
+.groupCard {
+  background: var(--bg-card, #252525);
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+.groupCard:hover {
+  border: none;
+}
+
+.groupCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.groupTitleGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.groupIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.groupName {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.progressBar {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+[data-theme="light"] .progressBar {
+  background: rgba(55, 53, 47, 0.08);
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+  width: 0%;
+}
+
+.fill_javascript {
+  background: var(--color-js, #f59e0b);
+}
+
+.fill_react {
+  background: var(--color-react, #61dafb);
+}
+
+.fill_algorithms {
+  background: var(--color-algo, #a855f7);
+}
+
+.groupTasksPreview {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.previewTaskItem {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 8px;
+  border-radius: var(--radius-sm, 4px);
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 12.5px;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.previewTaskItem:hover {
+  background: var(--state-hover);
+  color: var(--text-main);
+}
+
+.previewTaskTitle {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.groupCardFooter {
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: none;
+}
+
+[data-theme="light"] .kpiCard,
+[data-theme="light"] .dueAlertCard,
+[data-theme="light"] .groupCard {
+  background: var(--bg-popover, #ffffff);
+  border: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.groupActionLink {
+  text-decoration: none;
+  display: block;
+  width: 100%;
+}
+
+.groupActionBtn {
+  width: 100%;
+  justify-content: space-between;
+  text-decoration: none;
+}
+
+/* Icon / Status Helpers */
+.iconJs {
+  color: var(--color-js, #f59e0b);
+}
+
+.iconReact {
+  color: var(--color-react, #61dafb);
+}
+
+.iconAlgo {
+  color: var(--color-algo, #a855f7);
+}
+
+.iconFlame {
+  color: #ff6b6b;
+}
+
+.iconWrench {
+  color: #3b82f6;
+}
+
+.iconRocket {
+  color: #10b981;
+}
+
+.iconBrain {
+  color: #a855f7;
+}
+
+.iconZap {
+  color: #eab308;
+}
+
+.fileIcon {
+  color: var(--icon-file, #94a3b8);
+  flex-shrink: 0;
+}
+
+.statusSolved {
+  color: var(--color-status-solved, #10b981);
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.statusUnsolved {
+  color: var(--color-status-unsolved, #ef4444);
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.statusDue {
+  color: var(--color-status-due, #f59e0b);
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .overviewContainer {
+    padding: 24px 20px 48px 20px;
+  }
+
+  .kpiGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 540px) {
+  .kpiGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .groupsGrid {
+    grid-template-columns: 1fr;
+  }
+}

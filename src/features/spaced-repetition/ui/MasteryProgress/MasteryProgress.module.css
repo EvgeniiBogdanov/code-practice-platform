@@ -1,0 +1,85 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: var(--space-2);
+}
+
+.statCard {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+}
+
+.statValue {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.statLabel {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.progressBar {
+  display: flex;
+  height: 8px;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  background-color: var(--bg-surface);
+  gap: 1px;
+}
+
+.segMastered {
+  width: var(--seg-width, 0%);
+  background-color: var(--color-success);
+  transition: width var(--transition-standard);
+}
+
+.segReviewing {
+  width: var(--seg-width, 0%);
+  background-color: var(--accent-blue);
+  transition: width var(--transition-standard);
+}
+
+.segLearning {
+  width: var(--seg-width, 0%);
+  background-color: #a855f7;
+  transition: width var(--transition-standard);
+}
+
+.segDue {
+  width: var(--seg-width, 0%);
+  background-color: var(--color-warning);
+  transition: width var(--transition-standard);
+}
+
+.valSuccess {
+  color: var(--color-success);
+}
+
+.valBlue {
+  color: var(--accent-blue);
+}
+
+.valPurple {
+  color: #a855f7;
+}
+
+.valWarning {
+  color: var(--color-warning);
+}

@@ -1,0 +1,32 @@
+.listContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.treeGroupBlock {
+  margin-bottom: 0;
+  min-width: 0;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 34px;
+}
+
+.iconFlame {
+  color: #ff6b6b;
+}
+
+.iconWrench {
+  color: #3b82f6;
+}
+
+.iconRocket {
+  color: #10b981;
+}
+
+.iconBrain {
+  color: #a855f7;
+}
+
+.iconZap {
+  color: #eab308;
+}
