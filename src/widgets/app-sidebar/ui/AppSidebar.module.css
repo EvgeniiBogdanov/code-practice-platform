@@ -71,12 +71,3 @@
   padding: 0 6px 8px 6px;
   scrollbar-gutter: stable;
 }
-
-.dueSection:empty {
-  display: none;
-  margin: 0;
-}
-
-.dueSection:not(:empty) {
-  margin-bottom: 6px;
-}

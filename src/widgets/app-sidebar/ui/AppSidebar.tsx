@@ -3,7 +3,6 @@ import { useLocation } from "@tanstack/react-router";
 import { useUIStore } from "@/entities/ui-state";
 import { SectionType } from "@/entities/task";
 import { Tooltip } from "@/shared/ui";
-import { DueTasksBadge } from "@/features/spaced-repetition";
 import { SidebarWorkspaceHeader } from "./SidebarWorkspaceHeader";
 import { SidebarHomeOverview } from "./SidebarHomeOverview";
 import { SidebarReactList } from "./SidebarReactList";
@@ -117,10 +116,6 @@ export const AppSidebar = ({ className }: AppSidebarProps) => {
         />
 
         <div className={styles.content}>
-          <div className={styles.dueSection}>
-            <DueTasksBadge />
-          </div>
-
           {activeSectionKey === "home" ? (
             <SidebarHomeOverview activeSectionKey={activeSectionKey} />
           ) : activeSectionKey === "javascript" ? (
