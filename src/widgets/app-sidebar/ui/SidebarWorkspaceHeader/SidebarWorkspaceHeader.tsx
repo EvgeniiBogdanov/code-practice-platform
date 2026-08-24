@@ -1,8 +1,15 @@
-import React, { useState, useRef, useEffect, memo } from "react";
+import React, { useState, useRef, useEffect, memo, useMemo, useCallback } from "react";
 import { Link } from "@tanstack/react-router";
-import { ChevronDown, PanelLeftClose } from "lucide-react";
-import { SECTIONS_CONFIG, SECTIONS_LIST, SectionType } from "@/entities/task";
-import { Tooltip } from "@/shared/ui";
+import { ChevronDown, PanelLeftClose, ChevronsDownUp, ChevronsUpDown } from "lucide-react";
+import {
+  SECTIONS_CONFIG,
+  SECTIONS_LIST,
+  SectionType,
+  JS_GROUP_CONFIG,
+  ALGO_GROUP_CONFIG,
+} from "@/entities/task";
+import { useUIStore } from "@/entities/ui-state";
+import { Tooltip, SquareButton } from "@/shared/ui";
 import styles from "./SidebarWorkspaceHeader.module.css";
 
 export interface SidebarWorkspaceHeaderProps {
@@ -17,6 +24,63 @@ export const SidebarWorkspaceHeader = memo(
 
     const activeSection = SECTIONS_CONFIG[activeSectionKey] || SECTIONS_CONFIG.home;
     const ActiveSectionIcon = activeSection.icon;
+
+    const expandedJsGroups = useUIStore((state) => state.expandedJsGroups);
+    const expandedAlgoGroups = useUIStore((state) => state.expandedAlgoGroups);
+    const warmupExpanded = useUIStore((state) => state.warmupExpanded);
+    const refactoringExpanded = useUIStore((state) => state.refactoringExpanded);
+    const tasksExpanded = useUIStore((state) => state.tasksExpanded);
+    const advancedExpanded = useUIStore((state) => state.advancedExpanded);
+    const reactTsExpanded = useUIStore((state) => state.reactTsExpanded);
+    const reactTsPracticeExpanded = useUIStore((state) => state.reactTsPracticeExpanded);
+
+    const collapseAllInCurrentSection = useUIStore((state) => state.collapseAllInCurrentSection);
+    const expandAllInCurrentSection = useUIStore((state) => state.expandAllInCurrentSection);
+
+    const isAnyExpanded = useMemo(() => {
+      if (activeSectionKey === "javascript") {
+        return Object.values(expandedJsGroups || {}).some(Boolean);
+      }
+      if (activeSectionKey === "algorithms") {
+        return Object.values(expandedAlgoGroups || {}).some(Boolean);
+      }
+      if (activeSectionKey === "react") {
+        return Boolean(
+          warmupExpanded ||
+            refactoringExpanded ||
+            tasksExpanded ||
+            advancedExpanded ||
+            reactTsExpanded ||
+            reactTsPracticeExpanded
+        );
+      }
+      return false;
+    }, [
+      activeSectionKey,
+      expandedJsGroups,
+      expandedAlgoGroups,
+      warmupExpanded,
+      refactoringExpanded,
+      tasksExpanded,
+      advancedExpanded,
+      reactTsExpanded,
+      reactTsPracticeExpanded,
+    ]);
+
+    const handleToggleExpandAll = useCallback(() => {
+      if (activeSectionKey === "home") return;
+      if (isAnyExpanded) {
+        collapseAllInCurrentSection(activeSectionKey);
+      } else {
+        const groupNames =
+          activeSectionKey === "javascript"
+            ? Object.keys(JS_GROUP_CONFIG)
+            : activeSectionKey === "algorithms"
+              ? Object.keys(ALGO_GROUP_CONFIG)
+              : [];
+        expandAllInCurrentSection(activeSectionKey, groupNames);
+      }
+    }, [activeSectionKey, isAnyExpanded, collapseAllInCurrentSection, expandAllInCurrentSection]);
 
     // Close dropdown on click outside
     useEffect(() => {
@@ -81,16 +145,31 @@ export const SidebarWorkspaceHeader = memo(
           )}
         </div>
 
-        <Tooltip content="Свернуть боковую панель" side="right" sideOffset={8}>
-          <button
-            type="button"
-            className={styles.sidebarToggleBtn}
-            onClick={onCloseSidebar}
-            aria-label="Свернуть боковую панель"
-          >
-            <PanelLeftClose size={15} />
-          </button>
-        </Tooltip>
+        <div className={styles.headerActions}>
+          {activeSectionKey !== "home" && (
+            <Tooltip
+              content={isAnyExpanded ? "Свернуть все темы" : "Развернуть все темы"}
+              side="bottom"
+              sideOffset={6}
+            >
+              <SquareButton
+                size="sm"
+                icon={isAnyExpanded ? <ChevronsDownUp size={15} /> : <ChevronsUpDown size={15} />}
+                onClick={handleToggleExpandAll}
+                aria-label={isAnyExpanded ? "Свернуть все темы" : "Развернуть все темы"}
+              />
+            </Tooltip>
+          )}
+
+          <Tooltip content="Свернуть боковую панель" side="right" sideOffset={8}>
+            <SquareButton
+              size="sm"
+              icon={<PanelLeftClose size={15} />}
+              onClick={onCloseSidebar}
+              aria-label="Свернуть боковую панель"
+            />
+          </Tooltip>
+        </div>
       </div>
     );
   }

@@ -27,7 +27,7 @@
 
 .button:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--color-primary, #3b82f6);
+  box-shadow: 0 0 0 2px var(--accent-blue, #3b82f6);
 }
 
 /* Sizes */
@@ -135,45 +135,49 @@
 
 .variant-danger {
   background: var(--accent-red-bg, rgba(239, 68, 68, 0.1));
-  color: var(--color-error, #ef4444);
+  color: var(--accent-red, #ef4444);
 }
 
 .variant-danger:hover:not(:disabled) {
-  background: var(--color-error, #ef4444);
+  background: var(--accent-red, #ef4444);
   color: var(--text-on-accent, #ffffff);
 }
 
 .variant-success {
   background: var(--accent-green-bg, rgba(34, 197, 94, 0.1));
-  color: var(--color-success, #22c55e);
+  color: var(--accent-green, #22c55e);
 }
 
 .variant-success:hover:not(:disabled) {
-  background: var(--color-success, #22c55e);
+  background: var(--accent-green, #22c55e);
   color: var(--text-on-accent, #ffffff);
 }
 
 /* Active State for all buttons / toolbars */
 .button.active,
 .button[aria-pressed="true"] {
-  background: var(--state-active, rgba(255, 255, 255, 0.12)) !important;
-  color: var(--text-main) !important;
+  background: var(--state-active, rgba(255, 255, 255, 0.12));
+  color: var(--text-main);
 }
 
 [data-theme="light"] .button.active,
 [data-theme="light"] .button[aria-pressed="true"] {
-  background: rgba(55, 53, 47, 0.15) !important;
-  color: var(--text-main, #37352f) !important;
+  background: rgba(55, 53, 47, 0.15);
+  color: var(--text-main, #37352f);
 }
 
-.variant-success.active,
-.variant-success[aria-pressed="true"] {
-  background: #10b981 !important;
-  color: #ffffff !important;
+.button.variant-success.active,
+.button.variant-success[aria-pressed="true"],
+[data-theme="light"] .button.variant-success.active,
+[data-theme="light"] .button.variant-success[aria-pressed="true"] {
+  background: var(--accent-green, #10b981);
+  color: #ffffff;
 }
 
-.variant-danger.active,
-.variant-danger[aria-pressed="true"] {
-  background: #ef4444 !important;
-  color: #ffffff !important;
+.button.variant-danger.active,
+.button.variant-danger[aria-pressed="true"],
+[data-theme="light"] .button.variant-danger.active,
+[data-theme="light"] .button.variant-danger[aria-pressed="true"] {
+  background: var(--accent-red, #ef4444);
+  color: #ffffff;
 }

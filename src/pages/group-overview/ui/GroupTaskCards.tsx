@@ -5,6 +5,8 @@ import { Task } from "@/entities/task";
 import { Button, Card } from "@/shared/ui";
 import styles from "./GroupOverviewPage.module.css";
 
+import { ReviewItem } from "@/entities/review";
+
 export interface GroupTaskCardsProps {
   tasks: Task[];
   taskRoute: string;
@@ -14,17 +16,17 @@ export interface GroupTaskCardsProps {
   getTaskGradientClass: (
     task: Task,
     status: "solved" | "unsolved" | "unstarted",
-    taskReview: unknown
+    taskReview: ReviewItem | null | undefined
   ) => string;
   getTaskTooltipTitle: (
     task: Task,
     status: "solved" | "unsolved" | "unstarted",
-    taskReview: unknown
+    taskReview: ReviewItem | null | undefined
   ) => string;
   formatLastSolved: (timestamp?: number | string | null) => string | null;
-  formatNextReviewDate: (timestamp?: number | string | null) => string | null;
-  isTaskDue: (review: unknown) => boolean;
-  reviews: Record<string, any>;
+  formatNextReviewDate: (timestamp?: number | ReviewItem, dueDate?: string) => string | null;
+  isTaskDue: (review: ReviewItem | null | undefined) => boolean;
+  reviews: Record<string, ReviewItem>;
   onResetFilter: () => void;
 }
 
@@ -37,17 +39,17 @@ interface GroupTaskCardItemProps {
   getTaskGradientClass: (
     task: Task,
     status: "solved" | "unsolved" | "unstarted",
-    taskReview: unknown
+    taskReview: ReviewItem | null | undefined
   ) => string;
   getTaskTooltipTitle: (
     task: Task,
     status: "solved" | "unsolved" | "unstarted",
-    taskReview: unknown
+    taskReview: ReviewItem | null | undefined
   ) => string;
   formatLastSolved: (timestamp?: number | string | null) => string | null;
-  formatNextReviewDate: (timestamp?: number | string | null) => string | null;
-  isTaskDue: (review: unknown) => boolean;
-  reviews: Record<string, any>;
+  formatNextReviewDate: (timestamp?: number | ReviewItem, dueDate?: string) => string | null;
+  isTaskDue: (review: ReviewItem | null | undefined) => boolean;
+  reviews: Record<string, ReviewItem>;
 }
 
 const GroupTaskCardItem = memo(
@@ -107,7 +109,7 @@ const GroupTaskCardItem = memo(
                 </span>
                 {isDue ? (
                   <span className={styles.statusIconDue} title="Пора повторить сегодня!">
-                    <RotateCcw size={13} />
+                    <RotateCcw size={11} />
                   </span>
                 ) : isDone ? (
                   <span className={styles.statusIconSolved} title="Решено">

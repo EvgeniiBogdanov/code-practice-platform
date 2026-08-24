@@ -62,31 +62,11 @@
   color: var(--text-muted);
 }
 
-.sidebarToggleBtn {
-  display: inline-flex;
+.headerActions {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  border: none;
-  outline: none;
-  border-radius: var(--radius-md, 4px);
-  background: transparent;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: all var(--transition-standard, 0.15s ease);
+  gap: 2px;
   flex-shrink: 0;
-}
-
-.sidebarToggleBtn:hover {
-  background: var(--state-hover);
-  color: var(--text-main);
-}
-
-.sidebarToggleBtn:active {
-  background: var(--state-active);
-  transform: scale(0.95);
 }
 
 .sectionDropdownMenu {

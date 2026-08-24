@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { PieChart as PieChartIcon, BarChart3, RotateCcw } from "lucide-react";
+import { NotificationBadge } from "@/shared/ui";
 import styles from "./SpacedRepetitionSection.module.css";
 
 export type SRTabType = "distribution" | "schedule" | "due";
@@ -45,7 +46,13 @@ export const SpacedRepetitionTabBar = memo(
         >
           <RotateCcw size={13} />
           <span>Срочные задачи</span>
-          {dueTasksCount > 0 && <span className={styles.tabDueBadge}>{dueTasksCount}</span>}
+          <NotificationBadge
+            count={dueTasksCount}
+            variant="yellow"
+            pinned={false}
+            ring={false}
+            size="sm"
+          />
         </button>
       </div>
     );

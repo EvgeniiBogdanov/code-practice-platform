@@ -27,7 +27,7 @@ export const TaskButton = forwardRef<HTMLButtonElement, TaskButtonProps>(
       ...props
     },
     ref
-  ) => {
+  ): React.JSX.Element => {
     const activeClass =
       isActive && statusVariant === "solved"
         ? styles.solvedActive

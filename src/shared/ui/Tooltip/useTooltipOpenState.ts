@@ -27,6 +27,7 @@ export const useTooltipOpenState = ({
 
   const handleOpen = useCallback(() => {
     if (disabled) return;
+    if (typeof document !== "undefined" && document.hidden) return;
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
     if (delay === 0) {
@@ -35,6 +36,7 @@ export const useTooltipOpenState = ({
       provider.setWarm(true);
     } else {
       timeoutRef.current = setTimeout(() => {
+        if (typeof document !== "undefined" && document.hidden) return;
         if (!isControlled) setUncontrolledOpen(true);
         onOpenChange?.(true);
         provider.setWarm(true);
@@ -48,6 +50,34 @@ export const useTooltipOpenState = ({
     onOpenChange?.(false);
     provider.setWarm(false);
   }, [isControlled, onOpenChange, provider]);
+
+  // Close tooltip on window blur or tab visibility change (tab switch)
+  useEffect(() => {
+    const handleVisibilityOrBlur = () => {
+      if (document.hidden || !document.hasFocus()) {
+        handleClose();
+      }
+    };
+
+    window.addEventListener("blur", handleVisibilityOrBlur);
+    document.addEventListener("visibilitychange", handleVisibilityOrBlur);
+    return () => {
+      window.removeEventListener("blur", handleVisibilityOrBlur);
+      document.removeEventListener("visibilitychange", handleVisibilityOrBlur);
+    };
+  }, [handleClose]);
+
+  // Close on Escape key
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        handleClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, handleClose]);
 
   useEffect(() => {
     return () => {

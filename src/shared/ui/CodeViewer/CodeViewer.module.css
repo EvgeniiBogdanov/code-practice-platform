@@ -68,14 +68,14 @@
 }
 
 .gutter {
-  padding: 14px 8px 14px 0;
+  padding: var(--code-padding-y, 14px) 8px var(--code-padding-y, 14px) 0;
   background: var(--bg-editor, #1e1e1e);
   border-right: 1px solid var(--border-color, rgba(255, 255, 255, 0.05));
   user-select: none;
   color: var(--text-dimmed, #858585);
   font-family: var(--font-mono);
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: var(--code-font-size, 14px);
+  line-height: var(--code-line-height, 1.6);
   text-align: right;
   box-sizing: border-box;
   overflow: hidden;
@@ -90,9 +90,9 @@
 }
 
 .gutterLine {
-  height: 1.6em;
-  line-height: 1.6;
-  font-size: 14px;
+  height: calc(1em * var(--code-line-height, 1.6));
+  line-height: var(--code-line-height, 1.6);
+  font-size: var(--code-font-size, 14px);
   font-family: var(--font-mono);
   padding-right: 4px;
   box-sizing: border-box;
@@ -110,15 +110,17 @@
 
 .preOnly {
   margin: 0;
-  padding: 14px 16px;
+  padding: var(--code-padding-y, 14px) var(--code-padding-x, 16px);
   font-family: var(--font-mono);
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: var(--code-font-size, 14px);
+  line-height: var(--code-line-height, 1.6);
   color: var(--text-main, #d4d4d4);
-  white-space: pre;
+  white-space: var(--code-white-space, pre);
+  word-break: var(--code-word-break, normal);
+  overflow-wrap: var(--code-overflow-wrap, normal);
   max-width: 100%;
   box-sizing: border-box;
-  overflow-x: auto;
+  overflow-x: var(--code-overflow-x, auto);
 }
 
 [data-theme="light"] .preOnly {
@@ -127,8 +129,8 @@
 
 .preOnly code {
   font-family: var(--font-mono) !important;
-  font-size: 14px !important;
-  line-height: 1.6 !important;
+  font-size: var(--code-font-size, 14px) !important;
+  line-height: var(--code-line-height, 1.6) !important;
   background: transparent !important;
   padding: 0 !important;
   border: none !important;
@@ -142,8 +144,8 @@
 
 .preOnly code * {
   font-family: var(--font-mono) !important;
-  font-size: 14px !important;
-  line-height: 1.6 !important;
+  font-size: var(--code-font-size, 14px) !important;
+  line-height: var(--code-line-height, 1.6) !important;
 }
 
 .copyBtn {

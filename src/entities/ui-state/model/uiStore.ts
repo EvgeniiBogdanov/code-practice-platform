@@ -308,6 +308,15 @@ export const useUIStore = create<UIState>()(
               ? reactTsPracticeExpanded(state.reactTsPracticeExpanded)
               : reactTsPracticeExpanded,
         })),
+      setAllReactCategoriesExpanded: (expanded) =>
+        set({
+          warmupExpanded: expanded,
+          refactoringExpanded: expanded,
+          tasksExpanded: expanded,
+          advancedExpanded: expanded,
+          reactTsExpanded: expanded,
+          reactTsPracticeExpanded: expanded,
+        }),
       setExpandedJsGroups: (updater) =>
         set((state) => ({
           expandedJsGroups:
@@ -351,6 +360,48 @@ export const useUIStore = create<UIState>()(
         }),
 
       setTooltip: (tooltip) => set({ tooltip }),
+
+      collapseAllInCurrentSection: (section) => {
+        if (section === "javascript") {
+          set({ expandedJsGroups: {}, expandedJsSubgroups: {} });
+        } else if (section === "algorithms") {
+          set({ expandedAlgoGroups: {}, expandedAlgoSubgroups: {} });
+        } else if (section === "react") {
+          set({
+            warmupExpanded: false,
+            refactoringExpanded: false,
+            tasksExpanded: false,
+            advancedExpanded: false,
+            reactTsExpanded: false,
+            reactTsPracticeExpanded: false,
+          });
+        }
+      },
+
+      expandAllInCurrentSection: (section, allGroupNames = []) => {
+        if (section === "javascript") {
+          const nextGroups: Record<string, boolean> = {};
+          for (const name of allGroupNames) {
+            nextGroups[name] = true;
+          }
+          set({ expandedJsGroups: nextGroups });
+        } else if (section === "algorithms") {
+          const nextGroups: Record<string, boolean> = {};
+          for (const name of allGroupNames) {
+            nextGroups[name] = true;
+          }
+          set({ expandedAlgoGroups: nextGroups });
+        } else if (section === "react") {
+          set({
+            warmupExpanded: true,
+            refactoringExpanded: true,
+            tasksExpanded: true,
+            advancedExpanded: true,
+            reactTsExpanded: true,
+            reactTsPracticeExpanded: true,
+          });
+        }
+      },
     }),
     {
       name: "playground_ui_settings",
@@ -362,6 +413,12 @@ export const useUIStore = create<UIState>()(
         editorFontSize: state.editorFontSize,
         consoleFontSize: state.consoleFontSize,
         consoleCollapsed: state.consoleCollapsed,
+        warmupExpanded: state.warmupExpanded,
+        refactoringExpanded: state.refactoringExpanded,
+        tasksExpanded: state.tasksExpanded,
+        advancedExpanded: state.advancedExpanded,
+        reactTsExpanded: state.reactTsExpanded,
+        reactTsPracticeExpanded: state.reactTsPracticeExpanded,
         expandedJsGroups: state.expandedJsGroups,
         expandedJsSubgroups: state.expandedJsSubgroups,
         expandedAlgoGroups: state.expandedAlgoGroups,

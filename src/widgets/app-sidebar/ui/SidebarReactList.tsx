@@ -1,17 +1,17 @@
 import React, { useMemo } from "react";
 import { clsx } from "clsx";
 import { ALL_REACT_TASKS } from "@/entities/task";
-import { useSidebarReactList } from "../model/useSidebarReactList";
+import { useSidebarReactList } from "../model";
 import { SidebarProgressCard } from "./SidebarProgressCard/SidebarProgressCard";
 import { SidebarReactCategoryItem } from "./SidebarReactCategoryItem";
-import { getReactCategories } from "../lib/getReactCategories";
+import { getReactCategories } from "../lib/get-react-categories";
 import styles from "./SidebarReactList.module.css";
 
 export interface SidebarReactListProps {
   className?: string;
 }
 
-export const SidebarReactList = ({ className }: SidebarReactListProps) => {
+export const SidebarReactList = ({ className }: SidebarReactListProps): React.JSX.Element => {
   const { currentTaskId, progressState, reviews, uiState, completedTotal } = useSidebarReactList();
 
   const categories = useMemo(() => getReactCategories(uiState), [uiState]);

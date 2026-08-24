@@ -16,7 +16,6 @@ const cheatDataMap = CHEAT_SHEET_DATA as unknown as Record<string, CheatItem[]>;
 export function useCheatSheetData(cheatSearch: string) {
   const [activeSection, setActiveSection] = useState<SectionType>("react");
   const [activeCategory, setActiveCategory] = useState<string>("hooks");
-  const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const deferredSearch = useDeferredValue(cheatSearch);
   const currentSectionConfig = sectionConfigMap[activeSection] || sectionConfigMap.react;
@@ -42,20 +41,12 @@ export function useCheatSheetData(cheatSearch: string) {
     );
   }, [activeCategory, deferredSearch]);
 
-  const handleCopy = (code: string, id: string) => {
-    navigator.clipboard.writeText(code);
-    setCopiedId(id);
-    setTimeout(() => setCopiedId(null), 2000);
-  };
-
   return {
     activeSection,
     activeCategory,
-    copiedId,
     currentSectionConfig,
     filteredData,
     handleSelectSection,
     setActiveCategory,
-    handleCopy,
   };
 }

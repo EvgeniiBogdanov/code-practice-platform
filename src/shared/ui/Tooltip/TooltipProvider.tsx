@@ -1,4 +1,4 @@
-import { memo, ReactNode, useCallback, useRef, useState } from "react";
+import { memo, ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { TooltipProviderContext } from "./types";
 
 export interface TooltipProviderProps {
@@ -25,6 +25,21 @@ export const TooltipProvider = memo(
       },
       [skipDelayDuration]
     );
+
+    // Reset warm state when user leaves tab/window
+    useEffect(() => {
+      const handleWindowBlur = () => {
+        if (warmTimerRef.current) clearTimeout(warmTimerRef.current);
+        setIsWarm(false);
+      };
+
+      window.addEventListener("blur", handleWindowBlur);
+      document.addEventListener("visibilitychange", handleWindowBlur);
+      return () => {
+        window.removeEventListener("blur", handleWindowBlur);
+        document.removeEventListener("visibilitychange", handleWindowBlur);
+      };
+    }, []);
 
     return (
       <TooltipProviderContext.Provider

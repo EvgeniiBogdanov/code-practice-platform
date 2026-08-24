@@ -1,14 +1,14 @@
-import { memo } from "react";
+import React, { memo } from "react";
 import { Lightbulb, Star } from "lucide-react";
 import { Card } from "@/shared/ui";
 import styles from "./HomePage.module.css";
 
-export const HomeCallouts = memo(() => {
+export const HomeCallouts = memo((): React.JSX.Element => {
   return (
     <div className={styles.calloutsGrid}>
       <Card className={styles.calloutBanner}>
         <div className={styles.calloutIcon}>
-          <Lightbulb size={20} style={{ color: "var(--accent-blue, #3b82f6)" }} />
+          <Lightbulb size={20} color="#3b82f6" />
         </div>
         <div className={styles.calloutContent}>
           <div className={styles.calloutTitle}>Быстрый старт</div>
@@ -22,7 +22,7 @@ export const HomeCallouts = memo(() => {
 
       <Card className={styles.calloutBanner}>
         <div className={styles.calloutIcon}>
-          <Star size={20} style={{ color: "#f59e0b", fill: "rgba(245, 158, 11, 0.2)" }} />
+          <Star size={20} color="#f59e0b" fill="rgba(245, 158, 11, 0.2)" />
         </div>
         <div className={styles.calloutContent}>
           <div className={styles.calloutTitle}>Open-Source проект</div>

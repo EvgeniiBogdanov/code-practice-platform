@@ -13,6 +13,9 @@ import {
 } from "@/shared/ui";
 import styles from "./GroupOverviewPage.module.css";
 
+import { ReviewItem } from "@/entities/review";
+import { TaskCompletionStatus } from "@/entities/progress";
+
 export interface GroupTaskListProps {
   tasks: Task[];
   groupedSubgroups: Record<string, Task[]>;
@@ -26,13 +29,13 @@ export interface GroupTaskListProps {
   getTaskGradientClass: (
     task: Task,
     status: "solved" | "unsolved" | "unstarted",
-    taskReview: unknown
+    taskReview: ReviewItem | null | undefined
   ) => string;
   formatLastSolved: (timestamp?: number | string | null) => string | null;
-  formatNextReviewDate: (timestamp?: number | string | null) => string | null;
-  isTaskDue: (review: unknown) => boolean;
-  reviews: Record<string, any>;
-  completedTasks: Record<string, string>;
+  formatNextReviewDate: (timestamp?: number | ReviewItem, dueDate?: string) => string | null;
+  isTaskDue: (review: ReviewItem | null | undefined) => boolean;
+  reviews: Record<string, ReviewItem>;
+  completedTasks: Record<string, TaskCompletionStatus>;
   onResetFilter: () => void;
 }
 
@@ -99,7 +102,7 @@ export const GroupTaskList = React.memo(
                 </Badge>
               ) : (
                 <span className={styles.statusUnstarted} title="Ещё не решалась">
-                  <Minus size={13} />
+                  <Minus size={8} />
                 </span>
               )}
             </div>
@@ -111,7 +114,6 @@ export const GroupTaskList = React.memo(
                   variant="yellow"
                   size="sm"
                   uppercase={false}
-                  icon={<RotateCcw size={11} />}
                   title="Срок повторения подошел! Пора повторить сегодня"
                 >
                   Пора повторить
@@ -121,14 +123,13 @@ export const GroupTaskList = React.memo(
                   variant="blue"
                   size="sm"
                   uppercase={false}
-                  icon={<RotateCcw size={11} />}
                   title={`Следующее повторение: ${formatNextReviewDate(nextReviewAt)}`}
                 >
                   {formatNextReviewDate(nextReviewAt)}
                 </Badge>
               ) : (
                 <span className={styles.statusUnstarted} title="Повторение не запланировано">
-                  <Minus size={13} />
+                  <Minus size={8} />
                 </span>
               )}
             </div>
@@ -137,7 +138,7 @@ export const GroupTaskList = React.memo(
             <span className={styles.dbColStatus}>
               {isDue ? (
                 <span className={styles.statusDue} title="Пора повторить!">
-                  <RotateCcw size={13} />
+                  <RotateCcw size={11} />
                 </span>
               ) : s === "solved" ? (
                 <span className={styles.statusSolved} title="Решено">
@@ -149,7 +150,7 @@ export const GroupTaskList = React.memo(
                 </span>
               ) : (
                 <span className={styles.statusUnstarted} title="Не начато">
-                  <Minus size={13} />
+                  <Minus size={8} />
                 </span>
               )}
             </span>

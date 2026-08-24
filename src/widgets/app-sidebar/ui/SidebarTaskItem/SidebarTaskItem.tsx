@@ -70,7 +70,7 @@ export const SidebarTaskItem = memo(
 
           {isDue ? (
             <span className={styles.statusIconDue} aria-label="Пора повторить сегодня!">
-              <RotateCcw size={14} />
+              <RotateCcw size={11} />
             </span>
           ) : isSolved ? (
             <span className={styles.statusIconSolved} aria-label="Решено">

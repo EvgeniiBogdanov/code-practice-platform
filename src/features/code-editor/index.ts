@@ -1,3 +1,5 @@
+export * from "./model/types";
+export * from "./model/use-code-editor";
 export * from "./model/useCodeHistory";
 export * from "./model/useIntelliSense";
 export * from "./model/useHoverSignatures";

@@ -35,6 +35,19 @@ const cloneTriggerElement = (
   handleOpen: () => void,
   handleClose: () => void
 ) => {
+  const handleFocus = (e: React.FocusEvent) => {
+    // Only open tooltip on keyboard focus (:focus-visible)
+    // Ignore synthetic focus caused by window refocus or mouse clicks
+    try {
+      if ((e.target as HTMLElement)?.matches?.(":focus-visible")) {
+        handleOpen();
+      }
+    } catch {
+      handleOpen();
+    }
+    child.props.onFocus?.(e);
+  };
+
   return React.cloneElement(child, {
     ref: (node: HTMLElement | null) => {
       triggerRef.current = node;
@@ -53,10 +66,7 @@ const cloneTriggerElement = (
       handleClose();
       child.props.onMouseLeave?.(e);
     },
-    onFocus: (e: React.FocusEvent) => {
-      handleOpen();
-      child.props.onFocus?.(e);
-    },
+    onFocus: handleFocus,
     onBlur: (e: React.FocusEvent) => {
       handleClose();
       child.props.onBlur?.(e);
@@ -76,6 +86,17 @@ export const TooltipTrigger = memo(
     }
 
     const { isOpen, handleOpen, handleClose, triggerRef, tooltipId } = context;
+
+    const handleWrapperFocus = (e: React.FocusEvent<HTMLElement>) => {
+      try {
+        if ((e.target as HTMLElement)?.matches?.(":focus-visible")) {
+          handleOpen();
+        }
+      } catch {
+        handleOpen();
+      }
+      props.onFocus?.(e);
+    };
 
     if (asChild && React.isValidElement(children)) {
       return cloneTriggerElement(
@@ -99,7 +120,7 @@ export const TooltipTrigger = memo(
         aria-describedby={isOpen ? tooltipId : undefined}
         onMouseEnter={handleOpen}
         onMouseLeave={handleClose}
-        onFocus={handleOpen}
+        onFocus={handleWrapperFocus}
         onBlur={handleClose}
         onPointerDown={handleClose}
         {...props}

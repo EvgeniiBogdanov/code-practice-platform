@@ -18,7 +18,7 @@ declare module "@tanstack/react-router" {
   }
 }
 
-export const App = () => {
+export const App = (): React.JSX.Element => {
   return (
     <AppProviders>
       <RouterProvider router={router} />

@@ -2,7 +2,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: none !important;
+  border: 0;
   border-radius: var(--radius-lg, 10px);
   font-family: var(--font-sans);
   font-weight: 600;

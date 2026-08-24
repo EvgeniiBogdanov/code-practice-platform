@@ -19,23 +19,25 @@ interface FeatureCardProps {
   description: React.ReactNode;
 }
 
-const FeatureItem = memo(({ icon, badgeClass, title, description }: FeatureCardProps) => (
-  <Card className={styles.featureCard}>
-    <div className={styles.featureHeader}>
-      <div className={[styles.featureIconBadge, badgeClass].join(" ")}>{icon}</div>
-      <h4 className={styles.featureTitle}>{title}</h4>
-    </div>
-    <p className={styles.featureDesc}>{description}</p>
-  </Card>
-));
+const FeatureItem = memo(
+  ({ icon, badgeClass, title, description }: FeatureCardProps): React.JSX.Element => (
+    <Card className={styles.featureCard}>
+      <div className={styles.featureHeader}>
+        <div className={[styles.featureIconBadge, badgeClass].join(" ")}>{icon}</div>
+        <h4 className={styles.featureTitle}>{title}</h4>
+      </div>
+      <p className={styles.featureDesc}>{description}</p>
+    </Card>
+  )
+);
 
 FeatureItem.displayName = "FeatureItem";
 
-export const HomeFeaturesGrid = memo(() => {
+export const HomeFeaturesGrid = memo((): React.JSX.Element => {
   return (
     <div className={styles.sectionBlock}>
       <div className={styles.blockHeader}>
-        <BookOpen size={16} className={styles.blockIcon} />
+        <BookOpen size={16} color="var(--accent-blue, #3b82f6)" className={styles.blockIcon} />
         <h2 className={styles.blockTitle}>Возможности платформы</h2>
       </div>
 
@@ -54,12 +56,8 @@ export const HomeFeaturesGrid = memo(() => {
           description={
             <>
               Мгновенный запуск кода (Ctrl+Enter) с замером времени (
-              <Zap
-                size={12}
-                style={{ display: "inline", verticalAlign: "middle", marginBottom: "1px" }}
-              />{" "}
-              ms) и живой рендеринг компонентов React с Redux Toolkit, Zustand и защитой от
-              зацикливаний.
+              <Zap size={12} color="#f59e0b" /> ms) и живой рендеринг компонентов React с Redux
+              Toolkit, Zustand и защитой от зацикливаний.
             </>
           }
         />

@@ -8,19 +8,22 @@ import { SidebarHomeOverview } from "./SidebarHomeOverview";
 import { SidebarReactList } from "./SidebarReactList";
 import { SidebarJsList } from "./SidebarJsList";
 import { SidebarAlgoList } from "./SidebarAlgoList";
-import { useSidebarSync } from "../model/useSidebarSync";
+import { useSidebarSync, useSidebarKeyboardNav } from "../model";
 import styles from "./AppSidebar.module.css";
 
 export interface AppSidebarProps {
   className?: string;
 }
 
-export const AppSidebar = ({ className }: AppSidebarProps) => {
+export const AppSidebar = ({ className }: AppSidebarProps): React.JSX.Element => {
   const location = useLocation();
   const pathname = location.pathname;
 
   // Auto-sync active task's category and scroll into view
   useSidebarSync();
+
+  const contentRef = useRef<HTMLDivElement>(null);
+  useSidebarKeyboardNav(contentRef);
 
   const sidebarOpen = useUIStore((state) => state.sidebarOpen);
   const setSidebarOpen = useUIStore((state) => state.setSidebarOpen);
@@ -39,54 +42,41 @@ export const AppSidebar = ({ className }: AppSidebarProps) => {
     return "home";
   }, [pathname]);
 
-  // Reset sidebar width on double click
-  const handleDoubleClick = useCallback(() => {
-    const defaultWidth = 280;
-    setSidebarWidth(defaultWidth);
-    document.documentElement.style.setProperty("--sidebar-width", `${defaultWidth}px`);
-  }, [setSidebarWidth]);
-
-  // Sidebar drag resizer
   const handleMouseDown = useCallback(
     (e: React.MouseEvent) => {
-      // Direct double-click detection via DOM click count
-      if (e.detail >= 2) {
-        e.preventDefault();
-        e.stopPropagation();
-        handleDoubleClick();
-        return;
-      }
-
       e.preventDefault();
       setIsResizing(true);
       startXRef.current = e.clientX;
       startWidthRef.current = sidebarWidth;
-      document.body.classList.add("is-resizing-sidebar");
     },
-    [sidebarWidth, handleDoubleClick]
+    [sidebarWidth]
   );
+
+  const handleDoubleClick = useCallback(() => {
+    setSidebarWidth(280);
+  }, [setSidebarWidth]);
 
   useEffect(() => {
     if (!isResizing) return;
 
     const handleMouseMove = (e: MouseEvent) => {
       const delta = e.clientX - startXRef.current;
-      const newWidth = Math.min(Math.max(startWidthRef.current + delta, 220), 480);
+      const newWidth = Math.min(Math.max(startWidthRef.current + delta, 220), 500);
       setSidebarWidth(newWidth);
-      document.documentElement.style.setProperty("--sidebar-width", `${newWidth}px`);
     };
 
     const handleMouseUp = () => {
       setIsResizing(false);
-      document.body.classList.remove("is-resizing-sidebar");
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+    document.body.classList.add("is-resizing");
+
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
-      document.body.classList.remove("is-resizing-sidebar");
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+      document.body.classList.remove("is-resizing");
     };
   }, [isResizing, setSidebarWidth]);
 
@@ -99,7 +89,7 @@ export const AppSidebar = ({ className }: AppSidebarProps) => {
   return (
     <aside
       ref={sidebarRef}
-      style={{ width: sidebarOpen ? `${sidebarWidth}px` : "0px" }}
+      style={{ width: sidebarOpen ? `${sidebarWidth}px` : "0px" } as React.CSSProperties}
       className={[
         styles.sidebar,
         !sidebarOpen && styles.closed,
@@ -115,7 +105,15 @@ export const AppSidebar = ({ className }: AppSidebarProps) => {
           onCloseSidebar={() => setSidebarOpen(false)}
         />
 
-        <div className={styles.content}>
+        <div
+          ref={contentRef}
+          className={styles.content}
+          tabIndex={-1}
+          role={activeSectionKey !== "home" ? "tree" : undefined}
+          aria-label={
+            activeSectionKey !== "home" ? "Навигация по темам и задачам" : undefined
+          }
+        >
           {activeSectionKey === "home" ? (
             <SidebarHomeOverview activeSectionKey={activeSectionKey} />
           ) : activeSectionKey === "javascript" ? (

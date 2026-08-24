@@ -1,5 +1,5 @@
 import React from "react";
-import { useGroupOverview } from "../model/useGroupOverview";
+import { useGroupOverview } from "../model/use-group-overview";
 import { GroupHeroHeader } from "./GroupHeroHeader";
 import { GroupMetaBadges } from "./GroupMetaBadges";
 import { GroupToolbar } from "./GroupToolbar";
@@ -13,7 +13,7 @@ export interface GroupOverviewPageProps {
   groupId: string;
 }
 
-export const GroupOverviewPage = ({ groupId }: GroupOverviewPageProps) => {
+export const GroupOverviewPage = ({ groupId }: GroupOverviewPageProps): React.JSX.Element => {
   const {
     groupMeta,
     filteredTasks,

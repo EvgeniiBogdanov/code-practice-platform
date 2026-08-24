@@ -1,5 +1,9 @@
 export type TaskCompletionStatus = "solved" | "unsolved" | null;
 
+export interface ProgressTaskItem {
+  id: string | number;
+}
+
 export interface ProgressState {
   completedTasks: Record<string, TaskCompletionStatus>;
   checklistState: Record<string, boolean>;

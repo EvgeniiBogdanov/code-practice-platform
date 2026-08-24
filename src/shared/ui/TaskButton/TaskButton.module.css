@@ -46,18 +46,20 @@
 
 .taskButton:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--color-primary, #3b82f6);
+  box-shadow: 0 0 0 2px var(--accent-blue, #3b82f6);
 }
 
-/* Active Status Variants */
-.solvedActive {
-  background: #10b981 !important;
-  color: #ffffff !important;
+/* Active Status Variants with increased specificity */
+.taskButton.solvedActive,
+[data-theme="light"] .taskButton.solvedActive {
+  background: var(--accent-green, #10b981);
+  color: #ffffff;
   font-weight: 600;
 }
 
-.unsolvedActive {
-  background: #ef4444 !important;
-  color: #ffffff !important;
+.taskButton.unsolvedActive,
+[data-theme="light"] .taskButton.unsolvedActive {
+  background: var(--accent-red, #ef4444);
+  color: #ffffff;
   font-weight: 600;
 }

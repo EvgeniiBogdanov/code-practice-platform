@@ -1,6 +1,5 @@
 .sidebarTaskRow {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 32px;
+  position: relative;
 }
 
 .taskIsDue {
@@ -70,6 +69,9 @@
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
 }
 
 .statusIconUnsolved {
@@ -78,6 +80,9 @@
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
 }
 
 .statusIconDue {
@@ -86,4 +91,7 @@
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
 }

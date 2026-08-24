@@ -171,17 +171,6 @@
   color: #191919;
 }
 
-.tabDueBadge {
-  background: #ef4444;
-  color: #ffffff;
-  font-size: 10px;
-  font-weight: 700;
-  font-family: var(--font-mono, monospace);
-  padding: 1px 5px;
-  border-radius: 10px;
-  line-height: 1.2;
-}
-
 /* View Content Container */
 .viewContent {
   display: flex;
@@ -367,27 +356,36 @@
   gap: 10px;
 }
 
+.dueCardLink {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+}
+
 .dueCard {
-  background: var(--bg-subtle, rgba(255, 255, 255, 0.03));
-  border: none;
-  border-radius: var(--radius-lg);
+  width: 100%;
   padding: 12px 14px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   text-decoration: none;
   color: var(--text-main);
-  box-shadow: var(--shadow-sm);
-  transition: all var(--transition-fast);
-}
-
-[data-theme="light"] .dueCard {
-  background: #ffffff;
+  background: var(--bg-subtle, rgba(255, 255, 255, 0.03));
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
 }
 
 .dueCard:hover {
-  background: rgba(239, 68, 68, 0.08);
-  transform: translateY(-1px);
+  background: var(--state-hover, rgba(255, 255, 255, 0.06));
+}
+
+[data-theme="light"] .dueCard {
+  background: rgba(55, 53, 47, 0.04);
+}
+
+[data-theme="light"] .dueCard:hover {
+  background: rgba(55, 53, 47, 0.07);
 }
 
 .dueCardTop {
@@ -405,10 +403,35 @@
   font-weight: 600;
 }
 
+.section_javascript {
+  color: var(--color-js);
+}
+
+.section_javascript .sectionDot {
+  background-color: var(--color-js);
+}
+
+.section_algorithms {
+  color: var(--color-algo);
+}
+
+.section_algorithms .sectionDot {
+  background-color: var(--color-algo);
+}
+
+.section_react {
+  color: var(--color-react);
+}
+
+.section_react .sectionDot {
+  background-color: var(--color-react);
+}
+
 .sectionDot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .dueCardStage {
@@ -439,7 +462,7 @@
   gap: 4px;
   font-size: 11px;
   font-weight: 600;
-  color: #ef4444;
+  color: var(--color-status-due, #eab308);
 }
 
 .dueActionBtn {
@@ -458,15 +481,19 @@
   align-items: center;
   justify-content: center;
   padding: 40px 20px;
-  background: var(--bg-subtle, rgba(255, 255, 255, 0.02));
-  border: none;
-  border-radius: var(--radius-lg);
   text-align: center;
   gap: 6px;
+  background: var(--bg-subtle, rgba(255, 255, 255, 0.02));
+  border: none;
 }
 
 [data-theme="light"] .emptyDueCard {
-  background: var(--bg-card, #fbfbfa);
+  background: rgba(55, 53, 47, 0.03);
+}
+
+.emptyDueIcon {
+  color: var(--color-status-solved, #10b981);
+  margin-bottom: 8px;
 }
 
 .emptyDueTitle {

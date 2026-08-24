@@ -32,14 +32,21 @@ export interface MasteryStats {
   totalCount: number;
 }
 
+export interface ReviewTaskItem {
+  id: string | number;
+  difficulty?: string;
+}
+
 export interface ReviewState {
   reviews: Record<string, ReviewItem>;
   isInitialized: boolean;
   initReviews: () => Promise<void>;
   submitReview: (taskId: string | number, rating?: ReviewRating) => Promise<void>;
   removeReview: (taskId: string | number) => Promise<void>;
-  getDueTasks: (customTaskList?: any[]) => any[];
-  getMasteryStats: (customTaskList?: any[]) => MasteryStats;
+  getDueTasks: <T extends ReviewTaskItem = ReviewTaskItem>(
+    customTaskList?: T[]
+  ) => Array<T & { reviewData?: ReviewItem }>;
+  getMasteryStats: (customTaskList?: ReviewTaskItem[]) => MasteryStats;
   handleResetReviews: (
     scope?: "all" | "section",
     taskIds?: Array<string | number>

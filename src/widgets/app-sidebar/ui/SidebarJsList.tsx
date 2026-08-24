@@ -1,7 +1,7 @@
 import React from "react";
 import { clsx } from "clsx";
 import { ALL_JS_TASKS } from "@/entities/task";
-import { useSidebarJsList } from "../model/useSidebarJsList";
+import { useSidebarJsList } from "../model";
 import { SidebarProgressCard } from "./SidebarProgressCard/SidebarProgressCard";
 import { SidebarJsGroupItem } from "./SidebarJsGroupItem";
 import styles from "./SidebarJsList.module.css";
@@ -10,7 +10,7 @@ export interface SidebarJsListProps {
   className?: string;
 }
 
-export const SidebarJsList = ({ className }: SidebarJsListProps) => {
+export const SidebarJsList = ({ className }: SidebarJsListProps): React.JSX.Element => {
   const {
     currentTaskId,
     decodedCurrentId,
@@ -40,7 +40,7 @@ export const SidebarJsList = ({ className }: SidebarJsListProps) => {
           subgroups={subgroups}
           groupMeta={groupMetaMap[groupName]}
           isGroupOpen={Boolean(expandedGroups[groupName])}
-          onToggleGroup={() => toggleGroup(groupName)}
+          onToggleGroup={(e) => toggleGroup(groupName, e)}
           expandedSubgroups={expandedSubgroups}
           onToggleSubgroup={toggleSubgroup}
           currentTaskId={currentTaskId}

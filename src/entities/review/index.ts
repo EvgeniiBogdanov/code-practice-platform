@@ -1,4 +1,4 @@
 export * from "./types";
-export * from "./model/sm2Algorithm";
-export * from "./model/reviewStore";
-export * from "./model/reviewSelectors";
+export * from "./model/review-store";
+export * from "./model/review-selectors";
+export * from "./model/sm2-algorithm";

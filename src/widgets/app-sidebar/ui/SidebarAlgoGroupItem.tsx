@@ -11,7 +11,7 @@ export interface SidebarAlgoGroupItemProps {
   tasks: Task[];
   groupMeta?: ReturnType<typeof getAlgoGroupMeta>;
   isGroupOpen: boolean;
-  onToggle: () => void;
+  onToggle: (e?: React.MouseEvent) => void;
   currentTaskId: string;
   decodedCurrentId: string;
   progressState: ProgressState;

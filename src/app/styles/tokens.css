@@ -304,8 +304,8 @@
   --accent-green-bg: rgba(45, 106, 79, 0.12);
   --accent-red: #d32f2f;
   --accent-red-bg: rgba(211, 47, 47, 0.12);
-  --accent-yellow: #b8860b;
-  --accent-yellow-bg: rgba(184, 134, 11, 0.12);
+  --accent-yellow: #d97706;
+  --accent-yellow-bg: rgba(217, 119, 6, 0.12);
   --accent-gray: #787774;
   --accent-gray-bg: rgba(120, 119, 116, 0.15);
 
@@ -324,14 +324,14 @@
   /* Status Colors Light */
   --color-status-solved: #059669;
   --color-status-unsolved: #d32f2f;
-  --color-status-due: #b8860b;
+  --color-status-due: #d97706;
 
   /* Icon Colors Light */
   --icon-file: #94a3b8;
 
   /* Spaced Repetition Mastery Levels Light */
   --color-mastery-mastered: #059669;
-  --color-mastery-reviewing: #b8860b;
+  --color-mastery-reviewing: #d97706;
   --color-mastery-learning: #d32f2f;
   --color-mastery-unreviewed: #64748b;
 

@@ -1,12 +1,12 @@
-import { memo } from "react";
+import React, { memo } from "react";
 import { ProgressKpiGrid } from "@/entities/progress";
-import { HomeStats } from "../model/useHomeStats";
+import { HomeStats } from "../model/use-home-stats";
 
 interface HomeKpiSummaryProps {
   stats: HomeStats;
 }
 
-export const HomeKpiSummary = memo(({ stats }: HomeKpiSummaryProps) => {
+export const HomeKpiSummary = memo(({ stats }: HomeKpiSummaryProps): React.JSX.Element => {
   return (
     <ProgressKpiGrid
       total={stats.grandTotal}

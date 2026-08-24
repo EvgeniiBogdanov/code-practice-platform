@@ -86,7 +86,7 @@ const GroupItem = memo(
                 <span className={styles.previewTaskTitle}>{t.title}</span>
                 {due ? (
                   <span className={styles.statusDue} title="Пора повторить!">
-                    <RotateCcw size={11} />
+                    <RotateCcw size={10} />
                   </span>
                 ) : solved ? (
                   <span className={styles.statusSolved} title="Решено">
