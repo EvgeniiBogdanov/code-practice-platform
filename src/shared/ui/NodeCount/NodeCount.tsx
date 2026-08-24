@@ -21,7 +21,9 @@ export const NodeCount = memo(
 
     return (
       <span className={clsx(styles.nodeCount, variantClass, className)}>
-        {completed}/{total}
+        <span className={styles.inner}>
+          {completed}/{total}
+        </span>
       </span>
     );
   }

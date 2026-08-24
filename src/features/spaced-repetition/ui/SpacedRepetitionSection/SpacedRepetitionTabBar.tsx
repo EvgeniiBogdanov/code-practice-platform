@@ -1,20 +1,21 @@
 import { memo } from "react";
-import { PieChart as PieChartIcon, BarChart3, RotateCcw } from "lucide-react";
+import { PieChart as PieChartIcon, BarChart3, RotateCcw, CalendarClock } from "lucide-react";
 import { NotificationBadge } from "@/shared/ui";
 import styles from "./SpacedRepetitionSection.module.css";
 
-export type SRTabType = "distribution" | "schedule" | "due";
+export type SRTabType = "distribution" | "schedule" | "due" | "upcoming";
 
 interface SpacedRepetitionTabBarProps {
   activeTab: SRTabType;
   dueTasksCount: number;
+  upcomingTasksCount: number;
   onSelectTab: (tab: SRTabType) => void;
 }
 
 export const SpacedRepetitionTabBar = memo(
-  ({ activeTab, dueTasksCount, onSelectTab }: SpacedRepetitionTabBarProps) => {
+  ({ activeTab, dueTasksCount, upcomingTasksCount, onSelectTab }: SpacedRepetitionTabBarProps) => {
     return (
-      <div className={styles.tabBar}>
+      <nav className={styles.tabBar} aria-label="Вкладки аналитики">
         <button
           type="button"
           className={[styles.tabBtn, activeTab === "distribution" && styles.active]
@@ -22,8 +23,8 @@ export const SpacedRepetitionTabBar = memo(
             .join(" ")}
           onClick={() => onSelectTab("distribution")}
         >
-          <PieChartIcon size={13} />
-          <span>Распределение мастерства</span>
+          <PieChartIcon size={15} className={styles.tabBtnIcon} />
+          <span className={styles.tabBtnLabel}>Статистика</span>
         </button>
 
         <button
@@ -33,8 +34,8 @@ export const SpacedRepetitionTabBar = memo(
             .join(" ")}
           onClick={() => onSelectTab("schedule")}
         >
-          <BarChart3 size={13} />
-          <span>График повторений</span>
+          <BarChart3 size={15} className={styles.tabBtnIcon} />
+          <span className={styles.tabBtnLabel}>Графики</span>
         </button>
 
         <button
@@ -44,8 +45,8 @@ export const SpacedRepetitionTabBar = memo(
             .join(" ")}
           onClick={() => onSelectTab("due")}
         >
-          <RotateCcw size={13} />
-          <span>Срочные задачи</span>
+          <RotateCcw size={15} className={styles.tabBtnIcon} />
+          <span className={styles.tabBtnLabel}>Срочные задачи</span>
           <NotificationBadge
             count={dueTasksCount}
             variant="yellow"
@@ -54,7 +55,25 @@ export const SpacedRepetitionTabBar = memo(
             size="sm"
           />
         </button>
-      </div>
+
+        <button
+          type="button"
+          className={[styles.tabBtn, activeTab === "upcoming" && styles.active]
+            .filter(Boolean)
+            .join(" ")}
+          onClick={() => onSelectTab("upcoming")}
+        >
+          <CalendarClock size={15} className={styles.tabBtnIcon} />
+          <span className={styles.tabBtnLabel}>Предстоящий повтор</span>
+          <NotificationBadge
+            count={upcomingTasksCount}
+            variant="blue"
+            pinned={false}
+            ring={false}
+            size="sm"
+          />
+        </button>
+      </nav>
     );
   }
 );

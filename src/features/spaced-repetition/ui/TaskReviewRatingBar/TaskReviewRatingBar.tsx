@@ -49,7 +49,9 @@ export const TaskReviewRatingBar = memo(({ taskId, className }: TaskReviewRating
   return (
     <div className={containerClasses}>
       <TaskReviewHeader taskReview={taskReview} badgeMeta={badgeMeta} canRate={canRate} />
-      <TaskReviewRatingOptions taskReview={taskReview} canRate={canRate} onRate={handleRate} />
+      {canRate && (
+        <TaskReviewRatingOptions taskReview={taskReview} canRate={canRate} onRate={handleRate} />
+      )}
     </div>
   );
 });

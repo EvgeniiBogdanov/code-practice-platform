@@ -15,6 +15,7 @@ import { addImportToFile } from "./importManager";
 import { checkTypeScriptTypes, checkComponentProps } from "./typeChecker";
 import { detectMissingImports, type LintProblem } from "./linter/missingImportsDetector";
 import { validateBrackets } from "./linter/bracketValidator";
+import { getLanguageId, getLanguageCapabilities } from "./languages/languageDetector";
 
 export {
   KEYWORD_TYPOS,
@@ -43,6 +44,24 @@ export function lintJavaScriptCode(
   options: { files?: Array<{ name?: string; code?: string }>; filepath?: string } = {}
 ): LintResult {
   if (!code || typeof code !== "string" || !code.trim()) {
+    return {
+      problems: [],
+      errorCount: 0,
+      warningCount: 0,
+      isValid: true,
+      typoMap: {},
+      missingImportMap: {},
+      allMissingImports: [],
+      unusedImports: new Set(),
+    };
+  }
+
+  const filepath = options.filepath || "main.jsx";
+  const languageId = getLanguageId(filepath);
+  const capabilities = getLanguageCapabilities(languageId);
+
+  // If not a JS/TS/JSX/TSX file, skip JS-specific lint rules
+  if (["css", "html", "json", "sql", "markdown", "plaintext"].includes(languageId)) {
     return {
       problems: [],
       errorCount: 0,
@@ -116,8 +135,8 @@ export function lintJavaScriptCode(
     }
   });
 
-  // 2. Missing Imports
-  const missingImportsRes = detectMissingImports(code, lines, options.files);
+  // 2. Missing Imports (scoped by language environment)
+  const missingImportsRes = detectMissingImports(code, lines, options.files, filepath);
   problems.push(...missingImportsRes.problems);
 
   // 3. Bracket Matching
@@ -137,16 +156,20 @@ export function lintJavaScriptCode(
     });
   }
 
-  // 5. TypeScript Types
-  const tsTypeProblems = checkTypeScriptTypes(code);
-  for (const tsProb of tsTypeProblems) {
-    problems.push(tsProb as LintProblem);
+  // 5. TypeScript Types (only if TS supported)
+  if (capabilities.supportsTypeScript) {
+    const tsTypeProblems = checkTypeScriptTypes(code);
+    for (const tsProb of tsTypeProblems) {
+      problems.push(tsProb as LintProblem);
+    }
   }
 
-  // 6. React Component Props
-  const propsProblems = checkComponentProps(code, options);
-  for (const propProb of propsProblems) {
-    problems.push(propProb as LintProblem);
+  // 6. React Component Props (only if JSX supported)
+  if (capabilities.supportsJsx) {
+    const propsProblems = checkComponentProps(code, options);
+    for (const propProb of propsProblems) {
+      problems.push(propProb as LintProblem);
+    }
   }
 
   const errorCount = problems.filter((p) => p.severity === "error").length;

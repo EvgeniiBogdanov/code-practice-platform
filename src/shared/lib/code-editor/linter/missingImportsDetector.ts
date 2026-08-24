@@ -4,6 +4,7 @@ import {
   extractImportedSymbols,
   extractDeclaredSymbols,
 } from "./scopeAnalyzer";
+import { getLanguageId, getLanguageCapabilities } from "../languages/languageDetector";
 
 export interface LintProblem {
   id: string;
@@ -23,12 +24,20 @@ export interface LintProblem {
 export function detectMissingImports(
   code: string,
   lines: string[],
-  files?: Array<{ name?: string; code?: string }>
+  files?: Array<{ name?: string; code?: string }>,
+  filepath = "main.jsx"
 ): {
   problems: LintProblem[];
   missingImportMap: Record<number, LintProblem>;
   allMissingImports: LintProblem[];
 } {
+  const languageId = getLanguageId(filepath);
+  const capabilities = getLanguageCapabilities(languageId);
+
+  if (!capabilities.supportsAutoImport) {
+    return { problems: [], missingImportMap: {}, allMissingImports: [] };
+  }
+
   const problems: LintProblem[] = [];
   const missingImportMap: Record<number, LintProblem> = {};
   const allMissingImports: LintProblem[] = [];
@@ -37,7 +46,19 @@ export function detectMissingImports(
   const importedSymbols = extractImportedSymbols(code);
   const declaredSymbols = extractDeclaredSymbols(code);
 
-  const symbolRegistry: Record<string, KnownSymbolInfo> = { ...KNOWN_SYMBOLS };
+  const symbolRegistry: Record<string, KnownSymbolInfo> = {};
+
+  Object.entries(KNOWN_SYMBOLS).forEach(([sym, info]) => {
+    // If not in React environment, do not check React/Redux/Zustand/Lucide missing imports
+    if (
+      !capabilities.supportsReactHooks &&
+      ["hook", "api", "type", "namespace", "redux", "zustand", "icon"].includes(info.category)
+    ) {
+      return;
+    }
+    symbolRegistry[sym] = info;
+  });
+
   if (Array.isArray(files)) {
     files.forEach((f) => {
       if (!f || !f.name) return;

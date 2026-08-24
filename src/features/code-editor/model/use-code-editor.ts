@@ -12,6 +12,7 @@ import { useIntelliSense } from "./useIntelliSense";
 import { useHoverSignatures } from "./useHoverSignatures";
 import { useEditorKeyHandlers } from "./useEditorKeyHandlers";
 import { useFindReplace } from "./useFindReplace";
+import { useMultiCursor } from "./useMultiCursor";
 import { CodeEditorProps, CursorPosition, TypoInfo, MissingImportInfo } from "./types";
 import { getLanguageInfo } from "../lib/editor-utils";
 
@@ -36,14 +37,21 @@ export const useCodeEditor = ({
   const [wordWrap, setWordWrap] = useState(false);
   const [internalFullscreen, setInternalFullscreen] = useState(false);
   const effectiveFullscreen = isFullscreen !== undefined ? isFullscreen : internalFullscreen;
-  const toggleFullscreen = onToggleFullscreen || (() => setInternalFullscreen((prev) => !prev));
+  const toggleFullscreen = useCallback(() => {
+    if (onToggleFullscreen) {
+      onToggleFullscreen();
+    } else {
+      setInternalFullscreen((prev) => !prev);
+    }
+  }, [onToggleFullscreen]);
   const [cursorPos, setCursorPos] = useState<CursorPosition>({ line: 1, col: 1 });
   const [saveStatus, setSaveStatus] = useState<"saved" | "saving">("saved");
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const history = useCodeHistory(code);
   const intelliSense = useIntelliSense(files, filepath);
-  const hoverSignatures = useHoverSignatures();
+  const hoverSignatures = useHoverSignatures(filepath);
+  const multiCursor = useMultiCursor();
 
   const handleFormat = useCallback(async () => {
     if (!code || readOnly) return;
@@ -91,7 +99,9 @@ export const useCodeEditor = ({
     },
     intelliSense,
     history,
+    multiCursor,
     onRun,
+    readOnly,
   });
 
   useEffect(() => {
@@ -112,6 +122,11 @@ export const useCodeEditor = ({
         return;
       }
       if (e.key === "Escape") {
+        if (intelliSense.isOpen) {
+          e.preventDefault();
+          intelliSense.closeCompletions();
+          return;
+        }
         if (findReplace.findState.isOpen) {
           e.preventDefault();
           findReplace.closeFind();
@@ -137,7 +152,7 @@ export const useCodeEditor = ({
 
     window.addEventListener("keydown", handleGlobalKey);
     return () => window.removeEventListener("keydown", handleGlobalKey);
-  }, [findReplace, handleFormat, effectiveFullscreen, toggleFullscreen]);
+  }, [findReplace, handleFormat, effectiveFullscreen, toggleFullscreen, intelliSense]);
 
   const lintResult = useMemo(
     () => lintJavaScriptCode(code, { files, filepath }),
@@ -199,8 +214,15 @@ export const useCodeEditor = ({
           findReplace.findState.isOpen && findReplace.findState.query
             ? findReplace.findState.query
             : undefined,
+        multiSelections: multiCursor.selections,
       }),
-    [code, findReplace.findState.isOpen, findReplace.findState.query, lintResult.problems]
+    [
+      code,
+      findReplace.findState.isOpen,
+      findReplace.findState.query,
+      lintResult.problems,
+      multiCursor.selections,
+    ]
   );
   const lineCount = useMemo(() => code.split("\n").length, [code]);
 
@@ -231,6 +253,33 @@ export const useCodeEditor = ({
     if (textareaRef.current) {
       intelliSense.openCompletions(val, pos, textareaRef.current);
       hoverSignatures.updateSignatureHelp(val, pos);
+    }
+  };
+
+  const handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    if (multiCursor.hasMultipleCursors) {
+      const text = e.clipboardData.getData("text");
+      if (text) {
+        e.preventDefault();
+        multiCursor.handleMultiPaste(text, code, onChange, history, textareaRef.current);
+      }
+    }
+  };
+
+  const handleTextareaClick = () => {
+    updateCursorCoords();
+    intelliSense.closeCompletions();
+    multiCursor.clearSelections();
+  };
+
+  const handleTextareaBlur = () => {
+    intelliSense.closeCompletions();
+  };
+
+  const handleCursorKeyUp = () => {
+    updateCursorCoords();
+    if (textareaRef.current) {
+      intelliSense.handleCursorMove(code, textareaRef.current.selectionStart, textareaRef.current);
     }
   };
 
@@ -275,6 +324,7 @@ export const useCodeEditor = ({
     intelliSense,
     hoverSignatures,
     findReplace,
+    multiCursor,
     lintResult,
     activeTypo,
     activeMissingImport,
@@ -287,6 +337,10 @@ export const useCodeEditor = ({
     updateCursorCoords,
     handleScroll,
     handleTextChange,
+    handlePaste,
+    handleTextareaClick,
+    handleTextareaBlur,
+    handleCursorKeyUp,
     handleFixTypo,
     handleFixMissingImport,
     handleKeyDown,

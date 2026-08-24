@@ -110,9 +110,7 @@ export const AppSidebar = ({ className }: AppSidebarProps): React.JSX.Element =>
           className={styles.content}
           tabIndex={-1}
           role={activeSectionKey !== "home" ? "tree" : undefined}
-          aria-label={
-            activeSectionKey !== "home" ? "Навигация по темам и задачам" : undefined
-          }
+          aria-label={activeSectionKey !== "home" ? "Навигация по темам и задачам" : undefined}
         >
           {activeSectionKey === "home" ? (
             <SidebarHomeOverview activeSectionKey={activeSectionKey} />

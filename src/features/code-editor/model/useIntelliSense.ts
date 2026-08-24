@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useRef } from "react";
 import {
   getCompletions,
   expandSnippet,
@@ -20,6 +20,7 @@ export interface IntelliSenseState {
     force?: boolean
   ) => void;
   closeCompletions: () => void;
+  handleCursorMove: (code: string, cursorPos: number, textarea: HTMLTextAreaElement) => void;
   selectNext: () => void;
   selectPrev: () => void;
   applySelected: (
@@ -30,6 +31,12 @@ export interface IntelliSenseState {
   ) => { newCode: string; newCursor: number } | null;
 }
 
+interface CompletionSession {
+  lineIdx: number;
+  startPos: number;
+  word: string;
+}
+
 export function useIntelliSense(files: TaskFile[] = [], filepath = "main.jsx"): IntelliSenseState {
   const [isOpen, setIsOpen] = useState(false);
   const [items, setItems] = useState<CompletionItem[]>([]);
@@ -37,11 +44,14 @@ export function useIntelliSense(files: TaskFile[] = [], filepath = "main.jsx"): 
   const [word, setWord] = useState("");
   const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
 
+  const sessionRef = useRef<CompletionSession | null>(null);
+
   const closeCompletions = useCallback(() => {
     setIsOpen(false);
     setItems([]);
     setSelectedIndex(0);
     setWord("");
+    sessionRef.current = null;
   }, []);
 
   const openCompletions = useCallback(
@@ -52,15 +62,17 @@ export function useIntelliSense(files: TaskFile[] = [], filepath = "main.jsx"): 
         return;
       }
 
-      // Calculate approximate pixel coordinates
       const lines = code.substring(0, cursorPos).split("\n");
       const currentLineIdx = lines.length - 1;
       const currentColIdx = lines[currentLineIdx].length;
 
-      const lineHeight = 21;
-      const charWidth = 8.4;
-      const paddingTop = 16;
-      const paddingLeft = 60; // line numbers width + padding
+      // Compute dynamic metrics based on current font and styling
+      const computed = window.getComputedStyle(textarea);
+      const parsedFontSize = parseFloat(computed.fontSize) || 14;
+      const lineHeight = parseFloat(computed.lineHeight) || parsedFontSize * 1.5;
+      const charWidth = parsedFontSize * 0.6;
+      const paddingTop = parseFloat(computed.paddingTop) || 16;
+      const paddingLeft = parseFloat(computed.paddingLeft) || 60;
 
       const top = paddingTop + (currentLineIdx + 1) * lineHeight - textarea.scrollTop;
       const left = paddingLeft + currentColIdx * charWidth - textarea.scrollLeft;
@@ -70,10 +82,48 @@ export function useIntelliSense(files: TaskFile[] = [], filepath = "main.jsx"): 
         left: Math.max(10, Math.min(left, textarea.clientWidth - 280)),
       });
 
+      sessionRef.current = {
+        lineIdx: currentLineIdx,
+        startPos: Math.max(0, cursorPos - res.word.length),
+        word: res.word,
+      };
+
       setItems(res.items);
       setWord(res.word);
       setSelectedIndex(0);
       setIsOpen(true);
+    },
+    [files, filepath, closeCompletions]
+  );
+
+  const handleCursorMove = useCallback(
+    (code: string, cursorPos: number, _textarea?: HTMLTextAreaElement) => {
+      if (!sessionRef.current) return;
+
+      const lines = code.substring(0, cursorPos).split("\n");
+      const currentLineIdx = lines.length - 1;
+
+      // 1. If cursor moved to a different line, close immediately
+      if (currentLineIdx !== sessionRef.current.lineIdx) {
+        closeCompletions();
+        return;
+      }
+
+      // 2. If cursor moved before the start of the completion word, close
+      if (cursorPos < sessionRef.current.startPos) {
+        closeCompletions();
+        return;
+      }
+
+      // 3. Re-evaluate completions at new position on same line
+      const res = getCompletions(code, cursorPos, { files, filepath, force: false });
+      if (res.items.length === 0) {
+        closeCompletions();
+        return;
+      }
+
+      setItems(res.items);
+      setWord(res.word);
     },
     [files, filepath, closeCompletions]
   );
@@ -90,7 +140,7 @@ export function useIntelliSense(files: TaskFile[] = [], filepath = "main.jsx"): 
     (
       code: string,
       cursorPos: number,
-      taskFiles: TaskFile[] = files,
+      _taskFiles: TaskFile[] = files,
       currentFilepath = filepath
     ) => {
       const selected = items[selectedIndex];
@@ -148,6 +198,7 @@ export function useIntelliSense(files: TaskFile[] = [], filepath = "main.jsx"): 
     popupPosition,
     openCompletions,
     closeCompletions,
+    handleCursorMove,
     selectNext,
     selectPrev,
     applySelected,

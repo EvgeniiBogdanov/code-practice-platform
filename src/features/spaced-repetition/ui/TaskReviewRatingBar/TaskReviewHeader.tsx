@@ -53,7 +53,7 @@ export const TaskReviewHeader = memo(
               {!canRate && (
                 <span
                   className={styles.lockedBadge}
-                  title="Кнопки станут активны, когда наступит срок повторения задачи"
+                  title="Повторение запланировано. Блок оценки станет доступен, когда наступит срок повторения задачи"
                 >
                   <Lock size={12} />
                   <span>Запланировано</span>
@@ -67,11 +67,11 @@ export const TaskReviewHeader = memo(
                   Следующее повторение:{" "}
                   <strong>
                     {formatNextReviewDate(taskReview.nextReviewAt, taskReview.dueDate)}
-                  </strong>{" "}
-                  {taskReview.intervalDays ? `(через ${taskReview.intervalDays} дн.)` : ""}
-                  <div className={styles.descHint}>
+                  </strong>
+                  {". "}
+                  <span className={styles.descHint}>
                     В день повторения решение автоматически сбросится до чистого шаблона
-                  </div>
+                  </span>
                 </span>
               ) : canRate && taskReview ? (
                 <span className={styles.descDue}>

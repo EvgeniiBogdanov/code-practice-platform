@@ -50,4 +50,19 @@ describe("NotificationBadge", () => {
     expect(badge).toHaveTextContent("NEW");
     expect(badge).toHaveAttribute("aria-label", "Новое событие");
   });
+
+  it("supports tab size and neutral variant", () => {
+    render(<NotificationBadge count={8} size="tab" variant="neutral" pinned={false} ring={false} />);
+    const badge = screen.getByRole("status");
+    expect(badge).toBeInTheDocument();
+    expect(badge).toHaveTextContent("8");
+  });
+
+  it("renders children when provided", () => {
+    render(<NotificationBadge ariaLabel="Кастомный бейдж">PRO</NotificationBadge>);
+    const badge = screen.getByRole("status");
+    expect(badge).toBeInTheDocument();
+    expect(badge).toHaveTextContent("PRO");
+    expect(badge).toHaveAttribute("aria-label", "Кастомный бейдж");
+  });
 });

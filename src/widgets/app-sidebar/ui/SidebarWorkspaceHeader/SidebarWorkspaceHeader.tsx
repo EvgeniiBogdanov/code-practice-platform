@@ -47,11 +47,11 @@ export const SidebarWorkspaceHeader = memo(
       if (activeSectionKey === "react") {
         return Boolean(
           warmupExpanded ||
-            refactoringExpanded ||
-            tasksExpanded ||
-            advancedExpanded ||
-            reactTsExpanded ||
-            reactTsPracticeExpanded
+          refactoringExpanded ||
+          tasksExpanded ||
+          advancedExpanded ||
+          reactTsExpanded ||
+          reactTsPracticeExpanded
         );
       }
       return false;

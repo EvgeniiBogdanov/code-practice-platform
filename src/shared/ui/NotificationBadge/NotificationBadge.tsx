@@ -8,9 +8,10 @@ export type NotificationBadgeVariant =
   | "green"
   | "blue"
   | "purple"
-  | "neutral";
+  | "neutral"
+  | "gray";
 
-export type NotificationBadgeSize = "sm" | "md" | "lg";
+export type NotificationBadgeSize = "xs" | "sm" | "md" | "lg" | "xl" | "tab";
 
 export interface NotificationBadgeProps extends HTMLAttributes<HTMLSpanElement> {
   /**
@@ -50,6 +51,10 @@ export interface NotificationBadgeProps extends HTMLAttributes<HTMLSpanElement> 
    * Custom aria-label for accessibility.
    */
   ariaLabel?: string;
+  /**
+   * Children content if rendering custom badge inner text or element.
+   */
+  children?: React.ReactNode;
 }
 
 export const NotificationBadge = memo(
@@ -64,6 +69,7 @@ export const NotificationBadge = memo(
     ring = true,
     ariaLabel,
     className,
+    children,
     ...props
   }: NotificationBadgeProps): React.JSX.Element | null => {
     if (dot) {
@@ -85,6 +91,26 @@ export const NotificationBadge = memo(
       );
     }
 
+    if (children !== undefined && children !== null) {
+      return (
+        <span
+          role="status"
+          aria-label={ariaLabel}
+          className={clsx(
+            styles.badge,
+            styles[`variant_${variant}`],
+            styles[`size_${size}`],
+            pinned && styles.pinned,
+            ring && styles.ring,
+            className
+          )}
+          {...props}
+        >
+          <span className={styles.inner}>{children}</span>
+        </span>
+      );
+    }
+
     if (count === undefined || count === null) {
       return null;
     }
@@ -96,12 +122,14 @@ export const NotificationBadge = memo(
       return null;
     }
 
-    const displayCount =
-      isNumeric && numericCount > maxCount ? `${maxCount}+` : String(count);
+    const displayCount = isNumeric && numericCount > maxCount ? `${maxCount}+` : String(count);
+    const isSingleDigit =
+      isNumeric &&
+      numericCount >= 0 &&
+      numericCount < 10 &&
+      !displayCount.includes("+");
 
-    const defaultAriaLabel = isNumeric
-      ? `${numericCount} уведомлений`
-      : String(count);
+    const defaultAriaLabel = isNumeric ? `${numericCount} уведомлений` : String(count);
 
     return (
       <span
@@ -111,13 +139,14 @@ export const NotificationBadge = memo(
           styles.badge,
           styles[`variant_${variant}`],
           styles[`size_${size}`],
+          isSingleDigit && styles.singleDigit,
           pinned && styles.pinned,
           ring && styles.ring,
           className
         )}
         {...props}
       >
-        {displayCount}
+        <span className={styles.inner}>{displayCount}</span>
       </span>
     );
   }

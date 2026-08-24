@@ -49,10 +49,7 @@ export const useGroupOverview = (groupId: string): GroupOverviewState => {
       setCollapsedSubgroupsState((prev) => {
         const next = typeof updater === "function" ? updater(prev) : updater;
         try {
-          sessionStorage.setItem(
-            `playground_collapsed_subgroups_${groupId}`,
-            JSON.stringify(next)
-          );
+          sessionStorage.setItem(`playground_collapsed_subgroups_${groupId}`, JSON.stringify(next));
         } catch {
           // ignore
         }
@@ -96,15 +93,18 @@ export const useGroupOverview = (groupId: string): GroupOverviewState => {
     };
     let tasks: Task[] = [];
 
-    const reactGroups = REACT_GROUPS_CONFIG as unknown as Record<string, {
-      name?: string;
-      title?: string;
-      desc?: string;
-      icon?: React.ComponentType<{ size?: number | string; className?: string; color?: string }>;
-      color?: string;
-      bg?: string;
-      tasks?: Task[];
-    }>;
+    const reactGroups = REACT_GROUPS_CONFIG as unknown as Record<
+      string,
+      {
+        name?: string;
+        title?: string;
+        desc?: string;
+        icon?: React.ComponentType<{ size?: number | string; className?: string; color?: string }>;
+        color?: string;
+        bg?: string;
+        tasks?: Task[];
+      }
+    >;
     const jsGroups = JS_GROUP_CONFIG as unknown as Record<string, { desc?: string }>;
 
     if (reactGroups[groupId]) {

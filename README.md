@@ -1,6 +1,6 @@
 <div align="center">
 
-# ⚡ Code Practice Platform · `v2.2.9`
+# ⚡ Code Practice Platform · `v2.2.95`
 
 ### Интерактивная платформа для подготовки к техническим собеседованиям по фронтенду и алгоритмам
 
@@ -49,8 +49,8 @@
       <p>Изолированная <code>iframe</code>-песочница с перехватом рантайм-ошибок для React/TSX на <b>Sucrase</b> и Web Worker для мгновенного исполнения JavaScript/Node.js с терминалом <b>xterm.js</b> и замером времени выполнения (<code>⚡ 4.2ms</code>).</p>
     </td>
     <td width="50%" valign="top">
-      <h3>💻 VS Code-Level Редактор & Prettier 3</h3>
-      <p>Встроенное форматирование на базе <b>Prettier 3</b> (<code>Shift+Alt+F</code>), автодополнение IntelliSense, всплывающие подсказки сигнатур типов TypeScript, Emmet JSX и статический линтинг.</p>
+      <h3>💻 Самописный легковесный онлайн редактор кода</h3>
+      <p>Собственный быстрый редактор без нагрузки на бандл приложения. Мультикурсоры (<code>Cmd+D</code> / <code>Cmd+Shift+L</code>), перемещение строк (<code>Alt+↑/↓</code>), контекстный IntelliSense по расширениям файлов (JS, TSX, CSS, HTML), встроенное форматирование <b>Prettier 3</b> (<code>Shift+Alt+F</code>), всплывающие подсказки сигнатур типов TypeScript, Emmet и линтинг.</p>
     </td>
   </tr>
   <tr>
@@ -94,55 +94,64 @@
 | **Управление состоянием** | **Zustand 5** (стейт приложения и UI), **Redux Toolkit 2** & **React-Redux** (рантайм песочницы для решения задач по Redux) |
 | **Исполнение кода & Sandbox** | **Sucrase** (мгновенный JSX/TSX транспайлер), **xterm.js 6** (интерактивный терминал), **Web Workers**, изолированный `iframe` Sandbox |
 | **Аналитика & Графики** | **Visx 4** (`@visx/shape`, `@visx/scale`, `@visx/grid`, `@visx/tooltip`, `@visx/curve` и др.) |
-| **Хранилище & Синхронизация** | **IndexedDB v3** (локальная БД без ограничений памяти), **LocalStorage L1-кэш**, **BroadcastChannel API** |
-| **Стилизация & UI** | **CSS Modules** (`*.module.css`), **clsx 2**, Дизайн-токены CSS Variables |
-| **Форматирование & Парсинг** | **Prettier 3** (ин-браузерный форматтер), **Marked**, **DOMPurify** (санитизация разметки) |
+| **Хр## ⌨️ Управление с клавиатуры и горячие клавиши (Hotkeys & Navigation)
 
----
-
-## 📂 Архитектура и структура проекта (FSD v2.1)
-
-```text
-src/
-├── app/         # Инициализация приложения, провайдеры, роутер, дизайн-токены и глобальные стили
-├── pages/       # Страницы приложения (home, task, section-overview, group-overview, open-editor)
-├── widgets/     # Крупные составные UI-блоки (app-header, app-sidebar, stats-modal, cheat-sheet)
-├── features/    # Интерактивные сценарии (code-editor, code-runner, spaced-repetition, task-tabs)
-├── entities/    # Предметные сущности и данные (task & curriculum, progress, review, ui-state)
-└── shared/      # Абстрактный UI-Kit, движки редактора, сервисы хранения IndexedDB, хуки и типы
-```
-
----
-
-## 📥 Установка и запуск
-
-```bash
-# 1. Клонирование репозитория
-git clone https://github.com/EvgeniiBogdanov/code-practice-platform.git
-cd code-practice-platform
-
-# 2. Установка зависимостей
-npm install
-
-# 3. Запуск сервера разработки
-npm run dev
-
-# 4. Проверка качества кода (Линтер и Форматирование)
-npm run lint
-npm run format:check
-```
-
-Приложение будет доступно по адресу `http://localhost:4000/`.
-
----
-
-## ⌨️ Управление с клавиатуры и горячие клавиши (Hotkeys & Navigation)
-
-### 🌲 Навигация по дереву сайдбара (WAI-ARIA Treeview)
+### ⚡️ Навигация по дереву сайдбара (WAI-ARIA Treeview)
 
 | Клавиша / Сочетание | Действие |
 | :--- | :--- |
 | <kbd>↓</kbd> / <kbd>↑</kbd> | Перемещение фокуса между видимыми строками дерева (папками и задачами) |
+| <kbd>→</kbd> | Раскрыть свернутую папку / перейти к первой дочерней задаче |
+| <kbd>←</kbd> | Свернуть открытую папку / перейти к родительской теме |
+| <kbd>Enter</kbd> / <kbd>Space</kbd> | Открыть выбранную задачу / переключить состояние папки |
+| <kbd>Home</kbd> / <kbd>End</kbd> | Быстрый переход к первой / последней строке дерева |
+| <kbd>Alt</kbd> + Клик / <kbd>Option</kbd> + Клик | Массовое сворачивание / разворачивание всех папок раздела |
+
+### 💻 Редактор кода: Мультикурсоры и манипуляции со строками (VS Code Style)
+
+| Сочетание клавиш (macOS) | Сочетание клавиш (Win / Linux) | Действие |
+| :--- | :--- | :--- |
+| <kbd>⌘</kbd> + <kbd>D</kbd> | <kbd>Ctrl</kbd> + <kbd>D</kbd> | Выделить слово / найти и добавить следующее совпадение (мультикурсор) |
+| <kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>L</kbd> | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>L</kbd> | Выделить все совпадения выделенного слова в документе |
+| <kbd>Option</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd> | <kbd>Alt</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd> | Переместить текущую строку или выделенный блок строк вверх / вниз |
+| <kbd>Shift</kbd> + <kbd>Option</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd> | <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd> | Продублировать текущую строку или выделенный блок строк вверх / вниз |
+| <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>F</kbd> | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>L</kbd> | Форматирование кода через Prettier 3 |
+| <kbd>⌘</kbd> + <kbd>F</kbd> | <kbd>Ctrl</kbd> + <kbd>F</kbd> | Панель быстрого поиска и замены в редакторе |
+| <kbd>Alt</kbd> + <kbd>Z</kbd> | <kbd>Alt</kbd> + <kbd>Z</kbd> | Переключение мягкого переноса строк (Word Wrap) |
+| <kbd>Tab</kbd> / <kbd>Shift</kbd> + <kbd>Tab</kbd> | <kbd>Tab</kbd> / <kbd>Shift</kbd> + <kbd>Tab</kbd> | Добавить отступ (2 пробела) / убрать отступ для выделенных строк |
+| <kbd>⌘</kbd> + <kbd>/</kbd> | <kbd>Ctrl</kbd> + <kbd>/</kbd> | Закомментировать / раскомментировать строку (`//`) |
+| <kbd>Esc</kbd> / Клик мыши | <kbd>Esc</kbd> / Клик мыши | Сброс мультикурсоров / закрытие окна подсказок |
+
+### 🧠 Интеллектуальное автодополнение (IntelliSense & Snippets)
+
+| Сочетание клавиш | Действие |
+| :--- | :--- |
+| <kbd>Ctrl</kbd> + <kbd>Space</kbd> | Принудительный вызов контекстного меню подсказок IntelliSense |
+| <kbd>↓</kbd> / <kbd>↑</kbd> | Навигация по списку предложенных ключевых слов, методов и сниппетов |
+| <kbd>Tab</kbd> / <kbd>Enter</kbd> | Принять выбранную подсказку или развернуть сниппет (например, `clg` → `console.log(|)`) |
+| <kbd>Esc</kbd> | Закрыть меню автодополнения без вставки текста |
+
+### ⚡ Рабочее пространство и глобальные шорткаты
+
+| Сочетание клавиш | Действие |
+| :--- | :--- |
+| <kbd>⌘</kbd> + <kbd>K</kbd> / <kbd>Ctrl</kbd> + <kbd>K</kbd> | Палитра быстрого поиска задач по всем разделам платформы |
+| <kbd>⌘</kbd> + <kbd>Enter</kbd> / <kbd>Ctrl</kbd> + <kbd>Enter</kbd> | Запуск кода в терминале Node.js / песочнице React Live Runner |
+| <kbd>F11</kbd> | Полноэкранный режим редактора кода |
+| <kbd>Esc</kbd> | Закрыть активное модальное окно, подсказку (Tooltip) или палитру поиска |
+
+---
+
+## 📜 История версий
+
+Полная история всех изменений доступна в файле **[CHANGELOG.md](CHANGELOG.md)**.
+
+- **[v2.2.95](CHANGELOG.md#v2-2-95)** — Контекстный IntelliSense для JS/TS/React, мультикурсоры (Cmd+D), перемещение строк (Alt+↑/↓), умное управление консолью, редизайн модалок.
+- **[v2.2.9](CHANGELOG.md#v2-2-9)** — WAI-ARIA Treeview навигация по сайдбару, оптимизация CSS Grid анимаций, NotificationBadge, Sticky Progress.
+- **[v2.2.8](CHANGELOG.md#v2-2-8)** — Полная миграция на FSD v2.1, Strict TypeScript, посадочные страницы разделов, Prettier 3 Formatter, теория React+TS.
+- **[v2.2.7](CHANGELOG.md#v2-2-7)** — Архитектурная изоляция песочницы React (`iframe`), автоподстройка высоты, нормализация Form Controls.
+- **[v2.2.2](CHANGELOG.md#v2-2-2)** — Календарный SM-2 с учетом таймзоны, автосброс решений в день повтора.
+- **[v2.2.1](CHANGELOG.md#v2-2-1)** — Умное интервальное повторение (SM-2), Radix-подобная система Tooltip, редизайн Header.�емещение фокуса между видимыми строками дерева (папками и задачами) |
 | <kbd>→</kbd> | Раскрыть свернутую папку / перейти к первой дочерней задаче |
 | <kbd>←</kbd> | Свернуть открытую папку / перейти к родительской теме |
 | <kbd>Enter</kbd> / <kbd>Space</kbd> | Открыть выбранную задачу / переключить состояние папки |

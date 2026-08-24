@@ -7,6 +7,7 @@ export * from "./codeHighlighter";
 export * from "./emmetEngine";
 export * from "./fuzzyMatcher";
 export * from "./importManager";
+export * from "./languages";
 export * from "./snippetsData";
 export * from "./snippetsEngine";
 export * from "./typeSignaturesData";

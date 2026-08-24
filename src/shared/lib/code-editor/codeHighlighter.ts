@@ -19,6 +19,7 @@ export interface HighlightOptions {
   bracketPair?: [number, number] | null;
   problems?: DiagnosticProblem[];
   unusedImports?: Set<string> | null;
+  multiSelections?: Array<{ start: number; end: number }>;
 }
 
 export { findMatchingBracketPair };
@@ -60,12 +61,23 @@ export function highlightTemplateLiteral(text: string, options: HighlightOptions
 export function highlightJS(code: string, options: HighlightOptions = {}): string {
   if (!code) return "";
 
-  const { highlightWord = "", bracketPair = null, problems = [], unusedImports = null } = options;
+  const {
+    highlightWord = "",
+    bracketPair = null,
+    problems = [],
+    unusedImports = null,
+    multiSelections = [],
+  } = options;
 
   const isWordMatch = (txt: string) =>
     Boolean(highlightWord && highlightWord.length >= 2 && txt === highlightWord);
   const isBracketMatch = (idx: number) =>
     Boolean(bracketPair && (idx === bracketPair[0] || idx === bracketPair[1]));
+  const isMultiSelected = (start: number, len: number) => {
+    if (!multiSelections || multiSelections.length === 0) return false;
+    const end = start + len;
+    return multiSelections.some((s) => !(end <= s.start || start >= s.end));
+  };
 
   const rules = [
     { type: "comment", regex: /^(\/\*[\s\S]*?\*\/|\/\/.*)/ },
@@ -191,16 +203,17 @@ export function highlightJS(code: string, options: HighlightOptions = {}): strin
           unusedClass = " hl-unused-dimmed";
         }
 
-        const extraClasses = wordClass + squigglyClass + unusedClass;
+        const multiSelectClass = isMultiSelected(tokenStart, tokenLen) ? " hl-multi-selected" : "";
+        const extraClasses = wordClass + squigglyClass + unusedClass + multiSelectClass;
 
         if (rule.type === "comment") {
-          html += '<span class="hl-cm">' + escapeHtml(text) + "</span>";
+          html += '<span class="hl-cm' + multiSelectClass + '">' + escapeHtml(text) + "</span>";
         } else if (rule.type === "template") {
           html += highlightTemplateLiteral(text, options);
         } else if (rule.type === "string") {
-          html += '<span class="hl-str' + squigglyClass + '">' + escapeHtml(text) + "</span>";
+          html += '<span class="hl-str' + squigglyClass + multiSelectClass + '">' + escapeHtml(text) + "</span>";
         } else if (rule.type === "regex") {
-          html += '<span class="hl-regex">' + escapeHtml(text) + "</span>";
+          html += '<span class="hl-regex' + multiSelectClass + '">' + escapeHtml(text) + "</span>";
         } else if (rule.type === "number") {
           html += '<span class="hl-num' + extraClasses + '">' + escapeHtml(text) + "</span>";
         } else if (rule.type === "jsx-tag-open") {

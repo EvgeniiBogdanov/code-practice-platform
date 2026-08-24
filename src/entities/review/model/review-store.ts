@@ -65,10 +65,7 @@ export const useReviewStore = create<ReviewState>((set, get) => ({
     }
   },
 
-  submitReview: async (
-    taskId: string | number,
-    rating: ReviewRating = "medium"
-  ): Promise<void> => {
+  submitReview: async (taskId: string | number, rating: ReviewRating = "medium"): Promise<void> => {
     const stringId = String(taskId);
     const existing = get().reviews[stringId] || null;
     const item = calculateNextReview(existing, rating);
@@ -112,9 +109,7 @@ export const useReviewStore = create<ReviewState>((set, get) => ({
         ...task,
         reviewData: reviews[String(task.id)],
       }))
-      .sort(
-        (a, b) => (a.reviewData?.nextReviewAt || 0) - (b.reviewData?.nextReviewAt || 0)
-      );
+      .sort((a, b) => (a.reviewData?.nextReviewAt || 0) - (b.reviewData?.nextReviewAt || 0));
   },
 
   getMasteryStats: (customTaskList: ReviewTaskItem[] = []): MasteryStats => {

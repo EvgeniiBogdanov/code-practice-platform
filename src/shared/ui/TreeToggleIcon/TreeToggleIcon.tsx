@@ -48,9 +48,7 @@ export const TreeToggleIcon = React.memo<TreeToggleIconProps>(
         aria-expanded={expanded}
         title={
           title ??
-          (expanded
-            ? "Свернуть (Alt+клик: свернуть все)"
-            : "Развернуть (Alt+клик: развернуть все)")
+          (expanded ? "Свернуть (Alt+клик: свернуть все)" : "Развернуть (Alt+клик: развернуть все)")
         }
         role="presentation"
         tabIndex={-1}

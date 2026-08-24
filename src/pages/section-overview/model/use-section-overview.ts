@@ -140,7 +140,9 @@ export const useSectionOverview = (
           id: "warmup",
           name: "1. Разминка (Warm-up)",
           icon: React.createElement(Flame, { size: 18, color: "#f97316" }),
-          tasks: ALL_REACT_TASKS.filter((t) => t.category === "warmup" || t.difficulty === "warm-up"),
+          tasks: ALL_REACT_TASKS.filter(
+            (t) => t.category === "warmup" || t.difficulty === "warm-up"
+          ),
           firstTaskId: "warmup-1",
           color: "#f97316",
         },
@@ -158,7 +160,9 @@ export const useSectionOverview = (
           id: "middle",
           name: "3. Middle задачи",
           icon: React.createElement(Rocket, { size: 18, color: "#3b82f6" }),
-          tasks: ALL_REACT_TASKS.filter((t) => t.category === "middle" || t.difficulty === "middle"),
+          tasks: ALL_REACT_TASKS.filter(
+            (t) => t.category === "middle" || t.difficulty === "middle"
+          ),
           firstTaskId: "middle-1",
           color: "#3b82f6",
         },
@@ -166,7 +170,9 @@ export const useSectionOverview = (
           id: "strong",
           name: "4. Strong Middle & Senior",
           icon: React.createElement(Zap, { size: 18, color: "#a855f7" }),
-          tasks: ALL_REACT_TASKS.filter((t) => t.category === "strong" || t.difficulty === "strong"),
+          tasks: ALL_REACT_TASKS.filter(
+            (t) => t.category === "strong" || t.difficulty === "strong"
+          ),
           firstTaskId: "strong-1",
           color: "#a855f7",
         },

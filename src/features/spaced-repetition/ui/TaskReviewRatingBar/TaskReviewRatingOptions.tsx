@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { CheckCircle2, Clock, AlertCircle, Check } from "lucide-react";
-import { ReviewRating, RATINGS, formatNextReviewDate, ReviewItem } from "@/entities/review";
+import { ReviewRating, RATINGS, ReviewItem } from "@/entities/review";
 import styles from "./TaskReviewRatingBar.module.css";
 
 interface TaskReviewRatingOptionsProps {
@@ -38,23 +38,18 @@ const RATING_CONFIG = [
 
 export const TaskReviewRatingOptions = memo(
   ({ taskReview, canRate, onRate }: TaskReviewRatingOptionsProps) => {
-    const disabledTitle = `Кнопка неактивна до наступления срока повторения (${formatNextReviewDate(
-      taskReview ?? undefined
-    )})`;
+    if (!canRate) {
+      return null;
+    }
 
     return (
-      <div
-        className={[styles.taskReviewRatings, !canRate && styles.ratingsDisabled]
-          .filter(Boolean)
-          .join(" ")}
-      >
+      <div className={styles.taskReviewRatings}>
         {RATING_CONFIG.map((item) => {
           const isActive = taskReview?.rating === item.rating;
           const buttonClasses = [
             styles.reviewRateBtn,
             item.modifier,
             isActive && styles.active,
-            !canRate && styles.disabled,
           ]
             .filter(Boolean)
             .join(" ");
@@ -65,8 +60,7 @@ export const TaskReviewRatingOptions = memo(
               type="button"
               className={buttonClasses}
               onClick={() => onRate(item.rating)}
-              disabled={!canRate}
-              title={canRate ? item.titleActive : disabledTitle}
+              title={item.titleActive}
             >
               <div className={styles.rateBtnContent}>
                 <div className={styles.rateBtnTitleRow}>

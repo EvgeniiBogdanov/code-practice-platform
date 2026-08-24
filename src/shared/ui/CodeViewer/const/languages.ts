@@ -1,11 +1,11 @@
 import { LanguageMeta } from "../types";
 
 export const LANGUAGE_MAP: Record<string, LanguageMeta> = {
-  notepad: { name: "Notepad", color: "#94a3b8", isNotepad: true },
-  text: { name: "Notepad", color: "#94a3b8", isNotepad: true },
-  plaintext: { name: "Notepad", color: "#94a3b8", isNotepad: true },
-  txt: { name: "Notepad", color: "#94a3b8", isNotepad: true },
-  none: { name: "Notepad", color: "#94a3b8", isNotepad: true },
+  notepad: { name: "Notepad", color: "var(--icon-file, #94a3b8)", isNotepad: true },
+  text: { name: "Notepad", color: "var(--icon-file, #94a3b8)", isNotepad: true },
+  plaintext: { name: "Notepad", color: "var(--icon-file, #94a3b8)", isNotepad: true },
+  txt: { name: "Notepad", color: "var(--icon-file, #94a3b8)", isNotepad: true },
+  none: { name: "Notepad", color: "var(--icon-file, #94a3b8)", isNotepad: true },
   jsx: { name: "React JSX", color: "#61dafb", isNotepad: false },
   react: { name: "React JSX", color: "#61dafb", isNotepad: false },
   tsx: { name: "React TSX", color: "#61dafb", isNotepad: false },
@@ -23,6 +23,6 @@ export const LANGUAGE_MAP: Record<string, LanguageMeta> = {
 
 export const DEFAULT_LANGUAGE_META: LanguageMeta = {
   name: "Notepad",
-  color: "#94a3b8",
+  color: "var(--icon-file, #94a3b8)",
   isNotepad: false,
 };
