@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "@xterm/xterm/css/xterm.css";
 import { NodeRunnerLogEntry } from "@/shared/lib/code-runners";
 import { useUIStore } from "@/entities/ui-state";
@@ -40,18 +40,43 @@ export function JsConsole({
   const increaseFontSize = useUIStore((state) => state.increaseConsoleFontSize);
   const decreaseFontSize = useUIStore((state) => state.decreaseConsoleFontSize);
   const storeConsoleCollapsed = useUIStore((state) => state.consoleCollapsed);
-  const toggleConsoleCollapsed = useUIStore((state) => state.toggleConsoleCollapsed);
+  const setConsoleCollapsed = useUIStore((state) => state.setConsoleCollapsed);
 
-  const isCollapsed = propIsCollapsed !== undefined ? propIsCollapsed : storeConsoleCollapsed;
-  const onToggle =
-    propOnToggleCollapse !== undefined ? propOnToggleCollapse : toggleConsoleCollapsed;
+  // Local temporary reveal state when user runs code while console is collapsed
+  const [temporarilyRevealed, setTemporarilyRevealed] = useState(false);
 
-  // Auto-expand console when execution starts
+  // Reset temporary reveal when switching tasks or files
   useEffect(() => {
-    if (isRunning && isCollapsed) {
-      onToggle();
+    setTemporarilyRevealed(false);
+  }, [filename]);
+
+  // When execution starts, temporarily reveal the console without altering the global persistent setting
+  useEffect(() => {
+    if (isRunning) {
+      setTemporarilyRevealed(true);
     }
-  }, [isRunning, isCollapsed, onToggle]);
+  }, [isRunning]);
+
+  // If propIsCollapsed is controlled, respect it; otherwise respect global setting adjusted by temporary reveal
+  const isCollapsed =
+    propIsCollapsed !== undefined ? propIsCollapsed : storeConsoleCollapsed && !temporarilyRevealed;
+
+  // Toggle button in header explicitly changes the persistent global setting
+  const handleToggle = useCallback(() => {
+    if (propOnToggleCollapse) {
+      propOnToggleCollapse();
+      setTemporarilyRevealed(false);
+      return;
+    }
+
+    if (!isCollapsed) {
+      setTemporarilyRevealed(false);
+      setConsoleCollapsed(true);
+    } else {
+      setTemporarilyRevealed(false);
+      setConsoleCollapsed(false);
+    }
+  }, [isCollapsed, propOnToggleCollapse, setConsoleCollapsed]);
 
   const { terminalRef, clearTerminal } = useXtermConsole({
     logs,
@@ -99,7 +124,7 @@ export function JsConsole({
         onRun={onRun}
         onStop={onStop}
         onClear={handleClear}
-        onToggleCollapse={onToggle}
+        onToggleCollapse={handleToggle}
         onIncreaseFontSize={increaseFontSize}
         onDecreaseFontSize={decreaseFontSize}
         fontSize={consoleFontSize}

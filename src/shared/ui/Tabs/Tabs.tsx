@@ -1,5 +1,6 @@
 import React from "react";
 import { clsx } from "clsx";
+import { NotificationBadge } from "../NotificationBadge";
 import styles from "./Tabs.module.css";
 
 export interface TabItem {
@@ -47,7 +48,18 @@ export function Tabs({ items, activeId, onChange, className }: TabsProps) {
           >
             {item.icon && <span className={styles.tabIcon}>{item.icon}</span>}
             <span>{item.label}</span>
-            {item.badge !== undefined && <span className={styles.tabBadge}>{item.badge}</span>}
+            {item.badge !== undefined &&
+              (React.isValidElement(item.badge) ? (
+                item.badge
+              ) : (
+                <NotificationBadge
+                  count={item.badge as number | string}
+                  variant="neutral"
+                  pinned={false}
+                  ring={false}
+                  size="tab"
+                />
+              ))}
           </button>
         );
       })}

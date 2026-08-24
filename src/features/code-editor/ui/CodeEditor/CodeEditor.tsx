@@ -46,6 +46,7 @@ export const CodeEditor = ({
     intelliSense,
     hoverSignatures,
     findReplace,
+    multiCursor,
     lintResult,
     activeTypo,
     activeMissingImport,
@@ -58,6 +59,10 @@ export const CodeEditor = ({
     updateCursorCoords,
     handleScroll,
     handleTextChange,
+    handlePaste,
+    handleTextareaClick,
+    handleTextareaBlur,
+    handleCursorKeyUp,
     handleFixTypo,
     handleFixMissingImport,
     handleKeyDown,
@@ -166,12 +171,14 @@ export const CodeEditor = ({
               ref={textareaRef}
               value={code}
               onChange={handleTextChange}
+              onPaste={handlePaste}
               onKeyDown={(e) => {
                 handleKeyDown(e);
                 setTimeout(updateCursorCoords, 0);
               }}
-              onKeyUp={updateCursorCoords}
-              onClick={updateCursorCoords}
+              onKeyUp={handleCursorKeyUp}
+              onClick={handleTextareaClick}
+              onBlur={handleTextareaBlur}
               onScroll={handleScroll}
               onMouseMove={(e) => hoverSignatures.handleMouseMove(e, code)}
               onMouseLeave={hoverSignatures.handleMouseLeave}
@@ -278,6 +285,21 @@ export const CodeEditor = ({
             )}
 
             <span className={styles.statusSep}>|</span>
+
+            {multiCursor.hasMultipleCursors && (
+              <>
+                <Tooltip
+                  content="Активно мульти-выделение (Cmd+D / Ctrl+D). Нажмите Esc для сброса."
+                  side="top"
+                >
+                  <span className={[styles.statusItem, styles.multiCursorIndicator].join(" ")}>
+                    <span className={styles.savePulseDot} />
+                    <span>{multiCursor.selections.length} выделений</span>
+                  </span>
+                </Tooltip>
+                <span className={styles.statusSep}>|</span>
+              </>
+            )}
 
             <span className={styles.statusItem}>
               Стр {cursorPos.line}, Кол {cursorPos.col}

@@ -12,7 +12,14 @@ export interface LineNumbersProps {
 
 export const LineNumbers = forwardRef<HTMLDivElement, LineNumbersProps>(
   (
-    { lineCount, activeLine = 1, errorLines, warningLines, fontSize = 13, className }: LineNumbersProps,
+    {
+      lineCount,
+      activeLine = 1,
+      errorLines,
+      warningLines,
+      fontSize = 13,
+      className,
+    }: LineNumbersProps,
     ref
   ): React.JSX.Element => {
     const count = Math.max(1, lineCount);

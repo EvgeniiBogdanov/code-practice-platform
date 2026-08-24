@@ -1,10 +1,10 @@
 import { memo } from "react";
 import { Link } from "@tanstack/react-router";
-import { CheckCircle2, RotateCcw, ArrowRight } from "lucide-react";
+import { CheckCircle2, ArrowRight, AlertCircle, FileText } from "lucide-react";
 import { clsx } from "clsx";
-import { Task, SectionType, SECTIONS_CONFIG } from "@/entities/task";
+import { Task } from "@/entities/task";
 import { ReviewItem } from "@/entities/review";
-import { Card } from "@/shared/ui";
+import { Card, NotificationBadge } from "@/shared/ui";
 import styles from "./SpacedRepetitionSection.module.css";
 
 interface SpacedRepetitionDueTabProps {
@@ -18,6 +18,21 @@ const getTaskPath = (t: Task): string => {
   if (t.section === "javascript") return `/javascript/${t.id}`;
   if (t.section === "algorithms") return `/algorithms/${t.id}`;
   return `/react/${t.id}`;
+};
+
+const getTaskRatingClass = (difficulty?: string, reviewRating?: string): string => {
+  const r = reviewRating?.toLowerCase();
+  if (r === "hard") return styles.ratingHard;
+  if (r === "medium") return styles.ratingMedium;
+  if (r === "easy") return styles.ratingEasy;
+
+  const d = difficulty?.toLowerCase();
+  if (d === "hard") return styles.ratingHard;
+  if (d === "medium" || d === "ts" || d === "refactoring") return styles.ratingMedium;
+  if (d === "easy" || d === "warm-up" || d === "middle") return styles.ratingEasy;
+  if (d === "strong") return styles.ratingPurple;
+
+  return "";
 };
 
 export const SpacedRepetitionDueTab = memo(
@@ -36,41 +51,55 @@ export const SpacedRepetitionDueTab = memo(
     }
 
     return (
-      <div className={styles.dueGrid}>
+      <div className={styles.upcomingList}>
         {dueTasks.map((task) => {
-          const section = (task.section ?? "react") as SectionType;
-          const meta = SECTIONS_CONFIG[section] ?? SECTIONS_CONFIG.react;
           const rev = reviews[String(task.id)];
           const stage = rev?.stage ?? 1;
+          const intervalDays = rev?.intervalDays ?? 1;
 
           return (
             <Link
               key={task.id}
               to={getTaskPath(task)}
-              className={styles.dueCardLink}
+              className={styles.upcomingRowLink}
               onClick={onNavigate}
             >
-              <Card variant="subtle" className={styles.dueCard}>
-                <div className={styles.dueCardTop}>
-                  <span className={clsx(styles.dueCardSection, styles[`section_${section}`])}>
-                    <span className={styles.sectionDot} />
-                    {meta.title}
+              <div className={styles.upcomingRow}>
+                <div className={styles.upcomingRowLeft}>
+                  <FileText size={16} className={styles.fileIcon} />
+                  <span
+                    className={clsx(
+                      styles.upcomingRowTitle,
+                      getTaskRatingClass(task.difficulty, rev?.rating)
+                    )}
+                  >
+                    {task.title}
                   </span>
-                  <span className={styles.dueCardStage}>Этап {stage}</span>
                 </div>
 
-                <div className={styles.dueCardTitle}>{task.title}</div>
+                <div className={styles.upcomingRowRight}>
+                  <NotificationBadge
+                    variant="neutral"
+                    pinned={false}
+                    ring={false}
+                    size="tab"
+                  >
+                    Этап {stage} • {intervalDays} дн.
+                  </NotificationBadge>
 
-                <div className={styles.dueCardFooter}>
-                  <span className={styles.dueAlertText}>
+                  <NotificationBadge
+                    variant="yellow"
+                    pinned={false}
+                    ring={false}
+                    size="tab"
+                  >
+                    <AlertCircle size={11} style={{ marginRight: 4 }} />
                     <span>Пора повторить</span>
-                  </span>
-                  <span className={styles.dueActionBtn}>
-                    <span>Решить</span>
-                    <ArrowRight size={12} />
-                  </span>
+                  </NotificationBadge>
+
+                  <ArrowRight size={13} className={styles.upcomingRowArrow} />
                 </div>
-              </Card>
+              </div>
             </Link>
           );
         })}

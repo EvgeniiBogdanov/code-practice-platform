@@ -1,6 +1,11 @@
+/**
+ * Import Statement Completer
+ */
+
 import { fuzzyMatch } from "../fuzzyMatcher";
 import { getTaskFilesExports, TaskFile } from "../importManager";
 import { KNOWN_MODULES, CompletionItem } from "../snippetsData";
+import { LanguageCapabilities } from "../languages/languageTypes";
 
 export function getImportCompletions(
   fullCode: string,
@@ -11,8 +16,11 @@ export function getImportCompletions(
   lineEnd: number,
   fullCurrentLine: string,
   files: TaskFile[],
-  currentFilepath: string
+  currentFilepath: string,
+  capabilities: LanguageCapabilities
 ): { word: string; items: CompletionItem[] } | null {
+  if (!capabilities.supportsAutoImport) return null;
+
   const fromMatch = currentLineBeforeCursor.match(/from\s*(['"]?)([a-zA-Z0-9_@/.-]*)$/);
   if (fromMatch && currentLineBeforeCursor.includes("from")) {
     const hasQuote = Boolean(fromMatch[1]);
@@ -27,7 +35,14 @@ export function getImportCompletions(
     const quoteToUse = hasQuote ? quoteChar : "'";
     const insertSuffix = `${quoteToUse};`;
 
-    const moduleCandidates: CompletionItem[] = Object.keys(KNOWN_MODULES).map((mod) => ({
+    const availableModules = Object.keys(KNOWN_MODULES).filter((mod) => {
+      if (!capabilities.supportsReactHooks && (mod.startsWith("react") || mod === "lucide-react")) {
+        return false;
+      }
+      return true;
+    });
+
+    const moduleCandidates: CompletionItem[] = availableModules.map((mod) => ({
       prefix: mod,
       label: `'${mod}'`,
       detail: `Модуль библиотеки`,
@@ -94,6 +109,12 @@ export function getImportCompletions(
 
     const addNamedExports = (modName: string, modInfo: { named?: string[] }) => {
       if (!modInfo || !modInfo.named) return;
+      if (
+        !capabilities.supportsReactHooks &&
+        (modName.startsWith("react") || modName === "lucide-react")
+      ) {
+        return;
+      }
       for (const sym of modInfo.named) {
         if (alreadyImported.includes(sym)) continue;
         const { match, score } = fuzzyMatch(sym, currentPart);

@@ -132,6 +132,19 @@ body.is-resizing-sidebar iframe {
   border-radius: var(--radius-xs);
 }
 
+.hl-multi-selected {
+  background-color: rgba(38, 79, 120, 0.85) !important;
+  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.6);
+  border-radius: var(--radius-xs);
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .hl-multi-selected {
+  background-color: rgba(0, 102, 204, 0.22) !important;
+  box-shadow: 0 0 0 1px rgba(0, 102, 204, 0.5);
+  color: inherit !important;
+}
+
 .hl-bracket-match {
   background-color: rgba(35, 131, 226, 0.3);
   box-shadow: 0 0 0 1px rgba(35, 131, 226, 0.8);

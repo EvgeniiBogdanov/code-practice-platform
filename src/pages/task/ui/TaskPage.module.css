@@ -207,42 +207,6 @@
   display: block;
 }
 
-.tabBadge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 5px;
-  border-radius: 9999px;
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 18px;
-  vertical-align: middle;
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--text-muted);
-  margin-left: 2px;
-  flex-shrink: 0;
-  transition: all 0.15s ease;
-}
-
-.tabLink:hover .tabBadge,
-.tabLink.tabActive .tabBadge {
-  background: rgba(255, 255, 255, 0.14);
-  color: var(--text-main);
-}
-
-[data-theme="light"] .tabBadge {
-  background: rgba(0, 0, 0, 0.06);
-  color: var(--text-muted);
-}
-
-[data-theme="light"] .tabLink:hover .tabBadge,
-[data-theme="light"] .tabLink.tabActive .tabBadge {
-  background: rgba(0, 0, 0, 0.1);
-  color: var(--text-main);
-}
-
 /* Tabs Content Container */
 .tabsContent {
   padding: 8px;

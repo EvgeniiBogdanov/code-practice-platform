@@ -1,5 +1,4 @@
 import { memo, lazy, Suspense } from "react";
-import { Brain } from "lucide-react";
 import { Modal } from "@/shared/ui";
 import { useStatsModalController } from "../model/useStatsModalController";
 import styles from "./StatsModal.module.css";
@@ -11,15 +10,14 @@ const LazySpacedRepetitionSection = lazy(() =>
 );
 
 export const StatsModal = memo(() => {
-  const { isOpen, setIsOpen, statsData, modalTitle } = useStatsModalController();
+  const { isOpen, setIsOpen, statsData } = useStatsModalController();
 
   return (
     <Modal
       isOpen={isOpen}
       onClose={() => setIsOpen(false)}
       size="xl"
-      title={modalTitle}
-      icon={<Brain size={18} style={{ color: "var(--accent-purple, #a855f7)" }} />}
+      customHeader={<></>}
       className={styles.statsModal}
       contentClassName={styles.statsModalBody}
     >
@@ -27,6 +25,7 @@ export const StatsModal = memo(() => {
         <LazySpacedRepetitionSection
           inModal={true}
           onNavigate={() => setIsOpen(false)}
+          onCloseModal={() => setIsOpen(false)}
           taskList={statsData.taskList}
           sectionName={statsData.sectionName}
         />

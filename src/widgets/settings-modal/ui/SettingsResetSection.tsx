@@ -1,5 +1,4 @@
 import { memo } from "react";
-import { RotateCcw, Trash2 } from "lucide-react";
 import { Button } from "@/shared/ui";
 import styles from "./SettingsModal.module.css";
 
@@ -11,43 +10,70 @@ export interface SettingsResetSectionProps {
 export const SettingsResetSection = memo(
   ({ onOpenResetReviews, onOpenResetAll }: SettingsResetSectionProps) => {
     return (
-      <div className={styles.settingsModalBody}>
-        {/* Card 1: Spaced Repetition Schedule */}
-        <div className={styles.settingCard}>
-          <div className={styles.settingCardHeader}>
-            <div className={styles.settingCardInfo}>
-              <h4 className={styles.settingCardTitle}>Интервальное повторение (SM-2)</h4>
-              <p className={styles.settingCardDesc}>
-                Сброс стадий запоминания, интервалов и расписания повторений задач.
-              </p>
-            </div>
+      <div className={styles.settingsSectionWrapper}>
+        {/* Section 1: Storage & SM-2 */}
+        <section className={styles.settingsSection}>
+          <div className={styles.sectionHeader}>
+            <h3 className={styles.sectionTitle}>Прогресс и интервалы</h3>
+            <p className={styles.sectionSubtitle}>
+              Управление локальным прогрессом решений и графиком интервального повторения
+            </p>
           </div>
-          <div className={styles.settingCardFooter}>
-            <Button variant="secondary" onClick={onOpenResetReviews}>
-              <RotateCcw size={14} />
-              <span>Сбросить график повторений</span>
-            </Button>
-          </div>
-        </div>
 
-        {/* Card 2: Full Progress & Solutions */}
-        <div className={styles.settingCard}>
-          <div className={styles.settingCardHeader}>
-            <div className={styles.settingCardInfo}>
-              <h4 className={styles.settingCardTitle}>Прогресс и решения платформы</h4>
-              <p className={styles.settingCardDesc}>
-                Полная очистка статусов решённых задач, сохранённого кода решений в IndexedDB и
-                чек-листов.
-              </p>
+          <div className={styles.settingsRowList}>
+            <div className={styles.settingsRow}>
+              <div className={styles.settingsRowInfo}>
+                <div className={styles.settingsRowTitle}>Интервальное повторение (SM-2)</div>
+                <div className={styles.settingsRowDesc}>
+                  Сброс коэффициентов легкости, стадий и расписания повторений задач.
+                </div>
+              </div>
+              <div className={styles.settingsRowAction}>
+                <Button variant="secondary" onClick={onOpenResetReviews}>
+                  Сбросить график
+                </Button>
+              </div>
+            </div>
+
+            <div className={styles.settingsRow}>
+              <div className={styles.settingsRowInfo}>
+                <div className={styles.settingsRowTitle}>Локальное хранилище</div>
+                <div className={styles.settingsRowDesc}>
+                  Все решения и отметки чек-листов сохраняются в IndexedDB браузера.
+                </div>
+              </div>
+              <div className={styles.settingsRowAction}>
+                <span className={styles.statusBadge}>IndexedDB • Активно</span>
+              </div>
             </div>
           </div>
-          <div className={styles.settingCardFooter}>
-            <Button variant="danger" onClick={onOpenResetAll}>
-              <Trash2 size={14} />
-              <span>Сбросить всю статистику и решения</span>
-            </Button>
+        </section>
+
+        {/* Section 2: Danger Zone */}
+        <section className={styles.settingsSection}>
+          <div className={styles.sectionHeader}>
+            <h3 className={styles.sectionTitleDanger}>Опасная зона</h3>
+            <p className={styles.sectionSubtitle}>
+              Необратимые действия над локальной базой данных и всеми решениями
+            </p>
           </div>
-        </div>
+
+          <div className={styles.settingsRowList}>
+            <div className={styles.settingsRow}>
+              <div className={styles.settingsRowInfo}>
+                <div className={styles.settingsRowTitle}>Удалить все данные платформы</div>
+                <div className={styles.settingsRowDesc}>
+                  Полный сброс всех решённых задач, написанного кода решений и истории повторений.
+                </div>
+              </div>
+              <div className={styles.settingsRowAction}>
+                <Button variant="danger" onClick={onOpenResetAll}>
+                  Сбросить всё
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     );
   }

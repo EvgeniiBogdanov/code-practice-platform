@@ -3,6 +3,7 @@
  */
 
 import { TYPE_SIGNATURES, TypeSignatureInfo, TypeSignatureParam } from "./typeSignaturesData";
+import { getLanguageId, getLanguageCapabilities } from "./languages/languageDetector";
 
 export { TYPE_SIGNATURES };
 export type { TypeSignatureInfo, TypeSignatureParam };
@@ -28,9 +29,13 @@ export function getHoverInfo(
   wordOrCode: string,
   codeOrOffset?: string | number,
   _cursorIndex?: number,
-  _context: Record<string, unknown> = {}
+  context: { filepath?: string } = {}
 ): HoverInfo | null {
   if (!wordOrCode || typeof wordOrCode !== "string") return null;
+
+  const filepath = context.filepath || "main.jsx";
+  const languageId = getLanguageId(filepath);
+  const capabilities = getLanguageCapabilities(languageId);
 
   let word = wordOrCode;
   let code = typeof codeOrOffset === "string" ? codeOrOffset : undefined;
@@ -49,19 +54,20 @@ export function getHoverInfo(
   const cleanWord = word.trim();
   const strippedReact = cleanWord.replace(/^React\./, "");
 
-  if (TYPE_SIGNATURES[cleanWord]) {
+  const matchedSig = TYPE_SIGNATURES[cleanWord] || TYPE_SIGNATURES[strippedReact];
+  if (matchedSig) {
+    // If it's a React signature but environment doesn't support React, check if React is imported
+    if (matchedSig.module === "react" && !capabilities.supportsReactHooks) {
+      const hasReactImport =
+        code && (code.includes("from 'react'") || code.includes('from "react"'));
+      if (!hasReactImport) {
+        return null;
+      }
+    }
     return {
       symbol: cleanWord,
-      documentation: TYPE_SIGNATURES[cleanWord].description,
-      ...TYPE_SIGNATURES[cleanWord],
-    };
-  }
-
-  if (TYPE_SIGNATURES[strippedReact]) {
-    return {
-      symbol: cleanWord,
-      documentation: TYPE_SIGNATURES[strippedReact].description,
-      ...TYPE_SIGNATURES[strippedReact],
+      documentation: matchedSig.description,
+      ...matchedSig,
     };
   }
 
@@ -88,8 +94,16 @@ export function getHoverInfo(
   return null;
 }
 
-export function getSignatureHelp(code: string, cursorIndex: number): SignatureHelpInfo | null {
+export function getSignatureHelp(
+  code: string,
+  cursorIndex: number,
+  options: { filepath?: string } = {}
+): SignatureHelpInfo | null {
   if (!code || cursorIndex <= 0 || cursorIndex > code.length) return null;
+
+  const filepath = options.filepath || "main.jsx";
+  const languageId = getLanguageId(filepath);
+  const capabilities = getLanguageCapabilities(languageId);
 
   const textBefore = code.substring(0, cursorIndex);
   const searchStart = Math.max(0, textBefore.lastIndexOf("\n", Math.max(0, cursorIndex - 300)));
@@ -198,6 +212,13 @@ export function getSignatureHelp(code: string, cursorIndex: number): SignatureHe
   const functionName = activeCall.name;
   const typeInfo = TYPE_SIGNATURES[functionName];
   if (!typeInfo || !Array.isArray(typeInfo.parameters)) return null;
+
+  if (typeInfo.module === "react" && !capabilities.supportsReactHooks) {
+    const hasReactImport = code.includes("from 'react'") || code.includes('from "react"');
+    if (!hasReactImport) {
+      return null;
+    }
+  }
 
   return {
     functionName,

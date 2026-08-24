@@ -11,6 +11,7 @@ const getInitialUISettings = () => {
       theme: "dark" as ThemeMode,
       sidebarOpen: true,
       sidebarWidth: 280,
+      consoleCollapsed: true,
     };
   }
   try {
@@ -30,13 +31,21 @@ const getInitialUISettings = () => {
             parsed.state.sidebarWidth <= 480
               ? parsed.state.sidebarWidth
               : 280,
+          consoleCollapsed:
+            typeof parsed.state.consoleCollapsed === "boolean"
+              ? parsed.state.consoleCollapsed
+              : true,
         };
       }
     }
     const legacy = localStorage.getItem("playground_theme");
-    if (legacy === "light" || legacy === "dark") {
-      return { theme: legacy as ThemeMode, sidebarOpen: true, sidebarWidth: 280 };
-    }
+    const legacyConsole = localStorage.getItem("playground_console_collapsed");
+    return {
+      theme: (legacy === "light" || legacy === "dark" ? legacy : "dark") as ThemeMode,
+      sidebarOpen: true,
+      sidebarWidth: 280,
+      consoleCollapsed: legacyConsole !== null ? legacyConsole === "true" : true,
+    };
   } catch {
     // ignore
   }
@@ -44,6 +53,7 @@ const getInitialUISettings = () => {
     theme: "dark" as ThemeMode,
     sidebarOpen: true,
     sidebarWidth: 280,
+    consoleCollapsed: true,
   };
 };
 
@@ -160,13 +170,28 @@ export const useUIStore = create<UIState>()(
       },
 
       setConsoleCollapsed: (consoleCollapsed) =>
-        set((state) => ({
-          consoleCollapsed:
+        set((state) => {
+          const next =
             typeof consoleCollapsed === "function"
               ? consoleCollapsed(state.consoleCollapsed)
-              : consoleCollapsed,
-        })),
-      toggleConsoleCollapsed: () => set((state) => ({ consoleCollapsed: !state.consoleCollapsed })),
+              : consoleCollapsed;
+          try {
+            localStorage.setItem("playground_console_collapsed", String(next));
+          } catch {
+            // ignore
+          }
+          return { consoleCollapsed: next };
+        }),
+      toggleConsoleCollapsed: () =>
+        set((state) => {
+          const next = !state.consoleCollapsed;
+          try {
+            localStorage.setItem("playground_console_collapsed", String(next));
+          } catch {
+            // ignore
+          }
+          return { consoleCollapsed: next };
+        }),
 
       setStatsModalOpen: (statsModalOpen) =>
         set((state) => ({

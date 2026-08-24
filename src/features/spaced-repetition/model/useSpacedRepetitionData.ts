@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useReviewStore, isTaskDue, STAGE_INTERVALS } from "@/entities/review";
 import { ALL_TASKS, Task } from "@/entities/task";
+import { getUpcomingTasks, UpcomingTaskItem } from "../lib/upcoming-helpers";
 
 export interface UseSpacedRepetitionDataProps {
   taskList?: Task[];
@@ -41,6 +42,11 @@ export const useSpacedRepetitionData = ({
     });
   }, [targetTasks, reviews, isInitialized]);
 
+  const upcomingTasks = useMemo((): UpcomingTaskItem[] => {
+    if (!isInitialized) return [];
+    return getUpcomingTasks(targetTasks, reviews);
+  }, [targetTasks, reviews, isInitialized]);
+
   const masteryPercent =
     masteryStats.totalReviewed > 0
       ? Math.round((masteryStats.mastered / masteryStats.totalReviewed) * 100)
@@ -67,6 +73,7 @@ export const useSpacedRepetitionData = ({
     targetTasks,
     masteryStats,
     dueTasks,
+    upcomingTasks,
     masteryPercent,
     avgInterval,
     scopeLabel,

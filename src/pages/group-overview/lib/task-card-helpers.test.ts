@@ -1,8 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  calculateReadingTime,
-  getTaskTooltipTitle,
-} from "./task-card-helpers";
+import { calculateReadingTime, getTaskTooltipTitle } from "./task-card-helpers";
 import { Task } from "@/entities/task";
 import { ReviewItem } from "@/entities/review";
 

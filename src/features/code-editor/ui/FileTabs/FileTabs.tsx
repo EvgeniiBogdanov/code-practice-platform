@@ -33,7 +33,11 @@ export function FileTabs({
             className={[styles.tab, isActive && styles.active].filter(Boolean).join(" ")}
             onClick={() => onSelectTab(idx)}
           >
-            {file.name?.endsWith(".css") ? <FileText size={13} /> : <FileCode size={13} />}
+            {file.name?.endsWith(".css") ? (
+              <FileText size={13} className={styles.fileIcon} />
+            ) : (
+              <FileCode size={13} className={styles.fileIcon} />
+            )}
             <span>{file.name || `File ${idx + 1}`}</span>
             {isDirty && <span className={styles.dirtyDot} />}
           </button>

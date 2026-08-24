@@ -1,9 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  selectIsTaskCompleted,
-  selectTaskStatus,
-  selectSectionStats,
-} from "./progress-selectors";
+import { selectIsTaskCompleted, selectTaskStatus, selectSectionStats } from "./progress-selectors";
 import { ProgressState } from "../types";
 
 describe("progress-selectors", () => {

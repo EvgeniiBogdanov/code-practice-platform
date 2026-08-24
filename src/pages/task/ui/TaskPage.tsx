@@ -5,7 +5,7 @@ import { getTaskById, TaskDifficultyBadge } from "@/entities/task";
 import { useProgressStore, selectIsTaskCompleted } from "@/entities/progress";
 import { useReviewStore } from "@/entities/review";
 import { TaskReviewRatingBar } from "@/features/spaced-repetition";
-import { TaskButton } from "@/shared/ui";
+import { TaskButton, NotificationBadge, NotificationBadgeVariant } from "@/shared/ui";
 import { CandidateTab } from "./CandidateTab";
 import { SolutionTab } from "./SolutionTab";
 import { MaterialsTab } from "./MaterialsTab";
@@ -84,7 +84,13 @@ export const TaskPage = React.memo<TaskPageProps>(
       0;
     const checklistCount = task.checklist?.length || 0;
 
-    const tabs = [
+    const tabs: Array<{
+      id: string;
+      label: string;
+      icon: React.ReactNode;
+      badge?: number;
+      badgeVariant?: NotificationBadgeVariant;
+    }> = [
       {
         id: "candidate",
         label: "Задача",
@@ -105,12 +111,14 @@ export const TaskPage = React.memo<TaskPageProps>(
         label: "Вопросы",
         icon: <HelpCircle size={14} className={styles.tabIcon} />,
         badge: questionsCount > 0 ? questionsCount : undefined,
+        badgeVariant: "neutral",
       },
       {
         id: "checklist",
         label: "Самопроверка",
         icon: <ListChecks size={14} className={styles.tabIcon} />,
         badge: checklistCount > 0 ? checklistCount : undefined,
+        badgeVariant: "neutral",
       },
     ];
 
@@ -177,7 +185,13 @@ export const TaskPage = React.memo<TaskPageProps>(
                     {tab.icon}
                     <span className={styles.tabLabel}>{tab.label}</span>
                     {tab.badge !== undefined && (
-                      <span className={styles.tabBadge}>{tab.badge}</span>
+                      <NotificationBadge
+                        count={tab.badge}
+                        variant={tab.badgeVariant || "neutral"}
+                        pinned={false}
+                        ring={false}
+                        size="tab"
+                      />
                     )}
                   </button>
                 );

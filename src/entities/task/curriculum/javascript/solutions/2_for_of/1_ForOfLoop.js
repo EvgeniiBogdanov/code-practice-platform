@@ -1,5 +1,3 @@
-const numbers = [1, 2, 3];
+for (const el of arr) {
 
-for (const value of numbers) {
-  console.log(value);
 }
