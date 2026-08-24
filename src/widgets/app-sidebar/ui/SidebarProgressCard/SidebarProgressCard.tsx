@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from "react";
+import { clsx } from "clsx";
 import { CheckSquare } from "lucide-react";
 import styles from "./SidebarProgressCard.module.css";
 
@@ -22,21 +23,25 @@ export const SidebarProgressCard = React.memo(
     }, [percentage]);
 
     return (
-      <div className={[styles.progressCard, sectionClass, className].filter(Boolean).join(" ")}>
-        <div className={styles.headerRow}>
-          <span className={styles.sectionTitle}>
-            <CheckSquare size={13} className={styles.checkIcon} />
-            <span>Выполнено задач</span>
-          </span>
-          <span className={styles.countBadge}>
-            {completedCount}/{totalCount}
-          </span>
-        </div>
+      <div className={clsx(styles.stickyWrapper, className)}>
+        <div className={clsx(styles.progressCard, sectionClass)}>
+          <div className={styles.headerRow}>
+            <span className={styles.sectionTitle}>
+              <CheckSquare size={13} className={styles.checkIcon} />
+              <span>Выполнено задач</span>
+            </span>
+            <span className={styles.countBadge}>
+              {completedCount}/{totalCount}
+            </span>
+          </div>
 
-        <div className={styles.barTrack}>
-          <div ref={fillRef} className={styles.barFill} />
+          <div className={styles.barTrack}>
+            <div ref={fillRef} className={styles.barFill} />
+          </div>
         </div>
       </div>
     );
   }
 );
+
+SidebarProgressCard.displayName = "SidebarProgressCard";

@@ -95,11 +95,7 @@ export default tseslint.config(
         "error",
         {
           allowTypeImports: true,
-          ignoreInFilesPatterns: [
-            "**/src/routes/**",
-            "**/src/app/**",
-            "**/src/features/task-tabs/**",
-          ],
+          ignoreInFilesPatterns: ["**/src/routes/**", "**/src/app/**"],
         },
       ],
       "@conarti/feature-sliced/public-api": [

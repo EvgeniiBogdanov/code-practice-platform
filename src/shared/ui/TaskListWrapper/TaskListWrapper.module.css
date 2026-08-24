@@ -25,6 +25,16 @@
   border-left-color: rgba(55, 53, 47, 0.12);
 }
 
+.taskListWrapper:has([class*="isActive"]),
+.taskListWrapper:has([class*="active"]) {
+  border-left-color: rgba(255, 255, 255, 0.18);
+}
+
+[data-theme="light"] .taskListWrapper:has([class*="isActive"]),
+[data-theme="light"] .taskListWrapper:has([class*="active"]) {
+  border-left-color: rgba(55, 53, 47, 0.28);
+}
+
 .taskListWrapper.expanded {
   grid-template-rows: 1fr;
   margin-top: 0;

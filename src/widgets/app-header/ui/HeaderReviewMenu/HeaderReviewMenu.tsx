@@ -3,7 +3,7 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { RotateCcw, FileText, Sparkles, BookOpen } from "lucide-react";
 import { useReviewStore, isTaskDue, getReviewBadgeMeta } from "@/entities/review";
 import { ALL_TASKS, Task } from "@/entities/task";
-import { Tooltip, SquareButton } from "@/shared/ui";
+import { Tooltip, SquareButton, NotificationBadge } from "@/shared/ui";
 import styles from "./HeaderReviewMenu.module.css";
 
 const getRatingClass = (_difficulty?: string, reviewRating?: string) => {
@@ -64,12 +64,7 @@ export const HeaderReviewMenu = memo(() => {
         <SquareButton
           icon={<RotateCcw size={16} />}
           isActive={open}
-          className={dueTasks.length > 0 ? styles.hasDueReviews : undefined}
-          badge={
-            dueTasks.length > 0 ? (
-              <span className={styles.countBadge}>{dueTasks.length}</span>
-            ) : undefined
-          }
+          badge={<NotificationBadge count={dueTasks.length} variant="yellow" size="sm" />}
           onClick={() => setOpen((prev) => !prev)}
           aria-label="Интервальное повторение"
         />

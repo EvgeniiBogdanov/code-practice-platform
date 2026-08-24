@@ -11,7 +11,7 @@ export interface SidebarJsSubgroupItemProps {
   tasks: Task[];
   groupColor?: string;
   isSubOpen: boolean;
-  onToggle: () => void;
+  onToggle: (e?: React.MouseEvent) => void;
   currentTaskId: string;
   decodedCurrentId: string;
   progressState: ProgressState;

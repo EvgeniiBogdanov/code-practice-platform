@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
+import { codeInspectorPlugin } from "code-inspector-plugin";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -30,6 +31,12 @@ export default defineConfig({
   },
   base: process.env.VERCEL ? "/" : "/code-practice-platform/",
   plugins: [
+    codeInspectorPlugin({
+      bundler: "vite",
+      hotKeys: ["altKey"],
+      editor: "code",
+      launchType: "open",
+    }),
     TanStackRouterVite({
       routesDirectory: "./src/routes",
       generatedRouteTree: "./src/routeTree.gen.ts",

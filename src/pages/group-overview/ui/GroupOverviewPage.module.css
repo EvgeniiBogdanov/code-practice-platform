@@ -214,8 +214,6 @@
   min-height: 34px;
   border-radius: var(--radius-lg, 8px);
   font-size: var(--fs-sidebar-item, 14px);
-  content-visibility: auto;
-  contain-intrinsic-size: auto 34px;
 }
 
 .taskBtnTitle {

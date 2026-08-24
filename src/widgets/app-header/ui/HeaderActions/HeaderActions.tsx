@@ -1,6 +1,7 @@
 import React, { memo } from "react";
 import { useLocation } from "@tanstack/react-router";
 import { BarChart2, Lightbulb, Search, Settings } from "lucide-react";
+import { clsx } from "clsx";
 import { useUIStore } from "@/entities/ui-state";
 import { ThemeToggleButton } from "@/features/theme-toggle";
 import { TimerDisplay, TimerDropdown } from "@/features/practice-timer";
@@ -25,7 +26,7 @@ export const HeaderActions = memo(({ className }: HeaderActionsProps) => {
   const settingsModalOpen = useUIStore((state) => state.settingsModalOpen);
 
   return (
-    <div className={[styles.actionsContainer, className].filter(Boolean).join(" ")}>
+    <div className={clsx(styles.actionsContainer, className)}>
       {/* 1. Review Menu */}
       <HeaderReviewMenu />
 
@@ -60,7 +61,7 @@ export const HeaderActions = memo(({ className }: HeaderActionsProps) => {
       </Tooltip>
 
       {/* 5. Practice Timer */}
-      <div className={[styles.timerWrapper, isHome && styles.disabled].filter(Boolean).join(" ")}>
+      <div className={clsx(styles.timerWrapper, isHome && styles.disabled)}>
         <TimerDisplay disabled={isHome} />
         <TimerDropdown disabled={isHome} />
       </div>

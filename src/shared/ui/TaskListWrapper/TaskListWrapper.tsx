@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { clsx } from "clsx";
 import styles from "./TaskListWrapper.module.css";
 
@@ -11,24 +11,24 @@ export interface TaskListWrapperProps {
 
 export const TaskListWrapper = React.memo<TaskListWrapperProps>(
   ({ expanded, children, isSubgroup = false, className }) => {
-    const isInitialMount = useRef(true);
-    const [hasInteracted, setHasInteracted] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
-      if (isInitialMount.current) {
-        isInitialMount.current = false;
-        return;
-      }
-      setHasInteracted(true);
-    }, [expanded]);
+      const raf = requestAnimationFrame(() => {
+        setIsMounted(true);
+      });
+      return () => cancelAnimationFrame(raf);
+    }, []);
 
     return (
       <div
+        data-task-list-wrapper="true"
+        data-expanded={expanded ? "true" : "false"}
         className={clsx(
           styles.taskListWrapper,
           expanded ? styles.expanded : styles.collapsed,
           isSubgroup ? styles.subgroupsContainer : styles.tasksContainer,
-          !hasInteracted && styles.noTransition,
+          !isMounted && styles.noTransition,
           className
         )}
       >

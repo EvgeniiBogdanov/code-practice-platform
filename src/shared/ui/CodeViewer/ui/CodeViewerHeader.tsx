@@ -9,14 +9,14 @@ export const CodeViewerHeader = ({
   color,
   isNotepad,
   className,
-}: CodeViewerHeaderProps) => {
+}: CodeViewerHeaderProps): React.JSX.Element => {
   const Icon = isNotepad ? FileText : FileCode;
   const headerClasses = clsx(styles.header, className);
 
   return (
     <div className={headerClasses}>
       <div className={styles.fileTab}>
-        <Icon size={13} style={{ color, flexShrink: 0 }} />
+        <Icon size={13} color={color} className={styles.fileTabIcon} />
         <span>{langName}</span>
       </div>
     </div>

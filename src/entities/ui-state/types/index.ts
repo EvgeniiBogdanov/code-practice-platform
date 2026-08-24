@@ -78,6 +78,7 @@ export interface UIState {
   setAdvancedExpanded: (open: boolean | ((prev: boolean) => boolean)) => void;
   setReactTsExpanded: (open: boolean | ((prev: boolean) => boolean)) => void;
   setReactTsPracticeExpanded: (open: boolean | ((prev: boolean) => boolean)) => void;
+  setAllReactCategoriesExpanded: (expanded: boolean) => void;
   setExpandedJsGroups: (
     updater: Record<string, boolean> | ((prev: Record<string, boolean>) => Record<string, boolean>)
   ) => void;
@@ -94,6 +95,11 @@ export interface UIState {
   openSingleCategory: (categoryId: string) => void;
 
   setTooltip: (tooltip: string | null) => void;
+  collapseAllInCurrentSection: (section: "javascript" | "algorithms" | "react") => void;
+  expandAllInCurrentSection: (
+    section: "javascript" | "algorithms" | "react",
+    allGroupNames?: string[]
+  ) => void;
 }
 
 export interface TimerState {

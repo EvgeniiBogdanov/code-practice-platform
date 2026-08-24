@@ -1,16 +1,23 @@
+.stickyWrapper {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky, 30);
+  background: var(--bg-sidebar);
+  padding-top: 2px;
+  padding-bottom: 6px;
+  flex-shrink: 0;
+}
+
 .progressCard {
-  background: color-mix(in srgb, var(--state-active) 40%, transparent);
+  background: color-mix(in srgb, var(--state-active) 40%, var(--bg-sidebar));
   border-radius: var(--radius-lg);
   padding: 8px 10px;
-  margin-top: 2px;
-  margin-bottom: 6px;
-  flex-shrink: 0;
   cursor: default;
   user-select: none;
 }
 
 [data-theme="light"] .progressCard {
-  background: rgba(55, 53, 47, 0.035);
+  background: #ffffff;
   border: 1px solid rgba(55, 53, 47, 0.09);
 }
 

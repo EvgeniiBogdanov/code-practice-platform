@@ -45,6 +45,7 @@ export const TreeNodeHeader = memo(
           search={search}
           onClick={onClick}
           title={title}
+          data-tree-node="true"
           className={cls}
           {...rest}
         >
@@ -59,8 +60,9 @@ export const TreeNodeHeader = memo(
         id={id}
         onClick={onClick}
         title={title}
-        role={role}
-        tabIndex={tabIndex}
+        role={role ?? "treeitem"}
+        tabIndex={tabIndex ?? 0}
+        data-tree-node="true"
         className={cls}
         {...(rest as HTMLAttributes<HTMLDivElement>)}
       >

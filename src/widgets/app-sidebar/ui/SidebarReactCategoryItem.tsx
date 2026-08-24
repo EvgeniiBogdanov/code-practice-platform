@@ -13,7 +13,7 @@ export interface ReactCategoryDef {
   icon: React.ReactNode;
   tasks: Task[];
   isExpanded: boolean;
-  toggle: () => void;
+  toggle: (e?: React.MouseEvent) => void;
 }
 
 export interface SidebarReactCategoryItemProps {

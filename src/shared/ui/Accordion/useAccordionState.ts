@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 export function useAccordionState(
   controlledIsOpen?: boolean,
@@ -9,16 +9,14 @@ export function useAccordionState(
   const isControlled = controlledIsOpen !== undefined;
   const isOpen = isControlled ? controlledIsOpen : uncontrolledIsOpen;
 
-  const isInitialMount = useRef(true);
   const [hasInteracted, setHasInteracted] = useState(false);
 
   useEffect(() => {
-    if (isInitialMount.current) {
-      isInitialMount.current = false;
-      return;
-    }
-    setHasInteracted(true);
-  }, [isOpen]);
+    const raf = requestAnimationFrame(() => {
+      setHasInteracted(true);
+    });
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
   const handleToggle = () => {
     if (onToggle) {

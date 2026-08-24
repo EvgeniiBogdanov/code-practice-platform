@@ -5,6 +5,6 @@ export interface AppProvidersProps {
   children: React.ReactNode;
 }
 
-export function AppProviders({ children }: AppProvidersProps) {
+export const AppProviders = ({ children }: AppProvidersProps): React.JSX.Element => {
   return <ErrorBoundary>{children}</ErrorBoundary>;
-}
+};

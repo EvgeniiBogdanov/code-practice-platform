@@ -25,4 +25,5 @@ export * from "./CodeButton";
 export * from "./Card";
 export * from "./GroupCard";
 export * from "./ViewModeToggle";
+export * from "./NotificationBadge";
 export { clsx } from "clsx";

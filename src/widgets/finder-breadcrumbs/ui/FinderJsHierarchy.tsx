@@ -247,7 +247,7 @@ export const FinderJsHierarchy = ({
                         </span>
                         {isDueToday ? (
                           <span className={styles.statusDue} title="Пора повторить!">
-                            <RotateCcw size={12} />
+                            <RotateCcw size={10} />
                           </span>
                         ) : isSolved ? (
                           <span className={styles.statusSolved} title="Решено">

@@ -288,6 +288,9 @@
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
 }
 
 .statusUnsolved {
@@ -296,6 +299,9 @@
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
 }
 
 .statusDue {
@@ -304,6 +310,9 @@
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
 }
 
 /* Rating Colors */

@@ -18,12 +18,10 @@ export const CheatSheetModal = memo(() => {
   const {
     activeSection,
     activeCategory,
-    copiedId,
     currentSectionConfig,
     filteredData,
     handleSelectSection,
     setActiveCategory,
-    handleCopy,
   } = useCheatSheetData(cheatSearch);
 
   if (!isOpen) return null;
@@ -42,8 +40,6 @@ export const CheatSheetModal = memo(() => {
         activeCategory={activeCategory}
         onSelectCategory={setActiveCategory}
         items={filteredData}
-        copiedId={copiedId}
-        onCopy={handleCopy}
       />
     </div>
   );

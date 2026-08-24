@@ -18,8 +18,6 @@ interface CheatSheetDrawerBodyProps {
   activeCategory: string;
   onSelectCategory: (id: string) => void;
   items: CheatItem[];
-  copiedId: string | null;
-  onCopy: (code: string, cardId: string) => void;
 }
 
 export const CheatSheetDrawerBody = memo(
@@ -35,8 +33,6 @@ export const CheatSheetDrawerBody = memo(
     activeCategory,
     onSelectCategory,
     items,
-    copiedId,
-    onCopy,
   }: CheatSheetDrawerBodyProps) => {
     return (
       <div ref={drawerRef} className={styles.drawer} onClick={(e) => e.stopPropagation()}>
@@ -55,12 +51,7 @@ export const CheatSheetDrawerBody = memo(
           activeCategory={activeCategory}
           onSelectCategory={onSelectCategory}
         />
-        <CheatSheetList
-          items={items}
-          activeCategory={activeCategory}
-          copiedId={copiedId}
-          onCopy={onCopy}
-        />
+        <CheatSheetList items={items} activeCategory={activeCategory} />
       </div>
     );
   }

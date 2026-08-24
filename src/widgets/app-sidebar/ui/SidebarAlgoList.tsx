@@ -1,7 +1,7 @@
 import React from "react";
 import { clsx } from "clsx";
 import { ALL_ALGO_TASKS } from "@/entities/task";
-import { useSidebarAlgoList } from "../model/useSidebarAlgoList";
+import { useSidebarAlgoList } from "../model";
 import { SidebarProgressCard } from "./SidebarProgressCard/SidebarProgressCard";
 import { SidebarAlgoGroupItem } from "./SidebarAlgoGroupItem";
 import styles from "./SidebarAlgoList.module.css";
@@ -10,7 +10,7 @@ export interface SidebarAlgoListProps {
   className?: string;
 }
 
-export const SidebarAlgoList = ({ className }: SidebarAlgoListProps) => {
+export const SidebarAlgoList = ({ className }: SidebarAlgoListProps): React.JSX.Element => {
   const {
     currentTaskId,
     decodedCurrentId,
@@ -38,7 +38,7 @@ export const SidebarAlgoList = ({ className }: SidebarAlgoListProps) => {
           tasks={tasks}
           groupMeta={groupMetaMap[groupName]}
           isGroupOpen={Boolean(expandedGroups[groupName])}
-          onToggle={() => toggleGroup(groupName)}
+          onToggle={(e) => toggleGroup(groupName, e)}
           currentTaskId={currentTaskId}
           decodedCurrentId={decodedCurrentId}
           progressState={progressState}

@@ -39,7 +39,8 @@
   flex-shrink: 0;
 }
 
-.icon_javascript {
+.icon_javascript,
+.icon_js {
   color: var(--color-js, #f59e0b);
   flex-shrink: 0;
 }
@@ -49,7 +50,8 @@
   flex-shrink: 0;
 }
 
-.icon_algorithms {
+.icon_algorithms,
+.icon_algo {
   color: var(--color-algo, #a855f7);
   flex-shrink: 0;
 }

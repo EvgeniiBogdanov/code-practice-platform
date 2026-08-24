@@ -1,5 +1,7 @@
 import React from "react";
 import { Task, SectionType } from "@/entities/task";
+import { ReviewItem } from "@/entities/review";
+import { TaskCompletionStatus } from "@/entities/progress";
 
 export type StatusFilter = "all" | "completed" | "uncompleted";
 export type ViewMode = "list" | "cards";
@@ -62,16 +64,16 @@ export interface GroupOverviewState {
   getTaskGradientClass: (
     task: Task,
     status: "solved" | "unsolved" | "unstarted",
-    taskReview: unknown
+    taskReview: ReviewItem | null | undefined
   ) => string;
   getTaskTooltipTitle: (
     task: Task,
     status: "solved" | "unsolved" | "unstarted",
-    taskReview: unknown
+    taskReview: ReviewItem | null | undefined
   ) => string;
   formatLastSolved: (timestamp?: number | string | null) => string | null;
-  formatNextReviewDate: (timestamp?: any, dueDate?: any) => string | null;
-  isTaskDue: (review: any) => boolean;
-  reviews: Record<string, any>;
-  completedTasks: Record<string, any>;
+  formatNextReviewDate: (timestamp?: number | ReviewItem, dueDate?: string) => string | null;
+  isTaskDue: (review: ReviewItem | null | undefined) => boolean;
+  reviews: Record<string, ReviewItem>;
+  completedTasks: Record<string, TaskCompletionStatus>;
 }

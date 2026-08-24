@@ -1,5 +1,5 @@
-import { memo } from "react";
-import { useSectionOverview } from "../model/useSectionOverview";
+import React, { memo } from "react";
+import { useSectionOverview } from "../model/use-section-overview";
 import { SectionHeroHeader } from "./SectionHeroHeader";
 import { SectionKpiGrid } from "./SectionKpiGrid";
 import { SectionGroupsGrid } from "./SectionGroupsGrid";
@@ -9,46 +9,56 @@ export interface SectionOverviewPageProps {
   section: "javascript" | "react" | "algorithms";
 }
 
-export const SectionOverviewPage = memo(({ section }: SectionOverviewPageProps) => {
-  const { sectionMeta, stats, groups, isSolved, progressState, reviews, isTaskDue } =
-    useSectionOverview(section);
+export const SectionOverviewPage = memo(
+  ({ section }: SectionOverviewPageProps): React.JSX.Element => {
+    const { sectionMeta, stats, groups, isSolved, progressState, reviews, isTaskDue } =
+      useSectionOverview(section);
 
-  return (
-    <div className={styles.overviewContainer}>
-      <SectionHeroHeader
-        section={sectionMeta.id}
-        title={sectionMeta.title}
-        subtitle={sectionMeta.subtitle}
-        badge={sectionMeta.badge}
-        icon={sectionMeta.icon}
-      />
+    return (
+      <div className={styles.overviewContainer}>
+        <SectionHeroHeader
+          section={sectionMeta.id}
+          title={sectionMeta.title}
+          subtitle={sectionMeta.subtitle}
+          badge={sectionMeta.badge}
+          icon={sectionMeta.icon}
+        />
 
-      <SectionKpiGrid
-        total={stats.total}
-        solved={stats.solved}
-        percent={stats.percent}
-        remaining={stats.remaining}
-      />
+        <SectionKpiGrid
+          total={stats.total}
+          solved={stats.solved}
+          percent={stats.percent}
+          remaining={stats.remaining}
+        />
 
-      <SectionGroupsGrid
-        section={sectionMeta.id}
-        groups={groups}
-        isSolved={isSolved}
-        completedTasks={progressState.completedTasks}
-        reviews={reviews}
-        isDue={isTaskDue}
-      />
-    </div>
-  );
-});
+        <SectionGroupsGrid
+          section={sectionMeta.id}
+          groups={groups}
+          isSolved={isSolved}
+          completedTasks={progressState.completedTasks}
+          reviews={reviews}
+          isDue={isTaskDue}
+        />
+      </div>
+    );
+  }
+);
 
 SectionOverviewPage.displayName = "SectionOverviewPage";
 
-export const JavascriptOverviewPage = memo(() => <SectionOverviewPage section="javascript" />);
-JavascriptOverviewPage.displayName = "JavascriptOverviewPage";
-
-export const ReactOverviewPage = memo(() => <SectionOverviewPage section="react" />);
+export const ReactOverviewPage = memo((): React.JSX.Element => {
+  return <SectionOverviewPage section="react" />;
+});
 ReactOverviewPage.displayName = "ReactOverviewPage";
 
-export const AlgorithmsOverviewPage = memo(() => <SectionOverviewPage section="algorithms" />);
+export const JavascriptOverviewPage = memo((): React.JSX.Element => {
+  return <SectionOverviewPage section="javascript" />;
+});
+JavascriptOverviewPage.displayName = "JavascriptOverviewPage";
+
+export const AlgorithmsOverviewPage = memo((): React.JSX.Element => {
+  return <SectionOverviewPage section="algorithms" />;
+});
 AlgorithmsOverviewPage.displayName = "AlgorithmsOverviewPage";
+
+export default SectionOverviewPage;

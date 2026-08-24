@@ -30,13 +30,30 @@ export const TreeToggleIcon = React.memo<TreeToggleIconProps>(
       onToggle(e);
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        e.stopPropagation();
+        onToggle(e as unknown as React.MouseEvent);
+      }
+    };
+
     return (
       <div
         className={clsx(styles.toggleWrapper, size === "md" && styles.sizeMd, className)}
         onClick={handleClick}
-        title={title ?? (expanded ? "Свернуть" : "Развернуть")}
-        role="button"
-        tabIndex={0}
+        onKeyDown={handleKeyDown}
+        data-toggle-btn="true"
+        data-expanded={expanded ? "true" : "false"}
+        aria-expanded={expanded}
+        title={
+          title ??
+          (expanded
+            ? "Свернуть (Alt+клик: свернуть все)"
+            : "Развернуть (Alt+клик: развернуть все)")
+        }
+        role="presentation"
+        tabIndex={-1}
       >
         <div className={styles.iconDefault}>{icon}</div>
         <div className={clsx(styles.iconChevron, expanded && styles.expanded)}>

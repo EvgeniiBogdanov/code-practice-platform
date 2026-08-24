@@ -1,7 +1,7 @@
-import { memo } from "react";
+import React, { memo } from "react";
 import { Task } from "@/entities/task";
 import { TaskSourceFile } from "@/shared/lib/code-runners";
-import { useReactLiveSandbox } from "./useReactLiveSandbox";
+import { useReactLiveSandbox } from "../../model/use-react-live-sandbox";
 import { BrowserMockupHeader } from "./BrowserMockupHeader";
 import { BrowserMockupBody } from "./BrowserMockupBody";
 import styles from "./ReactLivePreview.module.css";
@@ -25,7 +25,7 @@ export const ReactLivePreview = memo(
     storagePrefix = "cand",
     variantIdx = 0,
     className,
-  }: ReactLivePreviewProps) => {
+  }: ReactLivePreviewProps): React.JSX.Element => {
     const {
       activeFile,
       srcDoc,

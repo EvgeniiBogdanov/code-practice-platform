@@ -1,4 +1,4 @@
 export * from "./types";
-export * from "./model/progressStore";
-export * from "./model/progressSelectors";
+export * from "./model/progress-store";
+export * from "./model/progress-selectors";
 export * from "./ui";

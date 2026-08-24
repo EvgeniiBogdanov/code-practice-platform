@@ -33,7 +33,8 @@
     "src/entities/**/*",
     "src/shared/**/*",
     "src/routes/**/*",
-    "src/main.jsx",
+    "src/test/**/*",
+    "src/main.tsx",
     "src/vite-env.d.ts"
   ],
   "exclude": [

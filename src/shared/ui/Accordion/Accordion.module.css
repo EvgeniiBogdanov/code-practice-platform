@@ -93,7 +93,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 10px 14px;
+  padding: 8px 10px;
   box-sizing: border-box;
   cursor: pointer;
   user-select: none;
@@ -214,22 +214,21 @@
 }
 
 .contentBody {
-  padding: 10px 14px 14px 14px;
+  padding: 6px 10px 6px 10px;
   font-size: 13.5px;
   line-height: 1.6;
   color: var(--text-main, #ffffff);
   border-top: 1px dashed rgba(255, 255, 255, 0.08);
-  content-visibility: auto;
 }
 
 .size-xs .contentBody {
-  padding: 6px 10px 10px 10px;
+  padding: 6px 10px 6px 10px;
   font-size: 12.5px;
   line-height: 1.5;
 }
 
 .size-sm .contentBody {
-  padding: 8px 12px 12px 12px;
+  padding: 6px 10px 6px 10px;
   font-size: 13px;
   line-height: 1.55;
 }
