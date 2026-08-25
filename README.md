@@ -1,6 +1,8 @@
 <div align="center">
 
-# <img src="public/favicon.svg" width="22" height="22" alt="" /> Code Practice Platform v.2.2.96
+# <img src="public/favicon.svg" width="22" height="22" alt="" /> Code Practice Platform
+
+<sub><sup><span style="color:gray">version: 2.2.96</span></sup></sub>
 
 ### Интерактивная платформа для подготовки к техническим собеседованиям по фронтенду и алгоритмам
 
