@@ -1,17 +1,32 @@
 .badge {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 4px;
-  padding: 2px 8px;
-  border-radius: var(--radius-full);
-  font-size: var(--fs-xs);
+  height: 22px;
+  padding: 0 8px;
+  border-radius: var(--radius-full, 9999px);
+  font-size: var(--fs-xs, 10px);
   font-weight: 600;
+  line-height: 1;
   background-color: rgba(234, 179, 8, 0.15);
   color: #eab308;
   border: 1px solid rgba(234, 179, 8, 0.3);
   cursor: pointer;
   text-decoration: none;
-  transition: all var(--transition-fast);
+  box-sizing: border-box;
+  transition:
+    background-color var(--transition-fast, 0.15s ease),
+    transform var(--transition-fast, 0.15s ease);
+}
+
+.badge span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  text-box-trim: both;
+  text-box-edge: cap alphabetic;
 }
 
 .badge:hover {

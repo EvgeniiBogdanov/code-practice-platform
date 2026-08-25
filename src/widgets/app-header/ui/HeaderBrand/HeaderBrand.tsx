@@ -1,14 +1,15 @@
 import React from "react";
 import { Link } from "@tanstack/react-router";
-import { PanelLeftOpen, PanelLeftClose, Code2 } from "lucide-react";
+import { PanelLeftOpen, PanelLeftClose } from "lucide-react";
 import { useUIStore } from "@/entities/ui-state";
+import { PlatformLogo } from "@/shared/ui";
 import styles from "./HeaderBrand.module.css";
 
 export interface HeaderBrandProps {
   className?: string;
 }
 
-export function HeaderBrand({ className }: HeaderBrandProps) {
+export function HeaderBrand({ className }: HeaderBrandProps): React.JSX.Element {
   const sidebarOpen = useUIStore((state) => state.sidebarOpen);
   const toggleSidebar = useUIStore((state) => state.toggleSidebar);
 
@@ -25,9 +26,7 @@ export function HeaderBrand({ className }: HeaderBrandProps) {
       </button>
 
       <Link to="/" className={styles.logoLink}>
-        <span className={styles.logoIcon}>
-          <Code2 size={16} />
-        </span>
+        <PlatformLogo size={26} className={styles.logoIcon} />
         <span>CodePractice</span>
       </Link>
     </div>

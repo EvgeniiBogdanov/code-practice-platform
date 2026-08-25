@@ -140,16 +140,6 @@ export const EditorToolbar = memo(
             </Tooltip>
           )}
 
-          {!readOnly && onFormat && (
-            <Tooltip content="Форматировать код (Shift+Alt+F)" side="bottom">
-              <CodeButton
-                icon={<Wand2 size={14} />}
-                onClick={onFormat}
-                aria-label="Форматировать код (Prettier)"
-              />
-            </Tooltip>
-          )}
-
           {onToggleWordWrap && (
             <Tooltip
               content={wordWrap ? "Выключить перенос строк" : "Включить перенос строк (Alt+Z)"}
@@ -160,6 +150,16 @@ export const EditorToolbar = memo(
                 isActive={wordWrap}
                 onClick={onToggleWordWrap}
                 aria-label="Перенос строк"
+              />
+            </Tooltip>
+          )}
+
+          {!readOnly && onFormat && (
+            <Tooltip content="Форматировать код (Shift+Alt+F)" side="bottom">
+              <CodeButton
+                icon={<Wand2 size={14} />}
+                onClick={onFormat}
+                aria-label="Форматировать код (Prettier)"
               />
             </Tooltip>
           )}

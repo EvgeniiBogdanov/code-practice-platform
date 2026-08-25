@@ -8,7 +8,10 @@ export interface DueTasksBadgeProps {
   className?: string;
 }
 
-export function DueTasksBadge({ onClick, className }: DueTasksBadgeProps) {
+export const DueTasksBadge = ({
+  onClick,
+  className,
+}: DueTasksBadgeProps): React.JSX.Element | null => {
   const dueCount = useReviewStore(selectDueTasksCount);
 
   if (dueCount === 0) return null;
@@ -24,4 +27,6 @@ export function DueTasksBadge({ onClick, className }: DueTasksBadgeProps) {
       <span>Повторить: {dueCount}</span>
     </button>
   );
-}
+};
+
+DueTasksBadge.displayName = "DueTasksBadge";

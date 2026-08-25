@@ -1,0 +1,41 @@
+.logoSvg {
+  display: inline-block;
+  flex-shrink: 0;
+  vertical-align: middle;
+  border-radius: var(--radius-sm, 6px);
+  user-select: none;
+}
+
+.shadowRect {
+  fill: rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="light"] .shadowRect {
+  fill: rgba(55, 53, 47, 0.1);
+}
+
+.bgRect {
+  fill: #222222;
+  stroke: rgba(255, 255, 255, 0.14);
+}
+
+[data-theme="light"] .bgRect {
+  fill: #ffffff;
+  stroke: rgba(55, 53, 47, 0.18);
+}
+
+.logoStroke {
+  stroke: #ffffff;
+}
+
+[data-theme="light"] .logoStroke {
+  stroke: #191919;
+}
+
+.logoDot {
+  fill: #ffffff;
+}
+
+[data-theme="light"] .logoDot {
+  fill: #191919;
+}

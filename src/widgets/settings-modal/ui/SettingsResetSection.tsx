@@ -8,7 +8,7 @@ export interface SettingsResetSectionProps {
 }
 
 export const SettingsResetSection = memo(
-  ({ onOpenResetReviews, onOpenResetAll }: SettingsResetSectionProps) => {
+  ({ onOpenResetReviews, onOpenResetAll }: SettingsResetSectionProps): React.JSX.Element => {
     return (
       <div className={styles.settingsSectionWrapper}>
         {/* Section 1: Storage & SM-2 */}
@@ -29,7 +29,12 @@ export const SettingsResetSection = memo(
                 </div>
               </div>
               <div className={styles.settingsRowAction}>
-                <Button variant="secondary" onClick={onOpenResetReviews}>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className={styles.settingsRowBtn}
+                  onClick={onOpenResetReviews}
+                >
                   Сбросить график
                 </Button>
               </div>
@@ -43,13 +48,19 @@ export const SettingsResetSection = memo(
                 </div>
               </div>
               <div className={styles.settingsRowAction}>
-                <span className={styles.statusBadge}>IndexedDB • Активно</span>
+                <span className={styles.statusBadge}>
+                  <span>IndexedDB</span>
+                  <span className={styles.statusDot}>•</span>
+                  <span className={styles.statusActive}>Активно</span>
+                </span>
               </div>
             </div>
           </div>
         </section>
 
         {/* Section 2: Danger Zone */}
+        <hr className={styles.sectionDivider} />
+
         <section className={styles.settingsSection}>
           <div className={styles.sectionHeader}>
             <h3 className={styles.sectionTitleDanger}>Опасная зона</h3>
@@ -67,7 +78,12 @@ export const SettingsResetSection = memo(
                 </div>
               </div>
               <div className={styles.settingsRowAction}>
-                <Button variant="danger" onClick={onOpenResetAll}>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className={styles.settingsRowBtn}
+                  onClick={onOpenResetAll}
+                >
                   Сбросить всё
                 </Button>
               </div>

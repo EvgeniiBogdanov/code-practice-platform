@@ -29,12 +29,14 @@ export const useCodeEditor = ({
   const fontSize = useUIStore((state) => state.editorFontSize);
   const increaseFontSize = useUIStore((state) => state.increaseEditorFontSize);
   const decreaseFontSize = useUIStore((state) => state.decreaseEditorFontSize);
+  const wordWrap = useUIStore((state) => state.editorWordWrap);
+  const setWordWrap = useUIStore((state) => state.setEditorWordWrap);
+  const toggleWordWrap = useUIStore((state) => state.toggleEditorWordWrap);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const highlightRef = useRef<HTMLPreElement>(null);
   const gutterRef = useRef<HTMLDivElement>(null);
 
-  const [wordWrap, setWordWrap] = useState(false);
   const [internalFullscreen, setInternalFullscreen] = useState(false);
   const effectiveFullscreen = isFullscreen !== undefined ? isFullscreen : internalFullscreen;
   const toggleFullscreen = useCallback(() => {
@@ -140,7 +142,7 @@ export const useCodeEditor = ({
       }
       if (e.altKey && e.key.toLowerCase() === "z") {
         e.preventDefault();
-        setWordWrap((prev) => !prev);
+        toggleWordWrap();
         return;
       }
       if (e.shiftKey && e.altKey && e.key.toLowerCase() === "f") {
@@ -152,7 +154,14 @@ export const useCodeEditor = ({
 
     window.addEventListener("keydown", handleGlobalKey);
     return () => window.removeEventListener("keydown", handleGlobalKey);
-  }, [findReplace, handleFormat, effectiveFullscreen, toggleFullscreen, intelliSense]);
+  }, [
+    findReplace,
+    handleFormat,
+    effectiveFullscreen,
+    toggleFullscreen,
+    intelliSense,
+    toggleWordWrap,
+  ]);
 
   const lintResult = useMemo(
     () => lintJavaScriptCode(code, { files, filepath }),
@@ -316,6 +325,7 @@ export const useCodeEditor = ({
     gutterRef,
     wordWrap,
     setWordWrap,
+    toggleWordWrap,
     effectiveFullscreen,
     toggleFullscreen,
     cursorPos,

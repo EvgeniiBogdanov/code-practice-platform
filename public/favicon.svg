@@ -1,0 +1,16 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Фон: скруглённый квадрат в стиле Notion -->
+  <rect x="16" y="16" width="480" height="480" rx="108" fill="#FFFFFF" stroke="#111111" stroke-width="14"/>
+
+  <!-- Скобки кода </> -->
+  <path d="M 196 168 L 128 256 L 196 344"
+        fill="none" stroke="#111111" stroke-width="22"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 316 168 L 384 256 L 316 344"
+        fill="none" stroke="#111111" stroke-width="22"
+        stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Косая черта прогресса/практики -->
+  <line x1="284" y1="150" x2="228" y2="362"
+        stroke="#111111" stroke-width="18" stroke-linecap="round"/>
+</svg>

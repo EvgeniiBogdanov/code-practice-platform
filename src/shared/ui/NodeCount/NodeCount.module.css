@@ -30,7 +30,8 @@
   text-align: center;
   line-height: 1;
   pointer-events: none;
-  transform: translateY(-0.5px);
+  text-box-trim: both;
+  text-box-edge: cap alphabetic;
 }
 
 .nodeCount.completed,

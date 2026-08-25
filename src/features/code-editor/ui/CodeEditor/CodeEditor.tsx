@@ -38,6 +38,7 @@ export const CodeEditor = ({
     gutterRef,
     wordWrap,
     setWordWrap,
+    toggleWordWrap,
     effectiveFullscreen,
     toggleFullscreen,
     cursorPos,
@@ -102,7 +103,7 @@ export const CodeEditor = ({
           }}
           onFormat={handleFormat}
           wordWrap={wordWrap}
-          onToggleWordWrap={() => setWordWrap((prev) => !prev)}
+          onToggleWordWrap={toggleWordWrap}
           isFindOpen={findReplace.findState.isOpen}
           onToggleFind={() => {
             if (findReplace.findState.isOpen) findReplace.closeFind();

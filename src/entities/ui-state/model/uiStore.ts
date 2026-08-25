@@ -12,6 +12,7 @@ const getInitialUISettings = () => {
       sidebarOpen: true,
       sidebarWidth: 280,
       consoleCollapsed: true,
+      editorWordWrap: false,
     };
   }
   try {
@@ -35,6 +36,10 @@ const getInitialUISettings = () => {
             typeof parsed.state.consoleCollapsed === "boolean"
               ? parsed.state.consoleCollapsed
               : true,
+          editorWordWrap:
+            typeof parsed.state.editorWordWrap === "boolean"
+              ? parsed.state.editorWordWrap
+              : false,
         };
       }
     }
@@ -45,6 +50,7 @@ const getInitialUISettings = () => {
       sidebarOpen: true,
       sidebarWidth: 280,
       consoleCollapsed: legacyConsole !== null ? legacyConsole === "true" : true,
+      editorWordWrap: false,
     };
   } catch {
     // ignore
@@ -54,6 +60,7 @@ const getInitialUISettings = () => {
     sidebarOpen: true,
     sidebarWidth: 280,
     consoleCollapsed: true,
+    editorWordWrap: false,
   };
 };
 
@@ -70,6 +77,7 @@ export const useUIStore = create<UIState>()(
       sidebarOpen: initialUI.sidebarOpen,
       sidebarWidth: initialUI.sidebarWidth,
       editorFontSize: 14,
+      editorWordWrap: initialUI.editorWordWrap,
       consoleFontSize: 14,
       consoleCollapsed: true,
 
@@ -153,6 +161,16 @@ export const useUIStore = create<UIState>()(
           editorFontSize: Math.max(MIN_FONT_SIZE, (state.editorFontSize || MIN_FONT_SIZE) - 1),
         }));
       },
+
+      setEditorWordWrap: (editorWordWrap) =>
+        set((state) => ({
+          editorWordWrap:
+            typeof editorWordWrap === "function"
+              ? editorWordWrap(state.editorWordWrap)
+              : editorWordWrap,
+        })),
+      toggleEditorWordWrap: () =>
+        set((state) => ({ editorWordWrap: !state.editorWordWrap })),
 
       setConsoleFontSize: (size) => {
         const clamped = Math.min(MAX_FONT_SIZE, Math.max(MIN_FONT_SIZE, size));
@@ -436,6 +454,7 @@ export const useUIStore = create<UIState>()(
         sidebarOpen: state.sidebarOpen,
         sidebarWidth: state.sidebarWidth,
         editorFontSize: state.editorFontSize,
+        editorWordWrap: state.editorWordWrap,
         consoleFontSize: state.consoleFontSize,
         consoleCollapsed: state.consoleCollapsed,
         warmupExpanded: state.warmupExpanded,

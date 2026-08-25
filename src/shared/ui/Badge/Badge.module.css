@@ -3,10 +3,9 @@
   align-items: center;
   justify-content: center;
   gap: 4px;
-  border-radius: 100px;
+  border-radius: var(--radius-full, 9999px);
   font-family: var(--font-sans);
   font-weight: 600;
-  line-height: 1;
   vertical-align: middle;
   align-self: center;
   white-space: nowrap;
@@ -14,6 +13,15 @@
   box-shadow: none;
   box-sizing: border-box;
   flex-shrink: 0;
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  text-box-trim: both;
+  text-box-edge: cap alphabetic;
 }
 
 .uppercase {
@@ -32,7 +40,7 @@
 .size-sm {
   height: 20px;
   padding: 0 7px;
-  font-size: 10.5px;
+  font-size: 11px;
 }
 
 .size-md {

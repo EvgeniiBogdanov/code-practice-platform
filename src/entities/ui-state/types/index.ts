@@ -5,6 +5,7 @@ export interface UIState {
   sidebarOpen: boolean;
   sidebarWidth: number;
   editorFontSize: number;
+  editorWordWrap: boolean;
   consoleFontSize: number;
   consoleCollapsed: boolean;
 
@@ -48,6 +49,8 @@ export interface UIState {
   decreaseEditorFontSize: () => void;
   increaseFontSize: () => void;
   decreaseFontSize: () => void;
+  setEditorWordWrap: (wrap: boolean | ((prev: boolean) => boolean)) => void;
+  toggleEditorWordWrap: () => void;
   setConsoleFontSize: (size: number) => void;
   increaseConsoleFontSize: () => void;
   decreaseConsoleFontSize: () => void;
