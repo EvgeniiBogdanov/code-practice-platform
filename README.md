@@ -1,6 +1,6 @@
 <div align="center">
 
-# <img src="public/favicon.svg" width="32" height="32" alt="Code Practice Platform" align="top" /> Code Practice Platform · `v2.2.96`
+# <img src="public/favicon.svg" width="20" height="20" alt="Code Practice Platform"  /> Code Practice Platform · `v2.2.96`
 
 ### Интерактивная платформа для подготовки к техническим собеседованиям по фронтенду и алгоритмам
 
