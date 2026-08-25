@@ -112,30 +112,6 @@
   padding: 4px 8px 2px 8px;
 }
 
-.sidebarFooter {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  padding: 8px 6px 0 6px;
-  border-top: 1px solid var(--border-color, rgba(255, 255, 255, 0.06));
-}
-
-[data-theme="light"] .sidebarFooter {
-  border-top-color: rgba(55, 53, 47, 0.08);
-}
-
-.sidebarVersion {
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--text-muted, #94a3b8);
-}
-
-.sidebarBuild {
-  font-size: 10px;
-  color: var(--text-muted, rgba(255, 255, 255, 0.4));
-  font-family: var(--font-mono, monospace);
-}
-
 .modalMain {
   flex: 1;
   min-width: 0;
@@ -241,10 +217,6 @@
   background: var(--state-hover, rgba(255, 255, 255, 0.05));
 }
 
-.kpiCard.hasDue {
-  background: rgba(239, 68, 68, 0.08);
-}
-
 .kpiHeader {
   font-size: 11px;
   font-weight: 600;
@@ -257,6 +229,26 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.kpiIconAmber {
+  color: var(--accent-orange, #f59e0b);
+}
+
+.kpiIconYellow {
+  color: var(--color-status-due, #eab308);
+}
+
+.kpiIconGreen {
+  color: var(--color-status-solved, #10b981);
+}
+
+.kpiIconBlue {
+  color: var(--accent-blue, #2383e2);
+}
+
+.kpiIconMuted {
+  color: var(--text-muted);
 }
 
 .kpiValRow {
@@ -273,6 +265,18 @@
   color: var(--text-main);
   line-height: 1.1;
   flex-shrink: 0;
+}
+
+.kpiValYellow {
+  color: var(--color-status-due, #eab308);
+}
+
+.kpiValGreen {
+  color: var(--color-status-solved, #10b981);
+}
+
+.kpiValBlue {
+  color: var(--accent-blue, #2383e2);
 }
 
 .kpiSub {
@@ -303,19 +307,19 @@
 }
 
 .kpiProgressBar.amber {
-  background: #f59e0b;
+  background: var(--accent-orange, #f59e0b);
 }
 
-.kpiProgressBar.red {
-  background: #ef4444;
+.kpiProgressBar.yellow {
+  background: var(--color-status-due, #eab308);
 }
 
 .kpiProgressBar.green {
-  background: #10b981;
+  background: var(--color-status-solved, #10b981);
 }
 
 .kpiProgressBar.blue {
-  background: var(--accent-blue, #3b82f6);
+  background: var(--accent-blue, #2383e2);
 }
 
 /* Tab Bar */

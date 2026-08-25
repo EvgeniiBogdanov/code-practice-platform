@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Link } from "@tanstack/react-router";
-import { CalendarClock, ArrowRight, Clock, AlertCircle, FileText } from "lucide-react";
+import { CalendarClock, ArrowRight, Clock, FileText } from "lucide-react";
 import { clsx } from "clsx";
 import { Task } from "@/entities/task";
 import { Card, NotificationBadge } from "@/shared/ui";
@@ -52,16 +52,10 @@ export const SpacedRepetitionUpcomingTab = memo(
     return (
       <div className={styles.upcomingList}>
         {upcomingTasks.map((item) => {
-          const { task, review, stage, intervalDays, isDue, daysUntil, relativeTime, formattedDate } =
+          const { task, review, stage, intervalDays, daysUntil, relativeTime, formattedDate } =
             item;
 
-          const badgeVariant = isDue
-            ? "yellow"
-            : daysUntil === 0
-              ? "green"
-              : daysUntil <= 2
-                ? "blue"
-                : "neutral";
+          const badgeVariant = daysUntil <= 2 ? "blue" : "neutral";
 
           return (
             <Link
@@ -99,9 +93,7 @@ export const SpacedRepetitionUpcomingTab = memo(
                     ring={false}
                     size="tab"
                   >
-                    {isDue ? (
-                      <AlertCircle size={11} style={{ marginRight: 4 }} />
-                    ) : daysUntil <= 1 ? (
+                    {daysUntil <= 1 ? (
                       <Clock size={11} style={{ marginRight: 4 }} />
                     ) : null}
                     <span>

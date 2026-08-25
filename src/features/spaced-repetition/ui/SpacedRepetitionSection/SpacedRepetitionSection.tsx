@@ -23,8 +23,8 @@ export interface SpacedRepetitionSectionProps {
 const TAB_TITLES: Record<SRTabType, string> = {
   distribution: "Мастерство и распределение",
   schedule: "График повторений",
-  due: "Срочные задачи",
-  upcoming: "Предстоящий повтор",
+  due: "Повтор",
+  upcoming: "В очереди на повторение",
 };
 
 export const SpacedRepetitionSection = memo(
@@ -78,11 +78,6 @@ export const SpacedRepetitionSection = memo(
                 onSelectTab={setActiveTab}
               />
             </div>
-          </div>
-
-          <div className={styles.sidebarFooter}>
-            <span className={styles.sidebarVersion}>Алгоритм SM-2</span>
-            <span className={styles.sidebarBuild}>4 стадии интервалов</span>
           </div>
         </aside>
 

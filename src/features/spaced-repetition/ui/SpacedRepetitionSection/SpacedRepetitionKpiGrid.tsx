@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { Zap, RotateCcw, Trophy, Clock } from "lucide-react";
+import { clsx } from "clsx";
 import styles from "./SpacedRepetitionSection.module.css";
 
 interface SpacedRepetitionKpiGridProps {
@@ -19,12 +20,12 @@ export const SpacedRepetitionKpiGrid = memo(
     mastered,
     masteryPercent,
     avgInterval,
-  }: SpacedRepetitionKpiGridProps) => {
+  }: SpacedRepetitionKpiGridProps): React.JSX.Element => {
     return (
       <div className={styles.kpiGrid}>
         <div className={styles.kpiCard}>
           <div className={styles.kpiHeader}>
-            <Zap size={13} style={{ color: "#f59e0b" }} />
+            <Zap size={13} className={styles.kpiIconAmber} />
             <span>В цикле SM-2</span>
           </div>
           <div className={styles.kpiValRow}>
@@ -33,7 +34,7 @@ export const SpacedRepetitionKpiGrid = memo(
           </div>
           <div className={styles.kpiProgress}>
             <div
-              className={[styles.kpiProgressBar, styles.amber].join(" ")}
+              className={clsx(styles.kpiProgressBar, styles.amber)}
               style={{
                 width: `${totalCount > 0 ? (totalReviewed / totalCount) * 100 : 0}%`,
               }}
@@ -41,26 +42,23 @@ export const SpacedRepetitionKpiGrid = memo(
           </div>
         </div>
 
-        <div className={[styles.kpiCard, dueToday > 0 && styles.hasDue].filter(Boolean).join(" ")}>
+        <div className={styles.kpiCard}>
           <div className={styles.kpiHeader}>
             <RotateCcw
               size={13}
-              style={{ color: dueToday > 0 ? "#ef4444" : "var(--text-muted)" }}
+              className={dueToday > 0 ? styles.kpiIconYellow : styles.kpiIconMuted}
             />
             <span>К повторению</span>
           </div>
           <div className={styles.kpiValRow}>
-            <span
-              className={styles.kpiVal}
-              style={{ color: dueToday > 0 ? "#ef4444" : "var(--text-main)" }}
-            >
+            <span className={clsx(styles.kpiVal, dueToday > 0 && styles.kpiValYellow)}>
               {dueToday}
             </span>
             <span className={styles.kpiSub}>сегодня</span>
           </div>
           <div className={styles.kpiProgress}>
             <div
-              className={[styles.kpiProgressBar, styles.red].join(" ")}
+              className={clsx(styles.kpiProgressBar, styles.yellow)}
               style={{ width: `${dueToday > 0 ? 100 : 0}%` }}
             />
           </div>
@@ -68,18 +66,18 @@ export const SpacedRepetitionKpiGrid = memo(
 
         <div className={styles.kpiCard}>
           <div className={styles.kpiHeader}>
-            <Trophy size={13} style={{ color: "#10b981" }} />
+            <Trophy size={13} className={styles.kpiIconGreen} />
             <span>Уровень Мастер</span>
           </div>
           <div className={styles.kpiValRow}>
-            <span className={styles.kpiVal} style={{ color: "#10b981" }}>
+            <span className={clsx(styles.kpiVal, styles.kpiValGreen)}>
               {masteryPercent}%
             </span>
             <span className={styles.kpiSub}>{mastered} задач</span>
           </div>
           <div className={styles.kpiProgress}>
             <div
-              className={[styles.kpiProgressBar, styles.green].join(" ")}
+              className={clsx(styles.kpiProgressBar, styles.green)}
               style={{ width: `${masteryPercent}%` }}
             />
           </div>
@@ -87,18 +85,18 @@ export const SpacedRepetitionKpiGrid = memo(
 
         <div className={styles.kpiCard}>
           <div className={styles.kpiHeader}>
-            <Clock size={13} style={{ color: "var(--accent-blue, #3b82f6)" }} />
+            <Clock size={13} className={styles.kpiIconBlue} />
             <span>Средний интервал</span>
           </div>
           <div className={styles.kpiValRow}>
-            <span className={styles.kpiVal} style={{ color: "var(--accent-blue, #3b82f6)" }}>
+            <span className={clsx(styles.kpiVal, styles.kpiValBlue)}>
               {avgInterval}
             </span>
             <span className={styles.kpiSub}>дней</span>
           </div>
           <div className={styles.kpiProgress}>
             <div
-              className={[styles.kpiProgressBar, styles.blue].join(" ")}
+              className={clsx(styles.kpiProgressBar, styles.blue)}
               style={{ width: `${Math.min(100, (avgInterval / 60) * 100)}%` }}
             />
           </div>

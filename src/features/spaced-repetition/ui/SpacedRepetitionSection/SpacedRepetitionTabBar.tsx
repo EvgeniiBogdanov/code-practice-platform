@@ -46,7 +46,7 @@ export const SpacedRepetitionTabBar = memo(
           onClick={() => onSelectTab("due")}
         >
           <RotateCcw size={15} className={styles.tabBtnIcon} />
-          <span className={styles.tabBtnLabel}>Срочные задачи</span>
+          <span className={styles.tabBtnLabel}>Повтор</span>
           <NotificationBadge
             count={dueTasksCount}
             variant="yellow"
@@ -64,7 +64,7 @@ export const SpacedRepetitionTabBar = memo(
           onClick={() => onSelectTab("upcoming")}
         >
           <CalendarClock size={15} className={styles.tabBtnIcon} />
-          <span className={styles.tabBtnLabel}>Предстоящий повтор</span>
+          <span className={styles.tabBtnLabel}>В очереди</span>
           <NotificationBadge
             count={upcomingTasksCount}
             variant="blue"

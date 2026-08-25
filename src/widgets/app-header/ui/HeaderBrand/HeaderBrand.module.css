@@ -39,9 +39,5 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  background: linear-gradient(135deg, var(--accent-blue), #6366f1);
-  background-color: var(--accent-blue);
-  color: #ffffff;
+  flex-shrink: 0;
 }

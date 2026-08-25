@@ -85,11 +85,19 @@ export function getUpcomingTasks(
   for (const task of targetTasks) {
     const rev = reviews[String(task.id)];
     if (rev && rev.stage > 0 && (rev.nextReviewAt || rev.dueDate)) {
+      if (isTaskDue(rev)) {
+        continue;
+      }
+
       const nextReviewAt =
         rev.nextReviewAt ||
         (rev.dueDate ? new Date(`${rev.dueDate}T00:00:00`).getTime() : 0);
-      const isDue = isTaskDue(rev);
       const daysUntil = getDaysUntil(rev.dueDate || nextReviewAt);
+      if (daysUntil <= 0) {
+        continue;
+      }
+
+      const isDue = false;
       const relativeTime = formatUpcomingRelativeTime(daysUntil, isDue);
       const formattedDate = formatUpcomingDate(rev.dueDate || nextReviewAt);
 

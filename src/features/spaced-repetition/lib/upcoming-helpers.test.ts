@@ -43,12 +43,13 @@ describe("upcoming-helpers", () => {
     expect(formatted.toLowerCase()).toContain("авг");
   });
 
-  it("gets and sorts upcoming tasks from nearest to furthest", () => {
+  it("gets and sorts strictly upcoming future tasks, excluding tasks due today or overdue", () => {
     const tasks: Task[] = [
       { id: "task1", title: "Task 1", section: "javascript" } as Task,
       { id: "task2", title: "Task 2", section: "react" } as Task,
       { id: "task3", title: "Task 3", section: "algorithms" } as Task,
       { id: "task4", title: "Unreviewed Task", section: "javascript" } as Task,
+      { id: "task5", title: "Overdue Task", section: "react" } as Task,
     ];
 
     const reviews: Record<string, ReviewItem> = {
@@ -63,7 +64,7 @@ describe("upcoming-helpers", () => {
         taskId: "task2",
         stage: 1,
         intervalDays: 1,
-        dueDate: "2026-08-24", // today
+        dueDate: "2026-08-24", // today -> due, should NOT be in upcoming
         nextReviewAt: new Date(2026, 7, 24).getTime(),
       } as ReviewItem,
       task3: {
@@ -73,19 +74,24 @@ describe("upcoming-helpers", () => {
         dueDate: "2026-09-24",
         nextReviewAt: new Date(2026, 8, 24).getTime(),
       } as ReviewItem,
+      task5: {
+        taskId: "task5",
+        stage: 1,
+        intervalDays: 1,
+        dueDate: "2026-08-20", // overdue -> due, should NOT be in upcoming
+        nextReviewAt: new Date(2026, 7, 20).getTime(),
+      } as ReviewItem,
     };
 
     const result = getUpcomingTasks(tasks, reviews);
 
-    expect(result).toHaveLength(3);
+    // Only task1 and task3 (strictly future)
+    expect(result).toHaveLength(2);
     // Nearest first
-    expect(result[0].task.id).toBe("task2");
-    expect(result[0].daysUntil).toBe(0);
-    // Middle
-    expect(result[1].task.id).toBe("task1");
-    expect(result[1].daysUntil).toBe(3);
+    expect(result[0].task.id).toBe("task1");
+    expect(result[0].daysUntil).toBe(3);
     // Furthest last
-    expect(result[2].task.id).toBe("task3");
-    expect(result[2].daysUntil).toBe(31);
+    expect(result[1].task.id).toBe("task3");
+    expect(result[1].daysUntil).toBe(31);
   });
 });

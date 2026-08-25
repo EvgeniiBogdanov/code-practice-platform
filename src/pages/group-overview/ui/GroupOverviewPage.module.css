@@ -532,9 +532,15 @@
 }
 
 .galleryCardBadge span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  line-height: 1;
+  text-box-trim: both;
+  text-box-edge: cap alphabetic;
 }
 
 .badgeLastSolved {

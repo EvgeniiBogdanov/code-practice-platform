@@ -26,4 +26,5 @@ export * from "./Card";
 export * from "./GroupCard";
 export * from "./ViewModeToggle";
 export * from "./NotificationBadge";
+export * from "./PlatformLogo";
 export { clsx } from "clsx";

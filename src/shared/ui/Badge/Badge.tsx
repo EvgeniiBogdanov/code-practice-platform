@@ -14,7 +14,7 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   uppercase?: boolean;
 }
 
-export function Badge({
+export const Badge = ({
   variant = "gray",
   size = "md",
   icon,
@@ -22,7 +22,7 @@ export function Badge({
   className,
   children,
   ...props
-}: BadgeProps) {
+}: BadgeProps): React.JSX.Element => {
   const variantClass = styles[`variant-${variant}`];
   const sizeClass = styles[`size-${size}`];
   const classNames = clsx(
@@ -36,7 +36,9 @@ export function Badge({
   return (
     <span className={classNames} {...props}>
       {icon && <span className={styles.icon}>{icon}</span>}
-      {children}
+      {children && <span className={styles.label}>{children}</span>}
     </span>
   );
-}
+};
+
+Badge.displayName = "Badge";
