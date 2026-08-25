@@ -1,4 +1,5 @@
 import React from "react";
+import { clsx } from "clsx";
 import { HoverInfo } from "@/shared/lib/code-editor";
 import styles from "./HoverSignatureCard.module.css";
 
@@ -19,7 +20,7 @@ export function HoverSignatureCard({ info, position, className }: HoverSignature
   }, [position.top, position.left]);
 
   return (
-    <div ref={cardRef} className={[styles.card, className].filter(Boolean).join(" ")}>
+    <div ref={cardRef} className={clsx(styles.card, className)}>
       <div className={styles.signature}>{info.signature}</div>
       {info.documentation && <div className={styles.description}>{info.documentation}</div>}
     </div>

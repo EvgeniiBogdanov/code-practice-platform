@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useReviewStore, isTaskDue, STAGE_INTERVALS } from "@/entities/review";
+import { useProgressStore } from "@/entities/progress";
 import { ALL_TASKS, Task } from "@/entities/task";
 import { getUpcomingTasks, UpcomingTaskItem } from "../lib/upcoming-helpers";
 
@@ -15,6 +16,7 @@ export const useSpacedRepetitionData = ({
   const reviews = useReviewStore((state) => state.reviews) || {};
   const isInitialized = useReviewStore((state) => state.isInitialized);
   const getMasteryStats = useReviewStore((state) => state.getMasteryStats);
+  const completedTasks = useProgressStore((state) => state.completedTasks);
 
   const targetTasks = useMemo(() => {
     return taskList && taskList.length > 0 ? taskList : ALL_TASKS;
@@ -47,6 +49,12 @@ export const useSpacedRepetitionData = ({
     return getUpcomingTasks(targetTasks, reviews);
   }, [targetTasks, reviews, isInitialized]);
 
+  const unsolvedTasks = useMemo((): Task[] => {
+    return targetTasks.filter((t) => {
+      return completedTasks[String(t.id)] === "unsolved";
+    });
+  }, [targetTasks, completedTasks]);
+
   const masteryPercent =
     masteryStats.totalReviewed > 0
       ? Math.round((masteryStats.mastered / masteryStats.totalReviewed) * 100)
@@ -74,6 +82,7 @@ export const useSpacedRepetitionData = ({
     masteryStats,
     dueTasks,
     upcomingTasks,
+    unsolvedTasks,
     masteryPercent,
     avgInterval,
     scopeLabel,

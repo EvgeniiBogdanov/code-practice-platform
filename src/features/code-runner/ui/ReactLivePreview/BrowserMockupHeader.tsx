@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { Lock, RotateCcw } from "lucide-react";
+import { clsx } from "clsx";
 import styles from "./ReactLivePreview.module.css";
 
 export interface BrowserMockupHeaderProps {
@@ -12,9 +13,9 @@ export const BrowserMockupHeader = memo(({ fileName, onReload }: BrowserMockupHe
     <div className={styles.header}>
       <div className={styles.left}>
         <div className={styles.dots}>
-          <span className={[styles.dot, styles.dotClose].join(" ")} />
-          <span className={[styles.dot, styles.dotMin].join(" ")} />
-          <span className={[styles.dot, styles.dotMax].join(" ")} />
+          <span className={clsx(styles.dot, styles.dotClose)} />
+          <span className={clsx(styles.dot, styles.dotMin)} />
+          <span className={clsx(styles.dot, styles.dotMax)} />
         </div>
       </div>
 

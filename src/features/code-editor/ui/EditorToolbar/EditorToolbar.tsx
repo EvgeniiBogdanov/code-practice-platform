@@ -14,6 +14,7 @@ import {
   Minimize2,
   FileCode,
 } from "lucide-react";
+import { clsx } from "clsx";
 import { Tooltip, CodeButton } from "@/shared/ui";
 import { TaskFile } from "@/shared/lib/code-editor";
 import styles from "./EditorToolbar.module.css";
@@ -91,7 +92,7 @@ export const EditorToolbar = memo(
     };
 
     return (
-      <div className={[styles.toolbar, className].filter(Boolean).join(" ")}>
+      <div className={clsx(styles.toolbar, className)}>
         <div className={styles.left}>
           {files && files.length > 1 ? (
             files.map((file, idx) => {
@@ -101,7 +102,7 @@ export const EditorToolbar = memo(
                 <button
                   key={idx}
                   type="button"
-                  className={[styles.fileTab, isActive && styles.active].filter(Boolean).join(" ")}
+                  className={clsx(styles.fileTab, isActive && styles.active)}
                   onClick={() => onFileSelect && onFileSelect(idx)}
                 >
                   <FileCode size={13} className={getFileIconClass(name)} />

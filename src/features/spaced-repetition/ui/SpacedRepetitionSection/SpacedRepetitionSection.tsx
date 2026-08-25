@@ -9,6 +9,7 @@ import { SpacedRepetitionDistributionTab } from "./SpacedRepetitionDistributionT
 import { SpacedRepetitionScheduleTab } from "./SpacedRepetitionScheduleTab";
 import { SpacedRepetitionDueTab } from "./SpacedRepetitionDueTab";
 import { SpacedRepetitionUpcomingTab } from "./SpacedRepetitionUpcomingTab";
+import { SpacedRepetitionUnsolvedTab } from "./SpacedRepetitionUnsolvedTab";
 import styles from "./SpacedRepetitionSection.module.css";
 
 export interface SpacedRepetitionSectionProps {
@@ -25,6 +26,7 @@ const TAB_TITLES: Record<SRTabType, string> = {
   schedule: "График повторений",
   due: "Повтор",
   upcoming: "В очереди на повторение",
+  unsolved: "Нерешенные задачи",
 };
 
 export const SpacedRepetitionSection = memo(
@@ -44,19 +46,17 @@ export const SpacedRepetitionSection = memo(
       masteryStats,
       dueTasks,
       upcomingTasks,
+      unsolvedTasks,
       masteryPercent,
       avgInterval,
       scopeLabel,
     } = useSpacedRepetitionData({ taskList, sectionName });
 
-    const isCompactPadding = activeTab === "due" || activeTab === "upcoming";
+    const isCompactPadding =
+      activeTab === "due" || activeTab === "upcoming" || activeTab === "unsolved";
 
     return (
-      <div
-        className={[inModal ? styles.inModal : styles.sectionBlock, className]
-          .filter(Boolean)
-          .join(" ")}
-      >
+      <div className={clsx(inModal ? styles.inModal : styles.sectionBlock, className)}>
         <aside className={styles.modalSidebar}>
           <div className={styles.sidebarTop}>
             <div className={styles.workspaceHeader}>
@@ -75,6 +75,7 @@ export const SpacedRepetitionSection = memo(
                 activeTab={activeTab}
                 dueTasksCount={dueTasks.length}
                 upcomingTasksCount={upcomingTasks.length}
+                unsolvedTasksCount={unsolvedTasks.length}
                 onSelectTab={setActiveTab}
               />
             </div>
@@ -139,6 +140,14 @@ export const SpacedRepetitionSection = memo(
             {activeTab === "upcoming" && (
               <SpacedRepetitionUpcomingTab
                 upcomingTasks={upcomingTasks}
+                scopeLabel={scopeLabel}
+                onNavigate={onNavigate}
+              />
+            )}
+
+            {activeTab === "unsolved" && (
+              <SpacedRepetitionUnsolvedTab
+                unsolvedTasks={unsolvedTasks}
                 scopeLabel={scopeLabel}
                 onNavigate={onNavigate}
               />

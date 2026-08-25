@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { Link } from "@tanstack/react-router";
 import { Folder, FileText, Calendar, RotateCcw, Check, X } from "lucide-react";
+import { clsx } from "clsx";
 import { Task } from "@/entities/task";
 import { Button, Card } from "@/shared/ui";
 import styles from "./GroupOverviewPage.module.css";
@@ -84,7 +85,7 @@ const GroupTaskCardItem = memo(
         title={tooltipTitle}
         style={{ textDecoration: "none" }}
       >
-        <Card className={[styles.galleryCard, gradientClass].filter(Boolean).join(" ")}>
+        <Card className={clsx(styles.galleryCard, gradientClass)}>
           <div>
             <div className={styles.galleryCardHeaderRow}>
               <div className={styles.galleryCardFolderInfo}>
@@ -96,14 +97,14 @@ const GroupTaskCardItem = memo(
 
               <div className={styles.galleryCardStatusRow}>
                 <span
-                  className={[
+                  className={clsx(
                     styles.galleryCardStatusText,
                     isDone
                       ? styles.statusSolved
                       : isUnsolved
                         ? styles.statusUnsolved
-                        : styles.statusUnstarted,
-                  ].join(" ")}
+                        : styles.statusUnstarted
+                  )}
                 >
                   {isDone ? "Решено" : isUnsolved ? "Не решено" : "Не начато"}
                 </span>
@@ -135,7 +136,7 @@ const GroupTaskCardItem = memo(
             <div className={styles.galleryCardBadgesRow}>
               {lastReviewedAt && (
                 <span
-                  className={[styles.galleryCardBadge, styles.badgeLastSolved].join(" ")}
+                  className={clsx(styles.galleryCardBadge, styles.badgeLastSolved)}
                   title={`Дата последнего решения: ${new Date(lastReviewedAt).toLocaleDateString("ru-RU")}`}
                 >
                   <Calendar size={11} />
@@ -143,12 +144,12 @@ const GroupTaskCardItem = memo(
                 </span>
               )}
               {isDue ? (
-                <span className={[styles.galleryCardBadge, styles.badgeNextDue].join(" ")}>
+                <span className={clsx(styles.galleryCardBadge, styles.badgeNextDue)}>
                   <span>Пора повторить</span>
                 </span>
               ) : nextReviewAt ? (
                 <span
-                  className={[styles.galleryCardBadge, styles.badgeNextScheduled].join(" ")}
+                  className={clsx(styles.galleryCardBadge, styles.badgeNextScheduled)}
                   title={`Следующее повторение: ${formatNextReviewDate(nextReviewAt)}`}
                 >
                   <RotateCcw size={11} />

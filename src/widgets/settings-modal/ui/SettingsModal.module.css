@@ -258,25 +258,13 @@
 .settingsSectionWrapper {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 12px;
 }
 
 .settingsSection {
   display: flex;
   flex-direction: column;
   gap: 12px;
-}
-
-.sectionDivider {
-  height: 1px;
-  background-color: var(--border-color, rgba(255, 255, 255, 0.08));
-  border: none;
-  margin: 0;
-  width: 100%;
-}
-
-[data-theme="light"] .sectionDivider {
-  background-color: rgba(55, 53, 47, 0.08);
 }
 
 .sectionHeader {
@@ -293,14 +281,6 @@
   font-family: var(--font-sans);
 }
 
-.sectionTitleDanger {
-  font-size: 13.5px;
-  font-weight: 600;
-  color: var(--accent-red, #ef4444);
-  margin: 0;
-  font-family: var(--font-sans);
-}
-
 .sectionSubtitle {
   font-size: 12px;
   color: var(--text-muted);
@@ -312,6 +292,12 @@
 .settingsRowList {
   display: flex;
   flex-direction: column;
+  border-top: 1px solid var(--border-color, rgba(255, 255, 255, 0.05));
+  margin-top: 4px;
+}
+
+[data-theme="light"] .settingsRowList {
+  border-top-color: rgba(55, 53, 47, 0.07);
 }
 
 .settingsRow {

@@ -859,6 +859,13 @@
   color: #9333ea !important;
 }
 
+/* Unsolved Tab Styles */
+.unsolvedContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 @media (max-width: 680px) {
   .inModal,
   .sectionBlock {

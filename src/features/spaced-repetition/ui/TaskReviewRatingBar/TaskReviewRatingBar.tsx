@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { clsx } from "clsx";
 import { useReviewStore, ReviewRating, getReviewBadgeMeta } from "@/entities/review";
 import { useProgressStore, selectIsTaskCompleted } from "@/entities/progress";
 import { TaskReviewHeader } from "./TaskReviewHeader";
@@ -38,16 +39,14 @@ export const TaskReviewRatingBar = memo(({ taskId, className }: TaskReviewRating
     }
   };
 
-  const containerClasses = [
-    styles.taskReviewBanner,
-    !canRate && styles.reviewBannerLocked,
-    className,
-  ]
-    .filter(Boolean)
-    .join(" ");
-
   return (
-    <div className={containerClasses}>
+    <div
+      className={clsx(
+        styles.taskReviewBanner,
+        !canRate && styles.reviewBannerLocked,
+        className
+      )}
+    >
       <TaskReviewHeader taskReview={taskReview} badgeMeta={badgeMeta} canRate={canRate} />
       {canRate && (
         <TaskReviewRatingOptions taskReview={taskReview} canRate={canRate} onRate={handleRate} />

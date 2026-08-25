@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import { Clock } from "lucide-react";
+import { clsx } from "clsx";
 import { Tooltip } from "@/shared/ui";
 import { useTimerStore } from "@/entities/ui-state";
 import styles from "./TimerDisplay.module.css";
@@ -22,14 +23,12 @@ export const TimerDisplay = memo(({ className, disabled = false }: TimerDisplayP
     <Tooltip content="Сбросить таймер" side="bottom" disabled={disabled}>
       <button
         type="button"
-        className={[
+        className={clsx(
           styles.timerDisplay,
           isExpired && styles.expired,
           disabled && styles.disabled,
-          className,
-        ]
-          .filter(Boolean)
-          .join(" ")}
+          className
+        )}
         onClick={disabled ? undefined : resetTimer}
         disabled={disabled}
         aria-label="Сбросить таймер"

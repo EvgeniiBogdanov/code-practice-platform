@@ -1,6 +1,7 @@
 import React, { memo } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
+import { clsx } from "clsx";
 import { Card } from "@/shared/ui";
 import styles from "./HomePage.module.css";
 
@@ -36,11 +37,11 @@ export const HomeSectionCard = memo(
   }: HomeSectionCardProps) => {
     return (
       <Card className={styles.galleryCard}>
-        <div className={[styles.cardCover, coverClass].join(" ")}>{coverIcon}</div>
+        <div className={clsx(styles.cardCover, coverClass)}>{coverIcon}</div>
         <div className={styles.cardBody}>
           <div className={styles.cardHeaderRow}>
             <h3 className={styles.cardTitle}>{title}</h3>
-            <span className={[styles.cardTag, tagClass].join(" ")}>{tagText}</span>
+            <span className={clsx(styles.cardTag, tagClass)}>{tagText}</span>
           </div>
           <p className={styles.cardDesc}>{description}</p>
           <div className={styles.cardTags}>
@@ -54,7 +55,7 @@ export const HomeSectionCard = memo(
             <span className={styles.cardProgress}>
               {solved} из {total} решено ({pct}%)
             </span>
-            <Link to={to} className={[styles.actionBtn, actionBtnClass].join(" ")}>
+            <Link to={to} className={clsx(styles.actionBtn, actionBtnClass)}>
               <span>Открыть</span>
               <ArrowRight size={13} />
             </Link>

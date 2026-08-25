@@ -11,7 +11,7 @@ export const SettingsModalHeader = memo(({ onClose }: SettingsModalHeaderProps) 
   return (
     <div className={styles.settingsModalHeader}>
       <div className={styles.settingsModalTitle}>
-        <Settings size={18} style={{ color: "var(--accent-blue, #3b82f6)" }} />
+        <Settings size={18} color="var(--accent-blue, #3b82f6)" />
         <span>Настройки</span>
       </div>
       <Tooltip content="Закрыть (Esc)" side="bottom">

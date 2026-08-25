@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { Link } from "@tanstack/react-router";
 import { ChevronDown, FileText, Check, X, RotateCcw, Brain } from "lucide-react";
+import { clsx } from "clsx";
 import { useProgressStore, selectIsTaskCompleted } from "@/entities/progress";
 import { useReviewStore, isTaskDue, getGroupCompletionClass } from "@/entities/review";
 import { ALL_ALGO_TASKS, getAlgoGroupMeta, getAlgoGroupMetaByInfoId } from "@/entities/task";
@@ -59,12 +60,10 @@ export const FinderAlgoHierarchy = ({
       <div className={styles.dropdownWrapper}>
         <button
           type="button"
-          className={[
+          className={clsx(
             styles.breadcrumbBtn,
-            activeDropdown === "group" && styles.breadcrumbBtnActive,
-          ]
-            .filter(Boolean)
-            .join(" ")}
+            activeDropdown === "group" && styles.breadcrumbBtnActive
+          )}
           onClick={() => toggleDropdown("group")}
           title="Выбрать группу задач Алгоритмы"
           aria-label="Выбрать группу задач Алгоритмы"
@@ -98,9 +97,7 @@ export const FinderAlgoHierarchy = ({
                     key={g.name}
                     to="/algorithms/$taskId"
                     params={{ taskId: g.meta.infoId || "group-two-pointers" }}
-                    className={[styles.dropdownItem, isActive && styles.active]
-                      .filter(Boolean)
-                      .join(" ")}
+                    className={clsx(styles.dropdownItem, isActive && styles.active)}
                     onClick={() => {
                       closeAllDropdowns();
                       setTimeout(() => {
@@ -131,13 +128,11 @@ export const FinderAlgoHierarchy = ({
           <div className={styles.dropdownWrapper}>
             <button
               type="button"
-              className={[
+              className={clsx(
                 styles.breadcrumbBtn,
                 styles.taskActiveBtn,
-                activeDropdown === "task" && styles.breadcrumbBtnActive,
-              ]
-                .filter(Boolean)
-                .join(" ")}
+                activeDropdown === "task" && styles.breadcrumbBtnActive
+              )}
               onClick={() => toggleDropdown("task")}
               title="Выбрать материал из группы"
               aria-label="Выбрать материал из группы"
@@ -180,17 +175,11 @@ export const FinderAlgoHierarchy = ({
                         key={t.id}
                         to="/algorithms/$taskId"
                         params={{ taskId: String(t.id) }}
-                        className={[styles.dropdownItem, isActive && styles.active]
-                          .filter(Boolean)
-                          .join(" ")}
+                        className={clsx(styles.dropdownItem, isActive && styles.active)}
                         onClick={closeAllDropdowns}
                       >
                         <FileText size={14} className={styles.fileIcon} />
-                        <span
-                          className={[styles.dropdownItemTitle, ratingClass]
-                            .filter(Boolean)
-                            .join(" ")}
-                        >
+                        <span className={clsx(styles.dropdownItemTitle, ratingClass)}>
                           {t.title}
                         </span>
                         {isDueToday ? (

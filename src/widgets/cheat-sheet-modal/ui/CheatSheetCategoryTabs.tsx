@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { clsx } from "clsx";
 import styles from "./CheatSheetModal.module.css";
 
 export interface CategoryConfig {
@@ -20,9 +21,7 @@ export const CheatSheetCategoryTabs = memo(
           <button
             key={cat.id}
             type="button"
-            className={[styles.tabBtn, activeCategory === cat.id && styles.activeTab]
-              .filter(Boolean)
-              .join(" ")}
+            className={clsx(styles.tabBtn, activeCategory === cat.id && styles.activeTab)}
             onClick={() => onSelectCategory(cat.id)}
           >
             {cat.name}

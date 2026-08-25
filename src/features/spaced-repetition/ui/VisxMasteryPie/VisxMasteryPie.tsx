@@ -3,6 +3,7 @@ import { Pie } from "@visx/shape";
 import { Group } from "@visx/group";
 import { LinearGradient } from "@visx/gradient";
 import { ParentSize } from "@visx/responsive";
+import { clsx } from "clsx";
 import { MasteryStats } from "@/entities/review";
 import styles from "./VisxMasteryPie.module.css";
 
@@ -115,13 +116,11 @@ function MasteryPieInner({
                 return (
                   <g
                     key={`arc-${arc.data.id}-${index}`}
-                    className={[
+                    className={clsx(
                       styles.arcGroup,
                       isHovered && styles.hovered,
-                      isDimmed && styles.dimmed,
-                    ]
-                      .filter(Boolean)
-                      .join(" ")}
+                      isDimmed && styles.dimmed
+                    )}
                     onMouseEnter={() => {
                       setActiveSegment({
                         id: arc.data.id,

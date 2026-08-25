@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Code2, Share2, Check, Minimize2, Home, FileQuestion, ArrowDown } from "lucide-react";
+import { clsx } from "clsx";
 import { getTaskById, getTaskFiles, hasTaskVisualComponent } from "@/entities/task";
 import { CodeEditor } from "@/features/code-editor";
 import { JsConsole, ReactLivePreview } from "@/features/code-runner";
@@ -273,7 +274,7 @@ export const OpenEditorPage = ({
         <div className={styles.topActions}>
           <button
             type="button"
-            className={[styles.actionBtn, linkCopied && styles.copied].filter(Boolean).join(" ")}
+            className={clsx(styles.actionBtn, linkCopied && styles.copied)}
             onClick={handleCopyLink}
             title="Скопировать ссылку"
           >

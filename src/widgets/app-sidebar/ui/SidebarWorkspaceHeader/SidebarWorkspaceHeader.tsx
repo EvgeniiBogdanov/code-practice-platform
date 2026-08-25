@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, memo, useMemo, useCallback } from "react";
 import { Link } from "@tanstack/react-router";
 import { ChevronDown, PanelLeftClose, ChevronsDownUp, ChevronsUpDown } from "lucide-react";
+import { clsx } from "clsx";
 import {
   SECTIONS_CONFIG,
   SECTIONS_LIST,
@@ -130,9 +131,7 @@ export const SidebarWorkspaceHeader = memo(
                   <Link
                     key={sec.id}
                     to={sec.path}
-                    className={[styles.sectionDropdownItem, isActive && styles.activeDropdownItem]
-                      .filter(Boolean)
-                      .join(" ")}
+                    className={clsx(styles.sectionDropdownItem, isActive && styles.activeDropdownItem)}
                     onClick={() => setDropdownOpen(false)}
                   >
                     <Icon size={15} className={styles[`icon_${sec.id}`]} />

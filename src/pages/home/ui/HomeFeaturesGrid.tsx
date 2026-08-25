@@ -9,6 +9,7 @@ import {
   ClipboardCheck,
   Zap,
 } from "lucide-react";
+import { clsx } from "clsx";
 import { Card } from "@/shared/ui";
 import styles from "./HomePage.module.css";
 
@@ -23,7 +24,7 @@ const FeatureItem = memo(
   ({ icon, badgeClass, title, description }: FeatureCardProps): React.JSX.Element => (
     <Card className={styles.featureCard}>
       <div className={styles.featureHeader}>
-        <div className={[styles.featureIconBadge, badgeClass].join(" ")}>{icon}</div>
+        <div className={clsx(styles.featureIconBadge, badgeClass)}>{icon}</div>
         <h4 className={styles.featureTitle}>{title}</h4>
       </div>
       <p className={styles.featureDesc}>{description}</p>

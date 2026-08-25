@@ -1,6 +1,7 @@
 import React, { useState, useRef, useMemo, useEffect, memo } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { RotateCcw, FileText, Sparkles, BookOpen } from "lucide-react";
+import { clsx } from "clsx";
 import { useReviewStore, isTaskDue, getReviewBadgeMeta } from "@/entities/review";
 import { ALL_TASKS, Task } from "@/entities/task";
 import { Tooltip, SquareButton, NotificationBadge } from "@/shared/ui";
@@ -106,13 +107,13 @@ export const HeaderReviewMenu = memo(() => {
                   >
                     <div className={styles.itemMain}>
                       <FileText size={14} className={styles.itemFileIcon} />
-                      <span className={[styles.itemTitle, ratingClass].filter(Boolean).join(" ")}>
+                      <span className={clsx(styles.itemTitle, ratingClass)}>
                         {task.title}
                       </span>
                     </div>
 
                     <div className={styles.itemMeta}>
-                      <span className={[styles.sectionTag, styles[`tag_${section}`]].join(" ")}>
+                      <span className={clsx(styles.sectionTag, styles[`tag_${section}`])}>
                         {section === "javascript"
                           ? "JS"
                           : section === "algorithms"
@@ -120,10 +121,10 @@ export const HeaderReviewMenu = memo(() => {
                             : "React"}
                       </span>
                       <span
-                        className={[
+                        className={clsx(
                           styles.difficultyBadge,
-                          styles[`diff_${badge.badgeVariant}`],
-                        ].join(" ")}
+                          styles[`diff_${badge.badgeVariant}`]
+                        )}
                       >
                         {badge.stageName || badge.label}
                       </span>
@@ -146,7 +147,7 @@ export const HeaderReviewMenu = memo(() => {
             </div>
           ) : (
             <div className={styles.emptyState}>
-              <div className={[styles.emptyIcon, styles.emptyIconSuccess].join(" ")}>
+              <div className={clsx(styles.emptyIcon, styles.emptyIconSuccess)}>
                 <Sparkles size={20} />
               </div>
               <div className={styles.emptyText}>

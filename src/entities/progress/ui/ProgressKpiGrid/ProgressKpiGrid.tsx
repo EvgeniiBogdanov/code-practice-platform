@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { clsx } from "clsx";
 import { Card } from "@/shared/ui";
 import styles from "./ProgressKpiGrid.module.css";
 
@@ -21,7 +22,7 @@ export const ProgressKpiGrid = memo(
     className,
   }: ProgressKpiGridProps) => {
     return (
-      <div className={[styles.kpiGrid, className].filter(Boolean).join(" ")}>
+      <div className={clsx(styles.kpiGrid, className)}>
         <Card className={styles.kpiCard}>
           <span className={styles.kpiLabel}>Всего задач</span>
           <span className={styles.kpiValue}>{total}</span>
@@ -29,17 +30,17 @@ export const ProgressKpiGrid = memo(
 
         <Card className={styles.kpiCard}>
           <span className={styles.kpiLabel}>Решено задач</span>
-          <span className={[styles.kpiValue, styles.kpiSolved].join(" ")}>{solved}</span>
+          <span className={clsx(styles.kpiValue, styles.kpiSolved)}>{solved}</span>
         </Card>
 
         <Card className={styles.kpiCard}>
           <span className={styles.kpiLabel}>{progressLabel}</span>
-          <span className={[styles.kpiValue, styles.kpiPercent].join(" ")}>{percent}%</span>
+          <span className={clsx(styles.kpiValue, styles.kpiPercent)}>{percent}%</span>
         </Card>
 
         <Card className={styles.kpiCard}>
           <span className={styles.kpiLabel}>Осталось решить</span>
-          <span className={[styles.kpiValue, styles.kpiRemaining].join(" ")}>{remaining}</span>
+          <span className={clsx(styles.kpiValue, styles.kpiRemaining)}>{remaining}</span>
         </Card>
       </div>
     );

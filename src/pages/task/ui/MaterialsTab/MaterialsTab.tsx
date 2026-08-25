@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { BookOpen, Clock, ExternalLink } from "lucide-react";
+import { clsx } from "clsx";
 import { parseMarkdownBlocks } from "@/shared/lib/markdown";
 import { Callout, MetaRow, MetaBadge, MarkdownView } from "@/shared/ui";
 import { Task, TASK_EXPLANATIONS } from "@/entities/task";
@@ -57,7 +58,7 @@ export const MaterialsTab = ({ task, className }: MaterialsTabProps): React.JSX.
   }
 
   return (
-    <div className={[styles.container, className].filter(Boolean).join(" ")}>
+    <div className={clsx(styles.container, className)}>
       {hasExplanation && (
         <article className={styles.articlePage}>
           <header className={styles.header}>

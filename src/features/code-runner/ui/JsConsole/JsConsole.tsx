@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "@xterm/xterm/css/xterm.css";
+import { clsx } from "clsx";
 import { NodeRunnerLogEntry } from "@/shared/lib/code-runners";
 import { useUIStore } from "@/entities/ui-state";
 import { useXtermConsole } from "../../model/useXtermConsole";
@@ -110,11 +111,7 @@ export function JsConsole({
     .join("\n");
 
   return (
-    <div
-      className={[styles.consoleCard, embedded && styles.embedded, className]
-        .filter(Boolean)
-        .join(" ")}
-    >
+    <div className={clsx(styles.consoleCard, embedded && styles.embedded, className)}>
       <JsConsoleHeader
         filename={filename}
         customTitle={customTitle}

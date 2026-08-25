@@ -1,4 +1,5 @@
 import React, { forwardRef } from "react";
+import { clsx } from "clsx";
 import styles from "./LineNumbers.module.css";
 
 export interface LineNumbersProps {
@@ -32,7 +33,7 @@ export const LineNumbers = forwardRef<HTMLDivElement, LineNumbersProps>(
     return (
       <div
         ref={ref}
-        className={[styles.gutter, className].filter(Boolean).join(" ")}
+        className={clsx(styles.gutter, className)}
         aria-hidden="true"
         style={
           {
@@ -50,14 +51,12 @@ export const LineNumbers = forwardRef<HTMLDivElement, LineNumbersProps>(
           return (
             <div
               key={num}
-              className={[
+              className={clsx(
                 styles.lineNumber,
                 isActive && styles.activeLine,
                 isErr && styles.hasError,
-                isWarn && styles.hasWarning,
-              ]
-                .filter(Boolean)
-                .join(" ")}
+                isWarn && styles.hasWarning
+              )}
               title={isErr ? "Ошибка синтаксиса или опечатка на строке" : undefined}
             >
               {isErr && <span className={styles.errorDot}>•</span>}

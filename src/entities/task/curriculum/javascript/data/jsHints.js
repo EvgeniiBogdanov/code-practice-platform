@@ -663,20 +663,6 @@ export const JS_HINTS = {
       "content": "```javascript\nconst pass = [], fail = [];\nfor (const item of arr) {\n  if (predicate(item)) pass.push(item);\n  else fail.push(item);\n}\nreturn [pass, fail];\n```"
     }
   },
-  "js40": {
-    "level1": {
-      "title": "Идея и ментальная модель",
-      "content": "Подсчет частоты встречаемости каждого символа или элемента с помощью Map или простого объекта: map.set(item, (map.get(item) || 0) + 1)."
-    },
-    "level2": {
-      "title": "Граничные случаи и ловушки",
-      "content": "• Использование Map предпочтительнее, если ключами могут быть числа, объекты или спецзнаки, не приводящиеся к строкам.\n• Время работы $O(N)$, память $O(K)$, где $K$ — количество уникальных элементов."
-    },
-    "level3": {
-      "title": "Псевдокод и сигнатура",
-      "content": "```javascript\nconst freq = new Map();\nfor (const item of arr) {\n  freq.set(item, (freq.get(item) || 0) + 1);\n}\nreturn freq;\n```"
-    }
-  },
   "js41": {
     "level1": {
       "title": "Идея и ментальная модель",
@@ -708,15 +694,15 @@ export const JS_HINTS = {
   "js43": {
     "level1": {
       "title": "Идея и ментальная модель",
-      "content": "Поиск объекта с максимальным критерием. Аналогично minBy, обновляйте максимум при val > maxVal."
+      "content": "Метод map() всегда возвращает новый массив той же длины, что и исходный. Колбэк вызывается для каждого элемента."
     },
     "level2": {
       "title": "Граничные случаи и ловушки",
-      "content": "• Закэшируйте maxVal в переменной для $O(N)$ сложности без лишних вычислений.\n• Пустой массив возвращает undefined."
+      "content": "• Если условие if (num % 2 === 0) не выполняется, явного return нет, и функция по умолчанию возвращает undefined.\n• map() не фильтрует массив, а заменяет элементы результатами вызова колбэка."
     },
     "level3": {
       "title": "Псевдокод и сигнатура",
-      "content": "```javascript\nif (!arr.length) return undefined;\nlet best = arr[0], maxVal = fn(arr[0]);\nfor (let i = 1; i < arr.length; i++) {\n  const val = fn(arr[i]);\n  if (val > maxVal) { best = arr[i]; maxVal = val; }\n}\nreturn best;\n```"
+      "content": "```javascript\n// arr = [1, 2, 3]\n// 1 -> num % 2 === 0 (false) -> undefined\n// 2 -> num % 2 === 0 (true)  -> return 2\n// 3 -> num % 2 === 0 (false) -> undefined\n// Итог: [undefined, 2, undefined]\n```"
     }
   },
   "js44": {

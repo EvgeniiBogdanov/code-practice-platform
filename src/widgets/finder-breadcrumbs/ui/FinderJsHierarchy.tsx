@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { Link } from "@tanstack/react-router";
 import { ChevronDown, FileText, Folder, Check, X, RotateCcw, Zap } from "lucide-react";
+import { clsx } from "clsx";
 import { selectIsTaskCompleted } from "@/entities/progress";
 import { isTaskDue } from "@/entities/review";
 import { ALL_JS_TASKS, getGroupMeta } from "@/entities/task";
@@ -36,12 +37,10 @@ export const FinderJsHierarchy = ({
       <div className={styles.dropdownWrapper}>
         <button
           type="button"
-          className={[
+          className={clsx(
             styles.breadcrumbBtn,
-            activeDropdown === "group" && styles.breadcrumbBtnActive,
-          ]
-            .filter(Boolean)
-            .join(" ")}
+            activeDropdown === "group" && styles.breadcrumbBtnActive
+          )}
           onClick={() => toggleDropdown("group")}
           title="Выбрать группу задач"
           aria-label="Выбрать группу задач"
@@ -75,9 +74,7 @@ export const FinderJsHierarchy = ({
                     key={g.name}
                     to="/javascript/$taskId"
                     params={{ taskId: `group-${g.name}` }}
-                    className={[styles.dropdownItem, isActive && styles.active]
-                      .filter(Boolean)
-                      .join(" ")}
+                    className={clsx(styles.dropdownItem, isActive && styles.active)}
                     onClick={() => {
                       closeAllDropdowns();
                       setTimeout(() => {
@@ -108,12 +105,10 @@ export const FinderJsHierarchy = ({
           <div className={styles.dropdownWrapper}>
             <button
               type="button"
-              className={[
+              className={clsx(
                 styles.breadcrumbBtn,
-                activeDropdown === "subgroup" && styles.breadcrumbBtnActive,
-              ]
-                .filter(Boolean)
-                .join(" ")}
+                activeDropdown === "subgroup" && styles.breadcrumbBtnActive
+              )}
               onClick={() => toggleDropdown("subgroup")}
               title="Выбрать подгруппу задач"
               aria-label="Выбрать подгруппу задач"
@@ -139,9 +134,7 @@ export const FinderJsHierarchy = ({
                         key={sub.name}
                         to="/javascript/$taskId"
                         params={{ taskId: `subgroup-${currentGroupName}-${sub.name}` }}
-                        className={[styles.dropdownItem, isActive && styles.active]
-                          .filter(Boolean)
-                          .join(" ")}
+                        className={clsx(styles.dropdownItem, isActive && styles.active)}
                         onClick={() => {
                           closeAllDropdowns();
                           setTimeout(() => {
@@ -181,13 +174,11 @@ export const FinderJsHierarchy = ({
           <div className={styles.dropdownWrapper}>
             <button
               type="button"
-              className={[
+              className={clsx(
                 styles.breadcrumbBtn,
                 styles.taskActiveBtn,
-                activeDropdown === "task" && styles.breadcrumbBtnActive,
-              ]
-                .filter(Boolean)
-                .join(" ")}
+                activeDropdown === "task" && styles.breadcrumbBtnActive
+              )}
               onClick={() => toggleDropdown("task")}
               title="Выбрать задачу из подгруппы"
               aria-label="Выбрать задачу из подгруппы"
@@ -232,17 +223,11 @@ export const FinderJsHierarchy = ({
                         key={t.id}
                         to="/javascript/$taskId"
                         params={{ taskId: String(t.id) }}
-                        className={[styles.dropdownItem, isActive && styles.active]
-                          .filter(Boolean)
-                          .join(" ")}
+                        className={clsx(styles.dropdownItem, isActive && styles.active)}
                         onClick={closeAllDropdowns}
                       >
                         <FileText size={14} className={styles.fileIcon} />
-                        <span
-                          className={[styles.dropdownItemTitle, ratingClass]
-                            .filter(Boolean)
-                            .join(" ")}
-                        >
+                        <span className={clsx(styles.dropdownItemTitle, ratingClass)}>
                           {t.title}
                         </span>
                         {isDueToday ? (

@@ -1,5 +1,6 @@
 import React from "react";
 import { CheckCircle2, Circle, Clock } from "lucide-react";
+import { clsx } from "clsx";
 import { Task } from "../../types";
 import { TaskDifficultyBadge } from "../TaskDifficultyBadge";
 import styles from "./TaskCard.module.css";
@@ -21,17 +22,16 @@ export function TaskCard({
   onClick,
   className,
 }: TaskCardProps) {
-  const cardClassNames = [styles.card, isActive && styles.active, className]
-    .filter(Boolean)
-    .join(" ");
-
   return (
-    <div className={cardClassNames} onClick={onClick} role="button" tabIndex={0}>
+    <div
+      className={clsx(styles.card, isActive && styles.active, className)}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+    >
       <div className={styles.left}>
         <span
-          className={[styles.statusIcon, isCompleted && styles.statusCompleted]
-            .filter(Boolean)
-            .join(" ")}
+          className={clsx(styles.statusIcon, isCompleted && styles.statusCompleted)}
         >
           {isCompleted ? <CheckCircle2 size={18} /> : <Circle size={18} />}
         </span>

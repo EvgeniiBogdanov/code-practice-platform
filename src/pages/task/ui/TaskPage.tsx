@@ -1,6 +1,7 @@
 import React, { useState, useEffect, startTransition } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Play, CheckCircle, BookOpen, HelpCircle, ListChecks } from "lucide-react";
+import { clsx } from "clsx";
 import { getTaskById, TaskDifficultyBadge } from "@/entities/task";
 import { useProgressStore, selectIsTaskCompleted } from "@/entities/progress";
 import { useReviewStore } from "@/entities/review";
@@ -177,9 +178,7 @@ export const TaskPage = React.memo<TaskPageProps>(
                     type="button"
                     role="tab"
                     aria-selected={isActive}
-                    className={[styles.tabLink, tabModifier, isActive && styles.tabActive]
-                      .filter(Boolean)
-                      .join(" ")}
+                    className={clsx(styles.tabLink, tabModifier, isActive && styles.tabActive)}
                     onClick={() => handleTabChange(tab.id)}
                   >
                     {tab.icon}

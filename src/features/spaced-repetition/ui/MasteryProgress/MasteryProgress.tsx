@@ -1,4 +1,5 @@
 import React from "react";
+import { clsx } from "clsx";
 import { useReviewStore } from "@/entities/review";
 import { ALL_TASKS, Task } from "@/entities/task";
 import styles from "./MasteryProgress.module.css";
@@ -31,7 +32,7 @@ export function MasteryProgress({ taskList, className }: MasteryProgressProps) {
   }, [masteredPercent, reviewingPercent, learningPercent, duePercent]);
 
   return (
-    <div className={[styles.container, className].filter(Boolean).join(" ")}>
+    <div className={clsx(styles.container, className)}>
       <div className={styles.progressBar}>
         <div ref={masteredRef} className={styles.segMastered} title={`Мастер: ${stats.mastered}`} />
         <div
@@ -56,22 +57,22 @@ export function MasteryProgress({ taskList, className }: MasteryProgressProps) {
         </div>
 
         <div className={styles.statCard}>
-          <span className={[styles.statValue, styles.valSuccess].join(" ")}>{stats.mastered}</span>
+          <span className={clsx(styles.statValue, styles.valSuccess)}>{stats.mastered}</span>
           <span className={styles.statLabel}>Освоено (5★)</span>
         </div>
 
         <div className={styles.statCard}>
-          <span className={[styles.statValue, styles.valBlue].join(" ")}>{stats.reviewing}</span>
+          <span className={clsx(styles.statValue, styles.valBlue)}>{stats.reviewing}</span>
           <span className={styles.statLabel}>Повторение (3-4★)</span>
         </div>
 
         <div className={styles.statCard}>
-          <span className={[styles.statValue, styles.valPurple].join(" ")}>{stats.learning}</span>
+          <span className={clsx(styles.statValue, styles.valPurple)}>{stats.learning}</span>
           <span className={styles.statLabel}>Изучение (1-2★)</span>
         </div>
 
         <div className={styles.statCard}>
-          <span className={[styles.statValue, styles.valWarning].join(" ")}>{stats.dueToday}</span>
+          <span className={clsx(styles.statValue, styles.valWarning)}>{stats.dueToday}</span>
           <span className={styles.statLabel}>К повторению</span>
         </div>
       </div>

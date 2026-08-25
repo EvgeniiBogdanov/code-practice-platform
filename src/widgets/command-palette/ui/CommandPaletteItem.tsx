@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import { Code2, Zap, Brain, FileText } from "lucide-react";
+import { clsx } from "clsx";
 import { Task, getGroupMeta, getAlgoGroupMeta } from "@/entities/task";
 import { Badge } from "@/shared/ui";
 import styles from "./CommandPalette.module.css";
@@ -100,7 +101,7 @@ export const CommandPaletteItem = memo(
     return (
       <button
         type="button"
-        className={[styles.paletteItem, isSelected && styles.active].filter(Boolean).join(" ")}
+        className={clsx(styles.paletteItem, isSelected && styles.active)}
         onClick={() => onSelect(task)}
         onMouseEnter={onMouseEnter}
       >

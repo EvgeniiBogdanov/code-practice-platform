@@ -10,6 +10,7 @@ import {
   Replace,
   ReplaceAll,
 } from "lucide-react";
+import { clsx } from "clsx";
 import { Tooltip, CodeButton } from "@/shared/ui";
 import { FindState, FindMatch } from "../../model/useFindReplace";
 import styles from "./FindReplaceWidget.module.css";
@@ -64,9 +65,7 @@ export const FindReplaceWidget = memo(
               icon={
                 <ChevronRight
                   size={14}
-                  className={[styles.chevronIcon, findState.showReplace && styles.chevronRotated]
-                    .filter(Boolean)
-                    .join(" ")}
+                  className={clsx(styles.chevronIcon, findState.showReplace && styles.chevronRotated)}
                 />
               }
               onClick={onToggleShowReplace}

@@ -88,9 +88,9 @@ import CountPropsKeysSolutionRaw from "../solutions/2_for_in/3_CountProperties_K
 import MultiplyNumericCandidateRaw from "../tasks/2_for_in/4_MultiplyNumeric.js?raw";
 import MultiplyNumericSolutionRaw from "../solutions/2_for_in/4_MultiplyNumeric.js?raw";
 
-import OwnPropertiesOnlyCandidateRaw from "../tasks/2_for_in/5_OwnPropertiesOnly.js?raw";
-import OwnPropertiesOnlyHasOwnSolutionRaw from "../solutions/2_for_in/5_OwnPropertiesOnly_HasOwn.js?raw";
-import OwnPropertiesOnlyHasOwnPropertySolutionRaw from "../solutions/2_for_in/5_OwnPropertiesOnly_HasOwnProperty.js?raw";
+import OwnPropertiesOnlyCandidateRaw from "../tasks/2_for_in/5_GetOwnValues.js?raw";
+import OwnPropertiesOnlyHasOwnSolutionRaw from "../solutions/2_for_in/5_GetOwnValues_HasOwn.js?raw";
+import OwnPropertiesOnlyHasOwnPropertySolutionRaw from "../solutions/2_for_in/5_GetOwnValues_HasOwnProperty.js?raw";
 
 import IsEmptyObjectCandidateRaw from "../tasks/2_for_in/6_IsEmptyObject.js?raw";
 import IsEmptyObjectForInSolutionRaw from "../solutions/2_for_in/6_IsEmptyObject_ForIn.js?raw";
@@ -111,11 +111,11 @@ import HasElemFromSolutionRaw from "../solutions/3_arrays_includes/2_HasElemFrom
 import HasSubstringCandidateRaw from "../tasks/3_arrays_includes/3_HasSubstring.js?raw";
 import HasSubstringSolutionRaw from "../solutions/3_arrays_includes/3_HasSubstring.js?raw";
 
-import StrictComparisonCandidateRaw from "../tasks/3_arrays_includes/4_StrictComparison.js?raw";
-import StrictComparisonSolutionRaw from "../solutions/3_arrays_includes/4_StrictComparison.js?raw";
+import StrictComparisonCandidateRaw from "../tasks/3_arrays_includes/4_IncludesTypes.js?raw";
+import StrictComparisonSolutionRaw from "../solutions/3_arrays_includes/4_IncludesTypes.js?raw";
 
-import UndefinedIncludesCandidateRaw from "../tasks/3_arrays_includes/5_UndefinedIncludes.js?raw";
-import UndefinedIncludesSolutionRaw from "../solutions/3_arrays_includes/5_UndefinedIncludes.js?raw";
+import UndefinedIncludesCandidateRaw from "../tasks/3_arrays_includes/5_IncludesNoArgs.js?raw";
+import UndefinedIncludesSolutionRaw from "../solutions/3_arrays_includes/5_IncludesNoArgs.js?raw";
 
 // JS ARRAYS FIND IMPORTS
 import FindFirstEvenCandidateRaw from "../tasks/4_arrays_find/1_FindFirstEven.js?raw";
@@ -132,8 +132,8 @@ import FindUserByNameCandidateRaw from "../tasks/4_arrays_find/4_FindUserByName.
 import FindUserByNameSolutionRaw from "../solutions/4_arrays_find/4_FindUserByName.js?raw";
 import FindUserByNameDestructuringSolutionRaw from "../solutions/4_arrays_find/4_FindUserByName_Destructuring.js?raw";
 
-import FindNotFoundCandidateRaw from "../tasks/4_arrays_find/5_FindNotFound.js?raw";
-import FindNotFoundSolutionRaw from "../solutions/4_arrays_find/5_FindNotFound.js?raw";
+import FindNotFoundCandidateRaw from "../tasks/4_arrays_find/5_FindPredicate.js?raw";
+import FindNotFoundSolutionRaw from "../solutions/4_arrays_find/5_FindPredicate.js?raw";
 
 // JS ARRAYS FILTER IMPORTS
 import FilterEvenCandidateRaw from "../tasks/5_arrays_filter/1_FilterEven.js?raw";
@@ -170,8 +170,8 @@ import FilterByStatusesCandidateRaw from "../tasks/5_arrays_filter/10_FilterBySt
 import FilterByStatusesSolutionRaw from "../solutions/5_arrays_filter/10_FilterByStatuses.js?raw";
 import FilterByStatusesSetSolutionRaw from "../solutions/5_arrays_filter/10_FilterByStatuses_Set.js?raw";
 
-import FilterAllTruthyCandidateRaw from "../tasks/5_arrays_filter/11_FilterAllTruthy.js?raw";
-import FilterAllTruthySolutionRaw from "../solutions/5_arrays_filter/11_FilterAllTruthy.js?raw";
+import FilterAllTruthyCandidateRaw from "../tasks/5_arrays_filter/11_FilterBoolean.js?raw";
+import FilterAllTruthySolutionRaw from "../solutions/5_arrays_filter/11_FilterBoolean.js?raw";
 
 // JS ARRAYS MAP IMPORTS
 import SquareNumbersCandidateRaw from "../tasks/6_arrays_map/1_SquareNumbers.js?raw";
@@ -191,19 +191,15 @@ import GetNamesDestructuringSolutionRaw from "../solutions/6_arrays_map/4_GetNam
 import GetFullNamesCandidateRaw from "../tasks/6_arrays_map/5_GetFullNames.js?raw";
 import GetFullNamesSolutionRaw from "../solutions/6_arrays_map/5_GetFullNames.js?raw";
 
-import AddInStockCandidateRaw from "../tasks/6_arrays_map/6_AddInStock.js?raw";
-import AddInStockFixedSolutionRaw from "../solutions/6_arrays_map/6_AddInStock_Fixed.js?raw";
-import AddInStockDynamicSolutionRaw from "../solutions/6_arrays_map/6_AddInStock_Dynamic.js?raw";
+import GetFirstLettersCandidateRaw from "../tasks/6_arrays_map/6_GetFirstLetters.js?raw";
+import GetFirstLettersSolutionRaw from "../solutions/6_arrays_map/6_GetFirstLetters.js?raw";
+import GetFirstLettersDefensiveSolutionRaw from "../solutions/6_arrays_map/6_GetFirstLetters_Defensive.js?raw";
 
-import GetFirstLettersCandidateRaw from "../tasks/6_arrays_map/7_GetFirstLetters.js?raw";
-import GetFirstLettersSolutionRaw from "../solutions/6_arrays_map/7_GetFirstLetters.js?raw";
-import GetFirstLettersDefensiveSolutionRaw from "../solutions/6_arrays_map/7_GetFirstLetters_Defensive.js?raw";
+import CheckEvenCandidateRaw from "../tasks/6_arrays_map/7_CheckEven.js?raw";
+import CheckEvenSolutionRaw from "../solutions/6_arrays_map/7_CheckEven.js?raw";
 
-import CheckEvenCandidateRaw from "../tasks/6_arrays_map/8_CheckEven.js?raw";
-import CheckEvenSolutionRaw from "../solutions/6_arrays_map/8_CheckEven.js?raw";
-
-import MapUndefinedCandidateRaw from "../tasks/6_arrays_map/9_MapUndefined.js?raw";
-import MapUndefinedSolutionRaw from "../solutions/6_arrays_map/9_MapUndefined.js?raw";
+import MapUndefinedCandidateRaw from "../tasks/6_arrays_map/8_MapCondition.js?raw";
+import MapUndefinedSolutionRaw from "../solutions/6_arrays_map/8_MapCondition.js?raw";
 
 // JS ARRAYS SORT IMPORTS
 import SortAscendingCandidateRaw from "../tasks/7_arrays_sort/1_SortAscending.js?raw";
@@ -227,8 +223,8 @@ import SortByLengthSolutionRaw from "../solutions/7_arrays_sort/5_SortByLength.j
 import RearrangeArrayCandidateRaw from "../tasks/7_arrays_sort/6_RearrangeArray.js?raw";
 import RearrangeArraySolutionRaw from "../solutions/7_arrays_sort/6_RearrangeArray.js?raw";
 
-import DefaultSortStringsCandidateRaw from "../tasks/7_arrays_sort/7_DefaultSortStrings.js?raw";
-import DefaultSortStringsSolutionRaw from "../solutions/7_arrays_sort/7_DefaultSortStrings.js?raw";
+import DefaultSortStringsCandidateRaw from "../tasks/7_arrays_sort/7_DefaultSort.js?raw";
+import DefaultSortStringsSolutionRaw from "../solutions/7_arrays_sort/7_DefaultSort.js?raw";
 
 // JS ARRAYS REDUCE IMPORTS
 import SyntaxCandidateRaw from "../tasks/8_arrays_reduce/1_Syntax.js?raw";
@@ -572,8 +568,8 @@ import ThisObjectArrowMethodsSolutionRaw from "../solutions/16_prototypes_this/1
 import ConstructorPrototypeReassignmentCandidateRaw from "../tasks/16_prototypes_this/2_ConstructorPrototypeReassignment.js?raw";
 import ConstructorPrototypeReassignmentSolutionRaw from "../solutions/16_prototypes_this/2_ConstructorPrototypeReassignment.js?raw";
 
-import MethodExtractionContextLossCandidateRaw from "../tasks/16_prototypes_this/3_MethodExtractionContextLoss.js?raw";
-import MethodExtractionContextLossSolutionRaw from "../solutions/16_prototypes_this/3_MethodExtractionContextLoss.js?raw";
+import MethodExtractionContextLossCandidateRaw from "../tasks/16_prototypes_this/3_MethodExtraction.js?raw";
+import MethodExtractionContextLossSolutionRaw from "../solutions/16_prototypes_this/3_MethodExtraction.js?raw";
 
 import MultipleBindChainingCandidateRaw from "../tasks/16_prototypes_this/4_MultipleBindChaining.js?raw";
 import MultipleBindChainingSolutionRaw from "../solutions/16_prototypes_this/4_MultipleBindChaining.js?raw";
@@ -1972,14 +1968,14 @@ export const JS_FOR_IN_TASKS = [
     id: "js193",
     group: "Циклы",
     subgroup: "for in",
-    title: "5. Фильтрация собственных свойств (Object.hasOwn)",
-    desc: "Напишите функцию getOwnValues(obj), которая возвращает массив значений ТОЛЬКО собственных свойств объекта с помощью for...in и Object.hasOwn, игнорируя унаследованные из прототипа свойства.",
+    title: "5. Получение значений собственных свойств объекта",
+    desc: "Напишите функцию getOwnValues(obj), которая принимает объект (который может наследовать свойства из прототипа) и возвращает массив значений только его собственных свойств, игнорируя унаследованные из прототипа свойства.",
     isRaw: true,
     candidate: OwnPropertiesOnlyCandidateRaw,
     rawCandidate: OwnPropertiesOnlyCandidateRaw,
     solution: OwnPropertiesOnlyHasOwnSolutionRaw,
     rawSolution: OwnPropertiesOnlyHasOwnSolutionRaw,
-    filepath: "src/javascript/tasks/2_for_in/5_OwnPropertiesOnly.js",
+    filepath: "src/javascript/tasks/2_for_in/5_GetOwnValues.js",
     solutions: [
       {
         title: "Вариант 1: Через Object.hasOwn() (ES2022)",
@@ -1987,7 +1983,7 @@ export const JS_FOR_IN_TASKS = [
         badge: "Современный стандарт",
         recommendationNote: "Статический метод Object.hasOwn() — современная и безопасная замена obj.hasOwnProperty().",
         rawSolution: OwnPropertiesOnlyHasOwnSolutionRaw,
-        filepath: "src/javascript/solutions/2_for_in/5_OwnPropertiesOnly_HasOwn.js",
+        filepath: "src/javascript/solutions/2_for_in/5_GetOwnValues_HasOwn.js",
       },
       {
         title: "Вариант 2: Через Object.prototype.hasOwnProperty.call()",
@@ -1995,7 +1991,7 @@ export const JS_FOR_IN_TASKS = [
         badge: "Классический подход",
         recommendationNote: "Безопасный вызов hasOwnProperty через call на случай, если объект создан через Object.create(null).",
         rawSolution: OwnPropertiesOnlyHasOwnPropertySolutionRaw,
-        filepath: "src/javascript/solutions/2_for_in/5_OwnPropertiesOnly_HasOwnProperty.js",
+        filepath: "src/javascript/solutions/2_for_in/5_GetOwnValues_HasOwnProperty.js",
       },
     ],
     articles: [
@@ -2022,7 +2018,7 @@ export const JS_FOR_IN_TASKS = [
     ],
     checklist: [
       "Использован цикл for...in",
-      "Свойства фильтруются через Object.hasOwn(obj, key)",
+      "Свойства из прототипа отфильтрованы",
       "Возвращается массив значений собственных свойств",
     ],
   },
@@ -2279,14 +2275,14 @@ export const JS_ARRAYS_INCLUDES_TASKS = [
     id: "js17",
     group: "Массивы",
     subgroup: "includes",
-    title: "4. Почему код ниже вернёт false ?",
-    desc: "Объясните, почему выражение [1, 2, 3].includes(\"1\") возвращает false.",
+    title: "4. Что вернёт этот код?",
+    desc: "Определите и объясните результат выполнения выражения [1, 2, 3].includes(\"1\").",
     isRaw: true,
     candidate: StrictComparisonCandidateRaw,
     rawCandidate: StrictComparisonCandidateRaw,
     solution: StrictComparisonSolutionRaw,
     rawSolution: StrictComparisonSolutionRaw,
-    filepath: "src/javascript/tasks/3_arrays_includes/4_StrictComparison.js",
+    filepath: "src/javascript/tasks/3_arrays_includes/4_IncludesTypes.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
@@ -2294,7 +2290,7 @@ export const JS_ARRAYS_INCLUDES_TASKS = [
         badge: "Быстрый поиск",
         recommendationNote: "Встроенные методы поиска прекращают обход сразу при первом совпадении (early exit), экономя ресурсы.",
         rawSolution: StrictComparisonSolutionRaw,
-        filepath: "src/javascript/tasks/3_arrays_includes/4_StrictComparison.js",
+        filepath: "src/javascript/tasks/3_arrays_includes/4_IncludesTypes.js",
       },
     ],
     articles: [
@@ -2319,14 +2315,14 @@ export const JS_ARRAYS_INCLUDES_TASKS = [
     id: "js18",
     group: "Массивы",
     subgroup: "includes",
-    title: "5. Почему результат будет true ?",
-    desc: "Объясните, почему вызов [undefined].includes() без аргументов возвращает true.",
+    title: "5. Что вернёт этот код?",
+    desc: "Определите и объясните, какой результат вернёт вызов [undefined].includes() без передачи аргументов.",
     isRaw: true,
     candidate: UndefinedIncludesCandidateRaw,
     rawCandidate: UndefinedIncludesCandidateRaw,
     solution: UndefinedIncludesSolutionRaw,
     rawSolution: UndefinedIncludesSolutionRaw,
-    filepath: "src/javascript/tasks/3_arrays_includes/5_UndefinedIncludes.js",
+    filepath: "src/javascript/tasks/3_arrays_includes/5_IncludesNoArgs.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
@@ -2334,7 +2330,7 @@ export const JS_ARRAYS_INCLUDES_TASKS = [
         badge: "Быстрый поиск",
         recommendationNote: "Встроенные методы поиска прекращают обход сразу при первом совпадении (early exit), экономя ресурсы.",
         rawSolution: UndefinedIncludesSolutionRaw,
-        filepath: "src/javascript/tasks/3_arrays_includes/5_UndefinedIncludes.js",
+        filepath: "src/javascript/tasks/3_arrays_includes/5_IncludesNoArgs.js",
       },
     ],
     articles: [
@@ -2564,13 +2560,13 @@ export const JS_ARRAYS_FIND_TASKS = [
     group: "Массивы",
     subgroup: "find",
     title: "5. Что вернёт этот код?",
-    desc: "Объясните, какое значение возвращает метод find(), если ни один элемент массива не удовлетворяет условию колбэк-функции.",
+    desc: "Определите и объясните, какое значение вернёт метод find() для данного массива и условия.",
     isRaw: true,
     candidate: FindNotFoundCandidateRaw,
     rawCandidate: FindNotFoundCandidateRaw,
     solution: FindNotFoundSolutionRaw,
     rawSolution: FindNotFoundSolutionRaw,
-    filepath: "src/javascript/tasks/4_arrays_find/5_FindNotFound.js",
+    filepath: "src/javascript/tasks/4_arrays_find/5_FindPredicate.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
@@ -2578,7 +2574,7 @@ export const JS_ARRAYS_FIND_TASKS = [
         badge: "Быстрый поиск",
         recommendationNote: "Встроенные методы поиска прекращают обход сразу при первом совпадении (early exit), экономя ресурсы.",
         rawSolution: FindNotFoundSolutionRaw,
-        filepath: "src/javascript/tasks/4_arrays_find/5_FindNotFound.js",
+        filepath: "src/javascript/tasks/4_arrays_find/5_FindPredicate.js",
       },
     ],
     articles: [
@@ -3083,13 +3079,13 @@ export const JS_ARRAYS_FILTER_TASKS = [
     group: "Массивы",
     subgroup: "filter",
     title: "11. Что вернёт этот код ?",
-    desc: "Объясните, что возвращает выражение arr.filter(num => num), если все элементы массива представляют собой положительные числа.",
+    desc: "Определите и объясните, какие элементы останутся в массиве после вызова arr.filter(Boolean).",
     isRaw: true,
     candidate: FilterAllTruthyCandidateRaw,
     rawCandidate: FilterAllTruthyCandidateRaw,
     solution: FilterAllTruthySolutionRaw,
     rawSolution: FilterAllTruthySolutionRaw,
-    filepath: "src/javascript/tasks/5_arrays_filter/11_FilterAllTruthy.js",
+    filepath: "src/javascript/tasks/5_arrays_filter/11_FilterBoolean.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
@@ -3097,7 +3093,7 @@ export const JS_ARRAYS_FILTER_TASKS = [
         badge: "Чистый функциональный подход",
         recommendationNote: "Метод filter() создает новый массив, не мутируя исходный. Отлично подходит для декларативной обработки коллекций.",
         rawSolution: FilterAllTruthySolutionRaw,
-        filepath: "src/javascript/tasks/5_arrays_filter/11_FilterAllTruthy.js",
+        filepath: "src/javascript/tasks/5_arrays_filter/11_FilterBoolean.js",
       },
     ],
     articles: [
@@ -3360,75 +3356,17 @@ export const JS_ARRAYS_MAP_TASKS = [
     ],
   },
   {
-    id: "js40",
-    group: "Массивы",
-    subgroup: "map",
-    title: "6. Добавить новое поле в каждый объект",
-    desc: "Напишите функцию addInStock(arr, key, value), которая возвращает новый массив объектов с добавленным полем inStock: true без мутации исходных элементов.",
-    isRaw: true,
-    candidate: AddInStockCandidateRaw,
-    rawCandidate: AddInStockCandidateRaw,
-    solution: AddInStockFixedSolutionRaw,
-    rawSolution: AddInStockFixedSolutionRaw,
-    filepath: "src/javascript/tasks/6_arrays_map/6_AddInStock.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Декларативное преобразование",
-        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
-        rawSolution: AddInStockFixedSolutionRaw,
-        filepath: "src/javascript/tasks/6_arrays_map/6_AddInStock.js",
-      },
-    ],
-    solutions: [
-      {
-        title: "Вариант 1: С фиксированным полем inStock: true",
-        isRecommended: false,
-        badge: "Прямое решение",
-        recommendationNote: "Быстрый разворот объекта с явным присвоением поля inStock: true.",
-        rawSolution: AddInStockFixedSolutionRaw,
-        filepath: "src/javascript/solutions/6_arrays_map/6_AddInStock_Fixed.js",
-      },
-      {
-        title: "Вариант 2: Динамический передаваемый ключ и значение",
-        isRecommended: true,
-        badge: "Универсальное решение",
-        recommendationNote: "Использование вычислимого свойства [key]: value делает функцию чистой и полностью переиспользуемой для создания любых полей объекта.",
-        rawSolution: AddInStockDynamicSolutionRaw,
-        filepath: "src/javascript/solutions/6_arrays_map/6_AddInStock_Dynamic.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Spread-оператор для объектов (MDN)",
-        urlTitle: "MDN — Оператор расширения объектов",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Spread_syntax#spread_in_object_literals",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Почему при возврате объекта из стрелочной функции его нужно оборачивать в круглые скобки ({ ...prod })?",
-        answer: "Без круглых скобок фигурные скобки воспринимаются интерпретатором как тело функции (block body), а не как литерал объекта.",
-      },
-    ],
-    checklist: [
-      "Использование оператора spread ({ ...product, inStock: true })",
-      "Предотвращение мутации исходного объекта",
-    ],
-  },
-  {
     id: "js41",
     group: "Массивы",
     subgroup: "map",
-    title: "7. Создать массив из первых букв слов",
+    title: "6. Создать массив из первых букв слов",
     desc: "Напишите функцию getFirstLetters(arr), которая создает массив, состоящий только из первых букв каждого слова.",
     isRaw: true,
     candidate: GetFirstLettersCandidateRaw,
     rawCandidate: GetFirstLettersCandidateRaw,
     solution: GetFirstLettersSolutionRaw,
     rawSolution: GetFirstLettersSolutionRaw,
-    filepath: "src/javascript/tasks/6_arrays_map/7_GetFirstLetters.js",
+    filepath: "src/javascript/tasks/6_arrays_map/6_GetFirstLetters.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
@@ -3436,7 +3374,7 @@ export const JS_ARRAYS_MAP_TASKS = [
         badge: "Декларативное преобразование",
         recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
         rawSolution: GetFirstLettersSolutionRaw,
-        filepath: "src/javascript/tasks/6_arrays_map/7_GetFirstLetters.js",
+        filepath: "src/javascript/tasks/6_arrays_map/6_GetFirstLetters.js",
       },
     ],
     solutions: [
@@ -3446,7 +3384,7 @@ export const JS_ARRAYS_MAP_TASKS = [
         badge: "Прямой доступ",
         recommendationNote: "Взятие первого символа по индексу 0.",
         rawSolution: GetFirstLettersSolutionRaw,
-        filepath: "src/javascript/solutions/6_arrays_map/7_GetFirstLetters.js",
+        filepath: "src/javascript/solutions/6_arrays_map/6_GetFirstLetters.js",
       },
       {
         title: "Вариант 2: Безопасный вызов charAt(0) с опциональной цепочкой ?.",
@@ -3454,7 +3392,7 @@ export const JS_ARRAYS_MAP_TASKS = [
         badge: "Защитный код (Defensive code)",
         recommendationNote: "Использование charAt(0) и ?. защищает приложение от аварийного завершения при встрече с null/undefined/пустой строкой.",
         rawSolution: GetFirstLettersDefensiveSolutionRaw,
-        filepath: "src/javascript/solutions/6_arrays_map/7_GetFirstLetters_Defensive.js",
+        filepath: "src/javascript/solutions/6_arrays_map/6_GetFirstLetters_Defensive.js",
       },
     ],
     articles: [
@@ -3478,14 +3416,14 @@ export const JS_ARRAYS_MAP_TASKS = [
     id: "js42",
     group: "Массивы",
     subgroup: "map",
-    title: "8. Сделать массив булевых значений — четное число или нет",
+    title: "7. Сделать массив булевых значений — четное число или нет",
     desc: "Напишите функцию checkEven(arr), которая трансформирует массив чисел в массив булевых значений [false, true, ...], обозначающих четность элемента.",
     isRaw: true,
     candidate: CheckEvenCandidateRaw,
     rawCandidate: CheckEvenCandidateRaw,
     solution: CheckEvenSolutionRaw,
     rawSolution: CheckEvenSolutionRaw,
-    filepath: "src/javascript/tasks/6_arrays_map/8_CheckEven.js",
+    filepath: "src/javascript/tasks/6_arrays_map/7_CheckEven.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
@@ -3493,7 +3431,7 @@ export const JS_ARRAYS_MAP_TASKS = [
         badge: "Декларативное преобразование",
         recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
         rawSolution: CheckEvenSolutionRaw,
-        filepath: "src/javascript/tasks/6_arrays_map/8_CheckEven.js",
+        filepath: "src/javascript/tasks/6_arrays_map/7_CheckEven.js",
       },
     ],
     articles: [
@@ -3517,14 +3455,14 @@ export const JS_ARRAYS_MAP_TASKS = [
     id: "js43",
     group: "Массивы",
     subgroup: "map",
-    title: "9. Что вернёт этот код и почему ?",
-    desc: "Объясните, почему результат вызова map() с условием if в колбэке без ветви else содержит значения undefined.",
+    title: "8. Что вернёт этот код и почему ?",
+    desc: "Определите и объясните, что будет содержать массив result после выполнения метода map() с данным условием.",
     isRaw: true,
     candidate: MapUndefinedCandidateRaw,
     rawCandidate: MapUndefinedCandidateRaw,
     solution: MapUndefinedSolutionRaw,
     rawSolution: MapUndefinedSolutionRaw,
-    filepath: "src/javascript/tasks/6_arrays_map/9_MapUndefined.js",
+    filepath: "src/javascript/tasks/6_arrays_map/8_MapCondition.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
@@ -3532,7 +3470,7 @@ export const JS_ARRAYS_MAP_TASKS = [
         badge: "Декларативное преобразование",
         recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
         rawSolution: MapUndefinedSolutionRaw,
-        filepath: "src/javascript/tasks/6_arrays_map/9_MapUndefined.js",
+        filepath: "src/javascript/tasks/6_arrays_map/8_MapCondition.js",
       },
     ],
     articles: [
@@ -3549,7 +3487,7 @@ export const JS_ARRAYS_MAP_TASKS = [
       },
     ],
     checklist: [
-      "Понимать, что отсутствие ясного return в колбэке map() возвращает undefined для этого индекса",
+      "Понимать, что отсутствие явного return в колбэке map() возвращает undefined для этого индекса",
     ],
   },
 ];
@@ -3815,8 +3753,8 @@ export const JS_ARRAYS_SORT_TASKS = [
     id: "js49",
     group: "Массивы",
     subgroup: "sort",
-    title: "6. Перестановка элементов массива с сортировкой (Company X)",
-    desc: "Напишите функцию rearrangeArray(arr), которая разделяет числа на чётные и нечётные, сортирует каждую группу по возрастанию и объединяет их.",
+    title: "6. Перестановка элементов массива (Company X)",
+    desc: "Напишите функцию rearrangeArray(arr), которая принимает массив чисел и возвращает новый массив, где все чётные числа идут перед нечётными, а внутри своих групп отсортированы по возрастанию.",
     isRaw: true,
     candidate: RearrangeArrayCandidateRaw,
     rawCandidate: RearrangeArrayCandidateRaw,
@@ -3857,13 +3795,13 @@ export const JS_ARRAYS_SORT_TASKS = [
     group: "Массивы",
     subgroup: "sort",
     title: "7. Что выведет этот код ?",
-    desc: "Объясните, почему вызов [1, 30, 4, 21, 100].sort() возвращает [1, 100, 21, 30, 4].",
+    desc: "Определите и объясните, в каком порядке будут расположены элементы массива после вызова sort() без передачи компаратора.",
     isRaw: true,
     candidate: DefaultSortStringsCandidateRaw,
     rawCandidate: DefaultSortStringsCandidateRaw,
     solution: DefaultSortStringsSolutionRaw,
     rawSolution: DefaultSortStringsSolutionRaw,
-    filepath: "src/javascript/tasks/7_arrays_sort/7_DefaultSortStrings.js",
+    filepath: "src/javascript/tasks/7_arrays_sort/7_DefaultSort.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
@@ -3871,7 +3809,7 @@ export const JS_ARRAYS_SORT_TASKS = [
         badge: "Стандарт ES6+",
         recommendationNote: "Использование встроенных методов массивов делает код читаемым, лаконичным и декларативным.",
         rawSolution: DefaultSortStringsSolutionRaw,
-        filepath: "src/javascript/tasks/7_arrays_sort/7_DefaultSortStrings.js",
+        filepath: "src/javascript/tasks/7_arrays_sort/7_DefaultSort.js",
       },
     ],
     articles: [
@@ -4956,7 +4894,7 @@ export const JS_TIMERS_SETTIMEOUT_TASKS = [
     group: "Таймеры",
     subgroup: "setTimeout",
     title: "5. Замыкание - Что покажет ?",
-    desc: "Объясните, почему цикл с var i и setTimeout выводит 10 раз число 10, и приведите все варианты решения этой проблемы.",
+    desc: "Определите, что выведет данный цикл с var и setTimeout, объясните причину такого поведения и приведите варианты решения.",
     isRaw: true,
     candidate: ClosureLoopCandidateRaw,
     rawCandidate: ClosureLoopCandidateRaw,
@@ -5013,7 +4951,7 @@ export const JS_TIMERS_SETTIMEOUT_TASKS = [
       },
     ],
     checklist: [
-      "Понимать, почему консоль выводит 10 раз число 10",
+      "Понимать, почему переменная var разделяется между всеми итерациями",
       "Знать решение через let i = 0",
     ],
   },
@@ -5022,7 +4960,7 @@ export const JS_TIMERS_SETTIMEOUT_TASKS = [
     group: "Таймеры",
     subgroup: "setTimeout",
     title: "6. Что покажет ? - Замыкания в цикле",
-    desc: "Разберите поведение цикла с задержкой i * 1000 и var, и объясните, почему код выведет 4, 4, 4 с интервалом в 1 секунду.",
+    desc: "Определите и объясните, что и с какими задержками будет выведено в консоль при выполнении данного цикла с setTimeout.",
     isRaw: true,
     candidate: ClosureLoopDelayCandidateRaw,
     rawCandidate: ClosureLoopDelayCandidateRaw,
@@ -5529,7 +5467,7 @@ export const JS_COLLECTIONS_SET_TASKS = [
     id: "js85",
     group: "Коллекции",
     subgroup: "Set",
-    title: "5. 1 - Что выведет код?",
+    title: "5. Что выведет этот код? (Базовые методы)",
     desc: "Определите вывод базовых методов работы с коллекцией Set: add(), size, has(), delete(), clear().",
     isRaw: true,
     candidate: SetBasicMethodsOutputCandidateRaw,
@@ -5568,7 +5506,7 @@ export const JS_COLLECTIONS_SET_TASKS = [
     id: "js86",
     group: "Коллекции",
     subgroup: "Set",
-    title: "6. 3 - Что выведет код?",
+    title: "6. Что выведет этот код? (Сравнение объектов)",
     desc: "Объясните особенности сравнения ссылочных типов данных (объектов) внутри коллекции Set.",
     isRaw: true,
     candidate: SetObjectComparisonOutputCandidateRaw,
@@ -5608,7 +5546,7 @@ export const JS_COLLECTIONS_SET_TASKS = [
     id: "js87",
     group: "Коллекции",
     subgroup: "Set",
-    title: "7. 7 - Что выведет код?",
+    title: "7. Что выведет этот код? (Мутация объектов)",
     desc: "Разберите поведение коллекции Set при мутации содержимого объекта, находящегося внутри сет-коллекции.",
     isRaw: true,
     candidate: SetObjectMutationOutputCandidateRaw,
@@ -5647,7 +5585,7 @@ export const JS_COLLECTIONS_SET_TASKS = [
     id: "js88",
     group: "Коллекции",
     subgroup: "Set",
-    title: "8. 8 - Что выведет код?",
+    title: "8. Что выведет этот код? (Итерация и удаление)",
     desc: "Разберите особенности поведения цикла for...of при одновременной итерации и вызове set.delete(v).",
     isRaw: true,
     candidate: SetIterationDeleteOutputCandidateRaw,
@@ -7304,7 +7242,7 @@ export const JS_CLOSURES_TASKS = [
     group: "Замыкания",
     subgroup: "Область видимости в циклах",
     title: "2. Обработчики событий в цикле",
-    desc: "Объясните, почему при клике выводится 3, и исправьте код с использованием let для предотвращения единой области видимости.",
+    desc: "Определите, что будет выведено в консоль при клике на кнопки, объясните причину и исправьте код для корректного вывода индекса.",
     isRaw: true,
     candidate: LoopEventListenersCandidateRaw,
     rawCandidate: LoopEventListenersCandidateRaw,
@@ -7343,7 +7281,7 @@ export const JS_CLOSURES_TASKS = [
     group: "Замыкания",
     subgroup: "Область видимости в циклах",
     title: "3. Таймеры и переменная цикла",
-    desc: "Объясните, почему setTimeout выводит 10 раз число 10, и исправьте задержку с помощью блочной переменной let.",
+    desc: "Определите, что выведет данный асинхронный цикл с var, объясните механизм замыкания и предложите варианты исправления.",
     isRaw: true,
     candidate: LoopTimersVarCandidateRaw,
     rawCandidate: LoopTimersVarCandidateRaw,
@@ -7421,7 +7359,7 @@ export const JS_CLOSURES_TASKS = [
     group: "Замыкания",
     subgroup: "Фиксация контекста",
     title: "5. Свежие и зафиксированные значения в замыкании",
-    desc: "Объясните, почему log выводит устревшее сообщение 'Count is 0', и исправьте код для считывания актуального состояния.",
+    desc: "Определите, какие сообщения будут выведены в консоль при вызовах increment() и log(), объясните поведение и исправьте функцию log.",
     isRaw: true,
     candidate: CreateIncrementFixCandidateRaw,
     rawCandidate: CreateIncrementFixCandidateRaw,
@@ -7460,7 +7398,7 @@ export const JS_CLOSURES_TASKS = [
     group: "Замыкания",
     subgroup: "Область видимости в циклах",
     title: "6. Замыкание по элементам массива",
-    desc: "Исправьте асинхронный доступ к элементам массива в цикле, выводивший undefined из-за выхода индекса за пределы длины.",
+    desc: "Определите, что выведет данный цикл с setTimeout при обращении к элементам массива, объясните причину и исправьте код.",
     isRaw: true,
     candidate: ArrayLoopTimeoutCandidateRaw,
     rawCandidate: ArrayLoopTimeoutCandidateRaw,
@@ -8212,7 +8150,7 @@ export const JS_PROTOTYPES_THIS_TASKS = [
     group: "Прототипы THIS",
     subgroup: "Прототипы",
     title: "2. Переопределение свойства prototype конструктора",
-    desc: "Определите, почему у объекта, созданного до замены свойства Person.prototype, отсутствует новый метод getName.",
+    desc: "Определите и объясните, что выведет код при обращении к методам объектов, созданных до и после перезаписи Person.prototype.",
     isRaw: true,
     candidate: ConstructorPrototypeReassignmentCandidateRaw,
     rawCandidate: ConstructorPrototypeReassignmentCandidateRaw,
@@ -8251,13 +8189,13 @@ export const JS_PROTOTYPES_THIS_TASKS = [
     group: "Прототипы THIS",
     subgroup: "Потеря контекста и bind",
     title: "3. Извлечение метода объекта в отдельную переменную",
-    desc: "Объясните причину потери контекста this при присваивании let fn = obj.getName и укажите варианты исправления.",
+    desc: "Определите, что выведет данный код при вызове извлечённого метода объекта, объясните поведение this и приведите способы исправления.",
     isRaw: true,
     candidate: MethodExtractionContextLossCandidateRaw,
     rawCandidate: MethodExtractionContextLossCandidateRaw,
     solution: MethodExtractionContextLossSolutionRaw,
     rawSolution: MethodExtractionContextLossSolutionRaw,
-    filepath: "src/javascript/tasks/16_prototypes_this/3_MethodExtractionContextLoss.js",
+    filepath: "src/javascript/tasks/16_prototypes_this/3_MethodExtraction.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
@@ -8265,7 +8203,7 @@ export const JS_PROTOTYPES_THIS_TASKS = [
         badge: "Фундамент JavaScript",
         recommendationNote: "Понимание контекста исполнения this и прототипного наследования — один из наиболее частых вопросов на собеседовании.",
         rawSolution: MethodExtractionContextLossSolutionRaw,
-        filepath: "src/javascript/tasks/16_prototypes_this/3_MethodExtractionContextLoss.js",
+        filepath: "src/javascript/tasks/16_prototypes_this/3_MethodExtraction.js",
       },
     ],
     articles: [

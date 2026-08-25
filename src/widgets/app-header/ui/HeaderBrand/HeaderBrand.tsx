@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "@tanstack/react-router";
 import { PanelLeftOpen, PanelLeftClose } from "lucide-react";
+import { clsx } from "clsx";
 import { useUIStore } from "@/entities/ui-state";
 import { PlatformLogo } from "@/shared/ui";
 import styles from "./HeaderBrand.module.css";
@@ -14,7 +15,7 @@ export function HeaderBrand({ className }: HeaderBrandProps): React.JSX.Element 
   const toggleSidebar = useUIStore((state) => state.toggleSidebar);
 
   return (
-    <div className={[styles.brandContainer, className].filter(Boolean).join(" ")}>
+    <div className={clsx(styles.brandContainer, className)}>
       <button
         type="button"
         className={styles.sidebarToggle}

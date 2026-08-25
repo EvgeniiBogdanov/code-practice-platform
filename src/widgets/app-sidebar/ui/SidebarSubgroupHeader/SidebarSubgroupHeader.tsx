@@ -1,5 +1,6 @@
 import React from "react";
 import { Folder } from "lucide-react";
+import { clsx } from "clsx";
 import { NodeCount, TreeToggleIcon, TreeNodeHeader } from "@/shared/ui";
 import styles from "./SidebarSubgroupHeader.module.css";
 
@@ -39,9 +40,7 @@ export const SidebarSubgroupHeader = React.memo(
       <Folder
         size={16}
         color={folderColor}
-        className={[styles.folderIcon, iconColor && styles[`folder_${iconColor}`]]
-          .filter(Boolean)
-          .join(" ")}
+        className={clsx(styles.folderIcon, iconColor && styles[`folder_${iconColor}`])}
       />
     );
 

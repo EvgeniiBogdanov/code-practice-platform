@@ -1,5 +1,6 @@
 import React from "react";
 import { BookOpen } from "lucide-react";
+import { clsx } from "clsx";
 import styles from "./FinderBreadcrumbs.module.css";
 
 export const FinderHomeHierarchy = () => {
@@ -9,7 +10,7 @@ export const FinderHomeHierarchy = () => {
       <div className={styles.dropdownWrapper}>
         <button
           type="button"
-          className={[styles.breadcrumbBtn, styles.staticItem].join(" ")}
+          className={clsx(styles.breadcrumbBtn, styles.staticItem)}
           title="Обзор платформы"
         >
           <BookOpen size={14} className={styles.iconMuted} />
