@@ -5,6 +5,7 @@ import { scaleBand, scaleLinear } from "@visx/scale";
 import { AxisBottom } from "@visx/axis";
 import { LinearGradient } from "@visx/gradient";
 import { ParentSize } from "@visx/responsive";
+import { clsx } from "clsx";
 import { ReviewItem, isTaskDue, getLocalDateString, getStartOfLocalDay } from "@/entities/review";
 import { Task } from "@/entities/task";
 import styles from "./VisxRetentionScheduleBar.module.css";
@@ -200,9 +201,7 @@ function RetentionScheduleBarInner({
                   <text
                     x={barX + barWidth / 2}
                     y={barY - 5}
-                    className={[styles.barCountText, isDueNow && styles.barCountDue]
-                      .filter(Boolean)
-                      .join(" ")}
+                    className={clsx(styles.barCountText, isDueNow && styles.barCountDue)}
                     textAnchor="middle"
                   >
                     {d.count}

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { clsx } from "clsx";
 import { CompletionItem } from "@/shared/lib/code-editor";
 import styles from "./SuggestionsDropdown.module.css";
 
@@ -38,13 +39,13 @@ export function SuggestionsDropdown({
   if (items.length === 0) return null;
 
   return (
-    <div ref={containerRef} className={[styles.dropdown, className].filter(Boolean).join(" ")}>
+    <div ref={containerRef} className={clsx(styles.dropdown, className)}>
       {items.map((item, idx) => {
         const isSelected = idx === selectedIndex;
         return (
           <div
             key={`${item.label}-${idx}`}
-            className={[styles.item, isSelected && styles.selected].filter(Boolean).join(" ")}
+            className={clsx(styles.item, isSelected && styles.selected)}
             onMouseDown={(e) => {
               e.preventDefault();
               onSelect(item);

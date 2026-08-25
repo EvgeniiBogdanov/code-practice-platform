@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useRef, useEffect, useMemo } from "react";
 import { useLocation } from "@tanstack/react-router";
+import { clsx } from "clsx";
 import { useUIStore } from "@/entities/ui-state";
 import { SectionType } from "@/entities/task";
 import { Tooltip } from "@/shared/ui";
@@ -90,14 +91,12 @@ export const AppSidebar = ({ className }: AppSidebarProps): React.JSX.Element =>
     <aside
       ref={sidebarRef}
       style={{ width: sidebarOpen ? `${sidebarWidth}px` : "0px" } as React.CSSProperties}
-      className={[
+      className={clsx(
         styles.sidebar,
         !sidebarOpen && styles.closed,
         isResizing && styles.isResizing,
-        className,
-      ]
-        .filter(Boolean)
-        .join(" ")}
+        className
+      )}
     >
       <Tooltip.Provider delayDuration={600} skipDelayDuration={300}>
         <SidebarWorkspaceHeader
@@ -126,7 +125,7 @@ export const AppSidebar = ({ className }: AppSidebarProps): React.JSX.Element =>
 
       {sidebarOpen && (
         <div
-          className={[styles.resizer, isResizing && styles.active].filter(Boolean).join(" ")}
+          className={clsx(styles.resizer, isResizing && styles.active)}
           onMouseDown={handleMouseDown}
           onDoubleClick={handleDoubleClick}
           title="Перетащите для изменения ширины (двойной клик — сброс)"

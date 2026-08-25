@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "@tanstack/react-router";
 import { FileText, Folder, Check, X, RotateCcw, Minus, Calendar } from "lucide-react";
+import { clsx } from "clsx";
 import { Task } from "@/entities/task";
 import { getGroupCompletionClass } from "@/entities/review";
 import {
@@ -80,7 +81,7 @@ export const GroupTaskList = React.memo(
           key={task.id}
           to={taskRoute}
           params={{ taskId: String(task.id) }}
-          className={[styles.treeTaskBtn, gradientClass].filter(Boolean).join(" ")}
+          className={clsx(styles.treeTaskBtn, gradientClass)}
         >
           <span className={styles.taskBtnTitle}>
             <FileText size={16} className={styles.nodeFileIcon} />

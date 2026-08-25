@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { Code2, Zap, Brain, BookOpen } from "lucide-react";
+import { clsx } from "clsx";
 import styles from "./CheatSheetModal.module.css";
 
 export type SectionType = "react" | "javascript" | "algorithms" | "home";
@@ -40,9 +41,7 @@ export const CheatSheetSectionTabs = memo(
           <button
             key={sec.id}
             type="button"
-            className={[styles.sectionTabBtn, activeSection === sec.id && styles.active]
-              .filter(Boolean)
-              .join(" ")}
+            className={clsx(styles.sectionTabBtn, activeSection === sec.id && styles.active)}
             onClick={() => onSelectSection(sec.id)}
           >
             {sec.icon}

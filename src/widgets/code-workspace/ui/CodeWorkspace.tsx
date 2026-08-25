@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { clsx } from "clsx";
 import { CodeEditor } from "@/features/code-editor";
 import { JsConsole, ReactLivePreview } from "@/features/code-runner";
 import { runNodeJsCode, clearRunningTimers, NodeRunnerLogEntry } from "@/shared/lib/code-runners";
@@ -74,18 +75,14 @@ export function CodeWorkspace() {
         <div className={styles.langToggle}>
           <button
             type="button"
-            className={[styles.langBtn, mode === "react" && styles.activeLang]
-              .filter(Boolean)
-              .join(" ")}
+            className={clsx(styles.langBtn, mode === "react" && styles.activeLang)}
             onClick={() => handleModeChange("react")}
           >
             React
           </button>
           <button
             type="button"
-            className={[styles.langBtn, mode === "js" && styles.activeLang]
-              .filter(Boolean)
-              .join(" ")}
+            className={clsx(styles.langBtn, mode === "js" && styles.activeLang)}
             onClick={() => handleModeChange("js")}
           >
             JavaScript

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "@tanstack/react-router";
+import { clsx } from "clsx";
 import {
   ALL_JS_TASKS,
   ALL_REACT_TASKS,
@@ -31,9 +32,7 @@ export const SidebarHomeOverview = ({
     <div className={styles.homeOverviewList}>
       <Link
         to="/home"
-        className={[styles.homeOverviewItem, activeSectionKey === "home" && styles.homeItemActive]
-          .filter(Boolean)
-          .join(" ")}
+        className={clsx(styles.homeOverviewItem, activeSectionKey === "home" && styles.homeItemActive)}
       >
         <SECTIONS_CONFIG.home.icon
           size={17}

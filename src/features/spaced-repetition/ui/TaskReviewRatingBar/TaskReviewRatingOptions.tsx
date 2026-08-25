@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { CheckCircle2, Clock, AlertCircle, Check } from "lucide-react";
+import { clsx } from "clsx";
 import { ReviewRating, RATINGS, ReviewItem } from "@/entities/review";
 import styles from "./TaskReviewRatingBar.module.css";
 
@@ -46,19 +47,16 @@ export const TaskReviewRatingOptions = memo(
       <div className={styles.taskReviewRatings}>
         {RATING_CONFIG.map((item) => {
           const isActive = taskReview?.rating === item.rating;
-          const buttonClasses = [
-            styles.reviewRateBtn,
-            item.modifier,
-            isActive && styles.active,
-          ]
-            .filter(Boolean)
-            .join(" ");
 
           return (
             <button
               key={item.rating}
               type="button"
-              className={buttonClasses}
+              className={clsx(
+                styles.reviewRateBtn,
+                item.modifier,
+                isActive && styles.active
+              )}
               onClick={() => onRate(item.rating)}
               title={item.titleActive}
             >

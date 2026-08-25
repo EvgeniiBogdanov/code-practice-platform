@@ -1,5 +1,6 @@
 import React from "react";
 import { Check, CheckCircle2, AlertCircle, Code2 } from "lucide-react";
+import { clsx } from "clsx";
 import { Tooltip } from "@/shared/ui";
 import { useCodeEditor } from "../../model/use-code-editor";
 import { CodeEditorProps } from "../../model/types";
@@ -80,9 +81,11 @@ export const CodeEditor = ({
 
   return (
     <div
-      className={[styles.editorWrapper, effectiveFullscreen && styles.fullscreen, className]
-        .filter(Boolean)
-        .join(" ")}
+      className={clsx(
+        styles.editorWrapper,
+        effectiveFullscreen && styles.fullscreen,
+        className
+      )}
       style={{ "--editor-font-size": `${fontSize}px` } as React.CSSProperties}
     >
       <Tooltip.Provider delayDuration={600} skipDelayDuration={300}>
@@ -160,9 +163,7 @@ export const CodeEditor = ({
           <div className={styles.textLayersWrapper}>
             <pre
               ref={highlightRef}
-              className={[styles.highlightLayer, wordWrap && styles.wrapOn]
-                .filter(Boolean)
-                .join(" ")}
+              className={clsx(styles.highlightLayer, wordWrap && styles.wrapOn)}
               aria-hidden="true"
             >
               <code dangerouslySetInnerHTML={{ __html: highlightedCode }} />
@@ -183,7 +184,7 @@ export const CodeEditor = ({
               onScroll={handleScroll}
               onMouseMove={(e) => hoverSignatures.handleMouseMove(e, code)}
               onMouseLeave={hoverSignatures.handleMouseLeave}
-              className={[styles.textarea, wordWrap && styles.wrapOn].filter(Boolean).join(" ")}
+              className={clsx(styles.textarea, wordWrap && styles.wrapOn)}
               placeholder="// Напишите ваш код решения здесь..."
               spellCheck={false}
               autoCapitalize="off"
@@ -220,27 +221,52 @@ export const CodeEditor = ({
           </div>
         </div>
 
+        <QuickFixBanner
+          activeTypo={activeTypo}
+          activeMissingImport={activeMissingImport}
+          onFixTypo={handleFixTypo}
+          onFixMissingImport={handleFixMissingImport}
+        />
+
+        {findReplace.findState.isOpen && (
+          <FindReplaceWidget
+            findState={findReplace.findState}
+            findMatches={findReplace.findMatches}
+            findInputRef={findReplace.findInputRef}
+            replaceInputRef={findReplace.replaceInputRef}
+            onClose={findReplace.closeFind}
+            onFindNext={findReplace.findNext}
+            onFindPrev={findReplace.findPrev}
+            onReplaceCurrent={findReplace.replaceCurrent}
+            onReplaceAll={findReplace.replaceAllMatches}
+            onSetQuery={findReplace.setQuery}
+            onSetReplaceText={findReplace.setReplaceText}
+            onToggleShowReplace={findReplace.toggleShowReplace}
+            onToggleMatchCase={findReplace.toggleMatchCase}
+            onToggleMatchWholeWord={findReplace.toggleMatchWholeWord}
+            onToggleUseRegex={findReplace.toggleUseRegex}
+          />
+        )}
+
         {bottomConsole && <div className={styles.bottomConsoleWrapper}>{bottomConsole}</div>}
 
         <div className={styles.statusBar}>
           <div className={styles.statusLeft}>
-            {!readOnly && (
+            {saveStatus && (
               <Tooltip
                 content={
                   saveStatus === "saving"
-                    ? "Автосохранение в IndexedDB..."
-                    : "Решение сохранено локально в IndexedDB"
+                    ? "Сохранение вашего прогресса..."
+                    : "Решение автоматически сохранено в браузере"
                 }
                 side="top"
               >
                 <span
-                  className={[
+                  className={clsx(
                     styles.statusItem,
                     styles.saveIndicator,
-                    saveStatus === "saving" && styles.saveIndicatorSaving,
-                  ]
-                    .filter(Boolean)
-                    .join(" ")}
+                    saveStatus === "saving" && styles.saveIndicatorSaving
+                  )}
                 >
                   {saveStatus === "saving" ? (
                     <>
@@ -264,7 +290,7 @@ export const CodeEditor = ({
                 content="Обнаружена ошибка синтаксиса, типов или отсутствующий импорт"
                 side="top"
               >
-                <span className={[styles.statusItem, styles.diagErr].join(" ")}>
+                <span className={clsx(styles.statusItem, styles.diagErr)}>
                   <AlertCircle size={11} />
                   <span>
                     {lintResult.errorCount} {lintResult.errorCount === 1 ? "ошибка" : "ошибок"}
@@ -278,7 +304,7 @@ export const CodeEditor = ({
               </Tooltip>
             ) : (
               <Tooltip content="Синтаксис и типы корректны" side="top">
-                <span className={[styles.statusItem, styles.diagOk].join(" ")}>
+                <span className={clsx(styles.statusItem, styles.diagOk)}>
                   <CheckCircle2 size={11} />
                   <span>Синтаксис корректен</span>
                 </span>
@@ -293,7 +319,7 @@ export const CodeEditor = ({
                   content="Активно мульти-выделение (Cmd+D / Ctrl+D). Нажмите Esc для сброса."
                   side="top"
                 >
-                  <span className={[styles.statusItem, styles.multiCursorIndicator].join(" ")}>
+                  <span className={clsx(styles.statusItem, styles.multiCursorIndicator)}>
                     <span className={styles.savePulseDot} />
                     <span>{multiCursor.selections.length} выделений</span>
                   </span>

@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import { FileText, Check, X, RotateCcw } from "lucide-react";
+import { clsx } from "clsx";
 import { Tooltip, TreeNodeHeader } from "@/shared/ui";
 import styles from "./SidebarTaskItem.module.css";
 
@@ -23,14 +24,12 @@ const getRatingClass = (
   _difficulty?: string,
   reviewRating?: string
 ) => {
-  if (isUnsolved) {
-    return styles.ratingUnsolved;
-  }
-  if (isSolved && reviewRating) {
-    if (reviewRating === "hard") return styles.ratingHard;
-    if (reviewRating === "medium") return styles.ratingMedium;
-    if (reviewRating === "easy") return styles.ratingEasy;
-  }
+  if (reviewRating === "hard") return styles.ratingHard;
+  if (reviewRating === "medium") return styles.ratingMedium;
+  if (reviewRating === "easy") return styles.ratingEasy;
+
+  if (isSolved) return styles.ratingSolved;
+  if (isUnsolved) return styles.ratingUnsolved;
   return "";
 };
 
@@ -58,12 +57,12 @@ export const SidebarTaskItem = memo(
           to={to}
           params={params}
           isActive={isActive}
-          className={[styles.sidebarTaskRow, isDue && styles.taskIsDue].filter(Boolean).join(" ")}
+          className={clsx(styles.sidebarTaskRow, isDue && styles.taskIsDue)}
           onClick={onClick}
         >
           <div className={styles.taskTitleGroup}>
             <FileText size={16} className={styles.fileIcon} />
-            <span className={[styles.taskTitleText, ratingClass].filter(Boolean).join(" ")}>
+            <span className={clsx(styles.taskTitleText, ratingClass)}>
               {title}
             </span>
           </div>

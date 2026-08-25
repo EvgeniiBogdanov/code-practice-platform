@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import { clsx } from "clsx";
 import { Tooltip } from "@/shared/ui";
 import { HeaderActions } from "./HeaderActions";
 import styles from "./AppHeader.module.css";
@@ -10,7 +11,7 @@ export interface AppHeaderProps {
 
 export const AppHeader = memo(({ className, breadcrumbs }: AppHeaderProps) => {
   return (
-    <header className={[styles.header, className].filter(Boolean).join(" ")}>
+    <header className={clsx(styles.header, className)}>
       <div className={styles.left}>{breadcrumbs}</div>
       <div className={styles.right}>
         <Tooltip.Provider delayDuration={600} skipDelayDuration={300}>

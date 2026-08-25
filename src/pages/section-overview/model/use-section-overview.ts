@@ -122,7 +122,7 @@ export const useSectionOverview = (
         const meta = getGroupMeta(name);
         return {
           id: name,
-          groupId: `group-${encodeURIComponent(name)}`,
+          groupId: `group-${name}`,
           name,
           icon: meta.renderIcon(18),
           tasks,

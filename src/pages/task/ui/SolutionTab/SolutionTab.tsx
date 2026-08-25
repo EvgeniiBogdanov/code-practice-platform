@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import { ArrowDown } from "lucide-react";
+import { clsx } from "clsx";
 import { Task } from "@/entities/task";
 import { Tooltip, Accordion, ErrorBoundary, ViewModeToggle } from "@/shared/ui";
 import { CodeEditor } from "@/features/code-editor";
@@ -44,7 +45,7 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
   } = useSolutionTab(task);
 
   return (
-    <div className={[styles.container, className].filter(Boolean).join(" ")}>
+    <div className={clsx(styles.container, className)}>
       <SolutionVariantsRow
         solutions={solutions}
         selectedIdx={selectedSolutionIdx}

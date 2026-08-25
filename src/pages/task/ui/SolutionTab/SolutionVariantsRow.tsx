@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import { FileCode, Check } from "lucide-react";
+import { clsx } from "clsx";
 import { TaskSolution } from "@/entities/task";
 import styles from "./SolutionTab.module.css";
 
@@ -21,9 +22,7 @@ export const SolutionVariantsRow = memo(
             <button
               key={sol.title || idx}
               type="button"
-              className={[styles.variantBtn, isActive && styles.activeVariant]
-                .filter(Boolean)
-                .join(" ")}
+              className={clsx(styles.variantBtn, isActive && styles.activeVariant)}
               onClick={() => onSelect(idx)}
             >
               <FileCode size={13} />

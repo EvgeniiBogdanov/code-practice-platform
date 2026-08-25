@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Atom, Zap, Brain, Code2 } from "lucide-react";
+import { clsx } from "clsx";
 import styles from "./HeaderSectionNav.module.css";
 
 export interface HeaderSectionNavProps {
@@ -17,15 +18,15 @@ export const HeaderSectionNav = ({ className }: HeaderSectionNavProps) => {
   const isEditor = pathname.startsWith("/editor");
 
   return (
-    <nav className={[styles.navContainer, className].filter(Boolean).join(" ")}>
-      <Link to="/" className={[styles.navItem, isReact && styles.active].filter(Boolean).join(" ")}>
+    <nav className={clsx(styles.navContainer, className)}>
+      <Link to="/" className={clsx(styles.navItem, isReact && styles.active)}>
         <Atom size={14} className={styles.iconReact} />
         <span>React</span>
       </Link>
 
       <Link
         to="/javascript"
-        className={[styles.navItem, isJs && styles.active].filter(Boolean).join(" ")}
+        className={clsx(styles.navItem, isJs && styles.active)}
       >
         <Zap size={14} className={styles.iconJs} />
         <span>JavaScript</span>
@@ -33,7 +34,7 @@ export const HeaderSectionNav = ({ className }: HeaderSectionNavProps) => {
 
       <Link
         to="/algorithms"
-        className={[styles.navItem, isAlgo && styles.active].filter(Boolean).join(" ")}
+        className={clsx(styles.navItem, isAlgo && styles.active)}
       >
         <Brain size={14} className={styles.iconAlgo} />
         <span>Алгоритмы</span>
@@ -41,7 +42,7 @@ export const HeaderSectionNav = ({ className }: HeaderSectionNavProps) => {
 
       <Link
         to="/editor"
-        className={[styles.navItem, isEditor && styles.active].filter(Boolean).join(" ")}
+        className={clsx(styles.navItem, isEditor && styles.active)}
       >
         <Code2 size={14} className={styles.iconEditor} />
         <span>Песочница</span>

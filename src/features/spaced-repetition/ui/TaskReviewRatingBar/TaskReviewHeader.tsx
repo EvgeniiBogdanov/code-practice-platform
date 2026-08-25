@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { Calendar, Lock } from "lucide-react";
+import { clsx } from "clsx";
 import {
   ReviewItem,
   ReviewBadgeMeta,
@@ -31,7 +32,7 @@ export const TaskReviewHeader = memo(
               <span>Интервальное повторение</span>
 
               {badgeMeta.stage > 0 && (
-                <span className={[styles.badge, badgeClass].join(" ")}>{badgeMeta.stageName}</span>
+                <span className={clsx(styles.badge, badgeClass)}>{badgeMeta.stageName}</span>
               )}
 
               {taskReview?.lastReviewedAt && (

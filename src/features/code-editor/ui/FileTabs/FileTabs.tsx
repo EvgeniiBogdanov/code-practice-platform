@@ -1,5 +1,6 @@
 import React from "react";
 import { FileCode, FileText } from "lucide-react";
+import { clsx } from "clsx";
 import { TaskFile } from "@/shared/lib/code-editor";
 import styles from "./FileTabs.module.css";
 
@@ -21,7 +22,7 @@ export function FileTabs({
   if (files.length <= 1) return null;
 
   return (
-    <div className={[styles.tabsContainer, className].filter(Boolean).join(" ")}>
+    <div className={clsx(styles.tabsContainer, className)}>
       {files.map((file, idx) => {
         const isActive = idx === activeIndex;
         const isDirty = Boolean(isDirtyMap[idx]);
@@ -30,7 +31,7 @@ export function FileTabs({
           <button
             key={file.name || idx}
             type="button"
-            className={[styles.tab, isActive && styles.active].filter(Boolean).join(" ")}
+            className={clsx(styles.tab, isActive && styles.active)}
             onClick={() => onSelectTab(idx)}
           >
             {file.name?.endsWith(".css") ? (

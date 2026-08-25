@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "@tanstack/react-router";
 import { ChevronDown } from "lucide-react";
+import { clsx } from "clsx";
 import { SECTIONS_CONFIG, SECTIONS_LIST } from "@/entities/task";
 import { FinderSectionDropdownProps } from "../model/types";
 import styles from "./FinderBreadcrumbs.module.css";
@@ -18,12 +19,10 @@ export const FinderSectionDropdown = ({
     <div className={styles.dropdownWrapper}>
       <button
         type="button"
-        className={[
+        className={clsx(
           styles.breadcrumbBtn,
-          activeDropdown === "section" && styles.breadcrumbBtnActive,
-        ]
-          .filter(Boolean)
-          .join(" ")}
+          activeDropdown === "section" && styles.breadcrumbBtnActive
+        )}
         onClick={() => toggleDropdown("section")}
         title="Переключить раздел практики"
         aria-label="Переключить раздел практики"
@@ -44,9 +43,7 @@ export const FinderSectionDropdown = ({
                 <Link
                   key={sec.id}
                   to={sec.path}
-                  className={[styles.dropdownItem, isActive && styles.active]
-                    .filter(Boolean)
-                    .join(" ")}
+                  className={clsx(styles.dropdownItem, isActive && styles.active)}
                   onClick={closeAllDropdowns}
                 >
                   <Icon size={15} className={styles[`icon_${sec.id}`]} />

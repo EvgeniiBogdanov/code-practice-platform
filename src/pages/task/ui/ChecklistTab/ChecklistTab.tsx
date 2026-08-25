@@ -1,4 +1,5 @@
 import React from "react";
+import { clsx } from "clsx";
 import { Task } from "@/entities/task";
 import { useProgressStore } from "@/entities/progress";
 import { Checkbox } from "@/shared/ui";
@@ -20,7 +21,7 @@ export function ChecklistTab({ task, className }: ChecklistTabProps) {
   const percent = Math.round((doneCount / total) * 100);
 
   return (
-    <div className={[styles.container, className].filter(Boolean).join(" ")}>
+    <div className={clsx(styles.container, className)}>
       <div className={styles.header}>
         <div>
           <h3 className={styles.title}>📋 Самопроверка</h3>

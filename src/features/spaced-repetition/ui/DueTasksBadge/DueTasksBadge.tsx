@@ -1,5 +1,6 @@
 import React from "react";
 import { Clock } from "lucide-react";
+import { clsx } from "clsx";
 import { useReviewStore, selectDueTasksCount } from "@/entities/review";
 import styles from "./DueTasksBadge.module.css";
 
@@ -19,7 +20,7 @@ export const DueTasksBadge = ({
   return (
     <button
       type="button"
-      className={[styles.badge, className].filter(Boolean).join(" ")}
+      className={clsx(styles.badge, className)}
       onClick={onClick}
       title={`${dueCount} задач ожидают повторения сегодня`}
     >

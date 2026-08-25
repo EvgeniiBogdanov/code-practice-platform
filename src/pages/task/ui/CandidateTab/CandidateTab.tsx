@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { ArrowDown } from "lucide-react";
+import { clsx } from "clsx";
 import { Task, getTaskFiles, hasTaskVisualComponent } from "@/entities/task";
 import {
   getUserSolution,
@@ -188,7 +189,7 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
   }, []);
 
   return (
-    <div className={[styles.container, className].filter(Boolean).join(" ")}>
+    <div className={clsx(styles.container, className)}>
       {hasVisualComponent && <ViewModeToggle mode={viewMode} onChange={setViewMode} />}
 
       <ErrorBoundary>

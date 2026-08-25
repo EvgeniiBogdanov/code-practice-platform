@@ -1,5 +1,6 @@
 import React, { memo, useState, useRef, useEffect } from "react";
 import { Clock } from "lucide-react";
+import { clsx } from "clsx";
 import { Tooltip, SquareButton } from "@/shared/ui";
 import { useTimerStore } from "@/entities/ui-state";
 import styles from "./TimerDropdown.module.css";
@@ -49,9 +50,7 @@ export const TimerDropdown = memo(({ className, disabled = false }: TimerDropdow
 
   return (
     <div
-      className={[styles.container, disabled && styles.disabled, className]
-        .filter(Boolean)
-        .join(" ")}
+      className={clsx(styles.container, disabled && styles.disabled, className)}
       ref={dropdownRef}
     >
       <Tooltip content="Таймер собеседования" side="bottom" disabled={isOpen || disabled}>

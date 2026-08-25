@@ -1,4 +1,5 @@
 import React, { useState, useEffect, memo, useCallback } from "react";
+import { clsx } from "clsx";
 import { Task, TaskQuestion } from "@/entities/task";
 import { QuestionItem } from "./QuestionItem";
 import styles from "./QuestionsTab.module.css";
@@ -21,7 +22,7 @@ export const QuestionsTab = memo(({ task, className }: QuestionsTabProps) => {
   }, []);
 
   return (
-    <div className={[styles.container, className].filter(Boolean).join(" ")}>
+    <div className={clsx(styles.container, className)}>
       <div className={styles.header}>
         <h3 className={styles.title}>Частые вопросы на собеседовании</h3>
       </div>

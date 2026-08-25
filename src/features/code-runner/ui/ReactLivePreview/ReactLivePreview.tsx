@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import { clsx } from "clsx";
 import { Task } from "@/entities/task";
 import { TaskSourceFile } from "@/shared/lib/code-runners";
 import { useReactLiveSandbox } from "../../model/use-react-live-sandbox";
@@ -47,7 +48,7 @@ export const ReactLivePreview = memo(
     const iframeKey = `${task?.id}_${storagePrefix}_${variantIdx}_${reloadKey}`;
 
     return (
-      <div className={[styles.browserMockup, className].filter(Boolean).join(" ")}>
+      <div className={clsx(styles.browserMockup, className)}>
         <BrowserMockupHeader
           fileName={activeFile?.name || "index.jsx"}
           onReload={handleManualReload}

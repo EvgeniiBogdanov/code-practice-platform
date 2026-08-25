@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { useLocation } from "@tanstack/react-router";
 import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import { clsx } from "clsx";
 import { useUIStore } from "@/entities/ui-state";
 import { getTaskById, Task } from "@/entities/task";
 import { useFinderDropdown } from "../model/useFinderDropdown";
@@ -37,9 +38,7 @@ export const FinderBreadcrumbs = () => {
     >
       <button
         type="button"
-        className={[styles.sidebarToggleBtn, sidebarOpen && styles.desktopHidden]
-          .filter(Boolean)
-          .join(" ")}
+        className={clsx(styles.sidebarToggleBtn, sidebarOpen && styles.desktopHidden)}
         onClick={toggleSidebar}
         title={sidebarOpen ? "Скрыть боковую панель" : "Показать боковую панель"}
         aria-label="Скрыть/Показать боковую панель"

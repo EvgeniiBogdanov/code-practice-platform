@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { Sparkles } from "lucide-react";
+import { clsx } from "clsx";
 import { MasteryStats } from "@/entities/review";
 import { VisxMasteryPie } from "../VisxMasteryPie";
 import styles from "./SpacedRepetitionSection.module.css";
@@ -24,7 +25,7 @@ export const SpacedRepetitionDistributionTab = memo(
 
           <div className={styles.stageList}>
             <div className={styles.stageItem}>
-              <div className={[styles.stageDot, styles.green].join(" ")} />
+              <div className={clsx(styles.stageDot, styles.green)} />
               <div className={styles.stageInfo}>
                 <div className={styles.stageTitle}>Мастер (30-60+ дней)</div>
                 <div className={styles.stageDesc}>Надёжно усвоено в долговременной памяти</div>
@@ -33,7 +34,7 @@ export const SpacedRepetitionDistributionTab = memo(
             </div>
 
             <div className={styles.stageItem}>
-              <div className={[styles.stageDot, styles.yellow].join(" ")} />
+              <div className={clsx(styles.stageDot, styles.yellow)} />
               <div className={styles.stageInfo}>
                 <div className={styles.stageTitle}>Закрепление (7-14 дней)</div>
                 <div className={styles.stageDesc}>Уверенное решение, интервалы растут</div>
@@ -42,7 +43,7 @@ export const SpacedRepetitionDistributionTab = memo(
             </div>
 
             <div className={styles.stageItem}>
-              <div className={[styles.stageDot, styles.red].join(" ")} />
+              <div className={clsx(styles.stageDot, styles.red)} />
               <div className={styles.stageInfo}>
                 <div className={styles.stageTitle}>Изучение (1-3 дня)</div>
                 <div className={styles.stageDesc}>Активная фаза повторов и разбора нюансов</div>
@@ -51,7 +52,7 @@ export const SpacedRepetitionDistributionTab = memo(
             </div>
 
             <div className={styles.stageItem}>
-              <div className={[styles.stageDot, styles.gray].join(" ")} />
+              <div className={clsx(styles.stageDot, styles.gray)} />
               <div className={styles.stageInfo}>
                 <div className={styles.stageTitle}>Ещё не в графике</div>
                 <div className={styles.stageDesc}>Задачи {scopeLabel}, ожидающие решения</div>
