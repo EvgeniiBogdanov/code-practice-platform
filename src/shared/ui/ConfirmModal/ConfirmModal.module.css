@@ -1,0 +1,23 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4, 16px);
+}
+
+.text {
+  font-size: var(--font-sm, 13px);
+  line-height: 1.5;
+  color: var(--text-secondary, #94a3b8);
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 8px);
+  margin-top: var(--space-2, 8px);
+}
+
+.iconDanger {
+  color: var(--accent-red, #ef4444);
+}

@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo } from "react";
 import {
   Undo2,
   Redo2,
@@ -17,6 +17,7 @@ import {
 import { clsx } from "clsx";
 import { Tooltip, CodeButton } from "@/shared/ui";
 import { TaskFile } from "@/shared/lib/code-editor";
+import { useCopy } from "@/shared/lib/hooks";
 import styles from "./EditorToolbar.module.css";
 
 export interface EditorToolbarProps {
@@ -71,18 +72,7 @@ export const EditorToolbar = memo(
     readOnly = false,
     className,
   }: EditorToolbarProps) => {
-    const [copied, setCopied] = useState(false);
-
-    const handleCopy = async () => {
-      if (!codeText) return;
-      try {
-        await navigator.clipboard.writeText(codeText);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      } catch {
-        // ignore
-      }
-    };
+    const { copied, copy } = useCopy(codeText);
 
     const getFileIconClass = (filename: string) => {
       const ext = filename.split(".").pop()?.toLowerCase();
@@ -194,7 +184,7 @@ export const EditorToolbar = memo(
               icon={
                 copied ? <Check size={14} className={styles.copiedCheck} /> : <Copy size={14} />
               }
-              onClick={handleCopy}
+              onClick={() => copy()}
               aria-label="Скопировать код"
             />
           </Tooltip>

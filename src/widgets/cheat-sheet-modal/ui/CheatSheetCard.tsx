@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Sparkles } from "lucide-react";
-import { CodeViewer } from "@/shared/ui";
+import { CodeViewer, Callout } from "@/shared/ui";
 import styles from "./CheatSheetModal.module.css";
 
 export interface CheatItem {
@@ -31,13 +31,14 @@ export const CheatSheetCard = memo(({ item }: CheatSheetCardProps) => {
       </div>
 
       {item.tip && (
-        <div className={styles.cheatsheetTip}>
-          <div className={styles.cheatsheetTipHeader}>
-            <Sparkles size={13} />
-            <span>Лайфхак для интервью</span>
-          </div>
-          <div className={styles.cheatsheetTipContent}>{item.tip}</div>
-        </div>
+        <Callout
+          color="yellow"
+          icon={<Sparkles size={13} />}
+          title="Лайфхак для интервью"
+          className={styles.cheatsheetCallout}
+        >
+          {item.tip}
+        </Callout>
       )}
     </div>
   );

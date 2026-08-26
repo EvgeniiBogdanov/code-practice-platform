@@ -67,3 +67,7 @@ coverage/
 # Temporary / Scratch Files
 .system_generated/
 scratch/
+
+# Codegraph
+.codegraph/
+codegraph.json

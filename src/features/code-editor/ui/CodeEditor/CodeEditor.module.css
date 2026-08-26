@@ -4,12 +4,16 @@
   background: #1e1e1e;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-md, 8px);
-  overflow: hidden;
+  overflow: visible;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
   display: flex;
   flex-direction: column;
   font-size: var(--editor-font-size, 13px) !important;
   position: relative;
+}
+
+.hasOpenDropdown {
+  z-index: 50;
 }
 
 [data-theme="light"] .editorWrapper {
@@ -40,10 +44,14 @@
   background: #1e1e1e;
   min-height: 180px;
   height: auto;
-  overflow: hidden;
+  overflow: visible;
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
+}
+
+.editorBody:last-child {
+  border-radius: 0 0 var(--radius-md, 8px) var(--radius-md, 8px);
 }
 
 [data-theme="light"] .editorBody {
@@ -55,7 +63,7 @@
   min-height: 0 !important;
   height: auto !important;
   max-height: none !important;
-  overflow: hidden !important;
+  overflow: visible !important;
 }
 
 .textLayersWrapper {
@@ -65,13 +73,14 @@
   max-width: 100%;
   height: auto;
   min-height: 180px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .fullscreen .textLayersWrapper {
   height: 100% !important;
   width: 100% !important;
   min-height: 0 !important;
+  overflow: visible !important;
 }
 
 .highlightLayer {
@@ -173,6 +182,11 @@
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+.bottomConsoleWrapper:last-child {
+  border-radius: 0 0 var(--radius-md, 8px) var(--radius-md, 8px);
+  overflow: hidden;
+}
+
 [data-theme="light"] .bottomConsoleWrapper {
   border-top-color: var(--border-color, rgba(55, 53, 47, 0.12));
 }
@@ -204,6 +218,10 @@
   user-select: none;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+.statusBar:last-child {
+  border-radius: 0 0 var(--radius-md, 8px) var(--radius-md, 8px);
 }
 
 [data-theme="light"] .statusBar {

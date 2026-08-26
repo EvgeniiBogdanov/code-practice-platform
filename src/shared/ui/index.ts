@@ -24,6 +24,8 @@ export * from "./SquareButton";
 export * from "./CodeButton";
 export * from "./Card";
 export * from "./GroupCard";
+export * from "./KpiGrid";
+export * from "./ConfirmModal";
 export * from "./ViewModeToggle";
 export * from "./NotificationBadge";
 export * from "./PlatformLogo";

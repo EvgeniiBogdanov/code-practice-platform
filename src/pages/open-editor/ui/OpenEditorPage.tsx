@@ -18,6 +18,7 @@ import {
   deleteUserSolution,
 } from "@/shared/lib/storage";
 import { Tooltip, ErrorBoundary, ViewModeToggle } from "@/shared/ui";
+import { useCopy } from "@/shared/lib/hooks";
 import styles from "./OpenEditorPage.module.css";
 
 export interface OpenEditorPageProps {
@@ -32,7 +33,7 @@ export const OpenEditorPage = ({
   initialViewMode,
 }: OpenEditorPageProps) => {
   const navigate = useNavigate();
-  const [linkCopied, setLinkCopied] = useState(false);
+  const { copied: linkCopied, copy: copyLink } = useCopy();
   const [activeFileIdx, setActiveFileIdx] = useState(0);
   const task = useMemo(() => (taskId ? getTaskById(taskId) : null), [taskId]);
   const isReact = task ? task.section === "react" : true;
@@ -235,13 +236,7 @@ export const OpenEditorPage = ({
   }, [task, tab]);
 
   const handleCopyLink = () => {
-    try {
-      navigator.clipboard.writeText(window.location.href);
-      setLinkCopied(true);
-      setTimeout(() => setLinkCopied(false), 2000);
-    } catch {
-      // ignore
-    }
+    copyLink(window.location.href);
   };
 
   if (taskId && !task) {

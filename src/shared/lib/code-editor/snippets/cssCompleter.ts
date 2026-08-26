@@ -95,13 +95,16 @@ export function getCssCompletions(
   for (const prop of CSS_PROPERTIES) {
     const { match, score } = fuzzyMatch(prop.name, query);
     if (match || (!query && force)) {
+      const tabStop = prop.insertText.indexOf("$1");
       const rawInsert = prop.insertText.replace(/\$1/g, "");
+      const cursorOffset = tabStop >= 0 ? tabStop : undefined;
       scoredProps.push({
         prefix: prop.name,
         label: prop.name,
         detail: prop.detail,
         kind: "property",
         insertText: rawInsert,
+        cursorOffset,
         replaceStart: cursorIndex - query.length,
         replaceEnd: cursorIndex + afterLen,
         score,

@@ -5,7 +5,6 @@
   border-bottom: 1px solid var(--border-color);
   padding: 0 10px;
   background: var(--bg-sidebar);
-  border-radius: var(--radius-md) var(--radius-md) 0 0;
   overflow-x: auto;
   user-select: none;
 }
@@ -70,6 +69,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .tabBadge {
@@ -87,7 +87,99 @@
   color: var(--text-muted);
 }
 
-.active .tabBadge {
-  background-color: rgba(255, 255, 255, 0.14);
+.variant_pills {
+  border-bottom: none;
+  padding: 4px;
+  background: var(--bg-surface);
+  gap: 6px;
+}
+
+.variant_pills .tab {
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  border-bottom: none;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
+.variant_pills .tab.active {
+  background: var(--bg-card);
   color: var(--text-main);
+  box-shadow: var(--shadow-sm);
+}
+
+.size_sm .tab {
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+.size_sm.variant_pills .tab {
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.tabLabel {
+  display: inline-flex;
+  align-items: center;
+}
+
+.orientation_vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
+  width: 100%;
+  padding: 0;
+  border-bottom: none;
+  background: transparent;
+  border-radius: 0;
+  overflow-x: visible;
+}
+
+.orientation_vertical .tab {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: var(--radius-md, 6px);
+  border-bottom: none;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: transparent;
+  text-align: left;
+  margin-bottom: 0;
+  box-sizing: border-box;
+}
+
+.orientation_vertical .tab:hover:not(:disabled) {
+  color: var(--text-main);
+  background: var(--state-hover, rgba(255, 255, 255, 0.05));
+}
+
+.orientation_vertical .tab.active {
+  background: var(--state-active, rgba(255, 255, 255, 0.08));
+  color: var(--text-main);
+  box-shadow: none;
+}
+
+[data-theme="light"] .orientation_vertical .tab:hover:not(:disabled) {
+  background: rgba(55, 53, 47, 0.06);
+  color: #191919;
+}
+
+[data-theme="light"] .orientation_vertical .tab.active {
+  background: rgba(55, 53, 47, 0.1);
+  color: #191919;
+}
+
+.orientation_vertical .tabLabel {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
 }

@@ -38,7 +38,7 @@ describe("SpacedRepetitionTabBar", () => {
       />
     );
 
-    const unsolvedBtn = screen.getByRole("button", { name: /нерешенные/i });
+    const unsolvedBtn = screen.getByRole("tab", { name: /нерешенные/i });
     fireEvent.click(unsolvedBtn);
 
     expect(onSelectTab).toHaveBeenCalledWith("unsolved");

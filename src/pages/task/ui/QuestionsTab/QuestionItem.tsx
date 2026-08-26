@@ -1,7 +1,5 @@
 import React, { memo } from "react";
-import DOMPurify from "dompurify";
-import { parseMarkdownBlocks } from "@/shared/lib/markdown";
-import { Accordion, CodeViewer } from "@/shared/ui";
+import { Accordion, MarkdownView } from "@/shared/ui";
 import { TaskQuestion } from "@/entities/task";
 import styles from "./QuestionsTab.module.css";
 
@@ -12,9 +10,8 @@ export interface QuestionItemProps {
   onToggle: () => void;
 }
 
-export const QuestionItem = memo(({ question, index, isOpen, onToggle }: QuestionItemProps) => {
+export const QuestionItem = memo(({ question, index, isOpen, onToggle }: QuestionItemProps): React.JSX.Element => {
   const rawAnswer = question.answer || question.response || question.desc || "";
-  const blocks = parseMarkdownBlocks(rawAnswer);
 
   return (
     <Accordion
@@ -29,21 +26,7 @@ export const QuestionItem = memo(({ question, index, isOpen, onToggle }: Questio
       isOpen={isOpen}
       onToggle={onToggle}
     >
-      <div className={styles.answerContent}>
-        {blocks.map((block, bIdx) => {
-          if (block.type === "code") {
-            return <CodeViewer key={bIdx} code={block.code || ""} language={block.language} />;
-          }
-          return (
-            <div
-              key={bIdx}
-              dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(block.html || ""),
-              }}
-            />
-          );
-        })}
-      </div>
+      <MarkdownView content={rawAnswer} />
     </Accordion>
   );
 });

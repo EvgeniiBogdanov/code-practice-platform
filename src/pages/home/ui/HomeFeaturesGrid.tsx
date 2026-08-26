@@ -9,22 +9,23 @@ import {
   ClipboardCheck,
   Zap,
 } from "lucide-react";
-import { clsx } from "clsx";
-import { Card } from "@/shared/ui";
+import { Card, TopicIconBox, TopicIconBoxColor } from "@/shared/ui";
 import styles from "./HomePage.module.css";
 
 interface FeatureCardProps {
   icon: React.ReactNode;
-  badgeClass: string;
+  colorVariant: TopicIconBoxColor;
   title: string;
   description: React.ReactNode;
 }
 
 const FeatureItem = memo(
-  ({ icon, badgeClass, title, description }: FeatureCardProps): React.JSX.Element => (
+  ({ icon, colorVariant, title, description }: FeatureCardProps): React.JSX.Element => (
     <Card className={styles.featureCard}>
       <div className={styles.featureHeader}>
-        <div className={clsx(styles.featureIconBadge, badgeClass)}>{icon}</div>
+        <TopicIconBox colorVariant={colorVariant} size="sm" hoverable={false}>
+          {icon}
+        </TopicIconBox>
         <h4 className={styles.featureTitle}>{title}</h4>
       </div>
       <p className={styles.featureDesc}>{description}</p>
@@ -45,14 +46,14 @@ export const HomeFeaturesGrid = memo((): React.JSX.Element => {
       <div className={styles.featuresGrid}>
         <FeatureItem
           icon={<Code2 size={16} />}
-          badgeClass={styles.badgeBlue}
+          colorVariant="blue"
           title="Редактор и анализ типов"
           description="Редактирование JS, TS и JSX/TSX с живой проверкой типов на лету, всплывающими подсказками сигнатур, Emmet JSX и автоформатированием Prettier."
         />
 
         <FeatureItem
           icon={<Terminal size={16} />}
-          badgeClass={styles.badgeAmber}
+          colorVariant="amber"
           title="Веб-консоль и React Runner"
           description={
             <>
@@ -65,28 +66,28 @@ export const HomeFeaturesGrid = memo((): React.JSX.Element => {
 
         <FeatureItem
           icon={<Brain size={16} />}
-          badgeClass={styles.badgePurple}
+          colorVariant="purple"
           title="Песочница кандидата"
           description="Запускаемый live-код с реальными багами и недочетами кандидатов для отработки навыка проведения технического Code Review."
         />
 
         <FeatureItem
           icon={<RotateCcw size={16} />}
-          badgeClass={styles.badgeGreen}
+          colorVariant="emerald"
           title="Интервальное повторение SM-2"
           description="Календарный алгоритм закрепления задач (1д ➔ 3д ➔ 7д ➔ 14д ➔ 30д ➔ Мастер) с учетом часового пояса и автосбросом кода в день повтора."
         />
 
         <FeatureItem
           icon={<CheckCircle2 size={16} />}
-          badgeClass={styles.badgeGreen}
+          colorVariant="emerald"
           title="Эталонные решения"
           description="Оптимизированные решения с разбором сложности O(N) / O(1), выбором нескольких вариантов реализации и лучшими практиками собеседований."
         />
 
         <FeatureItem
           icon={<ClipboardCheck size={16} />}
-          badgeClass={styles.badgeBlue}
+          colorVariant="blue"
           title="Чек-листы, поиск и таймер"
           description="Критерии самопроверки и вопросы интервьюера, быстрый поиск задач через Command Palette (Cmd+K), таймер собеседования и шпаргалки."
         />

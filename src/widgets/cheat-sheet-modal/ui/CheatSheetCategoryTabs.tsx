@@ -1,5 +1,5 @@
-import { memo } from "react";
-import { clsx } from "clsx";
+import { memo, useMemo } from "react";
+import { Tabs, TabItem } from "@/shared/ui";
 import styles from "./CheatSheetModal.module.css";
 
 export interface CategoryConfig {
@@ -15,19 +15,24 @@ interface CheatSheetCategoryTabsProps {
 
 export const CheatSheetCategoryTabs = memo(
   ({ categories, activeCategory, onSelectCategory }: CheatSheetCategoryTabsProps) => {
+    const items: TabItem[] = useMemo(
+      () =>
+        categories.map((cat) => ({
+          id: cat.id,
+          label: cat.name,
+        })),
+      [categories]
+    );
+
     return (
-      <div className={styles.categoryTabs}>
-        {categories.map((cat) => (
-          <button
-            key={cat.id}
-            type="button"
-            className={clsx(styles.tabBtn, activeCategory === cat.id && styles.activeTab)}
-            onClick={() => onSelectCategory(cat.id)}
-          >
-            {cat.name}
-          </button>
-        ))}
-      </div>
+      <Tabs
+        variant="pills"
+        size="sm"
+        items={items}
+        activeId={activeCategory}
+        onChange={onSelectCategory}
+        className={styles.categoryTabs}
+      />
     );
   }
 );

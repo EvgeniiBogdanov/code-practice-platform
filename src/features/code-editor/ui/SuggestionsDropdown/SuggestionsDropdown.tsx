@@ -8,6 +8,7 @@ export interface SuggestionsDropdownProps {
   selectedIndex: number;
   position: { top: number; left: number };
   onSelect: (item: CompletionItem) => void;
+  onHover?: (index: number) => void;
   className?: string;
 }
 
@@ -16,6 +17,7 @@ export function SuggestionsDropdown({
   selectedIndex,
   position,
   onSelect,
+  onHover,
   className,
 }: SuggestionsDropdownProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -31,7 +33,7 @@ export function SuggestionsDropdown({
     const el = containerRef.current;
     if (!el) return;
     const selectedEl = el.children[selectedIndex] as HTMLElement | undefined;
-    if (selectedEl) {
+    if (selectedEl && typeof selectedEl.scrollIntoView === "function") {
       selectedEl.scrollIntoView({ block: "nearest" });
     }
   }, [selectedIndex]);
@@ -39,14 +41,26 @@ export function SuggestionsDropdown({
   if (items.length === 0) return null;
 
   return (
-    <div ref={containerRef} className={clsx(styles.dropdown, className)}>
+    <div
+      ref={containerRef}
+      className={clsx(styles.dropdown, className)}
+      onMouseDown={(e) => {
+        // Prevent clicking inside dropdown container from blurring textarea
+        e.preventDefault();
+      }}
+    >
       {items.map((item, idx) => {
         const isSelected = idx === selectedIndex;
         return (
           <div
             key={`${item.label}-${idx}`}
             className={clsx(styles.item, isSelected && styles.selected)}
+            onMouseEnter={() => onHover?.(idx)}
             onMouseDown={(e) => {
+              e.preventDefault();
+              onSelect(item);
+            }}
+            onClick={(e) => {
               e.preventDefault();
               onSelect(item);
             }}

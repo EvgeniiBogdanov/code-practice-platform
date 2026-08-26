@@ -1,5 +1,5 @@
 const sortReverseAlphabetically = (words) => {
-  return [...words].sort((a, b) => b.localeCompare(a));
+  return words.sort().reverse();
 };
 
 // Пример вызова:

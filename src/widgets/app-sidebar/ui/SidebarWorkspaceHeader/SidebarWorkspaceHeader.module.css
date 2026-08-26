@@ -144,7 +144,6 @@
 
 .sectionDropdownItem.activeDropdownItem {
   background: var(--state-active);
-  font-weight: 600;
 }
 
 .sectionBadge {

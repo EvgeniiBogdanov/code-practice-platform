@@ -79,13 +79,16 @@ export function getMemberCompletions(
     for (const mem of candidateMembers) {
       const { match, score } = fuzzyMatch(mem.label, memberQuery);
       if (match || !memberQuery) {
+        const tabStopIdx = mem.insertText.indexOf("$1");
         const rawInsert = mem.insertText.replace(/\$1/g, "").replace(/\$2/g, "");
+        const cursorOffset = tabStopIdx >= 0 ? tabStopIdx : undefined;
         scoredMembers.push({
           prefix: mem.label,
           label: mem.label,
           detail: mem.detail,
           kind: mem.kind,
           insertText: rawInsert,
+          cursorOffset,
           replaceStart: cursorIndex - memberQuery.length,
           replaceEnd: cursorIndex + afterMemberLen,
           score,
@@ -116,12 +119,16 @@ export function getMemberCompletions(
         for (const prop of REACT_CSS_PROPERTIES) {
           const { match, score } = fuzzyMatch(prop.label, cssQuery);
           if (match || !cssQuery) {
+            const tabStopIdx = prop.insertText.indexOf("$1");
+            const cleanInsert = prop.insertText.replace(/\$1/g, "").replace(/\$2/g, "");
+            const cursorOffset = tabStopIdx >= 0 ? tabStopIdx : undefined;
             scoredCss.push({
               prefix: prop.label,
               label: prop.label,
               detail: prop.detail,
               kind: prop.kind,
-              insertText: prop.insertText,
+              insertText: cleanInsert,
+              cursorOffset,
               replaceStart: cursorIndex - cssQuery.length,
               replaceEnd: cursorIndex + afterCssLen,
               score: score + 15,
@@ -151,13 +158,16 @@ export function getMemberCompletions(
         for (const item of TS_GENERIC_TYPE_SUGGESTIONS) {
           const { match, score } = fuzzyMatch(item.name, genQuery);
           if (match || !genQuery) {
+            const tabStopIdx = item.insertText.indexOf("$1");
             const cleanInsert = item.insertText.replace(/\$1/g, "").replace(/\$2/g, "");
+            const cursorOffset = tabStopIdx >= 0 ? tabStopIdx : undefined;
             scoredGen.push({
               prefix: item.name,
               label: item.label,
               detail: item.detail,
               kind: "type",
               insertText: cleanInsert,
+              cursorOffset,
               replaceStart: cursorIndex - genQuery.length,
               replaceEnd: cursorIndex + afterGenLen,
               score: score + 12,

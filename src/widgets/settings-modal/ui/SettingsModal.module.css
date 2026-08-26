@@ -384,7 +384,6 @@
 
 .statusActive {
   color: var(--color-status-solved, #10b981);
-  font-weight: 600;
 }
 
 [data-theme="light"] .statusActive {

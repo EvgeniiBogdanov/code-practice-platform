@@ -1,14 +1,7 @@
 import { memo } from "react";
-import { AlertTriangle } from "lucide-react";
-import { Button, Modal } from "@/shared/ui";
-import styles from "./SettingsModal.module.css";
+import { ConfirmModal, ConfirmModalAction } from "@/shared/ui";
 
-export interface ConfirmAction {
-  label: string;
-  onClick: () => void;
-  variant?: "primary" | "secondary" | "danger" | "ghost";
-  icon?: React.ReactNode;
-}
+export type ConfirmAction = ConfirmModalAction;
 
 export interface SettingsResetConfirmDialogProps {
   isOpen: boolean;
@@ -21,30 +14,13 @@ export interface SettingsResetConfirmDialogProps {
 export const SettingsResetConfirmDialog = memo(
   ({ isOpen, title, description, actions, onClose }: SettingsResetConfirmDialogProps) => {
     return (
-      <Modal
+      <ConfirmModal
         isOpen={isOpen}
-        onClose={onClose}
-        size="sm"
         title={title}
-        icon={<AlertTriangle size={18} style={{ color: "var(--accent-red, #ef4444)" }} />}
-      >
-        <div className={styles.resetConfirmBody}>
-          <p className={styles.resetConfirmText}>{description}</p>
-
-          <div className={styles.resetConfirmActions}>
-            {actions.map((act, idx) => (
-              <Button key={idx} variant={act.variant || "danger"} onClick={act.onClick}>
-                {act.icon}
-                <span>{act.label}</span>
-              </Button>
-            ))}
-
-            <Button variant="secondary" onClick={onClose}>
-              Отмена
-            </Button>
-          </div>
-        </div>
-      </Modal>
+        description={description}
+        actions={actions}
+        onClose={onClose}
+      />
     );
   }
 );

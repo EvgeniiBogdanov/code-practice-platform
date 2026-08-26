@@ -83,13 +83,16 @@ export function getHtmlCompletions(
     for (const attr of HTML_ATTRIBUTES) {
       const { match, score } = fuzzyMatch(attr.name, query);
       if (match || !query || force) {
+        const tabStop = attr.insertText.indexOf("$1");
         const cleanInsert = attr.insertText.replace(/\$1/g, "");
+        const cursorOffset = tabStop >= 0 ? tabStop : undefined;
         scored.push({
           prefix: attr.name,
           label: attr.name,
           detail: attr.detail,
           kind: "property",
           insertText: cleanInsert,
+          cursorOffset,
           replaceStart: cursorIndex - query.length,
           replaceEnd: cursorIndex + afterLen,
           score,
