@@ -23,11 +23,13 @@ export interface IntelliSenseState {
   handleCursorMove: (code: string, cursorPos: number, textarea: HTMLTextAreaElement) => void;
   selectNext: () => void;
   selectPrev: () => void;
+  selectIndex: (index: number) => void;
   applySelected: (
     code: string,
     cursorPos: number,
     files?: TaskFile[],
-    filepath?: string
+    filepath?: string,
+    explicitItem?: CompletionItem
   ) => { newCode: string; newCursor: number } | null;
 }
 
@@ -136,14 +138,19 @@ export function useIntelliSense(files: TaskFile[] = [], filepath = "main.jsx"): 
     setSelectedIndex((prev) => (prev - 1 + (items.length || 1)) % (items.length || 1));
   }, [items.length]);
 
+  const selectIndex = useCallback((idx: number) => {
+    setSelectedIndex(idx);
+  }, []);
+
   const applySelected = useCallback(
     (
       code: string,
       cursorPos: number,
       _taskFiles: TaskFile[] = files,
-      currentFilepath = filepath
+      currentFilepath = filepath,
+      explicitItem?: CompletionItem
     ) => {
-      const selected = items[selectedIndex];
+      const selected = explicitItem ?? items[selectedIndex];
       if (!selected) return null;
 
       let newCode = code;
@@ -201,6 +208,7 @@ export function useIntelliSense(files: TaskFile[] = [], filepath = "main.jsx"): 
     handleCursorMove,
     selectNext,
     selectPrev,
+    selectIndex,
     applySelected,
   };
 }

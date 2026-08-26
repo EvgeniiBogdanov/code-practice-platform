@@ -37,12 +37,10 @@
 
 .activeLine {
   color: #c6c6c6 !important;
-  font-weight: 600;
 }
 
 [data-theme="light"] .activeLine {
   color: var(--text-main, #37352f) !important;
-  font-weight: 600;
 }
 
 .hasError {

@@ -84,6 +84,18 @@ describe("Pure JavaScript Completions (VS Code 1-to-1)", () => {
     expect(arrLabels).toContain("map");
     expect(arrLabels).toContain("filter");
     expect(arrLabels).toContain("reduce");
+
+    const reduceItem = arrRes.items.find((i) => i.label === "reduce");
+    expect(reduceItem?.insertText).toBe("reduce()");
+    expect(reduceItem?.cursorOffset).toBe(7);
+
+    const mapItem = arrRes.items.find((i) => i.label === "map");
+    expect(mapItem?.insertText).toBe("map()");
+    expect(mapItem?.cursorOffset).toBe(4);
+
+    const filterItem = arrRes.items.find((i) => i.label === "filter");
+    expect(filterItem?.insertText).toBe("filter()");
+    expect(filterItem?.cursorOffset).toBe(7);
   });
 });
 

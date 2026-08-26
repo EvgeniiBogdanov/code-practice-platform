@@ -16,6 +16,7 @@ describe("useEditorKeyHandlers", () => {
     openCompletions: vi.fn(),
     selectNext: vi.fn(),
     selectPrev: vi.fn(),
+    selectIndex: vi.fn(),
     applySelected: vi.fn(),
     closeCompletions: vi.fn(),
     handleCursorMove: vi.fn(),

@@ -84,6 +84,7 @@ export const CodeEditor = ({
       className={clsx(
         styles.editorWrapper,
         effectiveFullscreen && styles.fullscreen,
+        intelliSense.isOpen && styles.hasOpenDropdown,
         className
       )}
       style={{ "--editor-font-size": `${fontSize}px` } as React.CSSProperties}
@@ -197,15 +198,27 @@ export const CodeEditor = ({
                 items={intelliSense.items}
                 selectedIndex={intelliSense.selectedIndex}
                 position={intelliSense.popupPosition}
-                onSelect={() => {
+                onHover={intelliSense.selectIndex}
+                onSelect={(item) => {
                   if (textareaRef.current) {
                     const applied = intelliSense.applySelected(
                       code,
-                      textareaRef.current.selectionStart
+                      textareaRef.current.selectionStart,
+                      files,
+                      filepath,
+                      item
                     );
                     if (applied) {
                       onChange(applied.newCode);
                       history.pushHistory(applied.newCode, applied.newCursor);
+                      setTimeout(() => {
+                        if (textareaRef.current) {
+                          textareaRef.current.selectionStart = textareaRef.current.selectionEnd =
+                            applied.newCursor;
+                          textareaRef.current.focus();
+                          updateCursorCoords();
+                        }
+                      }, 0);
                     }
                   }
                 }}

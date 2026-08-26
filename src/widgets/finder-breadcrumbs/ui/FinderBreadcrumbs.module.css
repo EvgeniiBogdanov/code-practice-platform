@@ -92,7 +92,6 @@
 
 .taskActiveBtn {
   color: var(--text-main);
-  font-weight: 600;
 }
 
 .staticItem {
@@ -242,7 +241,6 @@
 
 .dropdownItem.active {
   background: var(--state-active);
-  font-weight: 600;
 }
 
 .dropdownItemIcon {

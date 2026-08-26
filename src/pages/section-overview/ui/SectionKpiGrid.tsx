@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { ProgressKpiGrid } from "@/entities/progress";
+import { KpiGrid } from "@/shared/ui";
 
 export interface SectionKpiGridProps {
   total: number;
@@ -10,7 +10,7 @@ export interface SectionKpiGridProps {
 
 export const SectionKpiGrid = memo(({ total, solved, percent, remaining }: SectionKpiGridProps) => {
   return (
-    <ProgressKpiGrid
+    <KpiGrid
       total={total}
       solved={solved}
       percent={percent}

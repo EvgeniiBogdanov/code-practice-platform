@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import {
   PieChart as PieChartIcon,
   BarChart3,
@@ -6,8 +6,7 @@ import {
   CalendarClock,
   CircleSlash,
 } from "lucide-react";
-import { clsx } from "clsx";
-import { NotificationBadge } from "@/shared/ui";
+import { Tabs, TabItem, NotificationBadge } from "@/shared/ui";
 import styles from "./SpacedRepetitionSection.module.css";
 
 export type SRTabType = "distribution" | "schedule" | "due" | "upcoming" | "unsolved";
@@ -28,74 +27,73 @@ export const SpacedRepetitionTabBar = memo(
     unsolvedTasksCount,
     onSelectTab,
   }: SpacedRepetitionTabBarProps) => {
+    const tabItems: TabItem[] = useMemo(
+      () => [
+        {
+          id: "distribution",
+          label: "Статистика",
+          icon: <PieChartIcon size={15} />,
+        },
+        {
+          id: "schedule",
+          label: "Графики",
+          icon: <BarChart3 size={15} />,
+        },
+        {
+          id: "due",
+          label: "Повтор",
+          icon: <RotateCcw size={15} />,
+          badge: (
+            <NotificationBadge
+              count={dueTasksCount}
+              variant="yellow"
+              pinned={false}
+              ring={false}
+              size="sm"
+            />
+          ),
+        },
+        {
+          id: "upcoming",
+          label: "В очереди",
+          icon: <CalendarClock size={15} />,
+          badge: (
+            <NotificationBadge
+              count={upcomingTasksCount}
+              variant="blue"
+              pinned={false}
+              ring={false}
+              size="sm"
+            />
+          ),
+        },
+        {
+          id: "unsolved",
+          label: "Нерешенные",
+          icon: <CircleSlash size={15} />,
+          badge: (
+            <NotificationBadge
+              count={unsolvedTasksCount}
+              variant="red"
+              pinned={false}
+              ring={false}
+              size="sm"
+            />
+          ),
+        },
+      ],
+      [dueTasksCount, upcomingTasksCount, unsolvedTasksCount]
+    );
+
     return (
-      <nav className={styles.tabBar} aria-label="Вкладки аналитики">
-        <button
-          type="button"
-          className={clsx(styles.tabBtn, activeTab === "distribution" && styles.active)}
-          onClick={() => onSelectTab("distribution")}
-        >
-          <PieChartIcon size={15} className={styles.tabBtnIcon} />
-          <span className={styles.tabBtnLabel}>Статистика</span>
-        </button>
-
-        <button
-          type="button"
-          className={clsx(styles.tabBtn, activeTab === "schedule" && styles.active)}
-          onClick={() => onSelectTab("schedule")}
-        >
-          <BarChart3 size={15} className={styles.tabBtnIcon} />
-          <span className={styles.tabBtnLabel}>Графики</span>
-        </button>
-
-        <button
-          type="button"
-          className={clsx(styles.tabBtn, activeTab === "due" && styles.active)}
-          onClick={() => onSelectTab("due")}
-        >
-          <RotateCcw size={15} className={styles.tabBtnIcon} />
-          <span className={styles.tabBtnLabel}>Повтор</span>
-          <NotificationBadge
-            count={dueTasksCount}
-            variant="yellow"
-            pinned={false}
-            ring={false}
-            size="sm"
-          />
-        </button>
-
-        <button
-          type="button"
-          className={clsx(styles.tabBtn, activeTab === "upcoming" && styles.active)}
-          onClick={() => onSelectTab("upcoming")}
-        >
-          <CalendarClock size={15} className={styles.tabBtnIcon} />
-          <span className={styles.tabBtnLabel}>В очереди</span>
-          <NotificationBadge
-            count={upcomingTasksCount}
-            variant="blue"
-            pinned={false}
-            ring={false}
-            size="sm"
-          />
-        </button>
-
-        <button
-          type="button"
-          className={clsx(styles.tabBtn, activeTab === "unsolved" && styles.active)}
-          onClick={() => onSelectTab("unsolved")}
-        >
-          <CircleSlash size={15} className={styles.tabBtnIcon} />
-          <span className={styles.tabBtnLabel}>Нерешенные</span>
-          <NotificationBadge
-            count={unsolvedTasksCount}
-            variant="red"
-            pinned={false}
-            ring={false}
-            size="sm"
-          />
-        </button>
-      </nav>
+      <Tabs
+        orientation="vertical"
+        items={tabItems}
+        activeId={activeTab}
+        onChange={(id) => onSelectTab(id as SRTabType)}
+        ariaLabel="Вкладки аналитики"
+        className={styles.tabBar}
+      />
     );
   }
 );

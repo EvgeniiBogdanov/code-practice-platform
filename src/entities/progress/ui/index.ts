@@ -1,1 +1,1 @@
-export * from "./ProgressKpiGrid";
+export { KpiGrid as ProgressKpiGrid } from "@/shared/ui";

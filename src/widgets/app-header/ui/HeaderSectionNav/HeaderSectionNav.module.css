@@ -29,7 +29,6 @@
 .active {
   background-color: var(--bg-surface);
   color: var(--text-main);
-  font-weight: 600;
   box-shadow: var(--shadow-sm);
 }
 

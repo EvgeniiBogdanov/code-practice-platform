@@ -71,12 +71,16 @@ export function collectPropsCompletions(
   for (const prop of candidateProps) {
     const { match, score } = fuzzyMatch(prop.label, query);
     if (match || !query) {
+      const tabStopIdx = prop.insertText.indexOf("$1");
+      const rawInsert = prop.insertText.replace(/\$1/g, "").replace(/\$2/g, "");
+      const cursorOffset = tabStopIdx >= 0 ? tabStopIdx : undefined;
       scoredProps.push({
         prefix: prop.label,
         label: prop.label,
         detail: prop.detail,
         kind: prop.kind,
-        insertText: prop.insertText,
+        insertText: rawInsert,
+        cursorOffset,
         replaceStart: cursorIndex - query.length,
         replaceEnd: cursorIndex + afterPropLen,
         score,

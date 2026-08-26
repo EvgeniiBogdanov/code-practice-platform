@@ -1,7 +1,7 @@
 import { memo, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { useUIStore } from "@/entities/ui-state";
-import { useModalBehavior } from "@/shared/ui/Modal/lib/useModalBehavior";
+import { useModalBehavior } from "@/shared/ui";
 import { useCheatSheetData } from "../model/useCheatSheetData";
 import { CheatSheetDrawerBody } from "./CheatSheetDrawerBody";
 import styles from "./CheatSheetModal.module.css";

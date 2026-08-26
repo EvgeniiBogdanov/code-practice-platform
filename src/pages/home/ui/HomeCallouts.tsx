@@ -1,45 +1,43 @@
 import React, { memo } from "react";
 import { Lightbulb, Star } from "lucide-react";
-import { Card } from "@/shared/ui";
+import { Callout } from "@/shared/ui";
 import styles from "./HomePage.module.css";
 
 export const HomeCallouts = memo((): React.JSX.Element => {
   return (
     <div className={styles.calloutsGrid}>
-      <Card className={styles.calloutBanner}>
-        <div className={styles.calloutIcon}>
-          <Lightbulb size={20} color="#3b82f6" />
+      <Callout
+        color="blue"
+        icon={<Lightbulb size={20} />}
+        title="Быстрый старт"
+        className={styles.calloutBanner}
+      >
+        <div className={styles.calloutText}>
+          Решайте задачи во встроенном редакторе или любимой IDE. Анализируйте код кандидата,
+          изучайте эталонные решения O(N) / O(1), проверяйте критерии самопроверки и запускайте
+          код в живой консоли и React-песочнице.
         </div>
-        <div className={styles.calloutContent}>
-          <div className={styles.calloutTitle}>Быстрый старт</div>
-          <div className={styles.calloutText}>
-            Решайте задачи во встроенном редакторе или любимой IDE. Анализируйте код кандидата,
-            изучайте эталонные решения O(N) / O(1), проверяйте критерии самопроверки и запускайте
-            код в живой консоли и React-песочнице.
-          </div>
-        </div>
-      </Card>
+      </Callout>
 
-      <Card className={styles.calloutBanner}>
-        <div className={styles.calloutIcon}>
-          <Star size={20} color="#f59e0b" fill="rgba(245, 158, 11, 0.2)" />
+      <Callout
+        color="yellow"
+        icon={<Star size={20} />}
+        title="Open-Source проект"
+        className={styles.calloutBanner}
+      >
+        <div className={styles.calloutText}>
+          Поддержите развитие платформы{" "}
+          <a
+            href="https://github.com/EvgeniiBogdanov/code-practice-platform"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.textLink}
+          >
+            звездой на GitHub
+          </a>{" "}
+          или внесите свой вклад новыми задачами и решениями.
         </div>
-        <div className={styles.calloutContent}>
-          <div className={styles.calloutTitle}>Open-Source проект</div>
-          <div className={styles.calloutText}>
-            Поддержите развитие платформы{" "}
-            <a
-              href="https://github.com/EvgeniiBogdanov/code-practice-platform"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.textLink}
-            >
-              звездой на GitHub
-            </a>{" "}
-            или внесите свой вклад новыми задачами и решениями.
-          </div>
-        </div>
-      </Card>
+      </Callout>
     </div>
   );
 });

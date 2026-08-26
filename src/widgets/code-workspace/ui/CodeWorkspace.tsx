@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { clsx } from "clsx";
+import React, { useState, memo, useMemo } from "react";
+import { Tabs, TabItem } from "@/shared/ui";
 import { CodeEditor } from "@/features/code-editor";
 import { JsConsole, ReactLivePreview } from "@/features/code-runner";
 import { runNodeJsCode, clearRunningTimers, NodeRunnerLogEntry } from "@/shared/lib/code-runners";
@@ -33,7 +33,7 @@ console.table([
 ]);
 `;
 
-export function CodeWorkspace() {
+export const CodeWorkspace = memo((): React.JSX.Element => {
   const [mode, setMode] = useState<"react" | "js">("react");
   const [code, setCode] = useState(mode === "react" ? DEFAULT_REACT_CODE : DEFAULT_JS_CODE);
 
@@ -44,9 +44,18 @@ export function CodeWorkspace() {
     exitCode?: number;
   } | null>(null);
 
-  const handleModeChange = (newMode: "react" | "js") => {
-    setMode(newMode);
-    setCode(newMode === "react" ? DEFAULT_REACT_CODE : DEFAULT_JS_CODE);
+  const langTabs: TabItem[] = useMemo(
+    () => [
+      { id: "react", label: "React" },
+      { id: "js", label: "JavaScript" },
+    ],
+    []
+  );
+
+  const handleModeChange = (newMode: string) => {
+    const validMode = newMode === "js" ? "js" : "react";
+    setMode(validMode);
+    setCode(validMode === "react" ? DEFAULT_REACT_CODE : DEFAULT_JS_CODE);
   };
 
   const handleRunJs = async () => {
@@ -72,22 +81,14 @@ export function CodeWorkspace() {
     <div className={styles.workspace}>
       <div className={styles.header}>
         <h1 className={styles.title}>Интерактивная песочница</h1>
-        <div className={styles.langToggle}>
-          <button
-            type="button"
-            className={clsx(styles.langBtn, mode === "react" && styles.activeLang)}
-            onClick={() => handleModeChange("react")}
-          >
-            React
-          </button>
-          <button
-            type="button"
-            className={clsx(styles.langBtn, mode === "js" && styles.activeLang)}
-            onClick={() => handleModeChange("js")}
-          >
-            JavaScript
-          </button>
-        </div>
+        <Tabs
+          variant="pills"
+          size="sm"
+          items={langTabs}
+          activeId={mode}
+          onChange={handleModeChange}
+          className={styles.langToggle}
+        />
       </div>
 
       <CodeEditor
@@ -118,4 +119,6 @@ export function CodeWorkspace() {
       )}
     </div>
   );
-}
+});
+
+CodeWorkspace.displayName = "CodeWorkspace";

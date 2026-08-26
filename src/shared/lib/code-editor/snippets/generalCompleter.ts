@@ -177,13 +177,16 @@ export function getGeneralCompletions(
     for (const t of TS_UTILITY_TYPES) {
       const { match, score } = fuzzyMatch(t.name, word);
       if (match || (!word && force)) {
+        const tabStopIdx = t.insertText.indexOf("$1");
         const cleanInsert = t.insertText.replace(/\$1/g, "").replace(/\$2/g, "");
+        const cursorOffset = tabStopIdx >= 0 ? tabStopIdx : undefined;
         allItems.push({
           prefix: t.name,
           label: t.label,
           detail: t.detail,
           kind: "type",
           insertText: cleanInsert,
+          cursorOffset,
           autoImport: t.autoImport,
           score: score + 7,
         });
@@ -208,13 +211,16 @@ export function getGeneralCompletions(
       for (const rt of REACT_TS_TYPES) {
         const { match, score } = fuzzyMatch(rt.name, word);
         if (match || (!word && force)) {
-          const cleanInsert = rt.insertText.replace(/\$1/g, "");
+          const tabStopIdx = rt.insertText.indexOf("$1");
+          const cleanInsert = rt.insertText.replace(/\$1/g, "").replace(/\$2/g, "");
+          const cursorOffset = tabStopIdx >= 0 ? tabStopIdx : undefined;
           allItems.push({
             prefix: rt.name,
             label: rt.label,
             detail: rt.detail,
             kind: "type",
             insertText: cleanInsert,
+            cursorOffset,
             autoImport: rt.autoImport,
             score: score + 8,
           });

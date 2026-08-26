@@ -2,6 +2,54 @@
 
 Все ключевые изменения, новые функции и исправления платформы задокументированы в этом файле.
 
+## <a id="v2-2-98"></a>🚀 v2.2.98 — Оптимизация IntelliSense и Сниппетов, Поддержка Мыши в Dropdown, Устранение Дублирования FSD (`shared/ui First`) и Корректировка Задач JS
+
+### 🧠 1. Редактор кода: оптимизация IntelliSense, поддержка мыши и фикс контекстного меню
+
+- **Устранение шаблонного бойлерплейта в автодополнении методов (`javascriptKnowledge.ts`, `reactKnowledge.ts`)**:
+  - Методы массивов (`reduce`, `map`, `filter`, `forEach`, `find`, `sort`, `slice`, `splice`, `join` и др.), промисов (`then`, `catch`, `finally`) и строк теперь подставляют чистое имя вызова со скобками (например, `arr.reduce()`, `arr.map()`), без готовых тел стрелочных функций и шаблонных аргументов (`(acc, curr) => acc, init`).
+  - Курсор автоматически позиционируется внутрь скобок (`cursorOffset`), сохраняя баланс между удобством набора и необходимостью самостоятельной практики синтаксиса.
+  - Для JSX-обработчиков событий (`onClick`, `onChange`, `onSubmit` и др.) убрана генерация тела колбэка: вставляется `onClick={}` с курсором внутри фигурных скобок.
+  - Точный расчёт `cursorOffset` добавлен во все парсеры автодополнения (`memberCompleter.ts`, `generalCompleterHelpers.ts`, `generalCompleter.ts`, `cssCompleter.ts`, `htmlCompleter.ts`).
+- **Полноценная поддержка мыши и клика в меню подсказок (`SuggestionsDropdown.tsx`, `useIntelliSense.ts`)**:
+  - Метод `applySelected` расширен параметром `explicitItem?: CompletionItem`, что обеспечивает применение именно того сниппета, по которому кликнул пользователь, вместо принудительной подстановки первого элемента списка.
+  - Добавлен метод `selectIndex` и проп `onHover`, синхронизирующий активный элемент при наведении курсора (`onMouseEnter`).
+  - Обработчик `onMouseDown` с `e.preventDefault()` сохраняет непрерывный фокус в текстовом поле редактора после клика.
+- **Устранение обрезания контекстного меню контейнером редактора (`CodeEditor.module.css`, `SuggestionsDropdown.module.css`)**:
+  - Снято ограничение `overflow: hidden` с `.editorWrapper`, `.editorBody` и `.textLayersWrapper` (`overflow: visible`), благодаря чему выпадающее меню больше не обрезается при малой высоте редактора (в компактном режиме или при коротком коде).
+  - Слой меню подсказок и карточки сигнатур повышен до `z-index: var(--z-modal, 9000)`, добавлена изоляция контекста через класс `.hasOpenDropdown` (`z-index: 50`).
+
+---
+
+### 🏗️ 2. Архитектурный рефакторинг FSD: ликвидация дублирования компонентов (`shared/ui First`)
+
+- **Устранение 1:1 дубликатов компонентов (`KpiGrid`, `ProgressKpiGrid`)**:
+  - `KpiGrid` добавлен в публичный API `src/shared/ui/index.ts`.
+  - Дублирующий компонент `ProgressKpiGrid` из `entities/progress` удален, потребители (`HomeKpiSummary`, `SectionKpiGrid`) переведены на использование примитива из `@/shared/ui`.
+- **Унификация табов и навигационных панелей (`Tabs.tsx`)**:
+  - Базовый компонент `Tabs` расширен поддержкой стиля `pills` и размера `sm`.
+  - Самописные таб-бары и переключатели (`SpacedRepetitionTabBar`, `CheatSheetCategoryTabs`, `CheatSheetSectionTabs`, `CommandPaletteTabs`, `CodeWorkspace`) переведены на единый компонент `Tabs`, устранены запрещённые inline-стили.
+- **Универсальные модальные окна подтверждения (`ConfirmModal.tsx`)**:
+  - В `src/shared/ui/ConfirmModal` реализован параметризованный презентационный компонент подтверждения действий (`title`, `description`, `confirmText`, `cancelText`, `danger`).
+  - `SettingsResetConfirmDialog` и `StatsModalResetConfirm` переведены на переиспользование `ConfirmModal`.
+- **Унификация презентационных баннеров и иконочных боксов (`Callout`, `TopicIconBox`)**:
+  - Самописные плашки подсказок и лайфхаков в `HomeCallouts` и `CheatSheetCard` заменены на тупоголовый компонент `Callout`.
+  - Обертки иконок в `HomeFeaturesGrid` переведены на стандартный примитив `TopicIconBox`.
+- **Централизация логики буфера обмена (`useCopy.ts`, `CopyButton`)**:
+  - Создан переиспользуемый хук `useCopy`.
+  - Разрозненные локальные реализации `navigator.clipboard.writeText` с таймерами в `EditorToolbar`, `JsConsoleHeader` и `OpenEditorPage` заменены на единый хук `useCopy` и компонент `CopyButton`.
+- **Изоляция Markdown-рендеринга и цветовых утилит**:
+  - `QuestionItem` переведен на компонент `MarkdownView`, инкапсулирующий безопасный парсинг, подсветку и санитизацию.
+  - Дублирование логики маппинга токенов цветов вынесено в утилиту `resolveColorVariant`.
+- **Исправление границ FSD-слоев**:
+  - Устранен прямой импорт внутренних файлов модалки в `CheatSheetModal`, импорты переведены на публичный контракт `@/shared/ui`.
+
+---
+
+### 📚 3. Каталог задач: исправления и актуализация задач JavaScript
+
+---
+
 ## <a id="v2-2-97"></a>🚀 v2.2.97 — Вкладка «Нерешенные» в Статистике Повторений, Фикс Двойного URL-Кодирования и Обновление Задач JavaScript
 
 ### 🔁 1. Интервальное повторение (SM-2): новая вкладка «Нерешенные» (`SpacedRepetitionSection`, `useSpacedRepetitionData.ts`)

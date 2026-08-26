@@ -48,5 +48,4 @@
 .activeLang {
   background-color: var(--bg-surface);
   color: var(--text-main);
-  font-weight: 600;
 }

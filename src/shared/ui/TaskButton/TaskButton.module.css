@@ -54,12 +54,10 @@
 [data-theme="light"] .taskButton.solvedActive {
   background: var(--accent-green, #10b981);
   color: #ffffff;
-  font-weight: 600;
 }
 
 .taskButton.unsolvedActive,
 [data-theme="light"] .taskButton.unsolvedActive {
   background: var(--accent-red, #ef4444);
   color: #ffffff;
-  font-weight: 600;
 }

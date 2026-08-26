@@ -13,6 +13,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { Tooltip, CodeButton } from "@/shared/ui";
+import { useCopy } from "@/shared/lib/hooks";
 import styles from "./JsConsole.module.css";
 
 export interface JsConsoleHeaderProps {
@@ -78,28 +79,8 @@ export const JsConsoleHeader = memo(
     fontSize = 14,
     textToCopy = "",
   }: JsConsoleHeaderProps) => {
-    const [copied, setCopied] = useState(false);
+    const { copied, copy } = useCopy(textToCopy);
     const showLongRunning = useLongRunningIndicator(isRunning);
-
-    const handleCopy = async () => {
-      if (!textToCopy) return;
-      try {
-        if (navigator.clipboard?.writeText) {
-          await navigator.clipboard.writeText(textToCopy);
-        } else {
-          const textarea = document.createElement("textarea");
-          textarea.value = textToCopy;
-          document.body.appendChild(textarea);
-          textarea.select();
-          document.execCommand("copy");
-          document.body.removeChild(textarea);
-        }
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      } catch {
-        // ignore
-      }
-    };
 
     return (
       <div className={styles.header}>
@@ -161,7 +142,7 @@ export const JsConsoleHeader = memo(
               icon={
                 copied ? <Check size={14} className={styles.copiedCheck} /> : <Copy size={14} />
               }
-              onClick={handleCopy}
+              onClick={() => copy()}
               disabled={!textToCopy}
               aria-label="Копировать"
             />

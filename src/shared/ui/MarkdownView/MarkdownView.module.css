@@ -87,7 +87,7 @@
 /* Paragraphs & Text */
 .markdownContainer p {
   margin: 4px 0 8px 0;
-  font-size: var(--fs-body, 16px);
+  font-size: var(--fs-md);
   line-height: var(--lh-body, 1.5);
   font-weight: var(--fw-regular, 400);
   color: inherit;
