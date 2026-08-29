@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import {
-  highlightJS,
+  highlightCode,
   lintJavaScriptCode,
   formatJavaScriptCode,
   fixTypoInCode,
@@ -217,7 +217,7 @@ export const useCodeEditor = ({
 
   const highlightedCode = useMemo(
     () =>
-      highlightJS(code + "\n", {
+      highlightCode(code + "\n", filepath, {
         problems: lintResult.problems,
         highlightWord:
           findReplace.findState.isOpen && findReplace.findState.query
@@ -227,6 +227,7 @@ export const useCodeEditor = ({
       }),
     [
       code,
+      filepath,
       findReplace.findState.isOpen,
       findReplace.findState.query,
       lintResult.problems,

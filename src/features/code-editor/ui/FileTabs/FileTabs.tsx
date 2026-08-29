@@ -12,13 +12,24 @@ export interface FileTabsProps {
   className?: string;
 }
 
+const getTabIconClass = (filename: string): string => {
+  const ext = filename.split(".").pop()?.toLowerCase();
+  if (ext === "jsx") return styles.fileIconJsx;
+  if (ext === "tsx") return styles.fileIconTsx;
+  if (ext === "ts" || ext === "mts" || ext === "cts") return styles.fileIconTs;
+  if (ext === "css" || ext === "scss" || ext === "less") return styles.fileIconCss;
+  if (ext === "html" || ext === "htm") return styles.fileIconHtml;
+  if (ext === "json") return styles.fileIconJson;
+  return styles.fileIconJs;
+};
+
 export function FileTabs({
   files,
   activeIndex,
   onSelectTab,
   isDirtyMap = {},
   className,
-}: FileTabsProps) {
+}: FileTabsProps): React.JSX.Element | null {
   if (files.length <= 1) return null;
 
   return (
@@ -26,6 +37,9 @@ export function FileTabs({
       {files.map((file, idx) => {
         const isActive = idx === activeIndex;
         const isDirty = Boolean(isDirtyMap[idx]);
+        const fileName = file.name || `File ${idx + 1}`;
+        const iconClass = getTabIconClass(fileName);
+        const isTextFile = fileName.endsWith(".css") || fileName.endsWith(".html");
 
         return (
           <button
@@ -34,12 +48,12 @@ export function FileTabs({
             className={clsx(styles.tab, isActive && styles.active)}
             onClick={() => onSelectTab(idx)}
           >
-            {file.name?.endsWith(".css") ? (
-              <FileText size={13} className={styles.fileIcon} />
+            {isTextFile ? (
+              <FileText size={13} className={iconClass} />
             ) : (
-              <FileCode size={13} className={styles.fileIcon} />
+              <FileCode size={13} className={iconClass} />
             )}
-            <span>{file.name || `File ${idx + 1}`}</span>
+            <span>{fileName}</span>
             {isDirty && <span className={styles.dirtyDot} />}
           </button>
         );

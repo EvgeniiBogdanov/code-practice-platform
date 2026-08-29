@@ -14,11 +14,11 @@ type PostItemProps = {
 };
 
 // 1. Исправлен PostItem
-const PostItem = memo(function PostItem({ 
+const PostItem = memo(({ 
   post, 
   onSelect, 
   isSelected 
-}: PostItemProps) {
+}: PostItemProps) => {
   return (
     <li className={isSelected ? 'selected' : ''}>
       <button onClick={() => onSelect(post.id)}>
@@ -35,7 +35,7 @@ type Props = {
   userId: number;
 };
 
-export function UserPostsList({ userId }: Props) {
+export const UserPostsList = ({ userId }: Props) => {
   // 2. Все состояния объявлены корректно
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -148,8 +148,10 @@ export function UserPostsList({ userId }: Props) {
       )}
     </div>
   );
-}
+};
 
-export default function App() {
+const App = () => {
   return <UserPostsList userId={1} />;
-}
+};
+
+export default App;

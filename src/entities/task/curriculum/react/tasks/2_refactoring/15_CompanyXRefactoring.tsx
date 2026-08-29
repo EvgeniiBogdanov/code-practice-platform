@@ -20,11 +20,11 @@ type PostItemProps = {
   isSelected: boolean;
 };
 
-const PostItem = memo(function PostItem({
+const PostItem = memo(({
   post,
   onSelect,
   isSelected,
-}: PostItemProps) {
+}: PostItemProps) => {
   return (
     <li className={isSelected ? 'selected' : ''}>
       <button onClick={() => onSelect(post.id)}>{post.title}</button>
@@ -38,7 +38,7 @@ type Props = {
   userId: number;
 };
 
-export function UserPostsList({ userId }: Props) {
+export const UserPostsList = ({ userId }: Props) => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -90,8 +90,10 @@ export function UserPostsList({ userId }: Props) {
       {visiblePosts.length === 0 && <p>No posts found</p>}
     </div>
   );
-}
+};
 
-export default function App() {
+const App = () => {
   return <UserPostsList userId={1} />;
-}
+};
+
+export default App;

@@ -125,8 +125,18 @@
   display: block;
 }
 
+.fileIconJsx {
+  color: #f59e0b;
+  flex-shrink: 0;
+}
+
+.fileIconTsx {
+  color: #3178c6;
+  flex-shrink: 0;
+}
+
 .fileIconReact {
-  color: #61dafb;
+  color: #f59e0b;
   flex-shrink: 0;
 }
 
@@ -137,6 +147,21 @@
 
 .fileIconJs {
   color: #f59e0b;
+  flex-shrink: 0;
+}
+
+.fileIconCss {
+  color: #38bdf8;
+  flex-shrink: 0;
+}
+
+.fileIconHtml {
+  color: #e34c26;
+  flex-shrink: 0;
+}
+
+.fileIconJson {
+  color: #a855f7;
   flex-shrink: 0;
 }
 

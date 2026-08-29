@@ -114,8 +114,26 @@ import RefactoringCandidate13 from "../tasks/2_refactoring/13_ReactRouterLinks.j
 import RefactoringSolution13 from "../solutions/2_refactoring/13_ReactRouterLinks.js?raw";
 import RefactoringCandidate14 from "../tasks/2_refactoring/14_ProgrammaticNavigation.js?raw";
 import RefactoringSolution14 from "../solutions/2_refactoring/14_ProgrammaticNavigation.js?raw";
+import RefactoringCandidate15Comp from "../tasks/2_refactoring/15_CompanyXRefactoring.tsx";
 import RefactoringCandidate15 from "../tasks/2_refactoring/15_CompanyXRefactoring.tsx?raw";
+import RefactoringSolution15Comp from "../solutions/2_refactoring/15_CompanyXRefactoring.tsx";
 import RefactoringSolution15 from "../solutions/2_refactoring/15_CompanyXRefactoring.tsx?raw";
+import RefactoringCandidate16 from "../tasks/2_refactoring/16_TimerRefactoring/App.jsx";
+import RefactoringCandidate16Raw from "../tasks/2_refactoring/16_TimerRefactoring/App.jsx?raw";
+import RefactoringCandidate16_App from "../tasks/2_refactoring/16_TimerRefactoring/App.jsx?raw";
+import RefactoringCandidate16_Css from "../tasks/2_refactoring/16_TimerRefactoring/App.css?raw";
+import RefactoringSolution16 from "../solutions/2_refactoring/16_TimerRefactoring/App.jsx";
+import RefactoringSolution16Raw from "../solutions/2_refactoring/16_TimerRefactoring/App.jsx?raw";
+import RefactoringSolution16_App from "../solutions/2_refactoring/16_TimerRefactoring/App.jsx?raw";
+import RefactoringSolution16_Css from "../solutions/2_refactoring/16_TimerRefactoring/App.css?raw";
+import RefactoringCandidate17 from "../tasks/2_refactoring/17_RandomNumberGenerator/App.jsx";
+import RefactoringCandidate17_App from "../tasks/2_refactoring/17_RandomNumberGenerator/App.jsx?raw";
+import RefactoringCandidate17_Buttons from "../tasks/2_refactoring/17_RandomNumberGenerator/Buttons.jsx?raw";
+import RefactoringCandidate17_List from "../tasks/2_refactoring/17_RandomNumberGenerator/List.jsx?raw";
+import RefactoringSolution17 from "../solutions/2_refactoring/17_RandomNumberGenerator/App.jsx";
+import RefactoringSolution17_App from "../solutions/2_refactoring/17_RandomNumberGenerator/App.jsx?raw";
+import RefactoringSolution17_Buttons from "../solutions/2_refactoring/17_RandomNumberGenerator/Buttons.jsx?raw";
+import RefactoringSolution17_List from "../solutions/2_refactoring/17_RandomNumberGenerator/List.jsx?raw";
 
 // Импорт компонентов кандидатов
 import Candidate1 from "../tasks/3_middle/1_FetchPersons.jsx";
@@ -1605,8 +1623,9 @@ export const REFACTORING_TASKS = [
     id: "r15",
     title: "15. Рефакторинг (Company X)",
     desc: "Исправьте ключевые антипаттерны, утечки таймера, мутации массивов и мемоизацию в TypeScript компоненте.",
-    isRaw: true,
+    candidate: RefactoringCandidate15Comp,
     rawCandidate: RefactoringCandidate15,
+    solution: RefactoringSolution15Comp,
     rawSolution: RefactoringSolution15,
     filepath: "src/react/tasks/2_refactoring/15_CompanyXRefactoring.tsx",
     articles: [
@@ -1633,6 +1652,178 @@ export const REFACTORING_TASKS = [
       "Массив сортируется иммутабельно: [...items].sort() вместо items.sort()",
       "Фильтрация обёрнута в useMemo для предотвращения пересчёта на каждый рендер",
       "Все три антипаттерна найдены и исправлены: таймер, мутация, мемоизация",
+    ],
+  },
+  {
+    id: "r16",
+    title: "16. Рефакторинг (Company X)",
+    desc: "Проведите рефакторинг компонента секундомера: вынесите стили в App.css, избавьтесь от прямого доступа к DOM, устраните утечки таймеров, вынесите логику в кастомный хук useTimer и отформатируйте вывод времени.",
+    isMultiFile: true,
+    candidate: RefactoringCandidate16,
+    rawCandidate: `// App.jsx\n${RefactoringCandidate16_App}\n\n// App.css\n${RefactoringCandidate16_Css}`,
+    solution: RefactoringSolution16,
+    rawSolution: `// App.jsx\n${RefactoringSolution16_App}\n\n// App.css\n${RefactoringSolution16_Css}`,
+    filepath: "src/react/tasks/2_refactoring/16_TimerRefactoring/App.jsx",
+    files: [
+      {
+        name: "App.jsx",
+        filepath: "src/react/tasks/2_refactoring/16_TimerRefactoring/App.jsx",
+        candidateCode: RefactoringCandidate16_App,
+        solutionCode: RefactoringSolution16_App,
+      },
+      {
+        name: "App.css",
+        filepath: "src/react/tasks/2_refactoring/16_TimerRefactoring/App.css",
+        candidateCode: RefactoringCandidate16_Css,
+        solutionCode: RefactoringSolution16_Css,
+      },
+    ],
+    articles: [
+      {
+        title: "Реакция на ввод с помощью состояния",
+        urlTitle: "Декларативный UI вместо императивного DOM (React.dev)",
+        url: "https://react.dev/learn/reacting-to-input-with-state",
+      },
+      {
+        title: "Кастомные хуки в React",
+        urlTitle: "Переиспользование логики с хуками (React.dev)",
+        url: "https://react.dev/learn/reusing-logic-with-custom-hooks",
+      },
+      {
+        title: "Очистка эффектов и таймеров",
+        urlTitle: "Функция очистки в useEffect (Doka.guide)",
+        url: "https://doka.guide/js/react-use-effect/#ochistka-effekta",
+      },
+      {
+        title: "Хранение ссылок без рендера",
+        urlTitle: "Хук useRef (Doka.guide)",
+        url: "https://doka.guide/js/react-use-ref/",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему document.querySelector('.timer') внутри useEffect является грубым антипаттерном в React?",
+        answer: "React следует декларативной парадигме (UI = f(state)). Прямой поиск в DOM работает в обход Virtual DOM, ломает инкапсуляцию компонентов (если на странице несколько таймеров, изменится только первый) и усложняет тестирование.",
+      },
+      {
+        question: "Как предотвратить утечку памяти при использовании setInterval в React-компоненте?",
+        answer: "Обязательно возвращать функцию очистки (cleanup) из useEffect: return () => { clearInterval(intervalRef.current); intervalRef.current = null; }. При размонтировании компонента таймер будет корректно остановлен.",
+      },
+      {
+        question: "Зачем выносить логику секундомера в кастомный хук useTimer()?",
+        answer: "Это разделяет ответственность (Single Responsibility Principle): хук управляет состоянием, таймером и действиями (start, pause, stop, toggle), а компонент отвечает исключительно за визуальное представление (JSX).",
+      },
+      {
+        question: "Как реализовать временную анимацию (пульсацию) декларативно без прямого classList.add/remove?",
+        answer: "Завести булево состояние isPulsating. При наступлении условия (секунды кратны 5) вызывать setIsPulsating(true) и запускать setTimeout на 600 мс с вызовом setIsPulsating(false), с обязательной очисткой clearTimeout в эффекте.",
+      },
+    ],
+    checklist: [
+      "Стили вынесены в отдельный файл App.css",
+      "Все функции объявлены как стрелочные (const App = () => { ... })",
+      "Прямой вызов document.querySelector('.timer') удалён и заменён на состояние isPulsating",
+      "Анимация pulsate включается через состояние и автоматически сбрасывается через setTimeout с clearTimeout",
+      "useRef используется для хранения идентификатора интервала без лишних перерендеров",
+      "Интервал гарантированно очищается при размонтировании (cleanup в useEffect)",
+      "Логика секундомера вынесена в кастомный хук useTimer() (SRP)",
+      "Время отформатировано в привычный вид мм:сс с помощью padStart(2, '0')",
+    ],
+  },
+  {
+    id: "r17",
+    title: "17. Рефакторинг (Company X)",
+    desc: "Исправьте проблемы в приложении генератора случайных чисел: почините раскрытие списка при переключении видимости, устраните потерю остановки таймера, предотвратите сброс данных при повторном монтировании, реализуйте удаление элементов и улучшите архитектуру приложения.",
+    isMultiFile: true,
+    candidate: RefactoringCandidate17,
+    rawCandidate: `// App.jsx\n${RefactoringCandidate17_App}\n\n// Buttons.jsx\n${RefactoringCandidate17_Buttons}\n\n// List.jsx\n${RefactoringCandidate17_List}`,
+    solution: RefactoringSolution17,
+    rawSolution: `// App.jsx\n${RefactoringSolution17_App}\n\n// Buttons.jsx\n${RefactoringSolution17_Buttons}\n\n// List.jsx\n${RefactoringSolution17_List}`,
+    filepath: "src/react/tasks/2_refactoring/17_RandomNumberGenerator/App.jsx",
+    files: [
+      {
+        name: "App.jsx",
+        filepath: "src/react/tasks/2_refactoring/17_RandomNumberGenerator/App.jsx",
+        candidateCode: RefactoringCandidate17_App,
+        solutionCode: RefactoringSolution17_App,
+      },
+      {
+        name: "Buttons.jsx",
+        filepath: "src/react/tasks/2_refactoring/17_RandomNumberGenerator/Buttons.jsx",
+        candidateCode: RefactoringCandidate17_Buttons,
+        solutionCode: RefactoringSolution17_Buttons,
+      },
+      {
+        name: "List.jsx",
+        filepath: "src/react/tasks/2_refactoring/17_RandomNumberGenerator/List.jsx",
+        candidateCode: RefactoringCandidate17_List,
+        solutionCode: RefactoringSolution17_List,
+      },
+    ],
+    articles: [
+      {
+        title: "Хранение значений в refs",
+        urlTitle: "Документация useRef (React.dev)",
+        url: "https://react.dev/learn/referencing-values-with-refs",
+      },
+      {
+        title: "Подъем состояния (Lifting State Up)",
+        urlTitle: "Разделение состояния между компонентами (React.dev)",
+        url: "https://react.dev/learn/sharing-state-between-components",
+      },
+      {
+        title: "Рендеринг списков и ключи",
+        urlTitle: "Ключи в коллекциях JSX (React.dev)",
+        url: "https://react.dev/learn/rendering-lists#keeping-list-items-in-order-with-key",
+      },
+      {
+        title: "Очистка эффектов и таймеров",
+        urlTitle: "Функция очистки в useEffect (Doka.guide)",
+        url: "https://doka.guide/js/react-use-effect/#ochistka-effekta",
+      },
+      {
+        title: "Хук useState и обновление состояния",
+        urlTitle: "Работа с состоянием (Doka.guide)",
+        url: "https://doka.guide/js/react-use-state/",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему при вызове setVisibleList(visibleList) список не скрывается и не раскрывается?",
+        answer:
+          "React выполняет проверку состояния через Object.is(prevState, nextState). Передача того же значения не регистрирует изменение, и React пропускает повторный рендер (bailout). Для корректной инверсии необходимо передавать сеттеру функцию: setVisibleList(prev => !prev).",
+      },
+      {
+        question: "Почему хранение ID таймера в локальной переменной let timer = null не позволяет остановить интервал кнопкой «Стоп»?",
+        answer:
+          "При каждом рендере функционального компонента его тело выполняется заново, пересоздавая локальные переменные с начальными значениями. После первого тика интервала вызов setNumbers приводит к перерендеру, где timer снова становится null. Вызов clearInterval(timer) в stop() пытается очистить null, а запущенный в фоновом потоке интервал продолжает работать. Решение — использовать useRef (timerRef.current), переживающий рендеры.",
+      },
+      {
+        question: "Почему при условном рендеринге {visibleList && <List />} скрытие и повторный показ сбрасывают состояние списка к [1, 2, 3]?",
+        answer:
+          "Когда условие становится false, React полностью размонтирует (unmount) компонент List и уничтожает его локальный useState. При повторном рендере List создаётся заново с начальным значением [1, 2, 3]. Чтобы данные сохранялись, состояние необходимо поднять в родительский компонент App (Lifting State Up).",
+      },
+      {
+        question: "В чём опасность использования key={`${index}_${num}`} в списках с динамическим удалением элементов?",
+        answer:
+          "При удалении элемента из середины списка индексы всех последующих элементов сдвигаются. Если ключи завязаны на index, React ошибочно сопоставит старые DOM-узлы и их внутреннее состояние с новыми элементами. Для стабильной идентификации следует генерировать постоянный уникальный id (например, через счётчик nextId.current++ или crypto.randomUUID()) и хранить его в объекте элемента { id, value }.",
+      },
+      {
+        question: "Зачем возвращать функцию очистки с clearInterval из useEffect в компоненте с таймером?",
+        answer:
+          "Если компонент размонтируется при работающем интервале, функция без очистки продолжит вызываться в фоновом потоке браузера, вызывая утечку памяти (memory leak) и ошибки попытки вызова setState на размонтированном компоненте.",
+      },
+    ],
+    checklist: [
+      "Исправлен toggle видимости: используется функциональное обновление setVisibleList(prev => !prev)",
+      "ID таймера хранится в useRef (timerRef.current) вместо локальной переменной",
+      "Флаг активности таймера started вынесен в useState для реактивного управления кнопками",
+      "Добавлена очистка интервала clearInterval в useEffect при размонтировании",
+      "Состояние списка numbers поднято в родительский компонент App (Lifting State Up)",
+      "Реализовано удаление элементов по уникальному идентификатору (removeNumber)",
+      "Элементы списка используют уникальные стабильные ключи (key={item.id})",
+      "Кнопки имеют корректные disabled-состояния (Старт блокируется при работе, Стоп — при простое)",
+      "Генерация случайного числа исправлена на Math.floor(Math.random() * 10) + 1",
+      "Обработчики событий в App мемоизированы через useCallback",
     ],
   },
 ];

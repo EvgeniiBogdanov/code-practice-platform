@@ -14,12 +14,15 @@ export function getLanguageId(filepath = "main.jsx"): LanguageId {
     case "js":
     case "mjs":
     case "cjs":
+    case "javascript":
       return "javascript";
     case "jsx":
+    case "react":
       return "javascriptreact";
     case "ts":
     case "mts":
     case "cts":
+    case "typescript":
       return "typescript";
     case "tsx":
       return "typescriptreact";
@@ -37,6 +40,11 @@ export function getLanguageId(filepath = "main.jsx"): LanguageId {
     case "md":
     case "markdown":
       return "markdown";
+    case "notepad":
+    case "text":
+    case "txt":
+    case "plaintext":
+      return "plaintext";
     default:
       return "javascript";
   }

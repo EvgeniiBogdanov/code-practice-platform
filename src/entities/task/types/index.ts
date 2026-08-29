@@ -38,6 +38,12 @@ export interface TaskQuestion {
   response?: string;
 }
 
+export interface TaskArticleItem {
+  title: string;
+  url: string;
+  urlTitle?: string;
+}
+
 export interface Task {
   id: string | number;
   title: string;
@@ -56,6 +62,7 @@ export interface Task {
   solutions?: TaskSolution[];
   variants?: TaskSolution[];
   materials?: string[];
+  articles?: TaskArticleItem[];
   checklist?: string[];
   questions?: TaskQuestion[];
   interviewerQuestions?: TaskQuestion[];

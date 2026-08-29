@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { clsx } from "clsx";
-import { highlightJS } from "../../../lib/code-editor";
+import { highlightCode } from "../../../lib/code-editor";
 import { cleanCode, calculateGutterWidth, getLanguageMeta } from "../lib";
 import { CodeViewerHeader } from "./CodeViewerHeader";
 import { CodeViewerGutter } from "./CodeViewerGutter";
@@ -16,7 +16,7 @@ export const CodeViewer = ({
   language = "notepad",
   className,
   showLineNumbers = true,
-}: CodeViewerProps) => {
+}: CodeViewerProps): React.JSX.Element => {
   const normalizedCode = useMemo(() => cleanCode(code), [code]);
   const lines = useMemo(() => normalizedCode.split("\n"), [normalizedCode]);
   const langMeta = useMemo(() => getLanguageMeta(language), [language]);
@@ -25,8 +25,8 @@ export const CodeViewer = ({
     if (langMeta.isNotepad) {
       return escapeHtmlChar(normalizedCode || "// Текст отсутствует");
     }
-    return highlightJS(normalizedCode || "// Код отсутствует");
-  }, [normalizedCode, langMeta.isNotepad]);
+    return highlightCode(normalizedCode || "// Код отсутствует", language);
+  }, [normalizedCode, language, langMeta.isNotepad]);
 
   const gutterWidth = useMemo(() => calculateGutterWidth(lines.length), [lines.length]);
 

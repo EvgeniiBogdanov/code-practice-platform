@@ -405,6 +405,10 @@ import MemoizeBasicSolutionRaw from "../solutions/12_collections_map/level3/15_M
 import MemoizeWithTTLLoggingCandidateRaw from "../tasks/12_collections_map/level3/16_MemoizeWithTTLLogging.js?raw";
 import MemoizeWithTTLLoggingSolutionRaw from "../solutions/12_collections_map/level3/16_MemoizeWithTTLLogging.js?raw";
 
+import CreateCategoryTreeCandidateRaw from "../tasks/12_collections_map/level3/17_CreateCategoryTree.js?raw";
+import CreateCategoryTreeSolutionRaw from "../solutions/12_collections_map/level3/17_CreateCategoryTree.js?raw";
+import CreateCategoryTreeExplanationRaw from "../explanations/12_collections_map/17_CreateCategoryTree.md?raw";
+
 // JS PROMISES IMPORTS
 // Level 1
 import CreatePromiseCandidateRaw from "../tasks/13_promises/level1/1_CreatePromise.js?raw";
@@ -6189,6 +6193,82 @@ export const JS_COLLECTIONS_MAP_TASKS = [
       "Логирование 'from cache' при актуальном кэше",
       "Логирование 'key delete' при протухшем кэше",
       "Логирование 'calculated' при новом вычислении",
+    ],
+  },
+  {
+    id: "js196",
+    group: "Коллекции",
+    subgroup: "Map",
+    title: "15. Преобразование списка категорий (Company X) (Уровень 3)",
+    desc: "Преобразуйте плоский список категорий с ссылками на родителей в иерархическую структуру дерева с массивами children за O(n).",
+    isRaw: true,
+    candidate: CreateCategoryTreeCandidateRaw,
+    rawCandidate: CreateCategoryTreeCandidateRaw,
+    solution: CreateCategoryTreeSolutionRaw,
+    rawSolution: CreateCategoryTreeSolutionRaw,
+    explanation: CreateCategoryTreeExplanationRaw,
+    filepath: "src/javascript/tasks/12_collections_map/level3/17_CreateCategoryTree.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение (O(n) через Map)",
+        isRecommended: true,
+        badge: "Линейная сложность O(n)",
+        recommendationNote: "Использование Map в качестве таблицы соответствий позволяет связать дочерние и родительские элементы за два линейных прохода без рекурсии и вложенных поисков.",
+        rawSolution: CreateCategoryTreeSolutionRaw,
+        filepath: "src/javascript/tasks/12_collections_map/level3/17_CreateCategoryTree.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Коллекция Map в JavaScript (Doka.guide)",
+        urlTitle: "Дока — Структура данных Map",
+        url: "https://doka.guide/js/map/",
+      },
+      {
+        title: "Преобразование плоского массива в дерево (Хабр Q&A)",
+        urlTitle: "Хабр — Построение дерева из плоского массива",
+        url: "https://qna.habr.com/q/623351",
+      },
+      {
+        title: "Структуры данных: Map и Set (LearnJS)",
+        urlTitle: "Учебник JavaScript — Map и Set",
+        url: "https://learn.javascript.ru/map-set",
+      },
+      {
+        title: "Объект Map и его методы (MDN)",
+        urlTitle: "MDN — Map API и методы",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Map",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Какова временная и пространственная сложность предложенного решения через Map?",
+        answer: "Сложность составляет O(N) по времени (два последовательных прохода по массиву с O(1) чтением/записью в Map) и O(N) по памяти (хранение N узлов в nodeMap и итоговом массиве roots).",
+      },
+      {
+        question: "Почему наивное рекурсивное решение с .filter() внутри дает сложность O(N²)?",
+        answer: "При вызове .filter() на каждом шаге рекурсии для каждого узла перебирается весь массив (N * N операций). На списке из 10 000 элементов это 100 млн итераций, что вызывает заметные задержки и блокирует поток выполнения.",
+      },
+      {
+        question: "Почему у листьев (элементов без детей) поле children не создается, а у корней создается всегда?",
+        answer: "Согласно спецификации формата, листья не должны содержать пустой массив children: [], чтобы минимизировать объем JSON и отличать пустую папку/контейнер (корень) от конечного элемента. Поле children создается динамически только при обнаружении первого дочернего элемента или явно для корней (parent === null).",
+      },
+      {
+        question: "Как алгоритм защищен от 'битых' ссылок (когда parent ссылается на несуществующий title)?",
+        answer: "С помощью проверки `if (!parentNode) return;`. Если родительский элемент отсутствует в nodeMap, дочерний узел просто игнорируется и не вызывает ошибку TypeError (Cannot set properties of undefined).",
+      },
+      {
+        question: "В чем преимущество использования new Map() по сравнению с обычным объектом {} для словаря узлов?",
+        answer: "Map не имеет коллизий со стандартными свойствами прототипа (например, 'toString', 'constructor', 'hasOwnProperty'), поддерживает любые типы ключей и явно выражает семантику ассоциативного массива.",
+      },
+    ],
+    checklist: [
+      "Создание словаря узлов const nodeMap = new Map() и наполнение плоскими объектами за первый проход O(n)",
+      "Проверка if (parent === null) для явного добавления корней в roots с инициализацией node.children = []",
+      "Поиск родительского узла через nodeMap.get(parent) за O(1) и защита if (!parentNode) return",
+      "Инициализация parentNode.children = [] только при наличии хотя бы одного дочернего элемента",
+      "Добавление дочернего узла в parentNode.children.push(node)",
+      "Возврат массива корней return roots с результирующей сложностью O(n) по времени и памяти",
     ],
   },
 ];

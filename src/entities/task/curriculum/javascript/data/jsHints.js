@@ -2696,6 +2696,20 @@ export const JS_HINTS = {
       "title": "Псевдокод и сигнатура",
       "content": "```javascript\n// Сигнатура функции:\nfunction solution(...args) {\n  // 1. Валидация входных данных\n  // 2. Основная логика\n  // 3. Возврат результата\n}\n```"
     }
+  },
+  "js196": {
+    "level1": {
+      "title": "Идея и ментальная модель",
+      "content": "Для решения за O(n) используйте двухпроходный алгоритм через Map: на первом шаге создайте плоский словарь всех узлов по их названию (title -> { title }), а на втором шаге свяжите узлы с их родителями по ссылке."
+    },
+    "level2": {
+      "title": "Граничные случаи и ловушки",
+      "content": "• Корневые узлы (parent === null) всегда должны иметь массив children (даже пустой []).\n• У листьев (узлов без потомков) свойство children создавать не нужно.\n• Проверяйте наличие родителя (if (!parentNode) return;), чтобы избежать ошибок при битых ссылках."
+    },
+    "level3": {
+      "title": "Псевдокод и сигнатура",
+      "content": "```javascript\nconst createCategoryTree = (list) => {\n  const nodeMap = new Map();\n  list.forEach(({ title }) => nodeMap.set(title, { title }));\n  const roots = [];\n  list.forEach(({ title, parent }) => {\n    const node = nodeMap.get(title);\n    if (parent === null) {\n      node.children = node.children || [];\n      roots.push(node);\n      return;\n    }\n    const parentNode = nodeMap.get(parent);\n    if (!parentNode) return;\n    parentNode.children = parentNode.children || [];\n    parentNode.children.push(node);\n  });\n  return roots;\n};\n```"
+    }
   }
 };
 
