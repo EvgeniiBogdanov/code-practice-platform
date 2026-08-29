@@ -28,8 +28,13 @@ export function buildSandboxIframeSrcDoc({
     fileKeys[0];
 
   const transpiledModules: Record<string, string> = {};
+  let customCss = "";
   for (const key of fileKeys) {
     const fileObj = filesMap[key];
+    if (key.endsWith(".css") || key.endsWith(".scss") || key.endsWith(".less")) {
+      customCss += `\n/* ${key} */\n` + (fileObj.code || "");
+      continue;
+    }
     const { code: transformedCode, error: transpileErr } = transpileCode(fileObj.code, key);
     if (transpileErr) {
       return { srcDoc: null, error: transpileErr };
@@ -38,18 +43,13 @@ export function buildSandboxIframeSrcDoc({
   }
 
   const isLight = theme === "light";
-  const bgColor = isLight ? "#ffffff" : "#141414";
-  const textColor = isLight ? "#1e293b" : "#cccccc";
+  const bgColor = isLight ? "#ffffff" : "#141414", textColor = isLight ? "#1e293b" : "#cccccc";
   const borderColor = isLight ? "#e2e8f0" : "rgba(255, 255, 255, 0.08)";
-  const inputBg = isLight ? "#f8fafc" : "#1e1e1e";
-  const inputBorder = isLight ? "#cbd5e1" : "rgba(255, 255, 255, 0.12)";
-  const btnBg = isLight ? "#f3f4f6" : "#222222";
-  const btnText = isLight ? "#1f2937" : "#e5e5e5";
-  const btnBorder = isLight ? "#d1d5db" : "rgba(255, 255, 255, 0.1)";
-  const btnHoverBg = isLight ? "#e5e7eb" : "#2d2d2d";
+  const inputBg = isLight ? "#f8fafc" : "#1e1e1e", inputBorder = isLight ? "#cbd5e1" : "rgba(255, 255, 255, 0.12)";
+  const btnBg = isLight ? "#f3f4f6" : "#222222", btnText = isLight ? "#1f2937" : "#e5e5e5";
+  const btnBorder = isLight ? "#d1d5db" : "rgba(255, 255, 255, 0.1)", btnHoverBg = isLight ? "#e5e7eb" : "#2d2d2d";
   const errorBg = isLight ? "rgba(239, 68, 68, 0.08)" : "rgba(239, 68, 68, 0.12)";
-  const errorBorder = isLight ? "rgba(239, 68, 68, 0.3)" : "rgba(239, 68, 68, 0.4)";
-  const errorText = isLight ? "#991b1b" : "#fca5a5";
+  const errorBorder = isLight ? "rgba(239, 68, 68, 0.3)" : "rgba(239, 68, 68, 0.4)", errorText = isLight ? "#991b1b" : "#fca5a5";
 
   const srcDoc = `<!DOCTYPE html>
 <html lang="ru" data-theme="${isLight ? "light" : "dark"}">
@@ -146,6 +146,7 @@ export function buildSandboxIframeSrcDoc({
       margin-top: 12px; background: #3b82f6; color: #ffffff; padding: 6px 12px;
       font-size: 12px; border-radius: 6px; border: none; cursor: pointer; font-weight: 500;
     }
+    ${customCss}
   </style>
 </head>
 <body>

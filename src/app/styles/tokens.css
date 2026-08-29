@@ -188,6 +188,14 @@
   --hl-type: #79c0ff;
   --hl-variable: #e6edf3;
   --hl-regex: #d2a8ff;
+  --hl-css-prop: #79c0ff;
+  --hl-css-val: #a5d6ff;
+  --hl-css-selector: #d2a8ff;
+  --hl-css-unit: #ff7b72;
+  --hl-css-atrule: #ff7b72;
+  --hl-css-color: #f59e0b;
+  --hl-doctype: #8b949e;
+  --hl-entity: #79c0ff;
 
   /* ==========================================
      3. SPACING TOKENS
@@ -377,4 +385,12 @@
   --hl-type: #0066cc;
   --hl-variable: #37352f;
   --hl-regex: #7d449e;
+  --hl-css-prop: #0066cc;
+  --hl-css-val: #0a3069;
+  --hl-css-selector: #7d449e;
+  --hl-css-unit: #c75d18;
+  --hl-css-atrule: #d32f2f;
+  --hl-css-color: #d97706;
+  --hl-doctype: #5c5b56;
+  --hl-entity: #0066cc;
 }

@@ -1,9 +1,10 @@
 /**
  * IndexedDB Database Service for Code Practice Platform
+ * Resilient schema management with dynamic version discovery & multi-tab coordination.
  */
 
 export const DB_NAME = "code_practice_platform_db";
-export const DB_VERSION = 3;
+export const DB_VERSION = 4;
 
 export const STORES = {
   SOLUTIONS: "solutions",
@@ -27,13 +28,10 @@ export function isIndexedDBAvailable(): boolean {
 }
 
 export async function requestPersistentStorage(): Promise<boolean> {
-  if (typeof navigator !== "undefined" && navigator.storage && navigator.storage.persist) {
+  if (typeof navigator !== "undefined" && navigator.storage?.persist) {
     try {
       const isPersisted = await navigator.storage.persisted();
-      if (!isPersisted) {
-        return await navigator.storage.persist();
-      }
-      return isPersisted;
+      return isPersisted || (await navigator.storage.persist());
     } catch {
       return false;
     }
@@ -46,7 +44,7 @@ export async function getStorageEstimate(): Promise<{
   quotaMB: number;
   percentUsed: number;
 }> {
-  if (typeof navigator !== "undefined" && navigator.storage && navigator.storage.estimate) {
+  if (typeof navigator !== "undefined" && navigator.storage?.estimate) {
     try {
       const { usage = 0, quota = 0 } = await navigator.storage.estimate();
       const usageMB = +(usage / (1024 * 1024)).toFixed(2);
@@ -82,83 +80,123 @@ function initObjectStores(db: IDBDatabase): void {
   }
 }
 
-export function getDB(version: number = DB_VERSION): Promise<IDBDatabase> {
-  if (dbInstance) {
-    const hasAllStores = Object.values(STORES).every((s) =>
-      dbInstance!.objectStoreNames.contains(s)
-    );
-    if (hasAllStores) return Promise.resolve(dbInstance);
-    try {
-      dbInstance.close();
-    } catch {
-      // ignore
-    }
-    dbInstance = null;
-    dbPromise = null;
+const hasAllStores = (db: IDBDatabase): boolean =>
+  Object.values(STORES).every((s) => db.objectStoreNames.contains(s));
+
+const resetDbCache = (): void => {
+  try {
+    dbInstance?.close();
+  } catch {
+    // ignore
   }
+  dbInstance = null;
+  dbPromise = null;
+};
 
-  if (dbPromise) return dbPromise;
+const attachLifecycle = (db: IDBDatabase): void => {
+  dbInstance = db;
+  db.onversionchange = resetDbCache;
+  db.onclose = resetDbCache;
+};
 
-  if (!isIndexedDBAvailable()) {
-    return Promise.reject(new Error("IndexedDB is not available."));
-  }
-
-  dbPromise = new Promise<IDBDatabase>((resolve, reject) => {
-    const request = window.indexedDB.open(DB_NAME, version);
-
-    request.onupgradeneeded = (event) => {
-      const db = (event.target as IDBOpenDBRequest).result;
-      initObjectStores(db);
-    };
-
-    request.onsuccess = (event) => {
-      const db = (event.target as IDBOpenDBRequest).result;
-      const hasAllStores = Object.values(STORES).every((s) => db.objectStoreNames.contains(s));
-
-      if (!hasAllStores) {
-        const nextVersion = Math.max(version, db.version) + 1;
-        try {
-          db.close();
-        } catch {
-          // ignore
-        }
-        dbInstance = null;
-        dbPromise = null;
-        resolve(getDB(nextVersion));
+const openWithVersion = (version: number): Promise<IDBDatabase> =>
+  new Promise((resolve, reject) => {
+    const req = window.indexedDB.open(DB_NAME, version);
+    req.onupgradeneeded = (e) => initObjectStores((e.target as IDBOpenDBRequest).result);
+    req.onsuccess = (e) => {
+      const db = (e.target as IDBOpenDBRequest).result;
+      if (!hasAllStores(db)) {
+        db.close();
+        resolve(openWithVersion(db.version + 1));
         return;
       }
-
-      dbInstance = db;
-      dbInstance.onversionchange = () => {
-        try {
-          dbInstance?.close();
-        } catch {
-          // ignore
-        }
-        dbInstance = null;
-        dbPromise = null;
-      };
-
-      resolve(dbInstance);
+      attachLifecycle(db);
+      resolve(db);
     };
-
-    request.onerror = (event) => {
-      dbPromise = null;
-      reject((event.target as IDBOpenDBRequest).error);
-    };
+    req.onblocked = () => console.warn("[IndexedDB] Database upgrade blocked by another tab.");
+    req.onerror = (e) => reject((e.target as IDBOpenDBRequest).error);
   });
+
+const openWithoutVersion = (): Promise<IDBDatabase | null> =>
+  new Promise((resolve) => {
+    try {
+      const req = window.indexedDB.open(DB_NAME);
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => resolve(null);
+      req.onupgradeneeded = () => {
+        req.transaction?.abort();
+        resolve(null);
+      };
+    } catch {
+      resolve(null);
+    }
+  });
+
+async function openResilientDB(targetVersion: number = DB_VERSION): Promise<IDBDatabase> {
+  if (!isIndexedDBAvailable()) throw new Error("IndexedDB is not available.");
+
+  const existingDb = await openWithoutVersion();
+  if (existingDb) {
+    if (hasAllStores(existingDb) && existingDb.version >= targetVersion) {
+      attachLifecycle(existingDb);
+      return existingDb;
+    }
+    const nextVer = Math.max(existingDb.version + 1, targetVersion);
+    existingDb.close();
+    return openWithVersion(nextVer);
+  }
+
+  try {
+    return await openWithVersion(targetVersion);
+  } catch (err: unknown) {
+    if (err instanceof DOMException && err.name === "VersionError") {
+      const fallbackDb = await openWithoutVersion();
+      if (fallbackDb) {
+        if (hasAllStores(fallbackDb)) {
+          attachLifecycle(fallbackDb);
+          return fallbackDb;
+        }
+        const nextVer = fallbackDb.version + 1;
+        fallbackDb.close();
+        return openWithVersion(nextVer);
+      }
+    }
+    throw err;
+  }
+}
+
+export function getDB(version: number = DB_VERSION): Promise<IDBDatabase> {
+  if (dbInstance && hasAllStores(dbInstance)) {
+    return Promise.resolve(dbInstance);
+  }
+  if (dbInstance) {
+    resetDbCache();
+  }
+
+  if (!dbPromise) {
+    dbPromise = openResilientDB(version).catch((err) => {
+      resetDbCache();
+      throw err;
+    });
+  }
 
   return dbPromise;
 }
+
+export const withStorageLock = async <T>(operation: () => Promise<T>): Promise<T> => {
+  if (typeof navigator !== "undefined" && navigator.locks?.request) {
+    return navigator.locks.request("code_practice_platform_storage_lock", operation);
+  }
+  return operation();
+};
 
 export async function dbGet<T = unknown>(storeName: string, key: IDBValidKey): Promise<T | null> {
   try {
     const db = await getDB();
     if (!db.objectStoreNames.contains(storeName)) return null;
-    return new Promise<T | null>((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const tx = db.transaction(storeName, "readonly");
-      const store = tx.objectStore(storeName);
-      const req = store.get(key);
+      const req = tx.objectStore(storeName).get(key);
       req.onsuccess = () => resolve((req.result as T) ?? null);
       req.onerror = () => reject(req.error);
     });
@@ -168,30 +206,17 @@ export async function dbGet<T = unknown>(storeName: string, key: IDBValidKey): P
   }
 }
 
-export const withStorageLock = async <T>(operation: () => Promise<T>): Promise<T> => {
-  if (
-    typeof navigator !== "undefined" &&
-    "locks" in navigator &&
-    navigator.locks &&
-    typeof navigator.locks.request === "function"
-  ) {
-    return navigator.locks.request("code_practice_platform_storage_lock", operation);
-  }
-  return operation();
-};
-
 export const dbPut = async <T extends object>(
   storeName: string,
   value: T
-): Promise<IDBValidKey | null> => {
-  return withStorageLock(async () => {
+): Promise<IDBValidKey | null> =>
+  withStorageLock(async () => {
     try {
       const db = await getDB();
       if (!db.objectStoreNames.contains(storeName)) return null;
-      return new Promise<IDBValidKey>((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         const tx = db.transaction(storeName, "readwrite");
-        const store = tx.objectStore(storeName);
-        const req = store.put(value);
+        const req = tx.objectStore(storeName).put(value);
         req.onsuccess = () => resolve(req.result);
         req.onerror = () => reject(req.error);
       });
@@ -200,17 +225,15 @@ export const dbPut = async <T extends object>(
       throw err;
     }
   });
-};
 
-export const dbDelete = async (storeName: string, key: IDBValidKey): Promise<void> => {
-  return withStorageLock(async () => {
+export const dbDelete = async (storeName: string, key: IDBValidKey): Promise<void> =>
+  withStorageLock(async () => {
     try {
       const db = await getDB();
       if (!db.objectStoreNames.contains(storeName)) return;
-      return new Promise<void>((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         const tx = db.transaction(storeName, "readwrite");
-        const store = tx.objectStore(storeName);
-        const req = store.delete(key);
+        const req = tx.objectStore(storeName).delete(key);
         req.onsuccess = () => resolve();
         req.onerror = () => reject(req.error);
       });
@@ -219,16 +242,14 @@ export const dbDelete = async (storeName: string, key: IDBValidKey): Promise<voi
       throw err;
     }
   });
-};
 
 export async function dbGetAll<T = unknown>(storeName: string): Promise<T[]> {
   try {
     const db = await getDB();
     if (!db.objectStoreNames.contains(storeName)) return [];
-    return new Promise<T[]>((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const tx = db.transaction(storeName, "readonly");
-      const store = tx.objectStore(storeName);
-      const req = store.getAll();
+      const req = tx.objectStore(storeName).getAll();
       req.onsuccess = () => resolve((req.result as T[]) || []);
       req.onerror = () => reject(req.error);
     });
@@ -238,15 +259,14 @@ export async function dbGetAll<T = unknown>(storeName: string): Promise<T[]> {
   }
 }
 
-export const dbClear = async (storeName: string): Promise<void> => {
-  return withStorageLock(async () => {
+export const dbClear = async (storeName: string): Promise<void> =>
+  withStorageLock(async () => {
     try {
       const db = await getDB();
       if (!db.objectStoreNames.contains(storeName)) return;
-      return new Promise<void>((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         const tx = db.transaction(storeName, "readwrite");
-        const store = tx.objectStore(storeName);
-        const req = store.clear();
+        const req = tx.objectStore(storeName).clear();
         req.onsuccess = () => resolve();
         req.onerror = () => reject(req.error);
       });
@@ -255,7 +275,6 @@ export const dbClear = async (storeName: string): Promise<void> => {
       throw err;
     }
   });
-};
 
 export const dbPutMany = async <T extends object>(storeName: string, items: T[]): Promise<void> => {
   if (!items || items.length === 0) return;
@@ -263,7 +282,7 @@ export const dbPutMany = async <T extends object>(storeName: string, items: T[])
     try {
       const db = await getDB();
       if (!db.objectStoreNames.contains(storeName)) return;
-      return new Promise<void>((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         const tx = db.transaction(storeName, "readwrite");
         const store = tx.objectStore(storeName);
         for (const item of items) {

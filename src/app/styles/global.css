@@ -125,6 +125,31 @@ body.is-resizing-sidebar iframe {
 .hl-regex {
   color: var(--hl-regex, var(--hl-string));
 }
+.hl-css-prop {
+  color: var(--hl-css-prop, var(--hl-type));
+}
+.hl-css-val {
+  color: var(--hl-css-val, var(--hl-string));
+}
+.hl-css-selector {
+  color: var(--hl-css-selector, var(--hl-function));
+}
+.hl-css-unit {
+  color: var(--hl-css-unit, var(--hl-operator));
+}
+.hl-css-atrule {
+  color: var(--hl-css-atrule, var(--hl-keyword));
+  font-weight: var(--fw-semibold);
+}
+.hl-css-color {
+  color: var(--hl-css-color, var(--hl-number));
+}
+.hl-doctype {
+  color: var(--hl-doctype, var(--hl-comment));
+}
+.hl-entity {
+  color: var(--hl-entity, var(--hl-number));
+}
 
 .hl-word-match {
   background-color: rgba(35, 131, 226, 0.22);

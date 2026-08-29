@@ -74,10 +74,14 @@ export const EditorToolbar = memo(
   }: EditorToolbarProps) => {
     const { copied, copy } = useCopy(codeText);
 
-    const getFileIconClass = (filename: string) => {
+    const getFileIconClass = (filename: string): string => {
       const ext = filename.split(".").pop()?.toLowerCase();
-      if (ext === "jsx" || ext === "tsx") return styles.fileIconReact;
-      if (ext === "ts") return styles.fileIconTs;
+      if (ext === "jsx") return styles.fileIconJsx;
+      if (ext === "tsx") return styles.fileIconTsx;
+      if (ext === "ts" || ext === "mts" || ext === "cts") return styles.fileIconTs;
+      if (ext === "css" || ext === "scss" || ext === "less") return styles.fileIconCss;
+      if (ext === "html" || ext === "htm") return styles.fileIconHtml;
+      if (ext === "json") return styles.fileIconJson;
       return styles.fileIconJs;
     };
 

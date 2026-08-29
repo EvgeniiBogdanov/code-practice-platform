@@ -4,7 +4,7 @@
  */
 
 import { marked } from "marked";
-import { highlightJS } from "../code-editor/codeHighlighter";
+import { highlightCode } from "../code-editor/codeHighlighter";
 
 const escapeHtmlChar = (str: string): string =>
   str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -209,7 +209,7 @@ export function parseMarkdown(markdownText: string): string {
 
         const highlighted = isNotepad
           ? escapeHtmlChar(block.code || "")
-          : highlightJS(block.code || "");
+          : highlightCode(block.code || "", lang);
         const lines = (block.code || "").split("\n");
         const lineGutter = lines
           .map((_, i) => `<div class="vscode-gutter-line">${i + 1}</div>`)
