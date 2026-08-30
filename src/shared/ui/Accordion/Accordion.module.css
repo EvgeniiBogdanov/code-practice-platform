@@ -22,7 +22,7 @@
 .accordionCard.size-xs {
   border-radius: var(--radius-md, 6px);
   font-size: 12.5px;
-  margin-bottom: 2px;
+  margin-bottom: 8px;
 }
 
 .accordionCard.size-sm {
