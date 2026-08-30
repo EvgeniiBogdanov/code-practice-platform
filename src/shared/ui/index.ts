@@ -30,6 +30,7 @@ export * from "./ViewModeToggle";
 export * from "./NotificationBadge";
 export * from "./PlatformLogo";
 export * from "./Icon";
+export * from "./ResizableSplitPane";
 export { clsx } from "clsx";
 
 

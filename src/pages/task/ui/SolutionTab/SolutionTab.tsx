@@ -83,7 +83,7 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
               key={`sol_${task.id}_${selectedSolutionIdx}_${activeFileIdx}`}
               code={activeFile?.code || ""}
               onChange={handleCodeChange}
-              onRun={hasVisualComponent ? undefined : () => handleRunCode()}
+              onRun={() => handleRunCode()}
               onReset={handleResetCode}
               files={files}
               activeFileIdx={activeFileIdx}
@@ -91,23 +91,21 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
               filepath={activeFile.name}
               onToggleFullscreen={handleToggleFullscreen}
               bottomConsole={
-                !hasVisualComponent ? (
-                  <div ref={consoleWrapperRef}>
-                    <JsConsole
-                      logs={consoleLogs}
-                      isRunning={isRunning}
-                      lastExecution={lastExecution}
-                      filename={activeFile.name}
-                      onRun={() => handleRunCode()}
-                      onStop={handleStopCode}
-                      onClear={handleClearConsole}
-                    />
-                  </div>
-                ) : null
+                <div ref={consoleWrapperRef}>
+                  <JsConsole
+                    logs={consoleLogs}
+                    isRunning={isRunning}
+                    lastExecution={lastExecution}
+                    filename={activeFile.name}
+                    onRun={() => handleRunCode()}
+                    onStop={handleStopCode}
+                    onClear={handleClearConsole}
+                  />
+                </div>
               }
             />
 
-            {!hasVisualComponent && !isConsoleVisible && (
+            {!isConsoleVisible && (
               <Tooltip content="Перейти к консоли" side="left" sideOffset={10}>
                 <button
                   type="button"

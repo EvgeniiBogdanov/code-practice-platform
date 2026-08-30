@@ -15,7 +15,7 @@ import {
   NodeRunnerLogEntry,
   TaskSourceFile,
 } from "@/shared/lib/code-runners";
-import { Tooltip, ErrorBoundary, ViewModeToggle } from "@/shared/ui";
+import { Tooltip, ErrorBoundary, ViewModeToggle, ViewMode } from "@/shared/ui";
 import { CodeEditor } from "@/features/code-editor";
 import { JsConsole, ReactLivePreview } from "@/features/code-runner";
 import styles from "./CandidateTab.module.css";
@@ -45,9 +45,7 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
 
   const hasVisualComponent = useMemo(() => hasTaskVisualComponent(task, files), [task, files]);
 
-  const [viewMode, setViewMode] = useState<"preview" | "code">(
-    hasVisualComponent ? "preview" : "code"
-  );
+  const [viewMode, setViewMode] = useState<ViewMode>("code");
 
   // JS Runner state
   const [consoleLogs, setConsoleLogs] = useState<NodeRunnerLogEntry[]>([]);
@@ -65,7 +63,7 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
     setActiveFileIdx(0);
     setIsConsoleVisible(true);
     setFiles(initialFiles);
-    setViewMode(hasTaskVisualComponent(task, initialFiles) ? "preview" : "code");
+    setViewMode("code");
     setConsoleLogs([]);
     setIsRunning(false);
     setLastExecution(null);
@@ -93,10 +91,33 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
     };
   }, [task.id, activeFileIdx]);
 
+  // Listen for console logs from sandbox iframe
+  useEffect(() => {
+    const handleMessage = (e: MessageEvent) => {
+      if (e.data && e.data.type === "SANDBOX_CONSOLE") {
+        const text = String(e.data.text ?? "");
+        const logType =
+          e.data.level === "error" ? "error" : e.data.level === "warn" ? "warn" : "stdout";
+        setConsoleLogs((prev) => [
+          ...prev,
+          {
+            id: Date.now() + Math.random(),
+            type: logType,
+            text,
+            args: [{ type: "string", text }],
+            timestamp: Date.now(),
+          },
+        ]);
+      }
+    };
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
+
   // IntersectionObserver to track console visibility for the quick-scroll button
   useEffect(() => {
     const el = consoleWrapperRef.current;
-    if (!el || hasVisualComponent || viewMode === "preview") {
+    if (!el || viewMode === "preview") {
       setIsConsoleVisible(true);
       return;
     }
@@ -116,7 +137,7 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
       isMounted = false;
       observer.disconnect();
     };
-  }, [hasVisualComponent, viewMode, activeFileIdx, task.id]);
+  }, [viewMode, activeFileIdx, task.id]);
 
   const handleToggleFullscreen = () => {
     const section = task.section || "javascript";
@@ -128,7 +149,7 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
             ? "/open/react/$taskId"
             : "/open/javascript/$taskId",
       params: { taskId: String(task.id) },
-      search: { tab: "candidate", view: viewMode },
+      search: { tab: "candidate", view: hasVisualComponent ? "split" : "code" },
     });
   };
 
@@ -207,7 +228,7 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
               key={`cand_${task.id}_${activeFileIdx}`}
               code={activeFile?.code || ""}
               onChange={handleCodeChange}
-              onRun={hasVisualComponent ? undefined : () => handleRunCode()}
+              onRun={() => handleRunCode()}
               onReset={handleResetCode}
               files={files}
               activeFileIdx={activeFileIdx}
@@ -215,24 +236,22 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
               filepath={activeFile.name}
               onToggleFullscreen={handleToggleFullscreen}
               bottomConsole={
-                !hasVisualComponent ? (
-                  <div ref={consoleWrapperRef}>
-                    <JsConsole
-                      logs={consoleLogs}
-                      isRunning={isRunning}
-                      lastExecution={lastExecution}
-                      filename={activeFile.name}
-                      onRun={() => handleRunCode()}
-                      onStop={handleStopCode}
-                      onClear={handleClearConsole}
-                    />
-                  </div>
-                ) : null
+                <div ref={consoleWrapperRef}>
+                  <JsConsole
+                    logs={consoleLogs}
+                    isRunning={isRunning}
+                    lastExecution={lastExecution}
+                    filename={activeFile.name}
+                    onRun={() => handleRunCode()}
+                    onStop={handleStopCode}
+                    onClear={handleClearConsole}
+                  />
+                </div>
               }
             />
 
             {/* Quick-scroll to console button */}
-            {!hasVisualComponent && !isConsoleVisible && (
+            {!isConsoleVisible && (
               <Tooltip content="Перейти к консоли" side="left" sideOffset={10}>
                 <button
                   type="button"

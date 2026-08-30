@@ -13,6 +13,7 @@ const getInitialUISettings = () => {
       sidebarWidth: 280,
       consoleCollapsed: true,
       editorWordWrap: false,
+      editorSplitRatio: 70,
     };
   }
   try {
@@ -40,6 +41,12 @@ const getInitialUISettings = () => {
             typeof parsed.state.editorWordWrap === "boolean"
               ? parsed.state.editorWordWrap
               : false,
+          editorSplitRatio:
+            typeof parsed.state.editorSplitRatio === "number" &&
+            parsed.state.editorSplitRatio >= 20 &&
+            parsed.state.editorSplitRatio <= 80
+              ? parsed.state.editorSplitRatio
+              : 70,
         };
       }
     }
@@ -51,6 +58,7 @@ const getInitialUISettings = () => {
       sidebarWidth: 280,
       consoleCollapsed: legacyConsole !== null ? legacyConsole === "true" : true,
       editorWordWrap: false,
+      editorSplitRatio: 70,
     };
   } catch {
     // ignore
@@ -61,6 +69,7 @@ const getInitialUISettings = () => {
     sidebarWidth: 280,
     consoleCollapsed: true,
     editorWordWrap: false,
+    editorSplitRatio: 70,
   };
 };
 
@@ -78,6 +87,7 @@ export const useUIStore = create<UIState>()(
       sidebarWidth: initialUI.sidebarWidth,
       editorFontSize: 14,
       editorWordWrap: initialUI.editorWordWrap,
+      editorSplitRatio: initialUI.editorSplitRatio,
       consoleFontSize: 14,
       consoleCollapsed: true,
 
@@ -171,6 +181,10 @@ export const useUIStore = create<UIState>()(
         })),
       toggleEditorWordWrap: () =>
         set((state) => ({ editorWordWrap: !state.editorWordWrap })),
+
+      setEditorSplitRatio: (ratio) =>
+        set({ editorSplitRatio: Math.min(80, Math.max(20, ratio)) }),
+      resetEditorSplitRatio: () => set({ editorSplitRatio: 70 }),
 
       setConsoleFontSize: (size) => {
         const clamped = Math.min(MAX_FONT_SIZE, Math.max(MIN_FONT_SIZE, size));
@@ -455,6 +469,7 @@ export const useUIStore = create<UIState>()(
         sidebarWidth: state.sidebarWidth,
         editorFontSize: state.editorFontSize,
         editorWordWrap: state.editorWordWrap,
+        editorSplitRatio: state.editorSplitRatio,
         consoleFontSize: state.consoleFontSize,
         consoleCollapsed: state.consoleCollapsed,
         warmupExpanded: state.warmupExpanded,

@@ -236,6 +236,9 @@ export const useCodeEditor = ({
   );
   const lineCount = useMemo(() => code.split("\n").length, [code]);
 
+  const [isScrolling, setIsScrolling] = useState(false);
+  const isScrollingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const handleScroll = () => {
     if (textareaRef.current) {
       const top = textareaRef.current.scrollTop;
@@ -248,6 +251,11 @@ export const useCodeEditor = ({
         gutterRef.current.scrollTop = top;
       }
     }
+    setIsScrolling(true);
+    if (isScrollingTimeoutRef.current) clearTimeout(isScrollingTimeoutRef.current);
+    isScrollingTimeoutRef.current = setTimeout(() => {
+      setIsScrolling(false);
+    }, 800);
   };
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -344,6 +352,7 @@ export const useCodeEditor = ({
     highlightedCode,
     lineCount,
     langInfo,
+    isScrolling,
     handleFormat,
     updateCursorCoords,
     handleScroll,

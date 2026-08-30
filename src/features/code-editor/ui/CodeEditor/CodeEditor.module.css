@@ -38,6 +38,46 @@
   background: var(--bg-app, #1e1e1e) !important;
 }
 
+.fillHeight {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  position: relative !important;
+  box-sizing: border-box !important;
+  border-radius: var(--radius-md, 8px);
+}
+
+.fillHeight .editorBody {
+  flex: 1 1 0% !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: hidden !important;
+}
+
+.fillHeight .textLayersWrapper {
+  height: 100% !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.fillHeight .highlightLayer {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.fillHeight .textarea {
+  overflow-y: auto !important;
+}
+
 .editorBody {
   display: flex;
   position: relative;
@@ -171,6 +211,42 @@
 .wrapOn {
   white-space: pre-wrap !important;
   word-break: break-word !important;
+}
+
+/* Custom 6px Scrollbar matching UI preview and application theme */
+.textarea::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.textarea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.textarea::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 9999px;
+  transition: background-color 0.25s ease;
+}
+
+.isScrolling::-webkit-scrollbar-thumb,
+.textarea:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.isScrolling::-webkit-scrollbar-thumb:hover,
+.textarea:hover::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.35);
+}
+
+[data-theme="light"] .isScrolling::-webkit-scrollbar-thumb,
+[data-theme="light"] .textarea:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(55, 53, 47, 0.2);
+}
+
+[data-theme="light"] .isScrolling::-webkit-scrollbar-thumb:hover,
+[data-theme="light"] .textarea:hover::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(55, 53, 47, 0.35);
 }
 
 /* Bottom Console Integration */

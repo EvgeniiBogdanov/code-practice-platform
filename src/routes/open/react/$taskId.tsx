@@ -4,7 +4,7 @@ import { OpenEditorPage } from "@/pages/open-editor";
 
 export interface OpenTaskSearch {
   tab?: "candidate" | "solution";
-  view?: "preview" | "code";
+  view?: "split" | "preview" | "code";
 }
 
 const OpenReactTaskRoute = () => {
@@ -19,7 +19,14 @@ const OpenReactTaskRoute = () => {
 export const Route = createFileRoute("/open/react/$taskId")({
   validateSearch: (search: Record<string, unknown>): OpenTaskSearch => ({
     tab: search.tab === "solution" ? "solution" : "candidate",
-    view: search.view === "code" ? "code" : search.view === "preview" ? "preview" : undefined,
+    view:
+      search.view === "code"
+        ? "code"
+        : search.view === "preview"
+          ? "preview"
+          : search.view === "split"
+            ? "split"
+            : undefined,
   }),
   component: OpenReactTaskRoute,
 });

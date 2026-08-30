@@ -9,6 +9,7 @@ export interface BrowserMockupBodyProps {
   iframeHeight: number;
   title: string;
   hasFiles: boolean;
+  fullHeight?: boolean;
   onIframeLoad?: (e: React.SyntheticEvent<HTMLIFrameElement>) => void;
 }
 
@@ -20,6 +21,7 @@ export const BrowserMockupBody = memo(
     iframeHeight,
     title,
     hasFiles,
+    fullHeight = false,
     onIframeLoad,
   }: BrowserMockupBodyProps) => {
     if (compileError) {
@@ -51,9 +53,9 @@ export const BrowserMockupBody = memo(
             srcDoc={srcDoc}
             onLoad={onIframeLoad}
             title={title}
-            scrolling="no"
+            scrolling={fullHeight ? "auto" : "no"}
             className={styles.iframe}
-            style={{ height: `${iframeHeight}px` }}
+            style={fullHeight ? undefined : { height: `${iframeHeight}px` }}
           />
         </div>
       );
