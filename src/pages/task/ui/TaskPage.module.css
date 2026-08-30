@@ -115,7 +115,7 @@
   font-family: inherit;
   font-size: 14.6px;
   font-weight: 600;
-  padding: 14px 12px;
+  padding: 12px 10px;
   border-radius: var(--radius-sm, 4px) var(--radius-sm, 4px) 0 0;
   cursor: pointer;
   position: relative;
