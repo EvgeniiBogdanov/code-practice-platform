@@ -2,6 +2,7 @@
   display: inline-flex;
   align-items: center;
   gap: 2px;
+  margin-bottom: 8px;
   padding: 2px;
   background: var(--bg-subtle, rgba(255, 255, 255, 0.04));
   border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
