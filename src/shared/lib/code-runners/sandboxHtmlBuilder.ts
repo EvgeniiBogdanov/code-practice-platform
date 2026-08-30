@@ -66,20 +66,51 @@ export function buildSandboxIframeSrcDoc({
       --accent: #3b82f6;
     }
     * { box-sizing: border-box; }
-    html, body {
+    html {
       margin: 0; padding: 0;
+      height: 100%;
       background: var(--bg); color: var(--text);
       font-family: var(--font-sans); font-size: 14px; line-height: 1.5;
-      -webkit-font-smoothing: antialiased; overflow: hidden; border: none; outline: none;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      overflow-y: auto;
+      border: none; outline: none;
     }
     body {
-      padding: 24px; min-height: auto; height: auto;
+      margin: 0; padding: 24px;
+      min-height: 100%;
+      box-sizing: border-box;
+      background: var(--bg); color: var(--text);
+      font-family: var(--font-sans); font-size: 14px; line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
       display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;
       gap: 12px; width: 100%; border: none; outline: none;
+      overflow-x: hidden;
+      overflow-y: visible;
     }
     #root {
       width: 100%; display: flex; flex-direction: column; align-items: flex-start;
       justify-content: flex-start; gap: 12px; min-height: auto; border: none; outline: none;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: transparent;
+      border-radius: 9999px;
+      transition: background-color 0.25s ease;
+    }
+    html.is-scrolling ::-webkit-scrollbar-thumb,
+    html:hover ::-webkit-scrollbar-thumb {
+      background-color: ${isLight ? "rgba(55, 53, 47, 0.2)" : "rgba(255, 255, 255, 0.2)"};
+    }
+    html.is-scrolling ::-webkit-scrollbar-thumb:hover,
+    html:hover ::-webkit-scrollbar-thumb:hover {
+      background-color: ${isLight ? "rgba(55, 53, 47, 0.35)" : "rgba(255, 255, 255, 0.35)"};
     }
     input, select, textarea, button {
       font-family: inherit; font-size: 13.5px; line-height: 1.3; box-sizing: border-box;
@@ -169,6 +200,29 @@ export function buildSandboxIframeSrcDoc({
       }
       window.onerror = function(msg, src, lineno, colno, error) { renderError(error || msg); return true; };
       window.onunhandledrejection = function(e) { renderError(e.reason || 'Unhandled Promise Rejection'); };
+
+      try {
+        var origLog = console.log, origWarn = console.warn, origError = console.error, origInfo = console.info;
+        function sendLog(type, args) {
+          try {
+            var serialized = Array.prototype.slice.call(args).map(function(arg) {
+              if (typeof arg === 'undefined') return 'undefined';
+              if (arg === null) return 'null';
+              if (typeof arg === 'object') {
+                try { return JSON.stringify(arg, null, 2); } catch (e) { return String(arg); }
+              }
+              return String(arg);
+            });
+            if (window.parent && window.parent !== window) {
+              window.parent.postMessage({ type: 'SANDBOX_CONSOLE', level: type, text: serialized.join(' ') }, '*');
+            }
+          } catch(e) {}
+        }
+        console.log = function() { sendLog('log', arguments); if (origLog) origLog.apply(console, arguments); };
+        console.warn = function() { sendLog('warn', arguments); if (origWarn) origWarn.apply(console, arguments); };
+        console.error = function() { sendLog('error', arguments); if (origError) origError.apply(console, arguments); };
+        console.info = function() { sendLog('info', arguments); if (origInfo) origInfo.apply(console, arguments); };
+      } catch(e) {}
 
       try {
         var runtime = window.parent && window.parent.__SANDBOX_RUNTIME__;
@@ -308,6 +362,15 @@ export function buildSandboxIframeSrcDoc({
           if (rootEl) ro.observe(rootEl);
           if (document.body) ro.observe(document.body);
         }
+        var scrollTimeout = null;
+        window.addEventListener('scroll', function() {
+          document.documentElement.classList.add('is-scrolling');
+          if (scrollTimeout) clearTimeout(scrollTimeout);
+          scrollTimeout = setTimeout(function() {
+            document.documentElement.classList.remove('is-scrolling');
+          }, 800);
+        }, { passive: true });
+
         window.addEventListener('resize', notifyHeight);
         window.addEventListener('load', notifyHeight);
         requestAnimationFrame(notifyHeight);

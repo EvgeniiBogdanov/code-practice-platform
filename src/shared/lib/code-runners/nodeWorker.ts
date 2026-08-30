@@ -273,7 +273,57 @@ if (typeof self !== "undefined") {
       // ignore
     }
 
-    const sandboxRequire = (_mod: string) => sandboxHelpers;
+    const sandboxExports: Record<string, unknown> = {};
+    const sandboxModule = { exports: sandboxExports };
+
+    const reactMock = {
+      default: {},
+      useState: (initial: unknown) => [typeof initial === "function" ? (initial as () => unknown)() : initial, () => {}],
+      useEffect: (fn: unknown) => {
+        try {
+          if (typeof fn === "function") (fn as () => void)();
+        } catch (err) {
+          void err;
+        }
+      },
+      useLayoutEffect: (fn: unknown) => {
+        try {
+          if (typeof fn === "function") (fn as () => void)();
+        } catch (err) {
+          void err;
+        }
+      },
+      useCallback: (fn: unknown) => fn,
+      useMemo: (fn: unknown) => (typeof fn === "function" ? (fn as () => unknown)() : fn),
+      useRef: (initial: unknown) => ({ current: initial }),
+      useReducer: (_reducer: unknown, initial: unknown) => [initial, () => {}],
+      useContext: () => ({}),
+      createContext: () => ({
+        Provider: ({ children }: { children?: unknown }) => children,
+        Consumer: ({ children }: { children?: unknown }) => children,
+      }),
+      memo: (c: unknown) => c,
+      forwardRef: (c: unknown) => c,
+      createElement: () => ({}),
+      Fragment: Symbol("React.Fragment"),
+    };
+
+    const sandboxRequire = (mod: string) => {
+      if (
+        mod === "react" ||
+        mod === "react/jsx-runtime" ||
+        mod === "react/jsx-dev-runtime"
+      ) {
+        return reactMock;
+      }
+      if (mod === "react-dom" || mod === "react-dom/client") {
+        return {
+          default: {},
+          createRoot: () => ({ render: () => {}, unmount: () => {} }),
+        };
+      }
+      return sandboxHelpers;
+    };
 
     const startTime = performance.now();
     let syncFinished = false;
@@ -345,10 +395,10 @@ if (typeof self !== "undefined") {
       }
 
       const wrappedCode = `
-        return (async function(console, setTimeout, clearTimeout, setInterval, clearInterval, queueMicrotask, require, window, global, globalThis) {
+        return (async function(console, setTimeout, clearTimeout, setInterval, clearInterval, queueMicrotask, require, exports, module, window, global, globalThis) {
           "use strict";
           ${trimmedCode}
-        })(sandboxConsole, sandboxSetTimeout, sandboxClearTimeout, sandboxSetInterval, sandboxClearInterval, sandboxQueueMicrotask, sandboxRequire, self, self, self);
+        })(sandboxConsole, sandboxSetTimeout, sandboxClearTimeout, sandboxSetInterval, sandboxClearInterval, sandboxQueueMicrotask, sandboxRequire, sandboxExports, sandboxModule, self, self, self);
       `;
 
       const executor = new Function(
@@ -359,6 +409,8 @@ if (typeof self !== "undefined") {
         "sandboxClearInterval",
         "sandboxQueueMicrotask",
         "sandboxRequire",
+        "sandboxExports",
+        "sandboxModule",
         wrappedCode
       );
 
@@ -369,7 +421,9 @@ if (typeof self !== "undefined") {
         sandboxSetInterval,
         sandboxClearInterval,
         sandboxQueueMicrotask,
-        sandboxRequire
+        sandboxRequire,
+        sandboxExports,
+        sandboxModule
       );
 
       syncResult = await execPromise;

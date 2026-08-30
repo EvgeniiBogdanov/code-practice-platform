@@ -2,7 +2,7 @@
 
 # <img src="public/favicon.svg" width="22" height="22" alt="" /> Code Practice Platform
 
-<sub><span style="color:gray">version: 2.3.0</span></sub>
+<sub><span style="color:gray">version: 2.3.1</span></sub>
 
 ### Интерактивная платформа для подготовки к техническим собеседованиям по фронтенду и алгоритмам
 
@@ -41,21 +41,21 @@
   <tr>
     <td width="50%" valign="top">
       <h3>🎯 300+ задач с реальных интервью</h3>
-      <p>База задач по <b>React + TypeScript</b>, <b>JavaScript</b> (от замыканий до Event Loop и промисов) и <b>алгоритмам</b>. Эталонные решения с оценкой <code>O(N)</code> / <code>O(1)</code>, поиск багов и чеклисты самопроверки.</p>
+      <p>Обширная база задач по <b>React + TypeScript</b>, <b>JavaScript</b> (от замыканий и Event Loop до кастомных промисов) и <b>алгоритмам</b>. Эталонные решения с оценкой <code>O(N)</code> / <code>O(1)</code>, поиск багов и чеклисты самопроверки.</p>
     </td>
     <td width="50%" valign="top">
       <h3>🧠 Интервальное повторение (SM-2)</h3>
-      <p>Адаптированный алгоритм интервального запоминания (<code>1д → 3д → 7д → 14д → 30д → 60+д</code> / Мастер) с учётом таймзон, автоматическим сбросом решений в день повтора и шкалой мастерства.</p>
+      <p>Адаптированный алгоритм интервального закрепления (<code>1д → 3д → 7д → 14д → 30д → 60+д</code> / Мастер) с учётом таймзон, автоматическим сбросом решений в день повтора и шкалой освоения.</p>
     </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <h3>⚛️ React Live Runner & Node.js Sandbox</h3>
-      <p>Изолированная <code>iframe</code>-песочница с перехватом рантайм-ошибок для React/TSX на <b>Sucrase</b> и Web Worker для мгновенного исполнения JavaScript/Node.js с терминалом <b>xterm.js</b> и замером времени выполнения.</p>
+      <h3>⚛️ React Live Runner & Сплит-режим</h3>
+      <p>Полноэкранный двухпанельный сплит (<b>70% код / 30% интерфейс</b>) с ресайзом drag-and-drop. Изолированная <code>iframe</code>-песочница с поддержкой React 19, TSX, CSS, переключением «Решение / Эталон» и стримингом логов в <b>JsConsole</b>.</p>
     </td>
     <td width="50%" valign="top">
-      <h3>💻 Собственный редактор кода</h3>
-      <p>Лёгкий редактор без нагрузки на бандл. Мультикурсоры (<code>Cmd+D</code> / <code>Cmd+Shift+L</code>), перемещение строк (<code>Alt+↑/↓</code>), контекстный IntelliSense (JS, TSX, CSS, HTML), форматирование <b>Prettier 3</b>, Emmet и линтинг.</p>
+      <h3>💻 Продвинутый редактор кода</h3>
+      <p>Лёгкий и мощный редактор с мультикурсорами (<code>Cmd+D</code> / <code>Cmd+Shift+L</code>), перемещением строк (<code>Alt+↑/↓</code>), контекстным IntelliSense (JS, TSX, CSS, HTML), форматированием <b>Prettier 3</b>, Emmet и умными оверлейными скроллбарами (6px).</p>
     </td>
   </tr>
   <tr>
@@ -65,7 +65,7 @@
     </td>
     <td width="50%" valign="top">
       <h3>💾 Zero-Lag Dual Storage & Sync</h3>
-      <p>Двухуровневое хранилище (L1 LocalStorage кэш + L2 IndexedDB v3) с автосохранением решений и межвкладочной синхронизацией в реальном времени через <code>BroadcastChannel API</code>.</p>
+      <p>Двухуровневое хранилище (L1 In-Memory/LocalStorage + L2 <b>IndexedDB v4</b> с самовосстановлением схемы) с автосохранением и межвкладочной синхронизацией в реальном времени через <code>BroadcastChannel API</code>.</p>
     </td>
   </tr>
 </table>
@@ -87,15 +87,15 @@
   <img src="https://img.shields.io/badge/Prettier_3-F7B93E?style=for-the-badge&logo=prettier&logoColor=black" alt="Prettier 3" />
 </p>
 
-| Категория                     | Технологии и библиотеки                                                                              |
-| :---------------------------- | :--------------------------------------------------------------------------------------------------- |
-| **Frontend Core**             | React 19.2 (`react`, `react-dom`), TypeScript 7.0, Vite 8 (движок Rolldown)                          |
-| **Архитектура и роутинг**     | Feature-Sliced Design (FSD v2.1), TanStack Router (типобезопасная файловая маршрутизация)            |
-| **Управление состоянием**     | Zustand 5 (стейт приложения и UI), Redux Toolkit 2 + React-Redux (песочница для задач по Redux)      |
-| **Исполнение кода & Sandbox** | Sucrase (JSX/TSX транспайлер), xterm.js 6 (терминал), Web Workers, изолированный `iframe`-sandbox    |
-| **Аналитика & графики**       | Visx 4 (`@visx/shape`, `@visx/scale`, `@visx/grid`, `@visx/tooltip`, `@visx/curve` и др.)            |
-| **Хранение & синхронизация**  | LocalStorage (L1-кэш), IndexedDB v3 (L2), синхронизация между вкладками через `BroadcastChannel API` |
-| **Инструменты кода**          | Prettier 3, Emmet, встроенный линтинг и IntelliSense                                                 |
+| Категория                     | Технологии и библиотеки                                                                                     |
+| :---------------------------- | :---------------------------------------------------------------------------------------------------------- |
+| **Frontend Core**             | React 19.2 (`react`, `react-dom`), TypeScript 7.0, Vite 8 (движок Rolldown)                                 |
+| **Архитектура и роутинг**     | Feature-Sliced Design (FSD v2.1), TanStack Router (типобезопасная файловая маршрутизация)                   |
+| **Управление состоянием**     | Zustand 5 (стейт приложения и UI), Redux Toolkit 2 + React-Redux (песочница для задач по Redux)             |
+| **Исполнение кода & Sandbox** | Sucrase (транспайлер JSX/TSX/CommonJS), xterm.js 6 (терминал), Node Web Workers, изолированный `iframe`-рантайм |
+| **Аналитика & графики**       | Visx 4 (`@visx/shape`, `@visx/scale`, `@visx/grid`, `@visx/tooltip`, `@visx/curve` и др.)                   |
+| **Хранение & синхронизация**  | LocalStorage (L1-кэш), IndexedDB v4 (L2 с самовосстановлением схемы), синхронизация через `BroadcastChannel` |
+| **Инструменты кода**          | Prettier 3 Standalone, Emmet, подсветка синтаксиса JS/TSX/CSS/HTML, встроенный линтинг и IntelliSense       |
 
 ---
 
@@ -177,12 +177,12 @@ npm run build
 
 Полная история изменений — в файле **[CHANGELOG.md](CHANGELOG.md)**.
 
-- **[v2.2.95](CHANGELOG.md#v2-2-95)** — Контекстный IntelliSense для JS/TS/React, мультикурсоры (Cmd+D), перемещение строк (Alt+↑/↓), умное управление консолью, редизайн модалок.
-- **[v2.2.9](CHANGELOG.md#v2-2-9)** — WAI-ARIA Treeview навигация по сайдбару, оптимизация CSS Grid анимаций, NotificationBadge, Sticky Progress.
-- **[v2.2.8](CHANGELOG.md#v2-2-8)** — Полная миграция на FSD v2.1, Strict TypeScript, посадочные страницы разделов, Prettier 3 Formatter, теория React+TS.
-- **[v2.2.7](CHANGELOG.md#v2-2-7)** — Архитектурная изоляция песочницы React (`iframe`), автоподстройка высоты, нормализация Form Controls.
-- **[v2.2.2](CHANGELOG.md#v2-2-2)** — Календарный SM-2 с учётом таймзоны, автосброс решений в день повтора.
-- **[v2.2.1](CHANGELOG.md#v2-2-1)** — Умное интервальное повторение (SM-2), Radix-подобная система Tooltip, редизайн Header.
+- **[v2.3.1](CHANGELOG.md#v2-3-1)** — Полноэкранный сплит-режим «Код + Интерфейс» (70/30), интеграция JsConsole, автотранспиляция и виртуальный React-рантайм в Web Worker, умные оверлейные скроллбары (6px).
+- **[v2.3.0](CHANGELOG.md#v2-3-0)** — Глобальное обновление: Feature-Sliced Design v2.1, React 19, TypeScript 7 Strict, Vite 8 Rolldown, TanStack Router, изолированная `iframe`-песочница, интервальное повторение SM-2 и аналитика Visx 4.
+- **[v2.2.99](CHANGELOG.md#v2-2-99)** — Подсветка синтаксиса CSS/HTML с цветовыми индикаторами `#hex`, динамическое зондирование и самовосстановление IndexedDB v4, новые задачи по React и JS.
+- **[v2.2.95](CHANGELOG.md#v2-2-95)** — Контекстный IntelliSense для JS/TS/React, мультикурсоры (<kbd>Cmd+D</kbd>), перемещение строк (<kbd>Alt+↑/↓</kbd>), форматирование Prettier 3.
+- **[v2.2.9](CHANGELOG.md#v2-2-9)** — WAI-ARIA Treeview навигация по сайдбару с клавиатуры, NotificationBadge, Sticky Progress.
+- **[v2.2.1](CHANGELOG.md#v2-2-1)** — Умное интервальное повторение (SM-2), Radix-подобная система Tooltip, дашборд аналитики на Visx.
 
 ---
 

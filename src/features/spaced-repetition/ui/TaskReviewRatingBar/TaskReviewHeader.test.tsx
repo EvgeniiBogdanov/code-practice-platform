@@ -1,11 +1,20 @@
 import React from "react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import { TaskReviewHeader } from "./TaskReviewHeader";
 import { ReviewItem, ReviewBadgeMeta } from "@/entities/review";
 
 describe("TaskReviewHeader", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-08-24T12:00:00Z"));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   const defaultBadgeMeta: ReviewBadgeMeta = {
     stage: 2,
     stageName: "Уровень 2",

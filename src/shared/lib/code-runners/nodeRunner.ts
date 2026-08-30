@@ -3,6 +3,7 @@
  */
 
 import NodeWorker from "./nodeWorker?worker";
+import { transpileCode } from "./transpiler";
 export { formatNodeValue, formatConsoleTable } from "./nodeFormatter";
 
 export interface NodeRunnerLogEntry {
@@ -62,6 +63,26 @@ export function runNodeJsCode(
         error: null,
         durationMs: 0,
         exitCode: 0,
+      });
+      return;
+    }
+
+    const { code: transpiledCode, error: transpileErr } = transpileCode(trimmedCode, "index.tsx");
+    if (transpileErr) {
+      resolve({
+        logs: [
+          {
+            id: 1,
+            type: "error",
+            text: `[Syntax Error] ${transpileErr.message}`,
+            args: [{ type: "string", text: transpileErr.message }],
+            timestamp: Date.now(),
+          },
+        ],
+        result: undefined,
+        error: transpileErr,
+        durationMs: 0,
+        exitCode: 1,
       });
       return;
     }
@@ -211,7 +232,7 @@ export function runNodeJsCode(
 
     worker.postMessage({
       type: "EXECUTE",
-      code: trimmedCode,
+      code: transpiledCode || trimmedCode,
       timeoutMs,
     });
   });

@@ -14,7 +14,11 @@ export interface ReactLivePreviewProps {
   currentCode?: string;
   storagePrefix?: "cand" | "sol";
   variantIdx?: number;
+  fullHeight?: boolean;
   className?: string;
+  previewTarget?: "candidate" | "solution";
+  onPreviewTargetChange?: (target: "candidate" | "solution") => void;
+  hasSolutionReference?: boolean;
 }
 
 export const ReactLivePreview = memo(
@@ -25,7 +29,11 @@ export const ReactLivePreview = memo(
     currentCode,
     storagePrefix = "cand",
     variantIdx = 0,
+    fullHeight = false,
     className,
+    previewTarget,
+    onPreviewTargetChange,
+    hasSolutionReference,
   }: ReactLivePreviewProps): React.JSX.Element => {
     const {
       activeFile,
@@ -48,10 +56,19 @@ export const ReactLivePreview = memo(
     const iframeKey = `${task?.id}_${storagePrefix}_${variantIdx}_${reloadKey}`;
 
     return (
-      <div className={clsx(styles.browserMockup, className)}>
+      <div
+        className={clsx(
+          styles.browserMockup,
+          fullHeight && styles.fullHeight,
+          className
+        )}
+      >
         <BrowserMockupHeader
           fileName={activeFile?.name || "index.jsx"}
           onReload={handleManualReload}
+          previewTarget={previewTarget}
+          onPreviewTargetChange={onPreviewTargetChange}
+          hasSolutionReference={hasSolutionReference}
         />
 
         <BrowserMockupBody
@@ -61,6 +78,7 @@ export const ReactLivePreview = memo(
           iframeHeight={iframeHeight}
           title={`Preview: ${activeFile?.name || "index.jsx"}`}
           hasFiles={hasFiles}
+          fullHeight={fullHeight}
           onIframeLoad={handleIframeLoad}
         />
       </div>

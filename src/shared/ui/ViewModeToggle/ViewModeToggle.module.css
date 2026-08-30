@@ -51,12 +51,12 @@
 
 .viewModeBtn.active {
   color: var(--text-main, #ffffff);
-  background: var(--bg-card, #1e1e1e);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  background: rgba(255, 255, 255, 0.066);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme="light"] .viewModeBtn.active {
-  color: #191919;
+  color: #111827;
   background: #ffffff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }

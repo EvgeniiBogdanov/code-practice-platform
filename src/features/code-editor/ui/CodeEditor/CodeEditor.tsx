@@ -28,6 +28,7 @@ export const CodeEditor = ({
   bottomConsole,
   isFullscreen,
   onToggleFullscreen,
+  fillHeight = false,
   className,
 }: CodeEditorProps): React.JSX.Element => {
   const {
@@ -57,6 +58,7 @@ export const CodeEditor = ({
     highlightedCode,
     lineCount,
     langInfo,
+    isScrolling,
     handleFormat,
     updateCursorCoords,
     handleScroll,
@@ -83,7 +85,8 @@ export const CodeEditor = ({
     <div
       className={clsx(
         styles.editorWrapper,
-        effectiveFullscreen && styles.fullscreen,
+        effectiveFullscreen && !fillHeight && styles.fullscreen,
+        fillHeight && styles.fillHeight,
         intelliSense.isOpen && styles.hasOpenDropdown,
         className
       )}
@@ -185,7 +188,11 @@ export const CodeEditor = ({
               onScroll={handleScroll}
               onMouseMove={(e) => hoverSignatures.handleMouseMove(e, code)}
               onMouseLeave={hoverSignatures.handleMouseLeave}
-              className={clsx(styles.textarea, wordWrap && styles.wrapOn)}
+              className={clsx(
+                styles.textarea,
+                isScrolling && styles.isScrolling,
+                wordWrap && styles.wrapOn
+              )}
               placeholder="// Напишите ваш код решения здесь..."
               spellCheck={false}
               autoCapitalize="off"

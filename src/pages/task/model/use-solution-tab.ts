@@ -13,6 +13,7 @@ import {
   NodeRunnerLogEntry,
   TaskSourceFile,
 } from "@/shared/lib/code-runners";
+import { ViewMode } from "@/shared/ui";
 
 export interface UseSolutionTabReturn {
   isReact: boolean;
@@ -20,8 +21,8 @@ export interface UseSolutionTabReturn {
   solutions: TaskSolution[];
   selectedSolutionIdx: number;
   setSelectedSolutionIdx: (idx: number) => void;
-  viewMode: "preview" | "code";
-  setViewMode: (mode: "preview" | "code") => void;
+  viewMode: ViewMode;
+  setViewMode: (mode: ViewMode) => void;
   activeFileIdx: number;
   setActiveFileIdx: (idx: number) => void;
   isHintExpanded: boolean;
@@ -95,9 +96,7 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
 
   const hasVisualComponent = useMemo(() => hasTaskVisualComponent(task, files), [task, files]);
 
-  const [viewMode, setViewMode] = useState<"preview" | "code">(
-    hasVisualComponent ? "preview" : "code"
-  );
+  const [viewMode, setViewMode] = useState<ViewMode>("code");
   const [isHintExpanded, setIsHintExpanded] = useState(false);
 
   const [consoleLogs, setConsoleLogs] = useState<NodeRunnerLogEntry[]>([]);
@@ -126,7 +125,7 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
   useEffect(() => {
     setActiveFileIdx(0);
     setFiles(initialFiles);
-    setViewMode(hasTaskVisualComponent(task, initialFiles) ? "preview" : "code");
+    setViewMode("code");
     setIsHintExpanded(false);
   }, [task, initialFiles]);
 
@@ -151,10 +150,33 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
     };
   }, [task.id, activeFileIdx, selectedSolutionIdx]);
 
+  // Listen for console logs from sandbox iframe
+  useEffect(() => {
+    const handleMessage = (e: MessageEvent) => {
+      if (e.data && e.data.type === "SANDBOX_CONSOLE") {
+        const text = String(e.data.text ?? "");
+        const logType =
+          e.data.level === "error" ? "error" : e.data.level === "warn" ? "warn" : "stdout";
+        setConsoleLogs((prev) => [
+          ...prev,
+          {
+            id: Date.now() + Math.random(),
+            type: logType,
+            text,
+            args: [{ type: "string", text }],
+            timestamp: Date.now(),
+          },
+        ]);
+      }
+    };
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
+
   // IntersectionObserver to track console visibility
   useEffect(() => {
     const el = consoleWrapperRef.current;
-    if (!el || hasVisualComponent || viewMode === "preview") {
+    if (!el || viewMode === "preview") {
       setIsConsoleVisible(true);
       return;
     }
@@ -174,7 +196,7 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
       isMounted = false;
       observer.disconnect();
     };
-  }, [hasVisualComponent, viewMode, activeFileIdx, task.id]);
+  }, [viewMode, activeFileIdx, task.id]);
 
   const handleToggleFullscreen = useCallback(() => {
     const section = task.section || "javascript";
@@ -186,9 +208,9 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
             ? "/open/react/$taskId"
             : "/open/javascript/$taskId",
       params: { taskId: String(task.id) },
-      search: { tab: "solution", view: viewMode },
+      search: { tab: "solution", view: hasVisualComponent ? "split" : "code" },
     });
-  }, [navigate, task.section, task.id, viewMode]);
+  }, [navigate, task.section, task.id, hasVisualComponent]);
 
   const handleCodeChange = useCallback(
     (newCode: string) => {

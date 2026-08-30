@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { Code2, Share2, Check, Minimize2, Home, FileQuestion, ArrowDown } from "lucide-react";
-import { clsx } from "clsx";
+import { Home, FileQuestion, ArrowDown } from "lucide-react";
 import { getTaskById, getTaskFiles, hasTaskVisualComponent } from "@/entities/task";
 import { CodeEditor } from "@/features/code-editor";
 import { JsConsole, ReactLivePreview } from "@/features/code-runner";
@@ -17,14 +16,14 @@ import {
   saveUserSolution,
   deleteUserSolution,
 } from "@/shared/lib/storage";
-import { Tooltip, ErrorBoundary, ViewModeToggle } from "@/shared/ui";
-import { useCopy } from "@/shared/lib/hooks";
+import { Tooltip, ErrorBoundary, ResizableSplitPane, ViewMode } from "@/shared/ui";
+import { useUIStore } from "@/entities/ui-state";
 import styles from "./OpenEditorPage.module.css";
 
 export interface OpenEditorPageProps {
   taskId?: string;
   tab?: "candidate" | "solution";
-  initialViewMode?: "preview" | "code";
+  initialViewMode?: ViewMode;
 }
 
 export const OpenEditorPage = ({
@@ -33,7 +32,10 @@ export const OpenEditorPage = ({
   initialViewMode,
 }: OpenEditorPageProps) => {
   const navigate = useNavigate();
-  const { copied: linkCopied, copy: copyLink } = useCopy();
+  const splitRatio = useUIStore((state) => state.editorSplitRatio) || 70;
+  const setSplitRatio = useUIStore((state) => state.setEditorSplitRatio);
+  const resetSplitRatio = useUIStore((state) => state.resetEditorSplitRatio);
+
   const [activeFileIdx, setActiveFileIdx] = useState(0);
   const task = useMemo(() => (taskId ? getTaskById(taskId) : null), [taskId]);
   const isReact = task ? task.section === "react" : true;
@@ -59,14 +61,34 @@ export const OpenEditorPage = ({
   const [files, setFiles] = useState<TaskSourceFile[]>(initialFiles);
   const activeFile = files[activeFileIdx] || files[0] || { name: "index.jsx", code: "" };
 
+  const solutionFiles = useMemo(() => {
+    if (!task) return [];
+    return getTaskFiles(task, "solution");
+  }, [task]);
+
+  const candidateFiles = useMemo(() => {
+    if (!task) return [];
+    return getTaskFiles(task, "candidate");
+  }, [task]);
+
+  const hasSolutionReference = useMemo(() => {
+    if (!task) return false;
+    return solutionFiles.length > 0 && solutionFiles.some((f) => Boolean(f.code?.trim()));
+  }, [task, solutionFiles]);
+
+  const [previewTarget, setPreviewTarget] = useState<"candidate" | "solution">(tab);
+
   const hasVisualComponent = useMemo(
     () => (task ? hasTaskVisualComponent(task, files) : isReact),
     [task, files, isReact]
   );
 
-  const [viewMode, setViewMode] = useState<"preview" | "code">(
-    initialViewMode || (hasVisualComponent ? "preview" : "code")
-  );
+  const [viewMode, setViewMode] = useState<ViewMode>(() => {
+    if (initialViewMode === "preview") return "preview";
+    if (initialViewMode === "code" && !hasVisualComponent) return "code";
+    if (initialViewMode === "split") return "split";
+    return hasVisualComponent ? "split" : "code";
+  });
 
   const [consoleLogs, setConsoleLogs] = useState<NodeRunnerLogEntry[]>([]);
   const [isRunning, setIsRunning] = useState(false);
@@ -83,15 +105,22 @@ export const OpenEditorPage = ({
     setActiveFileIdx(0);
     setIsConsoleVisible(true);
     setFiles(initialFiles);
+    setPreviewTarget(tab);
+    const hasVis = task ? hasTaskVisualComponent(task, initialFiles) : isReact;
     setViewMode(
-      initialViewMode ||
-        (task ? (hasTaskVisualComponent(task, initialFiles) ? "preview" : "code") : "preview")
+      initialViewMode === "preview"
+        ? "preview"
+        : initialViewMode === "code" && !hasVis
+          ? "code"
+          : hasVis
+            ? "split"
+            : "code"
     );
     setConsoleLogs([]);
     setIsRunning(false);
     setLastExecution(null);
     clearRunningTimers();
-  }, [task?.id, tab, initialFiles, task, initialViewMode]);
+  }, [task?.id, tab, initialFiles, task, initialViewMode, isReact]);
 
   // Load saved solution
   useEffect(() => {
@@ -118,6 +147,29 @@ export const OpenEditorPage = ({
       isMounted = false;
     };
   }, [task, tab, activeFileIdx]);
+
+  // Listen for console logs from sandbox iframe
+  useEffect(() => {
+    const handleMessage = (e: MessageEvent) => {
+      if (e.data && e.data.type === "SANDBOX_CONSOLE") {
+        const text = String(e.data.text ?? "");
+        const logType =
+          e.data.level === "error" ? "error" : e.data.level === "warn" ? "warn" : "stdout";
+        setConsoleLogs((prev) => [
+          ...prev,
+          {
+            id: Date.now() + Math.random(),
+            type: logType,
+            text,
+            args: [{ type: "string", text }],
+            timestamp: Date.now(),
+          },
+        ]);
+      }
+    };
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
 
   // Track console visibility
   useEffect(() => {
@@ -158,66 +210,79 @@ export const OpenEditorPage = ({
   };
 
   const handleResetCode = async () => {
+    const baseFiles = getTaskFiles(task, tab === "solution" ? "solution" : "candidate");
+    const originalCode = baseFiles[activeFileIdx]?.code || "";
+    setFiles((prev) => {
+      const next = [...prev];
+      if (next[activeFileIdx]) {
+        next[activeFileIdx] = { ...next[activeFileIdx], code: originalCode };
+      }
+      return next;
+    });
     if (task) {
       await deleteUserSolution(task.id, tab === "solution" ? "sol" : "cand", activeFileIdx);
     }
-    const original = initialFiles[activeFileIdx]?.code || defaultCode;
-    handleCodeChange(original);
   };
 
   const handleRunCode = async (codeToExecute?: string) => {
-    if (isRunning) return;
+    const code = codeToExecute !== undefined ? codeToExecute : activeFile?.code || "";
     setIsRunning(true);
-    setConsoleLogs([]);
-
-    const codeToRun = codeToExecute !== undefined ? codeToExecute : activeFile?.code || "";
-    const result = await runNodeJsCode(codeToRun, {
-      onLog: (_newLog, allLogs) => setConsoleLogs(allLogs),
-    });
-
-    setConsoleLogs(result.logs);
-    setLastExecution({ durationMs: result.durationMs, exitCode: result.exitCode });
-    setIsRunning(false);
+    const start = performance.now();
+    try {
+      const result = await runNodeJsCode(code);
+      const duration = Math.round(performance.now() - start);
+      setConsoleLogs((prev) => [...prev, ...result.logs]);
+      setLastExecution({ durationMs: duration, exitCode: result.exitCode });
+    } catch (err: unknown) {
+      const errMsg = err instanceof Error ? err.message : String(err);
+      setConsoleLogs((prev) => [
+        ...prev,
+        {
+          id: Date.now() + Math.random(),
+          type: "stderr",
+          text: errMsg,
+          args: [{ type: "string", text: errMsg }],
+          timestamp: Date.now(),
+        },
+      ]);
+    } finally {
+      setIsRunning(false);
+    }
   };
 
   const handleStopCode = () => {
     clearRunningTimers();
     setIsRunning(false);
-    setLastExecution({
-      durationMs: 0,
-      exitCode: 130,
-    });
+    setConsoleLogs((prev) => [
+      ...prev,
+      {
+        id: Date.now() + Math.random(),
+        type: "stderr",
+        text: "[Остановлено пользователем]",
+        args: [{ type: "string", text: "[Остановлено пользователем]" }],
+        timestamp: Date.now(),
+      },
+    ]);
   };
 
   const handleClearConsole = () => {
     setConsoleLogs([]);
     setLastExecution(null);
-    clearRunningTimers();
-    setIsRunning(false);
   };
 
   const handleExit = () => {
     if (task) {
       const section = task.section || "javascript";
-      if (section === "algorithms") {
-        navigate({
-          to: "/algorithms/$taskId",
-          params: { taskId: String(task.id) },
-          search: { tab },
-        });
-      } else if (section === "react") {
-        navigate({
-          to: "/react/$taskId",
-          params: { taskId: String(task.id) },
-          search: { tab },
-        });
-      } else {
-        navigate({
-          to: "/javascript/$taskId",
-          params: { taskId: String(task.id) },
-          search: { tab },
-        });
-      }
+      navigate({
+        to:
+          section === "algorithms"
+            ? "/algorithms/$taskId"
+            : section === "react"
+              ? "/react/$taskId"
+              : "/javascript/$taskId",
+        params: { taskId: String(task.id) },
+        search: { tab },
+      });
     } else {
       navigate({ to: "/" });
     }
@@ -235,10 +300,6 @@ export const OpenEditorPage = ({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [task, tab]);
 
-  const handleCopyLink = () => {
-    copyLink(window.location.href);
-  };
-
   if (taskId && !task) {
     return (
       <div className={styles.notFound}>
@@ -252,52 +313,97 @@ export const OpenEditorPage = ({
     );
   }
 
+  const previewFiles =
+    previewTarget === "solution"
+      ? tab === "candidate"
+        ? solutionFiles
+        : files
+      : tab === "solution"
+        ? candidateFiles
+        : files;
+
+  const previewCurrentCode =
+    previewTarget === "solution"
+      ? tab === "candidate"
+        ? solutionFiles[activeFileIdx]?.code || solutionFiles[0]?.code
+        : activeFile.code
+      : tab === "solution"
+        ? candidateFiles[activeFileIdx]?.code || candidateFiles[0]?.code
+        : activeFile.code;
+
+  const previewActiveFileIdx = Math.min(
+    activeFileIdx,
+    Math.max(0, (previewFiles.length || 1) - 1)
+  );
+
+  const previewStoragePrefix = previewTarget === "solution" ? "sol" : "cand";
+
+  const consoleNode = (
+    <div ref={consoleWrapperRef}>
+      <JsConsole
+        logs={consoleLogs}
+        isRunning={isRunning}
+        lastExecution={lastExecution}
+        filename={activeFile.name}
+        onRun={() => handleRunCode()}
+        onStop={handleStopCode}
+        onClear={handleClearConsole}
+      />
+    </div>
+  );
+
   return (
     <div className={styles.container}>
-      <div className={styles.topBar}>
-        <div className={styles.titleBadge}>
-          <Code2 size={16} className={styles.titleIcon} />
-          <span>
-            {task
-              ? `${task.title} (${tab === "solution" ? "Эталон" : "Решение"})`
-              : "Полноэкранный редактор"}
-          </span>
-        </div>
-
-        {hasVisualComponent && <ViewModeToggle mode={viewMode} onChange={setViewMode} />}
-
-        <div className={styles.topActions}>
-          <button
-            type="button"
-            className={clsx(styles.actionBtn, linkCopied && styles.copied)}
-            onClick={handleCopyLink}
-            title="Скопировать ссылку"
-          >
-            {linkCopied ? <Check size={13} /> : <Share2 size={13} />}
-            <span>{linkCopied ? "Ссылка скопирована" : "Поделиться"}</span>
-          </button>
-
-          <button
-            type="button"
-            className={styles.actionBtn}
-            onClick={handleExit}
-            title="Выйти из полноэкранного режима (Esc)"
-          >
-            <Minimize2 size={14} />
-            <span>Свернуть</span>
-          </button>
-        </div>
-      </div>
-
       <div className={styles.mainContent}>
         <ErrorBoundary>
-          {hasVisualComponent && viewMode === "preview" ? (
+          {hasVisualComponent && viewMode === "split" ? (
+            <ResizableSplitPane
+              splitRatio={splitRatio}
+              onSplitRatioChange={setSplitRatio}
+              onReset={resetSplitRatio}
+              className={styles.splitContainer}
+              left={
+                <CodeEditor
+                  key={`open_${task?.id}_${tab}_${activeFileIdx}`}
+                  code={activeFile?.code || ""}
+                  onChange={handleCodeChange}
+                  onRun={() => handleRunCode()}
+                  onReset={handleResetCode}
+                  files={files}
+                  activeFileIdx={activeFileIdx}
+                  onFileSelect={setActiveFileIdx}
+                  filepath={activeFile?.name || ""}
+                  fillHeight={true}
+                  isFullscreen={true}
+                  onToggleFullscreen={handleExit}
+                  bottomConsole={consoleNode}
+                />
+              }
+              right={
+                <ReactLivePreview
+                  task={task || undefined}
+                  files={previewFiles}
+                  activeFileIdx={previewActiveFileIdx}
+                  currentCode={previewCurrentCode}
+                  storagePrefix={previewStoragePrefix}
+                  fullHeight={true}
+                  previewTarget={previewTarget}
+                  onPreviewTargetChange={setPreviewTarget}
+                  hasSolutionReference={hasSolutionReference}
+                />
+              }
+            />
+          ) : hasVisualComponent && viewMode === "preview" ? (
             <ReactLivePreview
               task={task || undefined}
-              files={files}
-              activeFileIdx={activeFileIdx}
-              currentCode={activeFile.code}
-              storagePrefix={tab === "solution" ? "sol" : "cand"}
+              files={previewFiles}
+              activeFileIdx={previewActiveFileIdx}
+              currentCode={previewCurrentCode}
+              storagePrefix={previewStoragePrefix}
+              fullHeight={true}
+              previewTarget={previewTarget}
+              onPreviewTargetChange={setPreviewTarget}
+              hasSolutionReference={hasSolutionReference}
             />
           ) : (
             <>
@@ -305,32 +411,19 @@ export const OpenEditorPage = ({
                 key={`open_${task?.id}_${tab}_${activeFileIdx}`}
                 code={activeFile?.code || ""}
                 onChange={handleCodeChange}
-                onRun={hasVisualComponent ? undefined : () => handleRunCode()}
+                onRun={() => handleRunCode()}
                 onReset={handleResetCode}
                 files={files}
                 activeFileIdx={activeFileIdx}
                 onFileSelect={setActiveFileIdx}
                 filepath={activeFile?.name || ""}
+                fillHeight={true}
                 isFullscreen={true}
                 onToggleFullscreen={handleExit}
-                bottomConsole={
-                  !hasVisualComponent ? (
-                    <div ref={consoleWrapperRef}>
-                      <JsConsole
-                        logs={consoleLogs}
-                        isRunning={isRunning}
-                        lastExecution={lastExecution}
-                        filename={activeFile.name}
-                        onRun={() => handleRunCode()}
-                        onStop={handleStopCode}
-                        onClear={handleClearConsole}
-                      />
-                    </div>
-                  ) : null
-                }
+                bottomConsole={consoleNode}
               />
 
-              {!hasVisualComponent && !isConsoleVisible && (
+              {!isConsoleVisible && (
                 <Tooltip content="Перейти к консоли" side="left" sideOffset={10}>
                   <button
                     type="button"
