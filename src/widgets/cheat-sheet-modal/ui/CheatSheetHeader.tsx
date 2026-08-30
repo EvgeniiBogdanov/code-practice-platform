@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Lightbulb, X } from "lucide-react";
-import { Tooltip, SquareButton } from "@/shared/ui";
+import { Tooltip, SquareButton, Icon } from "@/shared/ui";
 import styles from "./CheatSheetModal.module.css";
 
 interface CheatSheetHeaderProps {
@@ -12,7 +12,7 @@ export const CheatSheetHeader = memo(({ title, onClose }: CheatSheetHeaderProps)
   return (
     <div className={styles.header}>
       <div className={styles.title}>
-        <Lightbulb size={18} className={styles.titleIcon} />
+        <Icon className={styles.titleIcon} icon={<Lightbulb size={18} />} />
         <span>{title}</span>
       </div>
       <Tooltip content="Закрыть (Esc)" side="bottom">

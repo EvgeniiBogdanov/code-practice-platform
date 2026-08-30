@@ -62,7 +62,7 @@ export const SidebarHomeOverview = ({
           color={SECTIONS_CONFIG.react.color}
           className={styles.icon_react}
         />
-        <span className={styles.homeItemTitle}>React & TypeScript</span>
+        <span className={styles.homeItemTitle}>React</span>
         <NodeCount
           completed={completedReactTotal}
           total={ALL_REACT_TASKS.length}

@@ -53,8 +53,7 @@
 }
 
 .titleIcon {
-  color: #eab308;
-  flex-shrink: 0;
+  color: var(--accent-yellow, #eab308);
 }
 
 .closeBtn {

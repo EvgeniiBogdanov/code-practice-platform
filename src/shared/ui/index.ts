@@ -29,4 +29,7 @@ export * from "./ConfirmModal";
 export * from "./ViewModeToggle";
 export * from "./NotificationBadge";
 export * from "./PlatformLogo";
+export * from "./Icon";
 export { clsx } from "clsx";
+
+

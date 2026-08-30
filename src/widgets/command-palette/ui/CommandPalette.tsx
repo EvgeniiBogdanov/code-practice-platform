@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { createPortal } from "react-dom";
 import { Search, X } from "lucide-react";
-import { SquareButton, Tooltip } from "@/shared/ui";
+import { Icon, SquareButton, Tooltip } from "@/shared/ui";
 import { useCommandPalette } from "../model";
 import { CommandPaletteTabs } from "./CommandPaletteTabs";
 import { CommandPaletteItem } from "./CommandPaletteItem";
@@ -32,7 +32,7 @@ export const CommandPalette = memo(() => {
         onKeyDown={handleKeyDown}
       >
         <div className={styles.paletteHeader}>
-          <Search size={16} className={styles.searchIcon} />
+          <Icon size="sm" icon={<Search size={16} />} />
           <input
             autoFocus
             type="text"

@@ -96,7 +96,7 @@
 
 .variant_pills .tab {
   padding: 6px 12px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-lg);
   border-bottom: none;
   font-size: 13px;
   font-weight: 500;
