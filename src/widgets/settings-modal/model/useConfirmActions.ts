@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Trash2 } from "lucide-react";
+import { RotateCcw, Trash2 } from "lucide-react";
 import React from "react";
 import { ConfirmAction } from "../ui/SettingsResetConfirmDialog";
 
@@ -8,6 +8,7 @@ export function useConfirmActions(
   sectionName: string,
   onResetSectionReviews: () => void,
   onResetAllReviews: () => void,
+  onResetUISettings: () => void,
   onResetAllData: () => void
 ) {
   const reviewActions: ConfirmAction[] = useMemo(() => {
@@ -29,6 +30,18 @@ export function useConfirmActions(
     return list;
   }, [activeSection, sectionName, onResetSectionReviews, onResetAllReviews]);
 
+  const uiSettingsActions: ConfirmAction[] = useMemo(
+    () => [
+      {
+        label: "Сбросить настройки интерфейса",
+        onClick: onResetUISettings,
+        variant: "danger",
+        icon: React.createElement(RotateCcw, { size: 14 }),
+      },
+    ],
+    [onResetUISettings]
+  );
+
   const allDataActions: ConfirmAction[] = useMemo(
     () => [
       {
@@ -43,6 +56,7 @@ export function useConfirmActions(
 
   return {
     reviewActions,
+    uiSettingsActions,
     allDataActions,
   };
 }

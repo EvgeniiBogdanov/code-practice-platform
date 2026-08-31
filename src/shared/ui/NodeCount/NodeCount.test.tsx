@@ -27,4 +27,13 @@ describe("NodeCount", () => {
     expect(container.firstChild).toHaveClass("custom-test");
     expect(container.firstChild).toHaveClass(/completedYellow/);
   });
+
+  it("renders a neutral total in count mode", () => {
+    const { container } = render(
+      <NodeCount completed={5} total={5} completedClass="completedGreen" variant="count" />
+    );
+
+    expect(screen.getByText("5")).toBeInTheDocument();
+    expect(container.firstChild).not.toHaveClass(/completed/);
+  });
 });

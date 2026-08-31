@@ -36,10 +36,6 @@ export const SpacedRepetitionUnsolvedTab = memo(
       <div className={styles.unsolvedContainer}>
         <div className={styles.upcomingList}>
           {unsolvedTasks.map((task) => {
-            const groupTag = task.group
-              ? `${task.group}${task.subgroup ? ` • ${task.subgroup}` : ""}`
-              : task.difficulty || "Задача";
-
             return (
               <Link
                 key={task.id}
@@ -62,16 +58,7 @@ export const SpacedRepetitionUnsolvedTab = memo(
                       ring={false}
                       size="tab"
                     >
-                      {groupTag}
-                    </NotificationBadge>
-
-                    <NotificationBadge
-                      variant="red"
-                      pinned={false}
-                      ring={false}
-                      size="tab"
-                    >
-                      Не решено
+                      {task.group || task.difficulty || "Задача"}
                     </NotificationBadge>
 
                     <ArrowRight size={13} className={styles.upcomingRowArrow} />

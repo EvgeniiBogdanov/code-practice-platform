@@ -1,0 +1,146 @@
+.columnsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-2-5);
+  margin-block-end: var(--space-1-5);
+  border-block-end: var(--space-px) solid var(--border-color);
+  color: var(--text-muted);
+  font-size: var(--fs-sidebar-section);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-section);
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.columnName,
+.taskTitle {
+  min-width: 0;
+  flex: 1;
+}
+
+.columnMeta,
+.rowMeta,
+.taskTitle,
+.columnFavorite,
+.columnSolution,
+.columnReview,
+.columnStatus,
+.statusSolved,
+.statusUnsolved,
+.statusDue,
+.statusUnstarted {
+  display: inline-flex;
+  align-items: center;
+}
+
+.columnMeta,
+.rowMeta {
+  flex-shrink: 0;
+  gap: var(--space-4);
+}
+
+.columnSolution,
+.columnReview,
+.columnFavorite,
+.columnStatus,
+.statusSolved,
+.statusUnsolved,
+.statusDue,
+.statusUnstarted {
+  justify-content: center;
+}
+
+.columnFavorite {
+  width: var(--task-table-favorite-width);
+}
+
+.favoriteHeaderIcon {
+  color: var(--text-muted);
+}
+
+.columnSolution {
+  width: var(--task-table-solution-width);
+  text-align: center;
+}
+
+.columnReview {
+  width: var(--task-table-review-width);
+  text-align: center;
+}
+
+.columnStatus {
+  width: var(--task-table-status-width);
+  text-align: center;
+}
+
+.taskRow {
+  min-height: var(--task-tree-row-height);
+  padding: var(--space-1-5) var(--space-2-5);
+  border-radius: var(--radius-lg);
+  font-size: var(--fs-sidebar-item);
+}
+
+.taskTitle {
+  gap: var(--space-2);
+}
+
+.fileIcon {
+  flex-shrink: 0;
+  color: var(--icon-file);
+}
+
+.taskTitleText {
+  min-width: 0;
+  flex: 0 1 auto;
+  overflow: hidden;
+  color: var(--text-main);
+  font-size: var(--fs-sidebar-item);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-code);
+  letter-spacing: var(--ls-item);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rowMeta {
+  margin-inline-start: var(--space-3);
+}
+
+.statusSolved,
+.tone_easy .taskTitleText {
+  color: var(--color-rating-easy);
+}
+
+.tone_medium .taskTitleText {
+  color: var(--color-rating-medium);
+}
+
+.tone_hard .taskTitleText {
+  color: var(--color-rating-hard);
+}
+
+.statusUnsolved,
+.tone_unsolved .taskTitleText {
+  color: var(--color-status-unsolved);
+}
+
+.statusDue {
+  color: var(--color-status-due);
+}
+
+.statusUnstarted {
+  color: var(--border-hover);
+}
+
+@media (max-width: 860px) {
+  .columnSolution {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .columnReview {
+    display: none;
+  }
+}

@@ -2,7 +2,7 @@
 
 # <img src="public/favicon.svg" width="22" height="22" alt="" /> Code Practice Platform
 
-<sub><span style="color:gray">version: 2.3.1</span></sub>
+<sub><span style="color:gray">version: 2.3.2</span></sub>
 
 ### Интерактивная платформа для подготовки к техническим собеседованиям по фронтенду и алгоритмам
 
@@ -87,15 +87,15 @@
   <img src="https://img.shields.io/badge/Prettier_3-F7B93E?style=for-the-badge&logo=prettier&logoColor=black" alt="Prettier 3" />
 </p>
 
-| Категория                     | Технологии и библиотеки                                                                                     |
-| :---------------------------- | :---------------------------------------------------------------------------------------------------------- |
-| **Frontend Core**             | React 19.2 (`react`, `react-dom`), TypeScript 7.0, Vite 8 (движок Rolldown)                                 |
-| **Архитектура и роутинг**     | Feature-Sliced Design (FSD v2.1), TanStack Router (типобезопасная файловая маршрутизация)                   |
-| **Управление состоянием**     | Zustand 5 (стейт приложения и UI), Redux Toolkit 2 + React-Redux (песочница для задач по Redux)             |
+| Категория                     | Технологии и библиотеки                                                                                         |
+| :---------------------------- | :-------------------------------------------------------------------------------------------------------------- |
+| **Frontend Core**             | React 19.2 (`react`, `react-dom`), TypeScript 7.0, Vite 8 (движок Rolldown)                                     |
+| **Архитектура и роутинг**     | Feature-Sliced Design (FSD v2.1), TanStack Router (типобезопасная файловая маршрутизация)                       |
+| **Управление состоянием**     | Zustand 5 (стейт приложения и UI), Redux Toolkit 2 + React-Redux (песочница для задач по Redux)                 |
 | **Исполнение кода & Sandbox** | Sucrase (транспайлер JSX/TSX/CommonJS), xterm.js 6 (терминал), Node Web Workers, изолированный `iframe`-рантайм |
-| **Аналитика & графики**       | Visx 4 (`@visx/shape`, `@visx/scale`, `@visx/grid`, `@visx/tooltip`, `@visx/curve` и др.)                   |
-| **Хранение & синхронизация**  | LocalStorage (L1-кэш), IndexedDB v4 (L2 с самовосстановлением схемы), синхронизация через `BroadcastChannel` |
-| **Инструменты кода**          | Prettier 3 Standalone, Emmet, подсветка синтаксиса JS/TSX/CSS/HTML, встроенный линтинг и IntelliSense       |
+| **Аналитика & графики**       | Visx 4 (`@visx/shape`, `@visx/scale`, `@visx/grid`, `@visx/tooltip`, `@visx/curve` и др.)                       |
+| **Хранение & синхронизация**  | LocalStorage (L1-кэш), IndexedDB v4 (L2 с самовосстановлением схемы), синхронизация через `BroadcastChannel`    |
+| **Инструменты кода**          | Prettier 3 Standalone, Emmet, подсветка синтаксиса JS/TSX/CSS/HTML, встроенный линтинг и IntelliSense           |
 
 ---
 

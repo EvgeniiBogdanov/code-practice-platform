@@ -139,6 +139,9 @@
   --color-status-solved: #10b981;
   --color-status-unsolved: #ef4444;
   --color-status-due: #eab308;
+  --color-rating-easy: #10b981;
+  --color-rating-medium: #eab308;
+  --color-rating-hard: #f97316;
 
   /* Icon Colors */
   --icon-file: #94a3b8;
@@ -216,6 +219,14 @@
   --space-10: 40px;
   --space-12: 48px;
 
+  --task-table-solution-width: 100px;
+  --task-table-review-width: 110px;
+  --task-table-favorite-width: 28px;
+  --task-table-status-width: 28px;
+  --task-tree-row-height: 34px;
+  --task-tree-indent: 14px;
+  --task-tree-border-width: 1.5px;
+
   /* ==========================================
      4. BORDER RADIUS TOKENS
      ========================================== */
@@ -258,10 +269,11 @@
   /* ==========================================
      7. TRANSITION TOKENS
      ========================================== */
+  --duration-medium: 200ms;
   --transition-hover: 50ms ease-in-out;
   --transition-fast: 100ms ease;
   --transition-standard: 150ms cubic-bezier(0.2, 0, 0, 1);
-  --transition-medium: 200ms cubic-bezier(0.2, 0, 0, 1);
+  --transition-medium: var(--duration-medium) cubic-bezier(0.2, 0, 0, 1);
   --transition-slow: 300ms cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 

@@ -3,7 +3,8 @@ import { Link } from "@tanstack/react-router";
 import { Folder, FileText, Calendar, RotateCcw, Check, X } from "lucide-react";
 import { clsx } from "clsx";
 import { Task } from "@/entities/task";
-import { Button, Card } from "@/shared/ui";
+import { TaskFavoriteMarker } from "@/features/task-favorite";
+import { Card } from "@/shared/ui";
 import styles from "./GroupOverviewPage.module.css";
 
 import { ReviewItem } from "@/entities/review";
@@ -28,7 +29,6 @@ export interface GroupTaskCardsProps {
   formatNextReviewDate: (timestamp?: number | ReviewItem, dueDate?: string) => string | null;
   isTaskDue: (review: ReviewItem | null | undefined) => boolean;
   reviews: Record<string, ReviewItem>;
-  onResetFilter: () => void;
 }
 
 interface GroupTaskCardItemProps {
@@ -83,7 +83,7 @@ const GroupTaskCardItem = memo(
         to={taskRoute}
         params={{ taskId: String(task.id) }}
         title={tooltipTitle}
-        style={{ textDecoration: "none" }}
+        className={styles.galleryCardLink}
       >
         <Card className={clsx(styles.galleryCard, gradientClass)}>
           <div>
@@ -127,6 +127,7 @@ const GroupTaskCardItem = memo(
             <div className={styles.galleryCardTitleRow}>
               <FileText size={16} className={styles.nodeFileIcon} />
               <span className={styles.galleryCardTitleText}>{task.title}</span>
+              <TaskFavoriteMarker taskId={task.id} taskTitle={task.title} />
             </div>
 
             {task.desc && <div className={styles.galleryCardDesc}>{task.desc}</div>}
@@ -179,13 +180,12 @@ export const GroupTaskCards = memo(
     formatNextReviewDate,
     isTaskDue,
     reviews,
-    onResetFilter,
   }: GroupTaskCardsProps) => {
     if (tasks.length === 0) {
       return (
         <div className={styles.emptyState}>
-          <div className={styles.emptyTitle}>Задач по выбранному фильтру нет</div>
-          <Button onClick={onResetFilter}>Показать все задачи</Button>
+          <h2>По выбранному фильтру задач нет</h2>
+          <p>Измените фильтр, чтобы увидеть остальные задачи.</p>
         </div>
       );
     }

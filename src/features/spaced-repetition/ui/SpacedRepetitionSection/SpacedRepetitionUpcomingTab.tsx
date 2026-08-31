@@ -84,7 +84,7 @@ export const SpacedRepetitionUpcomingTab = memo(
                     ring={false}
                     size="tab"
                   >
-                    Этап {stage} • {intervalDays} дн.
+                    Этап {stage}
                   </NotificationBadge>
 
                   <NotificationBadge
@@ -92,13 +92,12 @@ export const SpacedRepetitionUpcomingTab = memo(
                     pinned={false}
                     ring={false}
                     size="tab"
+                    title={formattedDate}
                   >
                     {daysUntil <= 1 ? (
                       <Clock size={11} style={{ marginRight: 4 }} />
                     ) : null}
-                    <span>
-                      {relativeTime} ({formattedDate})
-                    </span>
+                    <span>{relativeTime}</span>
                   </NotificationBadge>
 
                   <ArrowRight size={13} className={styles.upcomingRowArrow} />

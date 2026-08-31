@@ -3,6 +3,7 @@ export * from "./model/taskRegistry";
 export * from "./model/sectionsConfig";
 export * from "./model/taskTree";
 export * from "./model/taskFiles";
+export * from "./model/task-route";
 export * from "./ui/TaskDifficultyBadge";
 export * from "./ui/TaskCard";
 

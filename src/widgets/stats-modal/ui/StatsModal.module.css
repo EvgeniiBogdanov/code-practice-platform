@@ -57,14 +57,3 @@
   min-height: 0;
   box-sizing: border-box;
 }
-
-.statsModalLoading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-  color: var(--text-muted);
-  font-size: 13px;
-  font-family: var(--font-sans);
-}

@@ -106,6 +106,7 @@ export interface UIState {
     section: "javascript" | "algorithms" | "react",
     allGroupNames?: string[]
   ) => void;
+  resetUISettings: () => void;
 }
 
 export interface TimerState {

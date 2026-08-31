@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Link } from "@tanstack/react-router";
-import { CheckCircle2, ArrowRight, AlertCircle, FileText } from "lucide-react";
+import { CheckCircle2, ArrowRight, FileText } from "lucide-react";
 import { clsx } from "clsx";
 import { Task } from "@/entities/task";
 import { ReviewItem } from "@/entities/review";
@@ -79,22 +79,12 @@ export const SpacedRepetitionDueTab = memo(
 
                 <div className={styles.upcomingRowRight}>
                   <NotificationBadge
-                    variant="neutral"
-                    pinned={false}
-                    ring={false}
-                    size="tab"
-                  >
-                    Этап {stage} • {intervalDays} дн.
-                  </NotificationBadge>
-
-                  <NotificationBadge
                     variant="yellow"
                     pinned={false}
                     ring={false}
                     size="tab"
                   >
-                    <AlertCircle size={11} style={{ marginRight: 4 }} />
-                    <span>Пора повторить</span>
+                    Этап {stage} • {intervalDays} дн.
                   </NotificationBadge>
 
                   <ArrowRight size={13} className={styles.upcomingRowArrow} />

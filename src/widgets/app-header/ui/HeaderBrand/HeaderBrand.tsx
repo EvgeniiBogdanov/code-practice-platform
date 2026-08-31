@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { Link } from "@tanstack/react-router";
-import { PanelLeftOpen, PanelLeftClose } from "lucide-react";
+import { Menu, PanelLeft } from "lucide-react";
 import { clsx } from "clsx";
 import { useUIStore } from "@/entities/ui-state";
 import { PlatformLogo, SquareButton } from "@/shared/ui";
@@ -17,7 +17,7 @@ export const HeaderBrand = memo(({ className }: HeaderBrandProps): React.JSX.Ele
   return (
     <div className={clsx(styles.brandContainer, className)}>
       <SquareButton
-        icon={sidebarOpen ? <PanelLeftClose size={18} /> : <PanelLeftOpen size={18} />}
+        icon={sidebarOpen ? <PanelLeft size={18} /> : <Menu size={18} />}
         className={styles.sidebarToggle}
         onClick={toggleSidebar}
         aria-label={sidebarOpen ? "Скрыть панель навигации" : "Показать панель навигации"}

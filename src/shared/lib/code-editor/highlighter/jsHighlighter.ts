@@ -2,7 +2,7 @@
  * JavaScript, JSX, TypeScript, TSX Syntax Highlighter
  */
 
-import { HighlightOptions, escapeHtml } from "./types";
+import { DiagnosticProblem, HighlightOptions, escapeHtml } from "./types";
 
 export function highlightTemplateLiteral(text: string, options: HighlightOptions = {}): string {
   let result = '<span class="hl-str">`</span>';
@@ -108,6 +108,15 @@ export function highlightJS(code: string, options: HighlightOptions = {}): strin
     const end = start + len;
     return multiSelections.some((s) => !(end <= s.start || start >= s.end));
   };
+  const problemsByLine = new Map<number, DiagnosticProblem[]>();
+  for (const problem of problems) {
+    const lineProblems = problemsByLine.get(problem.line);
+    if (lineProblems) {
+      lineProblems.push(problem);
+    } else {
+      problemsByLine.set(problem.line, [problem]);
+    }
+  }
 
   let html = "";
   let rest = code;
@@ -150,7 +159,7 @@ export function highlightJS(code: string, options: HighlightOptions = {}): strin
 
         let squigglyClass = "";
         if (problems && problems.length > 0 && rule.type !== "space" && rule.type !== "comment") {
-          const prob = problems.find((p) => {
+          const prob = problemsByLine.get(tokenLine)?.find((p) => {
             if (p.line !== tokenLine) return false;
             if (p.typo && p.typo === text) return true;
             if (p.symbol && p.symbol === text) return true;

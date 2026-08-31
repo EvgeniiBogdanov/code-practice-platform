@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, useEffect, useCallback } from "react";
+import React, { useState, useMemo, useRef, useEffect, useCallback, useDeferredValue } from "react";
 import {
   highlightCode,
   lintJavaScriptCode,
@@ -32,6 +32,8 @@ export const useCodeEditor = ({
   const wordWrap = useUIStore((state) => state.editorWordWrap);
   const setWordWrap = useUIStore((state) => state.setEditorWordWrap);
   const toggleWordWrap = useUIStore((state) => state.toggleEditorWordWrap);
+  const deferredCode = useDeferredValue(code);
+  const deferredFiles = useDeferredValue(files);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const highlightRef = useRef<HTMLPreElement>(null);
@@ -164,9 +166,10 @@ export const useCodeEditor = ({
   ]);
 
   const lintResult = useMemo(
-    () => lintJavaScriptCode(code, { files, filepath }),
-    [code, files, filepath]
+    () => lintJavaScriptCode(deferredCode, { files: deferredFiles, filepath }),
+    [deferredCode, deferredFiles, filepath]
   );
+  const isAnalysisPending = deferredCode !== code || deferredFiles !== files;
 
   const activeTypo = useMemo((): TypoInfo | null => {
     if (lintResult.typoMap && lintResult.typoMap[cursorPos.line]) {
@@ -345,6 +348,7 @@ export const useCodeEditor = ({
     findReplace,
     multiCursor,
     lintResult,
+    isAnalysisPending,
     activeTypo,
     activeMissingImport,
     errorLines,

@@ -6,6 +6,7 @@ import { getTaskById, TaskDifficultyBadge } from "@/entities/task";
 import { useProgressStore, selectIsTaskCompleted } from "@/entities/progress";
 import { useReviewStore } from "@/entities/review";
 import { TaskReviewRatingBar } from "@/features/spaced-repetition";
+import { TaskFavoriteButton } from "@/features/task-favorite";
 import { TaskButton, NotificationBadge, NotificationBadgeVariant } from "@/shared/ui";
 import { CandidateTab } from "./CandidateTab";
 import { SolutionTab } from "./SolutionTab";
@@ -138,6 +139,8 @@ export const TaskPage = React.memo<TaskPageProps>(
             </div>
 
             <div className={styles.taskStatusActions}>
+              <TaskFavoriteButton taskId={task.id} taskTitle={task.title} />
+
               <TaskButton
                 statusVariant="solved"
                 isActive={isCompleted}

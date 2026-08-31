@@ -19,5 +19,5 @@
 }
 
 .barCountDue {
-  fill: var(--color-status-due);
+  fill: var(--text-main);
 }

@@ -6,7 +6,7 @@
   overflow: visible;
   user-select: none;
   font-family: var(--font-sans);
-  font-size: 13.5px;
+  font-size: 14.5px;
 }
 
 .sidebarToggleBtn {
@@ -22,7 +22,13 @@
   background: transparent;
   color: var(--text-muted);
   cursor: pointer;
-  transition: all var(--transition-standard, 0.15s ease);
+  transition:
+    width var(--transition-medium),
+    margin var(--transition-medium),
+    opacity var(--transition-fast),
+    transform var(--transition-medium),
+    background var(--transition-standard),
+    color var(--transition-standard);
   flex-shrink: 0;
   margin-right: 4px;
 }
@@ -40,14 +46,19 @@
 /* Hide toggle button in header on desktop when sidebar is open */
 @media (min-width: 769px) {
   .desktopHidden {
-    display: none !important;
+    width: 0;
+    margin-right: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(calc(var(--space-1) * -1));
   }
 }
 
 /* Always keep visible on mobile */
 @media (max-width: 768px) {
   .desktopHidden {
-    display: inline-flex !important;
+    display: inline-flex;
   }
 }
 
@@ -69,7 +80,7 @@
   border: none;
   border-radius: var(--radius-lg, 6px);
   color: var(--text-muted);
-  font-size: 13.5px;
+  font-size: 14.5px;
   font-weight: var(--fw-medium, 500);
   font-family: var(--font-sans);
   cursor: pointer;
@@ -255,7 +266,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 0;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .sectionBadge {
@@ -397,5 +408,10 @@
 
 .iconZap {
   color: #eab308;
+  flex-shrink: 0;
+}
+
+.iconFavorites {
+  color: var(--accent-yellow);
   flex-shrink: 0;
 }

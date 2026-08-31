@@ -14,12 +14,15 @@ import { Route as EditorRouteImport } from './routes/editor'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as AlgorithmsIndexRouteImport } from './routes/algorithms/index'
 import { Route as AlgorithmsTaskIdRouteImport } from './routes/algorithms/$taskId'
+import { Route as AlgorithmsFavoritesRouteImport } from './routes/algorithms/favorites'
 import { Route as JavascriptIndexRouteImport } from './routes/javascript/index'
 import { Route as JavascriptTaskIdRouteImport } from './routes/javascript/$taskId'
+import { Route as JavascriptFavoritesRouteImport } from './routes/javascript/favorites'
 import { Route as OpenIndexRouteImport } from './routes/open/index'
 import { Route as OpenTaskIdRouteImport } from './routes/open/$taskId'
 import { Route as ReactIndexRouteImport } from './routes/react/index'
 import { Route as ReactTaskIdRouteImport } from './routes/react/$taskId'
+import { Route as ReactFavoritesRouteImport } from './routes/react/favorites'
 import { Route as OpenAlgorithmsTaskIdRouteImport } from './routes/open/algorithms/$taskId'
 import { Route as OpenJavascriptTaskIdRouteImport } from './routes/open/javascript/$taskId'
 import { Route as OpenReactTaskIdRouteImport } from './routes/open/react/$taskId'
@@ -49,6 +52,11 @@ const AlgorithmsTaskIdRoute = AlgorithmsTaskIdRouteImport.update({
   path: '/algorithms/$taskId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AlgorithmsFavoritesRoute = AlgorithmsFavoritesRouteImport.update({
+  id: '/algorithms/favorites',
+  path: '/algorithms/favorites',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const JavascriptIndexRoute = JavascriptIndexRouteImport.update({
   id: '/javascript/',
   path: '/javascript/',
@@ -57,6 +65,11 @@ const JavascriptIndexRoute = JavascriptIndexRouteImport.update({
 const JavascriptTaskIdRoute = JavascriptTaskIdRouteImport.update({
   id: '/javascript/$taskId',
   path: '/javascript/$taskId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JavascriptFavoritesRoute = JavascriptFavoritesRouteImport.update({
+  id: '/javascript/favorites',
+  path: '/javascript/favorites',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OpenIndexRoute = OpenIndexRouteImport.update({
@@ -77,6 +90,11 @@ const ReactIndexRoute = ReactIndexRouteImport.update({
 const ReactTaskIdRoute = ReactTaskIdRouteImport.update({
   id: '/react/$taskId',
   path: '/react/$taskId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReactFavoritesRoute = ReactFavoritesRouteImport.update({
+  id: '/react/favorites',
+  path: '/react/favorites',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OpenAlgorithmsTaskIdRoute = OpenAlgorithmsTaskIdRouteImport.update({
@@ -100,9 +118,12 @@ export interface FileRoutesByFullPath {
   '/editor': typeof EditorRoute
   '/home': typeof HomeRoute
   '/algorithms/$taskId': typeof AlgorithmsTaskIdRoute
+  '/algorithms/favorites': typeof AlgorithmsFavoritesRoute
   '/javascript/$taskId': typeof JavascriptTaskIdRoute
+  '/javascript/favorites': typeof JavascriptFavoritesRoute
   '/open/$taskId': typeof OpenTaskIdRoute
   '/react/$taskId': typeof ReactTaskIdRoute
+  '/react/favorites': typeof ReactFavoritesRoute
   '/algorithms/': typeof AlgorithmsIndexRoute
   '/javascript/': typeof JavascriptIndexRoute
   '/open/': typeof OpenIndexRoute
@@ -116,9 +137,12 @@ export interface FileRoutesByTo {
   '/editor': typeof EditorRoute
   '/home': typeof HomeRoute
   '/algorithms/$taskId': typeof AlgorithmsTaskIdRoute
+  '/algorithms/favorites': typeof AlgorithmsFavoritesRoute
   '/javascript/$taskId': typeof JavascriptTaskIdRoute
+  '/javascript/favorites': typeof JavascriptFavoritesRoute
   '/open/$taskId': typeof OpenTaskIdRoute
   '/react/$taskId': typeof ReactTaskIdRoute
+  '/react/favorites': typeof ReactFavoritesRoute
   '/algorithms': typeof AlgorithmsIndexRoute
   '/javascript': typeof JavascriptIndexRoute
   '/open': typeof OpenIndexRoute
@@ -133,9 +157,12 @@ export interface FileRoutesById {
   '/editor': typeof EditorRoute
   '/home': typeof HomeRoute
   '/algorithms/$taskId': typeof AlgorithmsTaskIdRoute
+  '/algorithms/favorites': typeof AlgorithmsFavoritesRoute
   '/javascript/$taskId': typeof JavascriptTaskIdRoute
+  '/javascript/favorites': typeof JavascriptFavoritesRoute
   '/open/$taskId': typeof OpenTaskIdRoute
   '/react/$taskId': typeof ReactTaskIdRoute
+  '/react/favorites': typeof ReactFavoritesRoute
   '/algorithms/': typeof AlgorithmsIndexRoute
   '/javascript/': typeof JavascriptIndexRoute
   '/open/': typeof OpenIndexRoute
@@ -151,9 +178,12 @@ export interface FileRouteTypes {
     | '/editor'
     | '/home'
     | '/algorithms/$taskId'
+    | '/algorithms/favorites'
     | '/javascript/$taskId'
+    | '/javascript/favorites'
     | '/open/$taskId'
     | '/react/$taskId'
+    | '/react/favorites'
     | '/algorithms/'
     | '/javascript/'
     | '/open/'
@@ -167,9 +197,12 @@ export interface FileRouteTypes {
     | '/editor'
     | '/home'
     | '/algorithms/$taskId'
+    | '/algorithms/favorites'
     | '/javascript/$taskId'
+    | '/javascript/favorites'
     | '/open/$taskId'
     | '/react/$taskId'
+    | '/react/favorites'
     | '/algorithms'
     | '/javascript'
     | '/open'
@@ -183,9 +216,12 @@ export interface FileRouteTypes {
     | '/editor'
     | '/home'
     | '/algorithms/$taskId'
+    | '/algorithms/favorites'
     | '/javascript/$taskId'
+    | '/javascript/favorites'
     | '/open/$taskId'
     | '/react/$taskId'
+    | '/react/favorites'
     | '/algorithms/'
     | '/javascript/'
     | '/open/'
@@ -200,9 +236,12 @@ export interface RootRouteChildren {
   EditorRoute: typeof EditorRoute
   HomeRoute: typeof HomeRoute
   AlgorithmsTaskIdRoute: typeof AlgorithmsTaskIdRoute
+  AlgorithmsFavoritesRoute: typeof AlgorithmsFavoritesRoute
   JavascriptTaskIdRoute: typeof JavascriptTaskIdRoute
+  JavascriptFavoritesRoute: typeof JavascriptFavoritesRoute
   OpenTaskIdRoute: typeof OpenTaskIdRoute
   ReactTaskIdRoute: typeof ReactTaskIdRoute
+  ReactFavoritesRoute: typeof ReactFavoritesRoute
   AlgorithmsIndexRoute: typeof AlgorithmsIndexRoute
   JavascriptIndexRoute: typeof JavascriptIndexRoute
   OpenIndexRoute: typeof OpenIndexRoute
@@ -249,6 +288,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AlgorithmsTaskIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/algorithms/favorites': {
+      id: '/algorithms/favorites'
+      path: '/algorithms/favorites'
+      fullPath: '/algorithms/favorites'
+      preLoaderRoute: typeof AlgorithmsFavoritesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/javascript/': {
       id: '/javascript/'
       path: '/javascript'
@@ -261,6 +307,13 @@ declare module '@tanstack/react-router' {
       path: '/javascript/$taskId'
       fullPath: '/javascript/$taskId'
       preLoaderRoute: typeof JavascriptTaskIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/javascript/favorites': {
+      id: '/javascript/favorites'
+      path: '/javascript/favorites'
+      fullPath: '/javascript/favorites'
+      preLoaderRoute: typeof JavascriptFavoritesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/open/': {
@@ -289,6 +342,13 @@ declare module '@tanstack/react-router' {
       path: '/react/$taskId'
       fullPath: '/react/$taskId'
       preLoaderRoute: typeof ReactTaskIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/react/favorites': {
+      id: '/react/favorites'
+      path: '/react/favorites'
+      fullPath: '/react/favorites'
+      preLoaderRoute: typeof ReactFavoritesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/open/algorithms/$taskId': {
@@ -320,9 +380,12 @@ const rootRouteChildren: RootRouteChildren = {
   EditorRoute: EditorRoute,
   HomeRoute: HomeRoute,
   AlgorithmsTaskIdRoute: AlgorithmsTaskIdRoute,
+  AlgorithmsFavoritesRoute: AlgorithmsFavoritesRoute,
   JavascriptTaskIdRoute: JavascriptTaskIdRoute,
+  JavascriptFavoritesRoute: JavascriptFavoritesRoute,
   OpenTaskIdRoute: OpenTaskIdRoute,
   ReactTaskIdRoute: ReactTaskIdRoute,
+  ReactFavoritesRoute: ReactFavoritesRoute,
   AlgorithmsIndexRoute: AlgorithmsIndexRoute,
   JavascriptIndexRoute: JavascriptIndexRoute,
   OpenIndexRoute: OpenIndexRoute,

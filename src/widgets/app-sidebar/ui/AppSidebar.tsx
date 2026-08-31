@@ -32,9 +32,13 @@ export const AppSidebar = ({ className }: AppSidebarProps): React.JSX.Element =>
   const setSidebarWidth = useUIStore((state) => state.setSidebarWidth);
 
   const [isResizing, setIsResizing] = useState(false);
+  const [draftSidebarWidth, setDraftSidebarWidth] = useState(sidebarWidth);
   const startXRef = useRef(0);
   const startWidthRef = useRef(sidebarWidth);
+  const draftWidthRef = useRef(sidebarWidth);
   const sidebarRef = useRef<HTMLElement>(null);
+
+  const displayedSidebarWidth = isResizing ? draftSidebarWidth : sidebarWidth;
 
   const activeSectionKey: "home" | SectionType = useMemo(() => {
     if (pathname.startsWith("/javascript")) return "javascript";
@@ -49,6 +53,8 @@ export const AppSidebar = ({ className }: AppSidebarProps): React.JSX.Element =>
       setIsResizing(true);
       startXRef.current = e.clientX;
       startWidthRef.current = sidebarWidth;
+      draftWidthRef.current = sidebarWidth;
+      setDraftSidebarWidth(sidebarWidth);
     },
     [sidebarWidth]
   );
@@ -63,10 +69,12 @@ export const AppSidebar = ({ className }: AppSidebarProps): React.JSX.Element =>
     const handleMouseMove = (e: MouseEvent) => {
       const delta = e.clientX - startXRef.current;
       const newWidth = Math.min(Math.max(startWidthRef.current + delta, 220), 500);
-      setSidebarWidth(newWidth);
+      draftWidthRef.current = newWidth;
+      setDraftSidebarWidth(newWidth);
     };
 
     const handleMouseUp = () => {
+      setSidebarWidth(draftWidthRef.current);
       setIsResizing(false);
     };
 
@@ -82,46 +90,59 @@ export const AppSidebar = ({ className }: AppSidebarProps): React.JSX.Element =>
   }, [isResizing, setSidebarWidth]);
 
   useEffect(() => {
-    if (sidebarWidth) {
-      document.documentElement.style.setProperty("--sidebar-width", `${sidebarWidth}px`);
+    if (displayedSidebarWidth) {
+      document.documentElement.style.setProperty("--sidebar-width", `${displayedSidebarWidth}px`);
     }
-  }, [sidebarWidth]);
+  }, [displayedSidebarWidth]);
+
+  useEffect(() => {
+    if (!isResizing) {
+      draftWidthRef.current = sidebarWidth;
+      setDraftSidebarWidth(sidebarWidth);
+    }
+  }, [isResizing, sidebarWidth]);
 
   return (
     <aside
       ref={sidebarRef}
-      style={{ width: sidebarOpen ? `${sidebarWidth}px` : "0px" } as React.CSSProperties}
       className={clsx(
         styles.sidebar,
         !sidebarOpen && styles.closed,
         isResizing && styles.isResizing,
         className
       )}
+      aria-hidden={!sidebarOpen}
     >
-      <Tooltip.Provider delayDuration={600} skipDelayDuration={300}>
-        <SidebarWorkspaceHeader
-          activeSectionKey={activeSectionKey}
-          onCloseSidebar={() => setSidebarOpen(false)}
-        />
+      <div className={styles.sidebarInner}>
+        <Tooltip.Provider delayDuration={600} skipDelayDuration={300}>
+          <SidebarWorkspaceHeader
+            activeSectionKey={activeSectionKey}
+            currentTaskId={pathname.split("/").pop() || ""}
+            onCloseSidebar={() => setSidebarOpen(false)}
+          />
 
-        <div
-          ref={contentRef}
-          className={styles.content}
-          tabIndex={-1}
-          role={activeSectionKey !== "home" ? "tree" : undefined}
-          aria-label={activeSectionKey !== "home" ? "Навигация по темам и задачам" : undefined}
-        >
-          {activeSectionKey === "home" ? (
-            <SidebarHomeOverview activeSectionKey={activeSectionKey} />
-          ) : activeSectionKey === "javascript" ? (
-            <SidebarJsList />
-          ) : activeSectionKey === "algorithms" ? (
-            <SidebarAlgoList />
-          ) : (
-            <SidebarReactList />
-          )}
-        </div>
-      </Tooltip.Provider>
+          <div
+            ref={contentRef}
+            className={styles.content}
+            tabIndex={-1}
+            role={activeSectionKey !== "home" ? "tree" : undefined}
+            aria-label={activeSectionKey !== "home" ? "Навигация по темам и задачам" : undefined}
+          >
+            {activeSectionKey === "home" ? (
+              <SidebarHomeOverview
+                activeSectionKey={activeSectionKey}
+                isHomeActive={pathname === "/" || pathname === "/home"}
+              />
+            ) : activeSectionKey === "javascript" ? (
+              <SidebarJsList />
+            ) : activeSectionKey === "algorithms" ? (
+              <SidebarAlgoList />
+            ) : (
+              <SidebarReactList />
+            )}
+          </div>
+        </Tooltip.Provider>
+      </div>
 
       {sidebarOpen && (
         <div

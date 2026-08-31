@@ -48,6 +48,14 @@
   color: var(--text-main, #37352f);
 }
 
+.squareButton.variant_transparent,
+.squareButton.variant_transparent:hover:not(:disabled):not(.disabled),
+.squareButton.variant_transparent.active:not(:disabled):not(.disabled),
+[data-theme="light"] .squareButton.variant_transparent:hover:not(:disabled):not(.disabled),
+[data-theme="light"] .squareButton.variant_transparent.active:not(:disabled):not(.disabled) {
+  background: transparent;
+}
+
 .squareButton:disabled,
 .squareButton.disabled {
   opacity: 0.35;

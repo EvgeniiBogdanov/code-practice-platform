@@ -1,39 +1,62 @@
 .sidebar {
   width: var(--sidebar-width, 280px);
-  min-width: 200px;
-  max-width: 480px;
+  min-width: 0;
   height: 100%;
-  background: var(--bg-sidebar);
   padding: 0;
-  display: flex;
-  flex-direction: column;
   position: relative;
-  overflow: visible;
+  overflow: hidden;
   flex-shrink: 0;
-  transition:
-    width 0.2s cubic-bezier(0.2, 0, 0, 1),
-    min-width 0.2s cubic-bezier(0.2, 0, 0, 1);
+  transition: width var(--transition-medium);
+  will-change: width;
   z-index: var(--z-sidebar, 2000);
 }
 
 .sidebar.isResizing {
-  transition: none !important;
-  user-select: none !important;
+  transition: none;
+  user-select: none;
 }
 
 .sidebar.closed {
-  width: 0 !important;
-  min-width: 0 !important;
-  max-width: 0 !important;
-  border-right: none !important;
-  overflow: hidden !important;
+  width: 0;
+  pointer-events: none;
+}
+
+.sidebarInner {
+  --fs-sidebar-item: 14.5px;
+
+  display: flex;
+  flex-direction: column;
+  width: var(--sidebar-width, 280px);
+  height: 100%;
+  background: var(--bg-sidebar);
+  opacity: 1;
+  transform: translateX(0);
+  transform-origin: left center;
+  transition:
+    opacity var(--transition-fast),
+    transform var(--transition-medium),
+    visibility 0s linear;
+}
+
+.closed .sidebarInner {
+  visibility: hidden;
+  opacity: 0;
+  transform: translateX(calc(var(--space-2) * -1));
+  transition:
+    opacity var(--transition-fast),
+    transform var(--transition-medium),
+    visibility 0s linear var(--duration-medium);
+}
+
+.isResizing .sidebarInner {
+  transition: none;
 }
 
 /* Draggable resizer handle */
 .resizer {
   position: absolute;
   top: 0;
-  right: -3px;
+  right: 0;
   width: 6px;
   height: 100%;
   cursor: col-resize;
@@ -46,7 +69,7 @@
   content: "";
   position: absolute;
   top: 0;
-  left: 2px;
+  right: 0;
   width: 2px;
   height: 100%;
   background: transparent;
@@ -59,8 +82,27 @@
 }
 
 @media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: min(var(--sidebar-width, 280px), calc(100vw - var(--space-12)));
+    max-width: calc(100vw - var(--space-12));
+    transform: translateX(0);
+    transition: transform var(--transition-medium);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .sidebar.closed {
+    width: min(var(--sidebar-width, 280px), calc(100vw - var(--space-12)));
+    transform: translateX(-100%);
+  }
+
+  .sidebarInner {
+    width: 100%;
+  }
+
   .resizer {
-    display: none !important;
+    display: none;
   }
 }
 
