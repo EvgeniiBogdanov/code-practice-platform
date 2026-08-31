@@ -27,6 +27,17 @@ body {
   box-sizing: border-box;
 }
 
+/*
+ * Dark theme is intentionally flat. The priority override keeps that invariant across
+ * CSS Modules, portals, and third-party styles that do not consume our shadow tokens.
+ */
+:root[data-theme="dark"] body *,
+:root[data-theme="dark"] body *::before,
+:root[data-theme="dark"] body *::after {
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
 /* Custom Notion-style Scrollbars */
 ::-webkit-scrollbar {
   width: 8px;
@@ -151,12 +162,6 @@ body.is-resizing-sidebar iframe {
   color: var(--hl-entity, var(--hl-number));
 }
 
-.hl-word-match {
-  background-color: rgba(35, 131, 226, 0.22);
-  box-shadow: 0 0 0 1px rgba(35, 131, 226, 0.45);
-  border-radius: var(--radius-xs);
-}
-
 .hl-multi-selected {
   background-color: rgba(38, 79, 120, 0.85) !important;
   box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.6);
@@ -188,11 +193,6 @@ body.is-resizing-sidebar iframe {
 
 .hl-unused-dimmed {
   opacity: 0.45;
-}
-
-[data-theme="light"] .hl-word-match {
-  background-color: rgba(14, 99, 156, 0.14);
-  box-shadow: 0 0 0 1px rgba(14, 99, 156, 0.28);
 }
 
 [data-theme="light"] .hl-bracket-match {

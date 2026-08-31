@@ -4,7 +4,8 @@ import { ChevronDown, FileText, Folder, Check, X, RotateCcw, Zap } from "lucide-
 import { clsx } from "clsx";
 import { selectIsTaskCompleted } from "@/entities/progress";
 import { isTaskDue } from "@/entities/review";
-import { ALL_JS_TASKS, getGroupMeta } from "@/entities/task";
+import { getGroupMeta } from "@/entities/task/groups";
+import { useTaskSection } from "@/entities/task/catalog";
 import { FinderHierarchyProps } from "../model/types";
 import { useJsHierarchyLists } from "../model/useJsHierarchyLists";
 import { resolveJsHierarchyNames } from "../lib/resolveJsHierarchyNames";
@@ -19,9 +20,10 @@ export const FinderJsHierarchy = ({
   toggleDropdown,
   closeAllDropdowns,
 }: FinderHierarchyProps) => {
+  const { tasks } = useTaskSection("javascript");
   const { currentGroupName, currentSubgroupName } = useMemo(
-    () => resolveJsHierarchyNames(currentTask, paramId),
-    [currentTask, paramId]
+    () => resolveJsHierarchyNames(currentTask, paramId, tasks),
+    [currentTask, paramId, tasks]
   );
 
   const currentGroupMeta = currentGroupName ? getGroupMeta(currentGroupName) : null;
@@ -199,7 +201,7 @@ export const FinderJsHierarchy = ({
                   </span>
                 </div>
                 <div className={styles.dropdownList}>
-                  {ALL_JS_TASKS.filter(
+                  {tasks.filter(
                     (t) =>
                       t.group === currentGroupName &&
                       (!currentSubgroupName || t.subgroup === currentSubgroupName)

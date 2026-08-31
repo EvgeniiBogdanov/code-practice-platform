@@ -1,38 +1,45 @@
 import React, { useMemo, useState, useEffect, useCallback, useDeferredValue } from "react";
 import { useLocation } from "@tanstack/react-router";
 import { Folder } from "lucide-react";
+import { groupTasksBySubgroup, hasTaskSubgroups } from "@/entities/task";
 import {
-  Task,
-  SectionType,
   REACT_GROUPS_CONFIG,
   JS_GROUP_CONFIG,
   getGroupMeta,
-  getAlgoGroupMeta,
   getAlgoGroupMetaByInfoId,
-  ALL_JS_TASKS,
-  ALL_REACT_TASKS,
-  ALL_ALGO_TASKS,
-  groupTasksBySubgroup,
-  hasTaskSubgroups,
-} from "@/entities/task";
+} from "@/entities/task/groups";
+import type { Task, SectionType } from "@/entities/task/meta";
+import { useTaskSection } from "@/entities/task/catalog";
 import { useProgressStore } from "@/entities/progress";
 import { useReviewStore, isTaskDue, formatNextReviewDate } from "@/entities/review";
 import { safeDecodeURI } from "@/shared/lib/url";
 import { GroupMetaInfo, StatusFilter, ViewMode, GroupOverviewState } from "./types";
 import { formatLastSolved } from "../lib/format-last-solved";
-import {
-  getTaskGradientClass,
-  getTaskTooltipTitle,
-  calculateReadingTime,
-} from "../lib/task-card-helpers";
+import { getTaskGradientClass, getTaskTooltipTitle, calculateReadingTime } from "../lib/task-card-helpers";
 
 export { formatLastSolved, getTaskGradientClass, getTaskTooltipTitle };
 
+const isTaskInReactGroup = (task: Task, groupId: string): boolean => {
+  if (groupId === "group-warmup") return task.difficulty === "warm-up";
+  if (groupId === "group-refactoring") return task.difficulty === "refactoring";
+  if (groupId === "group-middle") return task.difficulty === "middle";
+  if (groupId === "group-strong") return task.difficulty === "strong";
+  if (groupId === "group-ts") return task.category === "React + TS (Разминка)";
+  if (groupId === "group-ts-practice") return task.category === "React + TS (Практика)";
+  return false;
+};
+
 export const useGroupOverview = (groupId: string): GroupOverviewState => {
-  const progressState = useProgressStore();
-  const completedTasks = progressState.completedTasks || {};
-  const reviews = useReviewStore((state) => state.reviews) || {};
+  const completedTasks = useProgressStore((state) => state.completedTasks);
+  const isProgressInitialized = useProgressStore((state) => state.isInitialized);
+  const reviews = useReviewStore((state) => state.reviews);
   const location = useLocation();
+  const section: SectionType = groupId in REACT_GROUPS_CONFIG
+    ? "react"
+    : getAlgoGroupMetaByInfoId(groupId)
+      ? "algorithms"
+      : "javascript";
+  const { tasks: loadedTasks, isLoading } = useTaskSection(section);
 
   const [collapsedSubgroups, setCollapsedSubgroupsState] = useState<Record<string, boolean>>(() => {
     if (typeof window === "undefined") return {};
@@ -80,8 +87,7 @@ export const useGroupOverview = (groupId: string): GroupOverviewState => {
   };
 
   // Determine section and metadata
-  const { groupMeta, groupTasks, section } = useMemo(() => {
-    let sec: SectionType = "algorithms";
+  const { groupMeta, groupTasks } = useMemo(() => {
     let meta: GroupMetaInfo = {
       name: groupId,
       title: groupId,
@@ -102,13 +108,11 @@ export const useGroupOverview = (groupId: string): GroupOverviewState => {
         icon?: React.ComponentType<{ size?: number | string; className?: string; color?: string }>;
         color?: string;
         bg?: string;
-        tasks?: Task[];
       }
     >;
     const jsGroups = JS_GROUP_CONFIG as unknown as Record<string, { desc?: string }>;
 
     if (reactGroups[groupId]) {
-      sec = "react";
       const cfg = reactGroups[groupId];
       meta = {
         name: cfg.name || cfg.title || groupId,
@@ -121,9 +125,8 @@ export const useGroupOverview = (groupId: string): GroupOverviewState => {
         practiceTasksList: [],
         articleLinksList: [],
       };
-      tasks = cfg.tasks || [];
+      tasks = loadedTasks.filter((task) => isTaskInReactGroup(task, groupId));
     } else if (getAlgoGroupMetaByInfoId(groupId)) {
-      sec = "algorithms";
       const algoMeta = getAlgoGroupMetaByInfoId(groupId);
       meta = {
         name: algoMeta?.name || groupId,
@@ -139,9 +142,8 @@ export const useGroupOverview = (groupId: string): GroupOverviewState => {
         articleLinksList: algoMeta?.articleLinksList || [],
         renderIcon: algoMeta?.renderIcon,
       };
-      tasks = ALL_ALGO_TASKS.filter((t) => t.group === meta.name);
+      tasks = loadedTasks.filter((t) => t.group === meta.name);
     } else {
-      sec = "javascript";
       const isSubgroup = groupId.startsWith("subgroup-");
       const rawName = safeDecodeURI(groupId.replace(/^group-|^subgroup-/, ""));
 
@@ -149,7 +151,7 @@ export const useGroupOverview = (groupId: string): GroupOverviewState => {
       let resolvedSubgroup: string | null = null;
 
       if (isSubgroup) {
-        const matched = ALL_JS_TASKS.find(
+        const matched = loadedTasks.find(
           (t) =>
             (t.group && t.subgroup && `${t.group}-${t.subgroup}` === rawName) ||
             (t.group && t.subgroup && `${t.group}/${t.subgroup}` === rawName) ||
@@ -181,7 +183,7 @@ export const useGroupOverview = (groupId: string): GroupOverviewState => {
           articleLinksList: [],
           renderIcon: (size = 14) => React.createElement(Folder, { size, color: jsMeta.color }),
         };
-        tasks = ALL_JS_TASKS.filter(
+        tasks = loadedTasks.filter(
           (t) => t.group === resolvedGroup && t.subgroup === resolvedSubgroup
         );
       } else {
@@ -197,19 +199,21 @@ export const useGroupOverview = (groupId: string): GroupOverviewState => {
           articleLinksList: [],
           renderIcon: jsMeta.renderIcon,
         };
-        tasks = ALL_JS_TASKS.filter((t) => t.group === resolvedGroup);
+        tasks = loadedTasks.filter((t) => t.group === resolvedGroup);
       }
     }
 
-    return { groupMeta: meta, groupTasks: tasks, section: sec };
-  }, [groupId]);
+    return { groupMeta: meta, groupTasks: tasks };
+  }, [groupId, loadedTasks]);
 
-  const getTaskStatus = (taskId: string | number): "solved" | "unsolved" | "unstarted" => {
-    const val = (completedTasks as Record<string, unknown>)[String(taskId)];
-    if (val === true || val === "solved" || val === "completed") return "solved";
-    if (val === "unsolved") return "unsolved";
-    return "unstarted";
-  };
+  const getTaskStatus = useCallback(
+    (taskId: string | number): "solved" | "unsolved" | "unstarted" => {
+      const value = (completedTasks as Record<string, unknown>)[String(taskId)];
+      if (value === true || value === "solved" || value === "completed") return "solved";
+      return value === "unsolved" ? "unsolved" : "unstarted";
+    },
+    [completedTasks]
+  );
 
   const readingTimeMinutes = useMemo(() => {
     return calculateReadingTime(groupMeta.infoRaw);
@@ -221,7 +225,7 @@ export const useGroupOverview = (groupId: string): GroupOverviewState => {
     const remaining = Math.max(0, total - completed);
     const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
     return { total, completed, remaining, percent };
-  }, [groupTasks, completedTasks]);
+  }, [getTaskStatus, groupTasks]);
 
   const deferredStatusFilter = useDeferredValue(statusFilter);
 
@@ -232,7 +236,7 @@ export const useGroupOverview = (groupId: string): GroupOverviewState => {
       if (deferredStatusFilter === "uncompleted") return status === "unsolved";
       return true;
     });
-  }, [groupTasks, deferredStatusFilter, completedTasks]);
+  }, [deferredStatusFilter, getTaskStatus, groupTasks]);
 
   const groupedSubgroups = useMemo(() => {
     return groupTasksBySubgroup(filteredTasks);
@@ -254,7 +258,7 @@ export const useGroupOverview = (groupId: string): GroupOverviewState => {
       ...prev,
       [subName]: !prev[subName],
     }));
-  }, []);
+  }, [setCollapsedSubgroups]);
 
   useEffect(() => {
     const handleScrollOrAnchor = () => {
@@ -321,5 +325,6 @@ export const useGroupOverview = (groupId: string): GroupOverviewState => {
     isTaskDue,
     reviews,
     completedTasks,
+    isInitialized: isProgressInitialized && !isLoading,
   };
 };

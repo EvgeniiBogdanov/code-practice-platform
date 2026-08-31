@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
-import { useNavigate } from "@tanstack/react-router";
 import { Task, TaskSolution, getTaskFiles, hasTaskVisualComponent } from "@/entities/task";
 import {
   getUserSolution,
@@ -14,6 +13,7 @@ import {
   TaskSourceFile,
 } from "@/shared/lib/code-runners";
 import { ViewMode } from "@/shared/ui";
+import { useFullscreenNavigation } from "./use-fullscreen-navigation";
 
 export interface UseSolutionTabReturn {
   isReact: boolean;
@@ -37,6 +37,8 @@ export interface UseSolutionTabReturn {
   recommendationNote?: string;
   isRecommended?: boolean;
   badgeText: string;
+  isFullscreenTransitioning: boolean;
+  preloadFullscreen: () => void;
   handleToggleFullscreen: () => void;
   handleCodeChange: (newCode: string) => void;
   handleResetCode: () => Promise<void>;
@@ -46,7 +48,6 @@ export interface UseSolutionTabReturn {
 }
 
 export function useSolutionTab(task: Task): UseSolutionTabReturn {
-  const navigate = useNavigate();
   const isReact = task.section === "react";
   const solutions = useMemo(
     () => task.solutions || task.variants || [],
@@ -97,6 +98,8 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
   const hasVisualComponent = useMemo(() => hasTaskVisualComponent(task, files), [task, files]);
 
   const [viewMode, setViewMode] = useState<ViewMode>("code");
+  const { isFullscreenTransitioning, handleToggleFullscreen, preloadFullscreen } =
+    useFullscreenNavigation({ task, tab: "solution", hasVisualComponent });
   const [isHintExpanded, setIsHintExpanded] = useState(false);
 
   const [consoleLogs, setConsoleLogs] = useState<NodeRunnerLogEntry[]>([]);
@@ -198,20 +201,6 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
     };
   }, [viewMode, activeFileIdx, task.id]);
 
-  const handleToggleFullscreen = useCallback(() => {
-    const section = task.section || "javascript";
-    navigate({
-      to:
-        section === "algorithms"
-          ? "/open/algorithms/$taskId"
-          : section === "react"
-            ? "/open/react/$taskId"
-            : "/open/javascript/$taskId",
-      params: { taskId: String(task.id) },
-      search: { tab: "solution", view: hasVisualComponent ? "split" : "code" },
-    });
-  }, [navigate, task.section, task.id, hasVisualComponent]);
-
   const handleCodeChange = useCallback(
     (newCode: string) => {
       setFiles((prev) => {
@@ -300,6 +289,8 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
     recommendationNote,
     isRecommended,
     badgeText,
+    isFullscreenTransitioning,
+    preloadFullscreen,
     handleToggleFullscreen,
     handleCodeChange,
     handleResetCode,

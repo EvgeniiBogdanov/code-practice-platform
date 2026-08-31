@@ -2,13 +2,13 @@
 
 # <img src="public/favicon.svg" width="22" height="22" alt="" /> Code Practice Platform
 
-<sub><span style="color:gray">version: 2.3.2</span></sub>
+<sub><span style="color:gray">version: 2.3.3</span></sub>
 
 ### Интерактивная платформа для подготовки к техническим собеседованиям по фронтенду и алгоритмам
 
 <br />
 
-<img width="1721" height="886" alt="Code Practice Platform Preview" src="https://github.com/user-attachments/assets/3bf6c943-4566-4642-98c0-d4ae3aaeb6ef" />
+<img width="1723" height="964" alt="Code Practice Platform Preview" src="https://github.com/user-attachments/assets/489061bb-f4a9-4417-aa1c-8031295f5eb3" />
 
 <br /><br />
 
@@ -147,7 +147,6 @@ npm run build
 | <kbd>Option</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd>                    | <kbd>Alt</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd>                    | Переместить текущую строку / блок строк вверх / вниз          |
 | <kbd>Shift</kbd> + <kbd>Option</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd> | <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd> | Продублировать текущую строку / блок строк вверх / вниз       |
 | <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>F</kbd>                   | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>L</kbd>                 | Форматирование кода через Prettier 3                          |
-| <kbd>⌘</kbd> + <kbd>F</kbd>                                        | <kbd>Ctrl</kbd> + <kbd>F</kbd>                                  | Поиск и замена в редакторе                                    |
 | <kbd>Alt</kbd> + <kbd>Z</kbd>                                      | <kbd>Alt</kbd> + <kbd>Z</kbd>                                   | Переключение мягкого переноса строк (Word Wrap)               |
 | <kbd>Tab</kbd> / <kbd>Shift</kbd> + <kbd>Tab</kbd>                 | <kbd>Tab</kbd> / <kbd>Shift</kbd> + <kbd>Tab</kbd>              | Добавить / убрать отступ для выделенных строк                 |
 | <kbd>⌘</kbd> + <kbd>/</kbd>                                        | <kbd>Ctrl</kbd> + <kbd>/</kbd>                                  | Закомментировать / раскомментировать строку (`//`)            |

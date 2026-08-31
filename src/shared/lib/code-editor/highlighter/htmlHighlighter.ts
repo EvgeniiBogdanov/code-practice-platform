@@ -9,15 +9,8 @@ import { highlightJS } from "./jsHighlighter";
 export function highlightHTML(code: string, options: HighlightOptions = {}): string {
   if (!code) return "";
 
-  const {
-    highlightWord = "",
-    bracketPair = null,
-    problems = [],
-    multiSelections = [],
-  } = options;
+  const { bracketPair = null, problems = [], multiSelections = [] } = options;
 
-  const isWordMatch = (txt: string): boolean =>
-    Boolean(highlightWord && highlightWord.length >= 2 && txt === highlightWord);
   const isBracketMatch = (idx: number): boolean =>
     Boolean(bracketPair && (idx === bracketPair[0] || idx === bracketPair[1]));
   const isMultiSelected = (start: number, len: number): boolean => {
@@ -141,11 +134,10 @@ export function highlightHTML(code: string, options: HighlightOptions = {}): str
         const attrMatch = /^([a-zA-Z0-9_:@.-]+)/.exec(rest);
         if (attrMatch) {
           const attrName = attrMatch[1];
-          const wordClass = isWordMatch(attrName) ? " hl-word-match" : "";
           const multiSelectClass = isMultiSelected(currentIndex, attrName.length)
             ? " hl-multi-selected"
             : "";
-          html += `<span class="hl-attr${wordClass}${multiSelectClass}">${escapeHtml(attrName)}</span>`;
+          html += `<span class="hl-attr${multiSelectClass}">${escapeHtml(attrName)}</span>`;
           currentIndex += attrName.length;
           rest = rest.slice(attrName.length);
 

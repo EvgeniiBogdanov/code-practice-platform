@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { clsx } from "clsx";
-import { Card } from "@/shared/ui";
+import { Card, UiNumberScramble } from "@/shared/ui";
 import styles from "./HomePage.module.css";
 
 export interface HomeSectionCardProps {
@@ -53,7 +53,8 @@ export const HomeSectionCard = memo(
           </div>
           <div className={styles.cardFooter}>
             <span className={styles.cardProgress}>
-              {solved} из {total} решено ({pct}%)
+              <UiNumberScramble value={solved} /> из {total} решено (
+              <UiNumberScramble value={pct} suffix="%" />)
             </span>
             <Link to={to} className={clsx(styles.actionBtn, actionBtnClass)}>
               <span>Открыть</span>

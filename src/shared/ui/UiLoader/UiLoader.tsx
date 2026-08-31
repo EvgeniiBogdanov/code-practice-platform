@@ -16,6 +16,7 @@ export interface UiLoaderProps extends React.HTMLAttributes<HTMLDivElement> {
   size?: UiLoaderSize | number;
   variant?: UiLoaderVariant;
   center?: boolean;
+  fullscreen?: boolean;
   label?: string;
   showLabel?: boolean;
   className?: string;
@@ -32,8 +33,9 @@ const STROKE_WIDTH_MAP: Record<UiLoaderSize, number> = {
 export const UiLoader = memo(
   ({
     size = "md",
-    variant = "primary",
+    variant = "gray",
     center = false,
+    fullscreen = false,
     label,
     showLabel = false,
     className,
@@ -84,6 +86,7 @@ export const UiLoader = memo(
           styles.container,
           styles[`variant_${variant}`],
           center && styles.center,
+          fullscreen && styles.fullscreen,
           className
         )}
         {...props}

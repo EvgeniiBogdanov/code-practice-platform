@@ -1,0 +1,13 @@
+.quickActions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: center;
+  justify-items: center;
+ 
+}
+
+.quickActions > * {
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}

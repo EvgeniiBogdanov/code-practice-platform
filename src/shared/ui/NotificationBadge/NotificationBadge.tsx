@@ -48,6 +48,10 @@ export interface NotificationBadgeProps extends HTMLAttributes<HTMLSpanElement> 
    */
   ring?: boolean;
   /**
+   * Whether to animate badge appearance on mount. Defaults to false.
+   */
+  animated?: boolean;
+  /**
    * Custom aria-label for accessibility.
    */
   ariaLabel?: string;
@@ -67,6 +71,7 @@ export const NotificationBadge = memo(
     showZero = false,
     pinned = true,
     ring = true,
+    animated = false,
     ariaLabel,
     className,
     children,
@@ -84,6 +89,7 @@ export const NotificationBadge = memo(
             styles[`size_${size}`],
             pinned && styles.pinned,
             ring && styles.ring,
+            animated && styles.animated,
             className
           )}
           {...props}
@@ -102,11 +108,12 @@ export const NotificationBadge = memo(
             styles[`size_${size}`],
             pinned && styles.pinned,
             ring && styles.ring,
+            animated && styles.animated,
             className
           )}
           {...props}
         >
-          <span className={styles.inner}>{children}</span>
+          {children}
         </span>
       );
     }
@@ -123,12 +130,6 @@ export const NotificationBadge = memo(
     }
 
     const displayCount = isNumeric && numericCount > maxCount ? `${maxCount}+` : String(count);
-    const isSingleDigit =
-      isNumeric &&
-      numericCount >= 0 &&
-      numericCount < 10 &&
-      !displayCount.includes("+");
-
     const defaultAriaLabel = isNumeric ? `${numericCount} уведомлений` : String(count);
 
     return (
@@ -139,14 +140,14 @@ export const NotificationBadge = memo(
           styles.badge,
           styles[`variant_${variant}`],
           styles[`size_${size}`],
-          isSingleDigit && styles.singleDigit,
           pinned && styles.pinned,
           ring && styles.ring,
+          animated && styles.animated,
           className
         )}
         {...props}
       >
-        <span className={styles.inner}>{displayCount}</span>
+        {displayCount}
       </span>
     );
   }

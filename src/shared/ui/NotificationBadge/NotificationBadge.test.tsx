@@ -65,4 +65,10 @@ describe("NotificationBadge", () => {
     expect(badge).toHaveTextContent("PRO");
     expect(badge).toHaveAttribute("aria-label", "Кастомный бейдж");
   });
+
+  it("supports animated prop", () => {
+    render(<NotificationBadge count={3} animated />);
+    const badge = screen.getByRole("status");
+    expect(badge).toBeInTheDocument();
+  });
 });

@@ -3,7 +3,7 @@ import { Modal, UiLoader } from "@/shared/ui";
 import { useStatsModalController } from "../model/useStatsModalController";
 import styles from "./StatsModal.module.css";
 
-const LazySpacedRepetitionSection = lazy(() =>
+const SpacedRepetitionSection = lazy(() =>
   import("@/features/spaced-repetition").then((module) => ({
     default: module.SpacedRepetitionSection,
   }))
@@ -21,8 +21,8 @@ export const StatsModal = memo(() => {
       className={styles.statsModal}
       contentClassName={styles.statsModalBody}
     >
-      <Suspense fallback={<UiLoader size="lg" center />}>
-        <LazySpacedRepetitionSection
+      <Suspense fallback={<UiLoader center size="lg" />}>
+        <SpacedRepetitionSection
           inModal={true}
           onNavigate={() => setIsOpen(false)}
           onCloseModal={() => setIsOpen(false)}

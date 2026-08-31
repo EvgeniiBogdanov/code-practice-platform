@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useLocation } from "@tanstack/react-router";
-import { ALL_TASKS, ALL_JS_TASKS, ALL_REACT_TASKS, ALL_ALGO_TASKS, Task } from "@/entities/task";
+import type { Task } from "@/entities/task/meta";
+import { useAllTaskSections } from "@/entities/task/catalog";
 
 export interface SpacedRepetitionModalData {
   sectionName: string;
@@ -10,6 +11,7 @@ export interface SpacedRepetitionModalData {
 
 export const useStatsModalData = (): SpacedRepetitionModalData => {
   const location = useLocation();
+  const { tasks } = useAllTaskSections();
 
   const activeSection = useMemo<"javascript" | "react" | "algorithms" | "home">(() => {
     const p = location.pathname;
@@ -24,27 +26,27 @@ export const useStatsModalData = (): SpacedRepetitionModalData => {
       return {
         sectionName: "JavaScript",
         section: "javascript",
-        taskList: ALL_JS_TASKS,
+        taskList: tasks.filter((task) => task.section === "javascript"),
       };
     }
     if (activeSection === "react") {
       return {
         sectionName: "React",
         section: "react",
-        taskList: ALL_REACT_TASKS,
+        taskList: tasks.filter((task) => task.section === "react"),
       };
     }
     if (activeSection === "algorithms") {
       return {
         sectionName: "Алгоритмы",
         section: "algorithms",
-        taskList: ALL_ALGO_TASKS,
+        taskList: tasks.filter((task) => task.section === "algorithms"),
       };
     }
     return {
       sectionName: "Вся платформа",
       section: "home",
-      taskList: ALL_TASKS,
+      taskList: Array.from(tasks),
     };
-  }, [activeSection]);
+  }, [activeSection, tasks]);
 };

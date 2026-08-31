@@ -15,6 +15,8 @@ export interface CodeEditorProps {
   bottomConsole?: React.ReactNode;
   isFullscreen?: boolean;
   onToggleFullscreen?: () => void;
+  onPreloadFullscreen?: () => void;
+  isFullscreenTransitioning?: boolean;
   fillHeight?: boolean;
   className?: string;
 }

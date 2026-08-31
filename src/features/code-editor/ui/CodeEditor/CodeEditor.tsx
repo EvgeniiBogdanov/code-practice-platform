@@ -6,7 +6,6 @@ import { useCodeEditor } from "../../model/use-code-editor";
 import { CodeEditorProps } from "../../model/types";
 import { LineNumbers } from "../LineNumbers";
 import { EditorToolbar } from "../EditorToolbar";
-import { FindReplaceWidget } from "../FindReplaceWidget";
 import { QuickFixBanner } from "../QuickFixBanner";
 import { SuggestionsDropdown } from "../SuggestionsDropdown";
 import { HoverSignatureCard } from "../HoverSignatureCard";
@@ -28,6 +27,8 @@ export const CodeEditor = ({
   bottomConsole,
   isFullscreen,
   onToggleFullscreen,
+  onPreloadFullscreen,
+  isFullscreenTransitioning = false,
   fillHeight = false,
   className,
 }: CodeEditorProps): React.JSX.Element => {
@@ -48,7 +49,6 @@ export const CodeEditor = ({
     history,
     intelliSense,
     hoverSignatures,
-    findReplace,
     multiCursor,
     lintResult,
     isAnalysisPending,
@@ -112,11 +112,6 @@ export const CodeEditor = ({
           onFormat={handleFormat}
           wordWrap={wordWrap}
           onToggleWordWrap={toggleWordWrap}
-          isFindOpen={findReplace.findState.isOpen}
-          onToggleFind={() => {
-            if (findReplace.findState.isOpen) findReplace.closeFind();
-            else findReplace.openFind(false);
-          }}
           onReset={onReset}
           isModified={isModified}
           onIncreaseFontSize={increaseFontSize}
@@ -125,6 +120,8 @@ export const CodeEditor = ({
           codeText={code}
           isFullscreen={effectiveFullscreen}
           onToggleFullscreen={toggleFullscreen}
+          onPreloadFullscreen={onPreloadFullscreen}
+          isFullscreenTransitioning={isFullscreenTransitioning}
           readOnly={readOnly}
         />
 
@@ -138,24 +135,6 @@ export const CodeEditor = ({
         )}
 
         <div className={styles.editorBody}>
-          <FindReplaceWidget
-            findState={findReplace.findState}
-            findMatches={findReplace.findMatches}
-            findInputRef={findReplace.findInputRef}
-            replaceInputRef={findReplace.replaceInputRef}
-            onClose={findReplace.closeFind}
-            onFindNext={findReplace.findNext}
-            onFindPrev={findReplace.findPrev}
-            onReplaceCurrent={findReplace.replaceCurrent}
-            onReplaceAll={findReplace.replaceAllMatches}
-            onSetQuery={findReplace.setQuery}
-            onSetReplaceText={findReplace.setReplaceText}
-            onToggleShowReplace={findReplace.toggleShowReplace}
-            onToggleMatchCase={findReplace.toggleMatchCase}
-            onToggleMatchWholeWord={findReplace.toggleMatchWholeWord}
-            onToggleUseRegex={findReplace.toggleUseRegex}
-          />
-
           <LineNumbers
             ref={gutterRef}
             lineCount={lineCount}
@@ -248,26 +227,6 @@ export const CodeEditor = ({
           onFixTypo={handleFixTypo}
           onFixMissingImport={handleFixMissingImport}
         />
-
-        {findReplace.findState.isOpen && (
-          <FindReplaceWidget
-            findState={findReplace.findState}
-            findMatches={findReplace.findMatches}
-            findInputRef={findReplace.findInputRef}
-            replaceInputRef={findReplace.replaceInputRef}
-            onClose={findReplace.closeFind}
-            onFindNext={findReplace.findNext}
-            onFindPrev={findReplace.findPrev}
-            onReplaceCurrent={findReplace.replaceCurrent}
-            onReplaceAll={findReplace.replaceAllMatches}
-            onSetQuery={findReplace.setQuery}
-            onSetReplaceText={findReplace.setReplaceText}
-            onToggleShowReplace={findReplace.toggleShowReplace}
-            onToggleMatchCase={findReplace.toggleMatchCase}
-            onToggleMatchWholeWord={findReplace.toggleMatchWholeWord}
-            onToggleUseRegex={findReplace.toggleUseRegex}
-          />
-        )}
 
         {bottomConsole && <div className={styles.bottomConsoleWrapper}>{bottomConsole}</div>}
 

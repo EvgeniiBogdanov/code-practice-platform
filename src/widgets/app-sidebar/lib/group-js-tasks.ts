@@ -1,15 +1,16 @@
-import { ALL_JS_TASKS, getGroupMeta, Task } from "@/entities/task";
+import { getGroupMeta } from "@/entities/task/groups";
+import type { Task } from "@/entities/task/meta";
 
 export interface GroupedJsTasksResult {
   groupedTasks: Record<string, Record<string, Task[]>>;
   groupMetaMap: Record<string, ReturnType<typeof getGroupMeta>>;
 }
 
-export const groupJsTasks = (): GroupedJsTasksResult => {
+export const groupJsTasks = (tasks: readonly Task[]): GroupedJsTasksResult => {
   const groups: Record<string, Record<string, Task[]>> = {};
   const metaMap: Record<string, ReturnType<typeof getGroupMeta>> = {};
 
-  ALL_JS_TASKS.forEach((task) => {
+  tasks.forEach((task) => {
     const group = task.group || "Общие";
     const subgroup = task.subgroup || "Разное";
 

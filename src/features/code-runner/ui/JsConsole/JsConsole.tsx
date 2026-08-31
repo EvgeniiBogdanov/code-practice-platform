@@ -1,11 +1,15 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { lazy, Suspense, useState, useEffect, useCallback } from "react";
 import "@xterm/xterm/css/xterm.css";
 import { clsx } from "clsx";
 import { NodeRunnerLogEntry } from "@/shared/lib/code-runners";
 import { useUIStore } from "@/entities/ui-state";
-import { useXtermConsole } from "../../model/useXtermConsole";
+import { UiLoader } from "@/shared/ui";
 import { JsConsoleHeader } from "./JsConsoleHeader";
 import styles from "./JsConsole.module.css";
+
+const XtermTerminal = lazy(() =>
+  import("./XtermTerminal").then((module) => ({ default: module.XtermTerminal }))
+);
 
 export interface JsConsoleProps {
   logs?: NodeRunnerLogEntry[];
@@ -79,18 +83,7 @@ export function JsConsole({
     }
   }, [isCollapsed, propOnToggleCollapse, setConsoleCollapsed]);
 
-  const { terminalRef, clearTerminal } = useXtermConsole({
-    logs,
-    theme,
-    fontSize: consoleFontSize,
-    isCollapsed,
-    filename,
-    isRunning,
-    lastExecution,
-  });
-
   const handleClear = () => {
-    clearTerminal();
     if (onClear) onClear();
   };
 
@@ -129,7 +122,18 @@ export function JsConsole({
         textToCopy={fullTextToCopy}
       />
 
-      {!isCollapsed && <div ref={terminalRef} className={styles.terminalBody} />}
+      {!isCollapsed && (
+        <Suspense fallback={<UiLoader center size="sm" />}>
+          <XtermTerminal
+            logs={logs}
+            theme={theme}
+            fontSize={consoleFontSize}
+            filename={filename}
+            isRunning={isRunning}
+            lastExecution={lastExecution}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }

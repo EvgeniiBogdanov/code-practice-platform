@@ -17,7 +17,7 @@ import {
 import { clsx } from "clsx";
 import { useProgressStore, selectIsTaskCompleted } from "@/entities/progress";
 import { useReviewStore, isTaskDue, getGroupCompletionClass } from "@/entities/review";
-import { ALL_REACT_TASKS } from "@/entities/task";
+import { useTaskSection } from "@/entities/task/catalog";
 import { FinderHierarchyProps } from "../model/types";
 import { getRatingClass } from "../lib/getRatingClass";
 import { NodeCount } from "@/shared/ui";
@@ -32,6 +32,7 @@ export const FinderReactHierarchy = ({
 }: FinderHierarchyProps) => {
   const progressState = useProgressStore();
   const reviews = useReviewStore((state) => state.reviews);
+  const { tasks } = useTaskSection("react");
 
   const reactCategories = useMemo(
     () => [
@@ -40,45 +41,45 @@ export const FinderReactHierarchy = ({
         label: "Разминка",
         icon: <Flame size={14} className={styles.iconFlame} />,
         infoId: "group-warmup",
-        tasks: ALL_REACT_TASKS.filter((t) => t.difficulty === "warm-up"),
+        tasks: tasks.filter((t) => t.difficulty === "warm-up"),
       },
       {
         id: "refactoring",
         label: "Рефакторинг",
         icon: <Wrench size={14} className={styles.iconWrench} />,
         infoId: "group-refactoring",
-        tasks: ALL_REACT_TASKS.filter((t) => t.difficulty === "refactoring"),
+        tasks: tasks.filter((t) => t.difficulty === "refactoring"),
       },
       {
         id: "middle",
         label: "Middle",
         icon: <Rocket size={14} className={styles.iconRocket} />,
         infoId: "group-middle",
-        tasks: ALL_REACT_TASKS.filter((t) => t.difficulty === "middle"),
+        tasks: tasks.filter((t) => t.difficulty === "middle"),
       },
       {
         id: "strong",
         label: "Strong",
         icon: <Brain size={14} className={styles.iconBrain} />,
         infoId: "group-strong",
-        tasks: ALL_REACT_TASKS.filter((t) => t.difficulty === "strong"),
+        tasks: tasks.filter((t) => t.difficulty === "strong"),
       },
       {
         id: "ts",
         label: "React + TS (Разминка)",
         icon: <Zap size={14} className={styles.iconZap} />,
         infoId: "group-ts",
-        tasks: ALL_REACT_TASKS.filter((t) => t.category === "React + TS (Разминка)"),
+        tasks: tasks.filter((t) => t.category === "React + TS (Разминка)"),
       },
       {
         id: "ts-practice",
         label: "React + TS (Практика)",
         icon: <Zap size={14} className={styles.iconZap} />,
         infoId: "group-ts-practice",
-        tasks: ALL_REACT_TASKS.filter((t) => t.category === "React + TS (Практика)"),
+        tasks: tasks.filter((t) => t.category === "React + TS (Практика)"),
       },
     ],
-    []
+    [tasks]
   );
 
   const currentReactCategory = useMemo(() => {

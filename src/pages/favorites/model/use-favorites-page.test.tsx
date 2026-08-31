@@ -1,12 +1,17 @@
 import { act, renderHook } from "@testing-library/react";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { useFavoriteTaskStore } from "@/entities/favorite-task";
 import { useProgressStore } from "@/entities/progress";
 import { useReviewStore } from "@/entities/review";
-import { getTasksBySection } from "@/entities/task";
+import { getLoadedTaskSection, loadTaskSection } from "@/entities/task/catalog";
 import { useFavoritesPage } from "./use-favorites-page";
 
 describe("useFavoritesPage", () => {
+  beforeAll(async () => {
+    await loadTaskSection("javascript");
+    await loadTaskSection("react");
+  });
+
   beforeEach(() => {
     localStorage.clear();
     useFavoriteTaskStore.setState({ favoriteTaskIds: [] });
@@ -36,7 +41,7 @@ describe("useFavoritesPage", () => {
   });
 
   it("keeps a removed favorite visible until the page is remounted", () => {
-    const taskId = String(getTasksBySection("javascript")[0].id);
+    const taskId = String(getLoadedTaskSection("javascript")[0].id);
     useFavoriteTaskStore.setState({ favoriteTaskIds: [taskId] });
     const { result, unmount } = renderHook(() => useFavoritesPage("javascript"));
 

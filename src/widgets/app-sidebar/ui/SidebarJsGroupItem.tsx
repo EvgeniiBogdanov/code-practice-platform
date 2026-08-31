@@ -1,6 +1,7 @@
 import React, { memo } from "react";
-import { Task, getGroupMeta } from "@/entities/task";
-import { selectIsTaskCompleted, ProgressState } from "@/entities/progress";
+import type { Task } from "@/entities/task/meta";
+import { getGroupMeta } from "@/entities/task/groups";
+import { isTaskCompleted, ProgressState } from "@/entities/progress";
 import { getGroupCompletionClass, ReviewItem } from "@/entities/review";
 import { TaskListWrapper } from "@/shared/ui";
 import { SidebarGroupHeader } from "./SidebarGroupHeader/SidebarGroupHeader";
@@ -17,7 +18,7 @@ export interface SidebarJsGroupItemProps {
   onToggleSubgroup: (groupName: string, subName: string, e?: React.MouseEvent) => void;
   currentTaskId: string;
   decodedCurrentId: string;
-  progressState: ProgressState;
+  completedTasks: ProgressState["completedTasks"];
   reviews: Record<string, ReviewItem>;
 }
 
@@ -32,13 +33,13 @@ export const SidebarJsGroupItem = memo((props: SidebarJsGroupItemProps) => {
     onToggleSubgroup,
     currentTaskId,
     decodedCurrentId,
-    progressState,
+    completedTasks,
     reviews,
   } = props;
 
   const allTasks = Object.values(subgroups).flat();
-  const completed = allTasks.filter((t) => selectIsTaskCompleted(progressState, t.id)).length;
-  const compClass = getGroupCompletionClass(allTasks, reviews, progressState.completedTasks);
+  const completed = allTasks.filter((task) => isTaskCompleted(completedTasks[String(task.id)])).length;
+  const compClass = getGroupCompletionClass(allTasks, reviews, completedTasks);
   const meta = groupMeta || getGroupMeta(groupName);
   const groupParamId = `group-${groupName}`;
   const isActive = decodedCurrentId === groupParamId || currentTaskId === groupParamId;
@@ -70,7 +71,7 @@ export const SidebarJsGroupItem = memo((props: SidebarJsGroupItemProps) => {
             onToggle={(e) => onToggleSubgroup(groupName, subName, e)}
             currentTaskId={currentTaskId}
             decodedCurrentId={decodedCurrentId}
-            progressState={progressState}
+            completedTasks={completedTasks}
             reviews={reviews}
           />
         ))}

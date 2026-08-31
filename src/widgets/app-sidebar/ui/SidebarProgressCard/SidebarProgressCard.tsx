@@ -8,10 +8,11 @@ export interface SidebarProgressCardProps {
   totalCount: number;
   sectionType: "javascript" | "algorithms" | "react";
   className?: string;
+  children?: React.ReactNode;
 }
 
 export const SidebarProgressCard = React.memo(
-  ({ completedCount, totalCount, sectionType, className }: SidebarProgressCardProps) => {
+  ({ completedCount, totalCount, sectionType, className, children }: SidebarProgressCardProps) => {
     const percentage = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
     const sectionClass = styles[sectionType] || styles.react;
     const fillRef = useRef<HTMLDivElement>(null);
@@ -39,6 +40,7 @@ export const SidebarProgressCard = React.memo(
             <div ref={fillRef} className={styles.barFill} />
           </div>
         </div>
+        {children}
       </div>
     );
   }

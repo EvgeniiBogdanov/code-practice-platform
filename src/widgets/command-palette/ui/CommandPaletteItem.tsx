@@ -1,7 +1,8 @@
 import React, { memo } from "react";
 import { Code2, Zap, Brain, FileText } from "lucide-react";
 import { clsx } from "clsx";
-import { Task, getGroupMeta, getAlgoGroupMeta } from "@/entities/task";
+import type { Task } from "@/entities/task/meta";
+import { getGroupMeta, getAlgoGroupMeta } from "@/entities/task/groups";
 import { Badge } from "@/shared/ui";
 import styles from "./CommandPalette.module.css";
 

@@ -2,12 +2,10 @@ import React from "react";
 import { Link } from "@tanstack/react-router";
 import { clsx } from "clsx";
 import {
-  ALL_JS_TASKS,
-  ALL_REACT_TASKS,
-  ALL_ALGO_TASKS,
+  CURRICULUM_COUNTS,
   SECTIONS_CONFIG,
   SectionType,
-} from "@/entities/task";
+} from "@/entities/task/meta";
 import { NodeCount } from "@/shared/ui";
 import { useSidebarHomeStats } from "../../model";
 import styles from "./SidebarHomeOverview.module.css";
@@ -53,7 +51,7 @@ export const SidebarHomeOverview = ({
         <span className={styles.homeItemTitle}>JavaScript</span>
         <NodeCount
           completed={completedJsTotal}
-          total={ALL_JS_TASKS.length}
+          total={CURRICULUM_COUNTS.javascript}
           className={jsCompletionClass}
         />
       </Link>
@@ -67,7 +65,7 @@ export const SidebarHomeOverview = ({
         <span className={styles.homeItemTitle}>React</span>
         <NodeCount
           completed={completedReactTotal}
-          total={ALL_REACT_TASKS.length}
+          total={CURRICULUM_COUNTS.react}
           className={reactCompletionClass}
         />
       </Link>
@@ -81,7 +79,7 @@ export const SidebarHomeOverview = ({
         <span className={styles.homeItemTitle}>Алгоритмы</span>
         <NodeCount
           completed={completedAlgoTotal}
-          total={ALL_ALGO_TASKS.length}
+          total={CURRICULUM_COUNTS.algorithms}
           className={algoCompletionClass}
         />
       </Link>

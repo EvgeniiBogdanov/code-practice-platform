@@ -16,6 +16,18 @@
   flex: 1;
 }
 
+.fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-fullscreen);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  background: var(--bg-app);
+  animation: uiLoaderFadeIn var(--transition-medium);
+}
+
 .spinner {
   animation: uiLoaderSpin 0.75s linear infinite;
   transform-origin: center center;
@@ -98,5 +110,21 @@
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes uiLoaderFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fullscreen {
+    animation: none;
   }
 }

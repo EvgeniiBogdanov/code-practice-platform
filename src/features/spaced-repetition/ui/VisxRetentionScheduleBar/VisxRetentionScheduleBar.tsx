@@ -160,7 +160,7 @@ function RetentionScheduleBarInner({
 
   return (
     <div className={styles.container}>
-      <svg width={width} height={height}>
+      <svg width={width} height={height} className={styles.svg}>
         <defs>
           <LinearGradient id="visx-sched-today" from="#ef4444" to="#b91c1c" vertical />
           <LinearGradient id="visx-sched-tomorrow" from="#f59e0b" to="#d97706" vertical />
@@ -243,11 +243,11 @@ export interface VisxRetentionScheduleBarProps {
 export function VisxRetentionScheduleBar({
   reviews,
   allTasks,
-  height = 210,
+  height = 220,
 }: VisxRetentionScheduleBarProps) {
   return (
-    <div style={{ width: "100%", height, minHeight: height }}>
-      <ParentSize debounceTime={10}>
+    <div className={styles.chartWrapper} style={{ height, minHeight: height }}>
+      <ParentSize debounceTime={0}>
         {({ width, height: pHeight }) => (
           <RetentionScheduleBarInner
             width={width}

@@ -1,6 +1,7 @@
 import React, { memo } from "react";
 import { clsx } from "clsx";
 import { Card } from "../Card";
+import { UiSkeleton } from "../UiSkeleton";
 import styles from "./GroupCard.module.css";
 
 export interface GroupCardProps {
@@ -9,6 +10,7 @@ export interface GroupCardProps {
   countBadge?: React.ReactNode;
   progressPercent?: number;
   progressFillClass?: string;
+  isLoadingProgress?: boolean;
   children?: React.ReactNode;
   footer?: React.ReactNode;
   className?: string;
@@ -21,6 +23,7 @@ export const GroupCard = memo(
     countBadge,
     progressPercent = 0,
     progressFillClass,
+    isLoadingProgress = false,
     children,
     footer,
     className,
@@ -36,10 +39,14 @@ export const GroupCard = memo(
         </div>
 
         <div className={styles.progressBar}>
-          <div
-            className={clsx(styles.progressFill, progressFillClass)}
-            style={{ width: `${progressPercent}%` }}
-          />
+          {isLoadingProgress ? (
+            <UiSkeleton width="100%" height="100%" radius={2} />
+          ) : (
+            <div
+              className={clsx(styles.progressFill, progressFillClass)}
+              style={{ width: `${progressPercent}%` }}
+            />
+          )}
         </div>
 
         {children && <div className={styles.content}>{children}</div>}

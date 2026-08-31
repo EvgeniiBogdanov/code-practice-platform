@@ -1,6 +1,4 @@
 import { TASK_EXPLANATIONS } from "../../taskExplanations";
-import { JS_TASKS } from "../../javascript/data/tasksData";
-import { ALGO_TASKS } from "../../algorithms/data/tasksData";
 
 
 // Импорт компонентов разминки
@@ -2940,8 +2938,4 @@ export const REACT_TASKS = [
   ...REACT_TS_PRACTICE_TASKS,
 ];
 
-export const ALL_TASKS = [
-  ...REACT_TASKS,
-  ...JS_TASKS,
-  ...ALGO_TASKS,
-];
+export const ALL_TASKS = REACT_TASKS;

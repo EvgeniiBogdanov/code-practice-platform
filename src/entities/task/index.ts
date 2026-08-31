@@ -1,5 +1,5 @@
 export * from "./types";
-export * from "./model/taskRegistry";
+export * from "./model/curriculum-manifest";
 export * from "./model/sectionsConfig";
 export * from "./model/taskTree";
 export * from "./model/taskFiles";

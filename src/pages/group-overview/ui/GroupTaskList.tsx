@@ -22,6 +22,7 @@ export interface GroupTaskListProps {
   getTaskStatus: (taskId: string | number) => "solved" | "unsolved" | "unstarted";
   reviews: Record<string, ReviewItem>;
   completedTasks: Record<string, TaskCompletionStatus>;
+  isLoading?: boolean;
 }
 
 interface GroupHeaderMetaProps {

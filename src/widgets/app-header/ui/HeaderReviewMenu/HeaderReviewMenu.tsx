@@ -3,7 +3,8 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { RotateCcw, FileText, Sparkles, BookOpen } from "lucide-react";
 import { clsx } from "clsx";
 import { useReviewStore, isTaskDue, getReviewBadgeMeta } from "@/entities/review";
-import { ALL_TASKS, Task } from "@/entities/task";
+import type { Task } from "@/entities/task/meta";
+import { useAllTaskSections } from "@/entities/task/catalog";
 import { Tooltip, SquareButton, NotificationBadge } from "@/shared/ui";
 import styles from "./HeaderReviewMenu.module.css";
 
@@ -21,6 +22,7 @@ export const HeaderReviewMenu = memo(() => {
 
   const reviews = useReviewStore((state) => state.reviews);
   const isInitialized = useReviewStore((state) => state.isInitialized);
+  const { tasks } = useAllTaskSections(open);
 
   // Close on click outside
   useEffect(() => {
@@ -40,11 +42,11 @@ export const HeaderReviewMenu = memo(() => {
 
   const dueTasks = useMemo(() => {
     if (!isInitialized) return [];
-    return ALL_TASKS.filter((t) => {
+    return tasks.filter((t) => {
       const rev = reviews[String(t.id)];
       return isTaskDue(rev);
     });
-  }, [reviews, isInitialized]);
+  }, [reviews, isInitialized, tasks]);
 
   const hasAnyReviewed = useMemo(() => {
     return Object.values(reviews).some((r) => r && (r.stage > 0 || r.lastReviewedAt));
@@ -65,7 +67,7 @@ export const HeaderReviewMenu = memo(() => {
         <SquareButton
           icon={<RotateCcw size={16} />}
           isActive={open}
-          badge={<NotificationBadge count={dueTasks.length} variant="yellow" size="sm" />}
+          badge={<NotificationBadge count={dueTasks.length} variant="yellow" size="xs" />}
           onClick={() => setOpen((prev) => !prev)}
           aria-label="Интервальное повторение"
         />

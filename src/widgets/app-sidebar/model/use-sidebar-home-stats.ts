@@ -1,7 +1,6 @@
 import { useMemo } from "react";
-import { ALL_JS_TASKS, ALL_REACT_TASKS, ALL_ALGO_TASKS } from "@/entities/task";
-import { useProgressStore, selectIsTaskCompleted } from "@/entities/progress";
-import { useReviewStore, getGroupCompletionClass } from "@/entities/review";
+import { CURRICULUM_COUNTS, getTaskSectionById } from "@/entities/task/meta";
+import { useProgressStore, isTaskCompleted } from "@/entities/progress";
 
 export interface UseSidebarHomeStatsReturn {
   completedJsTotal: number;
@@ -13,44 +12,28 @@ export interface UseSidebarHomeStatsReturn {
 }
 
 export const useSidebarHomeStats = (): UseSidebarHomeStatsReturn => {
-  const progressState = useProgressStore();
-  const reviews = useReviewStore((state) => state.reviews);
+  const completedTasks = useProgressStore((state) => state.completedTasks);
 
-  const completedJsTotal = useMemo(
-    () => ALL_JS_TASKS.filter((t) => selectIsTaskCompleted(progressState, t.id)).length,
-    [progressState]
-  );
-  const completedReactTotal = useMemo(
-    () => ALL_REACT_TASKS.filter((t) => selectIsTaskCompleted(progressState, t.id)).length,
-    [progressState]
-  );
-  const completedAlgoTotal = useMemo(
-    () => ALL_ALGO_TASKS.filter((t) => selectIsTaskCompleted(progressState, t.id)).length,
-    [progressState]
-  );
+  const completedTotals = useMemo(() => {
+    const totals = { javascript: 0, react: 0, algorithms: 0 };
 
-  const jsCompletionClass = getGroupCompletionClass(
-    ALL_JS_TASKS,
-    reviews,
-    progressState.completedTasks
-  );
-  const reactCompletionClass = getGroupCompletionClass(
-    ALL_REACT_TASKS,
-    reviews,
-    progressState.completedTasks
-  );
-  const algoCompletionClass = getGroupCompletionClass(
-    ALL_ALGO_TASKS,
-    reviews,
-    progressState.completedTasks
-  );
+    Object.entries(completedTasks).forEach(([taskId, status]) => {
+      if (isTaskCompleted(status)) totals[getTaskSectionById(taskId)] += 1;
+    });
+
+    return totals;
+  }, [completedTasks]);
+
+  const getCompletionClass = (section: "javascript" | "react" | "algorithms"): string => {
+    return completedTotals[section] === CURRICULUM_COUNTS[section] ? "completedGreen" : "";
+  };
 
   return {
-    completedJsTotal,
-    completedReactTotal,
-    completedAlgoTotal,
-    jsCompletionClass,
-    reactCompletionClass,
-    algoCompletionClass,
+    completedJsTotal: completedTotals.javascript,
+    completedReactTotal: completedTotals.react,
+    completedAlgoTotal: completedTotals.algorithms,
+    jsCompletionClass: getCompletionClass("javascript"),
+    reactCompletionClass: getCompletionClass("react"),
+    algoCompletionClass: getCompletionClass("algorithms"),
   };
 };

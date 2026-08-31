@@ -11,7 +11,6 @@ import { useCodeHistory } from "./useCodeHistory";
 import { useIntelliSense } from "./useIntelliSense";
 import { useHoverSignatures } from "./useHoverSignatures";
 import { useEditorKeyHandlers } from "./useEditorKeyHandlers";
-import { useFindReplace } from "./useFindReplace";
 import { useMultiCursor } from "./useMultiCursor";
 import { CodeEditorProps, CursorPosition, TypoInfo, MissingImportInfo } from "./types";
 import { getLanguageInfo } from "../lib/editor-utils";
@@ -79,19 +78,6 @@ export const useCodeEditor = ({
     setCursorPos({ line, col });
   }, [code]);
 
-  const findReplace = useFindReplace({
-    code,
-    onChange: (val) => {
-      onChange(val);
-      history.pushHistory(val);
-      setSaveStatus("saving");
-      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
-      saveTimerRef.current = setTimeout(() => setSaveStatus("saved"), 450);
-    },
-    textareaRef,
-    readOnly,
-  });
-
   const { handleKeyDown } = useEditorKeyHandlers({
     code,
     onChange: (val) => {
@@ -110,16 +96,6 @@ export const useCodeEditor = ({
 
   useEffect(() => {
     const handleGlobalKey = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey && e.key.toLowerCase() === "f") {
-        e.preventDefault();
-        findReplace.openFind(false);
-        return;
-      }
-      if ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey && e.key.toLowerCase() === "h") {
-        e.preventDefault();
-        findReplace.openFind(true);
-        return;
-      }
       if (e.key === "F11") {
         e.preventDefault();
         toggleFullscreen();
@@ -129,11 +105,6 @@ export const useCodeEditor = ({
         if (intelliSense.isOpen) {
           e.preventDefault();
           intelliSense.closeCompletions();
-          return;
-        }
-        if (findReplace.findState.isOpen) {
-          e.preventDefault();
-          findReplace.closeFind();
           return;
         }
         if (effectiveFullscreen) {
@@ -156,14 +127,7 @@ export const useCodeEditor = ({
 
     window.addEventListener("keydown", handleGlobalKey);
     return () => window.removeEventListener("keydown", handleGlobalKey);
-  }, [
-    findReplace,
-    handleFormat,
-    effectiveFullscreen,
-    toggleFullscreen,
-    intelliSense,
-    toggleWordWrap,
-  ]);
+  }, [handleFormat, effectiveFullscreen, toggleFullscreen, intelliSense, toggleWordWrap]);
 
   const lintResult = useMemo(
     () => lintJavaScriptCode(deferredCode, { files: deferredFiles, filepath }),
@@ -222,20 +186,9 @@ export const useCodeEditor = ({
     () =>
       highlightCode(code + "\n", filepath, {
         problems: lintResult.problems,
-        highlightWord:
-          findReplace.findState.isOpen && findReplace.findState.query
-            ? findReplace.findState.query
-            : undefined,
         multiSelections: multiCursor.selections,
       }),
-    [
-      code,
-      filepath,
-      findReplace.findState.isOpen,
-      findReplace.findState.query,
-      lintResult.problems,
-      multiCursor.selections,
-    ]
+    [code, filepath, lintResult.problems, multiCursor.selections]
   );
   const lineCount = useMemo(() => code.split("\n").length, [code]);
 
@@ -345,7 +298,6 @@ export const useCodeEditor = ({
     history,
     intelliSense,
     hoverSignatures,
-    findReplace,
     multiCursor,
     lintResult,
     isAnalysisPending,

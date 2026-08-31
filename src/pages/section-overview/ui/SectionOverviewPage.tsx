@@ -11,8 +11,16 @@ export interface SectionOverviewPageProps {
 
 export const SectionOverviewPage = memo(
   ({ section }: SectionOverviewPageProps): React.JSX.Element => {
-    const { sectionMeta, stats, groups, isSolved, progressState, reviews, isTaskDue } =
-      useSectionOverview(section);
+    const {
+      sectionMeta,
+      stats,
+      groups,
+      isSolved,
+      progressState,
+      reviews,
+      isTaskDue,
+      isInitialized,
+    } = useSectionOverview(section);
 
     return (
       <div className={styles.overviewContainer}>
@@ -38,6 +46,7 @@ export const SectionOverviewPage = memo(
           completedTasks={progressState.completedTasks}
           reviews={reviews}
           isDue={isTaskDue}
+          isLoading={!isInitialized}
         />
       </div>
     );

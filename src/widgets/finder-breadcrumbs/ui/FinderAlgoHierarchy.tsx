@@ -4,7 +4,9 @@ import { ChevronDown, FileText, Check, X, RotateCcw, Brain } from "lucide-react"
 import { clsx } from "clsx";
 import { useProgressStore, selectIsTaskCompleted } from "@/entities/progress";
 import { useReviewStore, isTaskDue, getGroupCompletionClass } from "@/entities/review";
-import { ALL_ALGO_TASKS, getAlgoGroupMeta, getAlgoGroupMetaByInfoId } from "@/entities/task";
+import { getAlgoGroupMeta, getAlgoGroupMetaByInfoId } from "@/entities/task/groups";
+import type { Task } from "@/entities/task/meta";
+import { useTaskSection } from "@/entities/task/catalog";
 import { safeDecodeURI } from "@/shared/lib/url";
 import { FinderHierarchyProps } from "../model/types";
 import { getRatingClass } from "../lib/getRatingClass";
@@ -20,6 +22,7 @@ export const FinderAlgoHierarchy = ({
 }: FinderHierarchyProps) => {
   const progressState = useProgressStore();
   const reviews = useReviewStore((state) => state.reviews);
+  const { tasks } = useTaskSection("algorithms");
 
   const currentGroupName = useMemo(() => {
     if (currentTask) return currentTask.group || null;
@@ -28,18 +31,18 @@ export const FinderAlgoHierarchy = ({
       if (meta) return meta.name;
       if (paramId.startsWith("group-")) {
         const raw = safeDecodeURI(paramId.replace(/^group-/, ""));
-        const matched = ALL_ALGO_TASKS.find((t) => t.group === raw);
+        const matched = tasks.find((t) => t.group === raw);
         return matched?.group || raw;
       }
     }
     return null;
-  }, [currentTask, paramId]);
+  }, [currentTask, paramId, tasks]);
 
   const currentGroupMeta = currentGroupName ? getAlgoGroupMeta(currentGroupName) : null;
 
   const algoGroupsList = useMemo(() => {
-    const groupsMap = new Map<string, typeof ALL_ALGO_TASKS>();
-    ALL_ALGO_TASKS.forEach((t) => {
+    const groupsMap = new Map<string, Task[]>();
+    tasks.forEach((t) => {
       const g = t.group || "Общие";
       if (!groupsMap.has(g)) groupsMap.set(g, []);
       groupsMap.get(g)!.push(t);
@@ -50,7 +53,7 @@ export const FinderAlgoHierarchy = ({
       const meta = getAlgoGroupMeta(name);
       return { name, tasks, completedCount, completionClass, meta };
     });
-  }, [progressState, reviews]);
+  }, [progressState, reviews, tasks]);
 
   return (
     <>
@@ -155,7 +158,7 @@ export const FinderAlgoHierarchy = ({
                   <span className={styles.dropdownHeaderTitle}>Задачи {currentGroupName}</span>
                 </div>
                 <div className={styles.dropdownList}>
-                  {ALL_ALGO_TASKS.filter((t) => t.group === currentGroupName).map((t) => {
+                  {tasks.filter((t) => t.group === currentGroupName).map((t) => {
                     const isSolved = selectIsTaskCompleted(progressState, t.id);
                     const isUnsolved =
                       progressState.completedTasks[t.id] === "unsolved" ||

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from "react";
+import React, { memo } from "react";
 import { createPortal } from "react-dom";
 import { useModalBehavior } from "./lib/useModalBehavior";
 import { ModalCard } from "./ui/ModalCard";
@@ -37,14 +37,9 @@ export const Modal = memo((props: ModalProps) => {
     ...restProps
   } = props;
 
-  const [mounted, setMounted] = useState(false);
   const modalRef = useModalBehavior(isOpen, closeOnEscape, onClose);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!isOpen || !mounted) return null;
+  if (!isOpen || typeof document === "undefined") return null;
 
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (closeOnOverlayClick && e.target === e.currentTarget) {

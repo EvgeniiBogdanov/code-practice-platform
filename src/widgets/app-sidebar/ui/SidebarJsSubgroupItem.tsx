@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { Task } from "@/entities/task";
-import { selectIsTaskCompleted, ProgressState } from "@/entities/progress";
+import { isTaskCompleted, ProgressState } from "@/entities/progress";
 import { getGroupCompletionClass, ReviewItem } from "@/entities/review";
 import { SidebarSubgroupHeader } from "./SidebarSubgroupHeader/SidebarSubgroupHeader";
 import { SidebarTasksList } from "./SidebarTasksList";
@@ -14,7 +14,7 @@ export interface SidebarJsSubgroupItemProps {
   onToggle: (e?: React.MouseEvent) => void;
   currentTaskId: string;
   decodedCurrentId: string;
-  progressState: ProgressState;
+  completedTasks: ProgressState["completedTasks"];
   reviews: Record<string, ReviewItem>;
 }
 
@@ -28,15 +28,13 @@ export const SidebarJsSubgroupItem = memo(
     onToggle,
     currentTaskId,
     decodedCurrentId,
-    progressState,
+    completedTasks,
     reviews,
   }: SidebarJsSubgroupItemProps) => {
-    const subCompleted = tasks.filter((t) => selectIsTaskCompleted(progressState, t.id)).length;
-    const subCompletionClass = getGroupCompletionClass(
-      tasks,
-      reviews,
-      progressState.completedTasks
-    );
+    const subCompleted = tasks.filter((task) =>
+      isTaskCompleted(completedTasks[String(task.id)])
+    ).length;
+    const subCompletionClass = getGroupCompletionClass(tasks, reviews, completedTasks);
     const subgroupId = `subgroup-${groupName}-${subName}`;
     const isSubFolderActive =
       decodedCurrentId === subgroupId ||
@@ -64,7 +62,7 @@ export const SidebarJsSubgroupItem = memo(
           tasks={tasks}
           to="/javascript/$taskId"
           currentTaskId={currentTaskId}
-          progressState={progressState}
+          completedTasks={completedTasks}
           reviews={reviews}
           expanded={isSubOpen}
         />
