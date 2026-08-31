@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useLocation } from "@tanstack/react-router";
-import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import { Menu, PanelLeft } from "lucide-react";
 import { clsx } from "clsx";
 import { useUIStore } from "@/entities/ui-state";
 import { getTaskById, Task } from "@/entities/task";
@@ -11,6 +11,7 @@ import { FinderHomeHierarchy } from "./FinderHomeHierarchy";
 import { FinderJsHierarchy } from "./FinderJsHierarchy";
 import { FinderReactHierarchy } from "./FinderReactHierarchy";
 import { FinderAlgoHierarchy } from "./FinderAlgoHierarchy";
+import { FinderFavoritesHierarchy } from "./FinderFavoritesHierarchy";
 import styles from "./FinderBreadcrumbs.module.css";
 
 export const FinderBreadcrumbs = () => {
@@ -25,10 +26,11 @@ export const FinderBreadcrumbs = () => {
     [location.pathname]
   );
 
+  const isFavoritesPage = location.pathname.endsWith("/favorites");
   const currentTask: Task | null = useMemo(() => {
-    if (!taskId) return null;
+    if (!taskId || isFavoritesPage) return null;
     return getTaskById(taskId) || null;
-  }, [taskId]);
+  }, [isFavoritesPage, taskId]);
 
   return (
     <nav
@@ -43,7 +45,7 @@ export const FinderBreadcrumbs = () => {
         title={sidebarOpen ? "Скрыть боковую панель" : "Показать боковую панель"}
         aria-label="Скрыть/Показать боковую панель"
       >
-        {sidebarOpen ? <PanelLeftClose size={16} /> : <PanelLeftOpen size={16} />}
+        {sidebarOpen ? <PanelLeft size={16} /> : <Menu size={16} />}
       </button>
 
       {/* 1. Section Selector */}
@@ -57,8 +59,10 @@ export const FinderBreadcrumbs = () => {
       {/* 2. Home Page Hierarchy */}
       {section === "home" && <FinderHomeHierarchy />}
 
+      {isFavoritesPage && section !== "home" && <FinderFavoritesHierarchy />}
+
       {/* 3. JavaScript Hierarchy: Group / Subgroup / Task */}
-      {section === "javascript" && (
+      {section === "javascript" && !isFavoritesPage && (
         <FinderJsHierarchy
           paramId={taskId}
           currentTask={currentTask}
@@ -69,7 +73,7 @@ export const FinderBreadcrumbs = () => {
       )}
 
       {/* 4. React Hierarchy: Category / Task */}
-      {section === "react" && (
+      {section === "react" && !isFavoritesPage && (
         <FinderReactHierarchy
           paramId={taskId}
           currentTask={currentTask}
@@ -80,7 +84,7 @@ export const FinderBreadcrumbs = () => {
       )}
 
       {/* 5. Algorithms Hierarchy: Group / Task */}
-      {section === "algorithms" && (
+      {section === "algorithms" && !isFavoritesPage && (
         <FinderAlgoHierarchy
           paramId={taskId}
           currentTask={currentTask}

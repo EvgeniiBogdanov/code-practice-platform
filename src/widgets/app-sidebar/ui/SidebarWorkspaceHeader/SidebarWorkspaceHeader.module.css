@@ -24,7 +24,7 @@
   background: transparent;
   border: none;
   color: var(--text-main);
-  font-size: 13.5px;
+  font-size: 14.5px;
   font-weight: var(--fw-semibold, 600);
   font-family: var(--font-sans);
   line-height: normal;
@@ -132,7 +132,7 @@
   border-radius: var(--radius-sm, 4px);
   color: var(--text-main);
   text-decoration: none;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   transition: background var(--transition-fast);

@@ -78,13 +78,8 @@ export const GroupOverviewPage = ({ groupId }: GroupOverviewPageProps): React.JS
             toggleSubgroup={toggleSubgroup}
             taskRoute={taskRoute}
             getTaskStatus={getTaskStatus}
-            getTaskGradientClass={getTaskGradientClass}
-            formatLastSolved={formatLastSolved}
-            formatNextReviewDate={formatNextReviewDate}
-            isTaskDue={isTaskDue}
             reviews={reviews}
             completedTasks={completedTasks}
-            onResetFilter={() => setStatusFilter("all")}
           />
         ) : (
           <GroupTaskCards
@@ -99,7 +94,6 @@ export const GroupOverviewPage = ({ groupId }: GroupOverviewPageProps): React.JS
             formatNextReviewDate={formatNextReviewDate}
             isTaskDue={isTaskDue}
             reviews={reviews}
-            onResetFilter={() => setStatusFilter("all")}
           />
         )}
 

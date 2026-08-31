@@ -14,10 +14,12 @@ import styles from "./SidebarHomeOverview.module.css";
 
 export interface SidebarHomeOverviewProps {
   activeSectionKey: "home" | SectionType;
+  isHomeActive?: boolean;
 }
 
 export const SidebarHomeOverview = ({
   activeSectionKey,
+  isHomeActive = activeSectionKey === "home",
 }: SidebarHomeOverviewProps): React.JSX.Element => {
   const {
     completedJsTotal,
@@ -32,7 +34,7 @@ export const SidebarHomeOverview = ({
     <div className={styles.homeOverviewList}>
       <Link
         to="/home"
-        className={clsx(styles.homeOverviewItem, activeSectionKey === "home" && styles.homeItemActive)}
+        className={clsx(styles.homeOverviewItem, isHomeActive && styles.homeItemActive)}
       >
         <SECTIONS_CONFIG.home.icon
           size={17}

@@ -19,10 +19,13 @@ export const SettingsModal = memo(() => {
     activeSection,
     resetReviewsConfirmOpen,
     setResetReviewsConfirmOpen,
+    resetUIConfirmOpen,
+    setResetUIConfirmOpen,
     resetAllConfirmOpen,
     setResetAllConfirmOpen,
     handleResetSectionReviews,
     handleResetAllReviews,
+    handleResetUISettings,
     handleResetAllData,
   } = useSettingsModal();
 
@@ -81,6 +84,7 @@ export const SettingsModal = memo(() => {
             {activeTab === "data" && (
               <SettingsResetSection
                 onOpenResetReviews={() => setResetReviewsConfirmOpen(true)}
+                onOpenResetUI={() => setResetUIConfirmOpen(true)}
                 onOpenResetAll={() => setResetAllConfirmOpen(true)}
               />
             )}
@@ -92,11 +96,14 @@ export const SettingsModal = memo(() => {
         activeSection={activeSection}
         sectionName={sectionName}
         resetReviewsConfirmOpen={resetReviewsConfirmOpen}
+        resetUIConfirmOpen={resetUIConfirmOpen}
         resetAllConfirmOpen={resetAllConfirmOpen}
         onCloseReviewsConfirm={() => setResetReviewsConfirmOpen(false)}
+        onCloseUIConfirm={() => setResetUIConfirmOpen(false)}
         onCloseAllConfirm={() => setResetAllConfirmOpen(false)}
         onResetSectionReviews={handleResetSectionReviews}
         onResetAllReviews={handleResetAllReviews}
+        onResetUISettings={handleResetUISettings}
         onResetAllData={handleResetAllData}
       />
     </>

@@ -158,53 +158,109 @@
   padding: 0;
 }
 
-/* Color Variants */
+/* Color Variants - Tinted Glass Pills with High Contrast */
 .variant_yellow {
-  background: var(--color-status-due, #eab308);
-  color: #000000;
+  background: rgba(245, 158, 11, 0.18);
+  color: #fbbf24;
 }
 
 [data-theme="light"] .variant_yellow {
-  background: #f59e0b;
-  color: #0f172a;
-}
-
-.variant_red {
-  background: var(--color-status-unsolved, #ef4444);
-  color: #ffffff;
-}
-
-.variant_green {
-  background: var(--color-status-solved, #10b981);
-  color: #000000;
+  background: rgba(217, 119, 6, 0.12);
+  color: #b45309;
 }
 
 .variant_blue {
-  background: var(--accent-blue, #2383e2);
-  color: #ffffff;
+  background: rgba(59, 130, 246, 0.18);
+  color: #60a5fa;
+}
+
+[data-theme="light"] .variant_blue {
+  background: rgba(37, 99, 235, 0.10);
+  color: #1d4ed8;
+}
+
+.variant_red {
+  background: rgba(239, 68, 68, 0.18);
+  color: #f87171;
+}
+
+[data-theme="light"] .variant_red {
+  background: rgba(220, 38, 38, 0.10);
+  color: #b91c1c;
+}
+
+.variant_green {
+  background: rgba(16, 185, 129, 0.18);
+  color: #34d399;
+}
+
+[data-theme="light"] .variant_green {
+  background: rgba(16, 185, 129, 0.12);
+  color: #047857;
 }
 
 .variant_purple {
-  background: var(--accent-purple, #a855f7);
-  color: #ffffff;
+  background: rgba(168, 85, 247, 0.18);
+  color: #c084fc;
+}
+
+[data-theme="light"] .variant_purple {
+  background: rgba(147, 51, 234, 0.10);
+  color: #7e22ce;
 }
 
 .variant_neutral {
-  background: var(--bg-card, #252525);
-  color: var(--text-main, #ffffff);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-muted, rgba(255, 255, 255, 0.75));
 }
 
 [data-theme="light"] .variant_neutral {
-  background: rgba(55, 53, 47, 0.12);
-  color: #191919;
+  background: rgba(55, 53, 47, 0.08);
+  color: rgba(55, 53, 47, 0.72);
 }
 
 .variant_gray {
-  background: var(--bg-hover, rgba(255, 255, 255, 0.08));
-  color: var(--text-muted, #94a3b8);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-muted, rgba(255, 255, 255, 0.65));
 }
 
 [data-theme="light"] .variant_gray {
-  background: rgba(55, 53, 47, 0.08);
-  color: #5a5a5a;
+  background: rgba(55, 53, 47, 0.05);
+  color: rgba(55, 53, 47, 0.65);
+}
+
+/* Pinned solid badges & indicator dots */
+.dot.variant_yellow,
+.pinned.variant_yellow {
+  background: #f59e0b;
+  color: #000000;
+  border: none;
+}
+
+.dot.variant_blue,
+.pinned.variant_blue {
+  background: var(--accent-blue, #2383e2);
+  color: #ffffff;
+  border: none;
+}
+
+.dot.variant_red,
+.pinned.variant_red {
+  background: #ef4444;
+  color: #ffffff;
+  border: none;
+}
+
+.dot.variant_green,
+.pinned.variant_green {
+  background: #10b981;
+  color: #ffffff;
+  border: none;
+}
+
+.dot.variant_purple,
+.pinned.variant_purple {
+  background: #a855f7;
+  color: #ffffff;
+  border: none;
 }

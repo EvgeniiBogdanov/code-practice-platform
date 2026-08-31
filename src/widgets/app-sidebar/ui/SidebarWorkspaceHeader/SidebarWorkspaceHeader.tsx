@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, memo, useMemo, useCallback } from "react";
 import { Link } from "@tanstack/react-router";
-import { ChevronDown, PanelLeftClose, ChevronsDownUp, ChevronsUpDown } from "lucide-react";
+import { ChevronDown, PanelLeft, ChevronsDownUp, ChevronsUpDown } from "lucide-react";
 import { clsx } from "clsx";
 import {
   SECTIONS_CONFIG,
@@ -11,15 +11,17 @@ import {
 } from "@/entities/task";
 import { useUIStore } from "@/entities/ui-state";
 import { Tooltip, SquareButton } from "@/shared/ui";
+import { SidebarFavorites } from "../SidebarFavorites/SidebarFavorites";
 import styles from "./SidebarWorkspaceHeader.module.css";
 
 export interface SidebarWorkspaceHeaderProps {
   activeSectionKey: "home" | SectionType;
+  currentTaskId: string;
   onCloseSidebar: () => void;
 }
 
 export const SidebarWorkspaceHeader = memo(
-  ({ activeSectionKey, onCloseSidebar }: SidebarWorkspaceHeaderProps) => {
+  ({ activeSectionKey, currentTaskId, onCloseSidebar }: SidebarWorkspaceHeaderProps) => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -131,7 +133,10 @@ export const SidebarWorkspaceHeader = memo(
                   <Link
                     key={sec.id}
                     to={sec.path}
-                    className={clsx(styles.sectionDropdownItem, isActive && styles.activeDropdownItem)}
+                    className={clsx(
+                      styles.sectionDropdownItem,
+                      isActive && styles.activeDropdownItem
+                    )}
                     onClick={() => setDropdownOpen(false)}
                   >
                     <Icon size={15} className={styles[`icon_${sec.id}`]} />
@@ -152,7 +157,7 @@ export const SidebarWorkspaceHeader = memo(
               sideOffset={6}
             >
               <SquareButton
-                size="sm"
+                size="md"
                 icon={isAnyExpanded ? <ChevronsDownUp size={15} /> : <ChevronsUpDown size={15} />}
                 onClick={handleToggleExpandAll}
                 aria-label={isAnyExpanded ? "Свернуть все темы" : "Развернуть все темы"}
@@ -160,10 +165,14 @@ export const SidebarWorkspaceHeader = memo(
             </Tooltip>
           )}
 
+          {activeSectionKey !== "home" && (
+            <SidebarFavorites section={activeSectionKey} currentTaskId={currentTaskId} />
+          )}
+
           <Tooltip content="Свернуть боковую панель" side="right" sideOffset={8}>
             <SquareButton
-              size="sm"
-              icon={<PanelLeftClose size={15} />}
+              size="md"
+              icon={<PanelLeft size={15} />}
               onClick={onCloseSidebar}
               aria-label="Свернуть боковую панель"
             />

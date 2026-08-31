@@ -3,12 +3,14 @@ import { clsx } from "clsx";
 import styles from "./SquareButton.module.css";
 
 export type SquareButtonSize = "sm" | "md";
+export type SquareButtonVariant = "default" | "transparent";
 
 export interface SquareButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: React.ReactNode;
   isActive?: boolean;
   badge?: React.ReactNode;
   size?: SquareButtonSize;
+  variant?: SquareButtonVariant;
 }
 
 export const SquareButton = memo(
@@ -19,6 +21,7 @@ export const SquareButton = memo(
         isActive = false,
         badge,
         size = "md",
+        variant = "default",
         className,
         children,
         disabled,
@@ -30,6 +33,7 @@ export const SquareButton = memo(
       const buttonClasses = clsx(
         styles.squareButton,
         styles[`size_${size}`],
+        styles[`variant_${variant}`],
         isActive && styles.active,
         disabled && styles.disabled,
         className

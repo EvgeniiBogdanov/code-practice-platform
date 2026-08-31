@@ -51,6 +51,7 @@ export const CodeEditor = ({
     findReplace,
     multiCursor,
     lintResult,
+    isAnalysisPending,
     activeTypo,
     activeMissingImport,
     errorLines,
@@ -127,7 +128,7 @@ export const CodeEditor = ({
           readOnly={readOnly}
         />
 
-        {!readOnly && (
+        {!readOnly && !isAnalysisPending && (
           <QuickFixBanner
             activeTypo={activeTypo}
             activeMissingImport={activeMissingImport}

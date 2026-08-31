@@ -31,6 +31,7 @@ export * from "./NotificationBadge";
 export * from "./PlatformLogo";
 export * from "./Icon";
 export * from "./ResizableSplitPane";
+export * from "./UiLoader";
 export { clsx } from "clsx";
 
 

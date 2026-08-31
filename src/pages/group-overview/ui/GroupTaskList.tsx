@@ -1,21 +1,14 @@
 import React from "react";
 import { Link } from "@tanstack/react-router";
-import { FileText, Folder, Check, X, RotateCcw, Minus, Calendar } from "lucide-react";
-import { clsx } from "clsx";
-import { Task } from "@/entities/task";
+import { Folder } from "lucide-react";
+import type { TaskCompletionStatus } from "@/entities/progress";
 import { getGroupCompletionClass } from "@/entities/review";
-import {
-  NodeCount,
-  TreeToggleIcon,
-  TreeNodeHeader,
-  TaskListWrapper,
-  Button,
-  Badge,
-} from "@/shared/ui";
+import type { ReviewItem } from "@/entities/review";
+import type { Task } from "@/entities/task";
+import { TaskFavoriteButton } from "@/features/task-favorite";
+import { TaskTableHeader, TaskTableRow } from "@/features/task-table";
+import { NodeCount, TreeToggleIcon, TreeNodeHeader, TaskListWrapper } from "@/shared/ui";
 import styles from "./GroupOverviewPage.module.css";
-
-import { ReviewItem } from "@/entities/review";
-import { TaskCompletionStatus } from "@/entities/progress";
 
 export interface GroupTaskListProps {
   tasks: Task[];
@@ -27,18 +20,31 @@ export interface GroupTaskListProps {
   toggleSubgroup: (subName: string) => void;
   taskRoute: string;
   getTaskStatus: (taskId: string | number) => "solved" | "unsolved" | "unstarted";
-  getTaskGradientClass: (
-    task: Task,
-    status: "solved" | "unsolved" | "unstarted",
-    taskReview: ReviewItem | null | undefined
-  ) => string;
-  formatLastSolved: (timestamp?: number | string | null) => string | null;
-  formatNextReviewDate: (timestamp?: number | ReviewItem, dueDate?: string) => string | null;
-  isTaskDue: (review: ReviewItem | null | undefined) => boolean;
   reviews: Record<string, ReviewItem>;
   completedTasks: Record<string, TaskCompletionStatus>;
-  onResetFilter: () => void;
 }
+
+interface GroupHeaderMetaProps {
+  completed: number;
+  total: number;
+  completedClass: string;
+}
+
+const GroupHeaderMeta = ({
+  completed,
+  total,
+  completedClass,
+}: Readonly<GroupHeaderMetaProps>): React.JSX.Element => (
+  <div className={styles.groupHeaderMeta}>
+    <NodeCount
+      completed={completed}
+      total={total}
+      completedClass={completedClass}
+      className={styles.statusNodeCount}
+    />
+    <span className={styles.favoriteColumnPlaceholder} aria-hidden="true" />
+  </div>
+);
 
 export const GroupTaskList = React.memo(
   ({
@@ -51,126 +57,42 @@ export const GroupTaskList = React.memo(
     toggleSubgroup,
     taskRoute,
     getTaskStatus,
-    getTaskGradientClass,
-    formatLastSolved,
-    formatNextReviewDate,
-    isTaskDue,
     reviews,
     completedTasks,
-    onResetFilter,
-  }: GroupTaskListProps) => {
+  }: GroupTaskListProps): React.JSX.Element => {
     if (tasks.length === 0) {
       return (
         <div className={styles.emptyState}>
-          <div className={styles.emptyTitle}>Задач по выбранному фильтру нет</div>
-          <Button onClick={onResetFilter}>Показать все задачи</Button>
+          <h2>По выбранному фильтру задач нет</h2>
+          <p>Измените фильтр, чтобы увидеть остальные задачи.</p>
         </div>
       );
     }
 
-    const renderTaskRow = (task: Task) => {
-      const s = getTaskStatus(task.id);
-      const taskReview = reviews[String(task.id)] || reviews[task.id];
-      const lastReviewedAt = taskReview?.lastReviewedAt;
-      const nextReviewAt = taskReview?.nextReviewAt;
-      const isDue = isTaskDue(taskReview);
-      const gradientClass = getTaskGradientClass(task, s, taskReview);
-
+    const renderTaskRow = (task: Task): React.JSX.Element => {
       return (
-        <TreeNodeHeader
+        <TaskTableRow
           key={task.id}
+          task={task}
           to={taskRoute}
-          params={{ taskId: String(task.id) }}
-          className={clsx(styles.treeTaskBtn, gradientClass)}
-        >
-          <span className={styles.taskBtnTitle}>
-            <FileText size={16} className={styles.nodeFileIcon} />
-            <span className={styles.taskBtnText}>{task.title}</span>
-          </span>
-
-          <div className={styles.taskRowMeta}>
-            {/* Last Solved Date */}
-            <div className={styles.dbColLastSolved}>
-              {lastReviewedAt ? (
-                <Badge
-                  variant="gray"
-                  size="sm"
-                  uppercase={false}
-                  icon={<Calendar size={11} />}
-                  title={`Дата последнего решения: ${new Date(lastReviewedAt).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })}`}
-                >
-                  {formatLastSolved(lastReviewedAt)}
-                </Badge>
-              ) : (
-                <span className={styles.statusUnstarted} title="Ещё не решалась">
-                  <Minus size={8} />
-                </span>
-              )}
-            </div>
-
-            {/* Next Review Badge */}
-            <div className={styles.dbColNextReview}>
-              {isDue ? (
-                <Badge
-                  variant="yellow"
-                  size="sm"
-                  uppercase={false}
-                  title="Срок повторения подошел! Пора повторить сегодня"
-                >
-                  Пора повторить
-                </Badge>
-              ) : nextReviewAt ? (
-                <Badge
-                  variant="blue"
-                  size="sm"
-                  uppercase={false}
-                  title={`Следующее повторение: ${formatNextReviewDate(nextReviewAt)}`}
-                >
-                  {formatNextReviewDate(nextReviewAt)}
-                </Badge>
-              ) : (
-                <span className={styles.statusUnstarted} title="Повторение не запланировано">
-                  <Minus size={8} />
-                </span>
-              )}
-            </div>
-
-            {/* Status Icon */}
-            <span className={styles.dbColStatus}>
-              {isDue ? (
-                <span className={styles.statusDue} title="Пора повторить!">
-                  <RotateCcw size={11} />
-                </span>
-              ) : s === "solved" ? (
-                <span className={styles.statusSolved} title="Решено">
-                  <Check size={13} />
-                </span>
-              ) : s === "unsolved" ? (
-                <span className={styles.statusUnsolved} title="Не решено">
-                  <X size={13} />
-                </span>
-              ) : (
-                <span className={styles.statusUnstarted} title="Не начато">
-                  <Minus size={8} />
-                </span>
-              )}
-            </span>
-          </div>
-        </TreeNodeHeader>
+          status={getTaskStatus(task.id)}
+          review={reviews[String(task.id)]}
+          favoriteMarker={
+            <TaskFavoriteButton
+              taskId={task.id}
+              taskTitle={task.title}
+              size="sm"
+              iconSize={13}
+              className={styles.taskFavoriteQuickAction}
+            />
+          }
+        />
       );
     };
 
     return (
       <div className={styles.folderPageTree}>
-        {/* DB Column Headers */}
-        <div className={styles.dbColumnsHeader}>
-          <span className={styles.dbColName}>Папка / Файл</span>
-          <div className={styles.dbColMeta}>
-            <span className={styles.dbColLastSolved}>Решение</span>
-            <span className={styles.dbColNextReview}>Повторение</span>
-            <span className={styles.dbColStatus}>Статус</span>
-          </div>
-        </div>
+        <TaskTableHeader />
 
         {hasSubgroups ? (
           Object.entries(groupedSubgroups).map(([subgroupName, subTasks]) => {
@@ -186,13 +108,7 @@ export const GroupTaskList = React.memo(
               <div className={styles.treeGroupBlock} key={`${groupName || ""}-${subgroupName}`}>
                 <TreeNodeHeader className={styles.subgroupHeader}>
                   <TreeToggleIcon
-                    icon={
-                      <Folder
-                        size={17}
-                        className={styles.folderIcon}
-                        style={{ color: folderColor }}
-                      />
-                    }
+                    icon={<Folder size={17} className={styles.folderIcon} color={folderColor} />}
                     size="md"
                     expanded={isOpen}
                     onToggle={() => toggleSubgroup(subgroupName)}
@@ -207,7 +123,7 @@ export const GroupTaskList = React.memo(
                     <span className={styles.nodeTitle}>{subgroupName}</span>
                   </Link>
 
-                  <NodeCount
+                  <GroupHeaderMeta
                     completed={completedSubCount}
                     total={subTasks.length}
                     completedClass={completionClass}

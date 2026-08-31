@@ -459,6 +459,58 @@ export const useUIStore = create<UIState>()(
           });
         }
       },
+
+      resetUISettings: () => {
+        if (typeof document !== "undefined") {
+          document.documentElement.setAttribute("data-theme", "dark");
+          document.documentElement.style.setProperty("--sidebar-width", "280px");
+        }
+        if (typeof localStorage !== "undefined") {
+          try {
+            localStorage.removeItem("playground_ui_settings");
+            localStorage.removeItem("playground_group_view_mode");
+            localStorage.removeItem("playground_favorites_list_display_mode");
+            localStorage.removeItem("playground_console_collapsed");
+            localStorage.removeItem("playground_theme");
+          } catch {
+            // ignore
+          }
+        }
+        if (typeof sessionStorage !== "undefined") {
+          try {
+            const keysToRemove: string[] = [];
+            for (let i = 0; i < sessionStorage.length; i++) {
+              const key = sessionStorage.key(i);
+              if (key && key.startsWith("playground_")) {
+                keysToRemove.push(key);
+              }
+            }
+            keysToRemove.forEach((k) => sessionStorage.removeItem(k));
+          } catch {
+            // ignore
+          }
+        }
+        set({
+          theme: "dark",
+          sidebarOpen: true,
+          sidebarWidth: 280,
+          editorFontSize: 14,
+          editorWordWrap: false,
+          editorSplitRatio: 70,
+          consoleFontSize: 14,
+          consoleCollapsed: true,
+          warmupExpanded: false,
+          refactoringExpanded: false,
+          tasksExpanded: false,
+          advancedExpanded: false,
+          reactTsExpanded: false,
+          reactTsPracticeExpanded: false,
+          expandedJsGroups: {},
+          expandedJsSubgroups: {},
+          expandedAlgoGroups: {},
+          expandedAlgoSubgroups: {},
+        });
+      },
     }),
     {
       name: "playground_ui_settings",

@@ -69,7 +69,7 @@
 
 [data-theme="light"] .workspaceIcon {
   background: rgba(55, 53, 47, 0.08);
-  color: #9333ea;
+  color: var(--text-muted);
 }
 
 .workspaceInfo {
@@ -717,7 +717,7 @@
 .upcomingList {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 2px;
 }
 
 .upcomingRowLink {
@@ -731,22 +731,23 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 10px 14px;
-  background: var(--bg-subtle, rgba(255, 255, 255, 0.03));
-  border-radius: var(--radius-md, 8px);
+  padding: 7px 10px;
+  background: transparent;
+  border-radius: var(--radius-md, 6px);
   border: none;
+  transition: background var(--transition-fast, 0.15s ease);
 }
 
 .upcomingRow:hover {
-  background: var(--state-hover, rgba(255, 255, 255, 0.06));
+  background: var(--state-hover, rgba(255, 255, 255, 0.055));
 }
 
 [data-theme="light"] .upcomingRow {
-  background: rgba(55, 53, 47, 0.04);
+  background: transparent;
 }
 
 [data-theme="light"] .upcomingRow:hover {
-  background: rgba(55, 53, 47, 0.07);
+  background: rgba(55, 53, 47, 0.06);
 }
 
 .upcomingRowLeft {
@@ -775,12 +776,22 @@
 }
 
 .upcomingRowArrow {
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.28);
   flex-shrink: 0;
+  transition: color var(--transition-fast, 0.15s ease), transform var(--transition-fast, 0.15s ease);
+}
+
+[data-theme="light"] .upcomingRowArrow {
+  color: rgba(55, 53, 47, 0.28);
 }
 
 .upcomingRow:hover .upcomingRowArrow {
-  color: var(--accent-blue, #3b82f6);
+  color: var(--text-muted, rgba(255, 255, 255, 0.75));
+  transform: translateX(2px);
+}
+
+[data-theme="light"] .upcomingRow:hover .upcomingRowArrow {
+  color: rgba(55, 53, 47, 0.75);
 }
 
 @media (max-width: 640px) {

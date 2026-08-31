@@ -9,19 +9,27 @@ export const useSettingsModal = () => {
   const setIsOpen = useUIStore((state) => state.setSettingsModalOpen);
 
   const [resetReviewsConfirmOpen, setResetReviewsConfirmOpen] = useState(false);
+  const [resetUIConfirmOpen, setResetUIConfirmOpen] = useState(false);
   const [resetAllConfirmOpen, setResetAllConfirmOpen] = useState(false);
 
+  const resetUISettings = useUIStore((state) => state.resetUISettings);
   const handleFullReset = useProgressStore((state) => state.handleFullReset);
   const handleResetReviews = useReviewStore((state) => state.handleResetReviews);
   const { activeSection, sectionName, currentSectionTasks } = useSettingsActiveSection();
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen && !resetReviewsConfirmOpen && !resetAllConfirmOpen) {
+      if (
+        e.key === "Escape" &&
+        isOpen &&
+        !resetReviewsConfirmOpen &&
+        !resetUIConfirmOpen &&
+        !resetAllConfirmOpen
+      ) {
         setIsOpen(false);
       }
     },
-    [isOpen, resetReviewsConfirmOpen, resetAllConfirmOpen, setIsOpen]
+    [isOpen, resetReviewsConfirmOpen, resetUIConfirmOpen, resetAllConfirmOpen, setIsOpen]
   );
 
   useEffect(() => {
@@ -42,9 +50,15 @@ export const useSettingsModal = () => {
     setResetReviewsConfirmOpen(false);
   };
 
+  const handleResetUISettings = () => {
+    resetUISettings();
+    setResetUIConfirmOpen(false);
+  };
+
   const handleResetAllData = async () => {
     await handleFullReset("all");
     await handleResetReviews("all");
+    resetUISettings();
     setResetAllConfirmOpen(false);
   };
 
@@ -55,10 +69,13 @@ export const useSettingsModal = () => {
     sectionName,
     resetReviewsConfirmOpen,
     setResetReviewsConfirmOpen,
+    resetUIConfirmOpen,
+    setResetUIConfirmOpen,
     resetAllConfirmOpen,
     setResetAllConfirmOpen,
     handleResetSectionReviews,
     handleResetAllReviews,
+    handleResetUISettings,
     handleResetAllData,
   };
 };

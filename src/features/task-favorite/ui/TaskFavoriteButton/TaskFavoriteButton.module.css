@@ -1,0 +1,13 @@
+.favoriteIcon {
+  color: var(--text-muted);
+  transition: color var(--transition-fast);
+}
+
+.favoriteIconActive {
+  color: var(--accent-yellow);
+}
+
+button:hover .favoriteIcon:not(.favoriteIconActive),
+button:focus-visible .favoriteIcon:not(.favoriteIconActive) {
+  color: color-mix(in srgb, var(--accent-yellow), var(--text-muted));
+}

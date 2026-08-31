@@ -4,11 +4,16 @@ import styles from "./SettingsModal.module.css";
 
 export interface SettingsResetSectionProps {
   onOpenResetReviews: () => void;
+  onOpenResetUI: () => void;
   onOpenResetAll: () => void;
 }
 
 export const SettingsResetSection = memo(
-  ({ onOpenResetReviews, onOpenResetAll }: SettingsResetSectionProps): React.JSX.Element => {
+  ({
+    onOpenResetReviews,
+    onOpenResetUI,
+    onOpenResetAll,
+  }: SettingsResetSectionProps): React.JSX.Element => {
     return (
       <div className={styles.settingsSectionWrapper}>
         <section className={styles.settingsSection}>
@@ -51,6 +56,25 @@ export const SettingsResetSection = memo(
                   onClick={onOpenResetReviews}
                 >
                   Сбросить график
+                </Button>
+              </div>
+            </div>
+
+            <div className={styles.settingsRow}>
+              <div className={styles.settingsRowInfo}>
+                <div className={styles.settingsRowTitle}>Настройки интерфейса</div>
+                <div className={styles.settingsRowDesc}>
+                  Сброс размеров панелей, масштаба шрифтов, режимов отображения списков и карточек, фильтров и раскрытых разделов.
+                </div>
+              </div>
+              <div className={styles.settingsRowAction}>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className={styles.settingsRowBtn}
+                  onClick={onOpenResetUI}
+                >
+                  Сбросить интерфейс
                 </Button>
               </div>
             </div>

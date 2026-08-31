@@ -1,5 +1,5 @@
 import { memo, lazy, Suspense } from "react";
-import { Modal } from "@/shared/ui";
+import { Modal, UiLoader } from "@/shared/ui";
 import { useStatsModalController } from "../model/useStatsModalController";
 import styles from "./StatsModal.module.css";
 
@@ -21,7 +21,7 @@ export const StatsModal = memo(() => {
       className={styles.statsModal}
       contentClassName={styles.statsModalBody}
     >
-      <Suspense fallback={<div className={styles.statsModalLoading}>Загрузка аналитики...</div>}>
+      <Suspense fallback={<UiLoader size="lg" center />}>
         <LazySpacedRepetitionSection
           inModal={true}
           onNavigate={() => setIsOpen(false)}

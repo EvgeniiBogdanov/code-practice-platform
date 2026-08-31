@@ -61,3 +61,13 @@
   background: var(--accent-red, #ef4444);
   color: #ffffff;
 }
+
+.taskButton.solvedActive:hover:not(:disabled),
+[data-theme="light"] .taskButton.solvedActive:hover:not(:disabled) {
+  background: var(--accent-green-bg);
+}
+
+.taskButton.unsolvedActive:hover:not(:disabled),
+[data-theme="light"] .taskButton.unsolvedActive:hover:not(:disabled) {
+  background: var(--accent-red-bg);
+}

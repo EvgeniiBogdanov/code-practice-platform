@@ -14,7 +14,11 @@ export const GroupMetaBadges = ({
   hasPracticeTasks,
   hasArticleLinks,
   hasArticle,
-}: GroupMetaBadgesProps) => {
+}: GroupMetaBadgesProps): React.JSX.Element | null => {
+  const hasBadges = hasArticle || hasPracticeTasks || hasArticleLinks;
+
+  if (!hasBadges) return null;
+
   return (
     <MetaRow>
       {hasArticle && (
