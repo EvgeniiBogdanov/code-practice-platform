@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
-import { useNavigate } from "@tanstack/react-router";
 import { ArrowDown } from "lucide-react";
 import { clsx } from "clsx";
 import { Task, getTaskFiles, hasTaskVisualComponent } from "@/entities/task";
@@ -18,6 +17,7 @@ import {
 import { Tooltip, ErrorBoundary, ViewModeToggle, ViewMode } from "@/shared/ui";
 import { CodeEditor } from "@/features/code-editor";
 import { JsConsole, ReactLivePreview } from "@/features/code-runner";
+import { useFullscreenNavigation } from "../../model/use-fullscreen-navigation";
 import styles from "./CandidateTab.module.css";
 
 export interface CandidateTabProps {
@@ -26,8 +26,6 @@ export interface CandidateTabProps {
 }
 
 export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.Element => {
-  const navigate = useNavigate();
-
   const initialFiles: TaskSourceFile[] = useMemo(() => {
     const rawFiles = getTaskFiles(task, "candidate");
     return rawFiles.map((file, idx) => {
@@ -46,6 +44,8 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
   const hasVisualComponent = useMemo(() => hasTaskVisualComponent(task, files), [task, files]);
 
   const [viewMode, setViewMode] = useState<ViewMode>("code");
+  const { isFullscreenTransitioning, handleToggleFullscreen, preloadFullscreen } =
+    useFullscreenNavigation({ task, tab: "candidate", hasVisualComponent });
 
   // JS Runner state
   const [consoleLogs, setConsoleLogs] = useState<NodeRunnerLogEntry[]>([]);
@@ -139,20 +139,6 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
     };
   }, [viewMode, activeFileIdx, task.id]);
 
-  const handleToggleFullscreen = () => {
-    const section = task.section || "javascript";
-    navigate({
-      to:
-        section === "algorithms"
-          ? "/open/algorithms/$taskId"
-          : section === "react"
-            ? "/open/react/$taskId"
-            : "/open/javascript/$taskId",
-      params: { taskId: String(task.id) },
-      search: { tab: "candidate", view: hasVisualComponent ? "split" : "code" },
-    });
-  };
-
   const handleCodeChange = (newCode: string) => {
     setFiles((prev) => {
       const next = [...prev];
@@ -235,6 +221,8 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
               onFileSelect={setActiveFileIdx}
               filepath={activeFile.name}
               onToggleFullscreen={handleToggleFullscreen}
+              onPreloadFullscreen={preloadFullscreen}
+              isFullscreenTransitioning={isFullscreenTransitioning}
               bottomConsole={
                 <div ref={consoleWrapperRef}>
                   <JsConsole

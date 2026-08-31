@@ -12,7 +12,6 @@ export interface DiagnosticProblem {
 }
 
 export interface HighlightOptions {
-  highlightWord?: string;
   bracketPair?: [number, number] | null;
   problems?: DiagnosticProblem[];
   unusedImports?: Set<string> | null;

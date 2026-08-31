@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useCallback, useState, useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Home, FileQuestion, ArrowDown } from "lucide-react";
-import { getTaskById, getTaskFiles, hasTaskVisualComponent } from "@/entities/task";
+import { getTaskFiles, hasTaskVisualComponent } from "@/entities/task";
+import type { SectionType } from "@/entities/task/meta";
+import { useTaskById } from "@/entities/task/catalog";
 import { CodeEditor } from "@/features/code-editor";
 import { JsConsole, ReactLivePreview } from "@/features/code-runner";
 import {
@@ -16,18 +18,21 @@ import {
   saveUserSolution,
   deleteUserSolution,
 } from "@/shared/lib/storage";
-import { Tooltip, ErrorBoundary, ResizableSplitPane, ViewMode } from "@/shared/ui";
+import { Tooltip, ErrorBoundary, ResizableSplitPane, UiLoader, ViewMode } from "@/shared/ui";
 import { useUIStore } from "@/entities/ui-state";
+import { useFullscreenExitTransition } from "../model/use-fullscreen-exit-transition";
 import styles from "./OpenEditorPage.module.css";
 
 export interface OpenEditorPageProps {
   taskId?: string;
+  section?: SectionType;
   tab?: "candidate" | "solution";
   initialViewMode?: ViewMode;
 }
 
 export const OpenEditorPage = ({
   taskId,
+  section = "react",
   tab = "candidate",
   initialViewMode,
 }: OpenEditorPageProps) => {
@@ -35,9 +40,11 @@ export const OpenEditorPage = ({
   const splitRatio = useUIStore((state) => state.editorSplitRatio) || 70;
   const setSplitRatio = useUIStore((state) => state.setEditorSplitRatio);
   const resetSplitRatio = useUIStore((state) => state.resetEditorSplitRatio);
+  const { isFullscreenExiting, startFullscreenExit } = useFullscreenExitTransition();
 
   const [activeFileIdx, setActiveFileIdx] = useState(0);
-  const task = useMemo(() => (taskId ? getTaskById(taskId) : null), [taskId]);
+  const { task: loadedTask, isLoading: isTaskLoading } = useTaskById(taskId ?? "", section);
+  const task = taskId ? loadedTask : null;
   const isReact = task ? task.section === "react" : true;
 
   const defaultCode = isReact
@@ -89,6 +96,8 @@ export const OpenEditorPage = ({
     if (initialViewMode === "split") return "split";
     return hasVisualComponent ? "split" : "code";
   });
+  const editorSessionKey = `${task?.id ?? "sandbox"}:${tab}:${initialViewMode ?? "default"}`;
+  const previousEditorSessionKeyRef = useRef(editorSessionKey);
 
   const [consoleLogs, setConsoleLogs] = useState<NodeRunnerLogEntry[]>([]);
   const [isRunning, setIsRunning] = useState(false);
@@ -100,8 +109,11 @@ export const OpenEditorPage = ({
 
   const consoleWrapperRef = useRef<HTMLDivElement>(null);
 
-  // Reset files when task or tab changes
+  // Keep the initial state intact to prevent a post-paint layout update on fullscreen entry.
   useEffect(() => {
+    if (previousEditorSessionKeyRef.current === editorSessionKey) return;
+
+    previousEditorSessionKeyRef.current = editorSessionKey;
     setActiveFileIdx(0);
     setIsConsoleVisible(true);
     setFiles(initialFiles);
@@ -120,7 +132,7 @@ export const OpenEditorPage = ({
     setIsRunning(false);
     setLastExecution(null);
     clearRunningTimers();
-  }, [task?.id, tab, initialFiles, task, initialViewMode, isReact]);
+  }, [editorSessionKey, initialFiles, task, tab, initialViewMode, isReact]);
 
   // Load saved solution
   useEffect(() => {
@@ -270,10 +282,10 @@ export const OpenEditorPage = ({
     setLastExecution(null);
   };
 
-  const handleExit = () => {
+  const navigateToTask = useCallback((): Promise<void> => {
     if (task) {
       const section = task.section || "javascript";
-      navigate({
+      return navigate({
         to:
           section === "algorithms"
             ? "/algorithms/$taskId"
@@ -282,11 +294,19 @@ export const OpenEditorPage = ({
               : "/javascript/$taskId",
         params: { taskId: String(task.id) },
         search: { tab },
+        resetScroll: false,
       });
-    } else {
-      navigate({ to: "/" });
     }
-  };
+
+    return navigate({
+      to: "/",
+      resetScroll: false,
+    });
+  }, [navigate, task, tab]);
+
+  const handleExit = useCallback((): void => {
+    startFullscreenExit(navigateToTask);
+  }, [navigateToTask, startFullscreenExit]);
 
   // Keyboard shortcut for Escape
   useEffect(() => {
@@ -298,7 +318,11 @@ export const OpenEditorPage = ({
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [task, tab]);
+  }, [handleExit]);
+
+  if (taskId && isTaskLoading) {
+    return <UiLoader fullscreen={true} size="lg" label="Загружаем редактор" />;
+  }
 
   if (taskId && !task) {
     return (
@@ -331,10 +355,7 @@ export const OpenEditorPage = ({
         ? candidateFiles[activeFileIdx]?.code || candidateFiles[0]?.code
         : activeFile.code;
 
-  const previewActiveFileIdx = Math.min(
-    activeFileIdx,
-    Math.max(0, (previewFiles.length || 1) - 1)
-  );
+  const previewActiveFileIdx = Math.min(activeFileIdx, Math.max(0, (previewFiles.length || 1) - 1));
 
   const previewStoragePrefix = previewTarget === "solution" ? "sol" : "cand";
 
@@ -376,6 +397,7 @@ export const OpenEditorPage = ({
                   fillHeight={true}
                   isFullscreen={true}
                   onToggleFullscreen={handleExit}
+                  isFullscreenTransitioning={isFullscreenExiting}
                   bottomConsole={consoleNode}
                 />
               }
@@ -420,6 +442,7 @@ export const OpenEditorPage = ({
                 fillHeight={true}
                 isFullscreen={true}
                 onToggleFullscreen={handleExit}
+                isFullscreenTransitioning={isFullscreenExiting}
                 bottomConsole={consoleNode}
               />
 

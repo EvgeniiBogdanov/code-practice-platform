@@ -17,7 +17,6 @@ import {
   Folder,
   Binary,
 } from "lucide-react";
-import { JS_TASKS } from "./tasksData";
 
 export const JS_GROUP_CONFIG = {
   "Типы данных": {
@@ -126,25 +125,6 @@ export const getGroupMeta = (groupName) => {
       ...meta,
       renderIcon: (size = 14) => (
         <IconComponent size={size} color={meta.color} />
-      ),
-    };
-  }
-
-  // Поддержка подпапок (subgroups): наследуем настройки и цвет родительской папки
-  const task = JS_TASKS.find(
-    (t) => t.subgroup === groupName || `${t.group}/${t.subgroup}` === groupName
-  );
-  if (task && JS_GROUP_CONFIG[task.group]) {
-    const parentMeta = JS_GROUP_CONFIG[task.group];
-    return {
-      icon: Folder,
-      color: parentMeta.color,
-      bg: parentMeta.bg,
-      desc: `Подраздел «${groupName}» темы «${task.group}».`,
-      isSubgroup: true,
-      parentGroup: task.group,
-      renderIcon: (size = 14) => (
-        <Folder size={size} color={parentMeta.color} />
       ),
     };
   }

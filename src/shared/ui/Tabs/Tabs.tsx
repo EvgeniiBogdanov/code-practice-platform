@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { clsx } from "clsx";
-import { NotificationBadge } from "../NotificationBadge";
+import { NotificationBadge, NotificationBadgeVariant } from "../NotificationBadge";
 import styles from "./Tabs.module.css";
 
 export interface TabItem {
@@ -8,6 +8,7 @@ export interface TabItem {
   label: React.ReactNode;
   icon?: React.ReactNode;
   badge?: React.ReactNode;
+  badgeVariant?: NotificationBadgeVariant;
   disabled?: boolean;
 }
 
@@ -85,7 +86,7 @@ export const Tabs = memo(
                 ) : (
                   <NotificationBadge
                     count={item.badge as number | string}
-                    variant="neutral"
+                    variant={item.badgeVariant ?? "neutral"}
                     pinned={false}
                     ring={false}
                     size="tab"

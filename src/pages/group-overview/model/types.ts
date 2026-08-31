@@ -76,4 +76,5 @@ export interface GroupOverviewState {
   isTaskDue: (review: ReviewItem | null | undefined) => boolean;
   reviews: Record<string, ReviewItem>;
   completedTasks: Record<string, TaskCompletionStatus>;
+  isInitialized: boolean;
 }

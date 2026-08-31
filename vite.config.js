@@ -78,15 +78,6 @@ export default defineConfig({
             }
             return "vendor-framework";
           }
-          if (id.includes("/curriculum/react/")) {
-            return "tasks-react";
-          }
-          if (id.includes("/curriculum/javascript/")) {
-            return "tasks-javascript";
-          }
-          if (id.includes("/curriculum/algorithms/")) {
-            return "tasks-algorithms";
-          }
           if (id.includes("cheatSheetData")) {
             return "data-cheatsheet";
           }

@@ -1,13 +1,15 @@
-import React, { useState, useEffect, startTransition } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Play, CheckCircle, BookOpen, HelpCircle, ListChecks } from "lucide-react";
 import { clsx } from "clsx";
-import { getTaskById, TaskDifficultyBadge } from "@/entities/task";
-import { useProgressStore, selectIsTaskCompleted } from "@/entities/progress";
+import { TaskDifficultyBadge } from "@/entities/task";
+import type { SectionType } from "@/entities/task/meta";
+import { useTaskById } from "@/entities/task/catalog";
+import { useProgressStore, isTaskCompleted } from "@/entities/progress";
 import { useReviewStore } from "@/entities/review";
 import { TaskReviewRatingBar } from "@/features/spaced-repetition";
 import { TaskFavoriteButton } from "@/features/task-favorite";
-import { TaskButton, NotificationBadge, NotificationBadgeVariant } from "@/shared/ui";
+import { TaskButton, NotificationBadge, NotificationBadgeVariant, UiLoader } from "@/shared/ui";
 import { CandidateTab } from "./CandidateTab";
 import { SolutionTab } from "./SolutionTab";
 import { MaterialsTab } from "./MaterialsTab";
@@ -17,16 +19,17 @@ import styles from "./TaskPage.module.css";
 
 export interface TaskPageProps {
   taskId: string;
+  section: SectionType;
   initialTab?: string;
 }
 
 export const TaskPage = React.memo<TaskPageProps>(
-  ({ taskId, initialTab }: TaskPageProps): React.JSX.Element => {
+  ({ taskId, section, initialTab }: TaskPageProps): React.JSX.Element => {
     const navigate = useNavigate();
-    const task = getTaskById(taskId);
+    const { task, isLoading } = useTaskById(taskId, section);
     const [activeTab, setActiveTab] = useState(initialTab || "candidate");
 
-    const progressState = useProgressStore();
+    const completedTasks = useProgressStore((state) => state.completedTasks);
     const setTaskStatus = useProgressStore((state) => state.setTaskStatus);
     const removeReview = useReviewStore((state) => state.removeReview);
 
@@ -35,6 +38,10 @@ export const TaskPage = React.memo<TaskPageProps>(
         setActiveTab(initialTab);
       }
     }, [initialTab, taskId]);
+
+    if (isLoading) {
+      return <UiLoader center={true} size="lg" label="Загружаем задачу" />;
+    }
 
     if (!task) {
       return (
@@ -49,20 +56,16 @@ export const TaskPage = React.memo<TaskPageProps>(
     }
 
     const handleTabChange = (tabId: string) => {
-      startTransition(() => {
-        setActiveTab(tabId);
-        navigate({
-          to: ".",
-          search: (prev: Record<string, unknown>) => ({ ...prev, tab: tabId }),
-          replace: true,
-        });
+      setActiveTab(tabId);
+      navigate({
+        to: ".",
+        search: (prev: Record<string, unknown>) => ({ ...prev, tab: tabId }),
+        replace: true,
       });
     };
 
-    const isCompleted = selectIsTaskCompleted(progressState, task.id);
-    const isUnsolved =
-      progressState.completedTasks[task.id] === "unsolved" ||
-      progressState.completedTasks[String(task.id)] === "unsolved";
+    const isCompleted = isTaskCompleted(completedTasks[String(task.id)]);
+    const isUnsolved = completedTasks[String(task.id)] === "unsolved";
 
     const handleToggleSolved = async () => {
       const nextStatus = isCompleted ? null : "solved";
@@ -201,11 +204,11 @@ export const TaskPage = React.memo<TaskPageProps>(
             </div>
 
             <div className={styles.tabsContent}>
-              {activeTab === "candidate" && <CandidateTab key={`cand_${task.id}`} task={task} />}
-              {activeTab === "solution" && <SolutionTab key={`sol_${task.id}`} task={task} />}
-              {activeTab === "materials" && <MaterialsTab key={`mat_${task.id}`} task={task} />}
-              {activeTab === "questions" && <QuestionsTab key={`q_${task.id}`} task={task} />}
-              {activeTab === "checklist" && <ChecklistTab key={`chk_${task.id}`} task={task} />}
+              {activeTab === "candidate" && <CandidateTab task={task} />}
+              {activeTab === "solution" && <SolutionTab task={task} />}
+              {activeTab === "materials" && <MaterialsTab task={task} />}
+              {activeTab === "questions" && <QuestionsTab task={task} />}
+              {activeTab === "checklist" && <ChecklistTab task={task} />}
             </div>
           </div>
         </div>

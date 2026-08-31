@@ -1,4 +1,4 @@
-import { ALL_JS_TASKS, Task } from "@/entities/task";
+import type { Task } from "@/entities/task/meta";
 import { safeDecodeURI } from "@/shared/lib/url";
 
 export interface JsHierarchyNames {
@@ -8,7 +8,8 @@ export interface JsHierarchyNames {
 
 export const resolveJsHierarchyNames = (
   currentTask: Task | null,
-  paramId: string | null
+  paramId: string | null,
+  tasks: readonly Task[]
 ): JsHierarchyNames => {
   if (currentTask) {
     return {
@@ -19,7 +20,7 @@ export const resolveJsHierarchyNames = (
   if (paramId) {
     if (paramId.startsWith("group-")) {
       const raw = safeDecodeURI(paramId.replace(/^group-/, ""));
-      const matched = ALL_JS_TASKS.find((t) => t.group === raw);
+      const matched = tasks.find((t) => t.group === raw);
       return {
         currentGroupName: matched?.group || raw,
         currentSubgroupName: null,
@@ -27,7 +28,7 @@ export const resolveJsHierarchyNames = (
     }
     if (paramId.startsWith("subgroup-")) {
       const raw = safeDecodeURI(paramId.replace(/^subgroup-/, ""));
-      const matched = ALL_JS_TASKS.find(
+      const matched = tasks.find(
         (t) =>
           (t.group && t.subgroup && `${t.group}-${t.subgroup}` === raw) ||
           (t.group && t.subgroup && `${t.group}/${t.subgroup}` === raw) ||

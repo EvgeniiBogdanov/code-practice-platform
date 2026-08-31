@@ -2,7 +2,8 @@ import { useCallback, useDeferredValue, useMemo, useState } from "react";
 import { useFavoriteTaskStore } from "@/entities/favorite-task";
 import { useProgressStore } from "@/entities/progress";
 import { isTaskDue, ReviewItem, useReviewStore } from "@/entities/review";
-import { getTasksBySection, SectionType, Task } from "@/entities/task";
+import type { SectionType, Task } from "@/entities/task/meta";
+import { useTaskSection } from "@/entities/task/catalog";
 import { buildFavoriteTaskTree, FavoriteTaskFolderNode } from "./favorite-task-tree";
 
 export type FavoriteStatusFilter = "all" | "solved" | "unsolved";
@@ -48,6 +49,7 @@ const getInitialListDisplayMode = (): FavoriteListDisplayMode => {
 };
 
 export const useFavoritesPage = (section: SectionType): FavoritesPageState => {
+  const { tasks: sectionTasks } = useTaskSection(section);
   const completedTasks = useProgressStore((state) => state.completedTasks);
   const reviews = useReviewStore((state) => state.reviews);
   const [visibleFavoriteTaskIds] = useState<readonly string[]>(() => [
@@ -80,8 +82,8 @@ export const useFavoritesPage = (section: SectionType): FavoritesPageState => {
 
   const favoriteTasks = useMemo(() => {
     const favoriteIds = new Set(visibleFavoriteTaskIds);
-    return getTasksBySection(section).filter((task) => favoriteIds.has(String(task.id)));
-  }, [section, visibleFavoriteTaskIds]);
+    return sectionTasks.filter((task) => favoriteIds.has(String(task.id)));
+  }, [sectionTasks, visibleFavoriteTaskIds]);
 
   const filteredTasks = useMemo(() => {
     if (deferredStatusFilter === "all") return favoriteTasks;

@@ -301,8 +301,7 @@
   gap: var(--space-3);
   text-align: center;
   border: 1px dashed var(--border-strong);
-  border-radius: var(--radius-xl);
-  background: var(--bg-subtle);
+  border-radius: var(--radius-lg);
 }
 
 .emptyState h2 {

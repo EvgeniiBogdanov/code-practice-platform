@@ -4,7 +4,7 @@ import { Folder, FileText, Calendar, RotateCcw, Check, X } from "lucide-react";
 import { clsx } from "clsx";
 import { Task } from "@/entities/task";
 import { TaskFavoriteMarker } from "@/features/task-favorite";
-import { Card } from "@/shared/ui";
+import { Card, UiSkeleton } from "@/shared/ui";
 import styles from "./GroupOverviewPage.module.css";
 
 import { ReviewItem } from "@/entities/review";
@@ -29,6 +29,7 @@ export interface GroupTaskCardsProps {
   formatNextReviewDate: (timestamp?: number | ReviewItem, dueDate?: string) => string | null;
   isTaskDue: (review: ReviewItem | null | undefined) => boolean;
   reviews: Record<string, ReviewItem>;
+  isLoading?: boolean;
 }
 
 interface GroupTaskCardItemProps {
@@ -52,6 +53,45 @@ interface GroupTaskCardItemProps {
   isTaskDue: (review: ReviewItem | null | undefined) => boolean;
   reviews: Record<string, ReviewItem>;
 }
+
+export const GroupTaskCardSkeleton = memo(() => {
+  return (
+    <Card className={styles.galleryCard} style={{ pointerEvents: "none", cursor: "default" }}>
+      <div>
+        <div className={styles.galleryCardHeaderRow}>
+          <div className={styles.galleryCardFolderInfo}>
+            <UiSkeleton width={14} height={14} radius={3} />
+            <UiSkeleton width={72} height={12} radius={3} />
+          </div>
+
+          <div className={styles.galleryCardStatusRow}>
+            <UiSkeleton width={54} height={14} radius={3} />
+          </div>
+        </div>
+
+        <div className={styles.galleryCardTitleRow}>
+          <UiSkeleton width={16} height={16} radius={3} />
+          <UiSkeleton width="75%" height={16} radius={4} />
+        </div>
+
+        <div
+          className={styles.galleryCardDesc}
+          style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 6 }}
+        >
+          <UiSkeleton width="92%" height={11} radius={3} />
+          <UiSkeleton width="55%" height={11} radius={3} />
+        </div>
+      </div>
+
+      <div className={styles.galleryCardBadgesRow}>
+        <UiSkeleton width="48%" height={22} radius={6} />
+        <UiSkeleton width="48%" height={22} radius={6} />
+      </div>
+    </Card>
+  );
+});
+
+GroupTaskCardSkeleton.displayName = "GroupTaskCardSkeleton";
 
 const GroupTaskCardItem = memo(
   ({
@@ -180,12 +220,23 @@ export const GroupTaskCards = memo(
     formatNextReviewDate,
     isTaskDue,
     reviews,
+    isLoading = false,
   }: GroupTaskCardsProps) => {
     if (tasks.length === 0) {
       return (
         <div className={styles.emptyState}>
           <h2>По выбранному фильтру задач нет</h2>
           <p>Измените фильтр, чтобы увидеть остальные задачи.</p>
+        </div>
+      );
+    }
+
+    if (isLoading) {
+      return (
+        <div className={styles.galleryGrid}>
+          {tasks.map((task) => (
+            <GroupTaskCardSkeleton key={task.id} />
+          ))}
         </div>
       );
     }

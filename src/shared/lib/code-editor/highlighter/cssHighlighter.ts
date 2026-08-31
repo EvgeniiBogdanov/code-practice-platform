@@ -7,13 +7,26 @@ import { HighlightOptions, escapeHtml } from "./types";
 const CSS_RULES = [
   { type: "comment", regex: /^(\/\*[\s\S]*?\*\/|\/\/.*)/ },
   { type: "string", regex: /^("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/ },
-  { type: "at-rule", regex: /^@(?:keyframes|media|import|font-face|supports|container|layer|charset)\b[^\s{;]*/ },
+  {
+    type: "at-rule",
+    regex: /^@(?:keyframes|media|import|font-face|supports|container|layer|charset)\b[^\s{;]*/,
+  },
   { type: "important", regex: /^!important\b/ },
-  { type: "hex-color", regex: /^#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{4}|[0-9a-fA-F]{3})\b/ },
-  { type: "dimension", regex: /^(-?\d+(?:\.\d+)?)(px|rem|em|%|vh|vw|dvh|dvw|s|ms|deg|rad|turn|fr|ch|ex)\b/i },
+  {
+    type: "hex-color",
+    regex: /^#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{4}|[0-9a-fA-F]{3})\b/,
+  },
+  {
+    type: "dimension",
+    regex: /^(-?\d+(?:\.\d+)?)(px|rem|em|%|vh|vw|dvh|dvw|s|ms|deg|rad|turn|fr|ch|ex)\b/i,
+  },
   { type: "number", regex: /^-?\b\d+(?:\.\d+)?\b/ },
   { type: "css-var", regex: /^--[a-zA-Z0-9_-]+/ },
-  { type: "fn-call", regex: /^(?:var|calc|min|max|clamp|rgb|rgba|hsl|hsla|oklch|url|linear-gradient|radial-gradient|scale|rotate|translate|translateX|translateY|translate3d|skew|matrix|cubic-bezier|polygon|circle|ellipse)(?=\s*\()/i },
+  {
+    type: "fn-call",
+    regex:
+      /^(?:var|calc|min|max|clamp|rgb|rgba|hsl|hsla|oklch|url|linear-gradient|radial-gradient|scale|rotate|translate|translateX|translateY|translate3d|skew|matrix|cubic-bezier|polygon|circle|ellipse)(?=\s*\()/i,
+  },
   { type: "property", regex: /^[a-zA-Z_-][a-zA-Z0-9_-]*(?=\s*:)/ },
   {
     type: "css-keyword",
@@ -33,15 +46,8 @@ const CSS_RULES = [
 export function highlightCSS(code: string, options: HighlightOptions = {}): string {
   if (!code) return "";
 
-  const {
-    highlightWord = "",
-    bracketPair = null,
-    problems = [],
-    multiSelections = [],
-  } = options;
+  const { bracketPair = null, problems = [], multiSelections = [] } = options;
 
-  const isWordMatch = (txt: string): boolean =>
-    Boolean(highlightWord && highlightWord.length >= 2 && txt === highlightWord);
   const isBracketMatch = (idx: number): boolean =>
     Boolean(bracketPair && (idx === bracketPair[0] || idx === bracketPair[1]));
   const isMultiSelected = (start: number, len: number): boolean => {
@@ -82,7 +88,6 @@ export function highlightCSS(code: string, options: HighlightOptions = {}): stri
           currentCol += text.length;
         }
 
-        const wordClass = isWordMatch(text) ? " hl-word-match" : "";
         let squigglyClass = "";
         if (problems && problems.length > 0 && rule.type !== "space" && rule.type !== "comment") {
           const prob = problems.find((p) => {
@@ -98,7 +103,7 @@ export function highlightCSS(code: string, options: HighlightOptions = {}): stri
         }
 
         const multiSelectClass = isMultiSelected(tokenStart, tokenLen) ? " hl-multi-selected" : "";
-        const extraClasses = wordClass + squigglyClass + multiSelectClass;
+        const extraClasses = squigglyClass + multiSelectClass;
 
         if (rule.type === "comment") {
           html += `<span class="hl-cm${multiSelectClass}">${escapeHtml(text)}</span>`;
@@ -122,7 +127,11 @@ export function highlightCSS(code: string, options: HighlightOptions = {}): stri
           html += `<span class="hl-fn${extraClasses}">${escapeHtml(text)}</span>`;
         } else if (rule.type === "css-keyword") {
           html += `<span class="hl-css-val${extraClasses}">${escapeHtml(text)}</span>`;
-        } else if (rule.type === "pseudo" || rule.type === "class-selector" || rule.type === "id-selector") {
+        } else if (
+          rule.type === "pseudo" ||
+          rule.type === "class-selector" ||
+          rule.type === "id-selector"
+        ) {
           html += `<span class="hl-css-selector${extraClasses}">${escapeHtml(text)}</span>`;
         } else if (rule.type === "attribute-selector") {
           html += `<span class="hl-css-selector${extraClasses}">${escapeHtml(text)}</span>`;

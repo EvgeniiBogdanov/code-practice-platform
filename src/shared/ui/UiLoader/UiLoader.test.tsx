@@ -9,6 +9,7 @@ describe("UiLoader", () => {
     const loader = screen.getByRole("status");
     expect(loader).toBeInTheDocument();
     expect(loader).toHaveAttribute("aria-label", "Загрузка...");
+    expect(loader.className).toContain("variant_gray");
   });
 
   it("renders with custom label and shows visible text when showLabel is true", () => {
@@ -25,6 +26,12 @@ describe("UiLoader", () => {
     const loader = screen.getByTestId("centered-loader");
     expect(loader.className).toContain("center");
     expect(container.querySelector("svg")).toBeInTheDocument();
+  });
+
+  it("renders as a fullscreen loader when fullscreen is enabled", () => {
+    render(<UiLoader fullscreen data-testid="fullscreen-loader" />);
+
+    expect(screen.getByTestId("fullscreen-loader").className).toContain("fullscreen");
   });
 
   it("supports numeric custom sizes", () => {

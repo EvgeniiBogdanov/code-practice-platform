@@ -1,7 +1,7 @@
 import React from "react";
 import { Home, Zap, Code2, Brain } from "lucide-react";
-import { ALL_JS_TASKS, ALL_REACT_TASKS, ALL_ALGO_TASKS } from "./taskRegistry";
-import { Task, SectionType } from "../types";
+import { CURRICULUM_COUNTS } from "./curriculum-manifest";
+import { SectionType } from "../types";
 
 export interface SectionMeta {
   id: "home" | SectionType;
@@ -11,7 +11,6 @@ export interface SectionMeta {
   icon: React.ComponentType<{ size?: number | string; className?: string; color?: string }>;
   color: string;
   badge: string;
-  tasks: Task[];
 }
 
 export const SECTIONS_CONFIG: Record<"home" | SectionType, SectionMeta> = {
@@ -23,7 +22,6 @@ export const SECTIONS_CONFIG: Record<"home" | SectionType, SectionMeta> = {
     icon: Home,
     color: "#60a5fa",
     badge: "Обзор",
-    tasks: [],
   },
   javascript: {
     id: "javascript",
@@ -32,8 +30,7 @@ export const SECTIONS_CONFIG: Record<"home" | SectionType, SectionMeta> = {
     path: "/javascript",
     icon: Zap,
     color: "#f59e0b",
-    badge: `${ALL_JS_TASKS.length} задач`,
-    tasks: ALL_JS_TASKS,
+    badge: `${CURRICULUM_COUNTS.javascript} задач`,
   },
   react: {
     id: "react",
@@ -42,8 +39,7 @@ export const SECTIONS_CONFIG: Record<"home" | SectionType, SectionMeta> = {
     path: "/react",
     icon: Code2,
     color: "#61dafb",
-    badge: `${ALL_REACT_TASKS.length} задач`,
-    tasks: ALL_REACT_TASKS,
+    badge: `${CURRICULUM_COUNTS.react} задач`,
   },
   algorithms: {
     id: "algorithms",
@@ -52,8 +48,7 @@ export const SECTIONS_CONFIG: Record<"home" | SectionType, SectionMeta> = {
     path: "/algorithms",
     icon: Brain,
     color: "#a855f7",
-    badge: `${ALL_ALGO_TASKS.length} задач`,
-    tasks: ALL_ALGO_TASKS,
+    badge: `${CURRICULUM_COUNTS.algorithms} задач`,
   },
 };
 

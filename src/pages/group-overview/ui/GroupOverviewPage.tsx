@@ -39,6 +39,7 @@ export const GroupOverviewPage = ({ groupId }: GroupOverviewPageProps): React.JS
     isTaskDue,
     reviews,
     completedTasks,
+    isInitialized,
   } = useGroupOverview(groupId);
 
   const hasArticle = Boolean(groupMeta.infoRaw && groupMeta.infoRaw.trim());
@@ -80,6 +81,7 @@ export const GroupOverviewPage = ({ groupId }: GroupOverviewPageProps): React.JS
             getTaskStatus={getTaskStatus}
             reviews={reviews}
             completedTasks={completedTasks}
+            isLoading={!isInitialized}
           />
         ) : (
           <GroupTaskCards
@@ -94,6 +96,7 @@ export const GroupOverviewPage = ({ groupId }: GroupOverviewPageProps): React.JS
             formatNextReviewDate={formatNextReviewDate}
             isTaskDue={isTaskDue}
             reviews={reviews}
+            isLoading={!isInitialized}
           />
         )}
 

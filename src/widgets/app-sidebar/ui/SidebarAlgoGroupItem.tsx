@@ -1,6 +1,7 @@
 import React, { memo } from "react";
-import { Task, getAlgoGroupMeta } from "@/entities/task";
-import { selectIsTaskCompleted, ProgressState } from "@/entities/progress";
+import type { Task } from "@/entities/task/meta";
+import { getAlgoGroupMeta } from "@/entities/task/groups";
+import { isTaskCompleted, ProgressState } from "@/entities/progress";
 import { getGroupCompletionClass, ReviewItem } from "@/entities/review";
 import { SidebarGroupHeader } from "./SidebarGroupHeader/SidebarGroupHeader";
 import { SidebarTasksList } from "./SidebarTasksList";
@@ -14,7 +15,7 @@ export interface SidebarAlgoGroupItemProps {
   onToggle: (e?: React.MouseEvent) => void;
   currentTaskId: string;
   decodedCurrentId: string;
-  progressState: ProgressState;
+  completedTasks: ProgressState["completedTasks"];
   reviews: Record<string, ReviewItem>;
 }
 
@@ -27,15 +28,13 @@ export const SidebarAlgoGroupItem = memo(
     onToggle,
     currentTaskId,
     decodedCurrentId,
-    progressState,
+    completedTasks,
     reviews,
   }: SidebarAlgoGroupItemProps) => {
-    const completedCount = tasks.filter((t) => selectIsTaskCompleted(progressState, t.id)).length;
-    const groupCompletionClass = getGroupCompletionClass(
-      tasks,
-      reviews,
-      progressState.completedTasks
-    );
+    const completedCount = tasks.filter((task) =>
+      isTaskCompleted(completedTasks[String(task.id)])
+    ).length;
+    const groupCompletionClass = getGroupCompletionClass(tasks, reviews, completedTasks);
     const meta = groupMeta || getAlgoGroupMeta(groupName);
     const isFolderActive =
       currentTaskId === meta.infoId ||
@@ -62,7 +61,7 @@ export const SidebarAlgoGroupItem = memo(
           tasks={tasks}
           to="/algorithms/$taskId"
           currentTaskId={currentTaskId}
-          progressState={progressState}
+          completedTasks={completedTasks}
           reviews={reviews}
           expanded={isGroupOpen}
         />

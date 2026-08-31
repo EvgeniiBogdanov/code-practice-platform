@@ -91,16 +91,8 @@ const REGEX_PRECEDING_TOKENS = new Set([
 export function highlightJS(code: string, options: HighlightOptions = {}): string {
   if (!code) return "";
 
-  const {
-    highlightWord = "",
-    bracketPair = null,
-    problems = [],
-    unusedImports = null,
-    multiSelections = [],
-  } = options;
+  const { bracketPair = null, problems = [], unusedImports = null, multiSelections = [] } = options;
 
-  const isWordMatch = (txt: string): boolean =>
-    Boolean(highlightWord && highlightWord.length >= 2 && txt === highlightWord);
   const isBracketMatch = (idx: number): boolean =>
     Boolean(bracketPair && (idx === bracketPair[0] || idx === bracketPair[1]));
   const isMultiSelected = (start: number, len: number): boolean => {
@@ -155,8 +147,6 @@ export function highlightJS(code: string, options: HighlightOptions = {}): strin
           currentCol += text.length;
         }
 
-        const wordClass = isWordMatch(text) ? " hl-word-match" : "";
-
         let squigglyClass = "";
         if (problems && problems.length > 0 && rule.type !== "space" && rule.type !== "comment") {
           const prob = problemsByLine.get(tokenLine)?.find((p) => {
@@ -188,7 +178,7 @@ export function highlightJS(code: string, options: HighlightOptions = {}): strin
         }
 
         const multiSelectClass = isMultiSelected(tokenStart, tokenLen) ? " hl-multi-selected" : "";
-        const extraClasses = wordClass + squigglyClass + unusedClass + multiSelectClass;
+        const extraClasses = squigglyClass + unusedClass + multiSelectClass;
 
         if (rule.type === "comment") {
           html += '<span class="hl-cm' + multiSelectClass + '">' + escapeHtml(text) + "</span>";
@@ -237,13 +227,12 @@ export function highlightJS(code: string, options: HighlightOptions = {}): strin
         } else if (rule.type === "property") {
           const dot = m[1];
           const prop = m[2];
-          const propExtraClasses = (isWordMatch(prop) ? " hl-word-match" : "") + squigglyClass;
           html +=
             '<span class="hl-punct">' +
             escapeHtml(dot) +
             "</span>" +
             '<span class="hl-prop' +
-            propExtraClasses +
+            squigglyClass +
             '">' +
             escapeHtml(prop) +
             "</span>";

@@ -7,7 +7,7 @@ export type TaskDifficulty =
 
 export interface TaskFile {
   name: string;
-  code: string;
+  code?: string;
   filepath?: string;
   solution?: string;
   rawSolution?: string;

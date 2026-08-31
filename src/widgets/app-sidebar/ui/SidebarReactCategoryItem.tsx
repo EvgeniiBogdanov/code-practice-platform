@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { Task } from "@/entities/task";
-import { selectIsTaskCompleted, ProgressState } from "@/entities/progress";
+import { isTaskCompleted, ProgressState } from "@/entities/progress";
 import { getGroupCompletionClass, ReviewItem } from "@/entities/review";
 import { SidebarGroupHeader } from "./SidebarGroupHeader/SidebarGroupHeader";
 import { SidebarTasksList } from "./SidebarTasksList";
@@ -19,15 +19,17 @@ export interface ReactCategoryDef {
 export interface SidebarReactCategoryItemProps {
   category: ReactCategoryDef;
   currentTaskId: string;
-  progressState: ProgressState;
+  completedTasks: ProgressState["completedTasks"];
   reviews: Record<string, ReviewItem>;
 }
 
 export const SidebarReactCategoryItem = memo(
-  ({ category, currentTaskId, progressState, reviews }: SidebarReactCategoryItemProps) => {
+  ({ category, currentTaskId, completedTasks, reviews }: SidebarReactCategoryItemProps) => {
     const { id, infoId, label, icon, tasks, isExpanded, toggle } = category;
-    const completedCount = tasks.filter((t) => selectIsTaskCompleted(progressState, t.id)).length;
-    const completionClass = getGroupCompletionClass(tasks, reviews, progressState.completedTasks);
+    const completedCount = tasks.filter((task) =>
+      isTaskCompleted(completedTasks[String(task.id)])
+    ).length;
+    const completionClass = getGroupCompletionClass(tasks, reviews, completedTasks);
     const isFolderActive = currentTaskId === infoId;
 
     return (
@@ -50,7 +52,7 @@ export const SidebarReactCategoryItem = memo(
           tasks={tasks}
           to="/react/$taskId"
           currentTaskId={currentTaskId}
-          progressState={progressState}
+          completedTasks={completedTasks}
           reviews={reviews}
           expanded={isExpanded}
         />

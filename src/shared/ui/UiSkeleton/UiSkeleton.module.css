@@ -1,0 +1,103 @@
+.skeleton {
+  display: block;
+  background-color: var(--bg-card, #252525);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  background-size: 200% 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme="light"] .skeleton {
+  background-color: var(--bg-subtle, #f4f4f2);
+  background-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.03) 0%,
+    rgba(0, 0, 0, 0.07) 50%,
+    rgba(0, 0, 0, 0.03) 100%
+  );
+}
+
+/* Animations */
+.animation_shimmer {
+  animation: uiSkeletonFadeIn 150ms ease-out both, uiSkeletonShimmer 1.6s ease-in-out infinite;
+}
+
+.animation_pulse {
+  animation: uiSkeletonFadeIn 150ms ease-out both, uiSkeletonPulse 1.8s ease-in-out infinite;
+}
+
+.animation_none {
+  animation: uiSkeletonFadeIn 150ms ease-out both;
+}
+
+@keyframes uiSkeletonFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Variants */
+.variant_rounded {
+  border-radius: var(--radius-md, 6px);
+}
+
+.variant_text {
+  border-radius: var(--radius-sm, 4px);
+  height: 1em;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+
+.variant_circular {
+  border-radius: var(--radius-full, 9999px);
+  flex-shrink: 0;
+}
+
+.variant_rectangular {
+  border-radius: 0;
+}
+
+/* Multi-line container */
+.linesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 8px);
+  width: 100%;
+}
+
+.linesContainer .skeleton:last-child:not(:only-child) {
+  width: 75%;
+}
+
+@keyframes uiSkeletonShimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes uiSkeletonPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animation_shimmer,
+  .animation_pulse {
+    animation: none;
+  }
+}

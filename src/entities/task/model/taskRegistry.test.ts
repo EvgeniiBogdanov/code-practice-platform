@@ -1,11 +1,15 @@
-import { describe, it, expect } from "vitest";
+import { beforeAll, describe, it, expect } from "vitest";
 import { getTaskById, getTasksBySection, searchTasks } from "./taskRegistry";
 import { getTaskHints } from "../curriculum/javascript/data/jsHints";
 import { TASK_EXPLANATIONS } from "../curriculum/taskExplanations";
 
 describe("taskRegistry", () => {
-  it("should retrieve the new Category Tree task (js196) with all metadata populated", () => {
-    const task = getTaskById("js196");
+  beforeAll(async () => {
+    await Promise.all([getTasksBySection("javascript"), getTasksBySection("react")]);
+  });
+
+  it("should retrieve the new Category Tree task (js196) with all metadata populated", async () => {
+    const task = await getTaskById("js196");
     expect(task).toBeDefined();
     expect(task?.id).toBe("js196");
     expect(task?.group).toBe("Коллекции");
@@ -49,18 +53,18 @@ describe("taskRegistry", () => {
     expect(hints?.level3?.content).toContain("const createCategoryTree = (list) =>");
   });
 
-  it("should find the task in searchTasks query", () => {
-    const results = searchTasks("Преобразование списка категорий", "javascript");
+  it("should find the task in searchTasks query", async () => {
+    const results = await searchTasks("Преобразование списка категорий", "javascript");
     expect(results.some((t) => t.id === "js196")).toBe(true);
   });
 
-  it("should include js196 in javascript section tasks", () => {
-    const jsTasks = getTasksBySection("javascript");
+  it("should include js196 in javascript section tasks", async () => {
+    const jsTasks = await getTasksBySection("javascript");
     expect(jsTasks.some((t) => t.id === "js196")).toBe(true);
   });
 
-  it("should retrieve the new React Timer Refactoring task (r16) with all metadata populated", () => {
-    const task = getTaskById("r16");
+  it("should retrieve the new React Timer Refactoring task (r16) with all metadata populated", async () => {
+    const task = await getTaskById("r16");
     expect(task).toBeDefined();
     expect(task?.id).toBe("r16");
     expect(task?.category).toBe("Рефакторинг");
@@ -104,8 +108,8 @@ describe("taskRegistry", () => {
     expect(task?.checklist?.length).toBeGreaterThanOrEqual(6);
   });
 
-  it("should retrieve React UserPostsList Refactoring task (r15) with in-depth explanation", () => {
-    const task = getTaskById("r15");
+  it("should retrieve React UserPostsList Refactoring task (r15) with in-depth explanation", async () => {
+    const task = await getTaskById("r15");
     expect(task).toBeDefined();
     expect(task?.id).toBe("r15");
     expect(task?.category).toBe("Рефакторинг");
@@ -125,8 +129,8 @@ describe("taskRegistry", () => {
     expect(TASK_EXPLANATIONS.r15).toContain("posts.sort()");
   });
 
-  it("should retrieve React RandomNumberGenerator Refactoring task (r17) with all metadata and multi-file structure", () => {
-    const task = getTaskById("r17");
+  it("should retrieve React RandomNumberGenerator Refactoring task (r17) with all metadata and multi-file structure", async () => {
+    const task = await getTaskById("r17");
     expect(task).toBeDefined();
     expect(task?.id).toBe("r17");
     expect(task?.category).toBe("Рефакторинг");
@@ -173,8 +177,8 @@ describe("taskRegistry", () => {
     expect(task?.checklist?.length).toBeGreaterThanOrEqual(8);
   });
 
-  it("should find r16 and r17 in react section tasks", () => {
-    const reactTasks = getTasksBySection("react");
+  it("should find r16 and r17 in react section tasks", async () => {
+    const reactTasks = await getTasksBySection("react");
     expect(reactTasks.some((t) => t.id === "r16")).toBe(true);
     expect(reactTasks.some((t) => t.id === "r17")).toBe(true);
   });

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { ALL_REACT_TASKS, ALL_JS_TASKS, ALL_ALGO_TASKS, ALL_TASKS } from "@/entities/task";
-import { useProgressStore, selectIsTaskCompleted } from "@/entities/progress";
+import { CURRICULUM_COUNTS, getTaskSectionById } from "@/entities/task/meta";
+import { useProgressStore, isTaskCompleted } from "@/entities/progress";
 
 export interface HomeStats {
   grandTotal: number;
@@ -19,24 +19,31 @@ export interface HomeStats {
 }
 
 export const useHomeStats = (): HomeStats => {
-  const progressState = useProgressStore();
+  const completedTasks = useProgressStore((state) => state.completedTasks);
 
   return useMemo((): HomeStats => {
-    const isSolved = (id: string | number): boolean => selectIsTaskCompleted(progressState, id);
+    let reactSolved = 0;
+    let jsSolved = 0;
+    let algoSolved = 0;
 
-    const reactTotal = ALL_REACT_TASKS.length;
-    const reactSolved = ALL_REACT_TASKS.filter((t) => isSolved(t.id)).length;
+    Object.entries(completedTasks).forEach(([taskId, status]) => {
+      if (!isTaskCompleted(status)) return;
+      const section = getTaskSectionById(taskId);
+      if (section === "react") reactSolved += 1;
+      if (section === "javascript") jsSolved += 1;
+      if (section === "algorithms") algoSolved += 1;
+    });
+
+    const reactTotal = CURRICULUM_COUNTS.react;
     const reactPct = reactTotal > 0 ? Math.round((reactSolved / reactTotal) * 100) : 0;
 
-    const jsTotal = ALL_JS_TASKS.length;
-    const jsSolved = ALL_JS_TASKS.filter((t) => isSolved(t.id)).length;
+    const jsTotal = CURRICULUM_COUNTS.javascript;
     const jsPct = jsTotal > 0 ? Math.round((jsSolved / jsTotal) * 100) : 0;
 
-    const algoTotal = ALL_ALGO_TASKS.length;
-    const algoSolved = ALL_ALGO_TASKS.filter((t) => isSolved(t.id)).length;
+    const algoTotal = CURRICULUM_COUNTS.algorithms;
     const algoPct = algoTotal > 0 ? Math.round((algoSolved / algoTotal) * 100) : 0;
 
-    const grandTotal = ALL_TASKS.length;
+    const grandTotal = reactTotal + jsTotal + algoTotal;
     const grandSolved = reactSolved + jsSolved + algoSolved;
     const grandPct = grandTotal > 0 ? Math.round((grandSolved / grandTotal) * 100) : 0;
     const grandRemaining = grandTotal - grandSolved;
@@ -56,5 +63,5 @@ export const useHomeStats = (): HomeStats => {
       algoSolved,
       algoPct,
     };
-  }, [progressState]);
+  }, [completedTasks]);
 };

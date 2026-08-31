@@ -6,7 +6,7 @@ import {
   CalendarClock,
   CircleSlash,
 } from "lucide-react";
-import { Tabs, TabItem, NotificationBadge } from "@/shared/ui";
+import { Tabs, TabItem } from "@/shared/ui";
 import styles from "./SpacedRepetitionSection.module.css";
 
 export type SRTabType = "distribution" | "schedule" | "due" | "upcoming" | "unsolved";
@@ -43,43 +43,22 @@ export const SpacedRepetitionTabBar = memo(
           id: "due",
           label: "Повтор",
           icon: <RotateCcw size={15} />,
-          badge: (
-            <NotificationBadge
-              count={dueTasksCount}
-              variant="yellow"
-              pinned={false}
-              ring={false}
-              size="sm"
-            />
-          ),
+          badge: dueTasksCount,
+          badgeVariant: "yellow",
         },
         {
           id: "upcoming",
           label: "В очереди",
           icon: <CalendarClock size={15} />,
-          badge: (
-            <NotificationBadge
-              count={upcomingTasksCount}
-              variant="blue"
-              pinned={false}
-              ring={false}
-              size="sm"
-            />
-          ),
+          badge: upcomingTasksCount,
+          badgeVariant: "blue",
         },
         {
           id: "unsolved",
           label: "Нерешенные",
           icon: <CircleSlash size={15} />,
-          badge: (
-            <NotificationBadge
-              count={unsolvedTasksCount}
-              variant="red"
-              pinned={false}
-              ring={false}
-              size="sm"
-            />
-          ),
+          badge: unsolvedTasksCount,
+          badgeVariant: "red",
         },
       ],
       [dueTasksCount, upcomingTasksCount, unsolvedTasksCount]

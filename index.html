@@ -39,14 +39,44 @@
     <style>
       html, body {
         background-color: #191919;
+        margin: 0;
+        padding: 0;
+        height: 100%;
       }
       html[data-theme="light"], html[data-theme="light"] body {
         background-color: #fbfbfa;
       }
+      @keyframes appInitialSpin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      .app-initial-loader {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        width: 100%;
+      }
+      .app-initial-spinner {
+        width: 36px;
+        height: 36px;
+        animation: appInitialSpin 0.75s linear infinite;
+        color: #94a3b8;
+      }
+      html[data-theme="light"] .app-initial-spinner {
+        color: #787774;
+      }
     </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="app-initial-loader" role="status" aria-label="Загрузка приложения...">
+        <svg class="app-initial-spinner" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="12" cy="12" r="9.5" stroke="currentColor" stroke-width="2.2" style="opacity: 0.15;" />
+          <circle cx="12" cy="12" r="9.5" stroke="currentColor" stroke-width="2.2" stroke-dasharray="45 15" stroke-linecap="round" />
+        </svg>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

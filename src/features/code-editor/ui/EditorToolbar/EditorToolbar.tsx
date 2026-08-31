@@ -4,7 +4,6 @@ import {
   Redo2,
   Wand2,
   WrapText,
-  Search,
   RotateCcw,
   Copy,
   Check,
@@ -32,8 +31,6 @@ export interface EditorToolbarProps {
   onFormat?: () => void;
   wordWrap?: boolean;
   onToggleWordWrap?: () => void;
-  isFindOpen?: boolean;
-  onToggleFind?: () => void;
   onReset?: () => void;
   isModified?: boolean;
   onIncreaseFontSize?: () => void;
@@ -42,6 +39,8 @@ export interface EditorToolbarProps {
   codeText?: string;
   isFullscreen?: boolean;
   onToggleFullscreen?: () => void;
+  onPreloadFullscreen?: () => void;
+  isFullscreenTransitioning?: boolean;
   readOnly?: boolean;
   className?: string;
 }
@@ -59,8 +58,6 @@ export const EditorToolbar = memo(
     onFormat,
     wordWrap,
     onToggleWordWrap,
-    isFindOpen,
-    onToggleFind,
     onReset,
     isModified,
     onIncreaseFontSize,
@@ -69,6 +66,8 @@ export const EditorToolbar = memo(
     codeText = "",
     isFullscreen,
     onToggleFullscreen,
+    onPreloadFullscreen,
+    isFullscreenTransitioning = false,
     readOnly = false,
     className,
   }: EditorToolbarProps) => {
@@ -159,17 +158,6 @@ export const EditorToolbar = memo(
             </Tooltip>
           )}
 
-          {onToggleFind && (
-            <Tooltip content="Поиск и замена (Ctrl+F)" side="bottom">
-              <CodeButton
-                icon={<Search size={14} />}
-                isActive={isFindOpen}
-                onClick={onToggleFind}
-                aria-label="Поиск и замена в файле (Ctrl+F)"
-              />
-            </Tooltip>
-          )}
-
           {!readOnly && onReset && (isModified || isModified === undefined) && (
             <Tooltip content="Сбросить код к исходному шаблону" side="bottom">
               <CodeButton
@@ -225,6 +213,9 @@ export const EditorToolbar = memo(
               <CodeButton
                 icon={isFullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
                 onClick={onToggleFullscreen}
+                onPointerEnter={onPreloadFullscreen}
+                onFocus={onPreloadFullscreen}
+                disabled={isFullscreenTransitioning}
                 aria-label={isFullscreen ? "Свернуть редактор" : "Развернуть редактор"}
               />
             </Tooltip>

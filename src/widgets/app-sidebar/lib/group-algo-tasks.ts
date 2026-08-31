@@ -1,13 +1,14 @@
-import { ALL_ALGO_TASKS, getAlgoGroupMeta, Task } from "@/entities/task";
+import { getAlgoGroupMeta } from "@/entities/task/groups";
+import type { Task } from "@/entities/task/meta";
 
-export function groupAlgoTasks(): {
+export function groupAlgoTasks(tasks: readonly Task[]): {
   groupedTasks: Record<string, Task[]>;
   groupMetaMap: Record<string, ReturnType<typeof getAlgoGroupMeta>>;
 } {
   const groupedTasks: Record<string, Task[]> = {};
   const groupMetaMap: Record<string, ReturnType<typeof getAlgoGroupMeta>> = {};
 
-  ALL_ALGO_TASKS.forEach((task) => {
+  tasks.forEach((task) => {
     const groupName = task.group || "Общие";
     if (!groupedTasks[groupName]) {
       groupedTasks[groupName] = [];

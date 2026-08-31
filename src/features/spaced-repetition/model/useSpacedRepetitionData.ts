@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 import { useReviewStore, isTaskDue, STAGE_INTERVALS } from "@/entities/review";
 import { useProgressStore } from "@/entities/progress";
-import { ALL_TASKS, Task } from "@/entities/task";
+import type { Task } from "@/entities/task/meta";
+import { useAllTaskSections } from "@/entities/task/catalog";
 import { getUpcomingTasks, UpcomingTaskItem } from "../lib/upcoming-helpers";
 
 export interface UseSpacedRepetitionDataProps {
@@ -17,10 +18,11 @@ export const useSpacedRepetitionData = ({
   const isInitialized = useReviewStore((state) => state.isInitialized);
   const getMasteryStats = useReviewStore((state) => state.getMasteryStats);
   const completedTasks = useProgressStore((state) => state.completedTasks);
+  const { tasks: catalogTasks } = useAllTaskSections(!taskList?.length);
 
   const targetTasks = useMemo(() => {
-    return taskList && taskList.length > 0 ? taskList : ALL_TASKS;
-  }, [taskList]);
+    return taskList && taskList.length > 0 ? taskList : catalogTasks;
+  }, [catalogTasks, taskList]);
 
   const masteryStats = useMemo(() => {
     return isInitialized

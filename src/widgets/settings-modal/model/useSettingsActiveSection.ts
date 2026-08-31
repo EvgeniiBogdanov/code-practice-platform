@@ -1,9 +1,10 @@
 import { useMemo } from "react";
 import { useLocation } from "@tanstack/react-router";
-import { ALL_TASKS, ALL_JS_TASKS, ALL_ALGO_TASKS, ALL_REACT_TASKS } from "@/entities/task";
+import { useAllTaskSections } from "@/entities/task/catalog";
 
 export function useSettingsActiveSection() {
   const location = useLocation();
+  const { tasks } = useAllTaskSections();
 
   const activeSection = useMemo(() => {
     const path = location.pathname;
@@ -29,15 +30,15 @@ export function useSettingsActiveSection() {
   const currentSectionTasks = useMemo(() => {
     switch (activeSection) {
       case "javascript":
-        return ALL_JS_TASKS;
+        return tasks.filter((task) => task.section === "javascript");
       case "algorithms":
-        return ALL_ALGO_TASKS;
+        return tasks.filter((task) => task.section === "algorithms");
       case "react":
-        return ALL_REACT_TASKS;
+        return tasks.filter((task) => task.section === "react");
       default:
-        return ALL_TASKS;
+        return tasks;
     }
-  }, [activeSection]);
+  }, [activeSection, tasks]);
 
   return {
     activeSection,

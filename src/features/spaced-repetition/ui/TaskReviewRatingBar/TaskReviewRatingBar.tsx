@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { clsx } from "clsx";
 import { useReviewStore, ReviewRating, getReviewBadgeMeta } from "@/entities/review";
-import { useProgressStore, selectIsTaskCompleted } from "@/entities/progress";
+import { useProgressStore, isTaskCompleted } from "@/entities/progress";
 import { TaskReviewHeader } from "./TaskReviewHeader";
 import { TaskReviewRatingOptions } from "./TaskReviewRatingOptions";
 import styles from "./TaskReviewRatingBar.module.css";
@@ -17,10 +17,10 @@ export const TaskReviewRatingBar = memo(({ taskId, className }: TaskReviewRating
   const isReviewStoreReady = useReviewStore((state) => state.isInitialized);
   const submitReview = useReviewStore((state) => state.submitReview);
 
-  const progressState = useProgressStore();
+  const completedTasks = useProgressStore((state) => state.completedTasks);
   const setTaskStatus = useProgressStore((state) => state.setTaskStatus);
 
-  const isCurrentlySolved = selectIsTaskCompleted(progressState, taskId);
+  const isCurrentlySolved = isTaskCompleted(completedTasks[stringId]);
   const taskReview = reviews[stringId] || null;
 
   if (!isReviewStoreReady || (!isCurrentlySolved && !taskReview)) {

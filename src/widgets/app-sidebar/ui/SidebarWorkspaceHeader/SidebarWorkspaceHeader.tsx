@@ -6,27 +6,39 @@ import {
   SECTIONS_CONFIG,
   SECTIONS_LIST,
   SectionType,
-  JS_GROUP_CONFIG,
-  ALGO_GROUP_CONFIG,
-} from "@/entities/task";
+} from "@/entities/task/meta";
+import { useTaskSection } from "@/entities/task/catalog";
 import { useUIStore } from "@/entities/ui-state";
 import { Tooltip, SquareButton } from "@/shared/ui";
-import { SidebarFavorites } from "../SidebarFavorites/SidebarFavorites";
 import styles from "./SidebarWorkspaceHeader.module.css";
 
 export interface SidebarWorkspaceHeaderProps {
   activeSectionKey: "home" | SectionType;
-  currentTaskId: string;
   onCloseSidebar: () => void;
 }
 
 export const SidebarWorkspaceHeader = memo(
-  ({ activeSectionKey, currentTaskId, onCloseSidebar }: SidebarWorkspaceHeaderProps) => {
+  ({ activeSectionKey, onCloseSidebar }: SidebarWorkspaceHeaderProps) => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     const activeSection = SECTIONS_CONFIG[activeSectionKey] || SECTIONS_CONFIG.home;
     const ActiveSectionIcon = activeSection.icon;
+    const taskSection = activeSectionKey === "home" ? "react" : activeSectionKey;
+    const { tasks: activeSectionTasks } = useTaskSection(
+      taskSection,
+      activeSectionKey !== "home"
+    );
+    const activeGroupNames = useMemo(
+      () => [
+        ...new Set(
+          activeSectionTasks
+            .map((task) => task.group)
+            .filter((groupName): groupName is string => Boolean(groupName))
+        ),
+      ],
+      [activeSectionTasks]
+    );
 
     const expandedJsGroups = useUIStore((state) => state.expandedJsGroups);
     const expandedAlgoGroups = useUIStore((state) => state.expandedAlgoGroups);
@@ -75,15 +87,15 @@ export const SidebarWorkspaceHeader = memo(
       if (isAnyExpanded) {
         collapseAllInCurrentSection(activeSectionKey);
       } else {
-        const groupNames =
-          activeSectionKey === "javascript"
-            ? Object.keys(JS_GROUP_CONFIG)
-            : activeSectionKey === "algorithms"
-              ? Object.keys(ALGO_GROUP_CONFIG)
-              : [];
-        expandAllInCurrentSection(activeSectionKey, groupNames);
+        expandAllInCurrentSection(activeSectionKey, activeGroupNames);
       }
-    }, [activeSectionKey, isAnyExpanded, collapseAllInCurrentSection, expandAllInCurrentSection]);
+    }, [
+      activeGroupNames,
+      activeSectionKey,
+      collapseAllInCurrentSection,
+      expandAllInCurrentSection,
+      isAnyExpanded,
+    ]);
 
     // Close dropdown on click outside
     useEffect(() => {
@@ -163,10 +175,6 @@ export const SidebarWorkspaceHeader = memo(
                 aria-label={isAnyExpanded ? "Свернуть все темы" : "Развернуть все темы"}
               />
             </Tooltip>
-          )}
-
-          {activeSectionKey !== "home" && (
-            <SidebarFavorites section={activeSectionKey} currentTaskId={currentTaskId} />
           )}
 
           <Tooltip content="Свернуть боковую панель" side="right" sideOffset={8}>

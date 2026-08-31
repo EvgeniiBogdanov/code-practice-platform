@@ -1,8 +1,11 @@
 import { ProgressState, ProgressTaskItem, SectionProgressStats } from "../types";
 
+export const isTaskCompleted = (status: unknown): boolean => {
+  return status === "solved" || status === true;
+};
+
 export const selectIsTaskCompleted = (state: ProgressState, taskId: string | number): boolean => {
-  const status = state.completedTasks[String(taskId)];
-  return status === "solved" || (status as unknown) === true;
+  return isTaskCompleted(state.completedTasks[String(taskId)]);
 };
 
 export const selectIsTaskUnsolved = (state: ProgressState, taskId: string | number): boolean => {
@@ -14,7 +17,7 @@ export const selectTaskStatus = (
   taskId: string | number
 ): "solved" | "unsolved" | "unstarted" => {
   const status = state.completedTasks[String(taskId)];
-  if (status === "solved" || (status as unknown) === true) return "solved";
+  if (isTaskCompleted(status)) return "solved";
   if (status === "unsolved") return "unsolved";
   return "unstarted";
 };
@@ -36,7 +39,7 @@ export const selectSectionStats = (
 
   for (const task of tasks) {
     const status = state.completedTasks[String(task.id)];
-    if (status === "solved" || (status as unknown) === true) {
+    if (isTaskCompleted(status)) {
       completed++;
     }
   }

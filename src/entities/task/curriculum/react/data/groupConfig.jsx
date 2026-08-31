@@ -1,13 +1,5 @@
 import React from "react";
 import { Flame, Wrench, Rocket, Brain, Zap } from "lucide-react";
-import {
-  WARMUP_TASKS,
-  REFACTORING_TASKS,
-  MAIN_TASKS,
-  ADVANCED_TASKS,
-  REACT_TS_TASKS,
-  REACT_TS_PRACTICE_TASKS,
-} from "./tasksData";
 
 export const REACT_GROUPS_CONFIG = {
   "group-warmup": {
@@ -17,7 +9,6 @@ export const REACT_GROUPS_CONFIG = {
     icon: Flame,
     color: "#ff6b6b",
     bg: "rgba(255, 107, 107, 0.12)",
-    tasks: WARMUP_TASKS,
   },
   "group-refactoring": {
     name: "Рефакторинг",
@@ -26,7 +17,6 @@ export const REACT_GROUPS_CONFIG = {
     icon: Wrench,
     color: "#3b82f6",
     bg: "rgba(59, 130, 246, 0.12)",
-    tasks: REFACTORING_TASKS,
   },
   "group-middle": {
     name: "Middle",
@@ -35,7 +25,6 @@ export const REACT_GROUPS_CONFIG = {
     icon: Rocket,
     color: "#10b981",
     bg: "rgba(16, 185, 129, 0.12)",
-    tasks: MAIN_TASKS,
   },
   "group-strong": {
     name: "Strong",
@@ -44,7 +33,6 @@ export const REACT_GROUPS_CONFIG = {
     icon: Brain,
     color: "#a855f7",
     bg: "rgba(168, 85, 247, 0.12)",
-    tasks: ADVANCED_TASKS,
   },
   "group-ts": {
     name: "React + TS (Разминка)",
@@ -53,7 +41,6 @@ export const REACT_GROUPS_CONFIG = {
     icon: Zap,
     color: "#f59e0b",
     bg: "rgba(245, 158, 11, 0.12)",
-    tasks: REACT_TS_TASKS,
   },
   "group-ts-practice": {
     name: "React + TS (Практика)",
@@ -62,7 +49,6 @@ export const REACT_GROUPS_CONFIG = {
     icon: Zap,
     color: "#f59e0b",
     bg: "rgba(245, 158, 11, 0.12)",
-    tasks: REACT_TS_PRACTICE_TASKS,
   },
 };
 

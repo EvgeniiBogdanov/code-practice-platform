@@ -1,7 +1,9 @@
 import { useMemo, useCallback } from "react";
 import { useRouterState } from "@tanstack/react-router";
-import { ALL_JS_TASKS, Task, getGroupMeta } from "@/entities/task";
-import { useProgressStore, selectIsTaskCompleted, ProgressState } from "@/entities/progress";
+import { getGroupMeta } from "@/entities/task/groups";
+import type { Task } from "@/entities/task/meta";
+import { useTaskSection } from "@/entities/task/catalog";
+import { useProgressStore, isTaskCompleted, ProgressState } from "@/entities/progress";
 import { useReviewStore, ReviewItem } from "@/entities/review";
 import { useUIStore } from "@/entities/ui-state";
 import { safeDecodeURI } from "@/shared/lib/url";
@@ -10,7 +12,7 @@ import { groupJsTasks } from "../lib/group-js-tasks";
 export interface UseSidebarJsListReturn {
   currentTaskId: string;
   decodedCurrentId: string;
-  progressState: ProgressState;
+  completedTasks: ProgressState["completedTasks"];
   reviews: Record<string, ReviewItem>;
   expandedGroups: Record<string, boolean>;
   expandedSubgroups: Record<string, boolean>;
@@ -19,21 +21,23 @@ export interface UseSidebarJsListReturn {
   groupedTasks: Record<string, Record<string, Task[]>>;
   groupMetaMap: Record<string, ReturnType<typeof getGroupMeta>>;
   completedTotal: number;
+  totalCount: number;
 }
 
 export const useSidebarJsList = (): UseSidebarJsListReturn => {
   const routerState = useRouterState();
   const currentTaskId = routerState.location.pathname.split("/").pop() || "";
   const decodedCurrentId = safeDecodeURI(currentTaskId);
+  const { tasks } = useTaskSection("javascript");
 
-  const progressState = useProgressStore();
+  const completedTasks = useProgressStore((state) => state.completedTasks);
   const reviews = useReviewStore((state) => state.reviews);
   const expandedGroups = useUIStore((state) => state.expandedJsGroups) || {};
   const setExpandedGroups = useUIStore((state) => state.setExpandedJsGroups);
   const expandedSubgroups = useUIStore((state) => state.expandedJsSubgroups) || {};
   const setExpandedSubgroups = useUIStore((state) => state.setExpandedJsSubgroups);
 
-  const { groupedTasks, groupMetaMap } = useMemo(() => groupJsTasks(), []);
+  const { groupedTasks, groupMetaMap } = useMemo(() => groupJsTasks(tasks), [tasks]);
 
   const toggleGroup = useCallback(
     (groupName: string, e?: React.MouseEvent) => {
@@ -75,14 +79,14 @@ export const useSidebarJsList = (): UseSidebarJsListReturn => {
   );
 
   const completedTotal = useMemo(
-    () => ALL_JS_TASKS.filter((t) => selectIsTaskCompleted(progressState, t.id)).length,
-    [progressState]
+    () => tasks.filter((task) => isTaskCompleted(completedTasks[String(task.id)])).length,
+    [completedTasks, tasks]
   );
 
   return {
     currentTaskId,
     decodedCurrentId,
-    progressState,
+    completedTasks,
     reviews,
     expandedGroups,
     expandedSubgroups,
@@ -91,5 +95,6 @@ export const useSidebarJsList = (): UseSidebarJsListReturn => {
     groupedTasks,
     groupMetaMap,
     completedTotal,
+    totalCount: tasks.length,
   };
 };

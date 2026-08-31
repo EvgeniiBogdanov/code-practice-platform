@@ -1,36 +1,41 @@
 import { useMemo } from "react";
 import { useRouterState } from "@tanstack/react-router";
-import { ALL_REACT_TASKS } from "@/entities/task";
-import { useProgressStore, selectIsTaskCompleted, ProgressState } from "@/entities/progress";
+import type { Task } from "@/entities/task/meta";
+import { useTaskSection } from "@/entities/task/catalog";
+import { useProgressStore, isTaskCompleted, ProgressState } from "@/entities/progress";
 import { useReviewStore, ReviewItem } from "@/entities/review";
 import { useUIStore, UIState } from "@/entities/ui-state";
 
 export interface UseSidebarReactListReturn {
   currentTaskId: string;
-  progressState: ProgressState;
+  completedTasks: ProgressState["completedTasks"];
   reviews: Record<string, ReviewItem>;
   uiState: UIState;
   completedTotal: number;
+  tasks: readonly Task[];
 }
 
 export const useSidebarReactList = (): UseSidebarReactListReturn => {
   const routerState = useRouterState();
   const currentTaskId = routerState.location.pathname.split("/").pop() || "";
+  const { tasks } = useTaskSection("react");
 
-  const progressState = useProgressStore();
+  const completedTasks = useProgressStore((state) => state.completedTasks);
   const reviews = useReviewStore((state) => state.reviews);
   const uiState = useUIStore();
 
   const completedTotal = useMemo(
-    () => ALL_REACT_TASKS.filter((t) => selectIsTaskCompleted(progressState, t.id)).length,
-    [progressState]
+    () =>
+      tasks.filter((task) => isTaskCompleted(completedTasks[String(task.id)])).length,
+    [completedTasks, tasks]
   );
 
   return {
     currentTaskId,
-    progressState,
+    completedTasks,
     reviews,
     uiState,
     completedTotal,
+    tasks,
   };
 };

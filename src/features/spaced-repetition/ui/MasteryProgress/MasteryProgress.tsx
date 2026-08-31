@@ -1,7 +1,8 @@
 import React from "react";
 import { clsx } from "clsx";
 import { useReviewStore } from "@/entities/review";
-import { ALL_TASKS, Task } from "@/entities/task";
+import type { Task } from "@/entities/task/meta";
+import { useAllTaskSections } from "@/entities/task/catalog";
 import styles from "./MasteryProgress.module.css";
 
 export interface MasteryProgressProps {
@@ -11,7 +12,8 @@ export interface MasteryProgressProps {
 
 export function MasteryProgress({ taskList, className }: MasteryProgressProps) {
   const getMasteryStats = useReviewStore((state) => state.getMasteryStats);
-  const stats = getMasteryStats(taskList || ALL_TASKS);
+  const { tasks } = useAllTaskSections(!taskList);
+  const stats = getMasteryStats(taskList || Array.from(tasks));
 
   const total = stats.totalCount || 1;
   const masteredPercent = Math.round((stats.mastered / total) * 100);

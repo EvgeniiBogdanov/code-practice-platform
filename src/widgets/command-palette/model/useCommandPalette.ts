@@ -1,6 +1,7 @@
 import { useState, useMemo, useDeferredValue, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "@tanstack/react-router";
-import { ALL_TASKS, Task } from "@/entities/task";
+import type { Task } from "@/entities/task/meta";
+import { useAllTaskSections } from "@/entities/task/catalog";
 import { useUIStore } from "@/entities/ui-state";
 import { PaletteSection } from "../ui/CommandPaletteTabs";
 import { getSectionFromPathname } from "../lib/getSectionFromPathname";
@@ -18,6 +19,7 @@ export const useCommandPalette = () => {
   );
   const [selectedIndex, setSelectedIndex] = useState(0);
   const deferredQuery = useDeferredValue(query);
+  const { tasks } = useAllTaskSections(isOpen);
 
   useEffect(() => {
     if (isOpen) {
@@ -28,7 +30,7 @@ export const useCommandPalette = () => {
   const filteredTasks = useMemo(() => {
     const q = deferredQuery.trim().toLowerCase();
     const pool =
-      activeSection === "all" ? ALL_TASKS : ALL_TASKS.filter((t) => t.section === activeSection);
+      activeSection === "all" ? tasks : tasks.filter((t) => t.section === activeSection);
     if (!q) return pool;
 
     return pool.filter((t) => {
@@ -41,7 +43,7 @@ export const useCommandPalette = () => {
         t.difficulty?.toLowerCase().includes(q)
       );
     });
-  }, [deferredQuery, activeSection]);
+  }, [deferredQuery, activeSection, tasks]);
 
   const handleSelectTask = useCallback(
     (task: Task) => {

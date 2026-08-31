@@ -30,8 +30,6 @@
   align-items: center;
   justify-content: center;
   line-height: 1;
-  text-box-trim: both;
-  text-box-edge: cap alphabetic;
 }
 
 /* Variants - Exact v2.2.7 meta-badge styling (borderless with tint) */

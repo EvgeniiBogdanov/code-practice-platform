@@ -1,14 +1,8 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { Zap, Code2, Brain, Flame, Wrench, Rocket } from "lucide-react";
-import {
-  ALL_JS_TASKS,
-  ALL_REACT_TASKS,
-  ALL_ALGO_TASKS,
-  SectionType,
-  getGroupMeta,
-  getAlgoGroupMeta,
-  Task,
-} from "@/entities/task";
+import { getGroupMeta, getAlgoGroupMeta } from "@/entities/task/groups";
+import type { SectionType, Task } from "@/entities/task/meta";
+import { useTaskSection } from "@/entities/task/catalog";
 import { useProgressStore, selectIsTaskCompleted, ProgressState } from "@/entities/progress";
 import { useReviewStore, isTaskDue, getGroupCompletionClass, ReviewItem } from "@/entities/review";
 import { GroupCardData } from "../ui/SectionGroupsGrid";
@@ -40,6 +34,7 @@ export interface UseSectionOverviewReturn {
   progressState: ProgressState;
   reviews: Record<string, ReviewItem>;
   isTaskDue: (review: ReviewItem | null | undefined) => boolean;
+  isInitialized: boolean;
 }
 
 export const useSectionOverview = (
@@ -47,8 +42,13 @@ export const useSectionOverview = (
 ): UseSectionOverviewReturn => {
   const progressState = useProgressStore();
   const reviews = useReviewStore((state) => state.reviews);
+  const { tasks, isLoading } = useTaskSection(section);
+  const sectionTasks = useMemo(() => Array.from(tasks), [tasks]);
 
-  const isSolved = (id: string | number): boolean => selectIsTaskCompleted(progressState, id);
+  const isSolved = useCallback(
+    (id: string | number): boolean => selectIsTaskCompleted(progressState, id),
+    [progressState]
+  );
 
   const sectionMeta = useMemo((): SectionMeta => {
     if (section === "javascript") {
@@ -58,8 +58,8 @@ export const useSectionOverview = (
         subtitle:
           "Комплексная практика JavaScript: замыкания, прототипы, Event Loop, промисы, асинхронные генераторы, структуры данных, манипуляции с DOM и чистые алгоритмические функции.",
         icon: React.createElement(Zap, { size: 24, className: styles.iconJs }),
-        tasks: ALL_JS_TASKS,
-        badge: `${ALL_JS_TASKS.length} задач`,
+        tasks: sectionTasks,
+        badge: `${sectionTasks.length} задач`,
       };
     }
     if (section === "react") {
@@ -69,8 +69,8 @@ export const useSectionOverview = (
         subtitle:
           "Практика создания современных React-компонентов: кастомные хуки, оптимизация рендеринга, управление состоянием, паттерны рефакторинга и строгая типизация TypeScript.",
         icon: React.createElement(Code2, { size: 24, className: styles.iconReact }),
-        tasks: ALL_REACT_TASKS,
-        badge: `${ALL_REACT_TASKS.length} задач`,
+        tasks: sectionTasks,
+        badge: `${sectionTasks.length} задач`,
       };
     }
     return {
@@ -79,10 +79,10 @@ export const useSectionOverview = (
       subtitle:
         "Практика алгоритмов и структур данных: массивы, хэш-таблицы, два указателя, скользящее окно, бинарный поиск, деревья, графы и динамическое программирование.",
       icon: React.createElement(Brain, { size: 24, className: styles.iconAlgo }),
-      tasks: ALL_ALGO_TASKS,
-      badge: `${ALL_ALGO_TASKS.length} задач`,
+      tasks: sectionTasks,
+      badge: `${sectionTasks.length} задач`,
     };
-  }, [section]);
+  }, [section, sectionTasks]);
 
   const stats = useMemo((): SectionStats => {
     const total = sectionMeta.tasks.length;
@@ -106,7 +106,7 @@ export const useSectionOverview = (
   const groups = useMemo((): GroupCardData[] => {
     if (section === "javascript") {
       const groupsMap = new Map<string, Task[]>();
-      ALL_JS_TASKS.forEach((t) => {
+      sectionTasks.forEach((t) => {
         const g = t.group || "Общие";
         if (!groupsMap.has(g)) groupsMap.set(g, []);
         groupsMap.get(g)!.push(t);
@@ -140,7 +140,7 @@ export const useSectionOverview = (
           id: "warmup",
           name: "1. Разминка (Warm-up)",
           icon: React.createElement(Flame, { size: 18, color: "#f97316" }),
-          tasks: ALL_REACT_TASKS.filter(
+          tasks: sectionTasks.filter(
             (t) => t.category === "warmup" || t.difficulty === "warm-up"
           ),
           firstTaskId: "warmup-1",
@@ -150,7 +150,7 @@ export const useSectionOverview = (
           id: "refactoring",
           name: "2. Рефакторинг (Refactoring)",
           icon: React.createElement(Wrench, { size: 18, color: "#06b6d4" }),
-          tasks: ALL_REACT_TASKS.filter(
+          tasks: sectionTasks.filter(
             (t) => t.category === "refactoring" || t.difficulty === "refactoring"
           ),
           firstTaskId: "refactor-1",
@@ -160,7 +160,7 @@ export const useSectionOverview = (
           id: "middle",
           name: "3. Middle задачи",
           icon: React.createElement(Rocket, { size: 18, color: "#3b82f6" }),
-          tasks: ALL_REACT_TASKS.filter(
+          tasks: sectionTasks.filter(
             (t) => t.category === "middle" || t.difficulty === "middle"
           ),
           firstTaskId: "middle-1",
@@ -170,7 +170,7 @@ export const useSectionOverview = (
           id: "strong",
           name: "4. Strong Middle & Senior",
           icon: React.createElement(Zap, { size: 18, color: "#a855f7" }),
-          tasks: ALL_REACT_TASKS.filter(
+          tasks: sectionTasks.filter(
             (t) => t.category === "strong" || t.difficulty === "strong"
           ),
           firstTaskId: "strong-1",
@@ -180,7 +180,7 @@ export const useSectionOverview = (
           id: "react-ts",
           name: "5. React + TypeScript",
           icon: React.createElement(Code2, { size: 18, color: "#3178c6" }),
-          tasks: ALL_REACT_TASKS.filter((t) => t.category === "react-ts" || t.difficulty === "ts"),
+          tasks: sectionTasks.filter((t) => t.category === "react-ts" || t.difficulty === "ts"),
           firstTaskId: "ts-1",
           color: "#3178c6",
         },
@@ -188,7 +188,7 @@ export const useSectionOverview = (
           id: "ts-practice",
           name: "6. TS Практика (Middle)",
           icon: React.createElement(Code2, { size: 18, color: "#10b981" }),
-          tasks: ALL_REACT_TASKS.filter((t) => t.category === "ts-practice"),
+          tasks: sectionTasks.filter((t) => t.category === "ts-practice"),
           firstTaskId: "ts-practice-1",
           color: "#10b981",
         },
@@ -217,7 +217,7 @@ export const useSectionOverview = (
 
     // Algorithms
     const algoGroupsMap = new Map<string, Task[]>();
-    ALL_ALGO_TASKS.forEach((t) => {
+    sectionTasks.forEach((t) => {
       const g = t.group || "Общие";
       if (!algoGroupsMap.has(g)) algoGroupsMap.set(g, []);
       algoGroupsMap.get(g)!.push(t);
@@ -239,7 +239,7 @@ export const useSectionOverview = (
         color: meta.color,
       };
     });
-  }, [section, progressState, reviews]);
+  }, [section, sectionTasks, isSolved, progressState.completedTasks, reviews]);
 
   return {
     sectionMeta,
@@ -249,5 +249,6 @@ export const useSectionOverview = (
     progressState,
     reviews,
     isTaskDue,
+    isInitialized: progressState.isInitialized && !isLoading,
   };
 };

@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
 import { clsx } from "clsx";
-import { ALL_REACT_TASKS } from "@/entities/task";
-import { useSidebarReactList } from "../model";
+import { useSidebarReactList, useSidebarSync } from "../model";
 import { SidebarProgressCard } from "./SidebarProgressCard/SidebarProgressCard";
+import { SidebarQuickActions } from "./SidebarQuickActions";
 import { SidebarReactCategoryItem } from "./SidebarReactCategoryItem";
 import { getReactCategories } from "../lib/get-react-categories";
 import styles from "./SidebarReactList.module.css";
@@ -12,24 +12,27 @@ export interface SidebarReactListProps {
 }
 
 export const SidebarReactList = ({ className }: SidebarReactListProps): React.JSX.Element => {
-  const { currentTaskId, progressState, reviews, uiState, completedTotal } = useSidebarReactList();
+  useSidebarSync();
+  const { currentTaskId, completedTasks, reviews, uiState, completedTotal, tasks } = useSidebarReactList();
 
-  const categories = useMemo(() => getReactCategories(uiState), [uiState]);
+  const categories = useMemo(() => getReactCategories(uiState, tasks), [uiState, tasks]);
 
   return (
     <div className={clsx(styles.listContainer, className)}>
       <SidebarProgressCard
         completedCount={completedTotal}
-        totalCount={ALL_REACT_TASKS.length}
+        totalCount={tasks.length}
         sectionType="react"
-      />
+      >
+        <SidebarQuickActions section="react" currentTaskId={currentTaskId} />
+      </SidebarProgressCard>
 
       {categories.map((cat) => (
         <SidebarReactCategoryItem
           key={cat.id}
           category={cat}
           currentTaskId={currentTaskId}
-          progressState={progressState}
+          completedTasks={completedTasks}
           reviews={reviews}
         />
       ))}

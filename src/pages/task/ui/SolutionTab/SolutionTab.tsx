@@ -36,6 +36,8 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
     recommendationNote,
     isRecommended,
     badgeText,
+    isFullscreenTransitioning,
+    preloadFullscreen,
     handleToggleFullscreen,
     handleCodeChange,
     handleResetCode,
@@ -90,6 +92,8 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
               onFileSelect={setActiveFileIdx}
               filepath={activeFile.name}
               onToggleFullscreen={handleToggleFullscreen}
+              onPreloadFullscreen={preloadFullscreen}
+              isFullscreenTransitioning={isFullscreenTransitioning}
               bottomConsole={
                 <div ref={consoleWrapperRef}>
                   <JsConsole

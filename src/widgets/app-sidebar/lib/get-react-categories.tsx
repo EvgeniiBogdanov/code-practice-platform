@@ -1,6 +1,6 @@
 import React from "react";
 import { Flame, Wrench, Rocket, Brain, Zap } from "lucide-react";
-import { ALL_REACT_TASKS, Task } from "@/entities/task";
+import type { Task } from "@/entities/task/meta";
 import { UIState } from "@/entities/ui-state";
 import { ReactCategoryDef } from "../ui/SidebarReactCategoryItem";
 import styles from "../ui/SidebarReactList.module.css";
@@ -108,13 +108,13 @@ const CATEGORY_CONFIGS: CategoryConfig[] = [
   },
 ];
 
-export const getReactCategories = (uiState: UIState): ReactCategoryDef[] =>
+export const getReactCategories = (uiState: UIState, tasks: readonly Task[]): ReactCategoryDef[] =>
   CATEGORY_CONFIGS.map((cfg) => ({
     id: cfg.id,
     infoId: cfg.infoId,
     label: cfg.label,
     icon: cfg.icon,
-    tasks: ALL_REACT_TASKS.filter(cfg.filter),
+    tasks: tasks.filter(cfg.filter),
     isExpanded: cfg.getExpanded(uiState),
     toggle: cfg.getToggle(uiState),
   }));

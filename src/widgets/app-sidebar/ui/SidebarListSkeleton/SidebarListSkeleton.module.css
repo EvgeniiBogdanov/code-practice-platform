@@ -1,0 +1,100 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1-5, 6px);
+  width: 100%;
+  animation: sidebarSkeletonFadeIn var(--transition-medium);
+}
+
+/* Sticky Progress Wrapper - identical to SidebarProgressCard stickyWrapper */
+.stickyWrapper {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky, 30);
+  background: var(--bg-sidebar);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1-5, 6px);
+  padding-top: 2px;
+  padding-bottom: 6px;
+  flex-shrink: 0;
+}
+
+.progressCard {
+  background: color-mix(in srgb, var(--state-active) 40%, var(--bg-sidebar));
+  border-radius: var(--radius-lg, 8px);
+  padding: 8px 10px;
+  cursor: default;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+[data-theme="light"] .progressCard {
+  background: #ffffff;
+  border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.barTrack {
+  height: 4px;
+  background: var(--border-color);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+/* Quick Actions - identical to SidebarQuickActions */
+.quickActions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: center;
+  justify-items: center;
+}
+
+/* Folders List - identical to TreeNodeHeader structure */
+.foldersList {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 0 0 var(--space-4, 16px);
+}
+
+.folderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  min-height: 32px;
+  padding: 6px 10px;
+  box-sizing: border-box;
+  border-radius: var(--radius-md, 6px);
+}
+
+.folderLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+@keyframes sidebarSkeletonFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

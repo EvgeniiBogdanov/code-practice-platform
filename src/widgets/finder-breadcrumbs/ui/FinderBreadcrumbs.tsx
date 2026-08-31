@@ -3,7 +3,8 @@ import { useLocation } from "@tanstack/react-router";
 import { Menu, PanelLeft } from "lucide-react";
 import { clsx } from "clsx";
 import { useUIStore } from "@/entities/ui-state";
-import { getTaskById, Task } from "@/entities/task";
+import type { SectionType, Task } from "@/entities/task/meta";
+import { useTaskSection } from "@/entities/task/catalog";
 import { useFinderDropdown } from "../model/useFinderDropdown";
 import { parseBreadcrumbRoute } from "../lib/parseBreadcrumbRoute";
 import { FinderSectionDropdown } from "./FinderSectionDropdown";
@@ -27,10 +28,12 @@ export const FinderBreadcrumbs = () => {
   );
 
   const isFavoritesPage = location.pathname.endsWith("/favorites");
+  const taskSection: SectionType = section === "home" ? "react" : section;
+  const { tasks } = useTaskSection(taskSection);
   const currentTask: Task | null = useMemo(() => {
     if (!taskId || isFavoritesPage) return null;
-    return getTaskById(taskId) || null;
-  }, [isFavoritesPage, taskId]);
+    return tasks.find((task) => String(task.id) === taskId) ?? null;
+  }, [isFavoritesPage, taskId, tasks]);
 
   return (
     <nav

@@ -90,7 +90,7 @@ function MasteryPieInner({
 
   return (
     <div className={styles.container}>
-      <svg width={width} height={height}>
+      <svg width={width} height={height} className={styles.svg}>
         <defs>
           <LinearGradient id="visx-mastery-mastered" from="#10b981" to="#059669" vertical />
           <LinearGradient id="visx-mastery-reviewing" from="#f59e0b" to="#d97706" vertical />
@@ -164,8 +164,8 @@ export interface VisxMasteryPieProps {
 
 export function VisxMasteryPie({ masteryStats, height = 210 }: VisxMasteryPieProps) {
   return (
-    <div style={{ width: "100%", height, minHeight: height }}>
-      <ParentSize debounceTime={10}>
+    <div className={styles.chartWrapper} style={{ height, minHeight: height }}>
+      <ParentSize debounceTime={0}>
         {({ width, height: pHeight }) => (
           <MasteryPieInner width={width} height={pHeight || height} masteryStats={masteryStats} />
         )}

@@ -1,12 +1,19 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "@tanstack/react-router";
-import { ALL_REACT_TASKS, getTaskById } from "@/entities/task";
+import type { SectionType } from "@/entities/task/meta";
+import { useTaskSection } from "@/entities/task/catalog";
 import { useUIStore } from "@/entities/ui-state";
 
 export const useSidebarSync = (): void => {
   const location = useLocation();
   const pathname = location.pathname;
   const currentTaskId = pathname.split("/").pop() || "";
+  const section: SectionType = pathname.startsWith("/javascript")
+    ? "javascript"
+    : pathname.startsWith("/algorithms")
+      ? "algorithms"
+      : "react";
+  const { tasks } = useTaskSection(section);
 
   const setWarmupExpanded = useUIStore((state) => state.setWarmupExpanded);
   const setRefactoringExpanded = useUIStore((state) => state.setRefactoringExpanded);
@@ -32,31 +39,17 @@ export const useSidebarSync = (): void => {
     }
 
     // B. Handle Specific Task URLs
-    const task = getTaskById(currentTaskId);
+    const task = tasks.find((item) => String(item.id) === currentTaskId);
     if (!task) return;
-
-    const taskIdStr = String(task.id);
 
     // 1. React tasks synchronization
     if (pathname.startsWith("/react")) {
-      const isWarmup = ALL_REACT_TASKS.some(
-        (t) => String(t.id) === taskIdStr && t.difficulty === "warm-up"
-      );
-      const isRefactoring = ALL_REACT_TASKS.some(
-        (t) => String(t.id) === taskIdStr && t.difficulty === "refactoring"
-      );
-      const isMiddle = ALL_REACT_TASKS.some(
-        (t) => String(t.id) === taskIdStr && t.difficulty === "middle"
-      );
-      const isStrong = ALL_REACT_TASKS.some(
-        (t) => String(t.id) === taskIdStr && t.difficulty === "strong"
-      );
-      const isReactTs = ALL_REACT_TASKS.some(
-        (t) => String(t.id) === taskIdStr && t.category === "React + TS (Разминка)"
-      );
-      const isReactTsPractice = ALL_REACT_TASKS.some(
-        (t) => String(t.id) === taskIdStr && t.category === "React + TS (Практика)"
-      );
+      const isWarmup = task.difficulty === "warm-up";
+      const isRefactoring = task.difficulty === "refactoring";
+      const isMiddle = task.difficulty === "middle";
+      const isStrong = task.difficulty === "strong";
+      const isReactTs = task.category === "React + TS (Разминка)";
+      const isReactTsPractice = task.category === "React + TS (Практика)";
 
       if (isWarmup) setWarmupExpanded(true);
       else if (isRefactoring) setRefactoringExpanded(true);
@@ -98,16 +91,17 @@ export const useSidebarSync = (): void => {
       }
     }
 
-    // 4. Smooth scroll to active sidebar item
+    // 4. Keep the selected task visible without adding a second animated layout shift.
     requestAnimationFrame(() => {
       const el = document.getElementById(`sidebar-task-${currentTaskId}`);
       if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        el.scrollIntoView({ behavior: "auto", block: "nearest" });
       }
     });
   }, [
     currentTaskId,
     pathname,
+    tasks,
     setWarmupExpanded,
     setRefactoringExpanded,
     setTasksExpanded,

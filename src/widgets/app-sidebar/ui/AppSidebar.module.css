@@ -113,3 +113,23 @@
   padding: 0 6px 8px 6px;
   scrollbar-gutter: stable;
 }
+
+.content > * > * {
+  animation: sidebarContentItemReveal var(--transition-fast) both;
+}
+
+@keyframes sidebarContentItemReveal {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .content > * > * {
+    animation: none;
+  }
+}

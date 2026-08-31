@@ -1,16 +1,29 @@
-import React, { useState, useCallback, useRef, useEffect, useMemo } from "react";
+import React, { lazy, Suspense, useState, useCallback, useRef, useEffect, useMemo } from "react";
 import { useLocation } from "@tanstack/react-router";
 import { clsx } from "clsx";
 import { useUIStore } from "@/entities/ui-state";
-import { SectionType } from "@/entities/task";
+import type { SectionType } from "@/entities/task/meta";
 import { Tooltip } from "@/shared/ui";
 import { SidebarWorkspaceHeader } from "./SidebarWorkspaceHeader";
-import { SidebarHomeOverview } from "./SidebarHomeOverview";
-import { SidebarReactList } from "./SidebarReactList";
-import { SidebarJsList } from "./SidebarJsList";
-import { SidebarAlgoList } from "./SidebarAlgoList";
-import { useSidebarSync, useSidebarKeyboardNav } from "../model";
+import { SidebarHomeSkeleton } from "./SidebarHomeOverview/SidebarHomeSkeleton";
+import { SidebarListSkeleton } from "./SidebarListSkeleton";
+import { useSidebarKeyboardNav } from "../model/use-sidebar-keyboard-nav";
 import styles from "./AppSidebar.module.css";
+
+const SidebarHomeOverview = lazy(() =>
+  import("./SidebarHomeOverview/SidebarHomeOverview").then((module) => ({
+    default: module.SidebarHomeOverview,
+  }))
+);
+const SidebarReactList = lazy(() =>
+  import("./SidebarReactList").then((module) => ({ default: module.SidebarReactList }))
+);
+const SidebarJsList = lazy(() =>
+  import("./SidebarJsList").then((module) => ({ default: module.SidebarJsList }))
+);
+const SidebarAlgoList = lazy(() =>
+  import("./SidebarAlgoList").then((module) => ({ default: module.SidebarAlgoList }))
+);
 
 export interface AppSidebarProps {
   className?: string;
@@ -19,9 +32,6 @@ export interface AppSidebarProps {
 export const AppSidebar = ({ className }: AppSidebarProps): React.JSX.Element => {
   const location = useLocation();
   const pathname = location.pathname;
-
-  // Auto-sync active task's category and scroll into view
-  useSidebarSync();
 
   const contentRef = useRef<HTMLDivElement>(null);
   useSidebarKeyboardNav(contentRef);
@@ -117,7 +127,6 @@ export const AppSidebar = ({ className }: AppSidebarProps): React.JSX.Element =>
         <Tooltip.Provider delayDuration={600} skipDelayDuration={300}>
           <SidebarWorkspaceHeader
             activeSectionKey={activeSectionKey}
-            currentTaskId={pathname.split("/").pop() || ""}
             onCloseSidebar={() => setSidebarOpen(false)}
           />
 
@@ -129,16 +138,18 @@ export const AppSidebar = ({ className }: AppSidebarProps): React.JSX.Element =>
             aria-label={activeSectionKey !== "home" ? "Навигация по темам и задачам" : undefined}
           >
             {activeSectionKey === "home" ? (
-              <SidebarHomeOverview
-                activeSectionKey={activeSectionKey}
-                isHomeActive={pathname === "/" || pathname === "/home"}
-              />
-            ) : activeSectionKey === "javascript" ? (
-              <SidebarJsList />
-            ) : activeSectionKey === "algorithms" ? (
-              <SidebarAlgoList />
+              <Suspense fallback={<SidebarHomeSkeleton />}>
+                <SidebarHomeOverview
+                  activeSectionKey={activeSectionKey}
+                  isHomeActive={pathname === "/" || pathname === "/home"}
+                />
+              </Suspense>
             ) : (
-              <SidebarReactList />
+              <Suspense fallback={<SidebarListSkeleton />}>
+                {activeSectionKey === "javascript" && <SidebarJsList />}
+                {activeSectionKey === "algorithms" && <SidebarAlgoList />}
+                {activeSectionKey === "react" && <SidebarReactList />}
+              </Suspense>
             )}
           </div>
         </Tooltip.Provider>

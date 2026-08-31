@@ -156,8 +156,7 @@
   gap: 12px;
   justify-content: center;
   border: 1px dashed var(--border-strong);
-  border-radius: var(--radius-xl);
-  background: var(--bg-subtle);
+  border-radius: var(--radius-lg);
   color: var(--text-muted);
 }
 
@@ -458,6 +457,7 @@
   align-items: center;
   gap: 5px;
   flex-shrink: 0;
+  min-height: 18px;
 }
 
 .galleryCardStatusText {
@@ -536,6 +536,25 @@
   border-top: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
 }
 
+.galleryGridAnimateIn {
+  animation: cardElementFadeIn 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes cardElementFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .galleryGridAnimateIn {
+    animation: none;
+  }
+}
+
 .galleryCardBadge {
   flex: 1 1 0;
   min-width: 0;
@@ -562,8 +581,6 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   line-height: 1;
-  text-box-trim: both;
-  text-box-edge: cap alphabetic;
 }
 
 .badgeLastSolved {
