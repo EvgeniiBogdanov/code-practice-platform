@@ -621,11 +621,11 @@ const removeNthFromEnd = (head, n) => {
 ### 1. Потеря ссылки на хвост списка при вставке
 
 ```js
-// ❌ Неправильно — сначала меняем prevNode.next
+//  Неправильно — сначала меняем prevNode.next
 prevNode.next = node;
 node.next = prevNode.next; // здесь node.next уже указывает сам на себя!
 
-// ✅ Правильно — сначала "запоминаем" следующий узел
+//  Правильно — сначала "запоминаем" следующий узел
 node.next = prevNode.next;
 prevNode.next = node;
 ```
@@ -643,14 +643,14 @@ prevNode.next = node;
 ### 4. Бесконечный цикл при обходе кольцевого списка
 
 ```js
-// ❌ Никогда не остановится — в кольце нет узла с next === null
+//  Никогда не остановится — в кольце нет узла с next === null
 let current = head;
 while (current) {
   console.log(current.value);
   current = current.next;
 }
 
-// ✅ Используем do...while с условием возврата к head
+//  Используем do...while с условием возврата к head
 let current = head;
 do {
   console.log(current.value);

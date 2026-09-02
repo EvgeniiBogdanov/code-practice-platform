@@ -4,6 +4,10 @@ export const isTaskCompleted = (status: unknown): boolean => {
   return status === "solved" || status === true;
 };
 
+export const isTaskUnsolved = (status: unknown): boolean => {
+  return status === "unsolved";
+};
+
 export const selectIsTaskCompleted = (state: ProgressState, taskId: string | number): boolean => {
   return isTaskCompleted(state.completedTasks[String(taskId)]);
 };

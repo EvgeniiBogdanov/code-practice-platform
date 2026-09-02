@@ -1,8 +1,8 @@
 .settingsModalCard {
-  background: var(--bg-card, #202020);
-  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
-  border-radius: var(--radius-lg, 12px);
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-popover);
   width: 90vw;
   max-width: 860px;
   height: 520px;
@@ -10,15 +10,9 @@
   display: flex;
   flex-direction: row;
   overflow: hidden;
-  color: var(--text-main, #ffffff);
+  color: var(--text-main);
   position: relative;
   box-sizing: border-box;
-}
-
-[data-theme="light"] .settingsModalCard {
-  background: #ffffff;
-  border-color: rgba(55, 53, 47, 0.12);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
 }
 
 /* Modal Body: full container */
@@ -38,18 +32,13 @@
 .settingsSidebar {
   width: 230px;
   flex-shrink: 0;
-  background: var(--bg-sidebar, #191919);
-  border-right: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
   padding: 16px 12px 14px 12px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box;
-}
-
-[data-theme="light"] .settingsSidebar {
-  background: #f7f6f3;
-  border-right-color: rgba(55, 53, 47, 0.09);
 }
 
 .sidebarTop {
@@ -69,17 +58,12 @@
   width: 26px;
   height: 26px;
   border-radius: var(--radius-sm, 5px);
-  background: var(--bg-subtle, rgba(255, 255, 255, 0.08));
+  background: var(--bg-subtle);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--text-muted);
   flex-shrink: 0;
-}
-
-[data-theme="light"] .workspaceIcon {
-  background: rgba(55, 53, 47, 0.08);
-  color: #37352f;
 }
 
 .workspaceInfo {
@@ -118,7 +102,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--text-muted, #94a3b8);
+  color: var(--text-muted);
   padding: 4px 8px 2px 8px;
 }
 
@@ -151,22 +135,13 @@
 
 .navBtn:hover {
   color: var(--text-main);
-  background: var(--state-hover, rgba(255, 255, 255, 0.05));
+  background: var(--state-hover);
 }
 
 .navBtn.active {
-  background: var(--state-active, rgba(255, 255, 255, 0.08));
+  background: var(--state-active);
   color: var(--text-main);
-}
-
-[data-theme="light"] .navBtn:hover {
-  background: rgba(55, 53, 47, 0.06);
-  color: #191919;
-}
-
-[data-theme="light"] .navBtn.active {
-  background: rgba(55, 53, 47, 0.1);
-  color: #191919;
+  font-weight: 500;
 }
 
 .navBtnIcon {
@@ -192,13 +167,9 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  background: var(--bg-card, #202020);
+  background: var(--bg-card);
   box-sizing: border-box;
   overflow: hidden;
-}
-
-[data-theme="light"] .settingsMain {
-  background: #ffffff;
 }
 
 .mainHeader {
@@ -206,12 +177,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 10px 8px 10px 18px;
-  border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.06));
+  border-bottom: 1px solid var(--border-color);
   flex-shrink: 0;
-}
-
-[data-theme="light"] .mainHeader {
-  border-bottom-color: rgba(55, 53, 47, 0.08);
 }
 
 .mainHeaderTitle {
@@ -220,6 +187,31 @@
   color: var(--text-main);
   margin: 0;
   font-family: var(--font-sans);
+}
+
+.settingsModalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-subtle);
+  flex-shrink: 0;
+}
+
+.settingsModalTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+  font-family: var(--font-sans);
+}
+
+.settingsModalHeaderIcon {
+  color: var(--accent-blue);
+  flex-shrink: 0;
 }
 
 .closeBtn {
@@ -238,13 +230,8 @@
 }
 
 .closeBtn:hover {
-  background: var(--state-hover, rgba(255, 255, 255, 0.08));
+  background: var(--state-hover);
   color: var(--text-main);
-}
-
-[data-theme="light"] .closeBtn:hover {
-  background: rgba(55, 53, 47, 0.08);
-  color: #191919;
 }
 
 .mainScrollable {
@@ -292,12 +279,8 @@
 .settingsRowList {
   display: flex;
   flex-direction: column;
-  border-top: 1px solid var(--border-color, rgba(255, 255, 255, 0.05));
+  border-top: 1px solid var(--border-color);
   margin-top: 4px;
-}
-
-[data-theme="light"] .settingsRowList {
-  border-top-color: rgba(55, 53, 47, 0.07);
 }
 
 .settingsRow {
@@ -306,15 +289,11 @@
   align-items: center;
   gap: 24px;
   padding: 14px 0;
-  border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.05));
+  border-bottom: 1px solid var(--border-color);
 }
 
 .settingsRow:last-child {
   border-bottom: none;
-}
-
-[data-theme="light"] .settingsRow {
-  border-bottom-color: rgba(55, 53, 47, 0.07);
 }
 
 .settingsRowInfo {
@@ -364,30 +343,23 @@
   font-size: 11px;
   font-weight: 600;
   line-height: 1;
-  color: var(--text-muted);
+  color: var(--accent-green);
+  background: var(--accent-green-bg);
+  border: 1px solid var(--accent-green-border);
   border-radius: var(--radius-sm, 5px);
   font-family: var(--font-sans);
   white-space: nowrap;
   user-select: none;
 }
 
-[data-theme="light"] .statusBadge {
-  background: rgba(55, 53, 47, 0.04);
-  border-color: rgba(55, 53, 47, 0.1);
-  color: rgba(55, 53, 47, 0.7);
-}
-
 .statusDot {
-  color: var(--text-muted);
-  opacity: 0.6;
+  color: var(--accent-green);
+  opacity: 0.8;
 }
 
 .statusActive {
-  color: var(--color-status-solved, #10b981);
-}
-
-[data-theme="light"] .statusActive {
-  color: #059669;
+  color: var(--color-status-solved);
+  font-weight: 600;
 }
 
 /* Confirm Dialog Body */
@@ -401,12 +373,8 @@
   margin: 0;
   font-size: 13.5px;
   line-height: 1.55;
-  color: var(--text-main, #ffffff);
+  color: var(--text-main);
   font-family: var(--font-sans);
-}
-
-[data-theme="light"] .resetConfirmText {
-  color: #191919;
 }
 
 .resetConfirmActions {

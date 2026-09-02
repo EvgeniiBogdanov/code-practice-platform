@@ -8,8 +8,10 @@ export interface TooltipProviderContextValue {
   setWarm: (warm: boolean) => void;
 }
 
+export const DEFAULT_TOOLTIP_DELAY_DURATION = 300;
+
 export const TooltipProviderContext = createContext<TooltipProviderContextValue>({
-  delayDuration: 180,
+  delayDuration: DEFAULT_TOOLTIP_DELAY_DURATION,
   skipDelayDuration: 300,
   isWarm: false,
   setWarm: () => {},

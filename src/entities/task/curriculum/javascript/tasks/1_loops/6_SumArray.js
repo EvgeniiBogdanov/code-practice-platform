@@ -1,10 +1,10 @@
 // Сумма элементов массива
-// Реализуйте функцию sumNumbers(arr), которая возвращает сумму всех элементов массива.
+// Напишите функцию sumArray(numbers), которая принимает массив чисел и возвращает их сумму.
 
-const sumNumbers = (arr) => {
+const sumArray = (numbers) => {
   // Решение тут
 };
 
 // Пример вызова:
-console.log(sumNumbers([5, 10, 2]));   // 17
-console.log(sumNumbers([1, 2, 3, 4])); // 10
+console.log(sumArray([1, 2, 3, 4, 5])); // 15
+console.log(sumArray([]));              // 0

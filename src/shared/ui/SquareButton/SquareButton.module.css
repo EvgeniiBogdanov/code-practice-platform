@@ -29,31 +29,31 @@
 }
 
 .squareButton:hover:not(:disabled):not(.disabled) {
-  background: var(--state-hover, rgba(255, 255, 255, 0.08));
+  background: var(--state-hover);
   color: var(--text-main);
 }
 
-[data-theme="light"] .squareButton:hover:not(:disabled):not(.disabled) {
-  background: rgba(55, 53, 47, 0.08);
-  color: var(--text-main, #37352f);
-}
-
-.squareButton.active:not(:disabled):not(.disabled) {
-  background: var(--state-active, rgba(255, 255, 255, 0.12));
+.squareButton.active:not(:disabled):not(.disabled),
+.squareButton[aria-pressed="true"]:not(:disabled):not(.disabled) {
+  background: transparent;
   color: var(--text-main);
 }
 
-[data-theme="light"] .squareButton.active:not(:disabled):not(.disabled) {
-  background: rgba(55, 53, 47, 0.14);
-  color: var(--text-main, #37352f);
+.squareButton.active:hover:not(:disabled):not(.disabled),
+.squareButton[aria-pressed="true"]:hover:not(:disabled):not(.disabled) {
+  background: var(--state-hover);
+  color: var(--text-main);
 }
 
 .squareButton.variant_transparent,
 .squareButton.variant_transparent:hover:not(:disabled):not(.disabled),
 .squareButton.variant_transparent.active:not(:disabled):not(.disabled),
-[data-theme="light"] .squareButton.variant_transparent:hover:not(:disabled):not(.disabled),
-[data-theme="light"] .squareButton.variant_transparent.active:not(:disabled):not(.disabled) {
+.squareButton.variant_transparent[aria-pressed="true"]:not(:disabled):not(.disabled) {
   background: transparent;
+}
+
+.squareButton.variant_transparent:hover:not(:disabled):not(.disabled) {
+  color: var(--text-main);
 }
 
 .squareButton:disabled,
@@ -63,4 +63,9 @@
   pointer-events: none;
   background: transparent;
   color: var(--text-muted);
+}
+
+.squareButton:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--bg-surface), 0 0 0 4px var(--accent-blue);
 }

@@ -1,13 +1,11 @@
-// Сравнение объектов в Set
-// Что выведет данный код?
-
-const a = { x: 1 };
-const b = { x: 1 };
+// Что выведет данный код в консоль и почему?
 
 const set = new Set();
-set.add(a);
-set.add(b);
+const obj = { id: 1 };
+
+set.add(obj);
+set.add({ id: 1 });
 
 console.log(set.size);
-console.log(set.has(a));
-console.log(set.has({ x: 1 }));
+console.log(set.has(obj));
+console.log(set.has({ id: 1 }));

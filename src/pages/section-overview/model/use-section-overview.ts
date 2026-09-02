@@ -24,6 +24,7 @@ export interface SectionStats {
   remaining: number;
   percent: number;
   dueTodayCount: number;
+  excludedCount: number;
 }
 
 export interface UseSectionOverviewReturn {
@@ -42,8 +43,13 @@ export const useSectionOverview = (
 ): UseSectionOverviewReturn => {
   const progressState = useProgressStore();
   const reviews = useReviewStore((state) => state.reviews);
+  const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
   const { tasks, isLoading } = useTaskSection(section);
   const sectionTasks = useMemo(() => Array.from(tasks), [tasks]);
+  const activeSectionTasks = useMemo(
+    () => sectionTasks.filter((t) => !excludedTaskIds.includes(String(t.id))),
+    [sectionTasks, excludedTaskIds]
+  );
 
   const isSolved = useCallback(
     (id: string | number): boolean => selectIsTaskCompleted(progressState, id),
@@ -59,7 +65,7 @@ export const useSectionOverview = (
           "Комплексная практика JavaScript: замыкания, прототипы, Event Loop, промисы, асинхронные генераторы, структуры данных, манипуляции с DOM и чистые алгоритмические функции.",
         icon: React.createElement(Zap, { size: 24, className: styles.iconJs }),
         tasks: sectionTasks,
-        badge: `${sectionTasks.length} задач`,
+        badge: `${activeSectionTasks.length} задач`,
       };
     }
     if (section === "react") {
@@ -70,7 +76,7 @@ export const useSectionOverview = (
           "Практика создания современных React-компонентов: кастомные хуки, оптимизация рендеринга, управление состоянием, паттерны рефакторинга и строгая типизация TypeScript.",
         icon: React.createElement(Code2, { size: 24, className: styles.iconReact }),
         tasks: sectionTasks,
-        badge: `${sectionTasks.length} задач`,
+        badge: `${activeSectionTasks.length} задач`,
       };
     }
     return {
@@ -80,18 +86,19 @@ export const useSectionOverview = (
         "Практика алгоритмов и структур данных: массивы, хэш-таблицы, два указателя, скользящее окно, бинарный поиск, деревья, графы и динамическое программирование.",
       icon: React.createElement(Brain, { size: 24, className: styles.iconAlgo }),
       tasks: sectionTasks,
-      badge: `${sectionTasks.length} задач`,
+      badge: `${activeSectionTasks.length} задач`,
     };
-  }, [section, sectionTasks]);
+  }, [section, sectionTasks, activeSectionTasks]);
 
   const stats = useMemo((): SectionStats => {
-    const total = sectionMeta.tasks.length;
-    const completed = sectionMeta.tasks.filter((t) => isSolved(t.id)).length;
+    const total = activeSectionTasks.length;
+    const completed = activeSectionTasks.filter((t) => isSolved(t.id)).length;
     const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
-    const dueTodayCount = sectionMeta.tasks.filter((t) => {
+    const dueTodayCount = activeSectionTasks.filter((t) => {
       const rev = reviews[String(t.id)];
       return rev && isTaskDue(rev);
     }).length;
+    const excludedCount = sectionTasks.length - activeSectionTasks.length;
 
     return {
       total,
@@ -100,8 +107,9 @@ export const useSectionOverview = (
       remaining: Math.max(0, total - completed),
       percent,
       dueTodayCount,
+      excludedCount,
     };
-  }, [sectionMeta.tasks, isSolved, reviews]);
+  }, [activeSectionTasks, sectionTasks.length, isSolved, reviews]);
 
   const groups = useMemo((): GroupCardData[] => {
     if (section === "javascript") {
@@ -112,10 +120,13 @@ export const useSectionOverview = (
         groupsMap.get(g)!.push(t);
       });
 
-      return Array.from(groupsMap.entries()).map(([name, tasks]) => {
-        const completedCount = tasks.filter((t) => isSolved(t.id)).length;
+      return Array.from(groupsMap.entries()).map(([name, groupTasksList]) => {
+        const activeGroupTasks = groupTasksList.filter(
+          (t) => !excludedTaskIds.includes(String(t.id))
+        );
+        const completedCount = activeGroupTasks.filter((t) => isSolved(t.id)).length;
         const completionClass = getGroupCompletionClass(
-          tasks,
+          activeGroupTasks,
           reviews,
           progressState.completedTasks
         );
@@ -125,10 +136,10 @@ export const useSectionOverview = (
           groupId: `group-${name}`,
           name,
           icon: meta.renderIcon(18),
-          tasks,
+          tasks: activeGroupTasks,
           completedCount,
           completionClass,
-          firstTaskId: String(tasks[0]?.id || "js-1"),
+          firstTaskId: String(groupTasksList[0]?.id || "js-1"),
           color: meta.color,
         };
       });
@@ -195,9 +206,10 @@ export const useSectionOverview = (
       ];
 
       return categories.map((cat) => {
-        const completedCount = cat.tasks.filter((t) => isSolved(t.id)).length;
+        const activeCatTasks = cat.tasks.filter((t) => !excludedTaskIds.includes(String(t.id)));
+        const completedCount = activeCatTasks.filter((t) => isSolved(t.id)).length;
         const completionClass = getGroupCompletionClass(
-          cat.tasks,
+          activeCatTasks,
           reviews,
           progressState.completedTasks
         );
@@ -206,7 +218,7 @@ export const useSectionOverview = (
           groupId: `group-${cat.id}`,
           name: cat.name,
           icon: cat.icon,
-          tasks: cat.tasks,
+          tasks: activeCatTasks,
           completedCount,
           completionClass,
           firstTaskId: cat.firstTaskId,
@@ -223,23 +235,30 @@ export const useSectionOverview = (
       algoGroupsMap.get(g)!.push(t);
     });
 
-    return Array.from(algoGroupsMap.entries()).map(([name, tasks]) => {
-      const completedCount = tasks.filter((t) => isSolved(t.id)).length;
-      const completionClass = getGroupCompletionClass(tasks, reviews, progressState.completedTasks);
+    return Array.from(algoGroupsMap.entries()).map(([name, groupTasksList]) => {
+      const activeAlgoTasks = groupTasksList.filter(
+        (t) => !excludedTaskIds.includes(String(t.id))
+      );
+      const completedCount = activeAlgoTasks.filter((t) => isSolved(t.id)).length;
+      const completionClass = getGroupCompletionClass(
+        activeAlgoTasks,
+        reviews,
+        progressState.completedTasks
+      );
       const meta = getAlgoGroupMeta(name);
       return {
         id: name,
         groupId: meta.infoId || `group-${name}`,
         name,
         icon: meta.renderIcon(18),
-        tasks,
+        tasks: activeAlgoTasks,
         completedCount,
         completionClass,
-        firstTaskId: String(tasks[0]?.id || "algo-1"),
+        firstTaskId: String(groupTasksList[0]?.id || "algo-1"),
         color: meta.color,
       };
     });
-  }, [section, sectionTasks, isSolved, progressState.completedTasks, reviews]);
+  }, [section, sectionTasks, excludedTaskIds, isSolved, progressState.completedTasks, reviews]);
 
   return {
     sectionMeta,

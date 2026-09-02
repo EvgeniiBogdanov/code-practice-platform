@@ -9,6 +9,7 @@ export interface KpiGridProps {
   solved: number;
   percent: number;
   remaining: number;
+  excludedCount?: number;
   progressLabel?: string;
   className?: string;
 }
@@ -19,6 +20,7 @@ export const KpiGrid = memo(
     solved,
     percent,
     remaining,
+    excludedCount,
     progressLabel = "Общий прогресс",
     className,
   }: KpiGridProps) => {
@@ -28,6 +30,9 @@ export const KpiGrid = memo(
           <span className={styles.kpiLabel}>Всего задач</span>
           <span className={styles.kpiValue}>
             <UiNumberScramble value={total} />
+            {excludedCount !== undefined && excludedCount > 0 ? (
+              <span className={styles.kpiExcluded}>(-{excludedCount})</span>
+            ) : null}
           </span>
         </Card>
 

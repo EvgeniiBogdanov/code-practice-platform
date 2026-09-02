@@ -1,5 +1,7 @@
-// Композиция функций (pipe и compose)
-// Напишите функции pipe(...fns) и compose(...fns).
+// Композиция функций: pipe и compose
+// Реализуйте функции pipe(...fns) и compose(...fns).
+// - pipe выполняет функции слева направо: f(g(h(x)))
+// - compose выполняет функции справа налево: f(g(h(x)))
 
 const pipe = (...fns) => {
   // Решение тут
@@ -10,8 +12,11 @@ const compose = (...fns) => {
 };
 
 // Пример вызова:
-const add2 = (x) => x + 2;
-const mult3 = (x) => x * 3;
+const add5 = (x) => x + 5;
+const mult2 = (x) => x * 2;
 
-console.log(pipe(add2, mult3)(5));
-console.log(compose(mult3, add2)(5));
+const p = pipe(add5, mult2);
+console.log(p(10)); // (10 + 5) * 2 = 30
+
+const c = compose(add5, mult2);
+console.log(c(10)); // (10 * 2) + 5 = 25

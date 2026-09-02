@@ -339,13 +339,13 @@ console.log(lengthOfLongestSubstring("pwwkew"));   // 3
 **нескольких** шагов сжатия слева, а не одного.
 
 ```js
-// ❌ Неправильно — может остаться нарушенное условие после одного сдвига
+//  Неправильно — может остаться нарушенное условие после одного сдвига
 if (windowSum > target) {
   windowSum -= nums[left];
   left++;
 }
 
-// ✅ Правильно — сжимаем, пока условие не станет верным
+//  Правильно — сжимаем, пока условие не станет верным
 while (windowSum > target) {
   windowSum -= nums[left];
   left++;
@@ -359,10 +359,10 @@ while (windowSum > target) {
 ошибка при работе со Sliding Window.
 
 ```js
-// ❌ Неправильно — длина окна занижена на 1
+//  Неправильно — длина окна занижена на 1
 const windowLength = right - left;
 
-// ✅ Правильно
+//  Правильно
 const windowLength = right - left + 1;
 ```
 
@@ -373,7 +373,7 @@ const windowLength = right - left + 1;
 возвращаетесь к сложности `O(n · k)` или `O(n²)`.
 
 ```js
-// ❌ Неправильно — теряем преимущество Sliding Window
+//  Неправильно — теряем преимущество Sliding Window
 for (let right = k; right < nums.length; right++) {
   let windowSum = 0;
   for (let j = right - k + 1; j <= right; j++) {
@@ -381,7 +381,7 @@ for (let right = k; right < nums.length; right++) {
   }
 }
 
-// ✅ Правильно — переиспользуем сумму предыдущего окна
+//  Правильно — переиспользуем сумму предыдущего окна
 windowSum += nums[right] - nums[right - k];
 ```
 
@@ -392,13 +392,13 @@ windowSum += nums[right] - nums[right - k];
 (уменьшить счётчик или удалить ключ), а не просто увеличить `left`.
 
 ```js
-// ❌ Неправильно — left двигается, но map не обновляется,
+//  Неправильно — left двигается, но map не обновляется,
 // из-за этого условие в while никогда не станет false
 while (/* условие */) {
   left++;
 }
 
-// ✅ Правильно — сначала обновляем состояние, потом двигаем left
+//  Правильно — сначала обновляем состояние, потом двигаем left
 while (/* условие */) {
   map.set(s[left], map.get(s[left]) - 1);
   if (map.get(s[left]) === 0) {

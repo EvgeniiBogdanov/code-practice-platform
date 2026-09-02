@@ -3,6 +3,7 @@ import { clsx } from "clsx";
 import { useReviewStore } from "@/entities/review";
 import type { Task } from "@/entities/task/meta";
 import { useAllTaskSections } from "@/entities/task/catalog";
+import { Tooltip } from "@/shared/ui";
 import styles from "./MasteryProgress.module.css";
 
 export interface MasteryProgressProps {
@@ -36,18 +37,18 @@ export function MasteryProgress({ taskList, className }: MasteryProgressProps) {
   return (
     <div className={clsx(styles.container, className)}>
       <div className={styles.progressBar}>
-        <div ref={masteredRef} className={styles.segMastered} title={`Мастер: ${stats.mastered}`} />
-        <div
-          ref={reviewingRef}
-          className={styles.segReviewing}
-          title={`Повторение: ${stats.reviewing}`}
-        />
-        <div
-          ref={learningRef}
-          className={styles.segLearning}
-          title={`Изучение: ${stats.learning}`}
-        />
-        <div ref={dueRef} className={styles.segDue} title={`Пора повторить: ${stats.dueToday}`} />
+        <Tooltip content={`Мастер: ${stats.mastered}`} side="top">
+          <div ref={masteredRef} className={styles.segMastered} />
+        </Tooltip>
+        <Tooltip content={`Повторение: ${stats.reviewing}`} side="top">
+          <div ref={reviewingRef} className={styles.segReviewing} />
+        </Tooltip>
+        <Tooltip content={`Изучение: ${stats.learning}`} side="top">
+          <div ref={learningRef} className={styles.segLearning} />
+        </Tooltip>
+        <Tooltip content={`Пора повторить: ${stats.dueToday}`} side="top">
+          <div ref={dueRef} className={styles.segDue} />
+        </Tooltip>
       </div>
 
       <div className={styles.statsGrid}>

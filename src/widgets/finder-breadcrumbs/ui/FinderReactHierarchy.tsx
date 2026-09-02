@@ -20,7 +20,7 @@ import { useReviewStore, isTaskDue, getGroupCompletionClass } from "@/entities/r
 import { useTaskSection } from "@/entities/task/catalog";
 import { FinderHierarchyProps } from "../model/types";
 import { getRatingClass } from "../lib/getRatingClass";
-import { NodeCount } from "@/shared/ui";
+import { NodeCount, Tooltip } from "@/shared/ui";
 import styles from "./FinderBreadcrumbs.module.css";
 
 export const FinderReactHierarchy = ({
@@ -32,6 +32,7 @@ export const FinderReactHierarchy = ({
 }: FinderHierarchyProps) => {
   const progressState = useProgressStore();
   const reviews = useReviewStore((state) => state.reviews);
+  const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
   const { tasks } = useTaskSection("react");
 
   const reactCategories = useMemo(
@@ -107,7 +108,6 @@ export const FinderReactHierarchy = ({
             activeDropdown === "group" && styles.breadcrumbBtnActive
           )}
           onClick={() => toggleDropdown("group")}
-          title="Выбрать категорию задач React"
           aria-label="Выбрать категорию задач React"
         >
           {currentReactCategory ? (
@@ -131,11 +131,14 @@ export const FinderReactHierarchy = ({
             </div>
             <div className={styles.dropdownList}>
               {reactCategories.map((cat) => {
-                const completedCount = cat.tasks.filter((t) =>
+                const activeCatTasks = cat.tasks.filter(
+                  (t) => !excludedTaskIds.includes(String(t.id))
+                );
+                const completedCount = activeCatTasks.filter((t) =>
                   selectIsTaskCompleted(progressState, t.id)
                 ).length;
                 const completionClass = getGroupCompletionClass(
-                  cat.tasks,
+                  activeCatTasks,
                   reviews,
                   progressState.completedTasks
                 );
@@ -159,7 +162,7 @@ export const FinderReactHierarchy = ({
                     <span className={styles.dropdownItemTitle}>{cat.label}</span>
                     <NodeCount
                       completed={completedCount}
-                      total={cat.tasks.length}
+                      total={activeCatTasks.length}
                       completedClass={completionClass}
                     />
                   </Link>
@@ -183,7 +186,6 @@ export const FinderReactHierarchy = ({
                 activeDropdown === "task" && styles.breadcrumbBtnActive
               )}
               onClick={() => toggleDropdown("task")}
-              title="Выбрать другую задачу из этого раздела"
               aria-label="Выбрать другую задачу из этого раздела"
             >
               <FileText size={14} className={styles.fileIcon} />
@@ -207,6 +209,7 @@ export const FinderReactHierarchy = ({
                     const isUnsolved =
                       progressState.completedTasks[t.id] === "unsolved" ||
                       progressState.completedTasks[String(t.id)] === "unsolved";
+                    const isExcluded = excludedTaskIds.includes(String(t.id));
                     const rev = reviews[String(t.id)];
                     const isDueToday = isTaskDue(rev);
                     const isActive = t.id === currentTask.id;
@@ -214,7 +217,8 @@ export const FinderReactHierarchy = ({
                       isSolved,
                       isUnsolved,
                       t.difficulty,
-                      rev?.rating
+                      rev?.rating,
+                      isExcluded
                     );
 
                     return (
@@ -229,19 +233,27 @@ export const FinderReactHierarchy = ({
                         <span className={clsx(styles.dropdownItemTitle, ratingClass)}>
                           {t.title}
                         </span>
-                        {isDueToday ? (
-                          <span className={styles.statusDue} title="Пора повторить!">
-                            <RotateCcw size={10} />
-                          </span>
-                        ) : isSolved ? (
-                          <span className={styles.statusSolved} title="Решено">
-                            <Check size={12} />
-                          </span>
-                        ) : isUnsolved ? (
-                          <span className={styles.statusUnsolved} title="Не решено">
-                            <X size={12} />
-                          </span>
-                        ) : null}
+                        {!isExcluded && (
+                          isDueToday ? (
+                            <Tooltip content="Пора повторить!" side="left">
+                              <span className={styles.statusDue}>
+                                <RotateCcw size={10} />
+                              </span>
+                            </Tooltip>
+                          ) : isSolved ? (
+                            <Tooltip content="Решено" side="left">
+                              <span className={styles.statusSolved}>
+                                <Check size={12} />
+                              </span>
+                            </Tooltip>
+                          ) : isUnsolved ? (
+                            <Tooltip content="Не решено" side="left">
+                              <span className={styles.statusUnsolved}>
+                                <X size={12} />
+                              </span>
+                            </Tooltip>
+                          ) : null
+                        )}
                       </Link>
                     );
                   })}

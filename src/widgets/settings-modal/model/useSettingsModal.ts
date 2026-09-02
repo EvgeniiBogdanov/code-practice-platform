@@ -15,6 +15,7 @@ export const useSettingsModal = () => {
   const resetUISettings = useUIStore((state) => state.resetUISettings);
   const handleFullReset = useProgressStore((state) => state.handleFullReset);
   const handleResetReviews = useReviewStore((state) => state.handleResetReviews);
+  const resetAssistantName = useReviewStore((state) => state.resetAssistantName);
   const { activeSection, sectionName, currentSectionTasks } = useSettingsActiveSection();
 
   const handleKeyDown = useCallback(
@@ -58,6 +59,7 @@ export const useSettingsModal = () => {
   const handleResetAllData = async () => {
     await handleFullReset("all");
     await handleResetReviews("all");
+    await resetAssistantName();
     resetUISettings();
     setResetAllConfirmOpen(false);
   };

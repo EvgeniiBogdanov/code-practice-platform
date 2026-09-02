@@ -1,11 +1,11 @@
-// Парсер и сериализатор Query String
-// Напишите функции parseQueryString(url) и stringifyQuery(obj).
+// Парсер и сериализатор строки запроса (Query String)
+// Напишите функции parseQueryString(url) и stringifyQuery(params).
 
 const parseQueryString = (url) => {
   // Решение тут
 };
 
-const stringifyQuery = (obj) => {
+const stringifyQuery = (params) => {
   // Решение тут
 };
 

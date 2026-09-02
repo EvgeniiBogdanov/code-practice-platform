@@ -57,67 +57,43 @@
 .variant-medium,
 .variant-yellow,
 .variant-ts {
-  background-color: var(--accent-orange-bg, rgba(245, 158, 11, 0.15));
-  color: var(--accent-orange, #f59e0b);
-}
-
-[data-theme="light"] .variant-medium,
-[data-theme="light"] .variant-yellow,
-[data-theme="light"] .variant-ts {
-  background-color: var(--accent-orange-bg, #fffbeb);
-  color: var(--accent-orange, #d97706);
+  background-color: var(--accent-yellow-bg);
+  color: var(--accent-yellow);
 }
 
 .variant-easy,
 .variant-green {
-  background-color: var(--accent-green-bg, rgba(16, 185, 129, 0.15));
-  color: var(--accent-green, #10b981);
-}
-
-[data-theme="light"] .variant-easy,
-[data-theme="light"] .variant-green {
-  background-color: var(--accent-green-bg, #ecfdf5);
-  color: var(--accent-green, #059669);
+  background-color: var(--accent-green-bg);
+  color: var(--accent-green);
 }
 
 .variant-hard,
 .variant-red {
-  background-color: var(--accent-red-bg, rgba(239, 68, 68, 0.15));
-  color: var(--accent-red, #ef4444);
-}
-
-[data-theme="light"] .variant-hard,
-[data-theme="light"] .variant-red {
-  background-color: var(--accent-red-bg, #fef2f2);
-  color: var(--accent-red, #dc2626);
+  background-color: var(--accent-red-bg);
+  color: var(--accent-red);
 }
 
 .variant-purple {
-  background-color: var(--accent-purple-bg, rgba(168, 85, 247, 0.15));
-  color: var(--accent-purple, #a855f7);
-}
-
-[data-theme="light"] .variant-purple {
-  background-color: var(--accent-purple-bg, #faf5ff);
-  color: var(--accent-purple, #9333ea);
+  background-color: var(--accent-purple-bg);
+  color: var(--accent-purple);
 }
 
 .variant-blue {
-  background-color: var(--accent-blue-bg, rgba(35, 131, 226, 0.15));
-  color: var(--accent-blue, #2383e2);
+  background-color: var(--accent-blue-bg);
+  color: var(--accent-blue);
 }
 
-[data-theme="light"] .variant-blue {
-  background-color: var(--accent-blue-bg, rgba(0, 102, 204, 0.1));
-  color: var(--accent-blue, #0066cc);
+.variant-orange {
+  background-color: var(--accent-orange-bg);
+  color: var(--accent-orange);
+}
+
+.variant-cyan {
+  background-color: var(--accent-cyan-bg);
+  color: var(--accent-cyan);
 }
 
 .variant-gray {
-  background-color: var(--state-hover, rgba(255, 255, 255, 0.08));
-  color: var(--text-muted, #94a3b8);
-}
-
-[data-theme="light"] .variant-gray {
-  background-color: var(--state-hover, rgba(55, 53, 47, 0.08));
-  color: var(--text-muted, rgba(55, 53, 47, 0.65));
+  background-color: var(--accent-gray-bg);
+  color: var(--accent-gray);
 }

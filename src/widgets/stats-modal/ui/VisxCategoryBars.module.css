@@ -72,8 +72,8 @@
 }
 
 .pctBadge.done {
-  background: rgba(16, 185, 129, 0.12);
-  color: #10b981;
+  background: var(--accent-green-bg);
+  color: var(--accent-green);
 }
 
 .barSvgWrap {

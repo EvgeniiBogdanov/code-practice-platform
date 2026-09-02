@@ -41,7 +41,6 @@ export const TaskButton = forwardRef<HTMLButtonElement, TaskButtonProps>(
       ...(accentColor
         ? ({
             "--task-btn-accent": accentColor,
-            "--task-btn-hover-bg": `${accentColor}18`,
           } as React.CSSProperties)
         : {}),
       ...style,

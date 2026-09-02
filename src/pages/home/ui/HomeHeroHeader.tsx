@@ -11,13 +11,13 @@ export const HomeHeroHeader = memo(({ grandTotal }: HomeHeroHeaderProps) => {
     <div className={styles.pageHeader}>
       <div className={styles.titleRow}>
         <h1 className={styles.mainTitle}>Code Practice Platform</h1>
-        <span className={styles.versionTag}>v{APP_VERSION || "2.2.8"}</span>
+        <span className={styles.versionTag}>v{APP_VERSION || "2.3.4"}</span>
       </div>
       <p className={styles.subtitle}>
         Интерактивная платформа для подготовки к техническим собеседованиям и практики решения задач
-        ({grandTotal > 0 ? `${grandTotal} задач` : "280+ задач"}). Встроенный редактор кода с
-        анализом типов, песочница кандидата, живой запуск React и интерактивная веб-консоль, умное
-        интервальное повторение и эталонные решения.
+        ({grandTotal > 0 ? `${grandTotal} задач` : "330+ задач"}). Встроенный редактор кода с
+        анализом типов, песочница кандидата, живой запуск React 19, умный интервальный помощник,
+        оценка вероятности на интервью и эталонные решения.
       </p>
     </div>
   );

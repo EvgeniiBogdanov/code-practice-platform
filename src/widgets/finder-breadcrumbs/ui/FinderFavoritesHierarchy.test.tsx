@@ -9,7 +9,7 @@ describe("FinderFavoritesHierarchy", () => {
     const { container } = render(<FinderFavoritesHierarchy />);
 
     expect(screen.getByText("Избранное")).toBeInTheDocument();
-    expect(screen.getByTitle("Избранные задачи")).toBeInTheDocument();
+    expect(screen.queryByTitle("Избранные задачи")).not.toBeInTheDocument();
 
     const svg = container.querySelector("svg");
     expect(svg).toBeInTheDocument();

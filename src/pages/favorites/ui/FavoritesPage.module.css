@@ -317,15 +317,19 @@
 .emptyLink {
   margin-top: var(--space-2);
   padding: var(--space-2) var(--space-4);
-  color: var(--text-on-accent);
+  color: var(--accent-blue);
+  background: var(--accent-blue-bg);
+  border: none;
   border-radius: var(--radius-lg);
   font-size: var(--fs-body-sm);
   font-weight: var(--fw-medium);
   text-decoration: none;
+  transition: all var(--transition-fast);
 }
 
 .emptyLink:hover {
-  background: var(--accent-gray-bg);
+  background: var(--accent-blue-border);
+  color: var(--accent-blue-hover);
 }
 
 @media (max-width: 768px) {

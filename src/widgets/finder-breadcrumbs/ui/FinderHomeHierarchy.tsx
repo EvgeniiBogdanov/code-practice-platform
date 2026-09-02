@@ -11,7 +11,6 @@ export const FinderHomeHierarchy = () => {
         <button
           type="button"
           className={clsx(styles.breadcrumbBtn, styles.staticItem)}
-          title="Обзор платформы"
         >
           <BookOpen size={14} className={styles.iconMuted} />
           <span className={styles.itemText}>Обзор платформы</span>

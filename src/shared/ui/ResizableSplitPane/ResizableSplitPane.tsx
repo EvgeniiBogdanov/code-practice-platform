@@ -1,5 +1,6 @@
 import React, { memo, useState, useRef, useCallback, useEffect } from "react";
 import { clsx } from "clsx";
+import { Tooltip } from "../Tooltip";
 import styles from "./ResizableSplitPane.module.css";
 
 export interface ResizableSplitPaneProps {
@@ -153,28 +154,32 @@ export const ResizableSplitPane = memo(
           {left}
         </div>
 
-        <div
-          role="separator"
-          tabIndex={disabled ? -1 : 0}
-          aria-label={ariaLabel}
-          aria-orientation="vertical"
-          aria-valuenow={Math.round(localRatio)}
-          aria-valuemin={minLeftPercent}
-          aria-valuemax={maxLeftPercent}
-          className={styles.resizer}
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-          onPointerCancel={handlePointerUp}
-          onDoubleClick={handleDoubleClick}
-          onKeyDown={handleKeyDown}
-          title="Потяните для изменения пропорции (двойной клик — сброс 70/30)"
+        <Tooltip
+          content="Потяните для изменения пропорции (двойной клик — сброс 70/30)"
+          side="top"
         >
-          <div className={styles.resizerBar} />
-          <div className={styles.resizerGrip}>
-            <div className={styles.gripDots} />
+          <div
+            role="separator"
+            tabIndex={disabled ? -1 : 0}
+            aria-label={ariaLabel}
+            aria-orientation="vertical"
+            aria-valuenow={Math.round(localRatio)}
+            aria-valuemin={minLeftPercent}
+            aria-valuemax={maxLeftPercent}
+            className={styles.resizer}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onPointerCancel={handlePointerUp}
+            onDoubleClick={handleDoubleClick}
+            onKeyDown={handleKeyDown}
+          >
+            <div className={styles.resizerBar} />
+            <div className={styles.resizerGrip}>
+              <div className={styles.gripDots} />
+            </div>
           </div>
-        </div>
+        </Tooltip>
 
         <div className={clsx(styles.pane, styles.rightPane)}>{right}</div>
 

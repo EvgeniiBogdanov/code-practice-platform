@@ -2,6 +2,7 @@ import React from "react";
 import { Clock } from "lucide-react";
 import { clsx } from "clsx";
 import { useReviewStore, selectDueTasksCount } from "@/entities/review";
+import { Tooltip } from "@/shared/ui";
 import styles from "./DueTasksBadge.module.css";
 
 export interface DueTasksBadgeProps {
@@ -17,16 +18,20 @@ export const DueTasksBadge = ({
 
   if (dueCount === 0) return null;
 
+  const tooltipText = `${dueCount} задач ожидают повторения сегодня`;
+
   return (
-    <button
-      type="button"
-      className={clsx(styles.badge, className)}
-      onClick={onClick}
-      title={`${dueCount} задач ожидают повторения сегодня`}
-    >
-      <Clock size={12} />
-      <span>Повторить: {dueCount}</span>
-    </button>
+    <Tooltip content={tooltipText} side="bottom">
+      <button
+        type="button"
+        className={clsx(styles.badge, className)}
+        onClick={onClick}
+        aria-label={tooltipText}
+      >
+        <Clock size={12} />
+        <span>Повторить: {dueCount}</span>
+      </button>
+    </Tooltip>
   );
 };
 

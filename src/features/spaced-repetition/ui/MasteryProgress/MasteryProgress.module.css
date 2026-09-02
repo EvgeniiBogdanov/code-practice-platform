@@ -58,7 +58,7 @@
 
 .segLearning {
   width: var(--seg-width, 0%);
-  background-color: #a855f7;
+  background-color: var(--color-mastery-learning);
   transition: width var(--transition-standard);
 }
 
@@ -77,7 +77,7 @@
 }
 
 .valPurple {
-  color: #a855f7;
+  color: var(--accent-purple);
 }
 
 .valWarning {

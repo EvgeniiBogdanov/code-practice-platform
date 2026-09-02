@@ -2,7 +2,7 @@ import { memo } from "react";
 import { Sparkles } from "lucide-react";
 import { clsx } from "clsx";
 import { MasteryStats } from "@/entities/review";
-import { VisxMasteryPie } from "../VisxMasteryPie";
+import { MasteryDistributionPie } from "../MasteryDistributionPie";
 import styles from "./SpacedRepetitionSection.module.css";
 
 interface SpacedRepetitionDistributionTabProps {
@@ -17,7 +17,7 @@ export const SpacedRepetitionDistributionTab = memo(
     return (
       <div className={styles.distributionView}>
         <div className={styles.chartCol}>
-          <VisxMasteryPie masteryStats={masteryStats} height={210} />
+          <MasteryDistributionPie masteryStats={masteryStats} height={210} />
         </div>
 
         <div className={styles.legendCol}>
@@ -64,7 +64,7 @@ export const SpacedRepetitionDistributionTab = memo(
           {!hasReviews && (
             <div className={styles.onboardingHint}>
               <div className={styles.onboardingHintTitle}>
-                <Sparkles size={13} style={{ color: "var(--accent-blue, #3b82f6)" }} />
+                <Sparkles size={13} className={styles.sparklesIcon} aria-hidden="true" />
                 <span>Как включить задачи в график:</span>
               </div>
               <div className={styles.onboardingHintText}>

@@ -1,10 +1,10 @@
-// Проверка возраста и отклонение промиса
-// Напишите функцию checkAge(age), возвращающую Promise.
+// Обработка отклонения промиса через catch
+// Напишите функцию getRejectedPromise(reason), возвращающую отклоненный промис с переданной причиной reason.
 
-const checkAge = (age) => {
+const getRejectedPromise = (reason) => {
   // Решение тут
 };
 
 // Пример вызова:
-checkAge(15).catch(console.error); // "Доступ запрещён"
-checkAge(20).then(console.log);    // "Доступ разрешён"
+getRejectedPromise(new Error("Ошибка сервера"))
+  .catch((err) => console.log("Поймано:", err.message));

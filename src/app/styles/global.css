@@ -163,21 +163,21 @@ body.is-resizing-sidebar iframe {
 }
 
 .hl-multi-selected {
-  background-color: rgba(38, 79, 120, 0.85) !important;
-  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.6);
+  background-color: var(--editor-selection-bg, rgba(88, 166, 255, 0.28)) !important;
+  box-shadow: 0 0 0 1px var(--accent-blue) !important;
   border-radius: var(--radius-xs);
-  color: #ffffff !important;
+  color: inherit !important;
 }
 
 [data-theme="light"] .hl-multi-selected {
-  background-color: rgba(0, 102, 204, 0.22) !important;
-  box-shadow: 0 0 0 1px rgba(0, 102, 204, 0.5);
+  background-color: var(--editor-selection-bg, rgba(8, 96, 196, 0.16)) !important;
+  box-shadow: 0 0 0 1px var(--accent-blue) !important;
   color: inherit !important;
 }
 
 .hl-bracket-match {
-  background-color: rgba(35, 131, 226, 0.3);
-  box-shadow: 0 0 0 1px rgba(35, 131, 226, 0.8);
+  background-color: var(--accent-blue-bg);
+  box-shadow: 0 0 0 1px var(--accent-blue);
   border-radius: var(--radius-xs);
 }
 
@@ -193,21 +193,6 @@ body.is-resizing-sidebar iframe {
 
 .hl-unused-dimmed {
   opacity: 0.45;
-}
-
-[data-theme="light"] .hl-bracket-match {
-  background-color: rgba(0, 122, 204, 0.22);
-  box-shadow: 0 0 0 1px rgba(0, 122, 204, 0.65);
-}
-
-[data-theme="light"] .hl-squiggly-error {
-  text-decoration: underline wavy #e51400 1.5px;
-  text-underline-offset: 3px;
-}
-
-[data-theme="light"] .hl-squiggly-warning {
-  text-decoration: underline wavy #bf8803 1.5px;
-  text-underline-offset: 3px;
 }
 
 /* ==========================================================================
@@ -277,8 +262,8 @@ body.is-resizing-sidebar iframe {
   font-size: var(--fs-inline-code);
   font-weight: var(--fw-regular);
   line-height: var(--lh-tight);
-  background: rgba(135, 131, 120, 0.15);
-  color: #eb5757;
+  background: var(--code-inline-bg);
+  color: var(--code-inline-text);
   padding: 2px 6px;
   border-radius: 4px;
   white-space: pre-wrap;
@@ -310,7 +295,7 @@ body.is-resizing-sidebar iframe {
   gap: 12px;
   align-items: flex-start;
   padding: 14px 16px;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--bg-subtle);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   margin: 12px 0;
@@ -319,24 +304,19 @@ body.is-resizing-sidebar iframe {
   font-family: var(--font-sans);
 }
 
-[data-theme="light"] .callout-box {
-  background: rgba(55, 53, 47, 0.05);
-  border-color: var(--border-color);
-}
-
 .callout-box.callout-tip {
   background: var(--accent-green-bg);
-  border-color: rgba(16, 185, 129, 0.25);
+  border-color: var(--accent-green-border);
 }
 
 .callout-box.callout-warning {
   background: var(--accent-orange-bg);
-  border-color: rgba(245, 158, 11, 0.25);
+  border-color: var(--accent-orange-border);
 }
 
 .callout-box.callout-important {
   background: var(--accent-purple-bg);
-  border-color: rgba(168, 85, 247, 0.25);
+  border-color: var(--accent-purple-border);
 }
 
 /* Markdown Tables */

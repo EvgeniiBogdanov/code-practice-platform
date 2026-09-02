@@ -13,7 +13,8 @@ export interface SidebarReactListProps {
 
 export const SidebarReactList = ({ className }: SidebarReactListProps): React.JSX.Element => {
   useSidebarSync();
-  const { currentTaskId, completedTasks, reviews, uiState, completedTotal, tasks } = useSidebarReactList();
+  const { currentTaskId, completedTasks, reviews, uiState, completedTotal, totalCount, tasks } =
+    useSidebarReactList();
 
   const categories = useMemo(() => getReactCategories(uiState, tasks), [uiState, tasks]);
 
@@ -21,7 +22,7 @@ export const SidebarReactList = ({ className }: SidebarReactListProps): React.JS
     <div className={clsx(styles.listContainer, className)}>
       <SidebarProgressCard
         completedCount={completedTotal}
-        totalCount={tasks.length}
+        totalCount={totalCount}
         sectionType="react"
       >
         <SidebarQuickActions section="react" currentTaskId={currentTaskId} />

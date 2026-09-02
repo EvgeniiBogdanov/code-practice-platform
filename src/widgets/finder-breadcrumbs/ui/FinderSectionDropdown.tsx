@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { ChevronDown } from "lucide-react";
 import { clsx } from "clsx";
 import { SECTIONS_CONFIG, SECTIONS_LIST } from "@/entities/task";
+import { Tooltip } from "@/shared/ui";
 import { FinderSectionDropdownProps } from "../model/types";
 import styles from "./FinderBreadcrumbs.module.css";
 
@@ -17,20 +18,25 @@ export const FinderSectionDropdown = ({
 
   return (
     <div className={styles.dropdownWrapper}>
-      <button
-        type="button"
-        className={clsx(
-          styles.breadcrumbBtn,
-          activeDropdown === "section" && styles.breadcrumbBtnActive
-        )}
-        onClick={() => toggleDropdown("section")}
-        title="Переключить раздел практики"
-        aria-label="Переключить раздел практики"
+      <Tooltip
+        content="Переключить раздел практики"
+        side="bottom"
+        disabled={activeDropdown === "section"}
       >
-        <SectionIcon size={15} className={styles[`icon_${section}`]} />
-        <span className={styles.itemText}>{sectionMeta.title}</span>
-        <ChevronDown size={13} className={styles.chevron} />
-      </button>
+        <button
+          type="button"
+          className={clsx(
+            styles.breadcrumbBtn,
+            activeDropdown === "section" && styles.breadcrumbBtnActive
+          )}
+          onClick={() => toggleDropdown("section")}
+          aria-label="Переключить раздел практики"
+        >
+          <SectionIcon size={15} className={styles[`icon_${section}`]} />
+          <span className={styles.itemText}>{sectionMeta.title}</span>
+          <ChevronDown size={13} className={styles.chevron} />
+        </button>
+      </Tooltip>
 
       {activeDropdown === "section" && (
         <div className={styles.dropdownMenu}>

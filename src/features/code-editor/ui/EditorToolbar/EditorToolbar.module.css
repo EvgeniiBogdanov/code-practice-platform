@@ -3,19 +3,14 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 6px;
-  background: #181818;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-editor-status);
+  border-bottom: 1px solid var(--border-editor);
   height: 30px;
   min-height: 30px;
   gap: 8px;
   user-select: none;
   overflow: hidden;
   border-radius: var(--radius-md, 8px) var(--radius-md, 8px) 0 0;
-}
-
-[data-theme="light"] .toolbar {
-  background: var(--bg-sidebar, #f7f6f3);
-  border-bottom-color: var(--border-color, rgba(55, 53, 47, 0.12));
 }
 
 .left {
@@ -53,13 +48,9 @@
   height: 24px;
   font-family: var(--font-mono);
   font-size: 11.5px;
-  color: var(--text-main, #e2e8f0);
+  color: var(--text-main);
   user-select: none;
   white-space: nowrap;
-}
-
-[data-theme="light"] .singleFile {
-  color: var(--text-main, #37352f);
 }
 
 .fileTab {
@@ -74,7 +65,7 @@
   font-size: 11.5px;
   font-weight: 500;
   line-height: 1;
-  color: var(--text-muted, rgba(255, 255, 255, 0.6));
+  color: var(--text-muted);
   background: transparent;
   border: none;
   border-radius: 4px;
@@ -89,30 +80,15 @@
 }
 
 .fileTab:hover {
-  color: var(--text-main, #ffffff);
-  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-main);
+  background: var(--state-hover);
 }
 
 .fileTab.active {
-  color: var(--text-main, #ffffff);
-  background: var(--bg-card, #2b2b2c);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  color: var(--text-main);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
   font-weight: 500;
-}
-
-[data-theme="light"] .fileTab {
-  color: var(--text-muted, rgba(55, 53, 47, 0.68));
-}
-
-[data-theme="light"] .fileTab:hover {
-  color: var(--text-main, #37352f);
-  background: var(--state-hover, rgba(55, 53, 47, 0.06));
-}
-
-[data-theme="light"] .fileTab.active {
-  color: var(--text-main, #37352f);
-  background: #ffffff;
-  box-shadow: 0 1px 3px rgba(55, 53, 47, 0.1);
 }
 
 .fileTabName {
@@ -126,42 +102,42 @@
 }
 
 .fileIconJsx {
-  color: #f59e0b;
+  color: var(--icon-file-js);
   flex-shrink: 0;
 }
 
 .fileIconTsx {
-  color: #3178c6;
+  color: var(--icon-file-ts);
   flex-shrink: 0;
 }
 
 .fileIconReact {
-  color: #f59e0b;
+  color: var(--icon-file-react);
   flex-shrink: 0;
 }
 
 .fileIconTs {
-  color: #3178c6;
+  color: var(--icon-file-ts);
   flex-shrink: 0;
 }
 
 .fileIconJs {
-  color: #f59e0b;
+  color: var(--icon-file-js);
   flex-shrink: 0;
 }
 
 .fileIconCss {
-  color: #38bdf8;
+  color: var(--icon-file-css);
   flex-shrink: 0;
 }
 
 .fileIconHtml {
-  color: #e34c26;
+  color: var(--icon-file-html);
   flex-shrink: 0;
 }
 
 .fileIconJson {
-  color: #a855f7;
+  color: var(--icon-file-json);
   flex-shrink: 0;
 }
 
@@ -175,7 +151,7 @@
 }
 
 .copiedCheck {
-  color: var(--color-success, #10b981);
+  color: var(--color-success);
 }
 
 .fontSizeLabel {

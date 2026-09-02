@@ -35,8 +35,8 @@
   height: 16px;
   min-width: 16px;
   min-height: 16px;
-  border-radius: 3px;
-  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  border-radius: var(--radius-sm, 3px);
+  border: 1.5px solid var(--border-strong);
   background: transparent;
   transition:
     background-color 0.12s ease,
@@ -48,51 +48,42 @@
 }
 
 .checkboxRow:hover:not(.disabled) .customBox {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.65);
+  background: var(--state-hover);
+  border-color: var(--accent-blue);
 }
 
 .checkboxRow:active:not(.disabled) .customBox {
   transform: scale(0.92);
 }
 
-[data-theme="light"] .customBox {
-  border-color: rgba(55, 53, 47, 0.35);
-}
-
-[data-theme="light"] .checkboxRow:hover:not(.disabled) .customBox {
-  background: rgba(55, 53, 47, 0.08);
-  border-color: rgba(55, 53, 47, 0.65);
-}
-
 /* Checked States */
 .color-blue.checked .customBox {
-  background: #2383e2 !important;
-  border-color: #2383e2 !important;
-  color: #ffffff;
+  background: var(--accent-blue) !important;
+  border-color: var(--accent-blue) !important;
+  color: var(--text-on-accent);
 }
 
 .color-green.checked .customBox {
-  background: #10b981 !important;
-  border-color: #10b981 !important;
-  color: #ffffff;
+  background: var(--accent-green) !important;
+  border-color: var(--accent-green) !important;
+  color: var(--text-on-accent);
 }
 
 .color-purple.checked .customBox {
-  background: #a855f7 !important;
-  border-color: #a855f7 !important;
-  color: #ffffff;
+  background: var(--accent-purple) !important;
+  border-color: var(--accent-purple) !important;
+  color: var(--text-on-accent);
 }
 
 /* Keyboard Focus Ring */
 .nativeInput:focus-visible + .customBox {
-  outline: 2px solid var(--accent-blue, #2383e2);
+  outline: 2px solid var(--accent-blue);
   outline-offset: 2px;
 }
 
 /* Checkmark Icon */
 .checkIcon {
-  color: #ffffff;
+  color: var(--text-on-accent);
   width: 12px;
   height: 12px;
   stroke-width: 3;
@@ -103,7 +94,7 @@
 .label {
   font-size: 14px;
   line-height: 1.5;
-  color: var(--text-main, #ffffff);
+  color: var(--text-main);
   font-family: var(--font-sans);
   transition:
     color 0.15s ease,
@@ -112,18 +103,10 @@
   min-width: 0;
 }
 
-[data-theme="light"] .label {
-  color: #191919;
-}
-
 /* Strikethrough & Muted on Checked */
 .checked .strikethrough {
   text-decoration: line-through;
-  color: var(--text-muted, rgba(255, 255, 255, 0.45));
-}
-
-[data-theme="light"] .checked .strikethrough {
-  color: rgba(55, 53, 47, 0.45);
+  color: var(--text-muted);
 }
 
 /* Sizes */

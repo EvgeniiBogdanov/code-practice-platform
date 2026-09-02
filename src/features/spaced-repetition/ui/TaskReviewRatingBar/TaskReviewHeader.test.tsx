@@ -3,7 +3,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import { TaskReviewHeader } from "./TaskReviewHeader";
-import { ReviewItem, ReviewBadgeMeta } from "@/entities/review";
+import { ReviewItem, ReviewBadgeMeta, useReviewStore } from "@/entities/review";
 
 describe("TaskReviewHeader", () => {
   beforeEach(() => {
@@ -45,17 +45,8 @@ describe("TaskReviewHeader", () => {
       />
     );
 
-    expect(screen.getByText(/Интервальное повторение/i)).toBeInTheDocument();
-    expect(screen.getByText(/Следующее повторение:/i)).toBeInTheDocument();
+    expect(screen.getByText(/Интервальный помощник/i)).toBeInTheDocument();
     expect(screen.getByText(/Через 7 дней/i)).toBeInTheDocument();
-    expect(
-      screen.getByText(/В день повторения решение автоматически сбросится до чистого шаблона/i)
-    ).toBeInTheDocument();
-
-    const descElement = screen.getByText(/Следующее повторение:/i).closest("span");
-    expect(descElement).toHaveTextContent(
-      "Следующее повторение: Через 7 дней. В день повторения решение автоматически сбросится до чистого шаблона"
-    );
   });
 
   it("renders due review description when canRate is true and review exists", () => {
@@ -86,7 +77,9 @@ describe("TaskReviewHeader", () => {
       />
     );
 
-    expect(screen.getByText(/Пора повторить задачу!/i)).toBeInTheDocument();
+    expect(screen.getByText(/Интервальный помощник/i)).toBeInTheDocument();
+    expect(screen.getByText(/Пора повторить/i)).toBeInTheDocument();
+    expect(screen.getByText(/оцени/i)).toBeInTheDocument();
   });
 
   it("renders initial rating description for new tasks", () => {
@@ -108,7 +101,50 @@ describe("TaskReviewHeader", () => {
     );
 
     expect(
-      screen.getByText(/Оцените сложность решения для составления персонального графика повторений:/i)
+      screen.getByText(/Оцени сложность задачи, а я рассчитаю оптимальный интервал для повторения:/i)
     ).toBeInTheDocument();
+  });
+
+  it("renders unsolved state with support message and without badge when isUnsolved is true", () => {
+    render(
+      <TaskReviewHeader
+        taskReview={null}
+        canRate={false}
+        isUnsolved={true}
+      />
+    );
+
+    expect(screen.getByText(/Интервальный помощник/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Не решено/i)).not.toBeInTheDocument();
+  });
+
+  it("renders excluded message without any status badge when isExcluded is true", () => {
+    render(
+      <TaskReviewHeader
+        taskReview={null}
+        canRate={false}
+        isExcluded={true}
+      />
+    );
+
+    expect(screen.getByText(/Интервальный помощник/i)).toBeInTheDocument();
+    expect(screen.getByText("Задача исключена из цикла повторений")).toBeInTheDocument();
+    expect(screen.queryByText(/^Исключена$/i)).not.toBeInTheDocument();
+  });
+
+  it("renders custom assistant name when configured in review store", () => {
+    useReviewStore.setState({ assistantName: "Кибер-Наставник" });
+
+    render(
+      <TaskReviewHeader
+        taskReview={null}
+        canRate={false}
+      />
+    );
+
+    expect(screen.getByText("Кибер-Наставник")).toBeInTheDocument();
+    expect(screen.queryByText("Интервальный помощник")).not.toBeInTheDocument();
+
+    useReviewStore.setState({ assistantName: "Интервальный помощник" });
   });
 });

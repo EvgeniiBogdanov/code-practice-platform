@@ -1,8 +1,8 @@
 import { SectionType } from "../types";
 
 export const CURRICULUM_COUNTS: Record<SectionType, number> = {
-  javascript: 203,
-  react: 68,
+  javascript: 226,
+  react: 70,
   algorithms: 34,
 };
 

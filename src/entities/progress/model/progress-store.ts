@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import {
   migrateFromLocalStorageIfNeeded,
-  getCompletedTasksFromDB,
+  getCompletedTasksWithTimestampsFromDB,
   saveTaskStatusToDB,
   removeTaskStatusesFromDB,
   getChecklistStateFromDB,
@@ -16,6 +16,7 @@ import { ProgressState, TaskCompletionStatus } from "../types";
 
 export const useProgressStore = create<ProgressState>((set, get) => ({
   completedTasks: {},
+  taskStatusTimestamps: {},
   checklistState: {},
   copiedCodeId: null,
   isInitialized: false,
@@ -26,13 +27,14 @@ export const useProgressStore = create<ProgressState>((set, get) => ({
     requestPersistentStorage();
     await migrateFromLocalStorageIfNeeded();
 
-    const [tasks, checklist] = await Promise.all([
-      getCompletedTasksFromDB(),
+    const [{ tasks, timestamps }, checklist] = await Promise.all([
+      getCompletedTasksWithTimestampsFromDB(),
       getChecklistStateFromDB(),
     ]);
 
     set({
       completedTasks: (tasks as unknown as Record<string, TaskCompletionStatus>) || {},
+      taskStatusTimestamps: timestamps || {},
       checklistState: checklist || {},
       isInitialized: true,
     });
@@ -41,12 +43,17 @@ export const useProgressStore = create<ProgressState>((set, get) => ({
       if (event.type === "TASK_STATUS_CHANGED" && event.taskId) {
         set((state) => {
           const updated = { ...state.completedTasks };
+          const updatedTimestamps = { ...state.taskStatusTimestamps };
+          const id = String(event.taskId);
           if (!event.status) {
-            delete updated[String(event.taskId)];
+            delete updated[id];
+            delete updatedTimestamps[id];
           } else {
-            updated[String(event.taskId)] = event.status as TaskCompletionStatus;
+            updated[id] = event.status as TaskCompletionStatus;
+            updatedTimestamps[id] =
+              typeof event.updatedAt === "number" ? event.updatedAt : Date.now();
           }
-          return { completedTasks: updated };
+          return { completedTasks: updated, taskStatusTimestamps: updatedTimestamps };
         });
       } else if (event.type === "CHECKLIST_CHANGED" && event.key) {
         set((state) => ({
@@ -60,12 +67,18 @@ export const useProgressStore = create<ProgressState>((set, get) => ({
           const idsSet = new Set(event.idsToRemove.map(String));
           set((state) => {
             const updated: Record<string, TaskCompletionStatus> = {};
+            const updatedTimestamps: Record<string, number> = {};
             for (const [id, status] of Object.entries(state.completedTasks)) {
               if (!idsSet.has(String(id))) {
                 updated[id] = status;
               }
             }
-            return { completedTasks: updated };
+            for (const [id, ts] of Object.entries(state.taskStatusTimestamps)) {
+              if (!idsSet.has(String(id))) {
+                updatedTimestamps[id] = ts;
+              }
+            }
+            return { completedTasks: updated, taskStatusTimestamps: updatedTimestamps };
           });
         }
       }
@@ -74,18 +87,22 @@ export const useProgressStore = create<ProgressState>((set, get) => ({
 
   setTaskStatus: async (taskId: string | number, status: TaskCompletionStatus): Promise<void> => {
     const stringId = String(taskId);
+    const now = Date.now();
     set((state) => {
       const updated = { ...state.completedTasks };
+      const updatedTimestamps = { ...state.taskStatusTimestamps };
       if (!status) {
         delete updated[stringId];
+        delete updatedTimestamps[stringId];
       } else {
         updated[stringId] = status;
+        updatedTimestamps[stringId] = now;
       }
-      return { completedTasks: updated };
+      return { completedTasks: updated, taskStatusTimestamps: updatedTimestamps };
     });
 
-    await saveTaskStatusToDB(stringId, status);
-    broadcastSyncEvent("TASK_STATUS_CHANGED", { taskId: stringId, status });
+    await saveTaskStatusToDB(stringId, status, now);
+    broadcastSyncEvent("TASK_STATUS_CHANGED", { taskId: stringId, status, updatedAt: now });
   },
 
   toggleChecklistItem: async (key: string): Promise<void> => {
@@ -137,7 +154,7 @@ export const useProgressStore = create<ProgressState>((set, get) => ({
 
       const allIds = Object.keys(get().completedTasks);
       await removeTaskStatusesFromDB(allIds);
-      set({ completedTasks: {} });
+      set({ completedTasks: {}, taskStatusTimestamps: {} });
       broadcastSyncEvent("PROGRESS_RESET", { idsToRemove: allIds });
     } else if (taskIds.length > 0) {
       const stringIds = taskIds.map(String);
@@ -148,12 +165,18 @@ export const useProgressStore = create<ProgressState>((set, get) => ({
       const idsToRemove = new Set(stringIds);
       set((state) => {
         const updated: Record<string, TaskCompletionStatus> = {};
+        const updatedTimestamps: Record<string, number> = {};
         for (const [id, status] of Object.entries(state.completedTasks)) {
           if (!idsToRemove.has(String(id))) {
             updated[id] = status;
           }
         }
-        return { completedTasks: updated };
+        for (const [id, ts] of Object.entries(state.taskStatusTimestamps)) {
+          if (!idsToRemove.has(String(id))) {
+            updatedTimestamps[id] = ts;
+          }
+        }
+        return { completedTasks: updated, taskStatusTimestamps: updatedTimestamps };
       });
       broadcastSyncEvent("PROGRESS_RESET", { idsToRemove: stringIds });
     }

@@ -1,12 +1,12 @@
-// Паттерн Signal (Реактивное состояние)
-// Реализуйте функцию createSignal(initialValue), возвращающую [get, set, subscribe].
+// Реактивный сигнал (Signal / Observable value)
+// Реализуйте функцию createSignal(initialValue), возвращающую пару [get, set], а также метод effect(fn) для автоматического отслеживания зависимостей.
 
 const createSignal = (initialValue) => {
   // Решение тут
 };
 
 // Пример вызова:
-const [getCount, setCount, subscribe] = createSignal(0);
-subscribe((val) => console.log("Count changed:", val));
-setCount(1); // Count changed: 1
-setCount(2); // Count changed: 2
+const [count, setCount] = createSignal(0);
+console.log(count()); // 0
+setCount(5);
+console.log(count()); // 5

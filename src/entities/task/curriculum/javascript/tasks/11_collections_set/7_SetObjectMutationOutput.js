@@ -1,11 +1,10 @@
-// Мутация объектов внутри Set
-// Что выведет данный код?
+// Что выведет данный код в консоль и почему?
 
-const user = { id: 1, name: "Ann" };
 const set = new Set();
+const user = { name: "Alice" };
 
 set.add(user);
 user.name = "Bob";
 
 console.log(set.has(user));
-console.log([...set]);
+console.log(Array.from(set)[0].name);

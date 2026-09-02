@@ -1,0 +1,21 @@
+.excludeIcon {
+  color: var(--text-muted, #787774);
+  transition: color var(--transition-fast, 0.15s ease), transform var(--transition-fast, 0.15s ease);
+}
+
+.excludeIconActive {
+  color: var(--accent-red);
+}
+
+button:hover .excludeIcon:not(.excludeIconActive),
+button:focus-visible .excludeIcon:not(.excludeIconActive) {
+  color: color-mix(in srgb, var(--accent-red) 70%, var(--text-muted));
+}
+
+.buttonActive {
+  background: var(--accent-red-bg);
+}
+
+.buttonActive:hover {
+  background: var(--accent-red-border);
+}

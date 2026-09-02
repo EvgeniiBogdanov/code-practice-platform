@@ -10,7 +10,7 @@ import { useTaskSection } from "@/entities/task/catalog";
 import { safeDecodeURI } from "@/shared/lib/url";
 import { FinderHierarchyProps } from "../model/types";
 import { getRatingClass } from "../lib/getRatingClass";
-import { NodeCount } from "@/shared/ui";
+import { NodeCount, Tooltip } from "@/shared/ui";
 import styles from "./FinderBreadcrumbs.module.css";
 
 export const FinderAlgoHierarchy = ({
@@ -22,6 +22,7 @@ export const FinderAlgoHierarchy = ({
 }: FinderHierarchyProps) => {
   const progressState = useProgressStore();
   const reviews = useReviewStore((state) => state.reviews);
+  const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
   const { tasks } = useTaskSection("algorithms");
 
   const currentGroupName = useMemo(() => {
@@ -47,13 +48,22 @@ export const FinderAlgoHierarchy = ({
       if (!groupsMap.has(g)) groupsMap.set(g, []);
       groupsMap.get(g)!.push(t);
     });
-    return Array.from(groupsMap.entries()).map(([name, tasks]) => {
-      const completedCount = tasks.filter((t) => selectIsTaskCompleted(progressState, t.id)).length;
-      const completionClass = getGroupCompletionClass(tasks, reviews, progressState.completedTasks);
+    return Array.from(groupsMap.entries()).map(([name, groupTasksList]) => {
+      const activeGroupTasks = groupTasksList.filter(
+        (t) => !excludedTaskIds.includes(String(t.id))
+      );
+      const completedCount = activeGroupTasks.filter((t) =>
+        selectIsTaskCompleted(progressState, t.id)
+      ).length;
+      const completionClass = getGroupCompletionClass(
+        activeGroupTasks,
+        reviews,
+        progressState.completedTasks
+      );
       const meta = getAlgoGroupMeta(name);
-      return { name, tasks, completedCount, completionClass, meta };
+      return { name, tasks: activeGroupTasks, completedCount, completionClass, meta };
     });
-  }, [progressState, reviews, tasks]);
+  }, [progressState, reviews, tasks, excludedTaskIds]);
 
   return (
     <>
@@ -68,7 +78,6 @@ export const FinderAlgoHierarchy = ({
             activeDropdown === "group" && styles.breadcrumbBtnActive
           )}
           onClick={() => toggleDropdown("group")}
-          title="Выбрать группу задач Алгоритмы"
           aria-label="Выбрать группу задач Алгоритмы"
         >
           {currentGroupMeta ? (
@@ -137,7 +146,6 @@ export const FinderAlgoHierarchy = ({
                 activeDropdown === "task" && styles.breadcrumbBtnActive
               )}
               onClick={() => toggleDropdown("task")}
-              title="Выбрать материал из группы"
               aria-label="Выбрать материал из группы"
             >
               <FileText size={14} className={styles.fileIcon} />
@@ -163,6 +171,7 @@ export const FinderAlgoHierarchy = ({
                     const isUnsolved =
                       progressState.completedTasks[t.id] === "unsolved" ||
                       progressState.completedTasks[String(t.id)] === "unsolved";
+                    const isExcluded = excludedTaskIds.includes(String(t.id));
                     const rev = reviews[String(t.id)];
                     const isDueToday = isTaskDue(rev);
                     const isActive = t.id === currentTask.id;
@@ -170,7 +179,8 @@ export const FinderAlgoHierarchy = ({
                       isSolved,
                       isUnsolved,
                       t.difficulty,
-                      rev?.rating
+                      rev?.rating,
+                      isExcluded
                     );
 
                     return (
@@ -185,19 +195,27 @@ export const FinderAlgoHierarchy = ({
                         <span className={clsx(styles.dropdownItemTitle, ratingClass)}>
                           {t.title}
                         </span>
-                        {isDueToday ? (
-                          <span className={styles.statusDue} title="Пора повторить!">
-                            <RotateCcw size={10} />
-                          </span>
-                        ) : isSolved ? (
-                          <span className={styles.statusSolved} title="Решено">
-                            <Check size={12} />
-                          </span>
-                        ) : isUnsolved ? (
-                          <span className={styles.statusUnsolved} title="Не решено">
-                            <X size={12} />
-                          </span>
-                        ) : null}
+                        {!isExcluded && (
+                          isDueToday ? (
+                            <Tooltip content="Пора повторить!" side="left">
+                              <span className={styles.statusDue}>
+                                <RotateCcw size={10} />
+                              </span>
+                            </Tooltip>
+                          ) : isSolved ? (
+                            <Tooltip content="Решено" side="left">
+                              <span className={styles.statusSolved}>
+                                <Check size={12} />
+                              </span>
+                            </Tooltip>
+                          ) : isUnsolved ? (
+                            <Tooltip content="Не решено" side="left">
+                              <span className={styles.statusUnsolved}>
+                                <X size={12} />
+                              </span>
+                            </Tooltip>
+                          ) : null
+                        )}
                       </Link>
                     );
                   })}

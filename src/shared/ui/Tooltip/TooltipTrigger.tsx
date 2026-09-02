@@ -25,6 +25,7 @@ type ChildWithRef = ReactElement<{
   onBlur?: React.FocusEventHandler;
   onPointerDown?: React.PointerEventHandler;
   "aria-describedby"?: string;
+  title?: string;
 }>;
 
 const cloneTriggerElement = (
@@ -58,6 +59,7 @@ const cloneTriggerElement = (
       }
     },
     "aria-describedby": isOpen ? tooltipId : undefined,
+    title: undefined,
     onMouseEnter: (e: React.MouseEvent) => {
       handleOpen();
       child.props.onMouseEnter?.(e);
@@ -124,6 +126,7 @@ export const TooltipTrigger = memo(
         onBlur={handleClose}
         onPointerDown={handleClose}
         {...props}
+        title={undefined}
       >
         {children}
       </span>

@@ -4,10 +4,10 @@
   left: var(--popup-left, 0px);
   z-index: var(--z-modal, 9000);
   max-width: 380px;
-  background-color: var(--bg-card);
+  background-color: var(--bg-popover);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  box-shadow: var(--shadow-lg);
   padding: 8px 12px;
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
@@ -15,12 +15,6 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-}
-
-[data-theme="light"] .card {
-  background-color: #ffffff;
-  border-color: var(--border-color, rgba(55, 53, 47, 0.16));
-  box-shadow: 0 8px 24px rgba(15, 15, 15, 0.15);
 }
 
 .signature {

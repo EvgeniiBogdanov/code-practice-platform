@@ -39,10 +39,16 @@ export interface ReviewTaskItem {
 
 export interface ReviewState {
   reviews: Record<string, ReviewItem>;
+  excludedTaskIds: string[];
+  assistantName: string;
   isInitialized: boolean;
   initReviews: () => Promise<void>;
   submitReview: (taskId: string | number, rating?: ReviewRating) => Promise<void>;
   removeReview: (taskId: string | number) => Promise<void>;
+  toggleExcludeTask: (taskId: string | number) => Promise<void>;
+  isTaskExcluded: (taskId: string | number) => boolean;
+  setAssistantName: (name: string) => Promise<void>;
+  resetAssistantName: () => Promise<void>;
   getDueTasks: <T extends ReviewTaskItem = ReviewTaskItem>(
     customTaskList?: T[]
   ) => Array<T & { reviewData?: ReviewItem }>;

@@ -1,26 +1,28 @@
-// Порядок выполнения async/await и Promise в Event Loop
-// Что выведет данный код?
-
-console.log("1: Script start");
+// Каков будет порядок вывода в консоль и почему?
 
 async function async1() {
-  console.log("2: async1 start");
+  console.log("async1 start");
   await async2();
-  console.log("3: async1 end");
+  console.log("async1 end");
 }
 
 async function async2() {
-  console.log("4: async2");
+  console.log("async2");
 }
+
+console.log("script start");
+
+setTimeout(() => {
+  console.log("setTimeout");
+}, 0);
 
 async1();
 
-setTimeout(() => {
-  console.log("5: setTimeout");
-}, 0);
-
-Promise.resolve().then(() => {
-  console.log("6: promise 1");
+new Promise((resolve) => {
+  console.log("promise1");
+  resolve();
+}).then(() => {
+  console.log("promise2");
 });
 
-console.log("7: Script end");
+console.log("script end");

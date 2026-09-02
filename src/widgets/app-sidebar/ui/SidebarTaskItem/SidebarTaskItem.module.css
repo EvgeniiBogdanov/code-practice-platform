@@ -15,7 +15,7 @@
 }
 
 .fileIcon {
-  color: var(--icon-file, #94a3b8);
+  color: var(--icon-file);
   flex-shrink: 0;
 }
 
@@ -31,40 +31,23 @@
 
 /* Rating / Status Color Gradients */
 .ratingHard {
-  color: #f97316 !important;
+  color: var(--color-rating-hard) !important;
 }
 
 .ratingMedium {
-  color: #eab308 !important;
+  color: var(--color-rating-medium) !important;
 }
 
 .ratingEasy {
-  color: #10b981 !important;
+  color: var(--color-rating-easy) !important;
 }
 
 .ratingUnsolved {
-  color: #ef4444 !important;
-}
-
-/* Light theme colors */
-[data-theme="light"] .ratingHard {
-  color: #ea580c !important;
-}
-
-[data-theme="light"] .ratingMedium {
-  color: #ca8a04 !important;
-}
-
-[data-theme="light"] .ratingEasy {
-  color: #16a34a !important;
-}
-
-[data-theme="light"] .ratingUnsolved {
-  color: #dc2626 !important;
+  color: var(--color-error) !important;
 }
 
 .statusIconSolved {
-  color: #10b981;
+  color: var(--color-status-solved);
   font-size: 12px;
   flex-shrink: 0;
   display: inline-flex;
@@ -75,7 +58,27 @@
 }
 
 .statusIconUnsolved {
-  color: #ef4444;
+  color: var(--color-status-unsolved);
+  font-size: 12px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+}
+
+.taskTitleExcluded {
+  color: var(--text-muted, #787774) !important;
+  opacity: 0.65;
+}
+
+.taskRowExcluded {
+  opacity: 0.7;
+}
+
+.statusIconExcluded {
+  color: var(--text-muted, #787774);
   font-size: 12px;
   flex-shrink: 0;
   display: inline-flex;
@@ -86,7 +89,7 @@
 }
 
 .statusIconDue {
-  color: #eab308;
+  color: var(--color-status-due);
   font-size: 12px;
   flex-shrink: 0;
   display: inline-flex;

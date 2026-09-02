@@ -2,7 +2,7 @@
 
 # <img src="public/favicon.svg" width="22" height="22" alt="" /> Code Practice Platform
 
-<sub><span style="color:gray">version: 2.3.3</span></sub>
+<sub><span style="color:gray">version: 2.3.4</span></sub>
 
 ### Интерактивная платформа для подготовки к техническим собеседованиям по фронтенду и алгоритмам
 
@@ -40,32 +40,42 @@
 <table>
   <tr>
     <td width="50%" valign="top">
-      <h3>🎯 300+ задач с реальных интервью</h3>
-      <p>Обширная база задач по <b>React + TypeScript</b>, <b>JavaScript</b> (от замыканий и Event Loop до кастомных промисов) и <b>алгоритмам</b>. Эталонные решения с оценкой <code>O(N)</code> / <code>O(1)</code>, поиск багов и чеклисты самопроверки.</p>
+      <h3>🎯 330+ задач с реальных интервью</h3>
+      <p>Специализированный каталог задач по <b>JavaScript</b> (объекты, замыкания, Event Loop, асинхронность, полифилы), <b>React 19 + TypeScript</b> и <b>алгоритмам</b>. Эталонные решения O(N) / O(1), вариативность подходов и чеклисты самопроверки.</p>
     </td>
     <td width="50%" valign="top">
-      <h3>🧠 Интервальное повторение (SM-2)</h3>
-      <p>Адаптированный алгоритм интервального закрепления (<code>1д → 3д → 7д → 14д → 30д → 60+д</code> / Мастер) с учётом таймзон, автоматическим сбросом решений в день повтора и шкалой освоения.</p>
+      <h3>📈 Индекс вероятности & мета-бейджи</h3>
+      <p>Оценка вероятности встретить задачу на live coding для Middle/Senior (BigTech, FinTech, E-commerce) с круговым <b>Gauge-индикатором</b> и системой смысловых тегов (алгоритм, паттерн, полифил, утилита).</p>
     </td>
   </tr>
   <tr>
+    <td width="50%" valign="top">
+      <h3>🤖 Интервальный помощник & SM-2</h3>
+      <p>Адаптированный алгоритм интервального закрепления (<code>1д → 3д → 7д → 14д → 30д</code>), интерактивный мотивационный помощник с отслеживанием просрочек, кастомизацией имени и возможностью исключения задач из цикла.</p>
+    </td>
     <td width="50%" valign="top">
       <h3>⚛️ React Live Runner & Сплит-режим</h3>
-      <p>Полноэкранный двухпанельный сплит (<b>70% код / 30% интерфейс</b>) с ресайзом drag-and-drop. Изолированная <code>iframe</code>-песочница с поддержкой React 19, TSX, CSS, переключением «Решение / Эталон» и стримингом логов в <b>JsConsole</b>.</p>
-    </td>
-    <td width="50%" valign="top">
-      <h3>💻 Продвинутый редактор кода</h3>
-      <p>Лёгкий и мощный редактор с мультикурсорами (<code>Cmd+D</code> / <code>Cmd+Shift+L</code>), перемещением строк (<code>Alt+↑/↓</code>), контекстным IntelliSense (JS, TSX, CSS, HTML), форматированием <b>Prettier 3</b>, Emmet и умными оверлейными скроллбарами (6px).</p>
+      <p>Полноэкранный двухпанельный сплит (<b>70% код / 30% интерфейс</b>) с drag-and-drop ресайзом. Изолированная <code>iframe</code>-песочница с поддержкой React 19, TSX, CSS, Zustand/RTK и стримингом логов в консоль.</p>
     </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <h3>📊 Аналитика и визуализация прогресса</h3>
-      <p>Интерактивные графики на <b>Visx 4</b>, кольцевые диаграммы освоения разделов, статистика решений по категориям сложности и детальный трекинг подготовки.</p>
+      <h3>🔍 Песочница кандидата & Code Review</h3>
+      <p>Запускаемый live-код с типичными багами и антипаттернами из реальных собеседований для тренировки навыка проведения технического Code Review.</p>
     </td>
     <td width="50%" valign="top">
-      <h3>💾 Zero-Lag Dual Storage & Sync</h3>
-      <p>Двухуровневое хранилище (L1 In-Memory/LocalStorage + L2 <b>IndexedDB v4</b> с самовосстановлением схемы) с автосохранением и межвкладочной синхронизацией в реальном времени через <code>BroadcastChannel API</code>.</p>
+      <h3>⭐ Избранное & Быстрый поиск</h3>
+      <p>Полноценный раздел «Избранное» со структурированным деревом задач и фильтрами по статусу. Мгновенная палитра быстрого поиска <b>Command Palette</b> (<kbd>Cmd+K</kbd>) и таймер собеседования.</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>💻 Продвинутый редактор кода</h3>
+      <p>VS Code-подобный редактор: мультикурсоры (<kbd>Cmd+D</kbd>), перемещение строк (<kbd>Alt+↑/↓</kbd>), подсветка синтаксиса JS/TSX/CSS/HTML, Emmet, автоформатирование <b>Prettier 3</b> и контекстный IntelliSense.</p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>💾 Local-First & Zero-Lag Sync</h3>
+      <p>Двухуровневое хранилище (L1 In-Memory кэш + L2 <b>IndexedDB</b> с самовосстановлением схемы). Мгновенный отклик без задержек и межвкладочная синхронизация прогресса через <code>BroadcastChannel API</code>.</p>
     </td>
   </tr>
 </table>
@@ -82,20 +92,20 @@
   <img src="https://img.shields.io/badge/TanStack_Router-FF4154?style=for-the-badge&logo=react&logoColor=white" alt="TanStack Router" />
   <img src="https://img.shields.io/badge/Zustand_5-443e38?style=for-the-badge&logo=react&logoColor=white" alt="Zustand 5" />
   <img src="https://img.shields.io/badge/Redux_Toolkit_2-764ABC?style=for-the-badge&logo=redux&logoColor=white" alt="Redux Toolkit 2" />
-  <img src="https://img.shields.io/badge/Visx_4-FC521F?style=for-the-badge&logo=d3.js&logoColor=white" alt="Visx 4" />
+  <img src="https://img.shields.io/badge/Nivo_Charts-FF4757?style=for-the-badge&logo=d3.js&logoColor=white" alt="Nivo Charts" />
   <img src="https://img.shields.io/badge/xterm.js_6-000000?style=for-the-badge&logo=gnometerminal&logoColor=white" alt="xterm.js 6" />
   <img src="https://img.shields.io/badge/Prettier_3-F7B93E?style=for-the-badge&logo=prettier&logoColor=black" alt="Prettier 3" />
 </p>
 
-| Категория                     | Технологии и библиотеки                                                                                         |
-| :---------------------------- | :-------------------------------------------------------------------------------------------------------------- |
-| **Frontend Core**             | React 19.2 (`react`, `react-dom`), TypeScript 7.0, Vite 8 (движок Rolldown)                                     |
-| **Архитектура и роутинг**     | Feature-Sliced Design (FSD v2.1), TanStack Router (типобезопасная файловая маршрутизация)                       |
-| **Управление состоянием**     | Zustand 5 (стейт приложения и UI), Redux Toolkit 2 + React-Redux (песочница для задач по Redux)                 |
-| **Исполнение кода & Sandbox** | Sucrase (транспайлер JSX/TSX/CommonJS), xterm.js 6 (терминал), Node Web Workers, изолированный `iframe`-рантайм |
-| **Аналитика & графики**       | Visx 4 (`@visx/shape`, `@visx/scale`, `@visx/grid`, `@visx/tooltip`, `@visx/curve` и др.)                       |
-| **Хранение & синхронизация**  | LocalStorage (L1-кэш), IndexedDB v4 (L2 с самовосстановлением схемы), синхронизация через `BroadcastChannel`    |
-| **Инструменты кода**          | Prettier 3 Standalone, Emmet, подсветка синтаксиса JS/TSX/CSS/HTML, встроенный линтинг и IntelliSense           |
+| Категория | Технологии |
+| :--- | :--- |
+| **Frontend Core** | React 19.2, TypeScript 7.0 (Strict), Vite 8 (Rolldown) |
+| **Архитектура и роутинг** | Feature-Sliced Design (FSD v2.1), TanStack Router (типизированная файловая маршрутизация) |
+| **Управление состоянием** | Zustand 5 (UI и данные приложения), Redux Toolkit 2 (песочница Redux-задач) |
+| **Исполнение кода & Sandbox** | Sucrase (транспиляция JSX/TSX/CommonJS), xterm.js 6, Web Workers, изолированный `iframe` |
+| **Аналитика & графики** | Nivo Charts (`@nivo/core`, `@nivo/pie`, `@nivo/bar`) |
+| **Хранилище & синхронизация** | LocalStorage (L1-кэш), IndexedDB (L2 хранилище), `BroadcastChannel API` |
+| **Инструменты редактора** | Prettier 3 Standalone, Emmet, лексеры JS/TSX/CSS/HTML, встроенный линтинг и IntelliSense |
 
 ---
 
@@ -115,7 +125,7 @@ npm install
 npm run dev
 ```
 
-Приложение будет доступно по адресу, который выведет Vite (обычно `http://localhost:5173`).
+Приложение будет доступно по адресу, указанному в терминале (обычно `http://localhost:5173`).
 
 Для сборки production-версии:
 
@@ -127,61 +137,40 @@ npm run build
 
 ## ⌨️ Горячие клавиши
 
-### Навигация по дереву сайдбара (WAI-ARIA Treeview)
+### Редактор кода (VS Code Style)
 
-| Клавиша / Сочетание                          | Действие                                                               |
-| :------------------------------------------- | :--------------------------------------------------------------------- |
-| <kbd>↓</kbd> / <kbd>↑</kbd>                  | Перемещение фокуса между видимыми строками дерева (папками и задачами) |
-| <kbd>→</kbd>                                 | Раскрыть свернутую папку / перейти к первой дочерней задаче            |
-| <kbd>←</kbd>                                 | Свернуть открытую папку / перейти к родительской теме                  |
-| <kbd>Enter</kbd> / <kbd>Space</kbd>          | Открыть выбранную задачу / переключить состояние папки                 |
-| <kbd>Home</kbd> / <kbd>End</kbd>             | Быстрый переход к первой / последней строке дерева                     |
-| <kbd>Alt</kbd>+Клик / <kbd>Option</kbd>+Клик | Массовое сворачивание / разворачивание всех папок раздела              |
+| macOS | Windows / Linux | Действие |
+| :--- | :--- | :--- |
+| <kbd>⌘</kbd> + <kbd>D</kbd> | <kbd>Ctrl</kbd> + <kbd>D</kbd> | Выделить слово / добавить следующее совпадение (мультикурсор) |
+| <kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>L</kbd> | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>L</kbd> | Выделить все совпадения выделенного слова |
+| <kbd>Option</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd> | <kbd>Alt</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd> | Переместить текущую строку или блок строк вверх / вниз |
+| <kbd>Shift</kbd> + <kbd>Option</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd> | <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd> | Продублировать текущую строку или блок строк |
+| <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>F</kbd> | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>L</kbd> | Форматирование кода через Prettier 3 |
+| <kbd>Ctrl</kbd> + <kbd>Space</kbd> | <kbd>Ctrl</kbd> + <kbd>Space</kbd> | Вызов меню контекстных подсказок IntelliSense |
+| <kbd>⌘</kbd> + <kbd>/</kbd> | <kbd>Ctrl</kbd> + <kbd>/</kbd> | Закомментировать / раскомментировать строку |
 
-### Редактор кода: мультикурсоры и работа со строками (VS Code Style)
+### Навигация и глобальные действия
 
-| macOS                                                              | Windows / Linux                                                 | Действие                                                      |
-| :----------------------------------------------------------------- | :-------------------------------------------------------------- | :------------------------------------------------------------ |
-| <kbd>⌘</kbd> + <kbd>D</kbd>                                        | <kbd>Ctrl</kbd> + <kbd>D</kbd>                                  | Выделить слово / добавить следующее совпадение (мультикурсор) |
-| <kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>L</kbd>                     | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>L</kbd>               | Выделить все совпадения выделенного слова в документе         |
-| <kbd>Option</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd>                    | <kbd>Alt</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd>                    | Переместить текущую строку / блок строк вверх / вниз          |
-| <kbd>Shift</kbd> + <kbd>Option</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd> | <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd> | Продублировать текущую строку / блок строк вверх / вниз       |
-| <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>F</kbd>                   | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>L</kbd>                 | Форматирование кода через Prettier 3                          |
-| <kbd>Alt</kbd> + <kbd>Z</kbd>                                      | <kbd>Alt</kbd> + <kbd>Z</kbd>                                   | Переключение мягкого переноса строк (Word Wrap)               |
-| <kbd>Tab</kbd> / <kbd>Shift</kbd> + <kbd>Tab</kbd>                 | <kbd>Tab</kbd> / <kbd>Shift</kbd> + <kbd>Tab</kbd>              | Добавить / убрать отступ для выделенных строк                 |
-| <kbd>⌘</kbd> + <kbd>/</kbd>                                        | <kbd>Ctrl</kbd> + <kbd>/</kbd>                                  | Закомментировать / раскомментировать строку (`//`)            |
-| <kbd>Esc</kbd> / Клик мыши                                         | <kbd>Esc</kbd> / Клик мыши                                      | Сброс мультикурсоров / закрытие окна подсказок                |
-
-### Интеллектуальное автодополнение (IntelliSense & Snippets)
-
-| Сочетание клавиш                   | Действие                                                                     |
-| :--------------------------------- | :--------------------------------------------------------------------------- |
-| <kbd>Ctrl</kbd> + <kbd>Space</kbd> | Вызов контекстного меню подсказок IntelliSense                               |
-| <kbd>↓</kbd> / <kbd>↑</kbd>        | Навигация по списку предложенных ключевых слов, методов и сниппетов          |
-| <kbd>Tab</kbd> / <kbd>Enter</kbd>  | Принять подсказку или развернуть сниппет (например, `clg` → `console.log()`) |
-| <kbd>Esc</kbd>                     | Закрыть меню автодополнения без вставки текста                               |
-
-### Рабочее пространство и глобальные шорткаты
-
-| Сочетание клавиш                                                     | Действие                                                                |
-| :------------------------------------------------------------------- | :---------------------------------------------------------------------- |
-| <kbd>⌘</kbd> + <kbd>K</kbd> / <kbd>Ctrl</kbd> + <kbd>K</kbd>         | Палитра быстрого поиска задач по всем разделам платформы                |
-| <kbd>⌘</kbd> + <kbd>Enter</kbd> / <kbd>Ctrl</kbd> + <kbd>Enter</kbd> | Запуск кода в терминале Node.js / песочнице React Live Runner           |
-| <kbd>F11</kbd>                                                       | Полноэкранный режим редактора кода                                      |
-| <kbd>Esc</kbd>                                                       | Закрыть активное модальное окно, подсказку (Tooltip) или палитру поиска |
+| Сочетание / Клавиша | Область | Действие |
+| :--- | :--- | :--- |
+| <kbd>⌘</kbd> + <kbd>K</kbd> / <kbd>Ctrl</kbd> + <kbd>K</kbd> | Глобально | Палитра быстрого поиска задач (Command Palette) |
+| <kbd>⌘</kbd> + <kbd>Enter</kbd> / <kbd>Ctrl</kbd> + <kbd>Enter</kbd> | Редактор | Быстрый запуск кода / тестов в песочнице |
+| <kbd>F11</kbd> | Редактор | Переключение полноэкранного режима редактора |
+| <kbd>↓</kbd> / <kbd>↑</kbd>, <kbd>→</kbd> / <kbd>←</kbd> | Сайдбар | Навигация по дереву задач (WAI-ARIA Treeview) |
+| <kbd>Alt</kbd> + Клик | Сайдбар | Свернуть / развернуть все папки текущего раздела |
+| <kbd>Esc</kbd> | Глобально | Закрыть модальное окно, подсказку или палитру поиска |
 
 ---
 
 ## 📜 История версий
 
-Полная история изменений — в файле **[CHANGELOG.md](CHANGELOG.md)**.
+Полная история изменений доступна в файле **[CHANGELOG.md](CHANGELOG.md)**.
 
-- **[v2.3.1](CHANGELOG.md#v2-3-1)** — Полноэкранный сплит-режим «Код + Интерфейс» (70/30), интеграция JsConsole, автотранспиляция и виртуальный React-рантайм в Web Worker, умные оверлейные скроллбары (6px).
-- **[v2.3.0](CHANGELOG.md#v2-3-0)** — Глобальное обновление: Feature-Sliced Design v2.1, React 19, TypeScript 7 Strict, Vite 8 Rolldown, TanStack Router, изолированная `iframe`-песочница, интервальное повторение SM-2 и аналитика Visx 4.
-- **[v2.2.99](CHANGELOG.md#v2-2-99)** — Подсветка синтаксиса CSS/HTML с цветовыми индикаторами `#hex`, динамическое зондирование и самовосстановление IndexedDB v4, новые задачи по React и JS.
-- **[v2.2.95](CHANGELOG.md#v2-2-95)** — Контекстный IntelliSense для JS/TS/React, мультикурсоры (<kbd>Cmd+D</kbd>), перемещение строк (<kbd>Alt+↑/↓</kbd>), форматирование Prettier 3.
-- **[v2.2.9](CHANGELOG.md#v2-2-9)** — WAI-ARIA Treeview навигация по сайдбару с клавиатуры, NotificationBadge, Sticky Progress.
-- **[v2.2.1](CHANGELOG.md#v2-2-1)** — Умное интервальное повторение (SM-2), Radix-подобная система Tooltip, дашборд аналитики на Visx.
+- **[v2.3.4](CHANGELOG.md#v2-3-4)** — Реструктуризация JavaScript-каталога под собеседования, 15 новых задач по объектам, умный интервальный помощник с мотивацией, Gauge-индикатор вероятности на интервью (BigTech, FinTech, E-commerce), исключение задач из повторения.
+- **[v2.3.3](CHANGELOG.md#v2-3-3)** — Асинхронный кэш реестра задач по разделам, мгновенный переход в полноэкранный редактор без промежуточных лоадеров, скелетоны страниц и сайдбара.
+- **[v2.3.2](CHANGELOG.md#v2-3-2)** — Раздел «Избранное» со структурированным деревом и фильтрами, оптимизация сборки (route-level code splitting в Vite), сброс настроек UI.
+- **[v2.3.1](CHANGELOG.md#v2-3-1)** — Полноэкранный двухпанельный сплит-режим «Код + Интерфейс» (70/30), JsConsole, автотранспиляция и виртуальный React-рантайм в Web Worker.
+- **[v2.3.0](CHANGELOG.md#v2-3-0)** — Архитектура Feature-Sliced Design v2.1, React 19, TypeScript 7 Strict, Vite 8 Rolldown, TanStack Router, изолированная песочница и алгоритм SM-2.
 
 ---
 

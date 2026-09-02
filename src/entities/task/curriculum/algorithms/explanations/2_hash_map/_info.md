@@ -366,7 +366,7 @@ freq.set(key({ id: 1 }), (freq.get(key({ id: 1 })) || 0) + 1);
 ### 7.6 Итерация по строкам с эмодзи и суррогатными парами
 
 ```js
-const str = "👨‍👩‍👧‍👦"; // семья — это несколько символов, склеенных ZWJ
+const str = "‍‍‍"; // семья — это несколько символов, склеенных ZWJ
 
 console.log(str.length); // 11 (!), а не 1
 
@@ -383,7 +383,7 @@ for (const char of str) {
 
 ```js
 const segmenter = new Intl.Segmenter("ru", { granularity: "grapheme" });
-const graphemes = [...segmenter.segment("👨‍👩‍👧‍👦")].map((s) => s.segment);
+const graphemes = [...segmenter.segment("‍‍‍")].map((s) => s.segment);
 console.log(graphemes.length); // 1 — теперь правильно
 ```
 

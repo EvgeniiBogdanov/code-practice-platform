@@ -219,13 +219,16 @@ export const useGroupOverview = (groupId: string): GroupOverviewState => {
     return calculateReadingTime(groupMeta.infoRaw);
   }, [groupMeta.infoRaw]);
 
+  const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
+
   const stats = useMemo(() => {
-    const total = groupTasks.length;
-    const completed = groupTasks.filter((t) => getTaskStatus(t.id) === "solved").length;
+    const activeTasks = groupTasks.filter((t) => !excludedTaskIds.includes(String(t.id)));
+    const total = activeTasks.length;
+    const completed = activeTasks.filter((t) => getTaskStatus(t.id) === "solved").length;
     const remaining = Math.max(0, total - completed);
     const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
     return { total, completed, remaining, percent };
-  }, [getTaskStatus, groupTasks]);
+  }, [getTaskStatus, groupTasks, excludedTaskIds]);
 
   const deferredStatusFilter = useDeferredValue(statusFilter);
 

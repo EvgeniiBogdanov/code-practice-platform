@@ -1,4 +1,4 @@
-// Полифилы Promise.race и Promise.any
+// Реализация полифилов Promise.race и Promise.any
 // Реализуйте функции promiseRace(promises) и promiseAny(promises).
 
 const promiseRace = (promises) => {

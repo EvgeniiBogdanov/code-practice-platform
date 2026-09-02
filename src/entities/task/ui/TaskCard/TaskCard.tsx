@@ -2,6 +2,7 @@ import React from "react";
 import { CheckCircle2, Circle, Clock } from "lucide-react";
 import { clsx } from "clsx";
 import { Task } from "../../types";
+import { Tooltip } from "@/shared/ui";
 import { TaskDifficultyBadge } from "../TaskDifficultyBadge";
 import styles from "./TaskCard.module.css";
 
@@ -46,10 +47,12 @@ export function TaskCard({
 
       <div className={styles.right}>
         {isDue && (
-          <span className={styles.dueBadge} title="Пора повторить по интервальной системе">
-            <Clock size={12} />
-            <span>Повторить</span>
-          </span>
+          <Tooltip content="Пора повторить по интервальной системе" side="top">
+            <span className={styles.dueBadge}>
+              <Clock size={12} />
+              <span>Повторить</span>
+            </span>
+          </Tooltip>
         )}
         <TaskDifficultyBadge difficulty={task.difficulty} />
       </div>

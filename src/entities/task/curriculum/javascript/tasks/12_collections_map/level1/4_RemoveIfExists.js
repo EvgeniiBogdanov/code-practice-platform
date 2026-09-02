@@ -1,12 +1,11 @@
-// Напишите функцию removeIfExists(map, key), которая удаляет ключ,
-// если он существует, и возвращает true/false — был ли ключ удалён.
+// Удаление ключа с проверкой
+// Напишите функцию removeKey(map, key), которая удаляет ключ из Map и возвращает true, если ключ был удален, иначе false.
 
-const map = new Map([["a", 1], ["b", 2]]);
-
-const removeIfExists = (map, key) => {
+const removeKey = (map, key) => {
   // Решение тут
 };
 
 // Пример вызова:
-console.log(removeIfExists(map, "a")); // true
-console.log(removeIfExists(map, "z")); // false
+const map = new Map([["x", 10]]);
+console.log(removeKey(map, "x")); // true
+console.log(removeKey(map, "y")); // false

@@ -6,6 +6,7 @@ export interface ProgressTaskItem {
 
 export interface ProgressState {
   completedTasks: Record<string, TaskCompletionStatus>;
+  taskStatusTimestamps: Record<string, number>;
   checklistState: Record<string, boolean>;
   copiedCodeId: string | null;
   isInitialized: boolean;

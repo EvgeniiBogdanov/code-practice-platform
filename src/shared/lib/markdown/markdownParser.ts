@@ -105,6 +105,7 @@ export function normalizeMarkdown(markdownText: string): string {
 
   return (
     markdownText
+      .replace(/\p{Extended_Pictographic}/gu, "")
       // Удаление битых юникод-символов и старых иконок
       .replace(/\uFFFD\uFE0F?|\uFFFD/g, "")
       .replace(/💡\s*/g, "")

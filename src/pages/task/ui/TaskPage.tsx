@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Play, CheckCircle, BookOpen, HelpCircle, ListChecks } from "lucide-react";
 import { clsx } from "clsx";
-import { TaskDifficultyBadge } from "@/entities/task";
+import { TaskDifficultyBadge, TaskMetaBadges } from "@/entities/task";
 import type { SectionType } from "@/entities/task/meta";
 import { useTaskById } from "@/entities/task/catalog";
 import { useProgressStore, isTaskCompleted } from "@/entities/progress";
 import { useReviewStore } from "@/entities/review";
-import { TaskReviewRatingBar } from "@/features/spaced-repetition";
+import { TaskReviewRatingBar, TaskExcludeButton } from "@/features/spaced-repetition";
 import { TaskFavoriteButton } from "@/features/task-favorite";
-import { TaskButton, NotificationBadge, NotificationBadgeVariant, UiLoader } from "@/shared/ui";
+import { TaskButton, NotificationBadge, NotificationBadgeVariant, UiLoader, Tooltip } from "@/shared/ui";
 import { CandidateTab } from "./CandidateTab";
 import { SolutionTab } from "./SolutionTab";
 import { MaterialsTab } from "./MaterialsTab";
@@ -32,6 +32,7 @@ export const TaskPage = React.memo<TaskPageProps>(
     const completedTasks = useProgressStore((state) => state.completedTasks);
     const setTaskStatus = useProgressStore((state) => state.setTaskStatus);
     const removeReview = useReviewStore((state) => state.removeReview);
+    const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
 
     useEffect(() => {
       if (initialTab) {
@@ -66,8 +67,10 @@ export const TaskPage = React.memo<TaskPageProps>(
 
     const isCompleted = isTaskCompleted(completedTasks[String(task.id)]);
     const isUnsolved = completedTasks[String(task.id)] === "unsolved";
+    const isExcluded = excludedTaskIds.includes(String(task.id));
 
     const handleToggleSolved = async () => {
+      if (isExcluded) return;
       const nextStatus = isCompleted ? null : "solved";
       await setTaskStatus(task.id, nextStatus);
       if (!nextStatus) {
@@ -76,6 +79,7 @@ export const TaskPage = React.memo<TaskPageProps>(
     };
 
     const handleToggleUnsolved = async () => {
+      if (isExcluded) return;
       const nextStatus = isUnsolved ? null : "unsolved";
       await setTaskStatus(task.id, nextStatus);
       if (nextStatus) {
@@ -139,37 +143,57 @@ export const TaskPage = React.memo<TaskPageProps>(
                   <TaskDifficultyBadge difficulty={task.difficulty} className={styles.titleBadge} />
                 )}
               </h1>
+              <TaskMetaBadges task={task} />
             </div>
 
             <div className={styles.taskStatusActions}>
               <TaskFavoriteButton taskId={task.id} taskTitle={task.title} />
+              <TaskExcludeButton taskId={task.id} taskTitle={task.title} />
 
-              <TaskButton
-                statusVariant="solved"
-                isActive={isCompleted}
-                onClick={handleToggleSolved}
-                title={
-                  isCompleted ? "Нажмите повторно, чтобы снять отметку" : "Пометить как решённую"
+              <Tooltip
+                content={
+                  isExcluded
+                    ? "Задача исключена из цикла повторений"
+                    : isCompleted
+                      ? "Нажмите повторно, чтобы снять отметку"
+                      : "Пометить как решённую"
                 }
+                side="top"
               >
-                Решено
-              </TaskButton>
+                <TaskButton
+                  statusVariant="solved"
+                  isActive={isCompleted}
+                  onClick={handleToggleSolved}
+                  disabled={isExcluded}
+                >
+                  Решено
+                </TaskButton>
+              </Tooltip>
 
-              <TaskButton
-                statusVariant="unsolved"
-                isActive={isUnsolved}
-                onClick={handleToggleUnsolved}
-                title={
-                  isUnsolved ? "Нажмите повторно, чтобы снять отметку" : "Пометить как нерешённую"
+              <Tooltip
+                content={
+                  isExcluded
+                    ? "Задача исключена из цикла повторений"
+                    : isUnsolved
+                      ? "Нажмите повторно, чтобы снять отметку"
+                      : "Пометить как нерешённую"
                 }
+                side="top"
               >
-                Не решено
-              </TaskButton>
+                <TaskButton
+                  statusVariant="unsolved"
+                  isActive={isUnsolved}
+                  onClick={handleToggleUnsolved}
+                  disabled={isExcluded}
+                >
+                  Не решено
+                </TaskButton>
+              </Tooltip>
             </div>
           </div>
 
           {/* Шкала интервального повторения SM-2 */}
-          <TaskReviewRatingBar taskId={task.id} />
+          <TaskReviewRatingBar taskId={task.id} task={task} />
 
           {/* Единый контейнер вкладок и содержимого */}
           <div className={styles.tabsContainer}>

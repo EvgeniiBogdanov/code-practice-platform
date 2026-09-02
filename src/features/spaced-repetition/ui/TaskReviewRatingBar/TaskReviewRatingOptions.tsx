@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { CheckCircle2, Clock, AlertCircle, Check } from "lucide-react";
-import { clsx } from "clsx";
+import { clsx, Tooltip } from "@/shared/ui";
 import { ReviewRating, RATINGS, ReviewItem } from "@/entities/review";
 import styles from "./TaskReviewRatingBar.module.css";
 
@@ -17,7 +17,7 @@ const RATING_CONFIG = [
     interval: "+7 дней",
     modifier: styles.rateEasy,
     icon: <CheckCircle2 size={13} className={styles.rateIconEasy} />,
-    titleActive: "Решил уверенно и быстро — повторить через 7 дней",
+    title: "Решил уверенно и быстро — повторить через 7 дней",
   },
   {
     rating: RATINGS.MEDIUM,
@@ -25,7 +25,7 @@ const RATING_CONFIG = [
     interval: "+3 дня",
     modifier: styles.rateMedium,
     icon: <Clock size={13} className={styles.rateIconMedium} />,
-    titleActive: "Решил сам, но с заминкой — повторить через 3 дня",
+    title: "Решил сам, но с заминкой — повторить через 3 дня",
   },
   {
     rating: RATINGS.HARD,
@@ -33,7 +33,7 @@ const RATING_CONFIG = [
     interval: "+1 день",
     modifier: styles.rateHard,
     icon: <AlertCircle size={13} className={styles.rateIconHard} />,
-    titleActive: "Трудно / смотрел подсказки — повторить завтра (+1 день)",
+    title: "Трудно / смотрел подсказки — повторить завтра (+1 день)",
   },
 ];
 
@@ -49,30 +49,35 @@ export const TaskReviewRatingOptions = memo(
           const isActive = taskReview?.rating === item.rating;
 
           return (
-            <button
+            <Tooltip
               key={item.rating}
-              type="button"
-              className={clsx(
-                styles.reviewRateBtn,
-                item.modifier,
-                isActive && styles.active
-              )}
-              onClick={() => onRate(item.rating)}
-              title={item.titleActive}
+              content={item.title}
+              side="bottom"
+              delayDuration={800}
             >
-              <div className={styles.rateBtnContent}>
-                <div className={styles.rateBtnTitleRow}>
-                  {item.icon}
-                  <span className={styles.rateLabel}>{item.label}</span>
+              <button
+                type="button"
+                className={clsx(
+                  styles.reviewRateBtn,
+                  item.modifier,
+                  isActive && styles.active
+                )}
+                onClick={() => onRate(item.rating)}
+              >
+                <div className={styles.rateBtnContent}>
+                  <div className={styles.rateBtnTitleRow}>
+                    {item.icon}
+                    <span className={styles.rateLabel}>{item.label}</span>
+                  </div>
+                  <span className={styles.rateInterval}>{item.interval}</span>
                 </div>
-                <span className={styles.rateInterval}>{item.interval}</span>
-              </div>
-              {isActive && (
-                <span className={styles.rateCurrentCheck} title="Текущая оценка">
-                  <Check size={11} />
-                </span>
-              )}
-            </button>
+                {isActive && (
+                  <span className={styles.rateCurrentCheck} aria-label="Текущая оценка">
+                    <Check size={11} />
+                  </span>
+                )}
+              </button>
+            </Tooltip>
           );
         })}
       </div>

@@ -9,17 +9,5 @@
 }
 
 .favoriteIcon {
-  color: var(--accent-gray);
-}
-
-.favoritesButton {
-  color: var(--accent-gray);
-}
-
-.favoritesControl button.favoritesButton[aria-current="page"]:enabled {
-  background: color-mix(in srgb, var(--state-active) 40%, var(--bg-sidebar));
-}
-
-[data-theme="light"] .favoritesControl button.favoritesButton[aria-current="page"]:enabled {
-  background: var(--bg-card);
+  display: inline-flex;
 }

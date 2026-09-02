@@ -8,4 +8,5 @@ export * from "./progressService";
 export * from "./migrationService";
 export * from "./backupService";
 export * from "./reviewService";
+export * from "./assistantNameService";
 export * from "./syncChannel";

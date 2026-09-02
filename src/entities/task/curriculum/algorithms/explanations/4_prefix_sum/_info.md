@@ -112,14 +112,14 @@ $$\text{sum}(l, r) = \text{prefix}[r + 1] - \text{prefix}[l]$$
 Для `nums = [2, 4, 1, 6, 3, 5]` и `prefix = [0, 2, 6, 7, 13, 16, 21]`:
 
 - Сумма на отрезке `[1, 3]` (элементы `4 + 1 + 6 = 11`):
-  `prefix[3 + 1] - prefix[1] = prefix[4] - prefix[1] = 13 - 2 = 11` ✅
+  `prefix[3 + 1] - prefix[1] = prefix[4] - prefix[1] = 13 - 2 = 11` 
 
 - Сумма на отрезке `[0, 2]` (элементы `2 + 4 + 1 = 7`):
-  `prefix[2 + 1] - prefix[0] = prefix[3] - prefix[0] = 7 - 0 = 7` ✅
+  `prefix[2 + 1] - prefix[0] = prefix[3] - prefix[0] = 7 - 0 = 7` 
   (благодаря нулю в `prefix[0]` не нужен специальный `if` для `l = 0`!)
 
 - Сумма всего массива `[0, 5]` (элементы `2+4+1+6+3+5 = 21`):
-  `prefix[5 + 1] - prefix[0] = prefix[6] - prefix[0] = 21 - 0 = 21` ✅
+  `prefix[5 + 1] - prefix[0] = prefix[6] - prefix[0] = 21 - 0 = 21` 
 
 ## Готовая функция на JavaScript
 
@@ -160,7 +160,7 @@ console.log(query.sumRange(4, 5)); // 8
 Результат: `prefix = [0, 3, 2, 4, 8]`.
 
 Теперь ответим на запрос `sumRange(1, 2)` (элементы `-1 + 2 = 1`):
-`prefix[2 + 1] - prefix[1] = prefix[3] - prefix[1] = 4 - 3 = 1` ✅.
+`prefix[2 + 1] - prefix[1] = prefix[3] - prefix[1] = 4 - 3 = 1` .
 
 ## Сложность алгоритма
 

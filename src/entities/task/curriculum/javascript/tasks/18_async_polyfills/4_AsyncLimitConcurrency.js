@@ -1,5 +1,5 @@
 // Пул асинхронных задач с ограничением конкурентности
-// Реализуйте функцию asyncPool(limit, items, iteratorFn).
+// Реализуйте функцию asyncPool(limit, items, iteratorFn), выполняющую операции с параллелизмом не более limit.
 
 const asyncPool = async (limit, items, iteratorFn) => {
   // Решение тут

@@ -1,0 +1,48 @@
+.gaugeContainer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.gaugeSvg {
+  display: block;
+  overflow: visible;
+}
+
+/* 4-Color Palette: Gray (0%-25%) -> Orange (25%-50%) -> Yellow (50%-75%) -> Green (75%-100%) */
+.seg1 {
+  fill: var(--gauge-seg-1);
+}
+
+.seg2 {
+  fill: var(--gauge-seg-2);
+}
+
+.seg3 {
+  fill: var(--gauge-seg-3);
+}
+
+.seg4 {
+  fill: var(--gauge-seg-4);
+}
+
+.innerRing {
+  fill: var(--bg-card);
+  opacity: 0.95;
+}
+
+.innerDial {
+  fill: var(--bg-app);
+  opacity: 0.85;
+}
+
+.needle {
+  fill: var(--text-main);
+}
+
+.pivotDot {
+  fill: var(--text-main);
+}

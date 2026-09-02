@@ -1,86 +1,144 @@
 import { memo } from "react";
-import { Calendar, Lock } from "lucide-react";
-import { clsx } from "clsx";
-import {
-  ReviewItem,
-  ReviewBadgeMeta,
-  formatNextReviewDate,
-  formatLastSolved,
-} from "@/entities/review";
+import { Calendar, Lock, Bot, RotateCcw } from "lucide-react";
+import { clsx, Tooltip } from "@/shared/ui";
+import { ReviewItem, ReviewBadgeMeta, formatLastSolved, useReviewStore, DEFAULT_ASSISTANT_NAME } from "@/entities/review";
+import { Task } from "@/entities/task";
+import { getRobotMessage } from "../../lib/get-robot-message";
+import { getOverdueDays } from "../../lib/robot-messages";
 import styles from "./TaskReviewRatingBar.module.css";
 
 interface TaskReviewHeaderProps {
   taskReview: ReviewItem | null;
-  badgeMeta: ReviewBadgeMeta;
+  badgeMeta?: ReviewBadgeMeta;
   canRate: boolean;
+  task?: Task;
+  isUnsolved?: boolean;
+  isExcluded?: boolean;
+  statusUpdatedAt?: number;
 }
 
 export const TaskReviewHeader = memo(
-  ({ taskReview, badgeMeta, canRate }: TaskReviewHeaderProps) => {
-    const badgeClass =
-      badgeMeta.badgeVariant === "due"
-        ? styles.badgeDue
-        : badgeMeta.badgeVariant === "master"
-          ? styles.badgeMaster
-          : styles.badgeLevel;
+  ({
+    taskReview,
+    canRate,
+    task,
+    isUnsolved,
+    isExcluded,
+    statusUpdatedAt,
+  }: TaskReviewHeaderProps) => {
+    const assistantName = useReviewStore((state) => state.assistantName) || DEFAULT_ASSISTANT_NAME;
+    const isDue = Boolean(taskReview && canRate);
+    const message = getRobotMessage({
+      taskReview,
+      canRate,
+      task,
+      isUnsolved,
+      statusUpdatedAt,
+    });
+
+    let dueBadgeLabel = "Пора повторить";
+    if (taskReview && isDue) {
+      const overdueDays = getOverdueDays(taskReview.dueDate, taskReview.nextReviewAt);
+      if (overdueDays >= 30) {
+        dueBadgeLabel = "Просрочено: месяц";
+      } else if (overdueDays >= 8) {
+        dueBadgeLabel = "Просрочено: 2 нед.";
+      } else if (overdueDays >= 1) {
+        dueBadgeLabel = "Просрочено: 1 нед.";
+      }
+    }
 
     return (
       <div className={styles.taskReviewHeaderRow}>
         <div className={styles.taskReviewInfo}>
+          <div
+            className={clsx(
+              styles.avatar,
+              isExcluded
+                ? styles.avatarExcluded
+                : isUnsolved
+                  ? styles.avatarUnsolved
+                  : isDue && styles.avatarDue
+            )}
+            aria-hidden="true"
+          >
+            <Bot size={18} />
+          </div>
+
           <div className={styles.taskReviewTexts}>
             <div className={styles.taskReviewTitle}>
-              <span>Интервальное повторение</span>
+              <span
+                className={clsx(
+                  styles.authorName,
+                  isExcluded
+                    ? styles.authorNameExcluded
+                    : isUnsolved
+                      ? styles.authorNameUnsolved
+                      : isDue && styles.authorNameDue
+                )}
+              >
+                {assistantName}
+              </span>
 
-              {badgeMeta.stage > 0 && (
-                <span className={clsx(styles.badge, badgeClass)}>{badgeMeta.stageName}</span>
-              )}
+              {!isExcluded && !isUnsolved && (
+                <>
+                  {isDue ? (
+                    <span className={clsx(styles.lastSolvedBadge, styles.badgeDue)}>
+                      <RotateCcw size={12} />
+                      <span>{dueBadgeLabel}</span>
+                    </span>
+                  ) : (
+                    <>
+                      {taskReview?.lastReviewedAt && (
+                        <Tooltip
+                          content={`Дата последнего решения: ${new Date(
+                            taskReview.lastReviewedAt
+                          ).toLocaleDateString("ru-RU", {
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric",
+                          })}`}
+                          side="top"
+                        >
+                          <span className={styles.lastSolvedBadge}>
+                            <Calendar size={12} />
+                            <span>Решено: {formatLastSolved(taskReview.lastReviewedAt)}</span>
+                          </span>
+                        </Tooltip>
+                      )}
 
-              {taskReview?.lastReviewedAt && (
-                <span
-                  className={styles.lastSolvedBadge}
-                  title={`Дата последнего решения: ${new Date(
-                    taskReview.lastReviewedAt
-                  ).toLocaleDateString("ru-RU", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  })}`}
-                >
-                  <Calendar size={12} />
-                  <span>Решено: {formatLastSolved(taskReview.lastReviewedAt)}</span>
-                </span>
-              )}
-
-              {!canRate && (
-                <span
-                  className={styles.lockedBadge}
-                  title="Повторение запланировано. Блок оценки станет доступен, когда наступит срок повторения задачи"
-                >
-                  <Lock size={12} />
-                  <span>Запланировано</span>
-                </span>
+                      {!canRate && (
+                        <Tooltip
+                          content="Повторение запланировано. Блок оценки станет доступен, когда наступит срок повторения задачи"
+                          side="top"
+                        >
+                          <span className={styles.lockedBadge}>
+                            <Lock size={12} />
+                            <span>Запланировано</span>
+                          </span>
+                        </Tooltip>
+                      )}
+                    </>
+                  )}
+                </>
               )}
             </div>
 
             <div className={styles.taskReviewDesc}>
-              {taskReview && !canRate ? (
-                <span className={styles.descScheduled}>
-                  Следующее повторение:{" "}
-                  <strong>
-                    {formatNextReviewDate(taskReview.nextReviewAt, taskReview.dueDate)}
-                  </strong>
-                  {". "}
-                  <span className={styles.descHint}>
-                    В день повторения решение автоматически сбросится до чистого шаблона
-                  </span>
-                </span>
-              ) : canRate && taskReview ? (
-                <span className={styles.descDue}>
-                  Пора повторить задачу! Решите её заново с чистого листа и оцените результат:
+              {isExcluded ? (
+                <span className={styles.messageTextExcluded}>
+                  Задача исключена из цикла повторений
                 </span>
               ) : (
-                <span className={styles.descNew}>
-                  Оцените сложность решения для составления персонального графика повторений:
+                <span>
+                  {message.text}
+                  {message.highlight && (
+                    <>
+                      {" "}
+                      <strong>{message.highlight}</strong>
+                      {"."}
+                    </>
+                  )}
                 </span>
               )}
             </div>

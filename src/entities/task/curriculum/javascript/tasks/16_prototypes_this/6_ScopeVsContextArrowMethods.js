@@ -1,14 +1,16 @@
-// Вложенные стрелочные функции и lexical this
-// Что выведет данный код?
+// Что выведет данный код в консоль и почему?
 
-const timer = {
-  seconds: 0,
-  start() {
-    setTimeout(() => {
-      this.seconds++;
-      console.log(this.seconds);
-    }, 100);
+const obj = {
+  name: "Outer",
+  getName() {
+    return () => {
+      console.log(this.name);
+    };
   },
 };
 
-timer.start();
+const fn = obj.getName();
+fn();
+
+const stolen = obj.getName.call({ name: "Inner" });
+stolen();

@@ -1,8 +1,8 @@
 .timerDisplay {
   font-family: var(--font-mono);
   font-size: 14px;
-  color: var(--accent-blue, #60a5fa);
-  background: var(--accent-blue-bg, rgba(96, 165, 250, 0.12));
+  color: var(--accent-blue);
+  background: var(--accent-blue-bg);
   border: none;
   padding: 0 8px;
   height: 28px;
@@ -18,7 +18,7 @@
 }
 
 .timerDisplay:hover {
-  filter: brightness(1.1);
+  background: var(--state-hover);
 }
 
 .disabled {
@@ -28,8 +28,8 @@
 }
 
 .expired {
-  color: #ff5f56;
-  background: rgba(255, 95, 86, 0.15);
+  color: var(--color-error);
+  background: var(--accent-red-bg);
   animation: timerPulse 1s ease infinite;
 }
 

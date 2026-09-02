@@ -2,7 +2,7 @@ import React from "react";
 import { Calendar, Check, Minus, RotateCcw, X } from "lucide-react";
 import { formatLastSolved, formatNextReviewDate, isTaskDue } from "@/entities/review";
 import type { ReviewItem } from "@/entities/review";
-import { Badge } from "@/shared/ui";
+import { Badge, Tooltip } from "@/shared/ui";
 import type { TaskRowStatus } from "../../model/task-row-tone";
 import styles from "./TaskTable.module.css";
 
@@ -13,22 +13,28 @@ interface TaskTableCellProps {
 const TaskSolutionCell = ({ review }: Readonly<TaskTableCellProps>): React.JSX.Element => (
   <div className={styles.columnSolution}>
     {review?.lastReviewedAt ? (
-      <Badge
-        variant="gray"
-        size="sm"
-        uppercase={false}
-        icon={<Calendar size={11} />}
-        title={`Дата последнего решения: ${new Date(review.lastReviewedAt).toLocaleDateString(
+      <Tooltip
+        content={`Дата последнего решения: ${new Date(review.lastReviewedAt).toLocaleDateString(
           "ru-RU",
           { day: "numeric", month: "long", year: "numeric" }
         )}`}
+        side="top"
       >
-        {formatLastSolved(review.lastReviewedAt)}
-      </Badge>
+        <Badge
+          variant="gray"
+          size="sm"
+          uppercase={false}
+          icon={<Calendar size={11} />}
+        >
+          {formatLastSolved(review.lastReviewedAt)}
+        </Badge>
+      </Tooltip>
     ) : (
-      <span className={styles.statusUnstarted} title="Ещё не решалась">
-        <Minus size={8} />
-      </span>
+      <Tooltip content="Ещё не решалась" side="top">
+        <span className={styles.statusUnstarted} aria-label="Ещё не решалась">
+          <Minus size={8} />
+        </span>
+      </Tooltip>
     )}
   </div>
 );
@@ -38,22 +44,30 @@ const TaskReviewCell = ({ review }: Readonly<TaskTableCellProps>): React.JSX.Ele
   return (
     <div className={styles.columnReview}>
       {due ? (
-        <Badge variant="yellow" size="sm" uppercase={false} title="Пора повторить сегодня">
-          Пора повторить
-        </Badge>
+        <Tooltip content="Пора повторить сегодня" side="top">
+          <Badge variant="yellow" size="sm" uppercase={false}>
+            Пора повторить
+          </Badge>
+        </Tooltip>
       ) : review?.nextReviewAt ? (
-        <Badge
-          variant="blue"
-          size="sm"
-          uppercase={false}
-          title={`Следующее повторение: ${formatNextReviewDate(review)}`}
+        <Tooltip
+          content={`Следующее повторение: ${formatNextReviewDate(review)}`}
+          side="top"
         >
-          {formatNextReviewDate(review)}
-        </Badge>
+          <Badge
+            variant="blue"
+            size="sm"
+            uppercase={false}
+          >
+            {formatNextReviewDate(review)}
+          </Badge>
+        </Tooltip>
       ) : (
-        <span className={styles.statusUnstarted} title="Повторение не запланировано">
-          <Minus size={8} />
-        </span>
+        <Tooltip content="Повторение не запланировано" side="top">
+          <span className={styles.statusUnstarted} aria-label="Повторение не запланировано">
+            <Minus size={8} />
+          </span>
+        </Tooltip>
       )}
     </div>
   );

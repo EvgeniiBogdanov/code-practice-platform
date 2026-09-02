@@ -23,6 +23,9 @@ export const SidebarHomeOverview = ({
     completedJsTotal,
     completedReactTotal,
     completedAlgoTotal,
+    totalJs,
+    totalReact,
+    totalAlgo,
     jsCompletionClass,
     reactCompletionClass,
     algoCompletionClass,
@@ -51,7 +54,7 @@ export const SidebarHomeOverview = ({
         <span className={styles.homeItemTitle}>JavaScript</span>
         <NodeCount
           completed={completedJsTotal}
-          total={CURRICULUM_COUNTS.javascript}
+          total={totalJs}
           className={jsCompletionClass}
         />
       </Link>
@@ -65,7 +68,7 @@ export const SidebarHomeOverview = ({
         <span className={styles.homeItemTitle}>React</span>
         <NodeCount
           completed={completedReactTotal}
-          total={CURRICULUM_COUNTS.react}
+          total={totalReact}
           className={reactCompletionClass}
         />
       </Link>
@@ -79,7 +82,7 @@ export const SidebarHomeOverview = ({
         <span className={styles.homeItemTitle}>Алгоритмы</span>
         <NodeCount
           completed={completedAlgoTotal}
-          total={CURRICULUM_COUNTS.algorithms}
+          total={totalAlgo}
           className={algoCompletionClass}
         />
       </Link>

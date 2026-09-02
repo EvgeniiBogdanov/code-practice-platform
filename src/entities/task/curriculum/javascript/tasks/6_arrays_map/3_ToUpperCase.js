@@ -1,9 +1,9 @@
-// Сделать все строки заглавными
-// Напишите функцию toUpperCaseList(words), которая возвращает строки в верхнем регистре.
+// Приведение строк к верхнему регистру
+// Напишите функцию toUpperCase(words), которая возвращает массив строк в верхнем регистре.
 
-const toUpperCaseList = (words) => {
+const toUpperCase = (words) => {
   // Решение тут
 };
 
 // Пример вызова:
-console.log(toUpperCaseList(["cat", "dog", "elephant"])); // ["CAT", "DOG", "ELEPHANT"]
+console.log(toUpperCase(["hello", "world", "js"])); // ["HELLO", "WORLD", "JS"]
