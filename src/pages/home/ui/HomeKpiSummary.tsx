@@ -13,6 +13,7 @@ export const HomeKpiSummary = memo(({ stats }: HomeKpiSummaryProps): React.JSX.E
       solved={stats.grandSolved}
       percent={stats.grandPct}
       remaining={stats.grandRemaining}
+      excludedCount={stats.grandExcluded}
       progressLabel="Общий прогресс"
     />
   );

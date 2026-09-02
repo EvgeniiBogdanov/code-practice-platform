@@ -1,6 +1,6 @@
 import React from "react";
 import { LayoutList, LayoutGrid } from "lucide-react";
-import { Button } from "@/shared/ui";
+import { Button, Tooltip } from "@/shared/ui";
 import { StatusFilter, ViewMode } from "../model/types";
 import styles from "./GroupOverviewPage.module.css";
 
@@ -45,26 +45,28 @@ export const GroupToolbar = React.memo<GroupToolbarProps>(
 
         {/* View Switcher */}
         <div className={styles.dbViewSwitch}>
-          <Button
-            variant="ghost"
-            size="sm"
-            leftIcon={<LayoutList size={14} />}
-            isActive={viewMode === "list"}
-            onClick={() => setViewMode("list")}
-            title="Вид: Список"
-          >
-            Список
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            leftIcon={<LayoutGrid size={14} />}
-            isActive={viewMode === "cards"}
-            onClick={() => setViewMode("cards")}
-            title="Вид: Карточки"
-          >
-            Карточки
-          </Button>
+          <Tooltip content="Вид: Список" side="bottom">
+            <Button
+              variant="ghost"
+              size="sm"
+              leftIcon={<LayoutList size={14} />}
+              isActive={viewMode === "list"}
+              onClick={() => setViewMode("list")}
+            >
+              Список
+            </Button>
+          </Tooltip>
+          <Tooltip content="Вид: Карточки" side="bottom">
+            <Button
+              variant="ghost"
+              size="sm"
+              leftIcon={<LayoutGrid size={14} />}
+              isActive={viewMode === "cards"}
+              onClick={() => setViewMode("cards")}
+            >
+              Карточки
+            </Button>
+          </Tooltip>
         </div>
       </div>
     );

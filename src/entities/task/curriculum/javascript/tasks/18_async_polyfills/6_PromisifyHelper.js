@@ -1,5 +1,5 @@
 // Утилита promisify для Node.js стиля колбэков
-// Напишите функцию promisify(fn), возвращающую функцию, возвращающую Promise.
+// Напишите функцию promisify(fn), оборачивающую функцию с callback (err, result) в Promise.
 
 const promisify = (fn) => {
   // Решение тут

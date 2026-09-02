@@ -6,6 +6,14 @@ import {
   deleteReviewFromDB,
   deleteReviewsForTasksFromDB,
   clearAllReviewsFromDB,
+  getExcludedTasksFromDB,
+  saveExcludedTasksToDB,
+  getExcludedTasksFromLocalStorage,
+  getAssistantNameFromDB,
+  saveAssistantNameToDB,
+  clearAssistantNameFromDB,
+  getAssistantNameFromLocalStorage,
+  DEFAULT_ASSISTANT_NAME,
   broadcastSyncEvent,
   subscribeToSyncEvents,
 } from "@/shared/lib/storage";
@@ -14,20 +22,28 @@ import { calculateNextReview, isTaskDue } from "./sm2-algorithm";
 
 const initialReviews =
   (getReviewsFromLocalStorage() as unknown as Record<string, ReviewItem>) || {};
+const initialExcluded = getExcludedTasksFromLocalStorage() || [];
+const initialAssistantName = getAssistantNameFromLocalStorage() || DEFAULT_ASSISTANT_NAME;
 
 export const useReviewStore = create<ReviewState>((set, get) => ({
   reviews: initialReviews,
+  excludedTaskIds: initialExcluded,
+  assistantName: initialAssistantName,
   isInitialized: true,
 
   initReviews: async (): Promise<void> => {
     try {
-      const records = await getAllReviewsFromDB();
-      if (records) {
-        set({
-          reviews: records as unknown as Record<string, ReviewItem>,
-          isInitialized: true,
-        });
-      }
+      const [records, excluded, name] = await Promise.all([
+        getAllReviewsFromDB(),
+        getExcludedTasksFromDB(),
+        getAssistantNameFromDB(),
+      ]);
+      set({
+        reviews: (records as unknown as Record<string, ReviewItem>) || {},
+        excludedTaskIds: excluded || [],
+        assistantName: name || DEFAULT_ASSISTANT_NAME,
+        isInitialized: true,
+      });
 
       subscribeToSyncEvents((event) => {
         if (event.type === "TASK_REVIEWED" && event.taskId && event.review) {
@@ -43,6 +59,10 @@ export const useReviewStore = create<ReviewState>((set, get) => ({
             delete updated[String(event.taskId)];
             return { reviews: updated };
           });
+        } else if (event.type === "TASK_EXCLUSION_CHANGED" && Array.isArray(event.taskIds)) {
+          set({ excludedTaskIds: event.taskIds });
+        } else if (event.type === "ASSISTANT_NAME_CHANGED" && typeof event.name === "string") {
+          set({ assistantName: event.name || DEFAULT_ASSISTANT_NAME });
         } else if (event.type === "REVIEWS_RESET") {
           if (event.all) {
             set({ reviews: {} });
@@ -94,14 +114,46 @@ export const useReviewStore = create<ReviewState>((set, get) => ({
     broadcastSyncEvent("TASK_REVIEWED", { taskId: stringId });
   },
 
+  isTaskExcluded: (taskId: string | number): boolean => {
+    return get().excludedTaskIds.includes(String(taskId));
+  },
+
+  toggleExcludeTask: async (taskId: string | number): Promise<void> => {
+    const stringId = String(taskId);
+    const current = get().excludedTaskIds;
+    const isExcluded = current.includes(stringId);
+    const next = isExcluded
+      ? current.filter((id) => id !== stringId)
+      : [...current, stringId];
+
+    set({ excludedTaskIds: next });
+    await saveExcludedTasksToDB(next);
+    broadcastSyncEvent("TASK_EXCLUSION_CHANGED", { taskIds: next });
+  },
+
+  setAssistantName: async (name: string): Promise<void> => {
+    const trimmed = name?.trim() || DEFAULT_ASSISTANT_NAME;
+    set({ assistantName: trimmed });
+    await saveAssistantNameToDB(trimmed);
+    broadcastSyncEvent("ASSISTANT_NAME_CHANGED", { name: trimmed });
+  },
+
+  resetAssistantName: async (): Promise<void> => {
+    set({ assistantName: DEFAULT_ASSISTANT_NAME });
+    await clearAssistantNameFromDB();
+    broadcastSyncEvent("ASSISTANT_NAME_CHANGED", { name: DEFAULT_ASSISTANT_NAME });
+  },
+
   getDueTasks: <T extends ReviewTaskItem = ReviewTaskItem>(
     customTaskList: T[] = []
   ): Array<T & { reviewData?: ReviewItem }> => {
     const list = customTaskList || [];
     const reviews = get().reviews;
+    const excluded = new Set(get().excludedTaskIds);
 
     return list
       .filter((task: T) => {
+        if (excluded.has(String(task.id))) return false;
         const rev = reviews[String(task.id)];
         return rev && isTaskDue(rev);
       })
@@ -115,7 +167,9 @@ export const useReviewStore = create<ReviewState>((set, get) => ({
   getMasteryStats: (customTaskList: ReviewTaskItem[] = []): MasteryStats => {
     const list = customTaskList || [];
     const reviews = get().reviews;
-    const totalCount = list.length;
+    const excluded = new Set(get().excludedTaskIds);
+    const activeList = list.filter((task) => !excluded.has(String(task.id)));
+    const totalCount = activeList.length;
 
     let dueToday = 0;
     let learning = 0;
@@ -123,7 +177,7 @@ export const useReviewStore = create<ReviewState>((set, get) => ({
     let mastered = 0;
     let totalReviewed = 0;
 
-    for (const task of list) {
+    for (const task of activeList) {
       const rev = reviews[String(task.id)];
       if (rev && rev.stage > 0) {
         totalReviewed++;

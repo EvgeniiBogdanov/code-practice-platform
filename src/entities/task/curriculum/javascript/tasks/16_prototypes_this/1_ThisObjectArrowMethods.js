@@ -1,15 +1,14 @@
-// Поведение this в стрелочных и обычных методах объекта
-// Что выведет следующий код?
+// Что выведет данный код в консоль и почему?
 
 const user = {
-  name: "Анна",
+  name: "Alice",
   regularMethod() {
-    return this.name;
+    console.log("regular:", this.name);
   },
   arrowMethod: () => {
-    return this.name;
+    console.log("arrow:", this.name);
   },
 };
 
-console.log(user.regularMethod());
-console.log(user.arrowMethod());
+user.regularMethod();
+user.arrowMethod();

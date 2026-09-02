@@ -8,6 +8,7 @@ describe("progress-selectors", () => {
       "1": "solved",
       "2": "unsolved",
     },
+    taskStatusTimestamps: {},
     checklistState: {},
     copiedCodeId: null,
     isInitialized: true,

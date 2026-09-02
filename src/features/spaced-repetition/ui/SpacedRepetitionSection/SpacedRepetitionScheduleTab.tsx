@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { ReviewItem } from "@/entities/review";
 import { Task } from "@/entities/task";
-import { VisxRetentionScheduleBar } from "../VisxRetentionScheduleBar";
+import { RetentionScheduleBar } from "../RetentionScheduleBar";
 import styles from "./SpacedRepetitionSection.module.css";
 
 interface SpacedRepetitionScheduleTabProps {
@@ -17,7 +17,7 @@ export const SpacedRepetitionScheduleTab = memo(
         <div className={styles.scheduleDesc}>
           Прогноз нагрузки и даты следующих повторений задач {scopeLabel} по интервалам SM-2:
         </div>
-        <VisxRetentionScheduleBar reviews={reviews} allTasks={targetTasks} height={220} />
+        <RetentionScheduleBar reviews={reviews} allTasks={targetTasks} height={220} />
       </div>
     );
   }

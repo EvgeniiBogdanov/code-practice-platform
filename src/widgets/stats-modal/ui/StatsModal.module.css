@@ -24,10 +24,10 @@
 }
 
 .statsModal {
-  background: var(--bg-card, #202020);
-  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-lg, 12px);
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--shadow-lg);
   width: 90vw;
   max-width: 940px;
   height: 560px;
@@ -35,15 +35,9 @@
   display: flex;
   flex-direction: row;
   overflow: hidden;
-  color: var(--text-main, #ffffff);
+  color: var(--text-main);
   position: relative;
   box-sizing: border-box;
-}
-
-[data-theme="light"] .statsModal {
-  background: #ffffff;
-  border-color: rgba(55, 53, 47, 0.12);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
 }
 
 .statsModalBody {

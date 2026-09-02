@@ -9,9 +9,9 @@
   font-size: var(--fs-xs, 10px);
   font-weight: 600;
   line-height: 1;
-  background-color: rgba(234, 179, 8, 0.15);
-  color: #eab308;
-  border: 1px solid rgba(234, 179, 8, 0.3);
+  background-color: var(--color-status-due-bg, var(--accent-yellow-bg));
+  color: var(--color-status-due, var(--accent-yellow));
+  border: none;
   cursor: pointer;
   text-decoration: none;
   box-sizing: border-box;
@@ -28,6 +28,6 @@
 }
 
 .badge:hover {
-  background-color: rgba(234, 179, 8, 0.25);
+  background-color: var(--accent-yellow-border);
   transform: translateY(-1px);
 }

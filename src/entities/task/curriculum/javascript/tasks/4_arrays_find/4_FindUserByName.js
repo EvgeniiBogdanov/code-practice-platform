@@ -1,4 +1,4 @@
-// Найти пользователя по имени
+// Поиск пользователя по имени
 // Напишите функцию findUserByName(users, name), которая находит объект пользователя с указанным именем.
 
 const findUserByName = (users, name) => {
@@ -12,5 +12,5 @@ const users = [
 ];
 
 // Пример вызова:
-console.log(findUserByName(users, "Иван"));   // { id: 2, name: "Иван" }
-console.log(findUserByName(users, "Пётр"));   // undefined
+console.log(findUserByName(users, "Иван")); // { id: 2, name: "Иван" }
+console.log(findUserByName(users, "Пётр")); // undefined

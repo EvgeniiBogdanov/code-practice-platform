@@ -1,10 +1,11 @@
-// Напиши пример функции Замыкания
+// Счетчик на замыкании
+// Напишите функцию createCounter(initialValue), возвращающую функцию, которая при каждом вызове увеличивает и возвращает значение счетчика на 1.
 
-const createCounter = () => {
-  // Ваш код здесь
+const createCounter = (initialValue = 0) => {
+  // Решение тут
 };
 
-const counter = createCounter();
-console.log(counter()); // 1
-console.log(counter()); // 2
-console.log(counter()); // 3
+// Пример вызова:
+const counter = createCounter(5);
+console.log(counter()); // 6
+console.log(counter()); // 7

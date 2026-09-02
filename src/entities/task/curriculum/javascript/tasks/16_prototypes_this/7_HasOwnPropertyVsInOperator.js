@@ -1,11 +1,10 @@
-// Разница между Object.hasOwn и оператором in
-// Что выведет данный код?
+// Что выведет данный код в консоль и почему?
 
-const proto = { inherited: true };
-const obj = Object.create(proto);
-obj.own = 123;
+const proto = { inherited: 1 };
+const child = Object.create(proto);
+child.own = 2;
 
-console.log("own" in obj);
-console.log("inherited" in obj);
-console.log(Object.hasOwn(obj, "own"));
-console.log(Object.hasOwn(obj, "inherited"));
+console.log("own" in child);
+console.log("inherited" in child);
+console.log(child.hasOwnProperty("own"));
+console.log(child.hasOwnProperty("inherited"));

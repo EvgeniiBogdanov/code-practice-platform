@@ -1,6 +1,7 @@
 import React, { memo } from "react";
 import { clsx } from "clsx";
 import { Eye, Code2, Columns2 } from "lucide-react";
+import { Tooltip } from "../Tooltip";
 import styles from "./ViewModeToggle.module.css";
 
 export type ViewMode = "split" | "preview" | "code";
@@ -34,17 +35,17 @@ const ViewModeToggleComponent = <T extends string = ViewMode>({
         {options.map((opt) => {
           const isActive = mode === opt.value;
           return (
-            <button
-              key={opt.value}
-              type="button"
-              className={clsx(styles.viewModeBtn, isActive && styles.active)}
-              onClick={() => onChange(opt.value)}
-              title={opt.title || opt.label}
-              aria-label={opt.ariaLabel || opt.title || opt.label}
-            >
-              {opt.icon}
-              <span>{opt.label}</span>
-            </button>
+            <Tooltip key={opt.value} content={opt.title || opt.label} side="bottom">
+              <button
+                type="button"
+                className={clsx(styles.viewModeBtn, isActive && styles.active)}
+                onClick={() => onChange(opt.value)}
+                aria-label={opt.ariaLabel || opt.title || opt.label}
+              >
+                {opt.icon}
+                <span>{opt.label}</span>
+              </button>
+            </Tooltip>
           );
         })}
       </div>
@@ -54,46 +55,49 @@ const ViewModeToggleComponent = <T extends string = ViewMode>({
   return (
     <div className={clsx(styles.viewModeToggleBar, className)}>
       {allowSplit && (
+        <Tooltip content="Сплит: Код слева и Интерфейс справа" side="bottom">
+          <button
+            type="button"
+            className={clsx(
+              styles.viewModeBtn,
+              (mode as unknown as ViewMode) === "split" && styles.active
+            )}
+            onClick={() => onChange("split" as unknown as T)}
+            aria-label="Сплит: Код слева и Интерфейс справа"
+          >
+            <Columns2 size={12} />
+            <span>Сплит</span>
+          </button>
+        </Tooltip>
+      )}
+      <Tooltip content="Просмотр исходного кода" side="bottom">
         <button
           type="button"
           className={clsx(
             styles.viewModeBtn,
-            (mode as unknown as ViewMode) === "split" && styles.active
+            (mode as unknown as ViewMode) === "code" && styles.active
           )}
-          onClick={() => onChange("split" as unknown as T)}
-          title="Сплит: Код слева и Интерфейс справа"
-          aria-label="Сплит: Код слева и Интерфейс справа"
+          onClick={() => onChange("code" as unknown as T)}
+          aria-label="Просмотр исходного кода"
         >
-          <Columns2 size={12} />
-          <span>Сплит</span>
+          <Code2 size={12} />
+          <span>Код</span>
         </button>
-      )}
-      <button
-        type="button"
-        className={clsx(
-          styles.viewModeBtn,
-          (mode as unknown as ViewMode) === "code" && styles.active
-        )}
-        onClick={() => onChange("code" as unknown as T)}
-        title="Просмотр исходного кода"
-        aria-label="Просмотр исходного кода"
-      >
-        <Code2 size={12} />
-        <span>Код</span>
-      </button>
-      <button
-        type="button"
-        className={clsx(
-          styles.viewModeBtn,
-          (mode as unknown as ViewMode) === "preview" && styles.active
-        )}
-        onClick={() => onChange("preview" as unknown as T)}
-        title="Просмотр UI песочницы"
-        aria-label="Просмотр UI песочницы"
-      >
-        <Eye size={12} />
-        <span>Интерфейс</span>
-      </button>
+      </Tooltip>
+      <Tooltip content="Просмотр UI песочницы" side="bottom">
+        <button
+          type="button"
+          className={clsx(
+            styles.viewModeBtn,
+            (mode as unknown as ViewMode) === "preview" && styles.active
+          )}
+          onClick={() => onChange("preview" as unknown as T)}
+          aria-label="Просмотр UI песочницы"
+        >
+          <Eye size={12} />
+          <span>Интерфейс</span>
+        </button>
+      </Tooltip>
     </div>
   );
 };

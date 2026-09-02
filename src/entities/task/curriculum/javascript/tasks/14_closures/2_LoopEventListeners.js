@@ -1,11 +1,12 @@
-// - Что выведется в консоль; - Варианты, как исправить;
+// Что выведет данный код в консоль и почему?
 
-const button = document.getElementById("button");
-
+var funcs = [];
 for (var i = 0; i < 3; i++) {
-  button.addEventListener("click", function (e) {
-    console.log(i);
+  funcs.push(function () {
+    return i;
   });
 }
 
-button.click();
+console.log(funcs[0]());
+console.log(funcs[1]());
+console.log(funcs[2]());

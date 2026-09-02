@@ -4,8 +4,10 @@ export const getRatingClass = (
   isSolved: boolean,
   isUnsolved: boolean,
   _difficulty?: string,
-  reviewRating?: string
+  reviewRating?: string,
+  isExcluded?: boolean
 ): string => {
+  if (isExcluded) return styles.ratingExcluded;
   if (isUnsolved) return styles.ratingUnsolved;
   if (isSolved && reviewRating) {
     if (reviewRating === "hard") return styles.ratingHard;

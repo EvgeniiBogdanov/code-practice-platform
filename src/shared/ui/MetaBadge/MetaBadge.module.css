@@ -8,20 +8,32 @@
 .metaBadge {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
+  height: 22px;
+  padding: 0 8px;
   font-size: 11px;
   font-weight: 500;
-  padding: 5px 8px;
+  line-height: 1;
   border-radius: var(--radius-lg);
   font-family: var(--font-sans);
   border: none;
   user-select: none;
+  box-sizing: border-box;
+  vertical-align: middle;
+  white-space: nowrap;
 }
 
 .icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.icon svg {
+  display: block;
   flex-shrink: 0;
 }
 
@@ -32,65 +44,53 @@
   line-height: 1;
 }
 
-/* Variants - Exact v2.2.7 meta-badge styling (borderless with tint) */
+/* Variants - Exact WCAG-compliant design tokens matching folder icons */
 .variant-default,
 .variant-gray {
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--text-muted, #94a3b8);
+  background: var(--accent-gray-bg);
+  color: var(--accent-gray);
 }
 
-[data-theme="light"] .variant-default,
-[data-theme="light"] .variant-gray {
-  background: rgba(55, 53, 47, 0.08);
-  color: rgba(55, 53, 47, 0.65);
-}
-
-.variant-blue {
-  background: rgba(35, 131, 226, 0.15);
-  color: #2383e2;
-}
-
-[data-theme="light"] .variant-blue {
-  background: rgba(0, 102, 204, 0.1);
-  color: #0066cc;
+.variant-blue,
+.variant-dark-blue,
+.variant-light-blue {
+  background: var(--accent-blue-bg);
+  color: var(--accent-blue);
 }
 
 .variant-yellow {
-  background: rgba(245, 158, 11, 0.15);
-  color: #f59e0b;
+  background: var(--accent-yellow-bg);
+  color: var(--accent-yellow);
 }
 
-[data-theme="light"] .variant-yellow {
-  background: rgba(217, 119, 6, 0.12);
-  color: #b45309;
+.variant-orange {
+  background: var(--accent-orange-bg);
+  color: var(--accent-orange);
+}
+
+.variant-lime,
+.variant-green {
+  background: var(--accent-green-bg);
+  color: var(--accent-green);
 }
 
 .variant-purple {
-  background: rgba(168, 85, 247, 0.15);
-  color: #a855f7;
+  background: var(--accent-purple-bg);
+  color: var(--accent-purple);
 }
 
-[data-theme="light"] .variant-purple {
-  background: rgba(125, 68, 158, 0.12);
-  color: #7d449e;
+.variant-red,
+.variant-coral {
+  background: var(--accent-red-bg);
+  color: var(--accent-red);
 }
 
-.variant-green {
-  background: rgba(16, 185, 129, 0.15);
-  color: #10b981;
+.variant-pink {
+  background: var(--accent-pink-bg);
+  color: var(--accent-pink);
 }
 
-[data-theme="light"] .variant-green {
-  background: rgba(16, 185, 129, 0.12);
-  color: #059669;
-}
-
-.variant-red {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
-}
-
-[data-theme="light"] .variant-red {
-  background: rgba(220, 38, 38, 0.12);
-  color: #dc2626;
+.variant-cyan {
+  background: var(--accent-cyan-bg);
+  color: var(--accent-cyan);
 }

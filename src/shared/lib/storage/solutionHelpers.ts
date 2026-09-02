@@ -1,4 +1,5 @@
 import { getReviewsFromLocalStorage, ReviewRecord } from "./reviewService";
+import { getProgressFromLocalStorage } from "./progressService";
 
 export function parseIdMetadata(id: string): {
   taskId: string;
@@ -42,6 +43,7 @@ export function shouldResetDueSolution(id: string, updatedAt?: number): boolean 
   const { rootTaskId } = parseIdMetadata(id);
   if (!rootTaskId) return false;
 
+  // 1. Spaced Repetition Due Check
   const reviews = getReviewsFromLocalStorage();
   const review = reviews[String(rootTaskId)];
   if (review && isReviewDue(review)) {
@@ -49,5 +51,29 @@ export function shouldResetDueSolution(id: string, updatedAt?: number): boolean 
       return true;
     }
   }
+
+  // 2. Unsolved Next Day Reset Check
+  // Если пользователь нажал «Не решено», на следующий календарный день решение сбрасывается
+  const progress = getProgressFromLocalStorage();
+  const taskProgress = progress[String(rootTaskId)];
+  if (taskProgress && taskProgress.status === "unsolved" && taskProgress.updatedAt) {
+    const now = new Date();
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+    const unsolvedDate = new Date(taskProgress.updatedAt);
+    const unsolvedDayStart = new Date(
+      unsolvedDate.getFullYear(),
+      unsolvedDate.getMonth(),
+      unsolvedDate.getDate()
+    ).getTime();
+
+    // Прошёл хотя бы 1 календарный день с момента отметки «Не решено»
+    if (todayStart > unsolvedDayStart) {
+      if (!updatedAt || updatedAt <= taskProgress.updatedAt) {
+        return true;
+      }
+    }
+  }
+
   return false;
 }
+

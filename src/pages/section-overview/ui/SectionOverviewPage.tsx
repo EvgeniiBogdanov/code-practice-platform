@@ -37,6 +37,7 @@ export const SectionOverviewPage = memo(
           solved={stats.solved}
           percent={stats.percent}
           remaining={stats.remaining}
+          excludedCount={stats.excludedCount}
         />
 
         <SectionGroupsGrid

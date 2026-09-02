@@ -20,7 +20,7 @@ export const SECTIONS_CONFIG: Record<"home" | SectionType, SectionMeta> = {
     label: "Главная (Обзор)",
     path: "/home",
     icon: Home,
-    color: "#60a5fa",
+    color: "var(--color-home)",
     badge: "Обзор",
   },
   javascript: {
@@ -29,7 +29,7 @@ export const SECTIONS_CONFIG: Record<"home" | SectionType, SectionMeta> = {
     label: "JavaScript",
     path: "/javascript",
     icon: Zap,
-    color: "#f59e0b",
+    color: "var(--color-js)",
     badge: `${CURRICULUM_COUNTS.javascript} задач`,
   },
   react: {
@@ -38,7 +38,7 @@ export const SECTIONS_CONFIG: Record<"home" | SectionType, SectionMeta> = {
     label: "React",
     path: "/react",
     icon: Code2,
-    color: "#61dafb",
+    color: "var(--color-react)",
     badge: `${CURRICULUM_COUNTS.react} задач`,
   },
   algorithms: {
@@ -47,7 +47,7 @@ export const SECTIONS_CONFIG: Record<"home" | SectionType, SectionMeta> = {
     label: "Алгоритмы",
     path: "/algorithms",
     icon: Brain,
-    color: "#a855f7",
+    color: "var(--color-algo)",
     badge: `${CURRICULUM_COUNTS.algorithms} задач`,
   },
 };

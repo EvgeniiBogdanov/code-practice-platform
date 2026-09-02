@@ -19,7 +19,7 @@
 }
 
 .kpiCard {
-  background: var(--bg-card, #252525);
+  background: var(--bg-card);
   border: none;
   border-radius: var(--radius-lg);
   padding: 16px 18px;
@@ -28,12 +28,6 @@
   gap: 6px;
   box-shadow: var(--shadow-sm);
   box-sizing: border-box;
-}
-
-[data-theme="light"] .kpiCard {
-  background: var(--bg-popover, #ffffff);
-  border: none;
-  box-shadow: var(--shadow-sm);
 }
 
 .kpiLabel {
@@ -52,13 +46,13 @@
 }
 
 .kpiSolved {
-  color: var(--color-status-solved, #10b981);
+  color: var(--color-status-solved);
 }
 
 .kpiPercent {
-  color: var(--accent-blue, #60a5fa);
+  color: var(--accent-blue);
 }
 
 .kpiRemaining {
-  color: var(--color-status-due, #f59e0b);
+  color: var(--color-status-due);
 }

@@ -1,5 +1,5 @@
 import { memo, ReactNode, useCallback, useEffect, useRef, useState } from "react";
-import { TooltipProviderContext } from "./types";
+import { TooltipProviderContext, DEFAULT_TOOLTIP_DELAY_DURATION } from "./types";
 
 export interface TooltipProviderProps {
   children: ReactNode;
@@ -8,7 +8,11 @@ export interface TooltipProviderProps {
 }
 
 export const TooltipProvider = memo(
-  ({ children, delayDuration = 600, skipDelayDuration = 300 }: TooltipProviderProps) => {
+  ({
+    children,
+    delayDuration = DEFAULT_TOOLTIP_DELAY_DURATION,
+    skipDelayDuration = 300,
+  }: TooltipProviderProps) => {
     const [isWarm, setIsWarm] = useState(false);
     const warmTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 

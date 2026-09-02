@@ -62,6 +62,7 @@ export function peekCachedSolution(id: string): string | null {
     if (shouldResetDueSolution(id, meta?.updatedAt)) {
       memoryCache.delete(id);
       pendingWrites.delete(id);
+      dbDelete(STORES.SOLUTIONS, id).catch(() => {});
       return null;
     }
     return memoryCache.get(id) || null;

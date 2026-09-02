@@ -156,12 +156,15 @@ export const AppSidebar = ({ className }: AppSidebarProps): React.JSX.Element =>
       </div>
 
       {sidebarOpen && (
-        <div
-          className={clsx(styles.resizer, isResizing && styles.active)}
-          onMouseDown={handleMouseDown}
-          onDoubleClick={handleDoubleClick}
-          title="Перетащите для изменения ширины (двойной клик — сброс)"
-        />
+        <Tooltip content="Перетащите для изменения ширины (двойной клик — сброс)" side="right">
+          <div
+            className={clsx(styles.resizer, isResizing && styles.active)}
+            onMouseDown={handleMouseDown}
+            onDoubleClick={handleDoubleClick}
+            role="separator"
+            aria-label="Изменить ширину боковой панели"
+          />
+        </Tooltip>
       )}
     </aside>
   );

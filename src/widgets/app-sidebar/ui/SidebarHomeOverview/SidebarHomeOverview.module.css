@@ -34,23 +34,23 @@
 }
 
 .icon_home {
-  color: #60a5fa;
+  color: var(--color-home);
   flex-shrink: 0;
 }
 
 .icon_javascript,
 .icon_js {
-  color: var(--color-js, #f59e0b);
+  color: var(--color-js);
   flex-shrink: 0;
 }
 
 .icon_react {
-  color: var(--color-react, #61dafb);
+  color: var(--color-react);
   flex-shrink: 0;
 }
 
 .icon_algorithms,
 .icon_algo {
-  color: var(--color-algo, #a855f7);
+  color: var(--color-algo);
   flex-shrink: 0;
 }

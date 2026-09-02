@@ -13,13 +13,24 @@
   user-select: none;
   line-height: 1;
   transition:
-    background-color 0.15s ease,
-    color 0.15s ease,
+    background-color var(--transition-fast, 0.15s ease),
+    color var(--transition-fast, 0.15s ease),
     transform 0.1s ease;
 }
 
-.button:active {
+.button:active:not(:disabled) {
   transform: scale(0.98);
+}
+
+.button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--bg-surface), 0 0 0 4px var(--accent-blue);
 }
 
 .icon {
@@ -53,171 +64,91 @@
 
 /* Color Variants */
 .color_amber {
-  background-color: rgba(245, 158, 11, 0.12);
-  color: #f59e0b;
+  background-color: var(--accent-yellow-bg);
+  color: var(--accent-yellow);
 }
 
-.color_amber:hover {
-  background-color: #f59e0b;
-  color: #1c1917;
-}
-
-[data-theme="light"] .color_amber {
-  background-color: rgba(245, 158, 11, 0.12);
-  color: #d97706;
-}
-
-[data-theme="light"] .color_amber:hover {
-  background-color: #d97706;
-  color: #ffffff;
+.color_amber:hover:not(:disabled) {
+  background-color: var(--accent-yellow-border);
+  color: var(--accent-yellow-hover);
 }
 
 .color_blue {
-  background-color: rgba(59, 130, 246, 0.12);
-  color: #3b82f6;
+  background-color: var(--accent-blue-bg);
+  color: var(--accent-blue);
 }
 
-.color_blue:hover {
-  background-color: #2383e2;
-  color: #ffffff;
-}
-
-[data-theme="light"] .color_blue {
-  background-color: rgba(0, 102, 204, 0.1);
-  color: #0066cc;
-}
-
-[data-theme="light"] .color_blue:hover {
-  background-color: #0066cc;
-  color: #ffffff;
+.color_blue:hover:not(:disabled) {
+  background-color: var(--accent-blue-border);
+  color: var(--accent-blue-hover);
 }
 
 .color_emerald {
-  background-color: rgba(16, 185, 129, 0.12);
-  color: #10b981;
+  background-color: var(--accent-green-bg);
+  color: var(--accent-green);
 }
 
-.color_emerald:hover {
-  background-color: #10b981;
-  color: #ffffff;
-}
-
-[data-theme="light"] .color_emerald {
-  background-color: rgba(16, 185, 129, 0.12);
-  color: #059669;
-}
-
-[data-theme="light"] .color_emerald:hover {
-  background-color: #059669;
-  color: #ffffff;
+.color_emerald:hover:not(:disabled) {
+  background-color: var(--accent-green-border);
+  color: var(--accent-green-hover);
 }
 
 .color_purple {
-  background-color: rgba(168, 85, 247, 0.12);
-  color: #a855f7;
+  background-color: var(--accent-purple-bg);
+  color: var(--accent-purple);
 }
 
-.color_purple:hover {
-  background-color: #a855f7;
-  color: #ffffff;
-}
-
-[data-theme="light"] .color_purple {
-  background-color: rgba(168, 85, 247, 0.12);
-  color: #9333ea;
-}
-
-[data-theme="light"] .color_purple:hover {
-  background-color: #9333ea;
-  color: #ffffff;
+.color_purple:hover:not(:disabled) {
+  background-color: var(--accent-purple-border);
+  color: var(--accent-purple-hover);
 }
 
 .color_red {
-  background-color: rgba(255, 107, 107, 0.12);
-  color: #ff6b6b;
+  background-color: var(--accent-red-bg);
+  color: var(--accent-red);
 }
 
-.color_red:hover {
-  background-color: #ff6b6b;
-  color: #ffffff;
-}
-
-[data-theme="light"] .color_red {
-  background-color: rgba(255, 107, 107, 0.12);
-  color: #dc2626;
-}
-
-[data-theme="light"] .color_red:hover {
-  background-color: #dc2626;
-  color: #ffffff;
+.color_red:hover:not(:disabled) {
+  background-color: var(--accent-red-border);
+  color: var(--accent-red-hover);
 }
 
 .color_cyan {
-  background-color: rgba(6, 182, 212, 0.12);
-  color: #06b6d4;
+  background-color: var(--accent-cyan-bg);
+  color: var(--accent-cyan);
 }
 
-.color_cyan:hover {
-  background-color: #06b6d4;
-  color: #ffffff;
-}
-
-[data-theme="light"] .color_cyan {
-  background-color: rgba(6, 182, 212, 0.12);
-  color: #0891b2;
-}
-
-[data-theme="light"] .color_cyan:hover {
-  background-color: #0891b2;
-  color: #ffffff;
+.color_cyan:hover:not(:disabled) {
+  background-color: var(--accent-cyan-border);
+  color: var(--accent-cyan-hover);
 }
 
 .color_pink {
-  background-color: rgba(236, 72, 153, 0.12);
-  color: #ec4899;
+  background-color: var(--accent-pink-bg);
+  color: var(--accent-pink);
 }
 
-.color_pink:hover {
-  background-color: #ec4899;
-  color: #ffffff;
-}
-
-[data-theme="light"] .color_pink {
-  background-color: rgba(236, 72, 153, 0.12);
-  color: #db2777;
-}
-
-[data-theme="light"] .color_pink:hover {
-  background-color: #db2777;
-  color: #ffffff;
+.color_pink:hover:not(:disabled) {
+  background-color: var(--accent-pink-border);
+  color: var(--accent-pink-hover);
 }
 
 .color_orange {
-  background-color: rgba(249, 115, 22, 0.12);
-  color: #f97316;
+  background-color: var(--accent-orange-bg);
+  color: var(--accent-orange);
 }
 
-.color_orange:hover {
-  background-color: #f97316;
-  color: #ffffff;
-}
-
-[data-theme="light"] .color_orange {
-  background-color: rgba(249, 115, 22, 0.12);
-  color: #ea580c;
-}
-
-[data-theme="light"] .color_orange:hover {
-  background-color: #ea580c;
-  color: #ffffff;
+.color_orange:hover:not(:disabled) {
+  background-color: var(--accent-orange-border);
+  color: var(--accent-orange-hover);
 }
 
 .color_default {
-  background-color: var(--state-hover, rgba(255, 255, 255, 0.08));
+  background-color: var(--state-hover);
   color: var(--text-muted);
 }
 
-.color_default:hover {
+.color_default:hover:not(:disabled) {
   background-color: var(--state-active);
   color: var(--text-main);
 }

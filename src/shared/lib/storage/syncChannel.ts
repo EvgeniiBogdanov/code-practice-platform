@@ -12,7 +12,9 @@ export type SyncEventType =
   | "PROGRESS_RESET"
   | "TASK_REVIEWED"
   | "TASK_REVIEW_DELETED"
-  | "REVIEWS_RESET";
+  | "REVIEWS_RESET"
+  | "TASK_EXCLUSION_CHANGED"
+  | "ASSISTANT_NAME_CHANGED";
 
 export interface SyncEventPayload {
   type: SyncEventType;
@@ -24,6 +26,7 @@ export interface SyncEventPayload {
   all?: boolean;
   idsToRemove?: string[];
   taskIds?: string[];
+  name?: string;
   [key: string]: unknown;
 }
 

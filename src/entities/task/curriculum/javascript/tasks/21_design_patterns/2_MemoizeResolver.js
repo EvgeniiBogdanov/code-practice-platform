@@ -1,18 +1,12 @@
 // Мемоизация с кастомным resolver-ом ключа
-// Напишите функцию memoize(fn, resolver).
+// Напишите функцию memoize(fn, resolver), которая кэширует результаты вызова fn. Ключ кэша формируется функцией resolver(...args) (по умолчанию первый аргумент).
 
 const memoize = (fn, resolver) => {
   // Решение тут
 };
 
 // Пример вызова:
-let count = 0;
-const add = (a, b) => {
-  count++;
-  return a + b;
-};
-const memoizedAdd = memoize(add, (a, b) => `${a}_${b}`);
-
-console.log(memoizedAdd(2, 3)); // 5
-console.log(memoizedAdd(2, 3)); // 5
-console.log(count);             // 1
+const sum = (a, b) => a + b;
+const memoizedSum = memoize(sum, (a, b) => `${a}_${b}`);
+console.log(memoizedSum(2, 3)); // 5
+console.log(memoizedSum(2, 3)); // 5 (из кэша)

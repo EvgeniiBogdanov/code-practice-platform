@@ -1,12 +1,13 @@
-// Что выведет следующий код и как его исправить?
+// Что выведет данный код в консоль и почему?
 
 const counter = {
   count: 10,
-  increment() {
+  inc() {
     this.count++;
     return this.count;
   },
 };
 
-const inc = counter.increment;
-console.log(inc());
+const increment = counter.inc;
+console.log(counter.inc());
+console.log(increment());

@@ -54,6 +54,6 @@ describe("TaskReviewRatingOptions", () => {
 
     render(<TaskReviewRatingOptions taskReview={mockReview} canRate={true} onRate={vi.fn()} />);
 
-    expect(screen.getByTitle("Текущая оценка")).toBeInTheDocument();
+    expect(screen.getByLabelText("Текущая оценка")).toBeInTheDocument();
   });
 });

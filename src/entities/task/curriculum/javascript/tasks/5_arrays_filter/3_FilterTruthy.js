@@ -1,4 +1,4 @@
-// Удалить все falsy значения
+// Удаление falsy значений
 // Напишите функцию filterTruthy(arr), которая возвращает массив без falsy значений (false, 0, "", null, undefined, NaN).
 
 const filterTruthy = (arr) => {

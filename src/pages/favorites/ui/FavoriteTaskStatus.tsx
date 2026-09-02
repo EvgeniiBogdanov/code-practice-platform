@@ -1,6 +1,6 @@
 import React from "react";
 import { Check, Minus, RotateCcw, X } from "lucide-react";
-import { clsx } from "clsx";
+import { clsx, Tooltip } from "@/shared/ui";
 import { FavoriteTaskStatus as TaskStatus } from "../model/use-favorites-page";
 import styles from "./FavoritesPage.module.css";
 
@@ -32,14 +32,23 @@ export const FavoriteTaskStatus = ({
     <Minus size={10} />
   );
 
-  return (
+  const statusNode = (
     <span
       className={clsx(styles.taskStatus, styles[`status_${isDue ? "due" : status}`])}
-      title={label}
       aria-label={label}
     >
       {icon}
       {showLabel ? <span>{label}</span> : null}
     </span>
   );
+
+  if (!showLabel) {
+    return (
+      <Tooltip content={label} side="top">
+        {statusNode}
+      </Tooltip>
+    );
+  }
+
+  return statusNode;
 };

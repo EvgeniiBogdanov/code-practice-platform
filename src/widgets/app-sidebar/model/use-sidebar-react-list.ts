@@ -12,6 +12,7 @@ export interface UseSidebarReactListReturn {
   reviews: Record<string, ReviewItem>;
   uiState: UIState;
   completedTotal: number;
+  totalCount: number;
   tasks: readonly Task[];
 }
 
@@ -22,12 +23,18 @@ export const useSidebarReactList = (): UseSidebarReactListReturn => {
 
   const completedTasks = useProgressStore((state) => state.completedTasks);
   const reviews = useReviewStore((state) => state.reviews);
+  const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
   const uiState = useUIStore();
+
+  const activeTasks = useMemo(
+    () => tasks.filter((task) => !excludedTaskIds.includes(String(task.id))),
+    [tasks, excludedTaskIds]
+  );
 
   const completedTotal = useMemo(
     () =>
-      tasks.filter((task) => isTaskCompleted(completedTasks[String(task.id)])).length,
-    [completedTasks, tasks]
+      activeTasks.filter((task) => isTaskCompleted(completedTasks[String(task.id)])).length,
+    [completedTasks, activeTasks]
   );
 
   return {
@@ -36,6 +43,7 @@ export const useSidebarReactList = (): UseSidebarReactListReturn => {
     reviews,
     uiState,
     completedTotal,
+    totalCount: activeTasks.length,
     tasks,
   };
 };

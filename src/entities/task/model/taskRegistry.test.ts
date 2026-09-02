@@ -182,4 +182,98 @@ describe("taskRegistry", () => {
     expect(reactTasks.some((t) => t.id === "r16")).toBe(true);
     expect(reactTasks.some((t) => t.id === "r17")).toBe(true);
   });
+  it("should retrieve React lifecycle tasks (a4, a5) with React 19 metadata", async () => {
+    const taskA4 = await getTaskById("a4");
+    expect(taskA4).toBeDefined();
+    expect(taskA4?.id).toBe("a4");
+    expect(taskA4?.section).toBe("react");
+    expect(taskA4?.title).toContain("React 19");
+    expect(TASK_EXPLANATIONS.a4).toBeDefined();
+    expect(TASK_EXPLANATIONS.a4).toContain("React 19");
+
+    const taskA5 = await getTaskById("a5");
+    expect(taskA5).toBeDefined();
+    expect(taskA5?.id).toBe("a5");
+    expect(taskA5?.section).toBe("react");
+    expect(taskA5?.title).toContain("React 19");
+    expect(TASK_EXPLANATIONS.a5).toBeDefined();
+    expect(TASK_EXPLANATIONS.a5).toContain("useLayoutEffect");
+
+    const reactTasks = await getTasksBySection("react");
+    expect(reactTasks.some((t) => t.id === "a4")).toBe(true);
+    expect(reactTasks.some((t) => t.id === "a5")).toBe(true);
+  });
+
+  it("should retrieve all 26 Objects tasks with full metadata", async () => {
+    const jsTasks = await getTasksBySection("javascript");
+    const objectTasks = jsTasks.filter((t) => t.group === "Объекты");
+
+    expect(objectTasks).toHaveLength(26);
+    expect(objectTasks.map((t) => t.id)).toEqual([
+      ...Array.from({ length: 13 }, (_, index) => `js${197 + index}`),
+      "js170",
+      "js210",
+      "js211",
+      "js216",
+      "js217",
+      "js222",
+      "js223",
+      "js224",
+      "js225",
+      "js228",
+      "js246",
+      "js247",
+      "js248",
+    ]);
+
+    // Test specific tasks across tiers
+    const task197 = await getTaskById("js197");
+    expect(task197?.group).toBe("Объекты");
+    expect(task197?.subgroup).toBe("Базовый синтаксис");
+    expect(task197?.title).toContain("CRUD");
+
+    const task202 = await getTaskById("js202");
+    expect(task202?.group).toBe("Объекты");
+    expect(task202?.subgroup).toBe("Манипуляции и Утилиты");
+    expect(task202?.title).toContain("isEmpty");
+
+    const task207 = await getTaskById("js207");
+    expect(task207?.group).toBe("Объекты");
+    expect(task207?.subgroup).toBe("Собеседования: Hard");
+    expect(task207?.title).toContain("get / Lodash _.get");
+
+    const task170 = await getTaskById("js170");
+    expect(task170?.group).toBe("Объекты");
+    expect(task170?.subgroup).toBe("Собеседования: Hard");
+    expect(task170?.title).toContain("deepFreeze");
+
+    const task210 = await getTaskById("js210");
+    expect(task210?.group).toBe("Объекты");
+    expect(task210?.subgroup).toBe("Собеседования: Hard");
+    expect(task210?.title).toContain("deepClone");
+
+    const task211 = await getTaskById("js211");
+    expect(task211?.group).toBe("Объекты");
+    expect(task211?.subgroup).toBe("Собеседования: Hard");
+    expect(task211?.title).toContain("deepMerge");
+  });
+
+  it("should place Objects group strictly before Arrays in JavaScript tasks order", async () => {
+    const jsTasks = await getTasksBySection("javascript");
+    const groupsInOrder: string[] = [];
+
+    jsTasks.forEach((t) => {
+      const g = t.group || "";
+      if (g && !groupsInOrder.includes(g)) {
+        groupsInOrder.push(g);
+      }
+    });
+
+    const objectsIndex = groupsInOrder.indexOf("Объекты");
+    const arraysIndex = groupsInOrder.indexOf("Массивы");
+
+    expect(objectsIndex).toBeGreaterThan(-1);
+    expect(arraysIndex).toBeGreaterThan(-1);
+    expect(objectsIndex).toBeLessThan(arraysIndex);
+  });
 });

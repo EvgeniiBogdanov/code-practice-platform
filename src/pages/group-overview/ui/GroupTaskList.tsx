@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "@tanstack/react-router";
 import { Folder } from "lucide-react";
 import type { TaskCompletionStatus } from "@/entities/progress";
-import { getGroupCompletionClass } from "@/entities/review";
+import { getGroupCompletionClass, useReviewStore } from "@/entities/review";
 import type { ReviewItem } from "@/entities/review";
 import type { Task } from "@/entities/task";
 import { TaskFavoriteButton } from "@/features/task-favorite";
@@ -61,6 +61,8 @@ export const GroupTaskList = React.memo(
     reviews,
     completedTasks,
   }: GroupTaskListProps): React.JSX.Element => {
+    const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
+
     if (tasks.length === 0) {
       return (
         <div className={styles.emptyState}>
@@ -71,6 +73,7 @@ export const GroupTaskList = React.memo(
     }
 
     const renderTaskRow = (task: Task): React.JSX.Element => {
+      const isExcluded = excludedTaskIds.includes(String(task.id));
       return (
         <TaskTableRow
           key={task.id}
@@ -78,6 +81,7 @@ export const GroupTaskList = React.memo(
           to={taskRoute}
           status={getTaskStatus(task.id)}
           review={reviews[String(task.id)]}
+          isExcluded={isExcluded}
           favoriteMarker={
             <TaskFavoriteButton
               taskId={task.id}
@@ -99,10 +103,13 @@ export const GroupTaskList = React.memo(
           Object.entries(groupedSubgroups).map(([subgroupName, subTasks]) => {
             if (subTasks.length === 0) return null;
             const isOpen = isSubgroupOpen(subgroupName);
-            const completedSubCount = subTasks.filter(
+            const activeSubTasks = subTasks.filter(
+              (t) => !excludedTaskIds.includes(String(t.id))
+            );
+            const completedSubCount = activeSubTasks.filter(
               (t) => getTaskStatus(t.id) === "solved"
             ).length;
-            const completionClass = getGroupCompletionClass(subTasks, reviews, completedTasks);
+            const completionClass = getGroupCompletionClass(activeSubTasks, reviews, completedTasks);
             const subgroupId = `subgroup-${groupName}-${subgroupName}`;
 
             return (
@@ -119,14 +126,14 @@ export const GroupTaskList = React.memo(
                     to={taskRoute}
                     params={{ taskId: subgroupId }}
                     className={styles.nodeTitleLink}
-                    title={`Открыть раздел «${subgroupName}»`}
+                    aria-label={`Открыть раздел «${subgroupName}»`}
                   >
                     <span className={styles.nodeTitle}>{subgroupName}</span>
                   </Link>
 
                   <GroupHeaderMeta
                     completed={completedSubCount}
-                    total={subTasks.length}
+                    total={activeSubTasks.length}
                     completedClass={completionClass}
                   />
                 </TreeNodeHeader>

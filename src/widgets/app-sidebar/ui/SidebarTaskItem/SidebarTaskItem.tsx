@@ -13,6 +13,7 @@ export interface SidebarTaskItemProps {
   isSolved: boolean;
   isUnsolved: boolean;
   isDue: boolean;
+  isExcluded?: boolean;
   difficulty?: string;
   reviewRating?: string;
   onClick?: () => void;
@@ -22,8 +23,10 @@ const getRatingClass = (
   isSolved: boolean,
   isUnsolved: boolean,
   _difficulty?: string,
-  reviewRating?: string
+  reviewRating?: string,
+  isExcluded?: boolean
 ) => {
+  if (isExcluded) return styles.taskTitleExcluded;
   if (reviewRating === "hard") return styles.ratingHard;
   if (reviewRating === "medium") return styles.ratingMedium;
   if (reviewRating === "easy") return styles.ratingEasy;
@@ -43,12 +46,17 @@ export const SidebarTaskItem = memo(
     isSolved,
     isUnsolved,
     isDue,
+    isExcluded = false,
     difficulty,
     reviewRating,
     onClick,
   }: SidebarTaskItemProps) => {
-    const ratingClass = getRatingClass(isSolved, isUnsolved, difficulty, reviewRating);
-    const tooltipText = isDue ? `🔄 ${title} (Пора повторить!)` : title;
+    const ratingClass = getRatingClass(isSolved, isUnsolved, difficulty, reviewRating, isExcluded);
+    const tooltipText = isExcluded
+      ? `${title} (Исключена из цикла повторений)`
+      : isDue
+        ? `${title} (Пора повторить!)`
+        : title;
 
     return (
       <Tooltip content={tooltipText} side="right" sideOffset={10} fullWidth>
@@ -57,7 +65,11 @@ export const SidebarTaskItem = memo(
           to={to}
           params={params}
           isActive={isActive}
-          className={clsx(styles.sidebarTaskRow, isDue && styles.taskIsDue)}
+          className={clsx(
+            styles.sidebarTaskRow,
+            !isExcluded && isDue && styles.taskIsDue,
+            isExcluded && styles.taskRowExcluded
+          )}
           onClick={onClick}
         >
           <div className={styles.taskTitleGroup}>
@@ -67,19 +79,21 @@ export const SidebarTaskItem = memo(
             </span>
           </div>
 
-          {isDue ? (
-            <span className={styles.statusIconDue} aria-label="Пора повторить сегодня!">
-              <RotateCcw size={11} />
-            </span>
-          ) : isSolved ? (
-            <span className={styles.statusIconSolved} aria-label="Решено">
-              <Check size={14} />
-            </span>
-          ) : isUnsolved ? (
-            <span className={styles.statusIconUnsolved} aria-label="Не решено">
-              <X size={14} />
-            </span>
-          ) : null}
+          {!isExcluded && (
+            isDue ? (
+              <span className={styles.statusIconDue} aria-label="Пора повторить сегодня!">
+                <RotateCcw size={11} />
+              </span>
+            ) : isSolved ? (
+              <span className={styles.statusIconSolved} aria-label="Решено">
+                <Check size={14} />
+              </span>
+            ) : isUnsolved ? (
+              <span className={styles.statusIconUnsolved} aria-label="Не решено">
+                <X size={14} />
+              </span>
+            ) : null
+          )}
         </TreeNodeHeader>
       </Tooltip>
     );

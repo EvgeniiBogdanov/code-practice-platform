@@ -125,6 +125,15 @@
   color: var(--color-status-unsolved);
 }
 
+.tone_excluded .taskTitleText {
+  color: var(--text-muted, #787774) !important;
+  opacity: 0.65;
+}
+
+.tone_excluded {
+  opacity: 0.7;
+}
+
 .statusDue {
   color: var(--color-status-due);
 }

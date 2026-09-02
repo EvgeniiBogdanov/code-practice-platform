@@ -34,6 +34,7 @@ export * from "./ResizableSplitPane";
 export * from "./UiLoader";
 export * from "./UiSkeleton";
 export * from "./UiNumberScramble";
+export * from "./GaugeIndicator";
 export { clsx } from "clsx";
 
 

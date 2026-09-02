@@ -47,42 +47,21 @@
 
 /* Hover */
 .codeBtn:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--text-main, #ffffff);
-}
-
-[data-theme="light"] .codeBtn {
-  color: var(--text-muted, rgba(55, 53, 47, 0.68));
-}
-
-[data-theme="light"] .codeBtn:hover:not(:disabled) {
-  background: #ffffff;
-  color: var(--text-main, #37352f);
+  background: var(--state-hover);
+  color: var(--text-main);
 }
 
 /* Active State */
 .active,
 .variant_active {
   background: transparent;
-  color: var(--accent-blue, #38bdf8);
+  color: var(--accent-blue);
 }
 
 .active:hover:not(:disabled),
 .variant_active:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--accent-blue, #38bdf8);
-}
-
-[data-theme="light"] .active,
-[data-theme="light"] .variant_active {
-  background: transparent;
-  color: var(--accent-blue, #0066cc);
-}
-
-[data-theme="light"] .active:hover:not(:disabled),
-[data-theme="light"] .variant_active:hover:not(:disabled) {
-  background: rgba(55, 53, 47, 0.08);
-  color: var(--accent-blue, #0066cc);
+  background: var(--state-hover);
+  color: var(--accent-blue);
 }
 
 /* Success / Run Variant */

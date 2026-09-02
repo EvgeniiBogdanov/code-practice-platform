@@ -1,18 +1,12 @@
-// Что будет выведено в консоль?
+// Что выведет данный код в консоль и почему?
 
-let number = 0;
-
-const increment = () => {
-  number += 1;
-  const message = `Incremented to ${number}`;
-
-  return () => {
+function createLogger() {
+  let message = "Привет";
+  return function () {
     console.log(message);
-    console.log(`Number: ${number}`);
   };
-};
+}
 
-const log = increment();
-increment();
-increment();
+let log = createLogger();
+message = "Пока";
 log();

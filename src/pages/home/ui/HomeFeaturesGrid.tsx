@@ -6,7 +6,7 @@ import {
   Brain,
   RotateCcw,
   CheckCircle2,
-  ClipboardCheck,
+  Gauge,
   Zap,
 } from "lucide-react";
 import { Card, TopicIconBox, TopicIconBoxColor } from "@/shared/ui";
@@ -47,8 +47,8 @@ export const HomeFeaturesGrid = memo((): React.JSX.Element => {
         <FeatureItem
           icon={<Code2 size={16} />}
           colorVariant="blue"
-          title="Редактор и анализ типов"
-          description="Редактирование JS, TS и JSX/TSX с живой проверкой типов на лету, всплывающими подсказками сигнатур, Emmet JSX и автоформатированием Prettier."
+          title="Редактор и сплит-режим"
+          description="Редактирование JS, TS и JSX/TSX с подсветкой синтаксиса, проверкой типов, всплывающими сигнатурами, Emmet, автоформатированием и сплит-режимом 70/30."
         />
 
         <FeatureItem
@@ -58,38 +58,38 @@ export const HomeFeaturesGrid = memo((): React.JSX.Element => {
           description={
             <>
               Мгновенный запуск кода (Ctrl+Enter) с замером времени (
-              <Zap size={12} color="#f59e0b" /> ms) и живой рендеринг компонентов React с Redux
-              Toolkit, Zustand и защитой от зацикливаний.
+              <Zap size={12} color="#f59e0b" /> ms) и живой рендеринг компонентов React 19 с Zustand,
+              Redux Toolkit и песочницей.
             </>
           }
         />
 
         <FeatureItem
-          icon={<Brain size={16} />}
-          colorVariant="purple"
-          title="Песочница кандидата"
-          description="Запускаемый live-код с реальными багами и недочетами кандидатов для отработки навыка проведения технического Code Review."
+          icon={<RotateCcw size={16} />}
+          colorVariant="emerald"
+          title="Интервальный помощник SM-2"
+          description="Алгоритм повторения (1д ➔ 3д ➔ 7д ➔ 14д ➔ 30д), интерактивный мотивационный помощник, наглядная аналитика прогресса и исключение задач."
         />
 
         <FeatureItem
-          icon={<RotateCcw size={16} />}
-          colorVariant="emerald"
-          title="Интервальное повторение SM-2"
-          description="Календарный алгоритм закрепления задач (1д ➔ 3д ➔ 7д ➔ 14д ➔ 30д ➔ Мастер) с учетом часового пояса и автосбросом кода в день повтора."
+          icon={<Gauge size={16} />}
+          colorVariant="red"
+          title="Индекс вероятности на интервью"
+          description="Оценка вероятности встретить задачу на live coding для Middle/Senior (BigTech, FinTech, E-commerce) и система мета-бейджей категорий."
         />
 
         <FeatureItem
           icon={<CheckCircle2 size={16} />}
-          colorVariant="emerald"
-          title="Эталонные решения"
-          description="Оптимизированные решения с разбором сложности O(N) / O(1), выбором нескольких вариантов реализации и лучшими практиками собеседований."
+          colorVariant="purple"
+          title="Эталонные решения и теория"
+          description="Оптимизированные решения O(N) / O(1) с разбором подводных камней, вариативностью подходов, вопросами интервьюера и чек-листами самопроверки."
         />
 
         <FeatureItem
-          icon={<ClipboardCheck size={16} />}
-          colorVariant="blue"
-          title="Чек-листы, поиск и таймер"
-          description="Критерии самопроверки и вопросы интервьюера, быстрый поиск задач через Command Palette (Cmd+K), таймер собеседования и шпаргалки."
+          icon={<Brain size={16} />}
+          colorVariant="cyan"
+          title="Песочница кандидата и Review"
+          description="Запускаемый live-код с реальными багами для отработки Code Review, быстрый поиск задач через Command Palette (Cmd+K) и раздел «Избранное»."
         />
       </div>
     </div>

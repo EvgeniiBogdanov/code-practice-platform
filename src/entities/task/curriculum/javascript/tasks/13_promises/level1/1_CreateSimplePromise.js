@@ -1,10 +1,9 @@
 // Создание базового Promise
-// Напишите функцию delay(ms), которая возвращает Promise,
-// переходящий в состояние fulfilled через ms миллисекунд со значением "Готово!".
+// Создайте функцию getResolvedPromise(value), которая возвращает успешно выполненный Promise со значением value.
 
-const delay = (ms) => {
+const getResolvedPromise = (value) => {
   // Решение тут
 };
 
 // Пример вызова:
-delay(1000).then((res) => console.log(res)); // "Готово!" (через 1000 мс)
+getResolvedPromise(42).then(console.log); // 42

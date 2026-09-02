@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { CalendarClock, ArrowRight, Clock, FileText } from "lucide-react";
 import { clsx } from "clsx";
 import { Task } from "@/entities/task";
-import { Card, NotificationBadge } from "@/shared/ui";
+import { Card, NotificationBadge, Tooltip } from "@/shared/ui";
 import { UpcomingTaskItem } from "../../lib/upcoming-helpers";
 import styles from "./SpacedRepetitionSection.module.css";
 
@@ -87,18 +87,19 @@ export const SpacedRepetitionUpcomingTab = memo(
                     Этап {stage}
                   </NotificationBadge>
 
-                  <NotificationBadge
-                    variant={badgeVariant}
-                    pinned={false}
-                    ring={false}
-                    size="tab"
-                    title={formattedDate}
-                  >
-                    {daysUntil <= 1 ? (
-                      <Clock size={11} style={{ marginRight: 4 }} />
-                    ) : null}
-                    <span>{relativeTime}</span>
-                  </NotificationBadge>
+                  <Tooltip content={formattedDate} side="top">
+                    <NotificationBadge
+                      variant={badgeVariant}
+                      pinned={false}
+                      ring={false}
+                      size="tab"
+                    >
+                      {daysUntil <= 1 ? (
+                        <Clock size={11} className={styles.clockIcon} aria-hidden="true" />
+                      ) : null}
+                      <span>{relativeTime}</span>
+                    </NotificationBadge>
+                  </Tooltip>
 
                   <ArrowRight size={13} className={styles.upcomingRowArrow} />
                 </div>

@@ -46,47 +46,47 @@
 }
 
 .fileIcon {
-  color: var(--icon-file, #94a3b8);
+  color: var(--icon-file);
   flex-shrink: 0;
 }
 
 .fileIconJsx {
-  color: #f59e0b;
+  color: var(--icon-file-js);
   flex-shrink: 0;
 }
 
 .fileIconTsx {
-  color: #3178c6;
+  color: var(--icon-file-ts);
   flex-shrink: 0;
 }
 
 .fileIconReact {
-  color: #f59e0b;
+  color: var(--icon-file-react);
   flex-shrink: 0;
 }
 
 .fileIconTs {
-  color: #3178c6;
+  color: var(--icon-file-ts);
   flex-shrink: 0;
 }
 
 .fileIconJs {
-  color: #f59e0b;
+  color: var(--icon-file-js);
   flex-shrink: 0;
 }
 
 .fileIconCss {
-  color: #38bdf8;
+  color: var(--icon-file-css);
   flex-shrink: 0;
 }
 
 .fileIconHtml {
-  color: #e34c26;
+  color: var(--icon-file-html);
   flex-shrink: 0;
 }
 
 .fileIconJson {
-  color: #a855f7;
+  color: var(--icon-file-json);
   flex-shrink: 0;
 }
 

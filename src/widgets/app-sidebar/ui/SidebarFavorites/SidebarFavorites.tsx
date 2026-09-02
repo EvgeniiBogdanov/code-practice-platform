@@ -31,7 +31,7 @@ export const SidebarFavorites = React.memo(
             <SquareButton
               icon={
                 <Star
-                  size={15}
+                  size={16}
                   className={styles.favoriteIcon}
                   fill={isActive ? "currentColor" : "none"}
                 />
@@ -41,7 +41,6 @@ export const SidebarFavorites = React.memo(
               aria-label="Открыть избранное"
               aria-current={isActive ? "page" : undefined}
               data-tree-node="true"
-              className={styles.favoritesButton}
               isActive={isActive}
             />
           </Tooltip>

@@ -2,6 +2,7 @@ import React from "react";
 import { Star } from "lucide-react";
 import { clsx } from "clsx";
 import { useFavoriteTaskStore } from "@/entities/favorite-task";
+import { Tooltip } from "@/shared/ui";
 import styles from "./TaskFavoriteMarker.module.css";
 
 export interface TaskFavoriteMarkerProps {
@@ -23,14 +24,15 @@ export const TaskFavoriteMarker = React.memo(
     if (!isFavorite) return null;
 
     return (
-      <span
-        className={clsx(styles.marker, className)}
-        role="img"
-        aria-label={`Задача «${taskTitle}» в избранном`}
-        title="В избранном"
-      >
-        <Star size={13} fill="currentColor" />
-      </span>
+      <Tooltip content="В избранном" side="top">
+        <span
+          className={clsx(styles.marker, className)}
+          role="img"
+          aria-label={`Задача «${taskTitle}» в избранном`}
+        >
+          <Star size={13} fill="currentColor" />
+        </span>
+      </Tooltip>
     );
   }
 );

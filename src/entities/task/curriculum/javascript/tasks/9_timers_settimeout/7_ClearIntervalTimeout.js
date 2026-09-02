@@ -1,5 +1,4 @@
-// Взаимодействие setInterval и clearTimeout
-// Что произойдет и какие сообщения будут выведены?
+// Что выведет данный код в консоль и почему?
 
 let count = 0;
 const intervalId = setInterval(() => {

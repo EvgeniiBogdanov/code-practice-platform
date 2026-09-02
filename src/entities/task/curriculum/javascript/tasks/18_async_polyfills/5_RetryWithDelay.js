@@ -1,5 +1,5 @@
 // Повтор выполнения асинхронной функции с задержкой (Retry)
-// Напишите функцию retry(fn, maxRetries, delayMs).
+// Напишите функцию retry(fn, maxRetries, delayMs), выполняющую повторные вызовы fn при возникновении ошибок.
 
 const retry = async (fn, maxRetries = 3, delayMs = 100) => {
   // Решение тут

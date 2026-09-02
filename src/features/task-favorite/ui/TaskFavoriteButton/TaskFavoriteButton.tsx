@@ -26,8 +26,8 @@ export const TaskFavoriteButton = React.memo(
     );
     const toggleFavoriteTask = useFavoriteTaskStore((state) => state.toggleFavoriteTask);
     const label = isFavorite
-      ? `Удалить «${taskTitle}» из избранного`
-      : `Добавить «${taskTitle}» в избранное`;
+      ? "Убрать из избранного"
+      : "Добавить в избранное";
     const handleToggleFavorite = useCallback(
       (event: React.MouseEvent<HTMLButtonElement>): void => {
         event.preventDefault();
@@ -53,7 +53,6 @@ export const TaskFavoriteButton = React.memo(
           onClick={handleToggleFavorite}
           aria-label={label}
           aria-pressed={isFavorite}
-          title={label}
         />
       </Tooltip>
     );

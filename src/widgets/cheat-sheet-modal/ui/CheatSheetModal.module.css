@@ -23,20 +23,16 @@
   height: calc(100dvh - var(--space-12));
   max-height: 100%;
   background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-popover);
+  color: var(--text-main);
   display: flex;
   flex-direction: column;
   padding: 16px;
   gap: 12px;
   box-sizing: border-box;
   animation: modalShow 200ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-[data-theme="light"] .drawer {
-  background: var(--bg-card, #ffffff);
-  box-shadow: var(--shadow-popover);
-  color: var(--text-main);
 }
 
 /* Header */
@@ -57,7 +53,8 @@
 }
 
 .titleIcon {
-  color: var(--accent-yellow, #eab308);
+  color: var(--accent-yellow);
+  flex-shrink: 0;
 }
 
 .closeBtn {
@@ -79,24 +76,16 @@
   color: var(--text-main);
 }
 
-[data-theme="light"] .closeBtn:hover {
-  background: var(--bg-subtle, #f4f4f2);
-  color: var(--text-main);
-}
-
 /* Section Tabs */
 .sectionTabs {
   display: flex;
   align-items: center;
   gap: 4px;
-  background: var(--bg-subtle, rgba(255, 255, 255, 0.04));
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-color);
   padding: 3px;
   border-radius: var(--radius-lg);
   flex-shrink: 0;
-}
-
-[data-theme="light"] .sectionTabs {
-  background: #f4f4f2;
 }
 
 .sectionTabBtn {
@@ -108,7 +97,7 @@
   padding: 5px 8px;
   border-radius: var(--radius-md);
   background: transparent;
-  border: none;
+  border: 1px solid transparent;
   color: var(--text-muted);
   font-size: 12px;
   font-weight: 500;
@@ -120,33 +109,32 @@
 
 .sectionTabBtn:hover {
   color: var(--text-main);
+  background: var(--state-hover);
 }
 
 .sectionTabBtn.active {
   background: var(--bg-card);
   color: var(--text-main);
+  border-color: var(--border-color);
   box-shadow: var(--shadow-sm);
 }
 
-[data-theme="light"] .sectionTabBtn.active {
-  background: #ffffff;
-}
-
 .iconReact {
-  color: var(--color-react, #38bdf8);
+  color: var(--color-react);
 }
 
 .iconJs {
-  color: var(--color-js, #facc15);
+  color: var(--color-js);
 }
 
 .iconAlgo {
-  color: var(--color-algo, #a855f7);
+  color: var(--color-algo);
 }
 
 /* Search input */
 .search {
-  background: var(--bg-subtle, rgba(255, 255, 255, 0.04));
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-color);
   color: var(--text-main);
   padding: 8px 12px;
   border-radius: var(--radius-md);
@@ -156,27 +144,18 @@
   flex-shrink: 0;
   transition:
     border-color var(--transition-fast),
-    background var(--transition-fast);
+    background var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .search:focus {
   border-color: var(--accent-blue);
   background: var(--bg-card);
+  box-shadow: 0 0 0 2px var(--accent-blue-bg);
 }
 
 .search::placeholder {
   color: var(--text-muted);
-}
-
-[data-theme="light"] .search {
-  background: #ffffff;
-  border-color: rgba(55, 53, 47, 0.2);
-  color: #191919;
-}
-
-[data-theme="light"] .search:focus {
-  border-color: var(--accent-blue, #0066cc);
-  box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.15);
 }
 
 /* Category Tabs */
@@ -200,7 +179,7 @@
 .tabBtn {
   flex-shrink: 0;
   background: transparent;
-  border: none;
+  border: 1px solid transparent;
   color: var(--text-muted);
   padding: 4px 10px;
   font-size: 12px;
@@ -218,23 +197,10 @@
 }
 
 .tabBtn.activeTab {
-  background: var(--accent-blue);
-  color: #ffffff;
-}
-
-[data-theme="light"] .tabBtn {
-  background: var(--bg-subtle, #f4f4f2);
-  color: var(--text-muted);
-}
-
-[data-theme="light"] .tabBtn:hover {
-  background: #e8e8e6;
-  color: var(--text-main);
-}
-
-[data-theme="light"] .tabBtn.activeTab {
-  background: var(--accent-blue, #0066cc);
-  color: #ffffff;
+  background: var(--accent-blue-bg);
+  color: var(--accent-blue);
+  border-color: var(--accent-blue-border);
+  font-weight: 600;
 }
 
 /* Content & Cards */
@@ -246,11 +212,7 @@
   gap: 12px;
   padding-right: 2px;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
-}
-
-[data-theme="light"] .content {
-  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+  scrollbar-color: var(--border-color) transparent;
 }
 
 .content::-webkit-scrollbar {
@@ -258,16 +220,13 @@
 }
 
 .content::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--border-color);
   border-radius: 4px;
 }
 
-[data-theme="light"] .content::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.15);
-}
-
 .cheatCard {
-  background: var(--bg-subtle, rgba(255, 255, 255, 0.03));
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   padding: 12px;
   display: flex;
@@ -278,9 +237,7 @@
 }
 
 [data-theme="light"] .cheatCard {
-  background: #ffffff;
-  border-color: var(--border-color);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  background: var(--bg-card);
 }
 
 .cardHeader {
@@ -319,9 +276,9 @@
 /* Notion-Style Callout Block for CheatSheet Tips */
 .cheatsheetTip {
   padding: 10px 12px;
-  background: rgba(245, 158, 11, 0.08);
-  border-left: 4px solid #f59e0b;
-  border-radius: var(--radius-md, 8px);
+  background: var(--accent-yellow-bg);
+  border-left: 3px solid var(--accent-yellow);
+  border-radius: var(--radius-md);
   color: var(--text-main);
   font-size: 12px;
   line-height: 1.5;
@@ -337,7 +294,7 @@
   align-items: center;
   gap: 6px;
   font-weight: 600;
-  color: #f59e0b;
+  color: var(--accent-yellow);
   font-size: 12px;
   font-family: var(--font-sans);
 }
@@ -345,16 +302,6 @@
 .cheatsheetTipContent {
   color: var(--text-main);
   font-size: 12px;
-}
-
-[data-theme="light"] .cheatsheetTip {
-  background: rgba(245, 158, 11, 0.07);
-  border-left: 4px solid #d97706;
-  color: var(--text-main);
-}
-
-[data-theme="light"] .cheatsheetTipHeader {
-  color: #d97706;
 }
 
 .empty {

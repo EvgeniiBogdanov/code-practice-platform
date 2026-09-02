@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight, Check, X, RotateCcw, FileText } from "lucide-react";
 import { SectionType, Task } from "@/entities/task";
 import { ReviewItem } from "@/entities/review";
-import { GroupCard, TaskButton, NodeCount, UiSkeleton } from "@/shared/ui";
+import { GroupCard, TaskButton, NodeCount, UiSkeleton, Tooltip } from "@/shared/ui";
 import styles from "./SectionOverviewPage.module.css";
 
 export interface GroupCardData {
@@ -118,17 +118,23 @@ const GroupItem = memo(
                     <FileText size={13} className={styles.fileIcon} />
                     <span className={styles.previewTaskTitle}>{t.title}</span>
                     {due ? (
-                      <span className={styles.statusDue} title="Пора повторить!">
-                        <RotateCcw size={10} />
-                      </span>
+                      <Tooltip content="Пора повторить!" side="left">
+                        <span className={styles.statusDue}>
+                          <RotateCcw size={10} />
+                        </span>
+                      </Tooltip>
                     ) : solved ? (
-                      <span className={styles.statusSolved} title="Решено">
-                        <Check size={11} />
-                      </span>
+                      <Tooltip content="Решено" side="left">
+                        <span className={styles.statusSolved}>
+                          <Check size={11} />
+                        </span>
+                      </Tooltip>
                     ) : unsolved ? (
-                      <span className={styles.statusUnsolved} title="Не решено">
-                        <X size={11} />
-                      </span>
+                      <Tooltip content="Не решено" side="left">
+                        <span className={styles.statusUnsolved}>
+                          <X size={11} />
+                        </span>
+                      </Tooltip>
                     ) : null}
                   </Link>
                 );

@@ -51,6 +51,13 @@
   font-feature-settings: "tnum";
 }
 
+.kpiExcluded {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-muted, #787774);
+  margin-left: 2px;
+}
+
 .kpiSolved {
   color: var(--color-status-solved, #10b981);
 }

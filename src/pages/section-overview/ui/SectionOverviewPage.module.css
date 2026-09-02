@@ -250,6 +250,10 @@
   text-decoration: none;
 }
 
+.groupActionBtn:hover {
+  background-color: var(--bg-elevated);
+}
+
 /* Icon / Status Helpers */
 .iconJs {
   color: var(--color-js, #f59e0b);

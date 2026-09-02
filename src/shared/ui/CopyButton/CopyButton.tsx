@@ -25,7 +25,6 @@ export const CopyButton = memo(
         type="button"
         onClick={() => copy()}
         className={clsx(styles.copyButton, copied && styles.copied, className)}
-        title={label}
       >
         {copied ? <Check size={14} /> : <Copy size={14} />}
         <span>{copied ? copiedLabel : label}</span>

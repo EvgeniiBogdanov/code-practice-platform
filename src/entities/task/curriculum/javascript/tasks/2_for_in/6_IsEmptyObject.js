@@ -6,6 +6,6 @@ const isEmpty = (obj) => {
 };
 
 // Пример вызова:
-console.log(isEmpty({}));           // true
+console.log(isEmpty({}));              // true
 console.log(isEmpty({ name: "Ann" })); // false
 console.log(isEmpty({ 0: "zero" }));   // false

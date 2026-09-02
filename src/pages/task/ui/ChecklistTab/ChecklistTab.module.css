@@ -36,36 +36,25 @@
 .scoreBadge {
   display: inline-flex;
   align-items: center;
-  padding: 6px 12px;
-  border-radius: 100px;
+  padding: 5px 12px;
+  border-radius: var(--radius-full, 100px);
   font-size: 12px;
-  font-weight: 700;
-  background-color: rgba(16, 185, 129, 0.12);
-  color: #10b981;
+  font-weight: 600;
+  background-color: var(--accent-green-bg);
+  color: var(--accent-green);
   white-space: nowrap;
   flex-shrink: 0;
   font-family: var(--font-sans);
-}
-
-[data-theme="light"] .scoreBadge {
-  background-color: rgba(16, 185, 129, 0.1);
-  color: #059669;
-  border-color: rgba(16, 185, 129, 0.25);
 }
 
 .section {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  background: var(--bg-subtle, rgba(255, 255, 255, 0.03));
+  background: var(--bg-surface);
   border: 1px solid var(--border-color);
   padding: 14px 16px;
   border-radius: var(--radius-md, 8px);
-}
-
-[data-theme="light"] .section {
-  background: #ffffff;
-  border-color: var(--border-color, rgba(55, 53, 47, 0.12));
 }
 
 .empty {

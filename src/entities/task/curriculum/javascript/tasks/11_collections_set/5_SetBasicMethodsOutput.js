@@ -1,16 +1,11 @@
-// Базовые методы Set
-// Что выведет данный код?
+// Что выведет данный код в консоль и почему?
 
 const set = new Set();
-
 set.add(1);
-set.add(2);
-set.add(2);
-set.add(3);
+set.add(5);
+set.add("five");
+set.add(5);
 
 console.log(set.size);
-console.log(set.has(2));
-set.delete(2);
-console.log(set.has(2));
-set.clear();
-console.log(set.size);
+console.log(set.has(5));
+console.log(set.has("5"));

@@ -18,7 +18,7 @@ describe("TaskFavoriteButton", () => {
     );
 
     const addButton = screen.getByRole("button", {
-      name: "Добавить «Тестовая задача» в избранное",
+      name: "Добавить в избранное",
     });
     const inactiveIcon = addButton.querySelector("svg");
     expect(addButton).toHaveAttribute("aria-pressed", "false");
@@ -29,7 +29,7 @@ describe("TaskFavoriteButton", () => {
 
     expect(useFavoriteTaskStore.getState().favoriteTaskIds).toEqual(["task-1"]);
     const removeButton = screen.getByRole("button", {
-      name: "Удалить «Тестовая задача» из избранного",
+      name: "Убрать из избранного",
     });
     expect(removeButton).toHaveAttribute("aria-pressed", "true");
     expect(removeButton.querySelector("svg")).toHaveAttribute("fill", "currentColor");
@@ -47,7 +47,7 @@ describe("TaskFavoriteButton", () => {
     );
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Добавить «Тестовая задача» в избранное" })
+      screen.getByRole("button", { name: "Добавить в избранное" })
     );
 
     expect(handleRowClick).not.toHaveBeenCalled();
@@ -62,7 +62,7 @@ describe("TaskFavoriteButton", () => {
     );
 
     const button = screen.getByRole("button", {
-      name: "Добавить «Тестовая задача» в избранное",
+      name: "Добавить в избранное",
     });
 
     expect(button.querySelector("svg")).toHaveAttribute("width", "13");

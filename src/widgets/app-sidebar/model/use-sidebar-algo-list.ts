@@ -54,9 +54,16 @@ export const useSidebarAlgoList = (): UseSidebarAlgoListReturn => {
     [groupMetaMap, setExpandedGroups]
   );
 
+  const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
+
+  const activeTasks = useMemo(
+    () => tasks.filter((task) => !excludedTaskIds.includes(String(task.id))),
+    [tasks, excludedTaskIds]
+  );
+
   const completedTotal = useMemo(
-    () => tasks.filter((task) => isTaskCompleted(completedTasks[String(task.id)])).length,
-    [completedTasks, tasks]
+    () => activeTasks.filter((task) => isTaskCompleted(completedTasks[String(task.id)])).length,
+    [completedTasks, activeTasks]
   );
 
   return {
@@ -69,6 +76,6 @@ export const useSidebarAlgoList = (): UseSidebarAlgoListReturn => {
     groupedTasks,
     groupMetaMap,
     completedTotal,
-    totalCount: tasks.length,
+    totalCount: activeTasks.length,
   };
 };

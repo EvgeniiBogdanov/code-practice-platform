@@ -15,6 +15,7 @@ export interface TaskTableRowProps {
   status: TaskRowStatus;
   review?: ReviewItem;
   favoriteMarker?: React.ReactNode;
+  isExcluded?: boolean;
 }
 
 export const TaskTableRow = React.memo(
@@ -24,8 +25,9 @@ export const TaskTableRow = React.memo(
     status,
     review,
     favoriteMarker,
+    isExcluded = false,
   }: Readonly<TaskTableRowProps>): React.JSX.Element => {
-    const tone = getTaskRowTone(task, status, review);
+    const tone = getTaskRowTone(task, status, review, isExcluded);
 
     return (
       <TreeNodeHeader

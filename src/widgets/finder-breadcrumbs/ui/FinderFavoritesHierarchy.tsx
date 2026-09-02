@@ -7,7 +7,7 @@ export const FinderFavoritesHierarchy = (): React.JSX.Element => (
   <>
     <span className={styles.separator}>/</span>
     <div className={styles.dropdownWrapper}>
-      <span className={clsx(styles.breadcrumbBtn, styles.staticItem)} title="Избранные задачи">
+      <span className={clsx(styles.breadcrumbBtn, styles.staticItem)}>
         <Star
           size={14}
           className={styles.iconFavorites}

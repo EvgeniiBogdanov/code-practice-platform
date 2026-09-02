@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Menu, PanelLeft } from "lucide-react";
 import { clsx } from "clsx";
 import { useUIStore } from "@/entities/ui-state";
-import { PlatformLogo, SquareButton } from "@/shared/ui";
+import { PlatformLogo, SquareButton, Tooltip } from "@/shared/ui";
 import styles from "./HeaderBrand.module.css";
 
 export interface HeaderBrandProps {
@@ -13,16 +13,18 @@ export interface HeaderBrandProps {
 export const HeaderBrand = memo(({ className }: HeaderBrandProps): React.JSX.Element => {
   const sidebarOpen = useUIStore((state) => state.sidebarOpen);
   const toggleSidebar = useUIStore((state) => state.toggleSidebar);
+  const toggleText = sidebarOpen ? "Скрыть сайдбар" : "Показать сайдбар";
 
   return (
     <div className={clsx(styles.brandContainer, className)}>
-      <SquareButton
-        icon={sidebarOpen ? <PanelLeft size={18} /> : <Menu size={18} />}
-        className={styles.sidebarToggle}
-        onClick={toggleSidebar}
-        aria-label={sidebarOpen ? "Скрыть панель навигации" : "Показать панель навигации"}
-        title={sidebarOpen ? "Скрыть сайдбар" : "Показать сайдбар"}
-      />
+      <Tooltip content={toggleText} side="bottom">
+        <SquareButton
+          icon={sidebarOpen ? <PanelLeft size={18} /> : <Menu size={18} />}
+          className={styles.sidebarToggle}
+          onClick={toggleSidebar}
+          aria-label={sidebarOpen ? "Скрыть панель навигации" : "Показать панель навигации"}
+        />
+      </Tooltip>
 
       <Link to="/" className={styles.logoLink}>
         <PlatformLogo size={26} className={styles.logoIcon} />

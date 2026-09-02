@@ -1,10 +1,15 @@
-// Завершающий блок finally
-// Допишите цепочку так, чтобы независимо от результата выводилось "Запрос завершён".
+// Что выведет данный код в консоль и почему?
 
-const fetchData = (shouldFail) =>
-  shouldFail ? Promise.reject("Ошибка сети") : Promise.resolve("Данные получены");
+let isLoading = true;
 
-// Решение тут
-
-// Пример вызова:
-fetchData(true);
+Promise.resolve("Данные получены")
+  .then((data) => {
+    console.log(data);
+  })
+  .catch((err) => {
+    console.log("Ошибка:", err);
+  })
+  .finally(() => {
+    isLoading = false;
+    console.log("isLoading:", isLoading);
+  });

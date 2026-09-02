@@ -6,6 +6,11 @@ export * from "./model/taskFiles";
 export * from "./model/task-route";
 export * from "./ui/TaskDifficultyBadge";
 export * from "./ui/TaskCard";
+export * from "./ui/TaskMetaBadges";
+export * from "./lib/get-js-task-badges";
+export * from "./lib/get-js-task-probability";
+export * from "./lib/get-algo-task-badges";
+export * from "./lib/get-algo-task-probability";
 
 export { REACT_GROUPS_CONFIG } from "./curriculum/react/data/groupConfig";
 export { JS_GROUP_CONFIG, getGroupMeta } from "./curriculum/javascript/data/groupConfig";

@@ -100,7 +100,7 @@ const FavoriteSubfolderHeader = ({
       to={taskRoute}
       params={{ taskId: routeId }}
       className={styles.nodeTitleLink}
-      title={`Открыть раздел «${node.title}»`}
+      aria-label={`Открыть раздел «${node.title}»`}
     >
       <span className={styles.nodeTitle}>{node.title}</span>
     </Link>
@@ -167,7 +167,7 @@ const FavoriteFolderHeader = ({
       to={taskRoute}
       params={{ taskId: routeId }}
       className={styles.nodeTitleLink}
-      title={`Открыть раздел «${node.title}»`}
+      aria-label={`Открыть раздел «${node.title}»`}
     >
       <span className={styles.nodeTitle}>{node.title}</span>
     </Link>

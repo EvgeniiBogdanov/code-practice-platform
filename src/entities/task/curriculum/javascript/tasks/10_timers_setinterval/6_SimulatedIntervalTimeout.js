@@ -1,5 +1,5 @@
-// Рекурсивный setTimeout вместо setInterval
-// Реализуйте функцию interval(fn, delay), использующую рекурсивный setTimeout.
+// Симуляция setInterval через рекурсивный setTimeout
+// Реализуйте функцию interval(fn, delay), которая периодически вызывает функцию fn с задержкой delay и возвращает функцию остановки.
 
 const interval = (fn, delay) => {
   // Решение тут

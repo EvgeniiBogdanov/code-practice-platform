@@ -1,6 +1,6 @@
 // Проверка наличия элемента с определенного индекса
 // Напишите функцию hasElemFrom(arr, target, fromIndex), которая проверяет наличие элемента target,
-// начиная с индекса fromIndex.
+// начиная с позиции fromIndex.
 
 const hasElemFrom = (arr, target, fromIndex) => {
   // Решение тут

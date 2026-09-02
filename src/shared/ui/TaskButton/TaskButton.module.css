@@ -7,7 +7,7 @@
   height: 34px;
   border-radius: var(--radius-lg);
   border: none;
-  background: var(--bg-subtle, rgba(255, 255, 255, 0.05));
+  background: var(--bg-surface);
   color: var(--text-muted);
   font-family: var(--font-sans);
   font-size: 13px;
@@ -17,57 +17,48 @@
   user-select: none;
   text-decoration: none;
   white-space: nowrap;
+  box-sizing: border-box;
   transition:
     background var(--transition-fast, 0.15s ease),
     color var(--transition-fast, 0.15s ease),
     transform 0.1s ease;
 }
 
-[data-theme="light"] .taskButton {
-  background: rgba(55, 53, 47, 0.06);
-  color: var(--text-muted, rgba(55, 53, 47, 0.65));
-}
-
 .taskButton:hover:not(:disabled) {
-  background: var(--task-btn-hover-bg, var(--state-hover, rgba(255, 255, 255, 0.09)));
+  background: var(--bg-elevated);
   color: var(--task-btn-accent, var(--text-main));
 }
 
-[data-theme="light"] .taskButton:hover:not(:disabled) {
-  background: var(--task-btn-hover-bg, rgba(55, 53, 47, 0.1));
-  color: var(--task-btn-accent, var(--text-main, #37352f));
-}
-
 .taskButton:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
   pointer-events: none;
 }
 
 .taskButton:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--accent-blue, #3b82f6);
+  box-shadow: 0 0 0 2px var(--bg-surface), 0 0 0 4px var(--accent-blue);
 }
 
-/* Active Status Variants with increased specificity */
-.taskButton.solvedActive,
-[data-theme="light"] .taskButton.solvedActive {
-  background: var(--accent-green, #10b981);
-  color: #ffffff;
-}
-
-.taskButton.unsolvedActive,
-[data-theme="light"] .taskButton.unsolvedActive {
-  background: var(--accent-red, #ef4444);
-  color: #ffffff;
-}
-
-.taskButton.solvedActive:hover:not(:disabled),
-[data-theme="light"] .taskButton.solvedActive:hover:not(:disabled) {
+/* Active Status Variants */
+.taskButton.solvedActive {
   background: var(--accent-green-bg);
+  color: var(--accent-green);
+  font-weight: 600;
 }
 
-.taskButton.unsolvedActive:hover:not(:disabled),
-[data-theme="light"] .taskButton.unsolvedActive:hover:not(:disabled) {
+.taskButton.solvedActive:hover:not(:disabled) {
+  background: var(--accent-green-border);
+  color: var(--accent-green-hover);
+}
+
+.taskButton.unsolvedActive {
   background: var(--accent-red-bg);
+  color: var(--accent-red);
+  font-weight: 600;
+}
+
+.taskButton.unsolvedActive:hover:not(:disabled) {
+  background: var(--accent-red-border);
+  color: var(--accent-red-hover);
 }

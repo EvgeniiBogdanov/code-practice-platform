@@ -1,6 +1,7 @@
 import React from "react";
 import { clsx } from "clsx";
 import { ChevronRight } from "lucide-react";
+import { Tooltip } from "../Tooltip";
 import styles from "./TreeToggleIcon.module.css";
 
 export interface TreeToggleIconProps {
@@ -23,9 +24,11 @@ export interface TreeToggleIconProps {
 export const TreeToggleIcon = React.memo<TreeToggleIconProps>(
   ({ icon, expanded, onToggle, size = "sm", chevronSize, title, className }) => {
     const computedChevronSize = chevronSize ?? (size === "md" ? 18 : 15);
+    const tooltipText =
+      title ??
+      (expanded ? "Свернуть (Alt+клик: свернуть все)" : "Развернуть (Alt+клик: развернуть все)");
 
     const handleClick = (e: React.MouseEvent) => {
-      e.preventDefault();
       e.stopPropagation();
       onToggle(e);
     };
@@ -39,25 +42,24 @@ export const TreeToggleIcon = React.memo<TreeToggleIconProps>(
     };
 
     return (
-      <div
-        className={clsx(styles.toggleWrapper, size === "md" && styles.sizeMd, className)}
-        onClick={handleClick}
-        onKeyDown={handleKeyDown}
-        data-toggle-btn="true"
-        data-expanded={expanded ? "true" : "false"}
-        aria-expanded={expanded}
-        title={
-          title ??
-          (expanded ? "Свернуть (Alt+клик: свернуть все)" : "Развернуть (Alt+клик: развернуть все)")
-        }
-        role="presentation"
-        tabIndex={-1}
-      >
-        <div className={styles.iconDefault}>{icon}</div>
-        <div className={clsx(styles.iconChevron, expanded && styles.expanded)}>
-          <ChevronRight size={computedChevronSize} />
+      <Tooltip content={tooltipText} side="right">
+        <div
+          className={clsx(styles.toggleWrapper, size === "md" && styles.sizeMd, className)}
+          onClick={handleClick}
+          onKeyDown={handleKeyDown}
+          data-toggle-btn="true"
+          data-expanded={expanded ? "true" : "false"}
+          aria-expanded={expanded}
+          aria-label={tooltipText}
+          role="presentation"
+          tabIndex={-1}
+        >
+          <div className={styles.iconDefault}>{icon}</div>
+          <div className={clsx(styles.iconChevron, expanded && styles.expanded)}>
+            <ChevronRight size={computedChevronSize} />
+          </div>
         </div>
-      </div>
+      </Tooltip>
     );
   }
 );

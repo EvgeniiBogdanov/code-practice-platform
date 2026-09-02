@@ -259,7 +259,7 @@ const graph = {
 console.log(dfsGraph(graph, "A")); // ["A", "B", "D", "C", "E"]
 ```
 
-Без множества `visited` этот код зациклился бы: `A → B → A → B → A → ...` до переполнения стека — граф ведь содержит цикл `A ↔ B`.
+Без множества `visited` этот код зациклился бы: `A → B → A → B → A → ...` до переполнения стека — граф ведь содержит цикл `A  B`.
 
 ---
 
@@ -380,7 +380,7 @@ const numIslands = (grid) => {
 ### 1. Забыли базовый случай рекурсии (base case)
 
 ```js
-// ❌ Бесконечная рекурсия — нет проверки на null
+//  Бесконечная рекурсия — нет проверки на null
 const preorderBroken = (node, result = []) => {
   result.push(node.value); // упадёт с ошибкой, когда node === null
   preorderBroken(node.left, result);
@@ -388,7 +388,7 @@ const preorderBroken = (node, result = []) => {
   return result;
 };
 
-// ✅ Правильно — base case проверяется первым
+//  Правильно — base case проверяется первым
 const preorderCorrect = (node, result = []) => {
   if (!node) return result;
   result.push(node.value);
@@ -409,7 +409,7 @@ const preorderCorrect = (node, result = []) => {
 ### 3. Забыли отметить узел посещённым при обходе графа
 
 ```js
-// ❌ Нет проверки visited — зациклится на графе с циклами
+//  Нет проверки visited — зациклится на графе с циклами
 const dfsGraphBroken = (graph, node, result = []) => {
   result.push(node);
   for (const neighbor of graph[node]) {
@@ -449,7 +449,7 @@ console.log(collectValues(tree2)); // ожидаем [4, 5], но если resul
 В примере с `contains` (см. выше) многие новички переписывают код так:
 
 ```js
-// ❌ Менее эффективно — оба вызова происходят всегда,
+//  Менее эффективно — оба вызова происходят всегда,
 // даже если левое поддерево уже дало true
 const containsInefficient = (node, target) => {
   if (!node) return false;

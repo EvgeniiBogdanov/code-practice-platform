@@ -7,6 +7,7 @@ import type { SectionType, Task } from "@/entities/task/meta";
 import { useTaskSection } from "@/entities/task/catalog";
 import { useFinderDropdown } from "../model/useFinderDropdown";
 import { parseBreadcrumbRoute } from "../lib/parseBreadcrumbRoute";
+import { Tooltip } from "@/shared/ui";
 import { FinderSectionDropdown } from "./FinderSectionDropdown";
 import { FinderHomeHierarchy } from "./FinderHomeHierarchy";
 import { FinderJsHierarchy } from "./FinderJsHierarchy";
@@ -41,15 +42,19 @@ export const FinderBreadcrumbs = () => {
       ref={containerRef}
       aria-label="Хлебные крошки Finder"
     >
-      <button
-        type="button"
-        className={clsx(styles.sidebarToggleBtn, sidebarOpen && styles.desktopHidden)}
-        onClick={toggleSidebar}
-        title={sidebarOpen ? "Скрыть боковую панель" : "Показать боковую панель"}
-        aria-label="Скрыть/Показать боковую панель"
+      <Tooltip
+        content={sidebarOpen ? "Скрыть боковую панель" : "Показать боковую панель"}
+        side="bottom"
       >
-        {sidebarOpen ? <PanelLeft size={16} /> : <Menu size={16} />}
-      </button>
+        <button
+          type="button"
+          className={clsx(styles.sidebarToggleBtn, sidebarOpen && styles.desktopHidden)}
+          onClick={toggleSidebar}
+          aria-label="Скрыть/Показать боковую панель"
+        >
+          {sidebarOpen ? <PanelLeft size={16} /> : <Menu size={16} />}
+        </button>
+      </Tooltip>
 
       {/* 1. Section Selector */}
       <FinderSectionDropdown

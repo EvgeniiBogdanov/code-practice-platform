@@ -3,16 +3,11 @@
   align-items: center;
   justify-content: space-between;
   padding: 5px 12px;
-  background: #252526;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-editor);
   gap: 12px;
   animation: fadeIn 0.15s ease;
   user-select: none;
-}
-
-[data-theme="light"] .quickfixBanner {
-  background: #f0f0f0;
-  border-bottom-color: var(--border-color, rgba(55, 53, 47, 0.12));
 }
 
 @keyframes fadeIn {
@@ -35,68 +30,47 @@
 }
 
 .iconBulb {
-  color: #eab308;
+  color: var(--accent-yellow);
   flex-shrink: 0;
 }
 
 .iconError {
-  color: #f87171;
-  flex-shrink: 0;
-}
-
-[data-theme="light"] .iconError {
   color: var(--color-error);
+  flex-shrink: 0;
 }
 
 .message {
   font-size: 11.5px;
-  color: rgba(255, 255, 255, 0.75);
-  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  color: var(--text-main);
+  font-family: var(--font-sans);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-[data-theme="light"] .message {
-  color: var(--text-main);
-}
-
 .message code {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.08);
+  color: var(--code-inline-text);
+  background: var(--code-inline-bg);
   padding: 1px 5px;
   border-radius: 3px;
-  font-family: var(--font-mono, monospace);
+  font-family: var(--font-mono);
   font-size: 11px;
 }
 
-[data-theme="light"] .message code {
-  color: var(--text-main);
-  background: rgba(55, 53, 47, 0.08);
-}
-
 .errorWord {
-  color: #f87171 !important;
-  background: rgba(239, 68, 68, 0.15) !important;
-  text-decoration: underline wavy #ef4444;
+  color: var(--color-error) !important;
+  background: var(--accent-red-bg) !important;
+  text-decoration: underline wavy var(--color-error);
 }
 
 .message strong {
-  color: #ffffff;
+  color: var(--text-main);
   font-weight: 600;
 }
 
-[data-theme="light"] .message strong {
-  color: var(--text-main);
-}
-
 .importModName {
-  color: #ce9178;
-  font-family: var(--font-mono, monospace);
-}
-
-[data-theme="light"] .importModName {
-  color: #a31515;
+  color: var(--accent-orange);
+  font-family: var(--font-mono);
 }
 
 .fixBtn {
@@ -105,9 +79,9 @@
   gap: 5px;
   padding: 3px 9px;
   height: 23px;
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.8);
-  border: 1px solid transparent;
+  background: var(--state-hover);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-sm, 4px);
   font-size: 11px;
   font-weight: 500;
@@ -120,20 +94,10 @@
 }
 
 .fixBtn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-}
-
-[data-theme="light"] .fixBtn {
-  background: #ffffff;
+  background: var(--state-active);
   color: var(--text-main);
-  border-color: var(--border-color);
-}
-
-[data-theme="light"] .fixBtn:hover {
-  background: var(--state-hover);
 }
 
 .fixBtn:active {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--state-selected);
 }

@@ -161,3 +161,68 @@ export async function clearAllReviewsFromDB(): Promise<void> {
     console.error("[ReviewService] Error clearing all reviews from DB:", err);
   }
 }
+
+const LOCAL_STORAGE_EXCLUDED_TASKS_KEY = "code_practice_excluded_tasks_v1";
+const META_EXCLUDED_TASKS_KEY = "excluded_task_ids";
+
+interface ExcludedMetaRecord {
+  key: string;
+  value: string[];
+  updatedAt: number;
+}
+
+export function getExcludedTasksFromLocalStorage(): string[] {
+  if (typeof window === "undefined" || !window.localStorage) return [];
+  try {
+    const raw = window.localStorage.getItem(LOCAL_STORAGE_EXCLUDED_TASKS_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed.map(String) : [];
+  } catch {
+    return [];
+  }
+}
+
+export function saveExcludedTasksToLocalStorage(taskIds: string[]): void {
+  if (typeof window === "undefined" || !window.localStorage) return;
+  try {
+    if (!taskIds || taskIds.length === 0) {
+      window.localStorage.removeItem(LOCAL_STORAGE_EXCLUDED_TASKS_KEY);
+    } else {
+      window.localStorage.setItem(LOCAL_STORAGE_EXCLUDED_TASKS_KEY, JSON.stringify(taskIds));
+    }
+  } catch {
+    // ignore
+  }
+}
+
+export async function getExcludedTasksFromDB(): Promise<string[]> {
+  try {
+    const record = await dbGet<ExcludedMetaRecord>(STORES.META, META_EXCLUDED_TASKS_KEY);
+    if (record && Array.isArray(record.value)) {
+      const taskIds = record.value.map(String);
+      saveExcludedTasksToLocalStorage(taskIds);
+      return taskIds;
+    }
+  } catch (err) {
+    console.error("[ReviewService] Error reading excluded tasks from IndexedDB:", err);
+  }
+  return getExcludedTasksFromLocalStorage();
+}
+
+export async function saveExcludedTasksToDB(taskIds: string[]): Promise<void> {
+  const normalized = Array.from(new Set(taskIds.map(String)));
+  saveExcludedTasksToLocalStorage(normalized);
+  try {
+    await dbPut(STORES.META, {
+      key: META_EXCLUDED_TASKS_KEY,
+      value: normalized,
+      updatedAt: Date.now(),
+    });
+  } catch (err) {
+    console.error("[ReviewService] Error saving excluded tasks to IndexedDB:", err);
+  }
+}
+
+export * from "./assistantNameService";
+

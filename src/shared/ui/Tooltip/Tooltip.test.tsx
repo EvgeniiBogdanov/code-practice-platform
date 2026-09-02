@@ -88,4 +88,43 @@ describe("Tooltip", () => {
     fireEvent.keyDown(window, { key: "Escape" });
     expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
   });
+
+  it("opens with default delay and not immediately when used without provider", () => {
+    render(
+      <Tooltip content="Подсказка по дефолту">
+        <button type="button">Кнопка без провайдера</button>
+      </Tooltip>
+    );
+
+    const button = screen.getByRole("button", { name: "Кнопка без провайдера" });
+
+    fireEvent.mouseEnter(button);
+    // Not open immediately
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+
+    // Not open before default delay (at 150ms)
+    act(() => {
+      vi.advanceTimersByTime(150);
+    });
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+
+    // Opens after default 300ms
+    act(() => {
+      vi.advanceTimersByTime(150);
+    });
+    expect(screen.getByRole("tooltip")).toBeInTheDocument();
+  });
+
+  it("strips native title attribute from child trigger to prevent browser tooltip", () => {
+    render(
+      <Tooltip content="Кастомная подсказка">
+        <button type="button" title="Браузерный тултип">
+          Кнопка с title
+        </button>
+      </Tooltip>
+    );
+
+    const button = screen.getByRole("button", { name: "Кнопка с title" });
+    expect(button).not.toHaveAttribute("title");
+  });
 });

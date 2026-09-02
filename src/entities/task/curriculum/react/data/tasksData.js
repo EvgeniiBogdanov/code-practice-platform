@@ -170,6 +170,15 @@ import CandidateAdvanced2_Store from "../tasks/4_strong/2_FetchUsersRTK/store.js
 import CandidateAdvanced3_Index from "../tasks/4_strong/3_FetchUsersRTKSelectors/index.jsx?raw";
 import CandidateAdvanced3_Slice from "../tasks/4_strong/3_FetchUsersRTKSelectors/usersSlice.js?raw";
 import CandidateAdvanced3_Store from "../tasks/4_strong/3_FetchUsersRTKSelectors/store.js?raw";
+import CandidateAdvanced4 from "../tasks/4_strong/4_ReactRenderRefUseEffect.jsx";
+import CandidateAdvanced4Raw from "../tasks/4_strong/4_ReactRenderRefUseEffect.jsx?raw";
+import SolutionAdvanced4 from "../solutions/4_strong/4_ReactRenderRefUseEffect.jsx";
+import SolutionAdvanced4Raw from "../solutions/4_strong/4_ReactRenderRefUseEffect.jsx?raw";
+
+import CandidateAdvanced5 from "../tasks/4_strong/5_ReactLayoutEffectCleanupCycle.jsx";
+import CandidateAdvanced5Raw from "../tasks/4_strong/5_ReactLayoutEffectCleanupCycle.jsx?raw";
+import SolutionAdvanced5 from "../solutions/4_strong/5_ReactLayoutEffectCleanupCycle.jsx";
+import SolutionAdvanced5Raw from "../solutions/4_strong/5_ReactLayoutEffectCleanupCycle.jsx?raw";
 
 // Импорт эталонных решений
 import Solution1 from "../solutions/3_middle/1_FetchPersons.jsx";
@@ -2357,6 +2366,106 @@ export const ADVANCED_TASKS = [
       "Входные селекторы возвращают примитивы или ссылки из стейта",
       "Выходной селектор пересчитывается только при изменении входных значений",
       "Строка поиска хранится в Redux и используется в селекторе",
+    ],
+  },
+  {
+    id: "a4",
+    title: "4. Порядок вызовов Render, Ref Callback и useEffect (React 19)",
+    desc: "Разбор фаз жизненного цикла в React 19: Render phase (синхронно), Commit phase (Ref Callback) и Post-commit phase (useEffect).",
+    candidate: CandidateAdvanced4,
+    rawCandidate: CandidateAdvanced4Raw,
+    solution: SolutionAdvanced4,
+    rawSolution: SolutionAdvanced4Raw,
+    filepath: "src/react/tasks/4_strong/4_ReactRenderRefUseEffect.jsx",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Фазы жизненного цикла React 19",
+        recommendationNote: "1. Render (синхронно) -> 2. Commit (ref callback) -> 3. Paint -> 4. Post-commit (useEffect асинхронно).",
+        rawSolution: SolutionAdvanced4Raw,
+        filepath: "src/react/tasks/4_strong/4_ReactRenderRefUseEffect.jsx",
+      },
+    ],
+    articles: [
+      {
+        title: "Render and Commit (React.dev)",
+        urlTitle: "React Docs — Render and Commit",
+        url: "https://react.dev/learn/render-and-commit",
+      },
+      {
+        title: "Manipulating the DOM with Refs (React.dev)",
+        urlTitle: "React Docs — Manipulating the DOM with Refs",
+        url: "https://react.dev/learn/manipulating-the-dom-with-refs",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "В каком порядке выполняются этапы рендеринга и эффектов при монтировании?",
+        answer: "1. Render phase (тело функции, console.log(0)); 2. Commit phase (React мутирует DOM и вызывает ref callback, console.log(2)); 3. Браузер отрисовывает экран (Paint); 4. Post-commit phase (асинхронно вызывается useEffect, console.log(1)).",
+      },
+      {
+        question: "Какое нововведение появилось для ref callback в React 19?",
+        answer: "В React 19 ref callback может возвращать функцию очистки (cleanup function), которая вызывается React при размонтировании узла или обновлении ref.",
+      },
+      {
+        question: "Как изменится порядок в режиме разработки под React.StrictMode?",
+        answer: "В Development режиме под StrictMode React намеренно монтирует компонент дважды для поиска сайд-эффектов, вызывая рендер и эффекты повторно. В Production монтирование происходит один раз: 0, 2, 1.",
+      },
+    ],
+    checklist: [
+      "Среда выполнения: Client-side DOM",
+      "Режим: Production (0, 2, 1)",
+      "Понимание Render phase vs Commit phase (ref) vs Post-commit phase (useEffect)",
+      "Знание поддержки ref cleanup function в React 19",
+    ],
+  },
+  {
+    id: "a5",
+    title: "5. Порядок вызовов useLayoutEffect, useEffect и Cleanup (React 19)",
+    desc: "Глубокий анализ порядка выполнения синхронных вызовов useLayoutEffect, их очисток и эффектов useEffect при первичном монтировании и обновлении состояния.",
+    candidate: CandidateAdvanced5,
+    rawCandidate: CandidateAdvanced5Raw,
+    solution: SolutionAdvanced5,
+    rawSolution: SolutionAdvanced5Raw,
+    filepath: "src/react/tasks/4_strong/5_ReactLayoutEffectCleanupCycle.jsx",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Фазы жизненного цикла React 19",
+        recommendationNote: "useLayoutEffect выполняется синхронно до Paint, useEffect — асинхронно после Paint. Очистки вызываются перед новыми эффектами.",
+        rawSolution: SolutionAdvanced5Raw,
+        filepath: "src/react/tasks/4_strong/5_ReactLayoutEffectCleanupCycle.jsx",
+      },
+    ],
+    articles: [
+      {
+        title: "useLayoutEffect (React.dev)",
+        urlTitle: "React Docs — useLayoutEffect",
+        url: "https://react.dev/reference/react/useLayoutEffect",
+      },
+      {
+        title: "Synchronizing with Effects (React.dev)",
+        urlTitle: "React Docs — Synchronizing with Effects",
+        url: "https://react.dev/learn/synchronizing-with-effects",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "В чем фундаментальное различие timing-моделей useLayoutEffect и useEffect?",
+        answer: "useLayoutEffect срабатывает синхронно сразу после того, как React обновил DOM, но ДО того, как браузер выполнил отрисовку (Paint). useEffect планируется асинхронно и срабатывает ПОСЛЕ отрисовки экрана.",
+      },
+      {
+        question: "В какой момент вызываются функции очистки (cleanup) эффектов при обновлении state?",
+        answer: "Очистка эффекта предыдущего рендера вызывается перед выполнением нового эффекта текущего рендера (при этом layout cleanups выполняются синхронно до paint, а effect cleanups — после paint перед новыми эффектами).",
+      },
+    ],
+    checklist: [
+      "Среда выполнения: Browser DOM",
+      "Режим: Production",
+      "1-й рендер (mount): App -> useLayoutEffect -> useEffect 1 -> useEffect 2",
+      "2-й рендер (update): App -> useLayoutEffect cleanup -> useLayoutEffect -> useEffect 1 cleanup -> useEffect 2 cleanup -> useEffect 1 -> useEffect 2",
     ],
   },
 ];

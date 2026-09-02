@@ -1,13 +1,14 @@
 import { memo, useState } from "react";
-import { Settings, Database, X } from "lucide-react";
+import { Settings, Database, Palette, X } from "lucide-react";
 import { clsx } from "clsx";
 import { Modal } from "@/shared/ui";
 import { useSettingsModal } from "../model/useSettingsModal";
 import { SettingsResetSection } from "./SettingsResetSection";
+import { SettingsCustomizationSection } from "./SettingsCustomizationSection";
 import { SettingsConfirmModals } from "./SettingsConfirmModals";
 import styles from "./SettingsModal.module.css";
 
-export type SettingsTabType = "data";
+export type SettingsTabType = "data" | "customization";
 
 export const SettingsModal = memo(() => {
   const [activeTab, setActiveTab] = useState<SettingsTabType>("data");
@@ -62,6 +63,14 @@ export const SettingsModal = memo(() => {
                   <Database size={15} className={styles.navBtnIcon} />
                   <span className={styles.navBtnLabel}>Данные приложения</span>
                 </button>
+                <button
+                  type="button"
+                  className={clsx(styles.navBtn, activeTab === "customization" && styles.active)}
+                  onClick={() => setActiveTab("customization")}
+                >
+                  <Palette size={15} className={styles.navBtnIcon} />
+                  <span className={styles.navBtnLabel}>Кастомизация</span>
+                </button>
               </nav>
             </div>
           </div>
@@ -69,7 +78,9 @@ export const SettingsModal = memo(() => {
 
         <main className={styles.settingsMain}>
           <div className={styles.mainHeader}>
-            <h2 className={styles.mainHeaderTitle}>Данные приложения</h2>
+            <h2 className={styles.mainHeaderTitle}>
+              {activeTab === "customization" ? "Кастомизация" : "Данные приложения"}
+            </h2>
             <button
               type="button"
               className={styles.closeBtn}
@@ -88,6 +99,7 @@ export const SettingsModal = memo(() => {
                 onOpenResetAll={() => setResetAllConfirmOpen(true)}
               />
             )}
+            {activeTab === "customization" && <SettingsCustomizationSection />}
           </div>
         </main>
       </Modal>

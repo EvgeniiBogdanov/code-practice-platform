@@ -1,0 +1,117 @@
+.settingsSectionWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.settingsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sectionHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.sectionTitle {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin: 0;
+  font-family: var(--font-sans);
+}
+
+.sectionSubtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.4;
+  font-family: var(--font-sans);
+}
+
+.settingsRowList {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border-color);
+  margin-top: 4px;
+}
+
+.customizationRow {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.rowInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.rowTitle {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-main);
+  line-height: 1.35;
+  font-family: var(--font-sans);
+}
+
+.rowDesc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.45;
+  font-family: var(--font-sans);
+}
+
+.formContainer {
+  width: 100%;
+}
+
+.inputGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.inputWrapper {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+  max-width: 340px;
+}
+
+.nameInput input {
+  padding-right: 50px;
+}
+
+.charCounter {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  color: var(--text-muted);
+  pointer-events: none;
+  font-family: var(--font-mono, monospace);
+  user-select: none;
+}
+
+.buttonGroup {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.actionBtn {
+  white-space: nowrap;
+}

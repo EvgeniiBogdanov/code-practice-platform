@@ -8,6 +8,7 @@ import { useReviewStore, getGroupCompletionClass } from "@/entities/review";
 export const useJsHierarchyLists = (currentGroupName: string | null) => {
   const progressState = useProgressStore();
   const reviews = useReviewStore((state) => state.reviews);
+  const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
   const { tasks } = useTaskSection("javascript");
 
   const jsGroupsList = useMemo(() => {
@@ -17,13 +18,22 @@ export const useJsHierarchyLists = (currentGroupName: string | null) => {
       if (!groupsMap.has(g)) groupsMap.set(g, []);
       groupsMap.get(g)!.push(t);
     });
-    return Array.from(groupsMap.entries()).map(([name, tasks]) => {
-      const completedCount = tasks.filter((t) => selectIsTaskCompleted(progressState, t.id)).length;
-      const completionClass = getGroupCompletionClass(tasks, reviews, progressState.completedTasks);
+    return Array.from(groupsMap.entries()).map(([name, groupTasksList]) => {
+      const activeGroupTasks = groupTasksList.filter(
+        (t) => !excludedTaskIds.includes(String(t.id))
+      );
+      const completedCount = activeGroupTasks.filter((t) =>
+        selectIsTaskCompleted(progressState, t.id)
+      ).length;
+      const completionClass = getGroupCompletionClass(
+        activeGroupTasks,
+        reviews,
+        progressState.completedTasks
+      );
       const meta = getGroupMeta(name);
-      return { name, tasks, completedCount, completionClass, meta };
+      return { name, tasks: activeGroupTasks, completedCount, completionClass, meta };
     });
-  }, [progressState, reviews, tasks]);
+  }, [progressState, reviews, tasks, excludedTaskIds]);
 
   const jsSubgroupsList = useMemo(() => {
     if (!currentGroupName) return [];
@@ -34,12 +44,21 @@ export const useJsHierarchyLists = (currentGroupName: string | null) => {
       if (!subgroupsMap.has(s)) subgroupsMap.set(s, []);
       subgroupsMap.get(s)!.push(t);
     });
-    return Array.from(subgroupsMap.entries()).map(([name, tasks]) => {
-      const completedCount = tasks.filter((t) => selectIsTaskCompleted(progressState, t.id)).length;
-      const completionClass = getGroupCompletionClass(tasks, reviews, progressState.completedTasks);
-      return { name, tasks, completedCount, completionClass };
+    return Array.from(subgroupsMap.entries()).map(([name, subTasksList]) => {
+      const activeSubTasks = subTasksList.filter(
+        (t) => !excludedTaskIds.includes(String(t.id))
+      );
+      const completedCount = activeSubTasks.filter((t) =>
+        selectIsTaskCompleted(progressState, t.id)
+      ).length;
+      const completionClass = getGroupCompletionClass(
+        activeSubTasks,
+        reviews,
+        progressState.completedTasks
+      );
+      return { name, tasks: activeSubTasks, completedCount, completionClass };
     });
-  }, [currentGroupName, progressState, reviews, tasks]);
+  }, [currentGroupName, progressState, reviews, tasks, excludedTaskIds]);
 
   return { jsGroupsList, jsSubgroupsList, progressState, reviews, tasks };
 };

@@ -1,23 +1,22 @@
-// Перезапись prototype у функции-конструктора
-// Что выведет данный код?
+// Что выведет данный код в консоль и почему?
 
 function Person(name) {
   this.name = name;
 }
 
 Person.prototype.greet = function () {
-  return `Привет, я ${this.name}`;
+  return `Hello, ${this.name}`;
 };
 
-const anna = new Person("Анна");
+const alice = new Person("Alice");
 
 Person.prototype = {
   greet() {
-    return `Здравствуйте, я ${this.name}`;
+    return `Hi, ${this.name}!`;
   },
 };
 
-const ivan = new Person("Иван");
+const bob = new Person("Bob");
 
-console.log(anna.greet());
-console.log(ivan.greet());
+console.log(alice.greet());
+console.log(bob.greet());

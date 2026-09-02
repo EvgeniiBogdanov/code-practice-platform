@@ -17,12 +17,14 @@ export const useSpacedRepetitionData = ({
   const reviews = useReviewStore((state) => state.reviews) || {};
   const isInitialized = useReviewStore((state) => state.isInitialized);
   const getMasteryStats = useReviewStore((state) => state.getMasteryStats);
+  const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
   const completedTasks = useProgressStore((state) => state.completedTasks);
   const { tasks: catalogTasks } = useAllTaskSections(!taskList?.length);
 
   const targetTasks = useMemo(() => {
-    return taskList && taskList.length > 0 ? taskList : catalogTasks;
-  }, [catalogTasks, taskList]);
+    const raw = taskList && taskList.length > 0 ? taskList : catalogTasks;
+    return raw.filter((t) => !excludedTaskIds.includes(String(t.id)));
+  }, [catalogTasks, taskList, excludedTaskIds]);
 
   const masteryStats = useMemo(() => {
     return isInitialized

@@ -1,4 +1,4 @@
-// Найти первое длинное слово
+// Поиск первого длинного слова
 // Напишите функцию findLongWord(words, minLength), которая возвращает первое слово длиннее minLength символов.
 
 const findLongWord = (words, minLength) => {

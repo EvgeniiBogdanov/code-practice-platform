@@ -1,5 +1,6 @@
 import React, { forwardRef } from "react";
 import { clsx } from "clsx";
+import { Tooltip } from "@/shared/ui";
 import styles from "./LineNumbers.module.css";
 
 export interface LineNumbersProps {
@@ -48,7 +49,7 @@ export const LineNumbers = forwardRef<HTMLDivElement, LineNumbersProps>(
           const isWarn = warningLines?.has(num);
           const isActive = activeLine === num;
 
-          return (
+          const lineNode = (
             <div
               key={num}
               className={clsx(
@@ -57,12 +58,26 @@ export const LineNumbers = forwardRef<HTMLDivElement, LineNumbersProps>(
                 isErr && styles.hasError,
                 isWarn && styles.hasWarning
               )}
-              title={isErr ? "Ошибка синтаксиса или опечатка на строке" : undefined}
             >
               {isErr && <span className={styles.errorDot}>•</span>}
               {num}
             </div>
           );
+
+          if (isErr) {
+            return (
+              <Tooltip
+                key={num}
+                content="Ошибка синтаксиса или опечатка на строке"
+                side="right"
+                sideOffset={4}
+              >
+                {lineNode}
+              </Tooltip>
+            );
+          }
+
+          return lineNode;
         })}
       </div>
     );

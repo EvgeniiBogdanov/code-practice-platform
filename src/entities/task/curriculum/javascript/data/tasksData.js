@@ -374,45 +374,45 @@ import RemoveIfExistsCandidateRaw from "../tasks/12_collections_map/level1/4_Rem
 import RemoveIfExistsSolutionRaw from "../solutions/12_collections_map/level1/4_RemoveIfExists.js?raw";
 
 // Level 2
-import PrintAllForOfCandidateRaw from "../tasks/12_collections_map/level2/6_PrintAllForOf.js?raw";
-import PrintAllForOfSolutionRaw from "../solutions/12_collections_map/level2/6_PrintAllForOf.js?raw";
+import PrintAllForOfCandidateRaw from "../tasks/12_collections_map/level2/7_PrintAllForOf.js?raw";
+import PrintAllForOfSolutionRaw from "../solutions/12_collections_map/level2/7_PrintAllForOf.js?raw";
 
-import MapForEachCandidateRaw from "../tasks/12_collections_map/level2/7_MapForEach.js?raw";
-import MapForEachSolutionRaw from "../solutions/12_collections_map/level2/7_MapForEach.js?raw";
+import MapForEachCandidateRaw from "../tasks/12_collections_map/level2/8_MapForEach.js?raw";
+import MapForEachSolutionRaw from "../solutions/12_collections_map/level2/8_MapForEach.js?raw";
 
-import GetKeysValuesEntriesCandidateRaw from "../tasks/12_collections_map/level2/8_GetKeysValuesEntries.js?raw";
-import GetKeysValuesEntriesSolutionRaw from "../solutions/12_collections_map/level2/8_GetKeysValuesEntries.js?raw";
+import GetKeysValuesEntriesCandidateRaw from "../tasks/12_collections_map/level2/9_GetKeysValuesEntries.js?raw";
+import GetKeysValuesEntriesSolutionRaw from "../solutions/12_collections_map/level2/9_GetKeysValuesEntries.js?raw";
 
 // Level 3
-import CountFrequencyCandidateRaw from "../tasks/12_collections_map/level3/11_CountFrequency.js?raw";
-import CountFrequencySolutionRaw from "../solutions/12_collections_map/level3/11_CountFrequency.js?raw";
+import CountFrequencyCandidateRaw from "../tasks/12_collections_map/level3/13_CountFrequency.js?raw";
+import CountFrequencySolutionRaw from "../solutions/12_collections_map/level3/13_CountFrequency.js?raw";
 
-import GroupByMapCandidateRaw from "../tasks/12_collections_map/level3/12_GroupByMap.js?raw";
-import GroupByMapSolutionRaw from "../solutions/12_collections_map/level3/12_GroupByMap.js?raw";
+import GroupByMapCandidateRaw from "../tasks/12_collections_map/level3/14_GroupByMap.js?raw";
+import GroupByMapSolutionRaw from "../solutions/12_collections_map/level3/14_GroupByMap.js?raw";
 
-import GroupByObjectCandidateRaw from "../tasks/12_collections_map/level3/12_2_GroupByObject.js?raw";
-import GroupByObjectSolutionRaw from "../solutions/12_collections_map/level3/12_2_GroupByObject.js?raw";
+import GroupByObjectCandidateRaw from "../tasks/12_collections_map/level3/15_GroupByObject.js?raw";
+import GroupByObjectSolutionRaw from "../solutions/12_collections_map/level3/15_GroupByObject.js?raw";
 
-import GroupAnagramsCandidateRaw from "../tasks/12_collections_map/level3/13_GroupAnagrams.js?raw";
-import GroupAnagramsSolutionRaw from "../solutions/12_collections_map/level3/13_GroupAnagrams.js?raw";
+import GroupAnagramsCandidateRaw from "../tasks/12_collections_map/level3/16_GroupAnagrams.js?raw";
+import GroupAnagramsSolutionRaw from "../solutions/12_collections_map/level3/16_GroupAnagrams.js?raw";
 
-import MemoizeWithTTLCandidateRaw from "../tasks/12_collections_map/level3/14_MemoizeWithTTL.js?raw";
-import MemoizeWithTTLSolutionRaw from "../solutions/12_collections_map/level3/14_MemoizeWithTTL.js?raw";
+import MemoizeWithTTLCandidateRaw from "../tasks/12_collections_map/level3/20_MemoizeWithTTL.js?raw";
+import MemoizeWithTTLSolutionRaw from "../solutions/12_collections_map/level3/20_MemoizeWithTTL.js?raw";
 
-import MemoizeBasicCandidateRaw from "../tasks/12_collections_map/level3/15_MemoizeBasic.js?raw";
-import MemoizeBasicSolutionRaw from "../solutions/12_collections_map/level3/15_MemoizeBasic.js?raw";
+import MemoizeBasicCandidateRaw from "../tasks/12_collections_map/level3/19_MemoizeBasic.js?raw";
+import MemoizeBasicSolutionRaw from "../solutions/12_collections_map/level3/19_MemoizeBasic.js?raw";
 
-import MemoizeWithTTLLoggingCandidateRaw from "../tasks/12_collections_map/level3/16_MemoizeWithTTLLogging.js?raw";
-import MemoizeWithTTLLoggingSolutionRaw from "../solutions/12_collections_map/level3/16_MemoizeWithTTLLogging.js?raw";
+import MemoizeWithTTLLoggingCandidateRaw from "../tasks/12_collections_map/level3/21_MemoizeWithTTLLogging.js?raw";
+import MemoizeWithTTLLoggingSolutionRaw from "../solutions/12_collections_map/level3/21_MemoizeWithTTLLogging.js?raw";
 
-import CreateCategoryTreeCandidateRaw from "../tasks/12_collections_map/level3/17_CreateCategoryTree.js?raw";
-import CreateCategoryTreeSolutionRaw from "../solutions/12_collections_map/level3/17_CreateCategoryTree.js?raw";
-import CreateCategoryTreeExplanationRaw from "../explanations/12_collections_map/17_CreateCategoryTree.md?raw";
+import CreateCategoryTreeCandidateRaw from "../tasks/12_collections_map/level3/22_CreateCategoryTree.js?raw";
+import CreateCategoryTreeSolutionRaw from "../solutions/12_collections_map/level3/22_CreateCategoryTree.js?raw";
+import CreateCategoryTreeExplanationRaw from "../explanations/12_collections_map/22_CreateCategoryTree.md?raw";
 
 // JS PROMISES IMPORTS
 // Level 1
-import CreatePromiseCandidateRaw from "../tasks/13_promises/level1/1_CreatePromise.js?raw";
-import CreatePromiseSolutionRaw from "../solutions/13_promises/level1/1_CreatePromise.js?raw";
+import CreatePromiseCandidateRaw from "../tasks/13_promises/level1/5_CreatePromise.js?raw";
+import CreatePromiseSolutionRaw from "../solutions/13_promises/level1/5_CreatePromise.js?raw";
 
 import RejectAndCatchCandidateRaw from "../tasks/13_promises/level1/2_RejectAndCatch.js?raw";
 import RejectAndCatchSolutionRaw from "../solutions/13_promises/level1/2_RejectAndCatch.js?raw";
@@ -424,69 +424,69 @@ import FinallyCandidateRaw from "../tasks/13_promises/level1/4_Finally.js?raw";
 import FinallySolutionRaw from "../solutions/13_promises/level1/4_Finally.js?raw";
 
 // Level 2
-import BasicAsyncAwaitCandidateRaw from "../tasks/13_promises/level2/5_BasicAsyncAwait.js?raw";
-import BasicAsyncAwaitSolutionRaw from "../solutions/13_promises/level2/5_BasicAsyncAwait.js?raw";
+import BasicAsyncAwaitCandidateRaw from "../tasks/13_promises/level2/9_BasicAsyncAwait.js?raw";
+import BasicAsyncAwaitSolutionRaw from "../solutions/13_promises/level2/9_BasicAsyncAwait.js?raw";
 
-import TryCatchAsyncAwaitCandidateRaw from "../tasks/13_promises/level2/6_TryCatchAsyncAwait.js?raw";
-import TryCatchAsyncAwaitSolutionRaw from "../solutions/13_promises/level2/6_TryCatchAsyncAwait.js?raw";
+import TryCatchAsyncAwaitCandidateRaw from "../tasks/13_promises/level2/11_TryCatchAsyncAwait.js?raw";
+import TryCatchAsyncAwaitSolutionRaw from "../solutions/13_promises/level2/11_TryCatchAsyncAwait.js?raw";
 
-import SequentialLoopCandidateRaw from "../tasks/13_promises/level2/7_SequentialLoop.js?raw";
-import SequentialLoopSolutionRaw from "../solutions/13_promises/level2/7_SequentialLoop.js?raw";
+import SequentialLoopCandidateRaw from "../tasks/13_promises/level2/13_SequentialLoop.js?raw";
+import SequentialLoopSolutionRaw from "../solutions/13_promises/level2/13_SequentialLoop.js?raw";
 
 // Level 3
-import PromiseAllCandidateRaw from "../tasks/13_promises/level3/8_PromiseAll.js?raw";
-import PromiseAllSolutionRaw from "../solutions/13_promises/level3/8_PromiseAll.js?raw";
+import PromiseAllCandidateRaw from "../tasks/13_promises/level3/15_PromiseAll.js?raw";
+import PromiseAllSolutionRaw from "../solutions/13_promises/level3/15_PromiseAll.js?raw";
 
-import PromiseAllSettledCandidateRaw from "../tasks/13_promises/level3/9_PromiseAllSettled.js?raw";
-import PromiseAllSettledSolutionRaw from "../solutions/13_promises/level3/9_PromiseAllSettled.js?raw";
+import PromiseAllSettledCandidateRaw from "../tasks/13_promises/level3/17_PromiseAllSettled.js?raw";
+import PromiseAllSettledSolutionRaw from "../solutions/13_promises/level3/17_PromiseAllSettled.js?raw";
 
-import PromiseRaceTimeoutCandidateRaw from "../tasks/13_promises/level3/10_PromiseRaceTimeout.js?raw";
-import PromiseRaceTimeoutSolutionRaw from "../solutions/13_promises/level3/10_PromiseRaceTimeout.js?raw";
+import PromiseRaceTimeoutCandidateRaw from "../tasks/13_promises/level3/19_PromiseRaceFetchTimeout.js?raw";
+import PromiseRaceTimeoutSolutionRaw from "../solutions/13_promises/level3/19_PromiseRaceFetchTimeout.js?raw";
 
-import PromiseAnyCandidateRaw from "../tasks/13_promises/level3/11_PromiseAny.js?raw";
-import PromiseAnySolutionRaw from "../solutions/13_promises/level3/11_PromiseAny.js?raw";
+import PromiseAnyCandidateRaw from "../tasks/13_promises/level3/21_PromiseAny.js?raw";
+import PromiseAnySolutionRaw from "../solutions/13_promises/level3/21_PromiseAny.js?raw";
 
 // Level 4
-import PromisifyCallbackCandidateRaw from "../tasks/13_promises/level4/12_PromisifyCallback.js?raw";
-import PromisifyCallbackSolutionRaw from "../solutions/13_promises/level4/12_PromisifyCallback.js?raw";
+import PromisifyCallbackCandidateRaw from "../tasks/13_promises/level4/23_PromisifyCallback.js?raw";
+import PromisifyCallbackSolutionRaw from "../solutions/13_promises/level4/23_PromisifyCallback.js?raw";
 
-import RetryWithDelayCandidateRaw from "../tasks/13_promises/level4/13_RetryWithDelay.js?raw";
-import RetryWithDelaySolutionRaw from "../solutions/13_promises/level4/13_RetryWithDelay.js?raw";
+import RetryWithDelayCandidateRaw from "../tasks/13_promises/level4/24_RetryWithDelay.js?raw";
+import RetryWithDelaySolutionRaw from "../solutions/13_promises/level4/24_RetryWithDelay.js?raw";
 
-import ConcurrencyPoolLimitCandidateRaw from "../tasks/13_promises/level4/14_ConcurrencyPoolLimit.js?raw";
-import ConcurrencyPoolLimitSolutionRaw from "../solutions/13_promises/level4/14_ConcurrencyPoolLimit.js?raw";
+import ConcurrencyPoolLimitCandidateRaw from "../tasks/13_promises/level4/25_ConcurrencyPoolLimit.js?raw";
+import ConcurrencyPoolLimitSolutionRaw from "../solutions/13_promises/level4/25_ConcurrencyPoolLimit.js?raw";
 
-import MemoizeAsyncCandidateRaw from "../tasks/13_promises/level4/15_MemoizeAsync.js?raw";
-import MemoizeAsyncSolutionRaw from "../solutions/13_promises/level4/15_MemoizeAsync.js?raw";
+import MemoizeAsyncCandidateRaw from "../tasks/13_promises/level4/26_MemoizeAsync.js?raw";
+import MemoizeAsyncSolutionRaw from "../solutions/13_promises/level4/26_MemoizeAsync.js?raw";
 
 // Level 5
-import MicrotaskVsMacrotaskCandidateRaw from "../tasks/13_promises/level5/16_MicrotaskVsMacrotask.js?raw";
-import MicrotaskVsMacrotaskSolutionRaw from "../solutions/13_promises/level5/16_MicrotaskVsMacrotask.js?raw";
+import MicrotaskVsMacrotaskCandidateRaw from "../tasks/13_promises/level5/27_MicrotaskVsMacrotask.js?raw";
+import MicrotaskVsMacrotaskSolutionRaw from "../solutions/13_promises/level5/27_MicrotaskVsMacrotask.js?raw";
 
-import MyPromiseImplementationCandidateRaw from "../tasks/13_promises/level5/17_MyPromiseImplementation.js?raw";
-import MyPromiseImplementationSolutionRaw from "../solutions/13_promises/level5/17_MyPromiseImplementation.js?raw";
+import MyPromiseImplementationCandidateRaw from "../tasks/13_promises/level5/28_MyPromiseImplementation.js?raw";
+import MyPromiseImplementationSolutionRaw from "../solutions/13_promises/level5/28_MyPromiseImplementation.js?raw";
 
-import AbortControllerCancelCandidateRaw from "../tasks/13_promises/level5/18_AbortControllerCancel.js?raw";
-import AbortControllerCancelSolutionRaw from "../solutions/13_promises/level5/18_AbortControllerCancel.js?raw";
+import AbortControllerCancelCandidateRaw from "../tasks/13_promises/level5/29_AbortControllerCancel.js?raw";
+import AbortControllerCancelSolutionRaw from "../solutions/13_promises/level5/29_AbortControllerCancel.js?raw";
 
-import AsyncTaskQueueCandidateRaw from "../tasks/13_promises/level5/19_AsyncTaskQueue.js?raw";
-import AsyncTaskQueueSolutionRaw from "../solutions/13_promises/level5/19_AsyncTaskQueue.js?raw";
+import AsyncTaskQueueCandidateRaw from "../tasks/13_promises/level5/30_AsyncTaskQueue.js?raw";
+import AsyncTaskQueueSolutionRaw from "../solutions/13_promises/level5/30_AsyncTaskQueue.js?raw";
 
-import DebounceAsyncCancelCandidateRaw from "../tasks/13_promises/level5/20_DebounceAsyncCancel.js?raw";
-import DebounceAsyncCancelSolutionRaw from "../solutions/13_promises/level5/20_DebounceAsyncCancel.js?raw";
+import DebounceAsyncCancelCandidateRaw from "../tasks/13_promises/level5/31_DebounceAsyncCancel.js?raw";
+import DebounceAsyncCancelSolutionRaw from "../solutions/13_promises/level5/31_DebounceAsyncCancel.js?raw";
 
 // Interview
-import PromiseAllCustomCandidateRaw from "../tasks/13_promises/interview/21_PromiseAllCustom.js?raw";
-import PromiseAllCustomSolutionRaw from "../solutions/13_promises/interview/21_PromiseAllCustom.js?raw";
+import PromiseAllCustomCandidateRaw from "../tasks/13_promises/interview/32_PromiseAllCustom.js?raw";
+import PromiseAllCustomSolutionRaw from "../solutions/13_promises/interview/32_PromiseAllCustom.js?raw";
 
-import AsyncPoolParallelCandidateRaw from "../tasks/13_promises/interview/22_AsyncPoolParallel.js?raw";
-import AsyncPoolParallelSolutionRaw from "../solutions/13_promises/interview/22_AsyncPoolParallel.js?raw";
+import AsyncPoolParallelCandidateRaw from "../tasks/13_promises/interview/33_AsyncPoolParallel.js?raw";
+import AsyncPoolParallelSolutionRaw from "../solutions/13_promises/interview/33_AsyncPoolParallel.js?raw";
 
-import WithTimeoutWrapCandidateRaw from "../tasks/13_promises/interview/23_WithTimeoutWrap.js?raw";
-import WithTimeoutWrapSolutionRaw from "../solutions/13_promises/interview/23_WithTimeoutWrap.js?raw";
+import WithTimeoutWrapCandidateRaw from "../tasks/13_promises/interview/34_WithTimeoutWrap.js?raw";
+import WithTimeoutWrapSolutionRaw from "../solutions/13_promises/interview/34_WithTimeoutWrap.js?raw";
 
-import PromiseChainsExecutionOrderCandidateRaw from "../tasks/13_promises/interview/24_PromiseChainsExecutionOrder.js?raw";
-import PromiseChainsExecutionOrderSolutionRaw from "../solutions/13_promises/interview/24_PromiseChainsExecutionOrder.js?raw";
+import PromiseChainsExecutionOrderCandidateRaw from "../tasks/13_promises/interview/35_PromiseChainsExecutionOrder.js?raw";
+import PromiseChainsExecutionOrderSolutionRaw from "../solutions/13_promises/interview/35_PromiseChainsExecutionOrder.js?raw";
 
 // JS CLOSURES IMPORTS
 import CounterGeneratorCandidateRaw from "../tasks/14_closures/1_CounterGenerator.js?raw";
@@ -527,43 +527,43 @@ import FindMaxArraySolutionRaw from "../solutions/15_recursion/level1/5_FindMaxA
 import FindMaxArraySolutionRecommendedRaw from "../solutions/15_recursion/level1/5_FindMaxArray_recommended.js?raw";
 
 // Level 3
-import DeepFlattenArrayCandidateRaw from "../tasks/15_recursion/level3/6_DeepFlattenArray.js?raw";
-import DeepFlattenArraySolutionRaw from "../solutions/15_recursion/level3/6_DeepFlattenArray.js?raw";
-import DeepFlattenArraySolutionRecommendedRaw from "../solutions/15_recursion/level3/6_DeepFlattenArray_recommended.js?raw";
+import DeepFlattenArrayCandidateRaw from "../tasks/15_recursion/level2/6_DeepFlattenArray.js?raw";
+import DeepFlattenArraySolutionRaw from "../solutions/15_recursion/level2/6_DeepFlattenArray.js?raw";
+import DeepFlattenArraySolutionRecommendedRaw from "../solutions/15_recursion/level2/6_DeepFlattenArray_recommended.js?raw";
 
-import DeepCloneObjectCandidateRaw from "../tasks/15_recursion/level3/7_DeepCloneObject.js?raw";
-import DeepCloneObjectSolutionRaw from "../solutions/15_recursion/level3/7_DeepCloneObject.js?raw";
-import DeepCloneObjectSolutionRecommendedRaw from "../solutions/15_recursion/level3/7_DeepCloneObject_recommended.js?raw";
+import DeepCloneObjectCandidateRaw from "../tasks/15_recursion/level2/7_DeepCloneObject.js?raw";
+import DeepCloneObjectSolutionRaw from "../solutions/15_recursion/level2/7_DeepCloneObject.js?raw";
+import DeepCloneObjectSolutionRecommendedRaw from "../solutions/15_recursion/level2/7_DeepCloneObject_recommended.js?raw";
 
-import DeepSumObjectCandidateRaw from "../tasks/15_recursion/level3/8_DeepSumObject.js?raw";
-import DeepSumObjectSolutionRaw from "../solutions/15_recursion/level3/8_DeepSumObject.js?raw";
-import DeepSumObjectSolutionRecommendedRaw from "../solutions/15_recursion/level3/8_DeepSumObject_recommended.js?raw";
+import DeepSumObjectCandidateRaw from "../tasks/15_recursion/level2/8_DeepSumObject.js?raw";
+import DeepSumObjectSolutionRaw from "../solutions/15_recursion/level2/8_DeepSumObject.js?raw";
+import DeepSumObjectSolutionRecommendedRaw from "../solutions/15_recursion/level2/8_DeepSumObject_recommended.js?raw";
 
-import TreeSumBinaryCandidateRaw from "../tasks/15_recursion/level3/9_TreeSumBinary.js?raw";
-import TreeSumBinarySolutionRaw from "../solutions/15_recursion/level3/9_TreeSumBinary.js?raw";
+import TreeSumBinaryCandidateRaw from "../tasks/15_recursion/level2/9_TreeSumBinary.js?raw";
+import TreeSumBinarySolutionRaw from "../solutions/15_recursion/level2/9_TreeSumBinary.js?raw";
 
-import TreeDepthMaxCandidateRaw from "../tasks/15_recursion/level3/10_TreeDepthMax.js?raw";
-import TreeDepthMaxSolutionRaw from "../solutions/15_recursion/level3/10_TreeDepthMax.js?raw";
+import TreeDepthMaxCandidateRaw from "../tasks/15_recursion/level2/10_TreeDepthMax.js?raw";
+import TreeDepthMaxSolutionRaw from "../solutions/15_recursion/level2/10_TreeDepthMax.js?raw";
 
-import FindFileFileSystemCandidateRaw from "../tasks/15_recursion/level3/11_FindFileFileSystem.js?raw";
-import FindFileFileSystemSolutionRaw from "../solutions/15_recursion/level3/11_FindFileFileSystem.js?raw";
+import FindFileFileSystemCandidateRaw from "../tasks/15_recursion/level2/11_FindFileFileSystem.js?raw";
+import FindFileFileSystemSolutionRaw from "../solutions/15_recursion/level2/11_FindFileFileSystem.js?raw";
 
 // Practice
-import SumNumbersNestedObjCandidateRaw from "../tasks/15_recursion/practice/12_SumNumbersNestedObj.js?raw";
-import SumNumbersNestedObjSolutionRaw from "../solutions/15_recursion/practice/12_SumNumbersNestedObj.js?raw";
+import SumNumbersNestedObjCandidateRaw from "../tasks/15_recursion/level3/12_SumNumbersNestedObj.js?raw";
+import SumNumbersNestedObjSolutionRaw from "../solutions/15_recursion/level3/12_SumNumbersNestedObj.js?raw";
 
-import GetAllPrimitivesCandidateRaw from "../tasks/15_recursion/practice/13_GetAllPrimitives.js?raw";
-import GetAllPrimitivesSolutionRaw from "../solutions/15_recursion/practice/13_GetAllPrimitives.js?raw";
+import GetAllPrimitivesCandidateRaw from "../tasks/15_recursion/level3/13_GetAllPrimitives.js?raw";
+import GetAllPrimitivesSolutionRaw from "../solutions/15_recursion/level3/13_GetAllPrimitives.js?raw";
 
-import CollectTreeValuesCandidateRaw from "../tasks/15_recursion/practice/14_CollectTreeValues.js?raw";
-import CollectTreeValuesSolutionRaw from "../solutions/15_recursion/practice/14_CollectTreeValues.js?raw";
+import CollectTreeValuesCandidateRaw from "../tasks/15_recursion/level3/14_CollectTreeValues.js?raw";
+import CollectTreeValuesSolutionRaw from "../solutions/15_recursion/level3/14_CollectTreeValues.js?raw";
 
-import SumTreeValuesCandidateRaw from "../tasks/15_recursion/practice/15_SumTreeValues.js?raw";
-import SumTreeValuesSolutionRaw from "../solutions/15_recursion/practice/15_SumTreeValues.js?raw";
+import SumTreeValuesCandidateRaw from "../tasks/15_recursion/level3/15_SumTreeValues.js?raw";
+import SumTreeValuesSolutionRaw from "../solutions/15_recursion/level3/15_SumTreeValues.js?raw";
 
-import FibonacciRecursiveCandidateRaw from "../tasks/15_recursion/practice/16_FibonacciRecursive.js?raw";
-import FibonacciRecursiveSolutionRaw from "../solutions/15_recursion/practice/16_FibonacciRecursive.js?raw";
-import FibonacciRecursiveSolutionRecommendedRaw from "../solutions/15_recursion/practice/16_FibonacciRecursive_recommended.js?raw";
+import FibonacciRecursiveCandidateRaw from "../tasks/15_recursion/level3/16_FibonacciRecursive.js?raw";
+import FibonacciRecursiveSolutionRaw from "../solutions/15_recursion/level3/16_FibonacciRecursive.js?raw";
+import FibonacciRecursiveSolutionRecommendedRaw from "../solutions/15_recursion/level3/16_FibonacciRecursive_recommended.js?raw";
 
 // JS PROTOTYPES AND THIS IMPORTS
 import ThisObjectArrowMethodsCandidateRaw from "../tasks/16_prototypes_this/1_ThisObjectArrowMethods.js?raw";
@@ -626,19 +626,6 @@ import ThrottleFunctionSolutionRaw from "../solutions/19_control_flow/2_Throttle
 import PipeAndComposeCandidateRaw from "../tasks/19_control_flow/3_PipeAndCompose.js?raw";
 import PipeAndComposeSolutionRaw from "../solutions/19_control_flow/3_PipeAndCompose.js?raw";
 
-// JS OBJECT UTILS IMPORTS
-import DeepCloneObjectUtilCandidateRaw from "../tasks/20_object_utils/1_DeepCloneObject.js?raw";
-import DeepCloneObjectUtilSolutionRaw from "../solutions/20_object_utils/1_DeepCloneObject.js?raw";
-
-import DeepEqualObjectUtilCandidateRaw from "../tasks/20_object_utils/2_DeepEqualObject.js?raw";
-import DeepEqualObjectUtilSolutionRaw from "../solutions/20_object_utils/2_DeepEqualObject.js?raw";
-
-import FlattenObjectUtilCandidateRaw from "../tasks/20_object_utils/3_FlattenObject.js?raw";
-import FlattenObjectUtilSolutionRaw from "../solutions/20_object_utils/3_FlattenObject.js?raw";
-
-import DeepFreezeObjectUtilCandidateRaw from "../tasks/20_object_utils/4_DeepFreezeObject.js?raw";
-import DeepFreezeObjectUtilSolutionRaw from "../solutions/20_object_utils/4_DeepFreezeObject.js?raw";
-
 // JS DESIGN PATTERNS IMPORTS
 import EventEmitterPubSubCandidateRaw from "../tasks/21_design_patterns/1_EventEmitterPubSub.js?raw";
 import EventEmitterPubSubSolutionRaw from "../solutions/21_design_patterns/1_EventEmitterPubSub.js?raw";
@@ -650,29 +637,29 @@ import ObservableSignalCandidateRaw from "../tasks/21_design_patterns/3_Observab
 import ObservableSignalSolutionRaw from "../solutions/21_design_patterns/3_ObservableSignal.js?raw";
 
 // JS EVENT LOOP IMPORTS
-import PromiseConstructorChainCandidateRaw from "../tasks/22_event_loop/1_PromiseConstructorChain.js?raw";
-import PromiseConstructorChainSolutionRaw from "../solutions/22_event_loop/1_PromiseConstructorChain.js?raw";
+import PromiseConstructorChainCandidateRaw from "../tasks/22_event_loop/3_PromiseConstructorChain.js?raw";
+import PromiseConstructorChainSolutionRaw from "../solutions/22_event_loop/3_PromiseConstructorChain.js?raw";
 
-import IifePromiseConstructorCandidateRaw from "../tasks/22_event_loop/2_IifePromiseConstructor.js?raw";
-import IifePromiseConstructorSolutionRaw from "../solutions/22_event_loop/2_IifePromiseConstructor.js?raw";
+import IifePromiseConstructorCandidateRaw from "../tasks/22_event_loop/4_IifePromiseConstructor.js?raw";
+import IifePromiseConstructorSolutionRaw from "../solutions/22_event_loop/4_IifePromiseConstructor.js?raw";
 
-import AsyncAwaitNestedPromisesCandidateRaw from "../tasks/22_event_loop/3_AsyncAwaitNestedPromises.js?raw";
-import AsyncAwaitNestedPromisesSolutionRaw from "../solutions/22_event_loop/3_AsyncAwaitNestedPromises.js?raw";
+import AsyncAwaitNestedPromisesCandidateRaw from "../tasks/22_event_loop/5_AsyncAwaitNestedPromises.js?raw";
+import AsyncAwaitNestedPromisesSolutionRaw from "../solutions/22_event_loop/5_AsyncAwaitNestedPromises.js?raw";
 
-import NestedTimersAndPromisesCandidateRaw from "../tasks/22_event_loop/4_NestedTimersAndPromises.js?raw";
-import NestedTimersAndPromisesSolutionRaw from "../solutions/22_event_loop/4_NestedTimersAndPromises.js?raw";
+import NestedTimersAndPromisesCandidateRaw from "../tasks/22_event_loop/6_NestedTimersAndPromises.js?raw";
+import NestedTimersAndPromisesSolutionRaw from "../solutions/22_event_loop/6_NestedTimersAndPromises.js?raw";
 
-import RequestAnimationFrameOrderCandidateRaw from "../tasks/22_event_loop/5_RequestAnimationFrameOrder.js?raw";
-import RequestAnimationFrameOrderSolutionRaw from "../solutions/22_event_loop/5_RequestAnimationFrameOrder.js?raw";
+import RequestAnimationFrameOrderCandidateRaw from "../tasks/22_event_loop/7_RequestAnimationFrameOrder.js?raw";
+import RequestAnimationFrameOrderSolutionRaw from "../solutions/22_event_loop/7_RequestAnimationFrameOrder.js?raw";
 
-import DeepNestedTimersPromisesCandidateRaw from "../tasks/22_event_loop/6_DeepNestedTimersPromises.js?raw";
-import DeepNestedTimersPromisesSolutionRaw from "../solutions/22_event_loop/6_DeepNestedTimersPromises.js?raw";
+import DeepNestedTimersPromisesCandidateRaw from "../tasks/22_event_loop/8_DeepNestedTimersPromises.js?raw";
+import DeepNestedTimersPromisesSolutionRaw from "../solutions/22_event_loop/8_DeepNestedTimersPromises.js?raw";
 
-import ReactRenderRefUseEffectCandidateRaw from "../tasks/22_event_loop/7_ReactRenderRefUseEffect.js?raw";
-import ReactRenderRefUseEffectSolutionRaw from "../solutions/22_event_loop/7_ReactRenderRefUseEffect.js?raw";
+import ReactRenderRefUseEffectCandidateRaw from "../tasks/22_event_loop/9_ReactRenderRefUseEffect.js?raw";
+import ReactRenderRefUseEffectSolutionRaw from "../solutions/22_event_loop/9_ReactRenderRefUseEffect.js?raw";
 
-import ReactLayoutEffectCleanupCycleCandidateRaw from "../tasks/22_event_loop/8_ReactLayoutEffectCleanupCycle.js?raw";
-import ReactLayoutEffectCleanupCycleSolutionRaw from "../solutions/22_event_loop/8_ReactLayoutEffectCleanupCycle.js?raw";
+import ReactLayoutEffectCleanupCycleCandidateRaw from "../tasks/22_event_loop/10_ReactLayoutEffectCleanupCycle.js?raw";
+import ReactLayoutEffectCleanupCycleSolutionRaw from "../solutions/22_event_loop/10_ReactLayoutEffectCleanupCycle.js?raw";
 
 // JS STRING DOM UTILS IMPORTS
 import StringTemplateEngineCandidateRaw from "../tasks/23_string_dom_utils/1_StringTemplateEngine.js?raw";
@@ -693,6 +680,255 @@ import ObjectsAndComparisonsSolutionRaw from "../solutions/24_types_coercion/2_O
 
 import TypeCheckingAndEdgeCasesCandidateRaw from "../tasks/24_types_coercion/3_TypeCheckingAndEdgeCases.js?raw";
 import TypeCheckingAndEdgeCasesSolutionRaw from "../solutions/24_types_coercion/3_TypeCheckingAndEdgeCases.js?raw";
+
+// JS OBJECTS IMPORTS
+import JsObjects_BasicsCRUDCandidateRaw from "../tasks/25_objects/1_ObjectBasicsCRUD.js?raw";
+import JsObjects_BasicsCRUDSolutionRaw from "../solutions/25_objects/1_ObjectBasicsCRUD.js?raw";
+
+import JsObjects_ExistenceCheckCandidateRaw from "../tasks/25_objects/2_PropertyExistenceCheck.js?raw";
+import JsObjects_ExistenceCheckSolutionRaw from "../solutions/25_objects/2_PropertyExistenceCheck.js?raw";
+
+import JsObjects_KeysValuesEntriesCandidateRaw from "../tasks/25_objects/3_ObjectKeysValuesEntries.js?raw";
+import JsObjects_KeysValuesEntriesSolutionRaw from "../solutions/25_objects/3_ObjectKeysValuesEntries.js?raw";
+
+import JsObjects_DestructuringCandidateRaw from "../tasks/25_objects/4_ObjectDestructuring.js?raw";
+import JsObjects_DestructuringSolutionRaw from "../solutions/25_objects/4_ObjectDestructuring.js?raw";
+
+import JsObjects_ShallowCopySpreadCandidateRaw from "../tasks/25_objects/5_ShallowCopyAssignSpread.js?raw";
+import JsObjects_ShallowCopySpreadSolutionRaw from "../solutions/25_objects/5_ShallowCopyAssignSpread.js?raw";
+
+import JsObjects_IsEmptyCandidateRaw from "../tasks/25_objects/6_IsEmptyObject.js?raw";
+import JsObjects_IsEmptySolutionRaw from "../solutions/25_objects/6_IsEmptyObject.js?raw";
+
+import JsObjects_InvertCandidateRaw from "../tasks/25_objects/7_InvertObject.js?raw";
+import JsObjects_InvertSolutionRaw from "../solutions/25_objects/7_InvertObject.js?raw";
+
+import JsObjects_PickCandidateRaw from "../tasks/25_objects/8_PickObject.js?raw";
+import JsObjects_PickSolutionRaw from "../solutions/25_objects/8_PickObject.js?raw";
+
+import JsObjects_OmitCandidateRaw from "../tasks/25_objects/9_OmitObject.js?raw";
+import JsObjects_OmitSolutionRaw from "../solutions/25_objects/9_OmitObject.js?raw";
+
+import JsObjects_DeepEqualCandidateRaw from "../tasks/25_objects/10_DeepEqual.js?raw";
+import JsObjects_DeepEqualSolutionRaw from "../solutions/25_objects/10_DeepEqual.js?raw";
+
+import JsObjects_GetByPathCandidateRaw from "../tasks/25_objects/11_GetByPath.js?raw";
+import JsObjects_GetByPathSolutionRaw from "../solutions/25_objects/11_GetByPath.js?raw";
+
+import JsObjects_SetByPathCandidateRaw from "../tasks/25_objects/12_SetByPath.js?raw";
+import JsObjects_SetByPathSolutionRaw from "../solutions/25_objects/12_SetByPath.js?raw";
+
+import JsObjects_FlattenCandidateRaw from "../tasks/25_objects/13_FlattenObject.js?raw";
+import JsObjects_FlattenSolutionRaw from "../solutions/25_objects/13_FlattenObject.js?raw";
+
+import JsObjects_DeepCloneCircularCandidateRaw from "../tasks/25_objects/14_DeepCloneWithCircular.js?raw";
+import JsObjects_DeepCloneCircularSolutionRaw from "../solutions/25_objects/14_DeepCloneWithCircular.js?raw";
+
+import JsObjects_DeepMergeCandidateRaw from "../tasks/25_objects/15_DeepMerge.js?raw";
+import JsObjects_DeepMergeSolutionRaw from "../solutions/25_objects/15_DeepMerge.js?raw";
+
+import JsObjects_DeepFreezeCandidateRaw from "../tasks/25_objects/16_DeepFreezeObject.js?raw";
+import JsObjects_DeepFreezeSolutionRaw from "../solutions/25_objects/16_DeepFreezeObject.js?raw";
+
+// JS CLOSURES & SCOPE & ERRORS NEW IMPORTS (js212-js215, js218-js220)
+
+
+
+import TryCatchFinallyReturnOrderCandidateRaw from "../tasks/14_closures/7_TryCatchFinallyReturnOrder.js?raw";
+import TryCatchFinallyReturnOrderSolutionRaw from "../solutions/14_closures/7_TryCatchFinallyReturnOrder.js?raw";
+
+import CustomErrorChainingRethrowCandidateRaw from "../tasks/14_closures/8_CustomErrorChainingRethrow.js?raw";
+import CustomErrorChainingRethrowSolutionRaw from "../solutions/14_closures/8_CustomErrorChainingRethrow.js?raw";
+
+import OnceDecoratorCandidateRaw from "../tasks/14_closures/9_OnceDecorator.js?raw";
+import OnceDecoratorSolutionRaw from "../solutions/14_closures/9_OnceDecorator.js?raw";
+
+// JS PROTOTYPES & THIS & CLASSES NEW IMPORTS (js221, js229-js231)
+import CustomBindPolyfillCandidateRaw from "../tasks/16_prototypes_this/8_CustomBindPolyfill.js?raw";
+import CustomBindPolyfillSolutionRaw from "../solutions/16_prototypes_this/8_CustomBindPolyfill.js?raw";
+
+import CustomNewOperatorCandidateRaw from "../tasks/16_prototypes_this/9_CustomNewOperator.js?raw";
+import CustomNewOperatorSolutionRaw from "../solutions/16_prototypes_this/9_CustomNewOperator.js?raw";
+
+import CustomInstanceOfPolyfillCandidateRaw from "../tasks/16_prototypes_this/10_CustomInstanceOfPolyfill.js?raw";
+import CustomInstanceOfPolyfillSolutionRaw from "../solutions/16_prototypes_this/10_CustomInstanceOfPolyfill.js?raw";
+
+import ClassExtendsPrivateStaticCandidateRaw from "../tasks/16_prototypes_this/11_ClassExtendsPrivateStatic.js?raw";
+import ClassExtendsPrivateStaticSolutionRaw from "../solutions/16_prototypes_this/11_ClassExtendsPrivateStatic.js?raw";
+
+// JS COLLECTIONS WEAKMAP & WEAKSET NEW IMPORTS (js226-js227)
+import WeakMapPrivateMetadataCandidateRaw from "../tasks/11_collections_set/9_WeakMapPrivateMetadata.js?raw";
+import WeakMapPrivateMetadataSolutionRaw from "../solutions/11_collections_set/9_WeakMapPrivateMetadata.js?raw";
+
+import WeakSetCircularCycleDetectionCandidateRaw from "../tasks/11_collections_set/10_WeakSetCircularCycleDetection.js?raw";
+import WeakSetCircularCycleDetectionSolutionRaw from "../solutions/11_collections_set/10_WeakSetCircularCycleDetection.js?raw";
+
+// JS OBJECTS NEW IMPORTS (js216, js217, js222, js223, js224, js225, js228)
+import NestedDestructuringDefaultsCandidateRaw from "../tasks/25_objects/17_NestedDestructuringDefaults.js?raw";
+import NestedDestructuringDefaultsSolutionRaw from "../solutions/25_objects/17_NestedDestructuringDefaults.js?raw";
+
+import FindShallowMutationBugCandidateRaw from "../tasks/25_objects/18_FindShallowMutationBug.js?raw";
+import FindShallowMutationBugSolutionRaw from "../solutions/25_objects/18_FindShallowMutationBug.js?raw";
+
+import PropertyDescriptorsCandidateRaw from "../tasks/25_objects/19_PropertyDescriptors.js?raw";
+import PropertyDescriptorsSolutionRaw from "../solutions/25_objects/19_PropertyDescriptors.js?raw";
+
+import ObjectKeysVsReflectOwnKeysCandidateRaw from "../tasks/25_objects/20_ObjectKeysVsReflectOwnKeys.js?raw";
+import ObjectKeysVsReflectOwnKeysSolutionRaw from "../solutions/25_objects/20_ObjectKeysVsReflectOwnKeys.js?raw";
+
+import SymbolToPrimitiveCoercionCandidateRaw from "../tasks/25_objects/21_SymbolToPrimitiveCoercion.js?raw";
+import SymbolToPrimitiveCoercionSolutionRaw from "../solutions/25_objects/21_SymbolToPrimitiveCoercion.js?raw";
+
+import ProxyValidatorGetSetCandidateRaw from "../tasks/25_objects/22_ProxyValidatorGetSet.js?raw";
+import ProxyValidatorGetSetSolutionRaw from "../solutions/25_objects/22_ProxyValidatorGetSet.js?raw";
+
+import ObjectCreateNullAndPollutionCandidateRaw from "../tasks/25_objects/23_ObjectCreateNullAndPollution.js?raw";
+import ObjectCreateNullAndPollutionSolutionRaw from "../solutions/25_objects/23_ObjectCreateNullAndPollution.js?raw";
+
+
+// JS ARRAY POLYFILLS & CHUNK IMPORTS (js232-js235)
+import PolyfillArrayMapCandidateRaw from "../tasks/6_arrays_map/9_PolyfillArrayMap.js?raw";
+import PolyfillArrayMapSolutionRaw from "../solutions/6_arrays_map/9_PolyfillArrayMap.js?raw";
+
+import PolyfillArrayFilterCandidateRaw from "../tasks/5_arrays_filter/12_PolyfillArrayFilter.js?raw";
+import PolyfillArrayFilterSolutionRaw from "../solutions/5_arrays_filter/12_PolyfillArrayFilter.js?raw";
+
+import PolyfillArrayReduceCandidateRaw from "../tasks/8_arrays_reduce/19_PolyfillArrayReduce.js?raw";
+import PolyfillArrayReduceSolutionRaw from "../solutions/8_arrays_reduce/19_PolyfillArrayReduce.js?raw";
+
+import ChunkArrayCandidateRaw from "../tasks/8_arrays_reduce/20_ChunkArray.js?raw";
+import ChunkArraySolutionRaw from "../solutions/8_arrays_reduce/20_ChunkArray.js?raw";
+
+// JS COLLECTIONS MAP & JOIN IMPORTS (js241-js242)
+import LruCacheMapCandidateRaw from "../tasks/12_collections_map/level3/23_LruCacheMap.js?raw";
+import LruCacheMapSolutionRaw from "../solutions/12_collections_map/level3/23_LruCacheMap.js?raw";
+
+import HashMapJoinApiResponsesCandidateRaw from "../tasks/12_collections_map/level3/24_HashMapJoinApiResponses.js?raw";
+import HashMapJoinApiResponsesSolutionRaw from "../solutions/12_collections_map/level3/24_HashMapJoinApiResponses.js?raw";
+
+// JS STRINGS & UTILS IMPORTS (js243-js245)
+import UnicodeStringReverseCandidateRaw from "../tasks/23_string_dom_utils/4_UnicodeStringReverse.js?raw";
+import UnicodeStringReverseSolutionRaw from "../solutions/23_string_dom_utils/4_UnicodeStringReverse.js?raw";
+
+import RegexTokenizerCandidateRaw from "../tasks/23_string_dom_utils/5_RegexTokenizer.js?raw";
+import RegexTokenizerSolutionRaw from "../solutions/23_string_dom_utils/5_RegexTokenizer.js?raw";
+
+import ReplaceAllPolyfillCandidateRaw from "../tasks/23_string_dom_utils/6_ReplaceAllPolyfill.js?raw";
+import ReplaceAllPolyfillSolutionRaw from "../solutions/23_string_dom_utils/6_ReplaceAllPolyfill.js?raw";
+
+// JS OBJECTS DIFF, PATH, KEYS IMPORTS (js246-js248)
+import ObjectDiffPatchCandidateRaw from "../tasks/25_objects/24_ObjectDiffPatch.js?raw";
+import ObjectDiffPatchSolutionRaw from "../solutions/25_objects/24_ObjectDiffPatch.js?raw";
+
+import SafeGetSetByPathCandidateRaw from "../tasks/25_objects/25_SafeGetSetByPath.js?raw";
+import SafeGetSetByPathSolutionRaw from "../solutions/25_objects/25_SafeGetSetByPath.js?raw";
+
+import CamelCaseSnakeCaseKeysCandidateRaw from "../tasks/25_objects/26_CamelCaseSnakeCaseKeys.js?raw";
+import CamelCaseSnakeCaseKeysSolutionRaw from "../solutions/25_objects/26_CamelCaseSnakeCaseKeys.js?raw";
+
+export const JS_TYPES_COERCION_TASKS = [
+  {
+    id: "js186",
+    group: "Типы данных",
+    subgroup: "Приведение типов",
+    title: "1. Типы данных и неявное приведение (Type Coercion)",
+    desc: "Определите и объясните результаты вывода базовых типов данных, сравнений (== / ===) и неявного приведения типов.",
+    isRaw: true,
+    candidate: TypeCoercionBasicsCandidateRaw,
+    rawCandidate: TypeCoercionBasicsCandidateRaw,
+    solution: TypeCoercionBasicsSolutionRaw,
+    rawSolution: TypeCoercionBasicsSolutionRaw,
+    filepath: "src/javascript/tasks/24_types_coercion/1_TypeCoercionBasics.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Фундаментальный JS",
+        recommendationNote: "Понимание неявного приведения типов и ссылочной модели необходимо для предотвращения неочевидных багов.",
+        rawSolution: TypeCoercionBasicsSolutionRaw,
+        filepath: "src/javascript/tasks/24_types_coercion/1_TypeCoercionBasics.js",
+      },
+    ],
+    articles: [
+      { title: "Типы данных (LearnJS)", urlTitle: "Учебник JS — Типы данных", url: "https://learn.javascript.ru/types" },
+      { title: "Преобразование типов (LearnJS)", urlTitle: "Учебник JS — Преобразование типов", url: "https://learn.javascript.ru/type-conversions" },
+      { title: "Операторы сравнения (LearnJS)", urlTitle: "Учебник JS — Сравнения", url: "https://learn.javascript.ru/comparison" },
+    ],
+    interviewerQuestions: [
+      { question: "Почему typeof null возвращает 'object'?", answer: "Это исторический баг первой реализации JS, где значения типа object имели тег типа 0, а null представлялся как нулевой указатель (0x00)." },
+      { question: "Как пошагово вычисляется выражение [] == ![]?", answer: "1) ![] дает false, 2) [] == false -> [].toString() дает '', 3) '' == false -> Number('') и Number(false) оба дают 0, 4) 0 == 0 -> true." },
+    ],
+    checklist: ["Понимание разницы между == и ===", "Правила приведения при операторах + и -", "Ссылочное сравнение объектов и массивов"],
+  },
+
+  {
+    id: "js187",
+    group: "Типы данных",
+    subgroup: "Приведение типов",
+    title: "2. Сложение объектов, массивов и парадоксы сравнения (ToPrimitive)",
+    desc: "Объясните правила сложения объектов ([] + [], [] + {}, {} + []), унарный плюс и краевые случаи сравнения null с нулём.",
+    isRaw: true,
+    candidate: ObjectsAndComparisonsCandidateRaw,
+    rawCandidate: ObjectsAndComparisonsCandidateRaw,
+    solution: ObjectsAndComparisonsSolutionRaw,
+    rawSolution: ObjectsAndComparisonsSolutionRaw,
+    filepath: "src/javascript/tasks/24_types_coercion/2_ObjectsAndComparisons.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "ToPrimitive и реляционные сравнения",
+        recommendationNote: "Алгоритм ToPrimitive вызывает valueOf и toString, а реляционные сравнения (<, >, >=) приводят к числам иначе, чем нестрогое равенство (==).",
+        rawSolution: ObjectsAndComparisonsSolutionRaw,
+        filepath: "src/javascript/tasks/24_types_coercion/2_ObjectsAndComparisons.js",
+      },
+    ],
+    articles: [
+      { title: "Преобразование объектов в примитивы (LearnJS)", urlTitle: "Учебник JS — Symbol.toPrimitive, valueOf, toString", url: "https://learn.javascript.ru/object-toprimitive" },
+      { title: "Неочевидные сравнения в JS (LearnJS)", urlTitle: "Учебник JS — Сравнение разных типов", url: "https://learn.javascript.ru/comparison#sravnenie-raznyh-tipov" },
+    ],
+    interviewerQuestions: [
+      { question: "Почему null >= 0 возвращает true, а null > 0 и null == 0 возвращают false?", answer: "При >= операнды приводятся к числам (0 >= 0 -> true, вычисляется как !(null < 0)). При == действует специальное правило: null равен только undefined." },
+      { question: "Как вычисляется сложение объектов [] + {}?", answer: "Алгоритм ToPrimitive преобразует [] через toString() в '', а {} через toString() в '[object Object]'. Итого '' + '[object Object]' дает '[object Object]'." },
+    ],
+    checklist: ["Алгоритм ToPrimitive (valueOf -> toString)", "Разница между == и реляционными операторами (<, >, <=, >=)", "Унарный плюс для примитивов (true, null, undefined)"],
+  },
+
+  {
+    id: "js188",
+    group: "Типы данных",
+    subgroup: "Проверка типов",
+    title: "1. Проверка типов, граничные случаи и операторы (Object.is, || vs ??)",
+    desc: "Разберите тонкости сравнения NaN и +0/-0 (Object.is), разницу isNaN vs Number.isNaN, логические операторы (|| vs ??) и надежные методы определения типов.",
+    isRaw: true,
+    candidate: TypeCheckingAndEdgeCasesCandidateRaw,
+    rawCandidate: TypeCheckingAndEdgeCasesCandidateRaw,
+    solution: TypeCheckingAndEdgeCasesSolutionRaw,
+    rawSolution: TypeCheckingAndEdgeCasesSolutionRaw,
+    filepath: "src/javascript/tasks/24_types_coercion/3_TypeCheckingAndEdgeCases.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Проверка типов и граничные случаи",
+        recommendationNote: "Object.is реализует алгоритм SameValue, различая +0 и -0 и считая NaN равным NaN.",
+        rawSolution: TypeCheckingAndEdgeCasesSolutionRaw,
+        filepath: "src/javascript/tasks/24_types_coercion/3_TypeCheckingAndEdgeCases.js",
+      },
+    ],
+    articles: [
+      { title: "Object.is (MDN)", urlTitle: "MDN — Object.is", url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/is" },
+      { title: "Операторы || и ?? (LearnJS)", urlTitle: "Учебник JS — Оператор нулевого слияния '??'", url: "https://learn.javascript.ru/nullish-coalescing-operator" },
+      { title: "Определение типов (LearnJS)", urlTitle: "Учебник JS — Методы проверки типов", url: "https://learn.javascript.ru/type-checking" },
+    ],
+    interviewerQuestions: [
+      { question: "В чем разница между глобальным isNaN() и методом Number.isNaN()?", answer: "Глобальный isNaN('str') сначала приводит аргумент к числу (давая true для любой нечисловой строки). Number.isNaN('str') проверяет строго: тип должен быть number И значение NaN (возвращает false)." },
+      { question: "В чем разница между оператором || и оператором ?? (Nullish Coalescing)?", answer: "Оператор || срабатывает на любые falsy-значения (0, '', false, null, undefined, NaN). Оператор ?? срабатывает только на null и undefined." },
+      { question: "Почему для проверки массивов используют Array.isArray(), а не typeof?", answer: "typeof [] возвращает 'object', так как массивы в JS являются объектами. Array.isArray корректно определяет массив даже между разными фреймами/окнами." },
+    ],
+    checklist: ["Разница между isNaN и Number.isNaN", "Разница между || и ??", "Алгоритм SameValue в Object.is для NaN и +0/-0", "Определение типов через Array.isArray и Object.prototype.toString"],
+  }
+];
 
 export const JS_WHILE_TASKS = [
   {
@@ -750,6 +986,7 @@ export const JS_WHILE_TASKS = [
       "Тело цикла оформлено фигурными скобками {}",
     ],
   },
+
   {
     id: "js_while_2",
     group: "Циклы",
@@ -800,6 +1037,7 @@ export const JS_WHILE_TASKS = [
       "Условие выхода предотвращает зацикливание при n <= 0",
     ],
   },
+
   {
     id: "js_while_3",
     group: "Циклы",
@@ -850,6 +1088,7 @@ export const JS_WHILE_TASKS = [
       "Корректно обрабатываются однозначные числа и 0",
     ],
   },
+
   {
     id: "js_while_4",
     group: "Циклы",
@@ -891,6 +1130,7 @@ export const JS_WHILE_TASKS = [
       "Возвращается числовое значение",
     ],
   },
+
   {
     id: "js_while_5",
     group: "Циклы",
@@ -933,6 +1173,7 @@ export const JS_WHILE_TASKS = [
       "Возвращается НОД чисел",
     ],
   },
+
   {
     id: "js_while_6",
     group: "Циклы",
@@ -984,6 +1225,7 @@ export const JS_WHILE_TASKS = [
       "Возвращается индекс найденного элемента или -1",
     ],
   },
+
   {
     id: "js_while_7",
     group: "Циклы",
@@ -1034,6 +1276,7 @@ export const JS_WHILE_TASKS = [
       "Возвращается накопленная сумма узлов",
     ],
   },
+
   {
     id: "js_while_8",
     group: "Циклы",
@@ -1087,7 +1330,7 @@ export const JS_WHILE_TASKS = [
       "Добавлены остаточные элементы через добивающие циклы",
       "Возвращается отсортированный массив за O(N + M)",
     ],
-  },
+  }
 ];
 
 export const JS_LOOPS_TASKS = [
@@ -1146,6 +1389,7 @@ export const JS_LOOPS_TASKS = [
       "Тело цикла оформлено фигурными скобками {}",
     ],
   },
+
   {
     id: "js2",
     group: "Циклы",
@@ -1192,6 +1436,7 @@ export const JS_LOOPS_TASKS = [
       "Вывод осуществляется через console.log(i)",
     ],
   },
+
   {
     id: "js3",
     group: "Циклы",
@@ -1238,6 +1483,7 @@ export const JS_LOOPS_TASKS = [
       "Функция возвращает итоговое значение sum через return",
     ],
   },
+
   {
     id: "js4",
     group: "Циклы",
@@ -1283,6 +1529,7 @@ export const JS_LOOPS_TASKS = [
       "Значения выводятся в консоль только при истинности условия",
     ],
   },
+
   {
     id: "js5",
     group: "Циклы",
@@ -1337,6 +1584,7 @@ export const JS_LOOPS_TASKS = [
       "Возвращается булево значение сравнения (true/false)",
     ],
   },
+
   {
     id: "js6",
     group: "Циклы",
@@ -1401,6 +1649,7 @@ export const JS_LOOPS_TASKS = [
       "Сумма накапливается в переменной и возвращается из функции",
     ],
   },
+
   {
     id: "js7",
     group: "Циклы",
@@ -1450,7 +1699,7 @@ export const JS_LOOPS_TASKS = [
       "Сравнение выполнятся между соседями (arr[j] > arr[j + 1])",
       "Обмен значениями происходит через временную переменную temp или деструктуризацию",
     ],
-  },
+  }
 ];
 
 export const JS_FOR_OF_TASKS = [
@@ -1500,6 +1749,7 @@ export const JS_FOR_OF_TASKS = [
       "Тело цикла оформлено фигурными скобками {}",
     ],
   },
+
   {
     id: "js9",
     group: "Циклы",
@@ -1559,6 +1809,7 @@ export const JS_FOR_OF_TASKS = [
       "Функция возвращает итоговую сумму",
     ],
   },
+
   {
     id: "js10",
     group: "Циклы",
@@ -1600,6 +1851,7 @@ export const JS_FOR_OF_TASKS = [
       "Вывод осуществляется через console.log(num)",
     ],
   },
+
   {
     id: "js11",
     group: "Циклы",
@@ -1658,6 +1910,7 @@ export const JS_FOR_OF_TASKS = [
       "Если ни один элемент не подошел, по окончании цикла возвращается false",
     ],
   },
+
   {
     id: "js12",
     group: "Циклы",
@@ -1716,6 +1969,7 @@ export const JS_FOR_OF_TASKS = [
       "Подходящие элементы добавляются методом push() в результирующий массив",
     ],
   },
+
   {
     id: "js13",
     group: "Циклы",
@@ -1774,7 +2028,7 @@ export const JS_FOR_OF_TASKS = [
       "Сравнение строгое (item === str)",
       "Возвращается числовых результатов инкрементов",
     ],
-  },
+  }
 ];
 
 export const JS_FOR_IN_TASKS = [
@@ -1828,6 +2082,7 @@ export const JS_FOR_IN_TASKS = [
       "Вывод значений через интерполяцию `${key}: ${user[key]}`",
     ],
   },
+
   {
     id: "js190",
     group: "Циклы",
@@ -1877,6 +2132,7 @@ export const JS_FOR_IN_TASKS = [
       "Функция корректно возвращает 0 для пустого объекта",
     ],
   },
+
   {
     id: "js191",
     group: "Циклы",
@@ -1926,6 +2182,7 @@ export const JS_FOR_IN_TASKS = [
       "Возвращается числовое значение",
     ],
   },
+
   {
     id: "js192",
     group: "Циклы",
@@ -1968,6 +2225,7 @@ export const JS_FOR_IN_TASKS = [
       "Функция возвращает модифицированный объект",
     ],
   },
+
   {
     id: "js193",
     group: "Циклы",
@@ -2026,6 +2284,7 @@ export const JS_FOR_IN_TASKS = [
       "Возвращается массив значений собственных свойств",
     ],
   },
+
   {
     id: "js194",
     group: "Циклы",
@@ -2075,6 +2334,7 @@ export const JS_FOR_IN_TASKS = [
       "Корректно обрабатывает пустой объект {}",
     ],
   },
+
   {
     id: "js195",
     group: "Циклы",
@@ -2127,6 +2387,1168 @@ export const JS_FOR_IN_TASKS = [
       "Создается новый объект const inverted = {}",
       "Присвоение выполняется как inverted[obj[key]] = key",
       "Возвращается новый инвертированный объект",
+    ],
+  }
+];
+
+export const JS_OBJECTS_TASKS = [
+  {
+    id: "js197",
+    group: "Объекты",
+    subgroup: "Базовый синтаксис",
+    title: "1. Создание, чтение, запись и удаление свойств (CRUD & Computed Keys)",
+    desc: "Реализуйте функцию manageUser(user, newKey, newValue, deleteKey) для добавления вычисляемого свойства и безопасного удаления указанного ключа.",
+    isRaw: true,
+    candidate: JsObjects_BasicsCRUDCandidateRaw,
+    rawCandidate: JsObjects_BasicsCRUDCandidateRaw,
+    solution: JsObjects_BasicsCRUDSolutionRaw,
+    rawSolution: JsObjects_BasicsCRUDSolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/1_ObjectBasicsCRUD.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Базовый синтаксис",
+        recommendationNote: "Использование скобочной нотации для динамических ключей и оператора delete.",
+        rawSolution: JsObjects_BasicsCRUDSolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/1_ObjectBasicsCRUD.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Объекты: основы (LearnJS)",
+        urlTitle: "Учебник JavaScript — Объекты",
+        url: "https://learn.javascript.ru/object",
+      },
+      {
+        title: "Оператор delete (MDN)",
+        urlTitle: "MDN — Оператор delete",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/delete",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "В чем разница между точечной и скобочной нотацией доступа к свойствам объекта?",
+        answer: "Точечная нотация работает только со статическими идентификаторами. Скобочная нотация вычисляет выражение внутри скобок, позволяя использовать переменные, пробелы, спецсимволы и вычисляемые свойства.",
+      },
+      {
+        question: "Как оператор delete влияет на оптимизацию в движке V8?",
+        answer: "Оператор delete ломает структуру скрытого класса (hidden class / shape) объекта в V8 и переводит его в медленный режим словаря (dictionary mode).",
+      },
+    ],
+    checklist: [
+      "Проверка на валидный объект (user !== null && typeof user === 'object')",
+      "Присвоение по динамическому ключу user[newKey] = newValue",
+      "Удаление свойства через delete user[deleteKey]",
+      "Возврат модифицированного объекта",
+    ],
+  },
+
+  {
+    id: "js198",
+    group: "Объекты",
+    subgroup: "Базовый синтаксис",
+    title: "2. Проверка существования свойств (in vs Object.hasOwn vs hasOwnProperty)",
+    desc: "Напишите функцию hasProperty(obj, prop, checkPrototype) для проверки наличия свойства с учетом или игнорированием прототипного наследования.",
+    isRaw: true,
+    candidate: JsObjects_ExistenceCheckCandidateRaw,
+    rawCandidate: JsObjects_ExistenceCheckCandidateRaw,
+    solution: JsObjects_ExistenceCheckSolutionRaw,
+    rawSolution: JsObjects_ExistenceCheckSolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/2_PropertyExistenceCheck.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "ES2022 Стандарт",
+        recommendationNote: "Object.hasOwn(obj, prop) безопасен для любых объектов, включая Object.create(null).",
+        rawSolution: JsObjects_ExistenceCheckSolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/2_PropertyExistenceCheck.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Object.hasOwn() (MDN)",
+        urlTitle: "MDN — Метод Object.hasOwn()",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwn",
+      },
+      {
+        title: "Оператор in (LearnJS)",
+        urlTitle: "Учебник JavaScript — Проверка существования свойства: оператор in",
+        url: "https://learn.javascript.ru/object#proverka-suschestvovaniya-svoystva-operator-in",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему проверка obj.prop !== undefined ненадежна?",
+        answer: "Если свойство существует в объекте, но явно установлено в undefined ({ a: undefined }), проверка obj.a !== undefined вернет false, хотя свойство реально присутствует.",
+      },
+      {
+        question: "Почему Object.hasOwn(obj, prop) предпочтительнее obj.hasOwnProperty(prop)?",
+        answer: "Метод hasOwnProperty может отсутствовать у объектов, созданных через Object.create(null), или может быть переопределен собственным свойством объекта.",
+      },
+    ],
+    checklist: [
+      "Обработка null и не-объектов",
+      "При checkPrototype === true используется оператор in",
+      "При checkPrototype === false используется Object.hasOwn(obj, prop)",
+    ],
+  },
+
+  {
+    id: "js199",
+    group: "Объекты",
+    subgroup: "Базовый синтаксис",
+    title: "3. Методы трансформации объектов (Object.keys, values, entries, fromEntries)",
+    desc: "Напишите функцию transformPrices(prices, multiplier, minPrice), фильтрующую и модифицирующую числовые цены через Object.entries и Object.fromEntries.",
+    isRaw: true,
+    candidate: JsObjects_KeysValuesEntriesCandidateRaw,
+    rawCandidate: JsObjects_KeysValuesEntriesCandidateRaw,
+    solution: JsObjects_KeysValuesEntriesSolutionRaw,
+    rawSolution: JsObjects_KeysValuesEntriesSolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/3_ObjectKeysValuesEntries.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Функциональный подход",
+        recommendationNote: "Связка Object.entries + методы массивов + Object.fromEntries обеспечивает чистую функциональную обработку.",
+        rawSolution: JsObjects_KeysValuesEntriesSolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/3_ObjectKeysValuesEntries.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Object.entries() и Object.fromEntries() (MDN)",
+        urlTitle: "MDN — Метод Object.fromEntries()",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries",
+      },
+      {
+        title: "Трансформация объектов (LearnJS)",
+        urlTitle: "Учебник JavaScript — Трансформация объектов",
+        url: "https://learn.javascript.ru/keys-values-entries#transformatsiya-obektov",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "В каком порядке перечисляются ключи в Object.keys / Object.entries?",
+        answer: "Согласно спецификации ES: сначала целочисленные ключи по возрастанию (0, 1, 2), затем строковые ключи в порядке их добавления, затем символы.",
+      },
+    ],
+    checklist: [
+      "Преобразование в пары через Object.entries(prices)",
+      "Фильтрация нечисловых и NaN значений",
+      "Умножение и округление Math.round(price * multiplier)",
+      "Сборка нового объекта через Object.fromEntries()",
+    ],
+  },
+
+  {
+    id: "js200",
+    group: "Объекты",
+    subgroup: "Базовый синтаксис",
+    title: "4. Деструктуризация объектов (Алиасы, дефолты и rest)",
+    desc: "Напишите функцию normalizeUser(rawUser) для извлечения id, name, переименования email в userEmail с дефолтом, роли по умолчанию и сбора остатка в extra.",
+    isRaw: true,
+    candidate: JsObjects_DestructuringCandidateRaw,
+    rawCandidate: JsObjects_DestructuringCandidateRaw,
+    solution: JsObjects_DestructuringSolutionRaw,
+    rawSolution: JsObjects_DestructuringSolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/4_ObjectDestructuring.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Современный ES6+",
+        recommendationNote: "Деструктуризация с переименованием, дефолтами и rest-оператором в одной лаконичной конструкции.",
+        rawSolution: JsObjects_DestructuringSolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/4_ObjectDestructuring.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Деструктурирующее присваивание (LearnJS)",
+        urlTitle: "Учебник JavaScript — Деструктуризация",
+        url: "https://learn.javascript.ru/destructuring-assignment",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "В каких случаях срабатывает значение по умолчанию при деструктуризации { a = 1 } = obj?",
+        answer: "Значение по умолчанию срабатывает строго тогда, когда свойство равно undefined (или отсутствует). Для null, false, 0 дефолт не применяется.",
+      },
+    ],
+    checklist: [
+      "Извлечение id, name",
+      "Переименование и значение по умолчанию email: userEmail = 'no-email@example.com'",
+      "Значение по умолчанию role = 'guest'",
+      "Сбор неперечисленных полей через ...extra",
+    ],
+  },
+
+  {
+    id: "js201",
+    group: "Объекты",
+    subgroup: "Базовый синтаксис",
+    title: "5. Поверхностное копирование и слияние ({ ...obj } vs Object.assign)",
+    desc: "Напишите функцию mergeConfigs(defaultConfig, userConfig), объединяющую настройки и демонстрирующую ссылочную модель для вложенных объектов.",
+    isRaw: true,
+    candidate: JsObjects_ShallowCopySpreadCandidateRaw,
+    rawCandidate: JsObjects_ShallowCopySpreadCandidateRaw,
+    solution: JsObjects_ShallowCopySpreadSolutionRaw,
+    rawSolution: JsObjects_ShallowCopySpreadSolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/5_ShallowCopyAssignSpread.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Иммутабельный Spread",
+        recommendationNote: "Оператор расширения создает новый чистый объект без мутации переданных аргументов.",
+        rawSolution: JsObjects_ShallowCopySpreadSolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/5_ShallowCopyAssignSpread.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Клонирование и объединение объектов (LearnJS)",
+        urlTitle: "Учебник JavaScript — Копирование объектов",
+        url: "https://learn.javascript.ru/object-copy",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "В чем разница между {...a, ...b} и Object.assign(a, b)?",
+        answer: "Object.assign мутирует первый аргумент 'a', тогда как spread создает новый объект. Кроме того, Object.assign вызывает сеттеры целевого объекта, а spread использует [[DefineOwnProperty]].",
+      },
+    ],
+    checklist: [
+      "Исходные объекты defaultConfig и userConfig не мутируются",
+      "Свойства userConfig переопределяют defaultConfig",
+      "Добавлено поле mergedAt: Date.now()",
+      "Вложенные объекты копируются по ссылке",
+    ],
+  },
+
+  {
+    id: "js202",
+    group: "Объекты",
+    subgroup: "Манипуляции и Утилиты",
+    title: "6. Проверка объекта на пустоту (isEmpty)",
+    desc: "Напишите функцию isEmpty(obj), проверяющую отсутствие собственных строковых и Symbol-свойств с ранним выходом O(1).",
+    isRaw: true,
+    candidate: JsObjects_IsEmptyCandidateRaw,
+    rawCandidate: JsObjects_IsEmptyCandidateRaw,
+    solution: JsObjects_IsEmptySolutionRaw,
+    rawSolution: JsObjects_IsEmptySolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/6_IsEmptyObject.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Оптимально O(1)",
+        recommendationNote: "for...in с Object.hasOwn обеспечивает ранний выход O(1), а Object.getOwnPropertySymbols учитывает символы.",
+        rawSolution: JsObjects_IsEmptySolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/6_IsEmptyObject.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Проверка на пустоту (LearnJS)",
+        urlTitle: "Учебник JavaScript — Проверка на пустоту",
+        url: "https://learn.javascript.ru/task/is-empty",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему Object.keys(obj).length === 0 менее эффективно, чем цикл for...in с ранним выходом?",
+        answer: "Object.keys(obj) принудительно обходит все свойства объекта и аллоцирует в памяти массив ключей, затрачивая O(N) времени и памяти, в то время как for...in завершается на первом же ключе за O(1).",
+      },
+    ],
+    checklist: [
+      "Проверка на null и не-объекты",
+      "Использование for...in + Object.hasOwn для раннего выхода",
+      "Проверка собственных Symbol-ключей через Object.getOwnPropertySymbols",
+    ],
+  },
+
+  {
+    id: "js203",
+    group: "Объекты",
+    subgroup: "Манипуляции и Утилиты",
+    title: "7. Инверсия ключей и значений объекта (invert)",
+    desc: "Напишите функцию invert(obj), меняющую местами ключи и значения объекта с корректной обработкой дублирующихся значений.",
+    isRaw: true,
+    candidate: JsObjects_InvertCandidateRaw,
+    rawCandidate: JsObjects_InvertCandidateRaw,
+    solution: JsObjects_InvertSolutionRaw,
+    rawSolution: JsObjects_InvertSolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/7_InvertObject.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Практическая утилита",
+        recommendationNote: "Итерация по собственным ключам с формированием нового инвертированного словаря.",
+        rawSolution: JsObjects_InvertSolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/7_InvertObject.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Lodash _.invert documentation",
+        urlTitle: "Lodash Docs — _.invert",
+        url: "https://lodash.com/docs/4.17.15#invert",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Что произойдет при инверсии объекта с числовыми или булевыми значениями?",
+        answer: "Все значения будут автоматически приведены к строковым ключам нового объекта (например { a: 10 } станет { '10': 'a' }).",
+      },
+    ],
+    checklist: [
+      "Исходный объект не мутируется",
+      "Значения преобразуются в ключи, ключи — в значения",
+      "При совпадении значений последнее перезаписывает предыдущие",
+    ],
+  },
+
+  {
+    id: "js204",
+    group: "Объекты",
+    subgroup: "Манипуляции и Утилиты",
+    title: "8. Выборка заданных свойств объекта (pick)",
+    desc: "Напишите функцию pick(obj, keys), создающую новый объект только с существующими в исходном объекте ключами из переданного списка.",
+    isRaw: true,
+    candidate: JsObjects_PickCandidateRaw,
+    rawCandidate: JsObjects_PickCandidateRaw,
+    solution: JsObjects_PickSolutionRaw,
+    rawSolution: JsObjects_PickSolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/8_PickObject.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Стандарт Lodash",
+        recommendationNote: "Итерация по переданному массиву ключей с проверкой Object.hasOwn(obj, key).",
+        rawSolution: JsObjects_PickSolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/8_PickObject.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Lodash _.pick documentation",
+        urlTitle: "Lodash Docs — _.pick",
+        url: "https://lodash.com/docs/4.17.15#pick",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему важно проверять Object.hasOwn(obj, key), а не просто делать result[k] = obj[k]?",
+        answer: "Если ключ отсутствует в исходном объекте, прямое присвоение добавит в результат свойство со значением undefined (например { unknown: undefined }), что не соответствует контракту выборки существующих свойств.",
+      },
+    ],
+    checklist: [
+      "Проверка валидности входного объекта и массива ключей",
+      "Проверка существования ключа через Object.hasOwn",
+      "Несуществующие ключи не добавляются в результат",
+    ],
+  },
+
+  {
+    id: "js205",
+    group: "Объекты",
+    subgroup: "Манипуляции и Утилиты",
+    title: "9. Исключение заданных свойств объекта (omit)",
+    desc: "Напишите функцию omit(obj, keys), возвращающую новый объект без указанных в массиве ключей с оптимизацией через Set.",
+    isRaw: true,
+    candidate: JsObjects_OmitCandidateRaw,
+    rawCandidate: JsObjects_OmitCandidateRaw,
+    solution: JsObjects_OmitSolutionRaw,
+    rawSolution: JsObjects_OmitSolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/9_OmitObject.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Оптимизация O(N + K)",
+        recommendationNote: "Использование new Set(keys) позволяет выполнять проверку has(key) за O(1).",
+        rawSolution: JsObjects_OmitSolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/9_OmitObject.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Lodash _.omit documentation",
+        urlTitle: "Lodash Docs — _.omit",
+        url: "https://lodash.com/docs/4.17.15#omit",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Как оптимизировать утилиту omit при большом количестве исключаемых ключей?",
+        answer: "Преобразовать массив исключаемых ключей в структуру Set, что уменьшит сложность проверки с O(K) до O(1) и общую сложность функции с O(N * K) до O(N + K).",
+      },
+    ],
+    checklist: [
+      "Преобразование массива keys в new Set(keys)",
+      "Итерация по Object.keys(obj)",
+      "Исключение ключей из Set без мутации исходного объекта",
+    ],
+  },
+
+  {
+    id: "js206",
+    group: "Объекты",
+    subgroup: "Манипуляции и Утилиты",
+    title: "10. Глубокое сравнение объектов (deepEqual)",
+    desc: "Напишите функцию deepEqual(a, b) для рекурсивного сравнения двух структур данных (примитивы, NaN, массивы, объекты) по значению.",
+    isRaw: true,
+    candidate: JsObjects_DeepEqualCandidateRaw,
+    rawCandidate: JsObjects_DeepEqualCandidateRaw,
+    solution: JsObjects_DeepEqualSolutionRaw,
+    rawSolution: JsObjects_DeepEqualSolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/10_DeepEqual.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Топ собеседований",
+        recommendationNote: "Object.is для примитивов и NaN + рекурсивное сопоставление ключей и типов массивов.",
+        rawSolution: JsObjects_DeepEqualSolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/10_DeepEqual.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Object.is() (MDN)",
+        urlTitle: "MDN — Метод Object.is()",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/is",
+      },
+      {
+        title: "Сравнение объектов по значению",
+        urlTitle: "BFE.dev — Implement deep equal",
+        url: "https://bigfrontend.dev/problem/implement-deep-equal",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему Object.is(NaN, NaN) возвращает true, а NaN === NaN возвращает false?",
+        answer: "По стандарту IEEE 754 NaN не равен ничему, включая самого себя (через ===). Метод Object.is реализует алгоритм SameValue, в котором NaN считается равным NaN.",
+      },
+      {
+        question: "Как deepEqual должен обрабатывать null и []?",
+        answer: "typeof null и typeof [] возвращают 'object'. Необходимо явно проверять a === null и Array.isArray(a) !== Array.isArray(b).",
+      },
+    ],
+    checklist: [
+      "Проверка Object.is(a, b) на первом шаге",
+      "Фильтрация null и не-объектов",
+      "Проверка одинаковости типов контейнеров (Array.isArray)",
+      "Сравнение длины ключей и рекурсивный вызов для каждого свойства",
+    ],
+  },
+
+  {
+    id: "js207",
+    group: "Объекты",
+    subgroup: "Собеседования: Hard",
+    title: "11. Безопасное получение значения по пути (get / Lodash _.get)",
+    desc: "Напишите функцию get(obj, path, defaultValue), извлекающую значение по строковому ('a.b[0].c') или массивному пути с возвратом defaultValue.",
+    isRaw: true,
+    candidate: JsObjects_GetByPathCandidateRaw,
+    rawCandidate: JsObjects_GetByPathCandidateRaw,
+    solution: JsObjects_GetByPathSolutionRaw,
+    rawSolution: JsObjects_GetByPathSolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/11_GetByPath.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Senior утилита",
+        recommendationNote: "Парсинг скобочных путей и безопасный итеративный проход без выброса TypeError.",
+        rawSolution: JsObjects_GetByPathSolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/11_GetByPath.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Lodash _.get documentation",
+        urlTitle: "Lodash Docs — _.get",
+        url: "https://lodash.com/docs/4.17.15#get",
+      },
+      {
+        title: "Implement _.get() (BFE.dev)",
+        urlTitle: "BFE.dev — Create your own Lodash _.get()",
+        url: "https://bigfrontend.dev/problem/lodash-get",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "В каких случаях возвращается defaultValue в функции _.get?",
+        answer: "defaultValue возвращается только если итоговое значение строго равно undefined, либо если путь обрывается на промежуточном null/undefined узле. Значения null, 0, false или '' возвращаются как есть.",
+      },
+    ],
+    checklist: [
+      "Поддержка строковых путей ('a.b.c', 'a[0].b') и массивов (['a', 'b', 0])",
+      "Безопасная обработка null/undefined на промежуточных узлах",
+      "Возврат defaultValue при undefined",
+    ],
+  },
+
+  {
+    id: "js208",
+    group: "Объекты",
+    subgroup: "Собеседования: Hard",
+    title: "12. Установка значения по глубокому пути (set / Lodash _.set)",
+    desc: "Напишите функцию set(obj, path, value), устанавливающую свойство по пути с автосозданием массивов для числовых ключей и защитой от Prototype Pollution.",
+    isRaw: true,
+    candidate: JsObjects_SetByPathCandidateRaw,
+    rawCandidate: JsObjects_SetByPathCandidateRaw,
+    solution: JsObjects_SetByPathSolutionRaw,
+    rawSolution: JsObjects_SetByPathSolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/12_SetByPath.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Безопасная реализация",
+        recommendationNote: "Автоопределение типа контейнера (массив/объект) и блокировка Prototype Pollution.",
+        rawSolution: JsObjects_SetByPathSolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/12_SetByPath.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Lodash _.set documentation",
+        urlTitle: "Lodash Docs — _.set",
+        url: "https://lodash.com/docs/4.17.15#set",
+      },
+      {
+        title: "Prototype Pollution в JavaScript (MDN)",
+        urlTitle: "MDN — Prototype Pollution security",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/proto",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Что такое Prototype Pollution и как защитить функцию _.set?",
+        answer: "Это уязвимость, позволяющая через ключи '__proto__' или 'prototype' модифицировать базовый Object.prototype. Для защиты необходимо явно фильтровать ключи '__proto__', 'constructor', 'prototype'.",
+      },
+    ],
+    checklist: [
+      "Разбор пути в массив строковых сегментов",
+      "Создание массива при числовом следующем ключе и объекта при строковом",
+      "Защита от ключей '__proto__', 'constructor', 'prototype'",
+      "Установка значения и возврат модифицированного объекта",
+    ],
+  },
+
+  {
+    id: "js209",
+    group: "Объекты",
+    subgroup: "Собеседования: Hard",
+    title: "13. Преобразование вложенного объекта в плоский путь (flattenObject)",
+    desc: "Напишите функцию flattenObject(obj), преобразующую вложенный объект в плоский словарь с точечными путями ('a.b.c').",
+    isRaw: true,
+    candidate: JsObjects_FlattenCandidateRaw,
+    rawCandidate: JsObjects_FlattenCandidateRaw,
+    solution: JsObjects_FlattenSolutionRaw,
+    rawSolution: JsObjects_FlattenSolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/13_FlattenObject.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "DFS Рекурсия",
+        recommendationNote: "Рекурсивный обход в глубину с префиксом пути и сохранением пустых объектов.",
+        rawSolution: JsObjects_FlattenSolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/13_FlattenObject.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Flatten a nested object (BFE.dev)",
+        urlTitle: "BFE.dev — Flat object implementation",
+        url: "https://bigfrontend.dev/problem/flat-object",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Как корректно обрабатывать массивы и пустые объекты {} в flattenObject?",
+        answer: "Массивы уплощаются с числовыми индексами в пути ('roles.0', 'roles.1'). Пустые объекты {} и массивы [] сохраняются как листовые значения { flags: {} } без потери ключа.",
+      },
+    ],
+    checklist: [
+      "Аккумуляция префикса пути через точку",
+      "Рекурсивный обход для непустых объектов и массивов",
+      "Сохранение пустых объектов {} и массивов [] в качестве конечных значений",
+    ],
+  },
+
+  {
+    id: "js170",
+    group: "Объекты",
+    subgroup: "Собеседования: Hard",
+    title: "14. Глубокая заморозка объектов (deepFreeze)",
+    desc: "Реализуйте функцию deepFreeze(obj), замораживающую объект и все его вложенные свойства, делая структуру полностью иммутабельной.",
+    isRaw: true,
+    candidate: JsObjects_DeepFreezeCandidateRaw,
+    rawCandidate: JsObjects_DeepFreezeCandidateRaw,
+    solution: JsObjects_DeepFreezeSolutionRaw,
+    rawSolution: JsObjects_DeepFreezeSolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/16_DeepFreezeObject.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Рекурсивная иммутабельность",
+        recommendationNote: "Рекурсивный обход собственных свойств с предварительной заморозкой текущего объекта предотвращает циклические ссылки.",
+        rawSolution: JsObjects_DeepFreezeSolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/16_DeepFreezeObject.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Object.freeze() (MDN)",
+        urlTitle: "MDN — Метод Object.freeze()",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze",
+      },
+      {
+        title: "Иммутабельность в JavaScript (LearnJS)",
+        urlTitle: "Учебник JavaScript — Флаги и дескрипторы свойств",
+        url: "https://learn.javascript.ru/property-descriptors",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Является ли нативный Object.freeze() глубоким?",
+        answer: "Нет, Object.freeze() выполняет только поверхностную заморозку (shallow freeze). Свойства первого уровня становятся неизменяемыми, но вложенные объекты остаются мутабельными.",
+      },
+      {
+        question: "Как предотвратить зацикливание при циклических ссылках в deepFreeze?",
+        answer: "Сначала вызывается Object.freeze(obj) для текущего узла, а затем перед рекурсивным спуском к детям проверяется !Object.isFrozen(val). Замороженный родитель остановит повторный вход.",
+      },
+    ],
+    checklist: [
+      "Применение Object.freeze(obj) к текущему уровню",
+      "Рекурсивный вызов deepFreeze для не замороженных объектов и функций",
+      "Проверка на null и примитивы",
+      "Возврат замороженного объекта",
+    ],
+  },
+
+  {
+    id: "js210",
+    group: "Объекты",
+    subgroup: "Собеседования: Hard",
+    title: "15. Глубокое клонирование с циклическими ссылками (deepClone + WeakMap)",
+    desc: "Напишите функцию deepClone(value, visited = new WeakMap()), корректно клонирующую структуры данных с циклическими ссылками, Date и RegExp.",
+    isRaw: true,
+    candidate: JsObjects_DeepCloneCircularCandidateRaw,
+    rawCandidate: JsObjects_DeepCloneCircularCandidateRaw,
+    solution: JsObjects_DeepCloneCircularSolutionRaw,
+    rawSolution: JsObjects_DeepCloneCircularSolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/14_DeepCloneWithCircular.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Senior Алгоритм",
+        recommendationNote: "Использование WeakMap для мемоизации ссылок и защиты от переполнения стека.",
+        rawSolution: JsObjects_DeepCloneCircularSolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/14_DeepCloneWithCircular.js",
+      },
+    ],
+    articles: [
+      {
+        title: "structuredClone() (MDN)",
+        urlTitle: "MDN — Нативный метод structuredClone()",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/structuredClone",
+      },
+      {
+        title: "Глубокое клонирование (LearnJS)",
+        urlTitle: "Учебник JavaScript — structuredClone",
+        url: "https://learn.javascript.ru/object-copy#glubokoe-klonirovanie-structuredclone",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему для отслеживания циклических ссылок используется WeakMap, а не Map?",
+        answer: "WeakMap держит слабые ссылки на объекты-ключи, позволяя Garbage Collector освобождать память после завершения работы функции без утечек памяти.",
+      },
+      {
+        question: "В какой момент необходимо добавлять объект в visited: до или после рекурсивного клонирования дочерних полей?",
+        answer: "Строго ДО рекурсивного вызова. Иначе дочерний узел, ссылающийся на родителя, не найдет родителя в visited и вызовет бесконечный цикл.",
+      },
+    ],
+    checklist: [
+      "Клонирование Date и RegExp через их конструкторы",
+      "Проверка visited.has(value) и возврат сохраненной копии",
+      "visited.set(value, clone) ДО рекурсивного обхода свойств",
+      "Копирование строковых и Symbol-свойств",
+    ],
+  },
+
+  {
+    id: "js211",
+    group: "Объекты",
+    subgroup: "Собеседования: Hard",
+    title: "16. Глубокое слияние объектов (deepMerge)",
+    desc: "Напишите функцию deepMerge(target, ...sources), рекурсивно объединяющую вложенные объекты и массивы с защитой от Prototype Pollution.",
+    isRaw: true,
+    candidate: JsObjects_DeepMergeCandidateRaw,
+    rawCandidate: JsObjects_DeepMergeCandidateRaw,
+    solution: JsObjects_DeepMergeSolutionRaw,
+    rawSolution: JsObjects_DeepMergeSolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/15_DeepMerge.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Senior Слияние",
+        recommendationNote: "Рекурсивное объединение простых объектов, конкатенация массивов и фильтрация __proto__.",
+        rawSolution: JsObjects_DeepMergeSolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/15_DeepMerge.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Lodash _.merge documentation",
+        urlTitle: "Lodash Docs — _.merge",
+        url: "https://lodash.com/docs/4.17.15#merge",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "В чем главное отличие deepMerge от Object.assign?",
+        answer: "Object.assign выполняет поверхностное копирование и полностью затирает вложенные объекты. deepMerge рекурсивно проникает внутрь объектов, объединяя их свойства на всех уровнях.",
+      },
+    ],
+    checklist: [
+      "Проверка на простой объект isPlainObject (исключая Date, RegExp, массивы)",
+      "Рекурсивный merge для вложенных объектов",
+      "Объединение массивов [...targetArr, ...sourceArr]",
+      "Защита от загрязнения прототипа (__proto__, constructor, prototype)",
+    ],
+  },
+
+  {
+    id: "js216",
+    group: "Объекты",
+    subgroup: "Базовый синтаксис",
+    title: "17. Глубокая вложенная деструктуризация (Defaults, Rename, Rest)",
+    desc: "Реализуйте функцию extractAccountSummary для извлечения нормализованных данных из сложного API-пейлоада с вложенными дефолтами и алиасами.",
+    isRaw: true,
+    candidate: NestedDestructuringDefaultsCandidateRaw,
+    rawCandidate: NestedDestructuringDefaultsCandidateRaw,
+    solution: NestedDestructuringDefaultsSolutionRaw,
+    rawSolution: NestedDestructuringDefaultsSolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/17_NestedDestructuringDefaults.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Синтаксис ES6+",
+        recommendationNote: "Использование = {} на промежуточных уровнях деструктуризации гарантирует защиту от TypeError при отсутствии родительских ключей.",
+        rawSolution: NestedDestructuringDefaultsSolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/17_NestedDestructuringDefaults.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Деструктурирующее присваивание (MDN)",
+        urlTitle: "MDN — Деструктуризация",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Как защитить вложенную деструктуризацию user: { address: { city } } от ошибки, если user === undefined?",
+        answer: "Указать значения по умолчанию на каждом уровне: const { user: { address: { city = 'default' } = {} } = {} } = data || {};",
+      },
+    ],
+    checklist: [
+      "Алиас id: accountId с дефолтом 'anonymous'",
+      "Деструктуризация первого элемента emails: [primaryEmail = 'no-email']",
+      "Сбор остатка через ...meta",
+    ],
+  },
+
+  {
+    id: "js217",
+    group: "Объекты",
+    subgroup: "Копирование и трансформация",
+    title: "18. Поиск скрытой мутации после Shallow Copy (Code Review)",
+    desc: "Исправьте ошибку скрытой мутации вложенного объекта товара в корзине заказов с сохранением structural sharing.",
+    isRaw: true,
+    candidate: FindShallowMutationBugCandidateRaw,
+    rawCandidate: FindShallowMutationBugCandidateRaw,
+    solution: FindShallowMutationBugSolutionRaw,
+    rawSolution: FindShallowMutationBugSolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/18_FindShallowMutationBug.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Иммутабельность",
+        recommendationNote: "Поверхностный spread копирует вложенные объекты по ссылке; для чистого обновления массива объектов используется .map().",
+        rawSolution: FindShallowMutationBugSolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/18_FindShallowMutationBug.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Иммутабельные обновления в React/Redux (Redux Docs)",
+        urlTitle: "Redux Docs — Immutable Update Patterns",
+        url: "https://redux.js.org/usage/structuring-reducers/immutable-update-patterns",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему {...state, items: [...state.items]} не защищает от мутации state.items[0].qty = 5?",
+        answer: "Потому что spread копирует только ссылки первого уровня. Объекты внутри нового массива items указывают на те же участки памяти, что и в исходном state.",
+      },
+    ],
+    checklist: [
+      "Использование items.map() для создания копии только измененного элемента",
+      "Сохранение исходных ссылок для неизмененных товаров (structural sharing)",
+      "Отсутствие мутаций оригинального order",
+    ],
+  },
+
+  {
+    id: "js222",
+    group: "Объекты",
+    subgroup: "Дескрипторы и свойства",
+    title: "19. Настройка дескрипторов свойств (writable, enumerable, configurable)",
+    desc: "Создайте защищенный объект через Object.defineProperty с закрытыми токенами, неизменяемым id и валидируемым геттером/сеттером role.",
+    isRaw: true,
+    candidate: PropertyDescriptorsCandidateRaw,
+    rawCandidate: PropertyDescriptorsCandidateRaw,
+    solution: PropertyDescriptorsSolutionRaw,
+    rawSolution: PropertyDescriptorsSolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/19_PropertyDescriptors.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Object Internals",
+        recommendationNote: "Object.defineProperty позволяет тонко управлять флагами writable, enumerable, configurable и аксессорами get/set.",
+        rawSolution: PropertyDescriptorsSolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/19_PropertyDescriptors.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Флаги и дескрипторы свойств (LearnJS)",
+        urlTitle: "Учебник JavaScript — Флаги и дескрипторы свойств",
+        url: "https://learn.javascript.ru/property-descriptors",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "В чем разница между writable: false и configurable: false?",
+        answer: "writable: false запрещает изменять значение свойства. configurable: false запрещает удалять свойство (delete) и переопределять его дескриптор.",
+      },
+    ],
+    checklist: [
+      "Свойство id с writable: false, configurable: false, enumerable: true",
+      "Свойство secretToken с enumerable: false",
+      "Свойство role с аксессорами get/set и валидацией ролей",
+    ],
+  },
+
+  {
+    id: "js223",
+    group: "Объекты",
+    subgroup: "Дескрипторы и свойства",
+    title: "20. Интроспекция свойств: Object.keys vs Reflect.ownKeys",
+    desc: "Реализуйте функцию классификации всех типов свойств объекта: enumerable, non-enumerable, Symbol и наследуемых из прототипа.",
+    isRaw: true,
+    candidate: ObjectKeysVsReflectOwnKeysCandidateRaw,
+    rawCandidate: ObjectKeysVsReflectOwnKeysCandidateRaw,
+    solution: ObjectKeysVsReflectOwnKeysSolutionRaw,
+    rawSolution: ObjectKeysVsReflectOwnKeysSolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/20_ObjectKeysVsReflectOwnKeys.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Метапрограммирование",
+        recommendationNote: "Reflect.ownKeys возвращает все собственные строковые и Symbol-ключи независимо от флага enumerable.",
+        rawSolution: ObjectKeysVsReflectOwnKeysSolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/20_ObjectKeysVsReflectOwnKeys.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Reflect.ownKeys (MDN)",
+        urlTitle: "MDN — Reflect.ownKeys()",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Reflect/ownKeys",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Как получить массив всех ключей объекта, включая non-enumerable и Symbol, но исключая прототип?",
+        answer: "С помощью Reflect.ownKeys(obj), который объединяет Object.getOwnPropertyNames(obj) и Object.getOwnPropertySymbols(obj).",
+      },
+    ],
+    checklist: [
+      "Получение Object.keys(obj)",
+      "Получение Object.getOwnPropertyNames(obj)",
+      "Получение Object.getOwnPropertySymbols(obj)",
+      "Получение Reflect.ownKeys(obj)",
+    ],
+  },
+
+  {
+    id: "js224",
+    group: "Объекты",
+    subgroup: "Метапрограммирование",
+    title: "21. Метапрограммирование: Symbol.toPrimitive",
+    desc: "Реализуйте класс CurrencyAmount с методом [Symbol.toPrimitive](hint) для управления приведением объекта к числу и строке.",
+    isRaw: true,
+    candidate: SymbolToPrimitiveCoercionCandidateRaw,
+    rawCandidate: SymbolToPrimitiveCoercionCandidateRaw,
+    solution: SymbolToPrimitiveCoercionSolutionRaw,
+    rawSolution: SymbolToPrimitiveCoercionSolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/21_SymbolToPrimitiveCoercion.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Symbol & Coercion",
+        recommendationNote: "Метод [Symbol.toPrimitive](hint) переопределяет стандартное поведение приведения к примитиву и имеет высший приоритет над valueOf и toString.",
+        rawSolution: SymbolToPrimitiveCoercionSolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/21_SymbolToPrimitiveCoercion.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Преобразование объектов в примитивы (LearnJS)",
+        urlTitle: "Учебник JavaScript — Symbol.toPrimitive",
+        url: "https://learn.javascript.ru/object-toprimitive",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Какие три значения может принимать аргумент hint в [Symbol.toPrimitive]?",
+        answer: "Аргумент hint может принимать значения 'string', 'number' и 'default'.",
+      },
+    ],
+    checklist: [
+      "Обработка hint === 'string' (возврат `${amount} ${currency}`)",
+      "Обработка hint === 'number' и 'default' (возврат amount)",
+    ],
+  },
+
+  {
+    id: "js225",
+    group: "Объекты",
+    subgroup: "Метапрограммирование",
+    title: "22. Proxy-валидатор с ловушками get и set",
+    desc: "Создайте защитную обертку Proxy для валидации схемы объекта, выбрасывающую ReferenceError при чтении неизвестных свойств и TypeError при невалидной записи.",
+    isRaw: true,
+    candidate: ProxyValidatorGetSetCandidateRaw,
+    rawCandidate: ProxyValidatorGetSetCandidateRaw,
+    solution: ProxyValidatorGetSetSolutionRaw,
+    rawSolution: ProxyValidatorGetSetSolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/22_ProxyValidatorGetSet.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Proxy & Reflect",
+        recommendationNote: "Ловушки Proxy get и set в сочетании с Reflect обеспечивают строгий контроль доступа и валидацию контракта схемы данных.",
+        rawSolution: ProxyValidatorGetSetSolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/22_ProxyValidatorGetSet.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Proxy и Reflect (LearnJS)",
+        urlTitle: "Учебник JavaScript — Proxy и Reflect",
+        url: "https://learn.javascript.ru/proxy",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Зачем использовать Reflect.get / Reflect.set внутри ловушек Proxy вместо прямого обращения target[prop]?",
+        answer: "Методы Reflect гарантируют корректную передачу receiver (контекста this для геттеров/сеттеров) и возвращают стандартные boolean-результаты.",
+      },
+    ],
+    checklist: [
+      "Ловушка get с проверкой prop in obj и выбросом ReferenceError",
+      "Ловушка set с проверкой schema[prop](value) и выбросом TypeError",
+      "Использование Reflect.get и Reflect.set",
+    ],
+  },
+
+  {
+    id: "js228",
+    group: "Объекты",
+    subgroup: "Безопасность и прототипы",
+    title: "23. Object.create(null) и защита от Prototype Pollution",
+    desc: "Реализуйте чистый словарь без прототипа и функцию безопасного рекурсивного слияния объектов с фильтрацией опасных ключей (__proto__, constructor).",
+    isRaw: true,
+    candidate: ObjectCreateNullAndPollutionCandidateRaw,
+    rawCandidate: ObjectCreateNullAndPollutionCandidateRaw,
+    solution: ObjectCreateNullAndPollutionSolutionRaw,
+    rawSolution: ObjectCreateNullAndPollutionSolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/23_ObjectCreateNullAndPollution.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Frontend Security",
+        recommendationNote: "Блокировка ключей __proto__, constructor и prototype при слиянии защищает глобальный Object.prototype от внедрения вредоносных свойств.",
+        rawSolution: ObjectCreateNullAndPollutionSolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/23_ObjectCreateNullAndPollution.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Prototype Pollution in JavaScript (MDN / Web Security)",
+        urlTitle: "MDN — Object.create(null)",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/create",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "В чем опасность отсутствия фильтрации ключа '__proto__' при глубоком слиянии JSON?",
+        answer: "Злоумышленник может перезаписать свойства глобального Object.prototype (например, isAdmin = true), изменив поведение всех объектов в приложении.",
+      },
+    ],
+    checklist: [
+      "Функция createCleanDictionary() через Object.create(null)",
+      "Блокировка ключей '__proto__', 'constructor', 'prototype'",
+      "Рекурсивное безопасное слияние safeDeepAssign",
+    ],
+  },
+  {
+    id: "js246",
+    group: "Объекты",
+    subgroup: "Копирование и трансформация",
+    title: "24. Неизменяемый diff и patch объектов",
+    desc: "Вычислите структурную разницу между объектами (added, updated, deleted) и примените её без мутации оригинала.",
+    isRaw: true,
+    candidate: ObjectDiffPatchCandidateRaw,
+    rawCandidate: ObjectDiffPatchCandidateRaw,
+    solution: ObjectDiffPatchSolutionRaw,
+    rawSolution: ObjectDiffPatchSolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/24_ObjectDiffPatch.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "State Management",
+        recommendationNote: "Формирует компактный объект дельты и создает новый объект при наложении патча.",
+        rawSolution: ObjectDiffPatchSolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/24_ObjectDiffPatch.js",
+      },
+    ],
+    articles: [
+      {
+        title: "JSON Patch (RFC 6902)",
+        urlTitle: "RFC 6902 — JavaScript Object Notation (JSON) Patch",
+        url: "https://datatracker.ietf.org/doc/html/rfc6902",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Для чего diff/patch используется при синхронизации через WebSockets?",
+        answer: "Для экономии трафика: вместо передачи всего состояния сервер отправляет только изменившиеся поля.",
+      },
+    ],
+    checklist: [
+      "Разделение на added, updated, deleted",
+      "Иммутабельное применение патча",
+      "Сохранение неизменных ссылок",
+    ],
+  },
+
+  {
+    id: "js247",
+    group: "Объекты",
+    subgroup: "Собеседования: Hard",
+    title: "25. Безопасные safeGet и safeSet по пути объекта",
+    desc: "Реализуйте доступ и запись по глубоким путям с автоматическим созданием структур и защитой от Prototype Pollution.",
+    isRaw: true,
+    candidate: SafeGetSetByPathCandidateRaw,
+    rawCandidate: SafeGetSetByPathCandidateRaw,
+    solution: SafeGetSetByPathSolutionRaw,
+    rawSolution: SafeGetSetByPathSolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/25_SafeGetSetByPath.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Безопасность и Архитектура",
+        recommendationNote: "Блокирует __proto__, prototype и constructor, защищая приложение от Prototype Pollution.",
+        rawSolution: SafeGetSetByPathSolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/25_SafeGetSetByPath.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Lodash get / set",
+        urlTitle: "Lodash Documentation — set",
+        url: "https://lodash.com/docs/4.17.15#set",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Как злоумышленник может использовать safeSet без защиты от Prototype Pollution?",
+        answer: "Передав путь '__proto__.isAdmin', он запишет свойство в глобальный Object.prototype, скомпрометировав все объекты в приложении.",
+      },
+    ],
+    checklist: [
+      "Парсинг путей a.b[0].c",
+      "Защита от __proto__, prototype, constructor",
+      "Автосоздание массивов при числовых индексах",
+    ],
+  },
+
+  {
+    id: "js248",
+    group: "Объекты",
+    subgroup: "Копирование и трансформация",
+    title: "26. Рекурсивное преобразование ключей camelCase / snake_case",
+    desc: "Рекурсивно нормализуйте все ключи объектов и массивов между camelCase и snake_case с сохранением Date и RegExp.",
+    isRaw: true,
+    candidate: CamelCaseSnakeCaseKeysCandidateRaw,
+    rawCandidate: CamelCaseSnakeCaseKeysCandidateRaw,
+    solution: CamelCaseSnakeCaseKeysSolutionRaw,
+    rawSolution: CamelCaseSnakeCaseKeysSolutionRaw,
+    filepath: "src/javascript/tasks/25_objects/26_CamelCaseSnakeCaseKeys.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "API Data Transformation",
+        recommendationNote: "Проверяет plain object, чтобы не повреждать экземпляры Date, RegExp и Map.",
+        rawSolution: CamelCaseSnakeCaseKeysSolutionRaw,
+        filepath: "src/javascript/solutions/25_objects/26_CamelCaseSnakeCaseKeys.js",
+      },
+    ],
+    articles: [
+      {
+        title: "CamelCase vs Snake_case",
+        urlTitle: "MDN Web Docs — JavaScript naming conventions",
+        url: "https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Writing_style_guide#naming_conventions",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему наивная рекурсивная функция ломает объекты Date при обходе?",
+        answer: "Потому что typeof new Date() === 'object'. Если не отфильтровать plain objects, дата превратится в пустой объект {}.",
+      },
+    ],
+    checklist: [
+      "Проверка isPlainObject",
+      "Рекурсивный обход массивов и объектов",
+      "Корректные регулярные выражения конвертации регистра",
     ],
   },
 ];
@@ -2195,6 +3617,7 @@ export const JS_ARRAYS_INCLUDES_TASKS = [
       "Возвращается булево значение (true/false)",
     ],
   },
+
   {
     id: "js15",
     group: "Массивы",
@@ -2235,6 +3658,7 @@ export const JS_ARRAYS_INCLUDES_TASKS = [
       "Поиск числового элемента 7 стартует с индекса 3",
     ],
   },
+
   {
     id: "js16",
     group: "Массивы",
@@ -2275,6 +3699,7 @@ export const JS_ARRAYS_INCLUDES_TASKS = [
       "Возвращается значение true/false",
     ],
   },
+
   {
     id: "js17",
     group: "Массивы",
@@ -2315,6 +3740,7 @@ export const JS_ARRAYS_INCLUDES_TASKS = [
       "Различать типы данных number и string",
     ],
   },
+
   {
     id: "js18",
     group: "Массивы",
@@ -2354,7 +3780,7 @@ export const JS_ARRAYS_INCLUDES_TASKS = [
       "Понимать, что вызов функции без аргументов передает valueToFind = undefined",
       "Знать, что [undefined].includes(undefined) вычисляется в true",
     ],
-  },
+  }
 ];
 
 export const JS_ARRAYS_FIND_TASKS = [
@@ -2421,6 +3847,7 @@ export const JS_ARRAYS_FIND_TASKS = [
       "Возвращается первое совпавшее значение или undefined",
     ],
   },
+
   {
     id: "js20",
     group: "Массивы",
@@ -2461,6 +3888,7 @@ export const JS_ARRAYS_FIND_TASKS = [
       "Возвращается найденное строковое значение",
     ],
   },
+
   {
     id: "js21",
     group: "Массивы",
@@ -2501,6 +3929,7 @@ export const JS_ARRAYS_FIND_TASKS = [
       "Функция возвращает отрицательное число или undefined",
     ],
   },
+
   {
     id: "js22",
     group: "Массивы",
@@ -2559,6 +3988,7 @@ export const JS_ARRAYS_FIND_TASKS = [
       "Сравнение пользовательского имени (user.name === name)",
     ],
   },
+
   {
     id: "js23",
     group: "Массивы",
@@ -2597,7 +4027,7 @@ export const JS_ARRAYS_FIND_TASKS = [
     checklist: [
       "Понимать, что отсутствие совпадений в find() всегда приводит к значению undefined",
     ],
-  },
+  }
 ];
 
 export const JS_ARRAYS_FILTER_TASKS = [
@@ -2664,6 +4094,7 @@ export const JS_ARRAYS_FILTER_TASKS = [
       "Возвращается новый отфильтрованный массив",
     ],
   },
+
   {
     id: "js25",
     group: "Массивы",
@@ -2704,6 +4135,7 @@ export const JS_ARRAYS_FILTER_TASKS = [
       "Фильтрация выполняется без изменения исходного массива",
     ],
   },
+
   {
     id: "js26",
     group: "Массивы",
@@ -2748,6 +4180,7 @@ export const JS_ARRAYS_FILTER_TASKS = [
       "Все 8 falsy значений отфильтрованы из итогового массива",
     ],
   },
+
   {
     id: "js27",
     group: "Массивы",
@@ -2806,6 +4239,7 @@ export const JS_ARRAYS_FILTER_TASKS = [
       "Условие user.age >= minAge выполняется корректно",
     ],
   },
+
   {
     id: "js28",
     group: "Массивы",
@@ -2845,6 +4279,7 @@ export const JS_ARRAYS_FILTER_TASKS = [
       "Фильтрация выполняется по логическому полю user.active",
     ],
   },
+
   {
     id: "js29",
     group: "Массивы",
@@ -2885,6 +4320,7 @@ export const JS_ARRAYS_FILTER_TASKS = [
       "Проверка наличия символа в каждой строке",
     ],
   },
+
   {
     id: "js30",
     group: "Массивы",
@@ -2943,6 +4379,7 @@ export const JS_ARRAYS_FILTER_TASKS = [
       "Включаются граничные значения min и max",
     ],
   },
+
   {
     id: "js31",
     group: "Массивы",
@@ -2982,6 +4419,7 @@ export const JS_ARRAYS_FILTER_TASKS = [
       "Фильтрация элементов по точной строке person.profession === profession",
     ],
   },
+
   {
     id: "js32",
     group: "Массивы",
@@ -3021,6 +4459,7 @@ export const JS_ARRAYS_FILTER_TASKS = [
       "Проверка частичного вхождения подстроки emp.position.includes(position)",
     ],
   },
+
   {
     id: "js33",
     group: "Массивы",
@@ -3078,6 +4517,7 @@ export const JS_ARRAYS_FILTER_TASKS = [
       "Использование метода statuses.includes(app.status) в предикате filter",
     ],
   },
+
   {
     id: "js34",
     group: "Массивы",
@@ -3183,6 +4623,7 @@ export const JS_ARRAYS_MAP_TASKS = [
       "Возвращается новый трансформированный массив одинаковой длины",
     ],
   },
+
   {
     id: "js36",
     group: "Массивы",
@@ -3223,6 +4664,7 @@ export const JS_ARRAYS_MAP_TASKS = [
       "Возвращается массив соответственной длины",
     ],
   },
+
   {
     id: "js37",
     group: "Массивы",
@@ -3262,6 +4704,7 @@ export const JS_ARRAYS_MAP_TASKS = [
       "Применение метода str.toUpperCase() внутри map",
     ],
   },
+
   {
     id: "js38",
     group: "Массивы",
@@ -3320,6 +4763,7 @@ export const JS_ARRAYS_MAP_TASKS = [
       "Возвращается массив строк имён",
     ],
   },
+
   {
     id: "js39",
     group: "Массивы",
@@ -3359,6 +4803,7 @@ export const JS_ARRAYS_MAP_TASKS = [
       "Использование интерполяции строк `${user.firstName} ${user.lastName}`",
     ],
   },
+
   {
     id: "js41",
     group: "Массивы",
@@ -3416,6 +4861,7 @@ export const JS_ARRAYS_MAP_TASKS = [
       "Доступ к первому символу через word[0] или word.charAt(0)",
     ],
   },
+
   {
     id: "js42",
     group: "Массивы",
@@ -3455,6 +4901,7 @@ export const JS_ARRAYS_MAP_TASKS = [
       "Предикат проверки четности num % 2 === 0 внутри map",
     ],
   },
+
   {
     id: "js43",
     group: "Массивы",
@@ -3560,6 +5007,7 @@ export const JS_ARRAYS_SORT_TASKS = [
       "Массив отсортирован по возрастанию",
     ],
   },
+
   {
     id: "js45",
     group: "Массивы",
@@ -3618,6 +5066,7 @@ export const JS_ARRAYS_SORT_TASKS = [
       "Строки отсортированы по алфавиту",
     ],
   },
+
   {
     id: "js46",
     group: "Массивы",
@@ -3657,6 +5106,7 @@ export const JS_ARRAYS_SORT_TASKS = [
       "Комбинация вызовов arr.sort().reverse()",
     ],
   },
+
   {
     id: "js47",
     group: "Массивы",
@@ -3714,6 +5164,7 @@ export const JS_ARRAYS_SORT_TASKS = [
       "Сравнение числовых полей объектов через компаратор (a, b) => a.age - b.age",
     ],
   },
+
   {
     id: "js48",
     group: "Массивы",
@@ -3753,6 +5204,7 @@ export const JS_ARRAYS_SORT_TASKS = [
       "Сравнение длины строк через компаратор (a, b) => a.length - b.length",
     ],
   },
+
   {
     id: "js49",
     group: "Массивы",
@@ -3794,6 +5246,7 @@ export const JS_ARRAYS_SORT_TASKS = [
       "Объединение через spread [...evens, ...odds]",
     ],
   },
+
   {
     id: "js50",
     group: "Массивы",
@@ -3832,7 +5285,7 @@ export const JS_ARRAYS_SORT_TASKS = [
     checklist: [
       "Понимать, что вызов sort() без компаратора приводит все значения к строкам и сравнивает по кодам Unicode",
     ],
-  },
+  }
 ];
 
 export const JS_ARRAYS_REDUCE_TASKS = [
@@ -3881,6 +5334,7 @@ export const JS_ARRAYS_REDUCE_TASKS = [
       "Указано начальное значение аккумулятора",
     ],
   },
+
   {
     id: "js52",
     group: "Массивы",
@@ -3921,6 +5375,7 @@ export const JS_ARRAYS_REDUCE_TASKS = [
       "Корректная обработка пустого массива",
     ],
   },
+
   {
     id: "js53",
     group: "Массивы",
@@ -3961,6 +5416,7 @@ export const JS_ARRAYS_REDUCE_TASKS = [
       "Прибавление свойства prod.price к аккумулятору",
     ],
   },
+
   {
     id: "js54",
     group: "Массивы",
@@ -4001,6 +5457,7 @@ export const JS_ARRAYS_REDUCE_TASKS = [
       "Возврат аккумулятора в конце итерации",
     ],
   },
+
   {
     id: "js55",
     group: "Массивы",
@@ -4059,6 +5516,7 @@ export const JS_ARRAYS_REDUCE_TASKS = [
       "Подсчет вхождений через (acc[el] || 0) + 1",
     ],
   },
+
   {
     id: "js56",
     group: "Массивы",
@@ -4098,6 +5556,7 @@ export const JS_ARRAYS_REDUCE_TASKS = [
       "Умножение price * quantity внутри аккумулирующего выражения",
     ],
   },
+
   {
     id: "js57",
     group: "Массивы",
@@ -4156,6 +5615,7 @@ export const JS_ARRAYS_REDUCE_TASKS = [
       "За один проход вычисляются и min, и max",
     ],
   },
+
   {
     id: "js58",
     group: "Массивы",
@@ -4221,6 +5681,7 @@ export const JS_ARRAYS_REDUCE_TASKS = [
       "Возвращается плоский одномерный массив",
     ],
   },
+
   {
     id: "js59",
     group: "Массивы",
@@ -4279,6 +5740,7 @@ export const JS_ARRAYS_REDUCE_TASKS = [
       "Автоматическая инициализация массива под каждый новый ключ (acc[groupKey] ??= [])",
     ],
   },
+
   {
     id: "js60",
     group: "Массивы",
@@ -4319,126 +5781,12 @@ export const JS_ARRAYS_REDUCE_TASKS = [
       "Слова внутри каждой группы отсортированы по алфавиту",
     ],
   },
-  {
-    id: "js61",
-    group: "Массивы",
-    subgroup: "reduce",
-    title: "11. Уникальные значения",
-    desc: "Напишите функцию unique(arr), которая возвращает массив только уникальных элементов, сохраняя порядок первого вхождения.",
-    isRaw: true,
-    candidate: UniqueValuesCandidateRaw,
-    rawCandidate: UniqueValuesCandidateRaw,
-    solution: UniqueValuesSetSolutionRaw,
-    rawSolution: UniqueValuesSetSolutionRaw,
-    filepath: "src/javascript/tasks/8_arrays_reduce/11_UniqueValues.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Идиоматичный подход",
-        recommendationNote: "Метод reduce() является функциональным стандартом для свертки и агрегации данных в JavaScript без мутации исходного массива.",
-        rawSolution: UniqueValuesSetSolutionRaw,
-        filepath: "src/javascript/tasks/8_arrays_reduce/11_UniqueValues.js",
-      },
-    ],
-    solutions: [
-      {
-        title: "Вариант 1: Через Set и spread (Современный метод)",
-        isRecommended: true,
-        badge: "Идиоматичное решение",
-        recommendationNote: "Конструкция [...new Set(arr)] удаляет дубликаты за O(N) по времени и является отраслевым стандартом.",
-        rawSolution: UniqueValuesSetSolutionRaw,
-        filepath: "src/javascript/solutions/8_arrays_reduce/11_UniqueValues_Set.js",
-      },
-      {
-        title: "Вариант 2: Через reduce() и includes()",
-        isRecommended: false,
-        badge: "Решение в рамках темы (reduce)",
-        recommendationNote: "Классический вариант свёртки, но линейный поиск includes() делает временную сложность O(N²).",
-        rawSolution: UniqueValuesReduceSolutionRaw,
-        filepath: "src/javascript/solutions/8_arrays_reduce/11_UniqueValues_Reduce.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Коллекция Set в JS (Doka.guide)",
-        urlTitle: "Дока — Объект Set",
-        url: "https://doka.guide/js/set/",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "В чем разница во временной сложности между Set и reduce + includes?",
-        answer: "Set проверяет наличие элемента за O(1), давая общую сложность O(N). reduce + includes делает O(N) проверок длиной O(N), давая O(N²).",
-      },
-    ],
-    checklist: [
-      "Возвращается массив без дубликатов",
-      "Сохраняется исходный порядок первых вхождений",
-    ],
-  },
-  {
-    id: "js62",
-    group: "Массивы",
-    subgroup: "reduce",
-    title: "12. Индексирование (эмуляция Map через reduce)",
-    desc: "Преобразуйте массив объектов в объект-хэшмапу, где ключом выступает id элемента, а значением — сам объект.",
-    isRaw: true,
-    candidate: CustomMapIndexCandidateRaw,
-    rawCandidate: CustomMapIndexCandidateRaw,
-    solution: CustomMapIndexSolutionRaw,
-    rawSolution: CustomMapIndexSolutionRaw,
-    filepath: "src/javascript/tasks/8_arrays_reduce/12_CustomMapIndex.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Идиоматичный подход",
-        recommendationNote: "Метод reduce() является функциональным стандартом для свертки и агрегации данных в JavaScript без мутации исходного массива.",
-        rawSolution: CustomMapIndexSolutionRaw,
-        filepath: "src/javascript/tasks/8_arrays_reduce/12_CustomMapIndex.js",
-      },
-    ],
-    solutions: [
-      {
-        title: "Вариант 1: Через reduce",
-        isRecommended: false,
-        badge: "Решение через редюсер",
-        recommendationNote: "Классическое построение объекта по id.",
-        rawSolution: CustomMapIndexSolutionRaw,
-        filepath: "src/javascript/solutions/8_arrays_reduce/12_CustomMapIndex.js",
-      },
-      {
-        title: "Вариант 2: Декларативный Object.fromEntries() + map()",
-        isRecommended: true,
-        badge: "Предпочтительно на собеседовании",
-        recommendationNote: "Сочетание Object.fromEntries() и map() — сжатый декларативный способ трансформации структуры данных.",
-        rawSolution: CustomMapIndexFromEntriesSolutionRaw,
-        filepath: "src/javascript/solutions/8_arrays_reduce/12_CustomMapIndex_FromEntries.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Индексация данных по ключу (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Поиск по ключу в объекте",
-        url: "https://learn.javascript.ru/object",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Зачем индексировать массив объектов по id во фронтенде?",
-        answer: "Индексация позволяет мгновенно получать объект по id за O(1) вместо повторных O(N) поисков через find() в компонентах.",
-      },
-    ],
-    checklist: [
-      "Присвоение acc[id] = { id, name }",
-    ],
-  },
+
   {
     id: "js63",
     group: "Массивы",
     subgroup: "reduce",
-    title: "13. Среднее арифметическое (Агрегация)",
+    title: "11. Среднее арифметическое (Агрегация)",
     desc: "Вычислите среднее арифметическое числового массива строго внутри метода reduce(), не используя свойства внешней длины вне редюсера.",
     isRaw: true,
     candidate: AverageValueCandidateRaw,
@@ -4474,11 +5822,12 @@ export const JS_ARRAYS_REDUCE_TASKS = [
       "Возвращается среднее значение (4.5)",
     ],
   },
+
   {
     id: "js64",
     group: "Массивы",
     subgroup: "reduce",
-    title: "14. Создать объект",
+    title: "12. Создать объект",
     desc: "Напишите функцию coursesToObject(arr), которая преобразует массив курсов в объект { [course]: price }.",
     isRaw: true,
     candidate: CoursesToObjectCandidateRaw,
@@ -4531,11 +5880,12 @@ export const JS_ARRAYS_REDUCE_TASKS = [
       "Динамическое присвоение свойства acc[course] = price",
     ],
   },
+
   {
     id: "js65",
     group: "Массивы",
     subgroup: "reduce",
-    title: "15. Merge объектов с суммированием значений (Сложный)",
+    title: "13. Merge объектов с суммированием значений (Сложный)",
     desc: "Объедините массив транзакций в один объект, суммируя суммы amount по уникальным категориям category.",
     isRaw: true,
     candidate: SumByCategoryCandidateRaw,
@@ -4588,11 +5938,12 @@ export const JS_ARRAYS_REDUCE_TASKS = [
       "Накопление суммы по категориям в объекте",
     ],
   },
+
   {
     id: "js66",
     group: "Массивы",
     subgroup: "reduce",
-    title: "16. Группировка названий продуктов по категории",
+    title: "14. Группировка названий продуктов по категории",
     desc: "Напишите функцию groupProductsByCategory(products), которая группирует названия продуктов по их категории.",
     isRaw: true,
     candidate: GroupProductsByCategoryCandidateRaw,
@@ -4645,11 +5996,12 @@ export const JS_ARRAYS_REDUCE_TASKS = [
       "Универсальная группировка по любому передаваемому свойству",
     ],
   },
+
   {
     id: "js67",
     group: "Массивы",
     subgroup: "reduce",
-    title: "17. Группировка по country и id (Company X)",
+    title: "15. Группировка по country и id (Company X)",
     desc: "Сгруппируйте массив пользователей в двухуровневый объект: по странам на 1 уровне и по id пользователей на 2 уровне.",
     isRaw: true,
     candidate: GroupCountriesCandidateRaw,
@@ -4669,9 +6021,9 @@ export const JS_ARRAYS_REDUCE_TASKS = [
     ],
     articles: [
       {
-        title: "Задачи на собеседованиях Company X (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Многоуровневые объекты",
-        url: "https://learn.javascript.ru/object",
+        title: "Индексация массива объектов по id (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Создайте объект с ключами из массива",
+        url: "https://learn.javascript.ru/array-methods#sozdayte-obekt-s-klyuchami-iz-massiva",
       },
     ],
     interviewerQuestions: [
@@ -4685,11 +6037,12 @@ export const JS_ARRAYS_REDUCE_TASKS = [
       "Запись данных пользователя по ключу id (acc[country][id] = ...)",
     ],
   },
+
   {
     id: "js68",
     group: "Массивы",
     subgroup: "reduce",
-    title: "18. Что вернёт этот код ?",
+    title: "16. Что вернёт этот код ?",
     desc: "Объясните, как ведет себя метод reduce(), если ему не передать второе значение (initialValue).",
     isRaw: true,
     candidate: NoInitialValueCandidateRaw,
@@ -4726,11 +6079,2866 @@ export const JS_ARRAYS_REDUCE_TASKS = [
   },
 ];
 
-export const JS_TIMERS_SETTIMEOUT_TASKS = [
+export const JS_ARRAYS_POLYFILLS_TASKS = [
+  {
+    id: "js232",
+    group: "Массивы",
+    subgroup: "Полифилы массивов",
+    title: "1. Реализация полифила Array.prototype.map",
+    desc: "Реализуйте функцию customMap(array, callback, thisArg) с поддержкой sparse arrays и сохранением пропусков.",
+    isRaw: true,
+    candidate: PolyfillArrayMapCandidateRaw,
+    rawCandidate: PolyfillArrayMapCandidateRaw,
+    solution: PolyfillArrayMapSolutionRaw,
+    rawSolution: PolyfillArrayMapSolutionRaw,
+    filepath: "src/javascript/tasks/6_arrays_map/9_PolyfillArrayMap.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Полифилы",
+        recommendationNote: "Использует проверку i in obj для корректной обработки разреженных массивов.",
+        rawSolution: PolyfillArrayMapSolutionRaw,
+        filepath: "src/javascript/solutions/6_arrays_map/9_PolyfillArrayMap.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Array.prototype.map (MDN)",
+        urlTitle: "MDN Web Docs — Array.prototype.map",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Array/map",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Как нативный map ведет себя на разреженном массиве [1, , 3]?",
+        answer: "Нативный map не вызывает callback для пустых слотов и возвращает новый массив с сохраненной дырой (<empty>).",
+      },
+    ],
+    checklist: [
+      "Проверка typeof callback === 'function'",
+      "Проверка i in obj для пропуска дыр",
+      "Привязка thisArg через callback.call",
+    ],
+  },
+  {
+    id: "js233",
+    group: "Массивы",
+    subgroup: "Полифилы массивов",
+    title: "2. Реализация полифила Array.prototype.filter",
+    desc: "Реализуйте функцию customFilter(array, callback, thisArg) с корректной обработкой sparse arrays и приведением к булеву типу.",
+    isRaw: true,
+    candidate: PolyfillArrayFilterCandidateRaw,
+    rawCandidate: PolyfillArrayFilterCandidateRaw,
+    solution: PolyfillArrayFilterSolutionRaw,
+    rawSolution: PolyfillArrayFilterSolutionRaw,
+    filepath: "src/javascript/tasks/5_arrays_filter/12_PolyfillArrayFilter.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Полифилы",
+        recommendationNote: "Фильтрует элементы без мутации оригинального массива.",
+        rawSolution: PolyfillArrayFilterSolutionRaw,
+        filepath: "src/javascript/solutions/5_arrays_filter/12_PolyfillArrayFilter.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Array.prototype.filter (MDN)",
+        urlTitle: "MDN Web Docs — Array.prototype.filter",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Array/filter",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "В чем разница между удаленным элементом и элементом со значением undefined при фильтрации?",
+        answer: "Удаленный/пустой слот в sparse array не имеет индекса ('i in arr' ложно) и пропускается. Слот со значением undefined существует ('i in arr' истинно) и передается в callback.",
+      },
+    ],
+    checklist: [
+      "Проверка валидности массива и функции",
+      "Пропуск пустых слотов",
+      "Boolean приведение результата предиката",
+    ],
+  },
+  {
+    id: "js234",
+    group: "Массивы",
+    subgroup: "Полифилы массивов",
+    title: "3. Реализация полифила Array.prototype.reduce",
+    desc: "Реализуйте полифил reduce с поддержкой непереданного initialValue, поиском первого элемента и выбросом TypeError на пустом массиве.",
+    isRaw: true,
+    candidate: PolyfillArrayReduceCandidateRaw,
+    rawCandidate: PolyfillArrayReduceCandidateRaw,
+    solution: PolyfillArrayReduceSolutionRaw,
+    rawSolution: PolyfillArrayReduceSolutionRaw,
+    filepath: "src/javascript/tasks/8_arrays_reduce/19_PolyfillArrayReduce.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Полифилы",
+        recommendationNote: "Корректно разделяет undefined начальное значение и полное отсутствие аргумента через arguments.length.",
+        rawSolution: PolyfillArrayReduceSolutionRaw,
+        filepath: "src/javascript/solutions/8_arrays_reduce/19_PolyfillArrayReduce.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Array.prototype.reduce (MDN)",
+        urlTitle: "MDN Web Docs — Array.prototype.reduce",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Что происходит при вызове [].reduce((a, b) => a + b)?",
+        answer: "Выбрасывается TypeError: Reduce of empty array with no initial value.",
+      },
+    ],
+    checklist: [
+      "Проверка arguments.length >= 3",
+      "Поиск первого существующего слота при отсутствии initialValue",
+      "Выброс TypeError на пустом массиве без начального значения",
+    ],
+  },
+];
+
+export const JS_ARRAYS_UTILS_TASKS = [
+  {
+    id: "js235",
+    group: "Массивы",
+    subgroup: "Утилиты массивов",
+    title: "1. Утилита разбиения массива chunk(array, size)",
+    desc: "Разбейте массив на подмассивы указанного размера size с валидацией входных данных.",
+    isRaw: true,
+    candidate: ChunkArrayCandidateRaw,
+    rawCandidate: ChunkArrayCandidateRaw,
+    solution: ChunkArraySolutionRaw,
+    rawSolution: ChunkArraySolutionRaw,
+    filepath: "src/javascript/tasks/8_arrays_reduce/20_ChunkArray.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Утилиты",
+        recommendationNote: "Использует цикл с шагом i += size и slice для максимальной скорости O(N).",
+        rawSolution: ChunkArraySolutionRaw,
+        filepath: "src/javascript/solutions/8_arrays_reduce/20_ChunkArray.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Lodash chunk",
+        urlTitle: "Lodash Documentation — chunk",
+        url: "https://lodash.com/docs/4.17.15#chunk",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Какова асимптотическая сложность разбиения массива на чанки?",
+        answer: "O(N) по времени и O(N) по памяти, так как каждый элемент исходного массива копируется ровно один раз.",
+      },
+    ],
+    checklist: [
+      "Валидация Array.isArray и size > 0",
+      "Округление размера Math.floor",
+      "Иммутабельное копирование через slice",
+    ],
+  },
+];
+
+export const JS_COLLECTIONS_SET_TASKS = [
+  {
+    id: "js81",
+    group: "Коллекции",
+    subgroup: "Set",
+    title: "1. Создание Set из массива и обратно",
+    desc: "Создайте новый массив, удалив все повторения и дубликаты с помощью объекта Set и оператора spread.",
+    isRaw: true,
+    candidate: SetFromArrayCandidateRaw,
+    rawCandidate: SetFromArrayCandidateRaw,
+    solution: SetFromArraySolutionRaw,
+    rawSolution: SetFromArraySolutionRaw,
+    filepath: "src/javascript/tasks/11_collections_set/1_SetFromArray.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Высокая производительность",
+        recommendationNote: "Использование Set / Map обеспечивает поиск и проверку наличия элемента за константное время O(1) в отличие от O(N) у массивов.",
+        rawSolution: SetFromArraySolutionRaw,
+        filepath: "src/javascript/tasks/11_collections_set/1_SetFromArray.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Коллекция Set (MDN)",
+        urlTitle: "MDN — Объект Set",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Set",
+      },
+      {
+        title: "Объекты Set и Map (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Set",
+        url: "https://learn.javascript.ru/map-set#set",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Как работает удаление дубликатов через new Set(arr)?",
+        answer: "Конструктор new Set() принимает итерируемый объект и сохраняет только уникальные значения. Выражение [...new Set(arr)] разворачивает уникальные элементы обратно в массив.",
+      },
+    ],
+    checklist: [
+      "Использование new Set(arr)",
+      "Разворачивание через оператор расширения [...set]",
+    ],
+  },
+
+  {
+    id: "js82",
+    group: "Коллекции",
+    subgroup: "Set",
+    title: "2. Удаление дубликатов строк (слова в тексте)",
+    desc: "Разбейте текстовую строку на массив слов через split(' ') и получите массив уникальных слов.",
+    isRaw: true,
+    candidate: UniqueWordsCandidateRaw,
+    rawCandidate: UniqueWordsCandidateRaw,
+    solution: UniqueWordsSolutionRaw,
+    rawSolution: UniqueWordsSolutionRaw,
+    filepath: "src/javascript/tasks/11_collections_set/2_UniqueWords.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Высокая производительность",
+        recommendationNote: "Использование Set / Map обеспечивает поиск и проверку наличия элемента за константное время O(1) в отличие от O(N) у массивов.",
+        rawSolution: UniqueWordsSolutionRaw,
+        filepath: "src/javascript/tasks/11_collections_set/2_UniqueWords.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Разделение строк split() (Doka.guide)",
+        urlTitle: "Дока — Метод String.split",
+        url: "https://doka.guide/js/string-split/",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Чувствителен ли Set к регистру при дедупликации слов?",
+        answer: "Да, 'Hello' и 'hello' будут считаться двумя разными уникальными элементами. Чтобы игнорировать регистр, строки следует предварительно привести через toLowerCase().",
+      },
+    ],
+    checklist: [
+      "Разделение текста метод text.split(' ')",
+      "Упаковка в new Set() и разворот в массив",
+    ],
+  },
+
+  {
+    id: "js83",
+    group: "Коллекции",
+    subgroup: "Set",
+    title: "3. Поиск первого повторяющегося элемента",
+    desc: "Напишите функцию firstRepeated(arr), которая возвращает первый повторившийся элемент массива (или null, если повторов нет).",
+    isRaw: true,
+    candidate: FirstRepeatedCandidateRaw,
+    rawCandidate: FirstRepeatedCandidateRaw,
+    solution: FirstRepeatedSetSolutionRaw,
+    rawSolution: FirstRepeatedSetSolutionRaw,
+    filepath: "src/javascript/tasks/11_collections_set/3_FirstRepeated.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Высокая производительность",
+        recommendationNote: "Использование Set / Map обеспечивает поиск и проверку наличия элемента за константное время O(1) в отличие от O(N) у массивов.",
+        rawSolution: FirstRepeatedSetSolutionRaw,
+        filepath: "src/javascript/tasks/11_collections_set/3_FirstRepeated.js",
+      },
+    ],
+    solutions: [
+      {
+        title: "Вариант 1: Через Set (Рекомендуется)",
+        isRecommended: true,
+        badge: "Оптимально за O(N)",
+        recommendationNote: "Сохранение встреченных элементов в Set дает проверку уникальности за O(1) и общее время O(N).",
+        rawSolution: FirstRepeatedSetSolutionRaw,
+        filepath: "src/javascript/solutions/11_collections_set/3_FirstRepeated_Set.js",
+      },
+      {
+        title: "Вариант 2: Вложенные циклы",
+        isRecommended: false,
+        badge: "Вложенные циклы O(N²)",
+        recommendationNote: "Сравнение элементов двумя вложенными циклами без выявления дополнительных структур данных (O(N²)).",
+        rawSolution: FirstRepeatedLoopsSolutionRaw,
+        filepath: "src/javascript/solutions/11_collections_set/3_FirstRepeated_Loops.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Проверка наличия через Set.has() (MDN)",
+        urlTitle: "MDN — Метод Set.prototype.has()",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Set/has",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Какова временная и пространственная сложность решения через Set?",
+        answer: "Временная сложность O(N) — однократный обход массива. Пространственная сложность O(N) — хранение уникальных элементов в куче.",
+      },
+    ],
+    checklist: [
+      "Ранний возврат при первом же совпадении unique.has(el)",
+      "Возврат null при отсутствии повторов",
+    ],
+  },
+
+  {
+    id: "js84",
+    group: "Коллекции",
+    subgroup: "Set",
+    title: "4. Set с объектами: фильтрация по id",
+    desc: "Напишите функцию getUniqueUsers(users), фильтрующую массив пользователей по уникальному свойству id (сохраняя первое вхождение).",
+    isRaw: true,
+    candidate: UniqueUsersByIdCandidateRaw,
+    rawCandidate: UniqueUsersByIdCandidateRaw,
+    solution: UniqueUsersByIdSetFilterSolutionRaw,
+    rawSolution: UniqueUsersByIdSetFilterSolutionRaw,
+    filepath: "src/javascript/tasks/11_collections_set/4_UniqueUsersById.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Высокая производительность",
+        recommendationNote: "Использование Set / Map обеспечивает поиск и проверку наличия элемента за константное время O(1) в отличие от O(N) у массивов.",
+        rawSolution: UniqueUsersByIdSetFilterSolutionRaw,
+        filepath: "src/javascript/tasks/11_collections_set/4_UniqueUsersById.js",
+      },
+    ],
+    solutions: [
+      {
+        title: "Вариант 1: Через Set + filter (Рекомендуется)",
+        isRecommended: true,
+        badge: "Через Set + filter",
+        recommendationNote: "Фильтрация элементов с отслеживанием уже встречавшихся id в сете seenIds.",
+        rawSolution: UniqueUsersByIdSetFilterSolutionRaw,
+        filepath: "src/javascript/solutions/11_collections_set/4_UniqueUsersById_SetFilter.js",
+      },
+      {
+        title: "Вариант 2: Через коллекцию Map",
+        isRecommended: false,
+        badge: "Компактно через Map",
+        recommendationNote: "Запись пользователей в Map по id с последующим извлечением значений через [...map.values()].",
+        rawSolution: UniqueUsersByIdMapSolutionRaw,
+        filepath: "src/javascript/solutions/11_collections_set/4_UniqueUsersById_Map.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Дедупликация объектов в JS (Doka.guide)",
+        urlTitle: "Дока — Использование Set для объектов",
+        url: "https://doka.guide/js/set/",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему new Set(users) не удалит дубликаты объектов с одинаковым id?",
+        answer: "Потому что Set сравнивает элементы по алгоритму SameValueZero (для объектов — по ссылке). Объект { id: 1, name: 'Ann' } и { id: 1, name: 'Ann 2' } имеют разный адрес в памяти.",
+      },
+    ],
+    checklist: [
+      "Создание Set для хранения просмотренных id",
+      "Фильтрация массива с сохранением первого вхождения",
+    ],
+  },
+
+  {
+    id: "js85",
+    group: "Коллекции",
+    subgroup: "Set",
+    title: "5. Что выведет этот код? (Базовые методы)",
+    desc: "Определите вывод базовых методов работы с коллекцией Set: add(), size, has(), delete(), clear().",
+    isRaw: true,
+    candidate: SetBasicMethodsOutputCandidateRaw,
+    rawCandidate: SetBasicMethodsOutputCandidateRaw,
+    solution: SetBasicMethodsOutputSolutionRaw,
+    rawSolution: SetBasicMethodsOutputSolutionRaw,
+    filepath: "src/javascript/tasks/11_collections_set/5_SetBasicMethodsOutput.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Высокая производительность",
+        recommendationNote: "Использование Set / Map обеспечивает поиск и проверку наличия элемента за константное время O(1) в отличие от O(N) у массивов.",
+        rawSolution: SetBasicMethodsOutputSolutionRaw,
+        filepath: "src/javascript/tasks/11_collections_set/5_SetBasicMethodsOutput.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Методы коллекции Set (MDN)",
+        urlTitle: "MDN — Методы и свойства Set",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Set",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Что возвращают методы add() и delete() экземпляра Set?",
+        answer: "Метод add() возвращает сам объект Set (что позволяет делать чейнинг set.add(1).add(2)), а delete() возвращает boolean (true, если элемент был удален).",
+      },
+    ],
+    checklist: [
+      "Знать вывод: 3, true, false, 0",
+    ],
+  },
+
+  {
+    id: "js86",
+    group: "Коллекции",
+    subgroup: "Set",
+    title: "6. Что выведет этот код? (Сравнение объектов)",
+    desc: "Объясните особенности сравнения ссылочных типов данных (объектов) внутри коллекции Set.",
+    isRaw: true,
+    candidate: SetObjectComparisonOutputCandidateRaw,
+    rawCandidate: SetObjectComparisonOutputCandidateRaw,
+    solution: SetObjectComparisonOutputSolutionRaw,
+    rawSolution: SetObjectComparisonOutputSolutionRaw,
+    filepath: "src/javascript/tasks/11_collections_set/6_SetObjectComparisonOutput.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Высокая производительность",
+        recommendationNote: "Использование Set / Map обеспечивает поиск и проверку наличия элемента за константное время O(1) в отличие от O(N) у массивов.",
+        rawSolution: SetObjectComparisonOutputSolutionRaw,
+        filepath: "src/javascript/tasks/11_collections_set/6_SetObjectComparisonOutput.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Сравнение ссылочных типов в JS (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Объекты: ссылки и копирование",
+        url: "https://learn.javascript.ru/object-copy",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему set.has({ x: 1 }) возвращает false, когда в set добавлен { x: 1 }?",
+        answer: "Литерал { x: 1 } создает в памяти совершенно новый объект с новым адресом ссылки, которого нет в сете.",
+      },
+    ],
+    checklist: [
+      "Понимать разницу между одинаковыми по значению объектами и одинаковыми ссылками",
+      "Знать вывод: 2, true, false",
+    ],
+  },
+
+  {
+    id: "js88",
+    group: "Коллекции",
+    subgroup: "Set",
+    title: "7. Что выведет этот код? (Итерация и удаление)",
+    desc: "Разберите особенности поведения цикла for...of при одновременной итерации и вызове set.delete(v).",
+    isRaw: true,
+    candidate: SetIterationDeleteOutputCandidateRaw,
+    rawCandidate: SetIterationDeleteOutputCandidateRaw,
+    solution: SetIterationDeleteOutputSolutionRaw,
+    rawSolution: SetIterationDeleteOutputSolutionRaw,
+    filepath: "src/javascript/tasks/11_collections_set/8_SetIterationDeleteOutput.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Высокая производительность",
+        recommendationNote: "Использование Set / Map обеспечивает поиск и проверку наличия элемента за константное время O(1) в отличие от O(N) у массивов.",
+        rawSolution: SetIterationDeleteOutputSolutionRaw,
+        filepath: "src/javascript/tasks/11_collections_set/8_SetIterationDeleteOutput.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Итерация по Set (MDN)",
+        urlTitle: "MDN — Итерирование по Set",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Set/@@iterator",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Безопасно ли вызывать set.delete(v) во время цикла for (const v of set)?",
+        answer: "Да, в отличие от массивов (где удаление смещает индексы), итератор Set устроен безопасно и корректно продолжает обход оставшихся элементов.",
+      },
+    ],
+    checklist: [
+      "Вывод итераций iter 1, iter 2, iter 3, iter 4",
+      "Финал: final [1, 3]",
+    ],
+  },
+];
+
+export const JS_COLLECTIONS_MAP_TASKS = [
+  {
+    id: "js89",
+    group: "Коллекции",
+    subgroup: "Map",
+    title: "1. Создание Map и добавление элементов (Уровень 1)",
+    desc: "Создайте Map с помощью конструктора new Map() и добавьте в него 3 пары 'a':1, 'b':2, 'c':3 через метод set().",
+    isRaw: true,
+    candidate: CreateMapCandidateRaw,
+    rawCandidate: CreateMapCandidateRaw,
+    solution: CreateMapSolutionRaw,
+    rawSolution: CreateMapSolutionRaw,
+    filepath: "src/javascript/tasks/12_collections_map/level1/1_CreateMap.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Декларативное преобразование",
+        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
+        rawSolution: CreateMapSolutionRaw,
+        filepath: "src/javascript/tasks/12_collections_map/level1/1_CreateMap.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Объект Map (MDN)",
+        urlTitle: "MDN — Map global object",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Map",
+      },
+      {
+        title: "Карта Map (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Map",
+        url: "https://learn.javascript.ru/map-set#map",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Чем Map отличается от обычного объекта Object?",
+        answer: "В Map ключом может быть любой тип данных (включая объекты и функции), сохраняется порядок вставки элементов, и есть удобный метод size.",
+      },
+    ],
+    checklist: [
+      "Создание new Map()",
+      "Добавление элементов через map.set(key, value)",
+    ],
+  },
+
+  {
+    id: "js90",
+    group: "Коллекции",
+    subgroup: "Map",
+    title: "2. Инициализация Map из массива пар (Уровень 1)",
+    desc: "Инициализируйте Map сразу в конструкторе, передав массив двухэлементных массивов [ключ, значение].",
+    isRaw: true,
+    candidate: InitMapFromPairsCandidateRaw,
+    rawCandidate: InitMapFromPairsCandidateRaw,
+    solution: InitMapFromPairsSolutionRaw,
+    rawSolution: InitMapFromPairsSolutionRaw,
+    filepath: "src/javascript/tasks/12_collections_map/level1/2_InitMapFromPairs.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Декларативное преобразование",
+        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
+        rawSolution: InitMapFromPairsSolutionRaw,
+        filepath: "src/javascript/tasks/12_collections_map/level1/2_InitMapFromPairs.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Конструктор Map (Doka.guide)",
+        urlTitle: "Дока — Структура Map",
+        url: "https://doka.guide/js/map/",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Какой формат входного массива ожидает конструктор new Map()?",
+        answer: "Конструктор ожидает итерируемый объект с элементами в виде пар [key, value] (например, массив двумерных массивов или результат Object.entries).",
+      },
+    ],
+    checklist: [
+      "Передача двумерного массива в new Map([...])",
+      "Извлечение по ключу через map.get('name')",
+    ],
+  },
+
+  {
+    id: "js91",
+    group: "Коллекции",
+    subgroup: "Map",
+    title: "3. Получение значения по ключу (Уровень 1)",
+    desc: "Напишите функцию getValue(map, key), проверяющую наличие ключа и возвращающую значение либо 'not found'.",
+    isRaw: true,
+    candidate: GetValueByKeyCandidateRaw,
+    rawCandidate: GetValueByKeyCandidateRaw,
+    solution: GetValueByKeySolutionRaw,
+    rawSolution: GetValueByKeySolutionRaw,
+    filepath: "src/javascript/tasks/12_collections_map/level1/3_GetValueByKey.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Декларативное преобразование",
+        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
+        rawSolution: GetValueByKeySolutionRaw,
+        filepath: "src/javascript/tasks/12_collections_map/level1/3_GetValueByKey.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Методы has() и get() в Map (MDN)",
+        urlTitle: "MDN — Map.prototype.has()",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Map/has",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Что вернет map.get(key), если ключ отсутствует?",
+        answer: "Метод get() вернет undefined, если ключ не найден в коллекции.",
+      },
+    ],
+    checklist: [
+      "Проверка наличия через map.has(key)",
+      "Возврат значения map.get(key) или фоллбека",
+    ],
+  },
+
+  {
+    id: "js92",
+    group: "Коллекции",
+    subgroup: "Map",
+    title: "4. Проверка наличия ключа и удаление (Уровень 1)",
+    desc: "Напишите функцию removeIfExists(map, key), которая удаляет ключ при его наличии и возвращает булевый результат.",
+    isRaw: true,
+    candidate: RemoveIfExistsCandidateRaw,
+    rawCandidate: RemoveIfExistsCandidateRaw,
+    solution: RemoveIfExistsSolutionRaw,
+    rawSolution: RemoveIfExistsSolutionRaw,
+    filepath: "src/javascript/tasks/12_collections_map/level1/4_RemoveIfExists.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Декларативное преобразование",
+        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
+        rawSolution: RemoveIfExistsSolutionRaw,
+        filepath: "src/javascript/tasks/12_collections_map/level1/4_RemoveIfExists.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Удаление ключей из Map (MDN)",
+        urlTitle: "MDN — Map.prototype.delete()",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Map/delete",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Что возвращает сам метод map.delete(key)?",
+        answer: "Метод delete() возвращает true, если элемент успешно найден и удален, и false, если элемента не было.",
+      },
+    ],
+    checklist: [
+      "Использование map.has(key) и map.delete(key)",
+    ],
+  },
+
+  {
+    id: "js93",
+    group: "Коллекции",
+    subgroup: "Map",
+    title: "5. Перебор Map через for...of (Уровень 2)",
+    desc: "Напишите функцию printAll(map), выводящую все пары в формате 'ключ: значение' через деструктуризацию в цикле for...of.",
+    isRaw: true,
+    candidate: PrintAllForOfCandidateRaw,
+    rawCandidate: PrintAllForOfCandidateRaw,
+    solution: PrintAllForOfSolutionRaw,
+    rawSolution: PrintAllForOfSolutionRaw,
+    filepath: "src/javascript/tasks/12_collections_map/level2/7_PrintAllForOf.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Декларативное преобразование",
+        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
+        rawSolution: PrintAllForOfSolutionRaw,
+        filepath: "src/javascript/tasks/12_collections_map/level2/7_PrintAllForOf.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Итерация по Map (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Итерирование по Map",
+        url: "https://learn.javascript.ru/map-set#perebor-map",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "В каком порядке цикл for...of обходит Map?",
+        answer: "В отличие от обычных объектов, Map строго сохраняет порядок вставки элементов.",
+      },
+    ],
+    checklist: [
+      "Использование цикла for (const [key, value] of map)",
+    ],
+  },
+
+  {
+    id: "js94",
+    group: "Коллекции",
+    subgroup: "Map",
+    title: "6. forEach у Map (Уровень 2)",
+    desc: "Перепишите обход коллекции Map с использованием встроенного метода map.forEach((value, key) => ...).",
+    isRaw: true,
+    candidate: MapForEachCandidateRaw,
+    rawCandidate: MapForEachCandidateRaw,
+    solution: MapForEachSolutionRaw,
+    rawSolution: MapForEachSolutionRaw,
+    filepath: "src/javascript/tasks/12_collections_map/level2/8_MapForEach.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Декларативное преобразование",
+        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
+        rawSolution: MapForEachSolutionRaw,
+        filepath: "src/javascript/tasks/12_collections_map/level2/8_MapForEach.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Метод Map.prototype.forEach (MDN)",
+        urlTitle: "MDN — Map.prototype.forEach()",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Map/forEach",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Какой порядок аргументов принимает колбэк в map.forEach()?",
+        answer: "Порядок аргументов: (value, key, map) — сначала значение, затем ключ, затем сама коллекция Map (для аналогии с Array.prototype.forEach).",
+      },
+    ],
+    checklist: [
+      "Использование map.forEach((value, key) => ...)",
+    ],
+  },
+
+  {
+    id: "js95",
+    group: "Коллекции",
+    subgroup: "Map",
+    title: "7. Получить отдельно ключи, значения, пары (Уровень 2)",
+    desc: "Извлеките из Map массивы ключей, значений и пар с помощью итераторов keys(), values(), entries().",
+    isRaw: true,
+    candidate: GetKeysValuesEntriesCandidateRaw,
+    rawCandidate: GetKeysValuesEntriesCandidateRaw,
+    solution: GetKeysValuesEntriesSolutionRaw,
+    rawSolution: GetKeysValuesEntriesSolutionRaw,
+    filepath: "src/javascript/tasks/12_collections_map/level2/9_GetKeysValuesEntries.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Декларативное преобразование",
+        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
+        rawSolution: GetKeysValuesEntriesSolutionRaw,
+        filepath: "src/javascript/tasks/12_collections_map/level2/9_GetKeysValuesEntries.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Итераторы Map (MDN)",
+        urlTitle: "MDN — Map.prototype.keys()",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Map/keys",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Что возвращают методы keys(), values() и entries()?",
+        answer: "Они возвращают итерируемые объекты (MapIterator), которые превращаются в массивы через спред [...map.keys()].",
+      },
+    ],
+    checklist: [
+      "Применение [...map.keys()]",
+      "Применение [...map.values()]",
+      "Применение [...map.entries()]",
+    ],
+  },
+
+  {
+    id: "js96",
+    group: "Коллекции",
+    subgroup: "Map",
+    title: "8. Подсчёт частоты элементов (Уровень 3)",
+    desc: "Напишите функцию countFrequency(arr), подсчитывающую количество вхождений каждого элемента в Map.",
+    isRaw: true,
+    candidate: CountFrequencyCandidateRaw,
+    rawCandidate: CountFrequencyCandidateRaw,
+    solution: CountFrequencySolutionRaw,
+    rawSolution: CountFrequencySolutionRaw,
+    filepath: "src/javascript/tasks/12_collections_map/level3/13_CountFrequency.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Декларативное преобразование",
+        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
+        rawSolution: CountFrequencySolutionRaw,
+        filepath: "src/javascript/tasks/12_collections_map/level3/13_CountFrequency.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Частотный словарь в JS (Doka.guide)",
+        urlTitle: "Дока — Построение частотного словаря",
+        url: "https://doka.guide/js/map/",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему Map предпочтительнее объекта для частотного словаря произвольных элементов?",
+        answer: "Map подходят для любого типа ключей (числа, строки, объекты, булевы значения), тогда как Object всегда приводит ключи к строкам.",
+      },
+    ],
+    checklist: [
+      "Обход массива и аккумуляция счетчика map.set(item, (map.get(item) || 0) + 1)",
+    ],
+  },
+
+  {
+    id: "js99",
+    group: "Коллекции",
+    subgroup: "Map",
+    title: "9. Анаграммы (Company X) (Уровень 3)",
+    desc: "Напишите функцию groupAnagrams(arr), сгруппировав слова-анаграммы в отдельные массивы.",
+    isRaw: true,
+    candidate: GroupAnagramsCandidateRaw,
+    rawCandidate: GroupAnagramsCandidateRaw,
+    solution: GroupAnagramsSolutionRaw,
+    rawSolution: GroupAnagramsSolutionRaw,
+    filepath: "src/javascript/tasks/12_collections_map/level3/16_GroupAnagrams.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Декларативное преобразование",
+        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
+        rawSolution: GroupAnagramsSolutionRaw,
+        filepath: "src/javascript/tasks/12_collections_map/level3/16_GroupAnagrams.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Задача Group Anagrams (LeetCode)",
+        urlTitle: "LeetCode 49 — Group Anagrams",
+        url: "https://leetcode.com/problems/group-anagrams/",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Что используется в качестве ключа Map для группировки анаграмм?",
+        answer: "Сортировка букв слова в алфавитном порядке (str.split('').sort().join('')) создает одинаковый канонический ключ для всех его анаграмм.",
+      },
+    ],
+    checklist: [
+      "Получение канонического ключа через sort()",
+      "Возврат массива значений [...map.values()]",
+    ],
+  },
+
+  {
+    id: "js196",
+    group: "Коллекции",
+    subgroup: "Map",
+    title: "10. Преобразование списка категорий (Company X) (Уровень 3)",
+    desc: "Преобразуйте плоский список категорий с ссылками на родителей в иерархическую структуру дерева с массивами children за O(n).",
+    isRaw: true,
+    candidate: CreateCategoryTreeCandidateRaw,
+    rawCandidate: CreateCategoryTreeCandidateRaw,
+    solution: CreateCategoryTreeSolutionRaw,
+    rawSolution: CreateCategoryTreeSolutionRaw,
+    explanation: CreateCategoryTreeExplanationRaw,
+    filepath: "src/javascript/tasks/12_collections_map/level3/22_CreateCategoryTree.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение (O(n) через Map)",
+        isRecommended: true,
+        badge: "Линейная сложность O(n)",
+        recommendationNote: "Использование Map в качестве таблицы соответствий позволяет связать дочерние и родительские элементы за два линейных прохода без рекурсии и вложенных поисков.",
+        rawSolution: CreateCategoryTreeSolutionRaw,
+        filepath: "src/javascript/tasks/12_collections_map/level3/22_CreateCategoryTree.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Коллекция Map в JavaScript (Doka.guide)",
+        urlTitle: "Дока — Структура данных Map",
+        url: "https://doka.guide/js/map/",
+      },
+      {
+        title: "Преобразование плоского массива в дерево (Хабр Q&A)",
+        urlTitle: "Хабр — Построение дерева из плоского массива",
+        url: "https://qna.habr.com/q/623351",
+      },
+      {
+        title: "Структуры данных: Map и Set (LearnJS)",
+        urlTitle: "Учебник JavaScript — Map и Set",
+        url: "https://learn.javascript.ru/map-set",
+      },
+      {
+        title: "Объект Map и его методы (MDN)",
+        urlTitle: "MDN — Map API и методы",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Map",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Какова временная и пространственная сложность предложенного решения через Map?",
+        answer: "Сложность составляет O(N) по времени (два последовательных прохода по массиву с O(1) чтением/записью в Map) и O(N) по памяти (хранение N узлов в nodeMap и итоговом массиве roots).",
+      },
+      {
+        question: "Почему наивное рекурсивное решение с .filter() внутри дает сложность O(N²)?",
+        answer: "При вызове .filter() на каждом шаге рекурсии для каждого узла перебирается весь массив (N * N операций). На списке из 10 000 элементов это 100 млн итераций, что вызывает заметные задержки и блокирует поток выполнения.",
+      },
+      {
+        question: "Почему у листьев (элементов без детей) поле children не создается, а у корней создается всегда?",
+        answer: "Согласно спецификации формата, листья не должны содержать пустой массив children: [], чтобы минимизировать объем JSON и отличать пустую папку/контейнер (корень) от конечного элемента. Поле children создается динамически только при обнаружении первого дочернего элемента или явно для корней (parent === null).",
+      },
+      {
+        question: "Как алгоритм защищен от 'битых' ссылок (когда parent ссылается на несуществующий title)?",
+        answer: "С помощью проверки `if (!parentNode) return;`. Если родительский элемент отсутствует в nodeMap, дочерний узел просто игнорируется и не вызывает ошибку TypeError (Cannot set properties of undefined).",
+      },
+      {
+        question: "В чем преимущество использования new Map() по сравнению с обычным объектом {} для словаря узлов?",
+        answer: "Map не имеет коллизий со стандартными свойствами прототипа (например, 'toString', 'constructor', 'hasOwnProperty'), поддерживает любые типы ключей и явно выражает семантику ассоциативного массива.",
+      },
+    ],
+    checklist: [
+      "Создание словаря узлов const nodeMap = new Map() и наполнение плоскими объектами за первый проход O(n)",
+      "Проверка if (parent === null) для явного добавления корней в roots с инициализацией node.children = []",
+      "Поиск родительского узла через nodeMap.get(parent) за O(1) и защита if (!parentNode) return",
+      "Инициализация parentNode.children = [] только при наличии хотя бы одного дочернего элемента",
+      "Добавление дочернего узла в parentNode.children.push(node)",
+      "Возврат массива корней return roots с результирующей сложностью O(n) по времени и памяти",
+    ],
+  },
+  {
+    id: "js241",
+    group: "Коллекции",
+    subgroup: "Map",
+    title: "18. Реализация LRU Cache на базе ES6 Map",
+    desc: "Реализуйте класс LRUCache(capacity) с методами get и put за O(1) с использованием порядка вставки Map.",
+    isRaw: true,
+    candidate: LruCacheMapCandidateRaw,
+    rawCandidate: LruCacheMapCandidateRaw,
+    solution: LruCacheMapSolutionRaw,
+    rawSolution: LruCacheMapSolutionRaw,
+    filepath: "src/javascript/tasks/12_collections_map/level3/23_LruCacheMap.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Алгоритмы и Структуры",
+        recommendationNote: "Map в JS сохраняет insertion order, поэтому delete + set переносит ключ в конец за O(1).",
+        rawSolution: LruCacheMapSolutionRaw,
+        filepath: "src/javascript/solutions/12_collections_map/level3/23_LruCacheMap.js",
+      },
+    ],
+    articles: [
+      {
+        title: "LRU Cache Mechanism",
+        urlTitle: "LeetCode 146 — LRU Cache",
+        url: "https://leetcode.com/problems/lru-cache/",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Как получить самый старый ключ в ES6 Map за O(1)?",
+        answer: "Через итератор ключей: map.keys().next().value.",
+      },
+    ],
+    checklist: [
+      "Валидация capacity > 0",
+      "Перемещение ключа при get/put",
+      "Вытеснение старого ключа при превышении capacity",
+    ],
+  },
+
+  {
+    id: "js242",
+    group: "Коллекции",
+    subgroup: "Map",
+    title: "19. Слияние двух API-ответов по ID (Hash Join за O(N + M))",
+    desc: "Объедините массивы пользователей и заказов по общему ключу за линейное время O(N + M) без квадратичных вложенных циклов.",
+    isRaw: true,
+    candidate: HashMapJoinApiResponsesCandidateRaw,
+    rawCandidate: HashMapJoinApiResponsesCandidateRaw,
+    solution: HashMapJoinApiResponsesSolutionRaw,
+    rawSolution: HashMapJoinApiResponsesSolutionRaw,
+    filepath: "src/javascript/tasks/12_collections_map/level3/24_HashMapJoinApiResponses.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Оптимизация производительности",
+        recommendationNote: "Индексирует правую таблицу в Map за O(M) и итерирует левую за O(N).",
+        rawSolution: HashMapJoinApiResponsesSolutionRaw,
+        filepath: "src/javascript/solutions/12_collections_map/level3/24_HashMapJoinApiResponses.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Hash Join Algorithm",
+        urlTitle: "Wikipedia — Hash Join",
+        url: "https://en.wikipedia.org/wiki/Hash_join",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему вложенный filter внутри map не подходит для больших массивов?",
+        answer: "Он имеет квадратичную сложность O(N * M), что при 10k записях дает 100 млн итераций и вешает главный поток.",
+      },
+    ],
+    checklist: [
+      "Создание хэш-индекса Map за O(M)",
+      "Один проход по основной коллекции за O(N)",
+      "Иммутабельное слияние объектов",
+    ],
+  },
+];
+
+export const JS_COLLECTIONS_WEAK_TASKS = [
+  {
+    id: "js226",
+    group: "Коллекции",
+    subgroup: "WeakMap и WeakSet",
+    title: "1. WeakMap для приватных метаданных и инкапсуляции",
+    desc: "Реализуйте класс SecureSessionManager на базе WeakMap для безопасного хранения сессионных токенов без утечек памяти и без засорения объектов пользователей.",
+    isRaw: true,
+    candidate: WeakMapPrivateMetadataCandidateRaw,
+    rawCandidate: WeakMapPrivateMetadataCandidateRaw,
+    solution: WeakMapPrivateMetadataSolutionRaw,
+    rawSolution: WeakMapPrivateMetadataSolutionRaw,
+    filepath: "src/javascript/tasks/11_collections_set/9_WeakMapPrivateMetadata.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Слабые ссылки & GC",
+        recommendationNote: "WeakMap хранит слабые ссылки на объекты-ключи, позволяя сборщику мусора автоматически очищать память при удалении самого объекта.",
+        rawSolution: WeakMapPrivateMetadataSolutionRaw,
+        filepath: "src/javascript/solutions/11_collections_set/9_WeakMapPrivateMetadata.js",
+      },
+    ],
+    articles: [
+      {
+        title: "WeakMap и WeakSet (LearnJS)",
+        urlTitle: "Учебник JavaScript — WeakMap и WeakSet",
+        url: "https://learn.javascript.ru/weakmap-weakset",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "В чем главное отличие WeakMap от обычного Map?",
+        answer: "Ключами WeakMap могут быть только объекты (и символы в ES2023+), ссылки на ключи являются слабыми (не препятствуют сборке мусора), и коллекция неитерируема.",
+      },
+      {
+        question: "Почему у WeakMap нет свойства .size и методов .keys()/.entries()?",
+        answer: "Потому что сборщик мусора работает асинхронно и недетерминированно — точное количество живых элементов в конкретный момент времени неизвестно.",
+      },
+    ],
+    checklist: [
+      "Проверка ключа на не-null объект (typeof key === 'object' && key !== null)",
+      "Использование приватного #store = new WeakMap()",
+      "Методы setSession, getSession, hasSession, removeSession",
+    ],
+  },
+  {
+    id: "js227",
+    group: "Коллекции",
+    subgroup: "WeakMap и WeakSet",
+    title: "2. WeakSet для защиты обхода циклической структуры",
+    desc: "Реализуйте функцию hasCircularReference(rootObj) для обнаружения циклических ссылок в графах объектов с помощью WeakSet.",
+    isRaw: true,
+    candidate: WeakSetCircularCycleDetectionCandidateRaw,
+    rawCandidate: WeakSetCircularCycleDetectionCandidateRaw,
+    solution: WeakSetCircularCycleDetectionSolutionRaw,
+    rawSolution: WeakSetCircularCycleDetectionSolutionRaw,
+    filepath: "src/javascript/tasks/11_collections_set/10_WeakSetCircularCycleDetection.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Графы и GC",
+        recommendationNote: "WeakSet регистрирует посещенные объекты по ссылочной идентичности без выделения долгоживущей памяти.",
+        rawSolution: WeakSetCircularCycleDetectionSolutionRaw,
+        filepath: "src/javascript/solutions/11_collections_set/10_WeakSetCircularCycleDetection.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Поиск циклов в объектах (MDN)",
+        urlTitle: "MDN — WeakSet",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/WeakSet",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему JSON.stringify() падает при наличии циклических ссылок?",
+        answer: "Потому что рекурсивный алгоритм сериализации заходит в бесконечный цикл и исчерпывает стек вызовов (Maximum call stack size exceeded).",
+      },
+    ],
+    checklist: [
+      "Создание visited = new WeakSet()",
+      "Рекурсивная проверка вложенных объектов с visited.has(current)",
+      "Возврат true при цикле и false при ацикличном графе",
+    ],
+  },
+];
+
+export const JS_FUNCTIONS_CLOSURES_TASKS = [
+  {
+    id: "js126",
+    group: "Замыкания",
+    subgroup: "Замыкания (База)",
+    title: "1. Генератор счетчика на замыкании",
+    desc: "Реализуйте функцию createCounter(), локальная переменная count которой сохраняется между вызовами благодаря замыканию.",
+    isRaw: true,
+    candidate: CounterGeneratorCandidateRaw,
+    rawCandidate: CounterGeneratorCandidateRaw,
+    solution: CounterGeneratorSolutionRaw,
+    rawSolution: CounterGeneratorSolutionRaw,
+    filepath: "src/javascript/tasks/14_closures/1_CounterGenerator.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Концепция JS Engine",
+        recommendationNote: "Замыкания позволяют функции сохранять доступ к лексическому окружению даже после завершения работы внешней функции.",
+        rawSolution: CounterGeneratorSolutionRaw,
+        filepath: "src/javascript/solutions/14_closures/1_CounterGenerator.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Замыкания в JavaScript (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Замыкания",
+        url: "https://learn.javascript.ru/closure",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Что такое замыкание (Closure) в JavaScript?",
+        answer: "Замыкание — это комбинация функции и лексического окружения, в котором эта функция была объявлена. Функция сохраняет доступ к переменным внешней функции даже после её завершения.",
+      },
+    ],
+    checklist: [
+      "Объявление локальной переменной let count = 0",
+      "Возврат вложенной функции, изменяющей count",
+    ],
+  },
+
+  {
+    id: "js127",
+    group: "Замыкания",
+    subgroup: "Замыкания (База)",
+    title: "2. Обработчики событий в цикле",
+    desc: "Определите, что будет выведено в консоль при клике на кнопки, объясните причину и исправьте код для корректного вывода индекса.",
+    isRaw: true,
+    candidate: LoopEventListenersCandidateRaw,
+    rawCandidate: LoopEventListenersCandidateRaw,
+    solution: LoopEventListenersSolutionRaw,
+    rawSolution: LoopEventListenersSolutionRaw,
+    filepath: "src/javascript/tasks/14_closures/2_LoopEventListeners.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Концепция JS Engine",
+        recommendationNote: "Замыкания позволяют функции сохранять доступ к лексическому окружению даже после завершения работы внешней функции.",
+        rawSolution: LoopEventListenersSolutionRaw,
+        filepath: "src/javascript/solutions/14_closures/2_LoopEventListeners.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Область видимости переменной в циклах (MDN)",
+        urlTitle: "MDN — Блочная область видимости let",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Statements/let",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему использование var в цикле приводит к одинаковым значениям во всех обработчиках?",
+        answer: "Переменная var имеет функциональную область видимости и создается в единственном экземпляре для всех итераций цикла.",
+      },
+    ],
+    checklist: [
+      "Замена var i = 0 на let i = 0",
+    ],
+  },
+
+  {
+    id: "js128",
+    group: "Замыкания",
+    subgroup: "Замыкания (База)",
+    title: "3. Таймеры и переменная цикла",
+    desc: "Определите, что выведет данный асинхронный цикл с var, объясните механизм замыкания и предложите варианты исправления.",
+    isRaw: true,
+    candidate: LoopTimersVarCandidateRaw,
+    rawCandidate: LoopTimersVarCandidateRaw,
+    solution: LoopTimersVarSolutionRaw,
+    rawSolution: LoopTimersVarSolutionRaw,
+    filepath: "src/javascript/tasks/14_closures/3_LoopTimersVar.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Концепция JS Engine",
+        recommendationNote: "Замыкания позволяют функции сохранять доступ к лексическому окружению даже после завершения работы внешней функции.",
+        rawSolution: LoopTimersVarSolutionRaw,
+        filepath: "src/javascript/solutions/14_closures/3_LoopTimersVar.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Замыкания и setTimeout в циклах (Doka.guide)",
+        urlTitle: "Дока — Ловушки var в таймерах",
+        url: "https://doka.guide/js/closures/",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Как ещё, кроме let, можно исправить проблему захвата var в цикле с setTimeout?",
+        answer: "Использованием IIFE (немедленно вызываемой функции) или передачей i третьим аргументом в setTimeout(fn, delay, i).",
+      },
+    ],
+    checklist: [
+      "Использование let для блочной привязки i на каждой итерации",
+    ],
+  },
+
+  {
+    id: "js129",
+    group: "Замыкания",
+    subgroup: "Замыкания (База)",
+    title: "4. Фиксация значений локальной переменной",
+    desc: "Определите, какие значения выведет вызов log() с учетом разницы между зафиксированной строкой и ссылкой на изменяемую переменную.",
+    isRaw: true,
+    candidate: MessageVsNumberStateCandidateRaw,
+    rawCandidate: MessageVsNumberStateCandidateRaw,
+    solution: MessageVsNumberStateSolutionRaw,
+    rawSolution: MessageVsNumberStateSolutionRaw,
+    filepath: "src/javascript/tasks/14_closures/4_MessageVsNumberState.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Концепция JS Engine",
+        recommendationNote: "Замыкания позволяют функции сохранять доступ к лексическому окружению даже после завершения работы внешней функции.",
+        rawSolution: MessageVsNumberStateSolutionRaw,
+        filepath: "src/javascript/solutions/14_closures/4_MessageVsNumberState.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Захват переменных в замыканиях (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Замыкания по ссылке и значению",
+        url: "https://learn.javascript.ru/closure",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "В чем разница между захватом примитивного значения свойства и ссылки на объект/переменную?",
+        answer: "Строка message фиксирует свой текст в момент создания, а переменная number доступна по живой ссылке на текущее состояние.",
+      },
+    ],
+    checklist: [
+      "Вывод 'Incremented to 1' и 'Number: 3'",
+    ],
+  },
+
+  {
+    id: "js130",
+    group: "Замыкания",
+    subgroup: "Замыкания (База)",
+    title: "5. Свежие и зафиксированные значения в замыкании",
+    desc: "Определите, какие сообщения будут выведены в консоль при вызовах increment() и log(), объясните поведение и исправьте функцию log.",
+    isRaw: true,
+    candidate: CreateIncrementFixCandidateRaw,
+    rawCandidate: CreateIncrementFixCandidateRaw,
+    solution: CreateIncrementFixSolutionRaw,
+    rawSolution: CreateIncrementFixSolutionRaw,
+    filepath: "src/javascript/tasks/14_closures/5_CreateIncrementFix.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Концепция JS Engine",
+        recommendationNote: "Замыкания позволяют функции сохранять доступ к лексическому окружению даже после завершения работы внешней функции.",
+        rawSolution: CreateIncrementFixSolutionRaw,
+        filepath: "src/javascript/solutions/14_closures/5_CreateIncrementFix.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Ловушки устаревших замыканий (Doka.guide)",
+        urlTitle: "Дока — Замыкания и устаревший стейт",
+        url: "https://doka.guide/js/closures/",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Как избежать устаревшего состояния (Stale Closure) при формировании сообщений?",
+        answer: "Формировать строки или считывать свойства динамически непосредственно в момент вызова логирующей функции.",
+      },
+    ],
+    checklist: [
+      "Динамическое вычисление строки `Count is ${count}` внутри log()",
+    ],
+  },
+
+  {
+    id: "js131",
+    group: "Замыкания",
+    subgroup: "Замыкания (База)",
+    title: "6. Замыкание по элементам массива",
+    desc: "Определите, что выведет данный цикл с setTimeout при обращении к элементам массива, объясните причину и исправьте код.",
+    isRaw: true,
+    candidate: ArrayLoopTimeoutCandidateRaw,
+    rawCandidate: ArrayLoopTimeoutCandidateRaw,
+    solution: ArrayLoopTimeoutSolutionRaw,
+    rawSolution: ArrayLoopTimeoutSolutionRaw,
+    filepath: "src/javascript/tasks/14_closures/6_ArrayLoopTimeout.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Концепция JS Engine",
+        recommendationNote: "Замыкания позволяют функции сохранять доступ к лексическому окружению даже после завершения работы внешней функции.",
+        rawSolution: ArrayLoopTimeoutSolutionRaw,
+        filepath: "src/javascript/solutions/14_closures/6_ArrayLoopTimeout.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Циклы, массивы и асинхронность (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Цикл for и let",
+        url: "https://learn.javascript.ru/let-const",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Какое значение имел индекс i после окончания работы цикла с var?",
+        answer: "Индекс i был равен 4 (arr.length), из-за чего arr[4] возвращал undefined на каждом вызове таймера.",
+      },
+    ],
+    checklist: [
+      "Использование let i = 0",
+      "Корректный вывод по индексам 0, 1, 2, 3",
+    ],
+  },
+
+  {
+    id: "js220",
+    group: "Замыкания",
+    subgroup: "Декораторы и функции высшего порядка",
+    title: "1. Реализация декоратора once(fn)",
+    desc: "Реализуйте функцию высшего порядка once(fn), гарантирующую однократный вызов функции с сохранением this и кэшированием результата.",
+    isRaw: true,
+    candidate: OnceDecoratorCandidateRaw,
+    rawCandidate: OnceDecoratorCandidateRaw,
+    solution: OnceDecoratorSolutionRaw,
+    rawSolution: OnceDecoratorSolutionRaw,
+    filepath: "src/javascript/tasks/14_closures/9_OnceDecorator.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Функции высшего порядка",
+        recommendationNote: "Флаг executed и кэш cachedResult изолированы в лексическом окружении функции once.",
+        rawSolution: OnceDecoratorSolutionRaw,
+        filepath: "src/javascript/solutions/14_closures/9_OnceDecorator.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Декораторы и замыкания (LearnJS)",
+        urlTitle: "Учебник JavaScript — Декораторы и переадресация вызова",
+        url: "https://learn.javascript.ru/call-apply-decorators",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему нельзя проверять if (!cachedResult) для определения первого вызова?",
+        answer: "Потому что функция может вернуть falsy-значение (undefined, null, false, 0). Необходим явный булев флаг executed.",
+      },
+    ],
+    checklist: [
+      "Флаг let executed = false",
+      "Вызов fn.apply(this, args)",
+      "Возврат закэшированного результата",
+    ],
+  },
+
+  {
+    id: "js218",
+    group: "Замыкания",
+    subgroup: "Обработка ошибок",
+    title: "1. Поток управления в try / catch / finally: Приоритеты return и throw",
+    desc: "Реализуйте безопасный трейсер выполнения с гарантированной очисткой ресурсов и разбором приоритетов return в блоке finally.",
+    isRaw: true,
+    candidate: TryCatchFinallyReturnOrderCandidateRaw,
+    rawCandidate: TryCatchFinallyReturnOrderCandidateRaw,
+    solution: TryCatchFinallyReturnOrderSolutionRaw,
+    rawSolution: TryCatchFinallyReturnOrderSolutionRaw,
+    filepath: "src/javascript/tasks/14_closures/7_TryCatchFinallyReturnOrder.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Обработка исключений",
+        recommendationNote: "Блок finally выполняется всегда, но не должен содержать явный return, чтобы не подавлять результаты try/catch.",
+        rawSolution: TryCatchFinallyReturnOrderSolutionRaw,
+        filepath: "src/javascript/solutions/14_closures/7_TryCatchFinallyReturnOrder.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Обработка ошибок, try...catch (LearnJS)",
+        urlTitle: "Учебник JavaScript — try...catch",
+        url: "https://learn.javascript.ru/try-catch",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Что произойдет, если в блоке finally написать return 100?",
+        answer: "Оператор return в finally полностью перезапишет любое возвращаемое значение или ошибку, выброшенную в блоках try и catch.",
+      },
+    ],
+    checklist: [
+      "Выполнение actionFn() внутри try",
+      "Перехват в catch",
+      "Гарантированный вызов cleanupFn() в finally",
+    ],
+  },
+
+  {
+    id: "js219",
+    group: "Замыкания",
+    subgroup: "Обработка ошибок",
+    title: "2. Собственные классы Error, cause и выборочный rethrow",
+    desc: "Создайте иерархию классов ошибок с поддержкой ES2022 Error cause и функцию выборочной обработки с пробросом непредвиденных исключений (rethrow).",
+    isRaw: true,
+    candidate: CustomErrorChainingRethrowCandidateRaw,
+    rawCandidate: CustomErrorChainingRethrowCandidateRaw,
+    solution: CustomErrorChainingRethrowSolutionRaw,
+    rawSolution: CustomErrorChainingRethrowSolutionRaw,
+    filepath: "src/javascript/tasks/14_closures/8_CustomErrorChainingRethrow.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Архитектура ошибок ES2022",
+        recommendationNote: "Иерархия кастомных ошибок с переопределением this.name и опцией cause позволяет выстраивать надежную и прозрачную обработку сбоев.",
+        rawSolution: CustomErrorChainingRethrowSolutionRaw,
+        filepath: "src/javascript/solutions/14_closures/8_CustomErrorChainingRethrow.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Пользовательские ошибки (LearnJS)",
+        urlTitle: "Учебник JavaScript — Пользовательские ошибки, расширение Error",
+        url: "https://learn.javascript.ru/custom-errors",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Зачем нужен второй аргумент { cause: originalError } в конструкторе Error?",
+        answer: "Для связывания первопричины ошибки в цепочку (Error Chaining), сохраняя низкоуровневый контекст отладки при пробросе высокоуровневой доменной ошибки.",
+      },
+    ],
+    checklist: [
+      "Класс AppError extends Error с установкой this.name = this.constructor.name",
+      "Поддержка { cause } в super(message, options)",
+      "Выборочный rethrow через throw err для неизвестных классов",
+    ],
+  },
+
+  {
+    id: "js155",
+    group: "Замыкания",
+    subgroup: "Каррирование",
+    title: "1. Каррирование суммы с двумя аргументами",
+    desc: "Реализуйте функцию sum, поддерживающую как прямой вызов sum(1, 2), так и каррированный вызов sum(1)(2).",
+    isRaw: true,
+    candidate: CurryingTwoArgumentsCandidateRaw,
+    rawCandidate: CurryingTwoArgumentsCandidateRaw,
+    solution: CurryingTwoArgumentsSolutionRaw,
+    rawSolution: CurryingTwoArgumentsSolutionRaw,
+    filepath: "src/javascript/tasks/17_currying/1_CurryingTwoArguments.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Функциональное программирование",
+        recommendationNote: "Каррирование позволяет трансформировать функцию от N аргументов в цепочку функций от одного аргумента, облегчая композицию.",
+        rawSolution: CurryingTwoArgumentsSolutionRaw,
+        filepath: "src/javascript/tasks/17_currying/1_CurryingTwoArguments.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Каррирование функций в JavaScript (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Каррирование",
+        url: "https://learn.javascript.ru/currying-partials",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Как определить, был ли передан второй аргумент при вызове sum(1, 2)?",
+        answer: "Проверкой параметра на равенство undefined: if (val2 !== undefined).",
+      },
+    ],
+    checklist: [
+      "Поддержка вызова sum(1, 2) === 3",
+      "Поддержка вызова sum(1)(2) === 3",
+    ],
+  },
+
+  {
+    id: "js156",
+    group: "Замыкания",
+    subgroup: "Каррирование",
+    title: "2. Бесконечное каррирование функции суммирования",
+    desc: "Напишите функцию curry_sum, позволяющую суммировать произвольное количество вызовов до терминального вызова без аргументов ().",
+    isRaw: true,
+    candidate: InfiniteCurryingCandidateRaw,
+    rawCandidate: InfiniteCurryingCandidateRaw,
+    solution: InfiniteCurryingSolutionRaw,
+    rawSolution: InfiniteCurryingSolutionRaw,
+    filepath: "src/javascript/tasks/17_currying/2_InfiniteCurrying.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Функциональное программирование",
+        recommendationNote: "Каррирование позволяет трансформировать функцию от N аргументов в цепочку функций от одного аргумента, облегчая композицию.",
+        rawSolution: InfiniteCurryingSolutionRaw,
+        filepath: "src/javascript/tasks/17_currying/2_InfiniteCurrying.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Продвинутое каррирование (MDN)",
+        urlTitle: "MDN — Замыкания и каррирование",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Closures",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Какое условие завершает цепь рекурсивных вызовов в бесконечном каррировании?",
+        answer: "Проверка y === undefined при финальном вызове без аргумента ().",
+      },
+    ],
+    checklist: [
+      "Результат sum(1)() === 1",
+      "Результат sum(1)(2)(3)() === 6",
+    ],
+  },
+
+  {
+    id: "js157",
+    group: "Замыкания",
+    subgroup: "Каррирование",
+    title: "3. Гибридная функция суммирования (Company X)",
+    desc: "Реализуйте функцию sum, поддерживающую гибкие вызовы sum(a, b) и sum(a)(b) в стиле задач собеседования Company X.",
+    isRaw: true,
+    candidate: HybridSumCurryingCompanyXCandidateRaw,
+    rawCandidate: HybridSumCurryingCompanyXCandidateRaw,
+    solution: HybridSumCurryingCompanyXSolutionRaw,
+    rawSolution: HybridSumCurryingCompanyXSolutionRaw,
+    filepath: "src/javascript/tasks/17_currying/3_HybridSumCurryingCompanyX.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Функциональное программирование",
+        recommendationNote: "Каррирование позволяет трансформировать функцию от N аргументов в цепочку функций от одного аргумента, облегчая композицию.",
+        rawSolution: HybridSumCurryingCompanyXSolutionRaw,
+        filepath: "src/javascript/tasks/17_currying/3_HybridSumCurryingCompanyX.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Каррирование на собеседованиях (Doka.guide)",
+        urlTitle: "Дока — Функция каррирования",
+        url: "https://doka.guide/js/currying/",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "В чем разница между частичным применением (partial application) и каррированием (currying)?",
+        answer: "Каррирование всегда преобразует функцию с N аргументами в цепочку из N функций от 1 аргумента. Частичное применение фиксирует только часть аргументов.",
+      },
+    ],
+    checklist: [
+      "Проверка b === undefined",
+      "Возврат стрелочной функции (num) => a + num",
+    ],
+  },
+
+  {
+    id: "js166",
+    group: "Замыкания",
+    subgroup: "Композиция функций",
+    title: "1. Композиция функций (Pipe и Compose)",
+    desc: "Реализуйте функции pipe(...fns) и compose(...fns) для последовательного выполнения функций.",
+    isRaw: true,
+    candidate: PipeAndComposeCandidateRaw,
+    rawCandidate: PipeAndComposeCandidateRaw,
+    solution: PipeAndComposeSolutionRaw,
+    rawSolution: PipeAndComposeSolutionRaw,
+    filepath: "src/javascript/tasks/19_control_flow/3_PipeAndCompose.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Оптимизация производительности",
+        recommendationNote: "Ограничение частоты вызова функций предотвращает избыточные сетевые запросы и перерисовывание интерфейса.",
+        rawSolution: PipeAndComposeSolutionRaw,
+        filepath: "src/javascript/tasks/19_control_flow/3_PipeAndCompose.js",
+      },
+    ],
+    articles: [
+      { title: "Композиция функций (MDN)", urlTitle: "MDN — Function Composition", url: "https://developer.mozilla.org/en-US/docs/Glossary/First-class_Function" },
+    ],
+    interviewerQuestions: [
+      { question: "В чем отличие pipe от compose?", answer: "pipe выполняет функции слева направо, compose — справа налево." },
+    ],
+    checklist: ["pipe(f, g)(x) === g(f(x))", "compose(f, g)(x) === f(g(x))"],
+  },
+
+  {
+    id: "js101",
+    group: "Замыкания",
+    subgroup: "Кеширование и мемоизация",
+    title: "1. Мемоизация аргументов (Company X) (Уровень 3)",
+    desc: "Реализуйте классическую функцию мемоизации memoize(fn) с учетом порядка любых примитивных аргументов.",
+    isRaw: true,
+    candidate: MemoizeBasicCandidateRaw,
+    rawCandidate: MemoizeBasicCandidateRaw,
+    solution: MemoizeBasicSolutionRaw,
+    rawSolution: MemoizeBasicSolutionRaw,
+    filepath: "src/javascript/tasks/12_collections_map/level3/19_MemoizeBasic.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Декларативное преобразование",
+        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
+        rawSolution: MemoizeBasicSolutionRaw,
+        filepath: "src/javascript/tasks/12_collections_map/level3/19_MemoizeBasic.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Кэширование результатов вызова (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Декораторы и мемоизация",
+        url: "https://learn.javascript.ru/call-apply-decorators",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему memoized(1, 2) и memoized(2, 1) считаются разными вызовами?",
+        answer: "JSON.stringify([1, 2]) возвращает '[1,2]', а JSON.stringify([2, 1]) — '[2,1]'. Ключи строковых представлений отличаются.",
+      },
+    ],
+    checklist: [
+      "Вызов fn.apply(this, args)",
+      "Кэширование в Map по ключу JSON.stringify(args)",
+    ],
+  },
+
+  {
+    id: "js100",
+    group: "Замыкания",
+    subgroup: "Кеширование и мемоизация",
+    title: "2. Мемоизация с TTL (Company X) (Уровень 3)",
+    desc: "Реализуйте функцию memoize(fn, ms), кэширующую результаты вызова fn на ms миллисекунд.",
+    isRaw: true,
+    candidate: MemoizeWithTTLCandidateRaw,
+    rawCandidate: MemoizeWithTTLCandidateRaw,
+    solution: MemoizeWithTTLSolutionRaw,
+    rawSolution: MemoizeWithTTLSolutionRaw,
+    filepath: "src/javascript/tasks/12_collections_map/level3/20_MemoizeWithTTL.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Декларативное преобразование",
+        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
+        rawSolution: MemoizeWithTTLSolutionRaw,
+        filepath: "src/javascript/tasks/12_collections_map/level3/20_MemoizeWithTTL.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Мемоизация функций в JS (Doka.guide)",
+        urlTitle: "Дока — Паттерн Мемоизация",
+        url: "https://doka.guide/js/memoization/",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Как отследить протухание кэша (TTL)?",
+        answer: "Сохраняя в кэше время истечения (now + ms) или времени вызова (timestamp) и сравнивая его с текущим Date.now().",
+      },
+    ],
+    checklist: [
+      "Формирование ключа через JSON.stringify(args)",
+      "Проверка времени истечения кэша (now < expiry)",
+    ],
+  }
+];
+
+export const JS_RECURSION_TASKS = [
+  {
+    id: "js132",
+    group: "Рекурсия",
+    subgroup: "База рекурсии",
+    title: "1. Что такое база рекурсии (base case)",
+    desc: "Напишите функцию countDown(n), печатающую числа от n до 1 с точкой остановки (базой рекурсии).",
+    isRaw: true,
+    candidate: CountDownBaseCaseCandidateRaw,
+    rawCandidate: CountDownBaseCaseCandidateRaw,
+    solution: CountDownBaseCaseSolutionRaw,
+    rawSolution: CountDownBaseCaseSolutionRaw,
+    filepath: "src/javascript/tasks/15_recursion/level0/1_CountDownBaseCase.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Алгоритмический подход",
+        recommendationNote: "Рекурсивный подход идеален для работы с древовидными и вложенными структурами данных. Всегда определяйте базовый случай выхода.",
+        rawSolution: CountDownBaseCaseSolutionRaw,
+        filepath: "src/javascript/tasks/15_recursion/level0/1_CountDownBaseCase.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Рекурсия и стек (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Рекурсия и стек",
+        url: "https://learn.javascript.ru/recursion",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Что происходит, если в рекурсивной функции отсутствует база рекурсии?",
+        answer: "Происходит бесконечный вызов функции самой себя, который приводит к переполнению стека вызовов (RangeError: Maximum call stack size exceeded).",
+      },
+    ],
+    checklist: [
+      "Проверка условия выхода if (n <= 0) return",
+      "Уменьшение аргумента при вызове countDown(n - 1)",
+    ],
+  },
+
+  {
+    id: "js133",
+    group: "Рекурсия",
+    subgroup: "База рекурсии",
+    title: "2. Рекурсия 'вверх' (печать при возврате)",
+    desc: "Напишите функцию countUp(n), печатающую числа от 1 до n, где вывод происходит ПОСЛЕ рекурсивного вызова.",
+    isRaw: true,
+    candidate: CountUpPostCallCandidateRaw,
+    rawCandidate: CountUpPostCallCandidateRaw,
+    solution: CountUpPostCallSolutionRaw,
+    rawSolution: CountUpPostCallSolutionRaw,
+    filepath: "src/javascript/tasks/15_recursion/level0/2_CountUpPostCall.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Алгоритмический подход",
+        recommendationNote: "Рекурсивный подход идеален для работы с древовидными и вложенными структурами данных. Всегда определяйте базовый случай выхода.",
+        rawSolution: CountUpPostCallSolutionRaw,
+        filepath: "src/javascript/tasks/15_recursion/level0/2_CountUpPostCall.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Порядок размотки стека рекурсии (Doka.guide)",
+        urlTitle: "Дока — Порядок выполнения вызовов",
+        url: "https://doka.guide/js/recursion/",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему консоль выводит числа по возрастанию, хотя вызовы идут на уменьшение?",
+        answer: "Вызовы накапливаются в стеке вызовов (спуск), а печать выполняется во время обратного хода (подъема) при разворачивании стека.",
+      },
+    ],
+    checklist: [
+      "Размещение console.log(n) после рекурсивного вызова",
+    ],
+  },
+
+  {
+    id: "js134",
+    group: "Рекурсия",
+    subgroup: "База рекурсии",
+    title: "3. Факториал (классика синтаксиса)",
+    desc: "Реализуйте классическую функцию вычисления факториала factorial(n) с наглядным рекурсивным шагом.",
+    isRaw: true,
+    candidate: FactorialClassicCandidateRaw,
+    rawCandidate: FactorialClassicCandidateRaw,
+    solution: FactorialClassicSolutionRaw,
+    rawSolution: FactorialClassicSolutionRaw,
+    filepath: "src/javascript/tasks/15_recursion/level0/3_FactorialClassic.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Алгоритмический подход",
+        recommendationNote: "Рекурсивный подход идеален для работы с древовидными и вложенными структурами данных. Всегда определяйте базовый случай выхода.",
+        rawSolution: FactorialClassicSolutionRaw,
+        filepath: "src/javascript/tasks/15_recursion/level0/3_FactorialClassic.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Вычисление факториала (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Задачи на рекурсию",
+        url: "https://learn.javascript.ru/task/factorial",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Чему равны факториалы 0! и 1!?",
+        answer: "Оба значения равны 1, поэтому база рекурсии проверяет if (n === 0 || n === 1) return 1.",
+      },
+    ],
+    checklist: [
+      "Базовое условие n === 0 || n === 1",
+      "Рекурсивное произведение n * factorial(n - 1)",
+    ],
+  },
+
+  {
+    id: "js135",
+    group: "Рекурсия",
+    subgroup: "База рекурсии",
+    title: "4. Возведение в степень",
+    desc: "Напишите функцию power(base, exp) для вычисления степени числа через последовательные рекурсивные умножения.",
+    isRaw: true,
+    candidate: PowerExpCandidateRaw,
+    rawCandidate: PowerExpCandidateRaw,
+    solution: PowerExpSolutionRaw,
+    rawSolution: PowerExpSolutionRaw,
+    filepath: "src/javascript/tasks/15_recursion/level0/4_PowerExp.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Алгоритмический подход",
+        recommendationNote: "Рекурсивный подход идеален для работы с древовидными и вложенными структурами данных. Всегда определяйте базовый случай выхода.",
+        rawSolution: PowerExpSolutionRaw,
+        filepath: "src/javascript/tasks/15_recursion/level0/4_PowerExp.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Возведение в степень через рекурсию (MDN)",
+        urlTitle: "MDN — Рекурсивное вычисление степеней",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Guide/Functions#recursion",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Какое базовое условие используется при возведении числа в степень?",
+        answer: "Базовое условие exp === 0 возвращает 1, так как любое число в нулевой степени равно единице.",
+      },
+    ],
+    checklist: [
+      "Условие if (exp === 0) return 1",
+      "Возврат base * power(base, exp - 1)",
+    ],
+  },
+
+  {
+    id: "js136",
+    group: "Рекурсия",
+    subgroup: "Массивы и строки",
+    title: "1. Максимум в массиве",
+    desc: "Напишите рекурсивную функцию findMax(arr) для поиска наибольшего элемента массива.",
+    isRaw: true,
+    candidate: FindMaxArrayCandidateRaw,
+    rawCandidate: FindMaxArrayCandidateRaw,
+    solution: FindMaxArraySolutionRaw,
+    rawSolution: FindMaxArraySolutionRaw,
+    solutions: [
+      {
+        solution: FindMaxArraySolutionRaw,
+        rawSolution: FindMaxArraySolutionRaw,
+        badge: "Рекурсивное",
+      },
+      {
+        solution: FindMaxArraySolutionRecommendedRaw,
+        rawSolution: FindMaxArraySolutionRecommendedRaw,
+        isRecommended: true,
+        badge: "Рекомендуется",
+        recommendationNote: "Использование Math.max(...arr) в реальных проектах эффективнее рекурсии O(N) по памяти.",
+      },
+    ],
+    filepath: "src/javascript/tasks/15_recursion/level1/5_FindMaxArray.js",
+    articles: [
+      {
+        title: "Поиск максимума в массиве (MDN)",
+        urlTitle: "MDN — Math.max()",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Math/max",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему срез arr.slice(1) в рекурсивной реализации расходует много памяти?",
+        answer: "slice(1) создаёт новый массив на каждом вызове, создавая доп. память O(N). Лучше передавать текущий индекс.",
+      },
+    ],
+    checklist: [
+      "База рекурсии if (arr.length === 1) return arr[0]",
+      "Рекурсивный срез arr.slice(1)",
+    ],
+  },
+
+  {
+    id: "js137",
+    group: "Рекурсия",
+    subgroup: "Массивы и строки",
+    title: "2. Глубокое сплющивание массива (flatten)",
+    desc: "Напишите функцию flatten(arr) для выравнивания массивов любой глубины вложенности без использования flat().",
+    isRaw: true,
+    candidate: DeepFlattenArrayCandidateRaw,
+    rawCandidate: DeepFlattenArrayCandidateRaw,
+    solution: DeepFlattenArraySolutionRaw,
+    rawSolution: DeepFlattenArraySolutionRaw,
+    solutions: [
+      {
+        solution: DeepFlattenArraySolutionRaw,
+        rawSolution: DeepFlattenArraySolutionRaw,
+        badge: "Рекурсивный flat",
+      },
+      {
+        solution: DeepFlattenArraySolutionRecommendedRaw,
+        rawSolution: DeepFlattenArraySolutionRecommendedRaw,
+        isRecommended: true,
+        badge: "Рекомендуется",
+        recommendationNote: "В современном ES2019+ принято использовать встроенный метод arr.flat(Infinity).",
+      },
+    ],
+    filepath: "src/javascript/tasks/15_recursion/level2/6_DeepFlattenArray.js",
+    articles: [
+      {
+        title: "Разворачивание вложенных массивов (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Рекурсивный flat",
+        url: "https://learn.javascript.ru/recursion",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Как проверить, является ли текущий элемент массивом?",
+        answer: "С помощью встроенного метода Array.isArray(el).",
+      },
+    ],
+    checklist: [
+      "Проверка Array.isArray(el)",
+      "Рекурсивный push(...flatten(el))",
+    ],
+  },
+
+  {
+    id: "js138",
+    group: "Рекурсия",
+    subgroup: "Вложенные структуры",
+    title: "1. Глубокое клонирование объекта",
+    desc: "Напишите функцию deepClone(obj) для полного клонирования объектов и массивов любой вложенности без JSON.parse.",
+    isRaw: true,
+    candidate: DeepCloneObjectCandidateRaw,
+    rawCandidate: DeepCloneObjectCandidateRaw,
+    solution: DeepCloneObjectSolutionRaw,
+    rawSolution: DeepCloneObjectSolutionRaw,
+    solutions: [
+      {
+        solution: DeepCloneObjectSolutionRaw,
+        rawSolution: DeepCloneObjectSolutionRaw,
+        badge: "Ручное клонирование",
+      },
+      {
+        solution: DeepCloneObjectSolutionRecommendedRaw,
+        rawSolution: DeepCloneObjectSolutionRecommendedRaw,
+        isRecommended: true,
+        badge: "Рекомендуется",
+        recommendationNote: "В современном JavaScript стандартной альтернативой является функция structuredClone(value).",
+      },
+    ],
+    filepath: "src/javascript/tasks/15_recursion/level2/7_DeepCloneObject.js",
+    articles: [
+      {
+        title: "Глубокая копия объектов (MDN)",
+        urlTitle: "MDN — structuredClone()",
+        url: "https://developer.mozilla.org/ru/docs/Web/API/structuredClone",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Чем глубокое клонирование отличается от поверхностного (shallow copy)?",
+        answer: "Поверхностное копирует только первые свойства, а вложенные объекты оставляет ссылками. Глубокая копия создает новые объекты для всех уровней.",
+      },
+    ],
+    checklist: [
+      "Проверка примитивов typeof !== 'object' || value === null",
+      "Рекурсивное копирование свойств и элементов",
+    ],
+  },
+
+  {
+    id: "js139",
+    group: "Рекурсия",
+    subgroup: "Вложенные структуры",
+    title: "2. Сумма всех чисел во вложенном объекте",
+    desc: "Реализуйте функцию deepSum(obj), суммирующую все числовые значения объектов и массивов любой вложенности.",
+    isRaw: true,
+    candidate: DeepSumObjectCandidateRaw,
+    rawCandidate: DeepSumObjectCandidateRaw,
+    solution: DeepSumObjectSolutionRaw,
+    rawSolution: DeepSumObjectSolutionRaw,
+    solutions: [
+      {
+        solution: DeepSumObjectSolutionRaw,
+        rawSolution: DeepSumObjectSolutionRaw,
+        badge: "С защитой от прототипов",
+      },
+      {
+        solution: DeepSumObjectSolutionRecommendedRaw,
+        rawSolution: DeepSumObjectSolutionRecommendedRaw,
+        isRecommended: true,
+        badge: "Рекомендуется",
+        recommendationNote: "Использование Object.values(obj).reduce(...) спасет от необходимости циклов по ключам.",
+      },
+    ],
+    filepath: "src/javascript/tasks/15_recursion/level2/8_DeepSumObject.js",
+    articles: [
+      {
+        title: "Обход вложенных объектов (Doka.guide)",
+        urlTitle: "Дока — Обход объектов",
+        url: "https://doka.guide/js/object-methods/",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему нужна явная проверка val === null?",
+        answer: "Потому что typeof null === 'object', и попытка передать null в рекурсию или Object.values прервет работу с ошибкой.",
+      },
+    ],
+    checklist: [
+      "Защита от typeof null === 'object'",
+      "Рекурсивный суммирующий обход",
+    ],
+  },
+
+  {
+    id: "js140",
+    group: "Рекурсия",
+    subgroup: "Вложенные структуры",
+    title: "3. Обход бинарного дерева (сумма значений)",
+    desc: "Напишите функцию treeSum(node), суммирующую значения всех узлов бинарного дерева { value, left, right }.",
+    isRaw: true,
+    candidate: TreeSumBinaryCandidateRaw,
+    rawCandidate: TreeSumBinaryCandidateRaw,
+    solution: TreeSumBinarySolutionRaw,
+    rawSolution: TreeSumBinarySolutionRaw,
+    filepath: "src/javascript/tasks/15_recursion/level2/9_TreeSumBinary.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Алгоритмический подход",
+        recommendationNote: "Рекурсивный подход идеален для работы с древовидными и вложенными структурами данных. Всегда определяйте базовый случай выхода.",
+        rawSolution: TreeSumBinarySolutionRaw,
+        filepath: "src/javascript/tasks/15_recursion/level2/9_TreeSumBinary.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Обход бинарных деревьев (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Деревья",
+        url: "https://learn.javascript.ru/recursion#рекурсивные-структуры",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Какое условие останавливает суммирование при достижении листьев дерева?",
+        answer: "Условие if (node === null) return 0.",
+      },
+    ],
+    checklist: [
+      "Проверка на null",
+      "Возврат node.value + treeSum(node.left) + treeSum(node.right)",
+    ],
+  },
+
+  {
+    id: "js141",
+    group: "Рекурсия",
+    subgroup: "Вложенные структуры",
+    title: "4. Глубина (высота) дерева",
+    desc: "Напишите функцию treeDepth(node), определяющую максимальную высоту (глубину) бинарного дерева.",
+    isRaw: true,
+    candidate: TreeDepthMaxCandidateRaw,
+    rawCandidate: TreeDepthMaxCandidateRaw,
+    solution: TreeDepthMaxSolutionRaw,
+    rawSolution: TreeDepthMaxSolutionRaw,
+    filepath: "src/javascript/tasks/15_recursion/level2/10_TreeDepthMax.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Алгоритмический подход",
+        recommendationNote: "Рекурсивный подход идеален для работы с древовидными и вложенными структурами данных. Всегда определяйте базовый случай выхода.",
+        rawSolution: TreeDepthMaxSolutionRaw,
+        filepath: "src/javascript/tasks/15_recursion/level2/10_TreeDepthMax.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Высота деревьев поиска (MDN)",
+        urlTitle: "MDN — Агоритмы на деревьях",
+        url: "https://developer.mozilla.org/ru/docs/Glossary/Tree",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Как рассчитывается глубина родительского узла по левому и правому поддереву?",
+        answer: "Глубина равна 1 + Math.max(leftDepth, rightDepth).",
+      },
+    ],
+    checklist: [
+      "Использование Math.max(depthLeft, depthRight)",
+    ],
+  },
+
+  {
+    id: "js142",
+    group: "Рекурсия",
+    subgroup: "Вложенные структуры",
+    title: "5. Поиск файла в файловой системе",
+    desc: "Напишите функцию findFile(node, name) для рекурсивного поиска файла в древовидной структуре папок.",
+    isRaw: true,
+    candidate: FindFileFileSystemCandidateRaw,
+    rawCandidate: FindFileFileSystemCandidateRaw,
+    solution: FindFileFileSystemSolutionRaw,
+    rawSolution: FindFileFileSystemSolutionRaw,
+    filepath: "src/javascript/tasks/15_recursion/level2/11_FindFileFileSystem.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Алгоритмический подход",
+        recommendationNote: "Рекурсивный подход идеален для работы с древовидными и вложенными структурами данных. Всегда определяйте базовый случай выхода.",
+        rawSolution: FindFileFileSystemSolutionRaw,
+        filepath: "src/javascript/tasks/15_recursion/level2/11_FindFileFileSystem.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Рекурсивный поиск в древовидных объектах (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Поиск в дереве",
+        url: "https://learn.javascript.ru/recursion",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Зачем использовать метод Array.prototype.some в рекурсивном поиске файла по папкам?",
+        answer: "Метод .some останавливает обход дочерних элементов сразу при первом совпадении (short-circuit).",
+      },
+    ],
+    checklist: [
+      "Проверка имени node.name === name",
+      "Рекурсивный обход детей node.children.some(...) ",
+    ],
+  },
+
+  {
+    id: "js143",
+    group: "Рекурсия",
+    subgroup: "Практические задачи",
+    title: "1. Рекурсивное суммирование чисел во вложенных объектах",
+    desc: "Реализуйте рекурсивную функцию sumNumbers(data) для подсчета суммы отрицательных и положительных чисел объекта.",
+    isRaw: true,
+    candidate: SumNumbersNestedObjCandidateRaw,
+    rawCandidate: SumNumbersNestedObjCandidateRaw,
+    solution: SumNumbersNestedObjSolutionRaw,
+    rawSolution: SumNumbersNestedObjSolutionRaw,
+    filepath: "src/javascript/tasks/15_recursion/level3/12_SumNumbersNestedObj.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Алгоритмический подход",
+        recommendationNote: "Рекурсивный подход идеален для работы с древовидными и вложенными структурами данных. Всегда определяйте базовый случай выхода.",
+        rawSolution: SumNumbersNestedObjSolutionRaw,
+        filepath: "src/javascript/tasks/15_recursion/level3/12_SumNumbersNestedObj.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Рекурсивные структуры данных (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Рекурсия",
+        url: "https://learn.javascript.ru/recursion",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Как рекурсивно просуммировать данные, если ключи объекта заранее неизвестны?",
+        answer: "С помощью цикла for...in или Object.values() с проверкой типов typeof value === 'number' и 'object'.",
+      },
+    ],
+    checklist: [
+      "Проверка typeof value === 'number'",
+      "Рекурсивное прибавление sum += sumNumbers(value)",
+    ],
+  },
+
+  {
+    id: "js144",
+    group: "Рекурсия",
+    subgroup: "Практические задачи",
+    title: "2. Сбор всех примитивов из глубокого объекта",
+    desc: "Напишите функцию getAllPrimitives(obj), извлекающую плоский массив всех числовых примитивов из глубоко вложенного объекта.",
+    isRaw: true,
+    candidate: GetAllPrimitivesCandidateRaw,
+    rawCandidate: GetAllPrimitivesCandidateRaw,
+    solution: GetAllPrimitivesSolutionRaw,
+    rawSolution: GetAllPrimitivesSolutionRaw,
+    filepath: "src/javascript/tasks/15_recursion/level3/13_GetAllPrimitives.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Алгоритмический подход",
+        recommendationNote: "Рекурсивный подход идеален для работы с древовидными и вложенными структурами данных. Всегда определяйте базовый случай выхода.",
+        rawSolution: GetAllPrimitivesSolutionRaw,
+        filepath: "src/javascript/tasks/15_recursion/level3/13_GetAllPrimitives.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Преобразование вложенных объектов (MDN)",
+        urlTitle: "MDN — Оператор спред и массивы",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Spread_syntax",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Как извлечь подмассивы в единый массив при помощи spread оператора?",
+        answer: "Вызовом arr.push(...getAllPrimitives(value)).",
+      },
+    ],
+    checklist: [
+      "Пуш примитивов arr.push(value)",
+      "Спред с рекурсией arr.push(...getAllPrimitives(value))",
+    ],
+  },
+
+  {
+    id: "js145",
+    group: "Рекурсия",
+    subgroup: "Практические задачи",
+    title: "3. Сбор всех значений у узлов дерева",
+    desc: "Напишите функцию recursionTree(tree), собирающую плоский массив значений value всех узлов и потомков дерева.",
+    isRaw: true,
+    candidate: CollectTreeValuesCandidateRaw,
+    rawCandidate: CollectTreeValuesCandidateRaw,
+    solution: CollectTreeValuesSolutionRaw,
+    rawSolution: CollectTreeValuesSolutionRaw,
+    filepath: "src/javascript/tasks/15_recursion/level3/14_CollectTreeValues.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Алгоритмический подход",
+        recommendationNote: "Рекурсивный подход идеален для работы с древовидными и вложенными структурами данных. Всегда определяйте базовый случай выхода.",
+        rawSolution: CollectTreeValuesSolutionRaw,
+        filepath: "src/javascript/tasks/15_recursion/level3/14_CollectTreeValues.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Обход вложенных списков и деревьев (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Связанные списки и деревья",
+        url: "https://learn.javascript.ru/recursion",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Какой порядок обхода реализует предложенная функция recursionTree?",
+        answer: "Обход в глубину (DFS — Depth-First Search), добавляющий текущий узел и рекурсивно всех его детей.",
+      },
+    ],
+    checklist: [
+      "Добавление значения текущего узла [data.value]",
+      "Циклический рекурсивный спред по data.children",
+    ],
+  },
+
+  {
+    id: "js146",
+    group: "Рекурсия",
+    subgroup: "Практические задачи",
+    title: "4. Суммирование значений дерева с дочерними элементами",
+    desc: "Реализуйте функцию sumTree(tree) для подсчета общей суммы всех свойства value в дереве произвольной ширины.",
+    isRaw: true,
+    candidate: SumTreeValuesCandidateRaw,
+    rawCandidate: SumTreeValuesCandidateRaw,
+    solution: SumTreeValuesSolutionRaw,
+    rawSolution: SumTreeValuesSolutionRaw,
+    filepath: "src/javascript/tasks/15_recursion/level3/15_SumTreeValues.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Алгоритмический подход",
+        recommendationNote: "Рекурсивный подход идеален для работы с древовидными и вложенными структурами данных. Всегда определяйте базовый случай выхода.",
+        rawSolution: SumTreeValuesSolutionRaw,
+        filepath: "src/javascript/tasks/15_recursion/level3/15_SumTreeValues.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Агрегация значений в деревьях (Doka.guide)",
+        urlTitle: "Дока — Суммирование узлов",
+        url: "https://doka.guide/js/recursion/",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Как просуммировать узлы дерева при отсутствии у некоторых из них поля children?",
+        answer: "Проверять существование свойства if (data.children) перед запуском цикла по потомкам.",
+      },
+    ],
+    checklist: [
+      "Инициализация суммы let sum = data.value",
+      "Прибавление сумм потомков в цикле sum += sumTree(child)",
+    ],
+  },
+
+  {
+    id: "js147",
+    group: "Рекурсия",
+    subgroup: "Практические задачи",
+    title: "5. Вычисление энно-го числа Фибоначчи",
+    desc: "Реализуйте функцию fib(n) для поиска n-го числа Фибоначчи через рекурсивную формулу.",
+    isRaw: true,
+    candidate: FibonacciRecursiveCandidateRaw,
+    rawCandidate: FibonacciRecursiveCandidateRaw,
+    solution: FibonacciRecursiveSolutionRaw,
+    rawSolution: FibonacciRecursiveSolutionRaw,
+    solutions: [
+      {
+        solution: FibonacciRecursiveSolutionRaw,
+        rawSolution: FibonacciRecursiveSolutionRaw,
+        badge: "Рекурсивное O(2^N)",
+      },
+      {
+        solution: FibonacciRecursiveSolutionRecommendedRaw,
+        rawSolution: FibonacciRecursiveSolutionRecommendedRaw,
+        isRecommended: true,
+        badge: "Рекомендуется",
+        recommendationNote: "Итеративное решение за O(N) быстрее и не переполняет стек при больших значениях n.",
+      },
+    ],
+    filepath: "src/javascript/tasks/15_recursion/level3/16_FibonacciRecursive.js",
+    articles: [
+      {
+        title: "Числа Фибоначчи (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Задача Числа Фибоначчи",
+        url: "https://learn.javascript.ru/task/fibonacci-numbers",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Какова временная сложность простой рекурсивной реализации fib(n)?",
+        answer: "Экспоненциальная сложность O(2^N), так как каждый вызов разветвляется на два новых вызова.",
+      },
+    ],
+    checklist: [
+      "Базовый случай n <= 1 ? n : ...",
+      "Рекурсия fib(n - 1) + fib(n - 2)",
+    ],
+  }
+];
+
+export const JS_PROTOTYPES_THIS_TASKS = [
+  {
+    id: "js148",
+    group: "Прототипы THIS",
+    subgroup: "Потеря контекста и bind",
+    title: "1. Потеря контекста, стрелочные функции и повторный bind",
+    desc: "Проанализируйте поведение this при вызове методов объекта, извлечении их в переменные, вызове стрелочных функций и повторном bind.",
+    isRaw: true,
+    candidate: ThisObjectArrowMethodsCandidateRaw,
+    rawCandidate: ThisObjectArrowMethodsCandidateRaw,
+    solution: ThisObjectArrowMethodsSolutionRaw,
+    rawSolution: ThisObjectArrowMethodsSolutionRaw,
+    filepath: "src/javascript/tasks/16_prototypes_this/1_ThisObjectArrowMethods.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Фундамент JavaScript",
+        recommendationNote: "Понимание контекста исполнения this и прототипного наследования — один из наиболее частых вопросов на собеседовании.",
+        rawSolution: ThisObjectArrowMethodsSolutionRaw,
+        filepath: "src/javascript/tasks/16_prototypes_this/1_ThisObjectArrowMethods.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Контекст вызова this (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Объект метода, this",
+        url: "https://learn.javascript.ru/object-methods",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Можно ли изменить this у стрелочной функции с помощью bind, call или apply?",
+        answer: "Нет, стрелочные функции не имеют собственного this и жестко привязываются к лексическому окружению на момент создания.",
+      },
+    ],
+    checklist: [
+      "Разница между методом объекта и стрелочным методом",
+      "Применение .bind() к обычным и стрелочным функциям",
+    ],
+  },
+
+  {
+    id: "js150",
+    group: "Прототипы THIS",
+    subgroup: "Потеря контекста и bind",
+    title: "2. Извлечение метода объекта в отдельную переменную",
+    desc: "Определите, что выведет данный код при вызове извлечённого метода объекта, объясните поведение this и приведите способы исправления.",
+    isRaw: true,
+    candidate: MethodExtractionContextLossCandidateRaw,
+    rawCandidate: MethodExtractionContextLossCandidateRaw,
+    solution: MethodExtractionContextLossSolutionRaw,
+    rawSolution: MethodExtractionContextLossSolutionRaw,
+    filepath: "src/javascript/tasks/16_prototypes_this/3_MethodExtraction.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Фундамент JavaScript",
+        recommendationNote: "Понимание контекста исполнения this и прототипного наследования — один из наиболее частых вопросов на собеседовании.",
+        rawSolution: MethodExtractionContextLossSolutionRaw,
+        filepath: "src/javascript/tasks/16_prototypes_this/3_MethodExtraction.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Потеря this при присваивании (Doka.guide)",
+        urlTitle: "Дока — Связывание контекста bind",
+        url: "https://doka.guide/js/bind/",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Как привязать контекст к извлеченной функции?",
+        answer: "Использованием obj.getName.bind(obj) или вызовом функции внутри анонимного стрелочного колбэка () => obj.getName().",
+      },
+    ],
+    checklist: [
+      "Привязка контекста через obj.getName.bind(obj)",
+    ],
+  },
+
+  {
+    id: "js151",
+    group: "Прототипы THIS",
+    subgroup: "Потеря контекста и bind",
+    title: "3. Повторное применение метода bind",
+    desc: "Определите значение this при цепочке вызовов obj1.getName.bind(obj2).bind(obj1).",
+    isRaw: true,
+    candidate: MultipleBindChainingCandidateRaw,
+    rawCandidate: MultipleBindChainingCandidateRaw,
+    solution: MultipleBindChainingSolutionRaw,
+    rawSolution: MultipleBindChainingSolutionRaw,
+    filepath: "src/javascript/tasks/16_prototypes_this/4_MultipleBindChaining.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Фундамент JavaScript",
+        recommendationNote: "Понимание контекста исполнения this и прототипного наследования — один из наиболее частых вопросов на собеседовании.",
+        rawSolution: MultipleBindChainingSolutionRaw,
+        filepath: "src/javascript/tasks/16_prototypes_this/4_MultipleBindChaining.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Привязка контекста и повторный bind (MDN)",
+        urlTitle: "MDN — Function.prototype.bind()",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Function/bind",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Можно ли переопределить контекст у функции, созданной через .bind()?",
+        answer: "Нет, первый вызов .bind() создает постоянно связанную функцию (bound function), свойство this которой нельзя изменить последующими bind/call/apply.",
+      },
+    ],
+    checklist: [
+      "Вывод 'name is: User 2'",
+    ],
+  },
+
+  {
+    id: "js153",
+    group: "Прототипы THIS",
+    subgroup: "Потеря контекста и bind",
+    title: "4. Вызов методов с изменением контекста внешней функции",
+    desc: "Определите вывод для обычных и стрелочных методов объекта при создании его внутри функции foo.call({ x: 30 }).",
+    isRaw: true,
+    candidate: ScopeVsContextArrowMethodsCandidateRaw,
+    rawCandidate: ScopeVsContextArrowMethodsCandidateRaw,
+    solution: ScopeVsContextArrowMethodsSolutionRaw,
+    rawSolution: ScopeVsContextArrowMethodsSolutionRaw,
+    filepath: "src/javascript/tasks/16_prototypes_this/6_ScopeVsContextArrowMethods.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Фундамент JavaScript",
+        recommendationNote: "Понимание контекста исполнения this и прототипного наследования — один из наиболее частых вопросов на собеседовании.",
+        rawSolution: ScopeVsContextArrowMethodsSolutionRaw,
+        filepath: "src/javascript/tasks/16_prototypes_this/6_ScopeVsContextArrowMethods.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Стрелочные функции и this (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Повторяем стрелочные функции",
+        url: "https://learn.javascript.ru/arrow-functions",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Где берет свой this стрелочный метод baz при вызове foo.call({ x: 30 })?",
+        answer: "Из лексического окружения функции foo, контекстом this которой при явном вызове .call({ x: 30 }) стал объект { x: 30 }.",
+      },
+    ],
+    checklist: [
+      "Различие контекста обычных методах и стрелочных методов",
+    ],
+  },
+
+  {
+    id: "js149",
+    group: "Прототипы THIS",
+    subgroup: "Прототипы",
+    title: "1. Переопределение свойства prototype конструктора",
+    desc: "Определите и объясните, что выведет код при обращении к методам объектов, созданных до и после перезаписи Person.prototype.",
+    isRaw: true,
+    candidate: ConstructorPrototypeReassignmentCandidateRaw,
+    rawCandidate: ConstructorPrototypeReassignmentCandidateRaw,
+    solution: ConstructorPrototypeReassignmentSolutionRaw,
+    rawSolution: ConstructorPrototypeReassignmentSolutionRaw,
+    filepath: "src/javascript/tasks/16_prototypes_this/2_ConstructorPrototypeReassignment.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Фундамент JavaScript",
+        recommendationNote: "Понимание контекста исполнения this и прототипного наследования — один из наиболее частых вопросов на собеседовании.",
+        rawSolution: ConstructorPrototypeReassignmentSolutionRaw,
+        filepath: "src/javascript/tasks/16_prototypes_this/2_ConstructorPrototypeReassignment.js",
+      },
+    ],
+    articles: [
+      {
+        title: "F.prototype и наследование (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Свойство F.prototype",
+        url: "https://learn.javascript.ru/function-prototype",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "На что указывает скрытое свойство [[Prototype]] (__proto__) объекта при вызове new Person()?",
+        answer: "Оно указывает на объект, который лежал в Person.prototype в момент выполнения оператора new.",
+      },
+    ],
+    checklist: [
+      "Различие объектов, созданных ДО и ПОСЛЕ замены prototype",
+    ],
+  },
+
+  {
+    id: "js152",
+    group: "Прототипы THIS",
+    subgroup: "Прототипы",
+    title: "2. Присваивание объектов по ссылке",
+    desc: "Проследите мутацию свойств объекта при присваивании внешнего объекта в свойство другого объекта.",
+    isRaw: true,
+    candidate: ObjectReferencePropertiesCandidateRaw,
+    rawCandidate: ObjectReferencePropertiesCandidateRaw,
+    solution: ObjectReferencePropertiesSolutionRaw,
+    rawSolution: ObjectReferencePropertiesSolutionRaw,
+    filepath: "src/javascript/tasks/16_prototypes_this/5_ObjectReferenceProperties.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Фундамент JavaScript",
+        recommendationNote: "Понимание контекста исполнения this и прототипного наследования — один из наиболее частых вопросов на собеседовании.",
+        rawSolution: ObjectReferencePropertiesSolutionRaw,
+        filepath: "src/javascript/tasks/16_prototypes_this/5_ObjectReferenceProperties.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Передача по ссылке (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Объекты: копирование по ссылке",
+        url: "https://learn.javascript.ru/object-copy",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Что хранится в переменной, которой присвоен объект?",
+        answer: "В переменной хранится не сам объект, а ссылка на область в оперативной памяти.",
+      },
+    ],
+    checklist: [
+      "Свойство salary = 120 появляется и в person.position, и в position",
+    ],
+  },
+
+  {
+    id: "js154",
+    group: "Прототипы THIS",
+    subgroup: "Прототипы",
+    title: "3. Разница между оператором in и методом hasOwnProperty",
+    desc: "Объясните разницу между проверкой собственного свойства через hasOwnProperty и поиском по всей цепочке прототипов через in.",
+    isRaw: true,
+    candidate: HasOwnPropertyVsInOperatorCandidateRaw,
+    rawCandidate: HasOwnPropertyVsInOperatorCandidateRaw,
+    solution: HasOwnPropertyVsInOperatorSolutionRaw,
+    rawSolution: HasOwnPropertyVsInOperatorSolutionRaw,
+    filepath: "src/javascript/tasks/16_prototypes_this/7_HasOwnPropertyVsInOperator.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Фундамент JavaScript",
+        recommendationNote: "Понимание контекста исполнения this и прототипного наследования — один из наиболее частых вопросов на собеседовании.",
+        rawSolution: HasOwnPropertyVsInOperatorSolutionRaw,
+        filepath: "src/javascript/tasks/16_prototypes_this/7_HasOwnPropertyVsInOperator.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Проверка наличия свойств (MDN)",
+        urlTitle: "MDN — in vs hasOwnProperty",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "В чем главное отличие 'property' in obj от obj.hasOwnProperty('property')?",
+        answer: "in проверяет наличие свойства в объекте и всех его прототипах, а hasOwnProperty — только среди собственных свойств самого объекта.",
+      },
+    ],
+    checklist: [
+      "hasOwnProperty('sound') === false",
+      "'sound' in myDog === true",
+    ],
+  },
+
+  {
+    id: "js221",
+    group: "Прототипы THIS",
+    subgroup: "Привязка контекста (this)",
+    title: "5. Реализация полифила Function.prototype.myBind",
+    desc: "Реализуйте собственный метод myBind с поддержкой привязки контекста, каррирования начальных аргументов и работы в качестве конструктора (new).",
+    isRaw: true,
+    candidate: CustomBindPolyfillCandidateRaw,
+    rawCandidate: CustomBindPolyfillCandidateRaw,
+    solution: CustomBindPolyfillSolutionRaw,
+    rawSolution: CustomBindPolyfillSolutionRaw,
+    filepath: "src/javascript/tasks/16_prototypes_this/8_CustomBindPolyfill.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Hard: Polyfills",
+        recommendationNote: "Полная реализация bind согласно ECMAScript включает проверку callable-типа, склейку аргументов и сохранение прототипной цепочки при new.",
+        rawSolution: CustomBindPolyfillSolutionRaw,
+        filepath: "src/javascript/solutions/16_prototypes_this/8_CustomBindPolyfill.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Function.prototype.bind() (MDN)",
+        urlTitle: "MDN — Function.prototype.bind",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Function/bind",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Что происходит со связанным контекстом this, если вызывать связанную функцию через new BoundFn()?",
+        answer: "При вызове с new переданный в bind контекст игнорируется, и this ссылается на вновь созданный экземпляр, прототипом которого является исходная функция.",
+      },
+    ],
+    checklist: [
+      "Проверка typeof targetFn === 'function'",
+      "Объединение аргументов [...bindArgs, ...callArgs]",
+      "Корректная обработка вызова с оператором new",
+    ],
+  },
+
+  {
+    id: "js229",
+    group: "Прототипы THIS",
+    subgroup: "Прототипы",
+    title: "4. Эмуляция оператора new (customNew)",
+    desc: "Реализуйте функцию customNew(Constructor, ...args), воспроизводящую 4 шага работы оператора new в JavaScript.",
+    isRaw: true,
+    candidate: CustomNewOperatorCandidateRaw,
+    rawCandidate: CustomNewOperatorCandidateRaw,
+    solution: CustomNewOperatorSolutionRaw,
+    rawSolution: CustomNewOperatorSolutionRaw,
+    filepath: "src/javascript/tasks/16_prototypes_this/9_CustomNewOperator.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "JS Engine Mechanics",
+        recommendationNote: "Создание объекта через Object.create(Constructor.prototype), выполнение конструктора и возврат объекта-результата (если он объект/функция).",
+        rawSolution: CustomNewOperatorSolutionRaw,
+        filepath: "src/javascript/solutions/16_prototypes_this/9_CustomNewOperator.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Оператор new (MDN)",
+        urlTitle: "MDN — new operator",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/new",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Что возвращает new Constructor(), если конструктор явно делает return 42 (примитив)?",
+        answer: "Возвращает созданный экземпляр instance (примитивный return игнорируется). Если же конструктор возвращает объект (return {}), вернется именно этот объект.",
+      },
+    ],
+    checklist: [
+      "Object.create(Constructor.prototype)",
+      "Constructor.apply(instance, args)",
+      "Возврат result, если result объект/функция, иначе instance",
+    ],
+  },
+
+  {
+    id: "js230",
+    group: "Прототипы THIS",
+    subgroup: "Прототипы",
+    title: "5. Реализация полифила instanceof (customInstanceOf)",
+    desc: "Реализуйте функцию customInstanceOf(instance, Constructor) для проверки принадлежности объекта классу по прототипной цепочке.",
+    isRaw: true,
+    candidate: CustomInstanceOfPolyfillCandidateRaw,
+    rawCandidate: CustomInstanceOfPolyfillCandidateRaw,
+    solution: CustomInstanceOfPolyfillSolutionRaw,
+    rawSolution: CustomInstanceOfPolyfillSolutionRaw,
+    filepath: "src/javascript/tasks/16_prototypes_this/10_CustomInstanceOfPolyfill.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Prototype Chain",
+        recommendationNote: "Алгоритм обходит прототипную цепочку через Object.getPrototypeOf(proto), сравнивая с Constructor.prototype.",
+        rawSolution: CustomInstanceOfPolyfillSolutionRaw,
+        filepath: "src/javascript/solutions/16_prototypes_this/10_CustomInstanceOfPolyfill.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Оператор instanceof (LearnJS)",
+        urlTitle: "Учебник JavaScript — Проверка класса: instanceof",
+        url: "https://learn.javascript.ru/instanceof",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Как Symbol.hasInstance влияет на работу оператора instanceof?",
+        answer: "Если у конструктора определен статический метод [Symbol.hasInstance](instance), то instanceof вызывает его вместо стандартного обхода прототипной цепочки.",
+      },
+    ],
+    checklist: [
+      "Проверка на примитив (возврат false)",
+      "Цикл while (proto !== null)",
+      "Сравнение proto === targetPrototype",
+    ],
+  },
+
+  {
+    id: "js231",
+    group: "Прототипы THIS",
+    subgroup: "Классы и ООП",
+    title: "1. Классы, наследование, статические методы и приватные поля (#)",
+    desc: "Создайте иерархию классов BaseCounter и AdvancedCounter с приватными полями (#count), наследованием (extends, super) и статическими фабричными методами.",
+    isRaw: true,
+    candidate: ClassExtendsPrivateStaticCandidateRaw,
+    rawCandidate: ClassExtendsPrivateStaticCandidateRaw,
+    solution: ClassExtendsPrivateStaticSolutionRaw,
+    rawSolution: ClassExtendsPrivateStaticSolutionRaw,
+    filepath: "src/javascript/tasks/16_prototypes_this/11_ClassExtendsPrivateStatic.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "ES2022 OOP",
+        recommendationNote: "Синтаксис приватных полей # гарантирует строгую изоляцию на уровне движка, а extends организует наследование как экземпляров, так и статических методов.",
+        rawSolution: ClassExtendsPrivateStaticSolutionRaw,
+        filepath: "src/javascript/solutions/16_prototypes_this/11_ClassExtendsPrivateStatic.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Приватные и защищённые свойства и методы (LearnJS)",
+        urlTitle: "Учебник JavaScript — Приватные свойства",
+        url: "https://learn.javascript.ru/private-protected-properties-methods",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Наследуются ли статические методы родительского класса в дочернем классе?",
+        answer: "Да, благодаря тому, что extends связывает прототипы самих функций-конструкторов (Child.__proto__ === Parent).",
+      },
+    ],
+    checklist: [
+      "Приватное поле #count",
+      "Вызов super() в конструкторе наследника",
+      "Статический метод getDefaultStep()",
+    ],
+  }
+];
+
+export const JS_ASYNC_TASKS = [
   {
     id: "js69",
-    group: "Таймеры",
-    subgroup: "setTimeout",
+    group: "Асинхронность",
+    subgroup: "Таймеры",
     title: "1. Напиши базовый пример setTimeout",
     desc: "Напишите базовый пример функции setTimeout(), вывода сообщения 'Прошла 1 секунда' с задержкой в 1000мс.",
     isRaw: true,
@@ -4772,11 +8980,139 @@ export const JS_TIMERS_SETTIMEOUT_TASKS = [
       "Задержка указана в миллисекундах (1000)",
     ],
   },
+
+  {
+    id: "js76",
+    group: "Асинхронность",
+    subgroup: "Таймеры",
+    title: "2. Напиши базовый пример setInterval",
+    desc: "Напишите базовый пример функции setInterval(), выводящей сообщение 'Я выполняюсь каждую секунду' с задержкой 1000мс.",
+    isRaw: true,
+    candidate: SetIntervalBasicCandidateRaw,
+    rawCandidate: SetIntervalBasicCandidateRaw,
+    solution: SetIntervalBasicSolutionRaw,
+    rawSolution: SetIntervalBasicSolutionRaw,
+    filepath: "src/javascript/tasks/10_timers_setinterval/1_SetIntervalBasic.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Асинхронный таймер",
+        recommendationNote: "При работе с таймерами важно всегда очищать таймер (clearTimeout/clearInterval) для предотвращения утечек памяти.",
+        rawSolution: SetIntervalBasicSolutionRaw,
+        filepath: "src/javascript/tasks/10_timers_setinterval/1_SetIntervalBasic.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Метод setInterval (MDN)",
+        urlTitle: "MDN — setInterval() global function",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/setInterval",
+      },
+      {
+        title: "Планирование вызовов (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — setInterval",
+        url: "https://learn.javascript.ru/settimeout-setinterval#setinterval",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Чем рекурсивный setTimeout лучше обычного setInterval для повторяющихся задач?",
+        answer: "Рекурсивный setTimeout гарантирует фиксированную паузу N мс МЕЖДУ выполнением функций, тогда как setInterval запускает следующий вызов каждые N мс независимо от времени работы самого колбэка.",
+      },
+    ],
+    checklist: [
+      "Вызов setInterval(callback, delay)",
+      "Интервал вызова передан в миллисекундах (1000)",
+    ],
+  },
+
+  {
+    id: "js77",
+    group: "Асинхронность",
+    subgroup: "Таймеры",
+    title: "3. Практическая задача - Таймер",
+    desc: "Напишите функцию createTimer(seconds), которая запускает обратный отсчет от заданного числа секунд и выводит 'Time's up!' при достижении 0.",
+    isRaw: true,
+    candidate: CountdownTimerCandidateRaw,
+    rawCandidate: CountdownTimerCandidateRaw,
+    solution: CountdownTimerSolutionRaw,
+    rawSolution: CountdownTimerSolutionRaw,
+    filepath: "src/javascript/tasks/10_timers_setinterval/2_CountdownTimer.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Асинхронный таймер",
+        recommendationNote: "При работе с таймерами важно всегда очищать таймер (clearTimeout/clearInterval) для предотвращения утечек памяти.",
+        rawSolution: CountdownTimerSolutionRaw,
+        filepath: "src/javascript/tasks/10_timers_setinterval/2_CountdownTimer.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Очистка интервала clearInterval (MDN)",
+        urlTitle: "MDN — clearInterval()",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/clearInterval",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему важно всегда вызывать clearInterval() при завершении таймера?",
+        answer: "Неочищенный setInterval продолжает работать в фоновом режиме, удерживая замыкания в памяти и вызывая утечку памяти (Memory Leak).",
+      },
+    ],
+    checklist: [
+      "Декремент переменной времени (timeLeft--)",
+      "Остановка интервала через clearInterval(intervalId) при timeLeft <= 0",
+    ],
+  },
+
+  {
+    id: "js75",
+    group: "Асинхронность",
+    subgroup: "Таймеры",
+    title: "4. Что покажет ? - Очистка таймаута",
+    desc: "Разберите взаимодействие параллельно работающих setInterval и setTimeout с вызовом clearInterval().",
+    isRaw: true,
+    candidate: ClearIntervalTimeoutCandidateRaw,
+    rawCandidate: ClearIntervalTimeoutCandidateRaw,
+    solution: ClearIntervalTimeoutSolutionRaw,
+    rawSolution: ClearIntervalTimeoutSolutionRaw,
+    filepath: "src/javascript/tasks/9_timers_settimeout/7_ClearIntervalTimeout.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Асинхронный таймер",
+        recommendationNote: "При работе с таймерами важно всегда очищать таймер (clearTimeout/clearInterval) для предотвращения утечек памяти.",
+        rawSolution: ClearIntervalTimeoutSolutionRaw,
+        filepath: "src/javascript/tasks/9_timers_settimeout/7_ClearIntervalTimeout.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Очистка интервала clearInterval (MDN)",
+        urlTitle: "MDN — clearInterval() global function",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/clearInterval",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Останавливает ли clearInterval(timerId) уже запущенный текущий код колбэка?",
+        answer: "Нет, clearInterval отменяет только последующие запланированные срабатывания. Текущий колбэк дочитается до конца.",
+      },
+    ],
+    checklist: [
+      "Верная последовательность вывода: Tick 1 -> Tick 2 -> Tick 3 -> Stopped -> Timeout finished",
+    ],
+  },
+
   {
     id: "js70",
-    group: "Таймеры",
-    subgroup: "setTimeout",
-    title: "2. Практическая задача - debounce",
+    group: "Асинхронность",
+    subgroup: "Контроль частоты",
+    title: "1. Практическая задача - debounce",
     desc: "Реализуйте функцию высшего порядка debounce(func, delay), откладывающую выполнение функции до истечения delay миллисекунд без повторных вызовов.",
     isRaw: true,
     candidate: DebounceCandidateRaw,
@@ -4813,11 +9149,84 @@ export const JS_TIMERS_SETTIMEOUT_TASKS = [
       "Передача аргументов с помощью spread-оператора (...args)",
     ],
   },
+
+  {
+    id: "js165",
+    group: "Асинхронность",
+    subgroup: "Контроль частоты",
+    title: "2. Реализация функции Throttle (ограничение частоты)",
+    desc: "Реализуйте функцию throttle(fn, ms), гарантирующую вызов не чаще одного раза в ms миллисекунд.",
+    isRaw: true,
+    candidate: ThrottleFunctionCandidateRaw,
+    rawCandidate: ThrottleFunctionCandidateRaw,
+    solution: ThrottleFunctionSolutionRaw,
+    rawSolution: ThrottleFunctionSolutionRaw,
+    filepath: "src/javascript/tasks/19_control_flow/2_ThrottleFunction.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Оптимизация производительности",
+        recommendationNote: "Ограничение частоты вызова функций предотвращает избыточные сетевые запросы и перерисовывание интерфейса.",
+        rawSolution: ThrottleFunctionSolutionRaw,
+        filepath: "src/javascript/tasks/19_control_flow/2_ThrottleFunction.js",
+      },
+    ],
+    articles: [
+      { title: "Throttle (JavaScript.ru)", urlTitle: "Учебник JS — Задерживающая декорация", url: "https://learn.javascript.ru/task/throttle" },
+    ],
+    interviewerQuestions: [
+      { question: "Где чаще всего используется Throttle?", answer: "Для обработки непрерывных событий scroll, resize, mousemove." },
+    ],
+    checklist: ["Вызов не чаще 1 раза за период ms"],
+  },
+
+  {
+    id: "js122",
+    group: "Асинхронность",
+    subgroup: "Контроль частоты",
+    title: "3. Дебаунс асинхронной функции с отменой устаревших вызовов (Уровень 5)",
+    desc: "Реализуйте асинхронный debounceAsync, который сбрасывает и отменяет предыдущий висящий промис при вызове новой функции.",
+    isRaw: true,
+    candidate: DebounceAsyncCancelCandidateRaw,
+    rawCandidate: DebounceAsyncCancelCandidateRaw,
+    solution: DebounceAsyncCancelSolutionRaw,
+    rawSolution: DebounceAsyncCancelSolutionRaw,
+    filepath: "src/javascript/tasks/13_promises/level5/31_DebounceAsyncCancel.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Современный Async/Await",
+        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
+        rawSolution: DebounceAsyncCancelSolutionRaw,
+        filepath: "src/javascript/tasks/13_promises/level5/31_DebounceAsyncCancel.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Асинхронный Debounce (MDN)",
+        urlTitle: "MDN — Асинхронные паттерны",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Guide/Using_promises",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Зачем отменять устаревшие асинхронные вызовы маркерным значением Symbol?",
+        answer: "Чтобы отменённые промежуточные запросы не засоряли консоль ошибками и не вызывали ложных сбоев приложения.",
+      },
+    ],
+    checklist: [
+      "Отмена предыдущих вызовов маркером CANCELLED",
+      "Выполнение только последнего вызова",
+    ],
+  },
+
   {
     id: "js71",
-    group: "Таймеры",
-    subgroup: "setTimeout",
-    title: "3. Что покажет ? - Базовый вывод",
+    group: "Асинхронность",
+    subgroup: "Event Loop",
+    title: "1. Что покажет ? - Базовый вывод",
     desc: "Определите порядок вывода чисел в консоль при сочетании синхронного кода и setTimeout с нулевой задержкой (0мс).",
     isRaw: true,
     candidate: BasicOutputOrderCandidateRaw,
@@ -4853,11 +9262,12 @@ export const JS_TIMERS_SETTIMEOUT_TASKS = [
       "Знать порядок вывода 1, 3, 2",
     ],
   },
+
   {
     id: "js72",
-    group: "Таймеры",
-    subgroup: "setTimeout",
-    title: "4. Что покажет ? - Вложенные таймауты",
+    group: "Асинхронность",
+    subgroup: "Event Loop",
+    title: "2. Что покажет ? - Вложенные таймауты",
     desc: "Разберите последовательность вывода сообщений при вложенных и разновременных вызовах setTimeout().",
     isRaw: true,
     candidate: NestedTimeoutsCandidateRaw,
@@ -4893,11 +9303,12 @@ export const JS_TIMERS_SETTIMEOUT_TASKS = [
       "Учитывать синхронный вывод внутри таймеров",
     ],
   },
+
   {
     id: "js73",
-    group: "Таймеры",
-    subgroup: "setTimeout",
-    title: "5. Замыкание - Что покажет ?",
+    group: "Асинхронность",
+    subgroup: "Event Loop",
+    title: "3. Замыкание - Что покажет ?",
     desc: "Определите, что выведет данный цикл с var и setTimeout, объясните причину такого поведения и приведите варианты решения.",
     isRaw: true,
     candidate: ClosureLoopCandidateRaw,
@@ -4959,11 +9370,12 @@ export const JS_TIMERS_SETTIMEOUT_TASKS = [
       "Знать решение через let i = 0",
     ],
   },
+
   {
     id: "js74",
-    group: "Таймеры",
-    subgroup: "setTimeout",
-    title: "6. Что покажет ? - Замыкания в цикле",
+    group: "Асинхронность",
+    subgroup: "Event Loop",
+    title: "4. Что покажет ? - Замыкания в цикле",
     desc: "Определите и объясните, что и с какими задержками будет выведено в консоль при выполнении данного цикла с setTimeout.",
     isRaw: true,
     candidate: ClosureLoopDelayCandidateRaw,
@@ -5017,138 +9429,12 @@ export const JS_TIMERS_SETTIMEOUT_TASKS = [
       "Уметь исправить через let i = 1",
     ],
   },
-  {
-    id: "js75",
-    group: "Таймеры",
-    subgroup: "setTimeout",
-    title: "7. Что покажет ? - Очистка таймаута",
-    desc: "Разберите взаимодействие параллельно работающих setInterval и setTimeout с вызовом clearInterval().",
-    isRaw: true,
-    candidate: ClearIntervalTimeoutCandidateRaw,
-    rawCandidate: ClearIntervalTimeoutCandidateRaw,
-    solution: ClearIntervalTimeoutSolutionRaw,
-    rawSolution: ClearIntervalTimeoutSolutionRaw,
-    filepath: "src/javascript/tasks/9_timers_settimeout/7_ClearIntervalTimeout.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Асинхронный таймер",
-        recommendationNote: "При работе с таймерами важно всегда очищать таймер (clearTimeout/clearInterval) для предотвращения утечек памяти.",
-        rawSolution: ClearIntervalTimeoutSolutionRaw,
-        filepath: "src/javascript/tasks/9_timers_settimeout/7_ClearIntervalTimeout.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Очистка интервала clearInterval (MDN)",
-        urlTitle: "MDN — clearInterval() global function",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/clearInterval",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Останавливает ли clearInterval(timerId) уже запущенный текущий код колбэка?",
-        answer: "Нет, clearInterval отменяет только последующие запланированные срабатывания. Текущий колбэк дочитается до конца.",
-      },
-    ],
-    checklist: [
-      "Верная последовательность вывода: Tick 1 -> Tick 2 -> Tick 3 -> Stopped -> Timeout finished",
-    ],
-  },
-];
 
-export const JS_TIMERS_SETINTERVAL_TASKS = [
-  {
-    id: "js76",
-    group: "Таймеры",
-    subgroup: "setInterval",
-    title: "1. Напиши базовый пример setInterval",
-    desc: "Напишите базовый пример функции setInterval(), выводящей сообщение 'Я выполняюсь каждую секунду' с задержкой 1000мс.",
-    isRaw: true,
-    candidate: SetIntervalBasicCandidateRaw,
-    rawCandidate: SetIntervalBasicCandidateRaw,
-    solution: SetIntervalBasicSolutionRaw,
-    rawSolution: SetIntervalBasicSolutionRaw,
-    filepath: "src/javascript/tasks/10_timers_setinterval/1_SetIntervalBasic.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Асинхронный таймер",
-        recommendationNote: "При работе с таймерами важно всегда очищать таймер (clearTimeout/clearInterval) для предотвращения утечек памяти.",
-        rawSolution: SetIntervalBasicSolutionRaw,
-        filepath: "src/javascript/tasks/10_timers_setinterval/1_SetIntervalBasic.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Метод setInterval (MDN)",
-        urlTitle: "MDN — setInterval() global function",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/setInterval",
-      },
-      {
-        title: "Планирование вызовов (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — setInterval",
-        url: "https://learn.javascript.ru/settimeout-setinterval#setinterval",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Чем рекурсивный setTimeout лучше обычного setInterval для повторяющихся задач?",
-        answer: "Рекурсивный setTimeout гарантирует фиксированную паузу N мс МЕЖДУ выполнением функций, тогда как setInterval запускает следующий вызов каждые N мс независимо от времени работы самого колбэка.",
-      },
-    ],
-    checklist: [
-      "Вызов setInterval(callback, delay)",
-      "Интервал вызова передан в миллисекундах (1000)",
-    ],
-  },
-  {
-    id: "js77",
-    group: "Таймеры",
-    subgroup: "setInterval",
-    title: "2. Практическая задача - Таймер",
-    desc: "Напишите функцию createTimer(seconds), которая запускает обратный отсчет от заданного числа секунд и выводит 'Time's up!' при достижении 0.",
-    isRaw: true,
-    candidate: CountdownTimerCandidateRaw,
-    rawCandidate: CountdownTimerCandidateRaw,
-    solution: CountdownTimerSolutionRaw,
-    rawSolution: CountdownTimerSolutionRaw,
-    filepath: "src/javascript/tasks/10_timers_setinterval/2_CountdownTimer.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Асинхронный таймер",
-        recommendationNote: "При работе с таймерами важно всегда очищать таймер (clearTimeout/clearInterval) для предотвращения утечек памяти.",
-        rawSolution: CountdownTimerSolutionRaw,
-        filepath: "src/javascript/tasks/10_timers_setinterval/2_CountdownTimer.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Очистка интервала clearInterval (MDN)",
-        urlTitle: "MDN — clearInterval()",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/clearInterval",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Почему важно всегда вызывать clearInterval() при завершении таймера?",
-        answer: "Неочищенный setInterval продолжает работать в фоновом режиме, удерживая замыкания в памяти и вызывая утечку памяти (Memory Leak).",
-      },
-    ],
-    checklist: [
-      "Декремент переменной времени (timeLeft--)",
-      "Остановка интервала через clearInterval(intervalId) при timeLeft <= 0",
-    ],
-  },
   {
     id: "js78",
-    group: "Таймеры",
-    subgroup: "setInterval",
-    title: "3. Что покажет ? - Базовый интервал",
+    group: "Асинхронность",
+    subgroup: "Event Loop",
+    title: "5. Что покажет ? - Базовый интервал",
     desc: "Определите, что выведет код с интервалом, увеличивающим счетчик до 3 и останавливающим себя через clearInterval().",
     isRaw: true,
     candidate: BasicIntervalOutputCandidateRaw,
@@ -5184,11 +9470,12 @@ export const JS_TIMERS_SETINTERVAL_TASKS = [
       "Полная остановка интервала после вывода 3",
     ],
   },
+
   {
     id: "js79",
-    group: "Таймеры",
-    subgroup: "setInterval",
-    title: "4. Что покажет ? - Интервал с задержкой",
+    group: "Асинхронность",
+    subgroup: "Event Loop",
+    title: "6. Что покажет ? - Интервал с задержкой",
     desc: "Разберите хронологию вывода сообщений при одновременном запуске синхронного кода, setTimeout на 500мс и setInterval на 1000мс.",
     isRaw: true,
     candidate: IntervalWithDelayOutputCandidateRaw,
@@ -5223,11 +9510,12 @@ export const JS_TIMERS_SETINTERVAL_TASKS = [
       "Хронология: Start -> End -> Timeout (0.5s) -> Interval (1s) -> Interval (2s)",
     ],
   },
+
   {
     id: "js80",
-    group: "Таймеры",
-    subgroup: "setInterval",
-    title: "5. Что покажет ? - Накопление интервалов",
+    group: "Асинхронность",
+    subgroup: "Event Loop",
+    title: "7. Что покажет ? - Накопление интервалов",
     desc: "Разберите поведение двух одновременно запущенных интервалов, изменяющих одну общую переменную счетчика.",
     isRaw: true,
     candidate: MultipleIntervalsAccumulationCandidateRaw,
@@ -5263,1633 +9551,205 @@ export const JS_TIMERS_SETINTERVAL_TASKS = [
       "Учитывать замедление темпа инкремента после clearInterval(id1) на 2.5 секунде",
     ],
   },
-];
 
-export const JS_COLLECTIONS_SET_TASKS = [
   {
-    id: "js81",
-    group: "Коллекции",
-    subgroup: "Set",
-    title: "1. Создание Set из массива и обратно",
-    desc: "Создайте новый массив, удалив все повторения и дубликаты с помощью объекта Set и оператора spread.",
+    id: "js174",
+    group: "Асинхронность",
+    subgroup: "Event Loop",
+    title: "8. Конструктор Promise и цепочка .then (Company X)",
+    desc: "Определите порядок вывода консоли при выполнении синхронного кода конструктора Promise, резолва и setTimeout.",
     isRaw: true,
-    candidate: SetFromArrayCandidateRaw,
-    rawCandidate: SetFromArrayCandidateRaw,
-    solution: SetFromArraySolutionRaw,
-    rawSolution: SetFromArraySolutionRaw,
-    filepath: "src/javascript/tasks/11_collections_set/1_SetFromArray.js",
+    candidate: PromiseConstructorChainCandidateRaw,
+    rawCandidate: PromiseConstructorChainCandidateRaw,
+    solution: PromiseConstructorChainSolutionRaw,
+    rawSolution: PromiseConstructorChainSolutionRaw,
+    filepath: "src/javascript/tasks/22_event_loop/3_PromiseConstructorChain.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
         isRecommended: true,
-        badge: "Высокая производительность",
-        recommendationNote: "Использование Set / Map обеспечивает поиск и проверку наличия элемента за константное время O(1) в отличие от O(N) у массивов.",
-        rawSolution: SetFromArraySolutionRaw,
-        filepath: "src/javascript/tasks/11_collections_set/1_SetFromArray.js",
+        badge: "Приоритет задач Event Loop",
+        recommendationNote: "Синхронный код -> Микрозадачи (Promise, queueMicrotask) -> Макрозадачи (setTimeout, setInterval). Это фундаментальный порядок.",
+        rawSolution: PromiseConstructorChainSolutionRaw,
+        filepath: "src/javascript/tasks/22_event_loop/3_PromiseConstructorChain.js",
       },
     ],
     articles: [
-      {
-        title: "Коллекция Set (MDN)",
-        urlTitle: "MDN — Объект Set",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Set",
-      },
-      {
-        title: "Объекты Set и Map (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Set",
-        url: "https://learn.javascript.ru/map-set#set",
-      },
+      { title: "Event Loop и микрозадачи (JavaScript.ru)", urlTitle: "Учебник JS — Событийный цикл", url: "https://learn.javascript.ru/event-loop" },
     ],
     interviewerQuestions: [
-      {
-        question: "Как работает удаление дубликатов через new Set(arr)?",
-        answer: "Конструктор new Set() принимает итерируемый объект и сохраняет только уникальные значения. Выражение [...new Set(arr)] разворачивает уникальные элементы обратно в массив.",
-      },
+      { question: "В какой момент выполняется функция-исполнитель (executor) в new Promise((resolve) => ...)?", answer: "Синхронно в момент создания объекта Promise." },
     ],
-    checklist: [
-      "Использование new Set(arr)",
-      "Разворачивание через оператор расширения [...set]",
-    ],
-  },
-  {
-    id: "js82",
-    group: "Коллекции",
-    subgroup: "Set",
-    title: "2. Удаление дубликатов строк (слова в тексте)",
-    desc: "Разбейте текстовую строку на массив слов через split(' ') и получите массив уникальных слов.",
-    isRaw: true,
-    candidate: UniqueWordsCandidateRaw,
-    rawCandidate: UniqueWordsCandidateRaw,
-    solution: UniqueWordsSolutionRaw,
-    rawSolution: UniqueWordsSolutionRaw,
-    filepath: "src/javascript/tasks/11_collections_set/2_UniqueWords.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Высокая производительность",
-        recommendationNote: "Использование Set / Map обеспечивает поиск и проверку наличия элемента за константное время O(1) в отличие от O(N) у массивов.",
-        rawSolution: UniqueWordsSolutionRaw,
-        filepath: "src/javascript/tasks/11_collections_set/2_UniqueWords.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Разделение строк split() (Doka.guide)",
-        urlTitle: "Дока — Метод String.split",
-        url: "https://doka.guide/js/string-split/",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Чувствителен ли Set к регистру при дедупликации слов?",
-        answer: "Да, 'Hello' и 'hello' будут считаться двумя разными уникальными элементами. Чтобы игнорировать регистр, строки следует предварительно привести через toLowerCase().",
-      },
-    ],
-    checklist: [
-      "Разделение текста метод text.split(' ')",
-      "Упаковка в new Set() и разворот в массив",
-    ],
-  },
-  {
-    id: "js83",
-    group: "Коллекции",
-    subgroup: "Set",
-    title: "3. Поиск первого повторяющегося элемента",
-    desc: "Напишите функцию firstRepeated(arr), которая возвращает первый повторившийся элемент массива (или null, если повторов нет).",
-    isRaw: true,
-    candidate: FirstRepeatedCandidateRaw,
-    rawCandidate: FirstRepeatedCandidateRaw,
-    solution: FirstRepeatedSetSolutionRaw,
-    rawSolution: FirstRepeatedSetSolutionRaw,
-    filepath: "src/javascript/tasks/11_collections_set/3_FirstRepeated.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Высокая производительность",
-        recommendationNote: "Использование Set / Map обеспечивает поиск и проверку наличия элемента за константное время O(1) в отличие от O(N) у массивов.",
-        rawSolution: FirstRepeatedSetSolutionRaw,
-        filepath: "src/javascript/tasks/11_collections_set/3_FirstRepeated.js",
-      },
-    ],
-    solutions: [
-      {
-        title: "Вариант 1: Через Set (Рекомендуется)",
-        isRecommended: true,
-        badge: "Оптимально за O(N)",
-        recommendationNote: "Сохранение встреченных элементов в Set дает проверку уникальности за O(1) и общее время O(N).",
-        rawSolution: FirstRepeatedSetSolutionRaw,
-        filepath: "src/javascript/solutions/11_collections_set/3_FirstRepeated_Set.js",
-      },
-      {
-        title: "Вариант 2: Вложенные циклы",
-        isRecommended: false,
-        badge: "Вложенные циклы O(N²)",
-        recommendationNote: "Сравнение элементов двумя вложенными циклами без выявления дополнительных структур данных (O(N²)).",
-        rawSolution: FirstRepeatedLoopsSolutionRaw,
-        filepath: "src/javascript/solutions/11_collections_set/3_FirstRepeated_Loops.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Проверка наличия через Set.has() (MDN)",
-        urlTitle: "MDN — Метод Set.prototype.has()",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Set/has",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Какова временная и пространственная сложность решения через Set?",
-        answer: "Временная сложность O(N) — однократный обход массива. Пространственная сложность O(N) — хранение уникальных элементов в куче.",
-      },
-    ],
-    checklist: [
-      "Ранний возврат при первом же совпадении unique.has(el)",
-      "Возврат null при отсутствии повторов",
-    ],
-  },
-  {
-    id: "js84",
-    group: "Коллекции",
-    subgroup: "Set",
-    title: "4. Set с объектами: фильтрация по id",
-    desc: "Напишите функцию getUniqueUsers(users), фильтрующую массив пользователей по уникальному свойству id (сохраняя первое вхождение).",
-    isRaw: true,
-    candidate: UniqueUsersByIdCandidateRaw,
-    rawCandidate: UniqueUsersByIdCandidateRaw,
-    solution: UniqueUsersByIdSetFilterSolutionRaw,
-    rawSolution: UniqueUsersByIdSetFilterSolutionRaw,
-    filepath: "src/javascript/tasks/11_collections_set/4_UniqueUsersById.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Высокая производительность",
-        recommendationNote: "Использование Set / Map обеспечивает поиск и проверку наличия элемента за константное время O(1) в отличие от O(N) у массивов.",
-        rawSolution: UniqueUsersByIdSetFilterSolutionRaw,
-        filepath: "src/javascript/tasks/11_collections_set/4_UniqueUsersById.js",
-      },
-    ],
-    solutions: [
-      {
-        title: "Вариант 1: Через Set + filter (Рекомендуется)",
-        isRecommended: true,
-        badge: "Через Set + filter",
-        recommendationNote: "Фильтрация элементов с отслеживанием уже встречавшихся id в сете seenIds.",
-        rawSolution: UniqueUsersByIdSetFilterSolutionRaw,
-        filepath: "src/javascript/solutions/11_collections_set/4_UniqueUsersById_SetFilter.js",
-      },
-      {
-        title: "Вариант 2: Через коллекцию Map",
-        isRecommended: false,
-        badge: "Компактно через Map",
-        recommendationNote: "Запись пользователей в Map по id с последующим извлечением значений через [...map.values()].",
-        rawSolution: UniqueUsersByIdMapSolutionRaw,
-        filepath: "src/javascript/solutions/11_collections_set/4_UniqueUsersById_Map.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Дедупликация объектов в JS (Doka.guide)",
-        urlTitle: "Дока — Использование Set для объектов",
-        url: "https://doka.guide/js/set/",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Почему new Set(users) не удалит дубликаты объектов с одинаковым id?",
-        answer: "Потому что Set сравнивает элементы по алгоритму SameValueZero (для объектов — по ссылке). Объект { id: 1, name: 'Ann' } и { id: 1, name: 'Ann 2' } имеют разный адрес в памяти.",
-      },
-    ],
-    checklist: [
-      "Создание Set для хранения просмотренных id",
-      "Фильтрация массива с сохранением первого вхождения",
-    ],
-  },
-  {
-    id: "js85",
-    group: "Коллекции",
-    subgroup: "Set",
-    title: "5. Что выведет этот код? (Базовые методы)",
-    desc: "Определите вывод базовых методов работы с коллекцией Set: add(), size, has(), delete(), clear().",
-    isRaw: true,
-    candidate: SetBasicMethodsOutputCandidateRaw,
-    rawCandidate: SetBasicMethodsOutputCandidateRaw,
-    solution: SetBasicMethodsOutputSolutionRaw,
-    rawSolution: SetBasicMethodsOutputSolutionRaw,
-    filepath: "src/javascript/tasks/11_collections_set/5_SetBasicMethodsOutput.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Высокая производительность",
-        recommendationNote: "Использование Set / Map обеспечивает поиск и проверку наличия элемента за константное время O(1) в отличие от O(N) у массивов.",
-        rawSolution: SetBasicMethodsOutputSolutionRaw,
-        filepath: "src/javascript/tasks/11_collections_set/5_SetBasicMethodsOutput.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Методы коллекции Set (MDN)",
-        urlTitle: "MDN — Методы и свойства Set",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Set",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Что возвращают методы add() и delete() экземпляра Set?",
-        answer: "Метод add() возвращает сам объект Set (что позволяет делать чейнинг set.add(1).add(2)), а delete() возвращает boolean (true, если элемент был удален).",
-      },
-    ],
-    checklist: [
-      "Знать вывод: 3, true, false, 0",
-    ],
-  },
-  {
-    id: "js86",
-    group: "Коллекции",
-    subgroup: "Set",
-    title: "6. Что выведет этот код? (Сравнение объектов)",
-    desc: "Объясните особенности сравнения ссылочных типов данных (объектов) внутри коллекции Set.",
-    isRaw: true,
-    candidate: SetObjectComparisonOutputCandidateRaw,
-    rawCandidate: SetObjectComparisonOutputCandidateRaw,
-    solution: SetObjectComparisonOutputSolutionRaw,
-    rawSolution: SetObjectComparisonOutputSolutionRaw,
-    filepath: "src/javascript/tasks/11_collections_set/6_SetObjectComparisonOutput.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Высокая производительность",
-        recommendationNote: "Использование Set / Map обеспечивает поиск и проверку наличия элемента за константное время O(1) в отличие от O(N) у массивов.",
-        rawSolution: SetObjectComparisonOutputSolutionRaw,
-        filepath: "src/javascript/tasks/11_collections_set/6_SetObjectComparisonOutput.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Сравнение ссылочных типов в JS (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Объекты: ссылки и копирование",
-        url: "https://learn.javascript.ru/object-copy",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Почему set.has({ x: 1 }) возвращает false, когда в set добавлен { x: 1 }?",
-        answer: "Литерал { x: 1 } создает в памяти совершенно новый объект с новым адресом ссылки, которого нет в сете.",
-      },
-    ],
-    checklist: [
-      "Понимать разницу между одинаковыми по значению объектами и одинаковыми ссылками",
-      "Знать вывод: 2, true, false",
-    ],
-  },
-  {
-    id: "js87",
-    group: "Коллекции",
-    subgroup: "Set",
-    title: "7. Что выведет этот код? (Мутация объектов)",
-    desc: "Разберите поведение коллекции Set при мутации содержимого объекта, находящегося внутри сет-коллекции.",
-    isRaw: true,
-    candidate: SetObjectMutationOutputCandidateRaw,
-    rawCandidate: SetObjectMutationOutputCandidateRaw,
-    solution: SetObjectMutationOutputSolutionRaw,
-    rawSolution: SetObjectMutationOutputSolutionRaw,
-    filepath: "src/javascript/tasks/11_collections_set/7_SetObjectMutationOutput.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Высокая производительность",
-        recommendationNote: "Использование Set / Map обеспечивает поиск и проверку наличия элемента за константное время O(1) в отличие от O(N) у массивов.",
-        rawSolution: SetObjectMutationOutputSolutionRaw,
-        filepath: "src/javascript/tasks/11_collections_set/7_SetObjectMutationOutput.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Мутация объектов (Doka.guide)",
-        urlTitle: "Дока — Объекты и ссылки",
-        url: "https://doka.guide/js/object/",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Влияет ли мутация свойств объекта user.name = 'Bob' на его поиск в Set?",
-        answer: "Нет, не влияет, так как Set отслеживает ссылку на сам объект в памяти, а не его внутреннее содержимое.",
-      },
-    ],
-    checklist: [
-      "Знать вывод: true, [ { id: 1, name: 'Bob' } ]",
-    ],
-  },
-  {
-    id: "js88",
-    group: "Коллекции",
-    subgroup: "Set",
-    title: "8. Что выведет этот код? (Итерация и удаление)",
-    desc: "Разберите особенности поведения цикла for...of при одновременной итерации и вызове set.delete(v).",
-    isRaw: true,
-    candidate: SetIterationDeleteOutputCandidateRaw,
-    rawCandidate: SetIterationDeleteOutputCandidateRaw,
-    solution: SetIterationDeleteOutputSolutionRaw,
-    rawSolution: SetIterationDeleteOutputSolutionRaw,
-    filepath: "src/javascript/tasks/11_collections_set/8_SetIterationDeleteOutput.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Высокая производительность",
-        recommendationNote: "Использование Set / Map обеспечивает поиск и проверку наличия элемента за константное время O(1) в отличие от O(N) у массивов.",
-        rawSolution: SetIterationDeleteOutputSolutionRaw,
-        filepath: "src/javascript/tasks/11_collections_set/8_SetIterationDeleteOutput.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Итерация по Set (MDN)",
-        urlTitle: "MDN — Итерирование по Set",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Set/@@iterator",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Безопасно ли вызывать set.delete(v) во время цикла for (const v of set)?",
-        answer: "Да, в отличие от массивов (где удаление смещает индексы), итератор Set устроен безопасно и корректно продолжает обход оставшихся элементов.",
-      },
-    ],
-    checklist: [
-      "Вывод итераций iter 1, iter 2, iter 3, iter 4",
-      "Финал: final [1, 3]",
-    ],
-  },
-];
-
-export const JS_COLLECTIONS_MAP_TASKS = [
-  // Уровень 1
-  {
-    id: "js89",
-    group: "Коллекции",
-    subgroup: "Map",
-    title: "1. Создание Map и добавление элементов (Уровень 1)",
-    desc: "Создайте Map с помощью конструктора new Map() и добавьте в него 3 пары 'a':1, 'b':2, 'c':3 через метод set().",
-    isRaw: true,
-    candidate: CreateMapCandidateRaw,
-    rawCandidate: CreateMapCandidateRaw,
-    solution: CreateMapSolutionRaw,
-    rawSolution: CreateMapSolutionRaw,
-    filepath: "src/javascript/tasks/12_collections_map/level1/1_CreateMap.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Декларативное преобразование",
-        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
-        rawSolution: CreateMapSolutionRaw,
-        filepath: "src/javascript/tasks/12_collections_map/level1/1_CreateMap.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Объект Map (MDN)",
-        urlTitle: "MDN — Map global object",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Map",
-      },
-      {
-        title: "Карта Map (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Map",
-        url: "https://learn.javascript.ru/map-set#map",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Чем Map отличается от обычного объекта Object?",
-        answer: "В Map ключом может быть любой тип данных (включая объекты и функции), сохраняется порядок вставки элементов, и есть удобный метод size.",
-      },
-    ],
-    checklist: [
-      "Создание new Map()",
-      "Добавление элементов через map.set(key, value)",
-    ],
-  },
-  {
-    id: "js90",
-    group: "Коллекции",
-    subgroup: "Map",
-    title: "2. Инициализация Map из массива пар (Уровень 1)",
-    desc: "Инициализируйте Map сразу в конструкторе, передав массив двухэлементных массивов [ключ, значение].",
-    isRaw: true,
-    candidate: InitMapFromPairsCandidateRaw,
-    rawCandidate: InitMapFromPairsCandidateRaw,
-    solution: InitMapFromPairsSolutionRaw,
-    rawSolution: InitMapFromPairsSolutionRaw,
-    filepath: "src/javascript/tasks/12_collections_map/level1/2_InitMapFromPairs.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Декларативное преобразование",
-        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
-        rawSolution: InitMapFromPairsSolutionRaw,
-        filepath: "src/javascript/tasks/12_collections_map/level1/2_InitMapFromPairs.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Конструктор Map (Doka.guide)",
-        urlTitle: "Дока — Структура Map",
-        url: "https://doka.guide/js/map/",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Какой формат входного массива ожидает конструктор new Map()?",
-        answer: "Конструктор ожидает итерируемый объект с элементами в виде пар [key, value] (например, массив двумерных массивов или результат Object.entries).",
-      },
-    ],
-    checklist: [
-      "Передача двумерного массива в new Map([...])",
-      "Извлечение по ключу через map.get('name')",
-    ],
-  },
-  {
-    id: "js91",
-    group: "Коллекции",
-    subgroup: "Map",
-    title: "3. Получение значения по ключу (Уровень 1)",
-    desc: "Напишите функцию getValue(map, key), проверяющую наличие ключа и возвращающую значение либо 'not found'.",
-    isRaw: true,
-    candidate: GetValueByKeyCandidateRaw,
-    rawCandidate: GetValueByKeyCandidateRaw,
-    solution: GetValueByKeySolutionRaw,
-    rawSolution: GetValueByKeySolutionRaw,
-    filepath: "src/javascript/tasks/12_collections_map/level1/3_GetValueByKey.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Декларативное преобразование",
-        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
-        rawSolution: GetValueByKeySolutionRaw,
-        filepath: "src/javascript/tasks/12_collections_map/level1/3_GetValueByKey.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Методы has() и get() в Map (MDN)",
-        urlTitle: "MDN — Map.prototype.has()",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Map/has",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Что вернет map.get(key), если ключ отсутствует?",
-        answer: "Метод get() вернет undefined, если ключ не найден в коллекции.",
-      },
-    ],
-    checklist: [
-      "Проверка наличия через map.has(key)",
-      "Возврат значения map.get(key) или фоллбека",
-    ],
-  },
-  {
-    id: "js92",
-    group: "Коллекции",
-    subgroup: "Map",
-    title: "4. Проверка наличия ключа и удаление (Уровень 1)",
-    desc: "Напишите функцию removeIfExists(map, key), которая удаляет ключ при его наличии и возвращает булевый результат.",
-    isRaw: true,
-    candidate: RemoveIfExistsCandidateRaw,
-    rawCandidate: RemoveIfExistsCandidateRaw,
-    solution: RemoveIfExistsSolutionRaw,
-    rawSolution: RemoveIfExistsSolutionRaw,
-    filepath: "src/javascript/tasks/12_collections_map/level1/4_RemoveIfExists.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Декларативное преобразование",
-        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
-        rawSolution: RemoveIfExistsSolutionRaw,
-        filepath: "src/javascript/tasks/12_collections_map/level1/4_RemoveIfExists.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Удаление ключей из Map (MDN)",
-        urlTitle: "MDN — Map.prototype.delete()",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Map/delete",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Что возвращает сам метод map.delete(key)?",
-        answer: "Метод delete() возвращает true, если элемент успешно найден и удален, и false, если элемента не было.",
-      },
-    ],
-    checklist: [
-      "Использование map.has(key) и map.delete(key)",
-    ],
+    checklist: ["Результат: start, promise1, end, resolve, promise2, setTimeout"],
   },
 
-  // Уровень 2
   {
-    id: "js93",
-    group: "Коллекции",
-    subgroup: "Map",
-    title: "5. Перебор Map через for...of (Уровень 2)",
-    desc: "Напишите функцию printAll(map), выводящую все пары в формате 'ключ: значение' через деструктуризацию в цикле for...of.",
+    id: "js175",
+    group: "Асинхронность",
+    subgroup: "Event Loop",
+    title: "9. IIFE, Конструктор Promise и Микрозадачи (Company X)",
+    desc: "Проанализируйте порядок вызыва IIFE, возврата из функции-исполнителя Promise, .then и setTimeout.",
     isRaw: true,
-    candidate: PrintAllForOfCandidateRaw,
-    rawCandidate: PrintAllForOfCandidateRaw,
-    solution: PrintAllForOfSolutionRaw,
-    rawSolution: PrintAllForOfSolutionRaw,
-    filepath: "src/javascript/tasks/12_collections_map/level2/6_PrintAllForOf.js",
+    candidate: IifePromiseConstructorCandidateRaw,
+    rawCandidate: IifePromiseConstructorCandidateRaw,
+    solution: IifePromiseConstructorSolutionRaw,
+    rawSolution: IifePromiseConstructorSolutionRaw,
+    filepath: "src/javascript/tasks/22_event_loop/4_IifePromiseConstructor.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
         isRecommended: true,
-        badge: "Декларативное преобразование",
-        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
-        rawSolution: PrintAllForOfSolutionRaw,
-        filepath: "src/javascript/tasks/12_collections_map/level2/6_PrintAllForOf.js",
+        badge: "Приоритет задач Event Loop",
+        recommendationNote: "Синхронный код -> Микрозадачи (Promise, queueMicrotask) -> Макрозадачи (setTimeout, setInterval). Это фундаментальный порядок.",
+        rawSolution: IifePromiseConstructorSolutionRaw,
+        filepath: "src/javascript/tasks/22_event_loop/4_IifePromiseConstructor.js",
       },
     ],
     articles: [
-      {
-        title: "Итерация по Map (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Итерирование по Map",
-        url: "https://learn.javascript.ru/map-set#perebor-map",
-      },
+      { title: "Микрозадачи и макрозадачи (Doka.guide)", urlTitle: "Дока — Event Loop", url: "https://doka.guide/js/event-loop/" },
     ],
     interviewerQuestions: [
-      {
-        question: "В каком порядке цикл for...of обходит Map?",
-        answer: "В отличие от обычных объектов, Map строго сохраняет порядок вставки элементов.",
-      },
+      { question: "Каков порядок выполнения IIFE в контексте Event Loop?", answer: "IIFE является обычной функцией, вызов которой происходит полностью синхронно." },
     ],
-    checklist: [
-      "Использование цикла for (const [key, value] of map)",
-    ],
-  },
-  {
-    id: "js94",
-    group: "Коллекции",
-    subgroup: "Map",
-    title: "6. forEach у Map (Уровень 2)",
-    desc: "Перепишите обход коллекции Map с использованием встроенного метода map.forEach((value, key) => ...).",
-    isRaw: true,
-    candidate: MapForEachCandidateRaw,
-    rawCandidate: MapForEachCandidateRaw,
-    solution: MapForEachSolutionRaw,
-    rawSolution: MapForEachSolutionRaw,
-    filepath: "src/javascript/tasks/12_collections_map/level2/7_MapForEach.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Декларативное преобразование",
-        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
-        rawSolution: MapForEachSolutionRaw,
-        filepath: "src/javascript/tasks/12_collections_map/level2/7_MapForEach.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Метод Map.prototype.forEach (MDN)",
-        urlTitle: "MDN — Map.prototype.forEach()",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Map/forEach",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Какой порядок аргументов принимает колбэк в map.forEach()?",
-        answer: "Порядок аргументов: (value, key, map) — сначала значение, затем ключ, затем сама коллекция Map (для аналогии с Array.prototype.forEach).",
-      },
-    ],
-    checklist: [
-      "Использование map.forEach((value, key) => ...)",
-    ],
-  },
-  {
-    id: "js95",
-    group: "Коллекции",
-    subgroup: "Map",
-    title: "7. Получить отдельно ключи, значения, пары (Уровень 2)",
-    desc: "Извлеките из Map массивы ключей, значений и пар с помощью итераторов keys(), values(), entries().",
-    isRaw: true,
-    candidate: GetKeysValuesEntriesCandidateRaw,
-    rawCandidate: GetKeysValuesEntriesCandidateRaw,
-    solution: GetKeysValuesEntriesSolutionRaw,
-    rawSolution: GetKeysValuesEntriesSolutionRaw,
-    filepath: "src/javascript/tasks/12_collections_map/level2/8_GetKeysValuesEntries.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Декларативное преобразование",
-        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
-        rawSolution: GetKeysValuesEntriesSolutionRaw,
-        filepath: "src/javascript/tasks/12_collections_map/level2/8_GetKeysValuesEntries.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Итераторы Map (MDN)",
-        urlTitle: "MDN — Map.prototype.keys()",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Map/keys",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Что возвращают методы keys(), values() и entries()?",
-        answer: "Они возвращают итерируемые объекты (MapIterator), которые превращаются в массивы через спред [...map.keys()].",
-      },
-    ],
-    checklist: [
-      "Применение [...map.keys()]",
-      "Применение [...map.values()]",
-      "Применение [...map.entries()]",
-    ],
+    checklist: ["Результат: 3, 2, 5, 4, 1"],
   },
 
-  // Уровень 3
   {
-    id: "js96",
-    group: "Коллекции",
-    subgroup: "Map",
-    title: "8. Подсчёт частоты элементов (Уровень 3)",
-    desc: "Напишите функцию countFrequency(arr), подсчитывающую количество вхождений каждого элемента в Map.",
+    id: "js179",
+    group: "Асинхронность",
+    subgroup: "Event Loop",
+    title: "10. Вложенные промисы и Async/Await (Company X)",
+    desc: "Определите порядок вывода при возврате Promise.resolve() из .then в сравнении с оператором await.",
     isRaw: true,
-    candidate: CountFrequencyCandidateRaw,
-    rawCandidate: CountFrequencyCandidateRaw,
-    solution: CountFrequencySolutionRaw,
-    rawSolution: CountFrequencySolutionRaw,
-    filepath: "src/javascript/tasks/12_collections_map/level3/11_CountFrequency.js",
+    candidate: AsyncAwaitNestedPromisesCandidateRaw,
+    rawCandidate: AsyncAwaitNestedPromisesCandidateRaw,
+    solution: AsyncAwaitNestedPromisesSolutionRaw,
+    rawSolution: AsyncAwaitNestedPromisesSolutionRaw,
+    filepath: "src/javascript/tasks/22_event_loop/5_AsyncAwaitNestedPromises.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
         isRecommended: true,
-        badge: "Декларативное преобразование",
-        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
-        rawSolution: CountFrequencySolutionRaw,
-        filepath: "src/javascript/tasks/12_collections_map/level3/11_CountFrequency.js",
+        badge: "Приоритет задач Event Loop",
+        recommendationNote: "Синхронный код -> Микрозадачи (Promise, queueMicrotask) -> Макрозадачи (setTimeout, setInterval). Это фундаментальный порядок.",
+        rawSolution: AsyncAwaitNestedPromisesSolutionRaw,
+        filepath: "src/javascript/tasks/22_event_loop/5_AsyncAwaitNestedPromises.js",
       },
     ],
     articles: [
-      {
-        title: "Частотный словарь в JS (Doka.guide)",
-        urlTitle: "Дока — Построение частотного словаря",
-        url: "https://doka.guide/js/map/",
-      },
+      { title: "Async/await и порядок задач (MDN)", urlTitle: "MDN — async function", url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Statements/async_function" },
     ],
     interviewerQuestions: [
-      {
-        question: "Почему Map предпочтительнее объекта для частотного словаря произвольных элементов?",
-        answer: "Map подходят для любого типа ключей (числа, строки, объекты, булевы значения), тогда как Object всегда приводит ключи к строкам.",
-      },
+      { question: "Сколько микрозадач создает возврат нового Promise из колбэка .then()?", answer: "Возврат промиса из .then планирует дополнительные тики очереди микрозадач для разрешения цепочки." },
     ],
-    checklist: [
-      "Обход массива и аккумуляция счетчика map.set(item, (map.get(item) || 0) + 1)",
-    ],
-  },
-  {
-    id: "js97",
-    group: "Коллекции",
-    subgroup: "Map",
-    title: "9. Группировка объектов по свойству в Map (Уровень 3)",
-    desc: "Реализуйте функцию groupBy(items, key), группирующую массив объектов в Map по значению ключа.",
-    isRaw: true,
-    candidate: GroupByMapCandidateRaw,
-    rawCandidate: GroupByMapCandidateRaw,
-    solution: GroupByMapSolutionRaw,
-    rawSolution: GroupByMapSolutionRaw,
-    filepath: "src/javascript/tasks/12_collections_map/level3/12_GroupByMap.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Декларативное преобразование",
-        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
-        rawSolution: GroupByMapSolutionRaw,
-        filepath: "src/javascript/tasks/12_collections_map/level3/12_GroupByMap.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Группировка данных (MDN)",
-        urlTitle: "MDN — Группировка через Map",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Map",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Какова временная сложность функции groupBy с использованием Map?",
-        answer: "Сложность составляет O(N) по времени и O(N) по памяти.",
-      },
-    ],
-    checklist: [
-      "Создание массива при первом наступлении ключа",
-      "Добавление объекта в соответствующий массив группы",
-    ],
-  },
-  {
-    id: "js98",
-    group: "Коллекции",
-    subgroup: "Map",
-    title: "10. Группировка объектов по свойству в Object (Уровень 3)",
-    desc: "Реализуйте функцию groupBy(items, key), возвращающую результат группировки в виде обычного объекта Object.",
-    isRaw: true,
-    candidate: GroupByObjectCandidateRaw,
-    rawCandidate: GroupByObjectCandidateRaw,
-    solution: GroupByObjectSolutionRaw,
-    rawSolution: GroupByObjectSolutionRaw,
-    filepath: "src/javascript/tasks/12_collections_map/level3/12_2_GroupByObject.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Декларативное преобразование",
-        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
-        rawSolution: GroupByObjectSolutionRaw,
-        filepath: "src/javascript/tasks/12_collections_map/level3/12_2_GroupByObject.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Преобразование Map в Object (MDN)",
-        urlTitle: "MDN — Object.fromEntries()",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Какой метод превращает Map обратно в классический JavaScript объект?",
-        answer: "Метод Object.fromEntries(map) конвертирует итерируемые пары [key, value] в стандартный объект.",
-      },
-    ],
-    checklist: [
-      "Преобразование Map в объект через Object.fromEntries(map)",
-    ],
-  },
-  {
-    id: "js99",
-    group: "Коллекции",
-    subgroup: "Map",
-    title: "11. Анаграммы (Company X) (Уровень 3)",
-    desc: "Напишите функцию groupAnagrams(arr), сгруппировав слова-анаграммы в отдельные массивы.",
-    isRaw: true,
-    candidate: GroupAnagramsCandidateRaw,
-    rawCandidate: GroupAnagramsCandidateRaw,
-    solution: GroupAnagramsSolutionRaw,
-    rawSolution: GroupAnagramsSolutionRaw,
-    filepath: "src/javascript/tasks/12_collections_map/level3/13_GroupAnagrams.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Декларативное преобразование",
-        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
-        rawSolution: GroupAnagramsSolutionRaw,
-        filepath: "src/javascript/tasks/12_collections_map/level3/13_GroupAnagrams.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Задача Group Anagrams (LeetCode)",
-        urlTitle: "LeetCode 49 — Group Anagrams",
-        url: "https://leetcode.com/problems/group-anagrams/",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Что используется в качестве ключа Map для группировки анаграмм?",
-        answer: "Сортировка букв слова в алфавитном порядке (str.split('').sort().join('')) создает одинаковый канонический ключ для всех его анаграмм.",
-      },
-    ],
-    checklist: [
-      "Получение канонического ключа через sort()",
-      "Возврат массива значений [...map.values()]",
-    ],
-  },
-  {
-    id: "js100",
-    group: "Коллекции",
-    subgroup: "Map",
-    title: "12. Мемоизация с TTL (Company X) (Уровень 3)",
-    desc: "Реализуйте функцию memoize(fn, ms), кэширующую результаты вызова fn на ms миллисекунд.",
-    isRaw: true,
-    candidate: MemoizeWithTTLCandidateRaw,
-    rawCandidate: MemoizeWithTTLCandidateRaw,
-    solution: MemoizeWithTTLSolutionRaw,
-    rawSolution: MemoizeWithTTLSolutionRaw,
-    filepath: "src/javascript/tasks/12_collections_map/level3/14_MemoizeWithTTL.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Декларативное преобразование",
-        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
-        rawSolution: MemoizeWithTTLSolutionRaw,
-        filepath: "src/javascript/tasks/12_collections_map/level3/14_MemoizeWithTTL.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Мемоизация функций в JS (Doka.guide)",
-        urlTitle: "Дока — Паттерн Мемоизация",
-        url: "https://doka.guide/js/memoization/",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Как отследить протухание кэша (TTL)?",
-        answer: "Сохраняя в кэше время истечения (now + ms) или времени вызова (timestamp) и сравнивая его с текущим Date.now().",
-      },
-    ],
-    checklist: [
-      "Формирование ключа через JSON.stringify(args)",
-      "Проверка времени истечения кэша (now < expiry)",
-    ],
-  },
-  {
-    id: "js101",
-    group: "Коллекции",
-    subgroup: "Map",
-    title: "13. Мемоизация аргументов (Company X) (Уровень 3)",
-    desc: "Реализуйте классическую функцию мемоизации memoize(fn) с учетом порядка любых примитивных аргументов.",
-    isRaw: true,
-    candidate: MemoizeBasicCandidateRaw,
-    rawCandidate: MemoizeBasicCandidateRaw,
-    solution: MemoizeBasicSolutionRaw,
-    rawSolution: MemoizeBasicSolutionRaw,
-    filepath: "src/javascript/tasks/12_collections_map/level3/15_MemoizeBasic.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Декларативное преобразование",
-        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
-        rawSolution: MemoizeBasicSolutionRaw,
-        filepath: "src/javascript/tasks/12_collections_map/level3/15_MemoizeBasic.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Кэширование результатов вызова (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Декораторы и мемоизация",
-        url: "https://learn.javascript.ru/call-apply-decorators",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Почему memoized(1, 2) и memoized(2, 1) считаются разными вызовами?",
-        answer: "JSON.stringify([1, 2]) возвращает '[1,2]', а JSON.stringify([2, 1]) — '[2,1]'. Ключи строковых представлений отличаются.",
-      },
-    ],
-    checklist: [
-      "Вызов fn.apply(this, args)",
-      "Кэширование в Map по ключу JSON.stringify(args)",
-    ],
-  },
-  {
-    id: "js102",
-    group: "Коллекции",
-    subgroup: "Map",
-    title: "14. Мемоизация с логированием и TTL (Company X) (Уровень 3)",
-    desc: "Реализуйте функцию memoize(fn, ttl), выводимую сообщение 'from cache', 'key delete', 'calculated' при пересчете и очистке кэша.",
-    isRaw: true,
-    candidate: MemoizeWithTTLLoggingCandidateRaw,
-    rawCandidate: MemoizeWithTTLLoggingCandidateRaw,
-    solution: MemoizeWithTTLLoggingSolutionRaw,
-    rawSolution: MemoizeWithTTLLoggingSolutionRaw,
-    filepath: "src/javascript/tasks/12_collections_map/level3/16_MemoizeWithTTLLogging.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Декларативное преобразование",
-        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
-        rawSolution: MemoizeWithTTLLoggingSolutionRaw,
-        filepath: "src/javascript/tasks/12_collections_map/level3/16_MemoizeWithTTLLogging.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Управление временем жизни кэша (MDN)",
-        urlTitle: "MDN — Замыкания и состояния",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Closures",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Зачем удалять протухший ключ из Map (cache.delete(key))?",
-        answer: "Очистка устаревших ключей предотвращает неконтролируемое разрастание объекта Map и освобождает память.",
-      },
-    ],
-    checklist: [
-      "Логирование 'from cache' при актуальном кэше",
-      "Логирование 'key delete' при протухшем кэше",
-      "Логирование 'calculated' при новом вычислении",
-    ],
-  },
-  {
-    id: "js196",
-    group: "Коллекции",
-    subgroup: "Map",
-    title: "15. Преобразование списка категорий (Company X) (Уровень 3)",
-    desc: "Преобразуйте плоский список категорий с ссылками на родителей в иерархическую структуру дерева с массивами children за O(n).",
-    isRaw: true,
-    candidate: CreateCategoryTreeCandidateRaw,
-    rawCandidate: CreateCategoryTreeCandidateRaw,
-    solution: CreateCategoryTreeSolutionRaw,
-    rawSolution: CreateCategoryTreeSolutionRaw,
-    explanation: CreateCategoryTreeExplanationRaw,
-    filepath: "src/javascript/tasks/12_collections_map/level3/17_CreateCategoryTree.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение (O(n) через Map)",
-        isRecommended: true,
-        badge: "Линейная сложность O(n)",
-        recommendationNote: "Использование Map в качестве таблицы соответствий позволяет связать дочерние и родительские элементы за два линейных прохода без рекурсии и вложенных поисков.",
-        rawSolution: CreateCategoryTreeSolutionRaw,
-        filepath: "src/javascript/tasks/12_collections_map/level3/17_CreateCategoryTree.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Коллекция Map в JavaScript (Doka.guide)",
-        urlTitle: "Дока — Структура данных Map",
-        url: "https://doka.guide/js/map/",
-      },
-      {
-        title: "Преобразование плоского массива в дерево (Хабр Q&A)",
-        urlTitle: "Хабр — Построение дерева из плоского массива",
-        url: "https://qna.habr.com/q/623351",
-      },
-      {
-        title: "Структуры данных: Map и Set (LearnJS)",
-        urlTitle: "Учебник JavaScript — Map и Set",
-        url: "https://learn.javascript.ru/map-set",
-      },
-      {
-        title: "Объект Map и его методы (MDN)",
-        urlTitle: "MDN — Map API и методы",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Map",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Какова временная и пространственная сложность предложенного решения через Map?",
-        answer: "Сложность составляет O(N) по времени (два последовательных прохода по массиву с O(1) чтением/записью в Map) и O(N) по памяти (хранение N узлов в nodeMap и итоговом массиве roots).",
-      },
-      {
-        question: "Почему наивное рекурсивное решение с .filter() внутри дает сложность O(N²)?",
-        answer: "При вызове .filter() на каждом шаге рекурсии для каждого узла перебирается весь массив (N * N операций). На списке из 10 000 элементов это 100 млн итераций, что вызывает заметные задержки и блокирует поток выполнения.",
-      },
-      {
-        question: "Почему у листьев (элементов без детей) поле children не создается, а у корней создается всегда?",
-        answer: "Согласно спецификации формата, листья не должны содержать пустой массив children: [], чтобы минимизировать объем JSON и отличать пустую папку/контейнер (корень) от конечного элемента. Поле children создается динамически только при обнаружении первого дочернего элемента или явно для корней (parent === null).",
-      },
-      {
-        question: "Как алгоритм защищен от 'битых' ссылок (когда parent ссылается на несуществующий title)?",
-        answer: "С помощью проверки `if (!parentNode) return;`. Если родительский элемент отсутствует в nodeMap, дочерний узел просто игнорируется и не вызывает ошибку TypeError (Cannot set properties of undefined).",
-      },
-      {
-        question: "В чем преимущество использования new Map() по сравнению с обычным объектом {} для словаря узлов?",
-        answer: "Map не имеет коллизий со стандартными свойствами прототипа (например, 'toString', 'constructor', 'hasOwnProperty'), поддерживает любые типы ключей и явно выражает семантику ассоциативного массива.",
-      },
-    ],
-    checklist: [
-      "Создание словаря узлов const nodeMap = new Map() и наполнение плоскими объектами за первый проход O(n)",
-      "Проверка if (parent === null) для явного добавления корней в roots с инициализацией node.children = []",
-      "Поиск родительского узла через nodeMap.get(parent) за O(1) и защита if (!parentNode) return",
-      "Инициализация parentNode.children = [] только при наличии хотя бы одного дочернего элемента",
-      "Добавление дочернего узла в parentNode.children.push(node)",
-      "Возврат массива корней return roots с результирующей сложностью O(n) по времени и памяти",
-    ],
-  },
-];
-
-export const JS_PROMISES_TASKS = [
-  // Уровень 1
-  {
-    id: "js103",
-    group: "Промисы",
-    subgroup: "Основы синтаксиса",
-    title: "1. Создание Promise (Уровень 1)",
-    desc: "Напишите функцию delay(ms), возвращающую Promise, который успешно разрешается значением 'done' через ms миллисекунд.",
-    isRaw: true,
-    candidate: CreatePromiseCandidateRaw,
-    rawCandidate: CreatePromiseCandidateRaw,
-    solution: CreatePromiseSolutionRaw,
-    rawSolution: CreatePromiseSolutionRaw,
-    filepath: "src/javascript/tasks/13_promises/level1/1_CreatePromise.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Современный Async/Await",
-        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
-        rawSolution: CreatePromiseSolutionRaw,
-        filepath: "src/javascript/tasks/13_promises/level1/1_CreatePromise.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Промисы, резолв и реджект (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Промисы",
-        url: "https://learn.javascript.ru/promise-basics",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "В каком состоянии находится созданный new Promise() до вызова resolve или reject?",
-        answer: "Промис находится в состоянии 'pending' (ожидание). После вызова resolve переходит в 'fulfilled', а после reject — в 'rejected'.",
-      },
-    ],
-    checklist: [
-      "Возврат new Promise((resolve) => ...)",
-      "Вызов setTimeout() внутри конструктора",
-    ],
-  },
-  {
-    id: "js104",
-    group: "Промисы",
-    subgroup: "Основы синтаксиса",
-    title: "2. reject и catch (Уровень 1)",
-    desc: "Напишите функцию checkAge(age), возвращающую разрешенный промис при age >= 18 или отклоненный при age < 18.",
-    isRaw: true,
-    candidate: RejectAndCatchCandidateRaw,
-    rawCandidate: RejectAndCatchCandidateRaw,
-    solution: RejectAndCatchSolutionRaw,
-    rawSolution: RejectAndCatchSolutionRaw,
-    filepath: "src/javascript/tasks/13_promises/level1/2_RejectAndCatch.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Современный Async/Await",
-        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
-        rawSolution: RejectAndCatchSolutionRaw,
-        filepath: "src/javascript/tasks/13_promises/level1/2_RejectAndCatch.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Обработка ошибок в Promise (MDN)",
-        urlTitle: "MDN — Promise.prototype.catch()",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Чем отличается вызов reject(reason) от выброса ошибки throw new Error(reason) внутри исполнителя?",
-        answer: "Оба варианта переводят промис в состояние 'rejected', но reject предпочтителен для передаваемых причин отмены, а throw перехватывает неизбежные синтаксические и логические сбои.",
-      },
-    ],
-    checklist: [
-      "Использование параметров (resolve, reject)",
-      "Обработка ошибок через .catch()",
-    ],
-  },
-  {
-    id: "js105",
-    group: "Промисы",
-    subgroup: "Основы синтаксиса",
-    title: "3. Цепочка then (Уровень 1)",
-    desc: "Постройте цепочку вызовов .then(): получить пользователя -> извлечь его id -> вывести 'User id: <id>'.",
-    isRaw: true,
-    candidate: ThenChainCandidateRaw,
-    rawCandidate: ThenChainCandidateRaw,
-    solution: ThenChainSolutionRaw,
-    rawSolution: ThenChainSolutionRaw,
-    filepath: "src/javascript/tasks/13_promises/level1/3_ThenChain.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Современный Async/Await",
-        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
-        rawSolution: ThenChainSolutionRaw,
-        filepath: "src/javascript/tasks/13_promises/level1/3_ThenChain.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Цепочки промисов (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Цепочка промисов",
-        url: "https://learn.javascript.ru/promise-chaining",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Что возвращает метод .then()?",
-        answer: "Метод .then() всегда возвращает НОВЫЙ Promise, разрешающийся результатом выполнения его колбэка.",
-      },
-    ],
-    checklist: [
-      "Передача значения от одного .then() к следующему",
-    ],
-  },
-  {
-    id: "js106",
-    group: "Промисы",
-    subgroup: "Основы синтаксиса",
-    title: "4. finally (Уровень 1)",
-    desc: "Дополните цепочку промиса блоком .finally(), который выполняется всегда, независимо от результата запроса.",
-    isRaw: true,
-    candidate: FinallyCandidateRaw,
-    rawCandidate: FinallyCandidateRaw,
-    solution: FinallySolutionRaw,
-    rawSolution: FinallySolutionRaw,
-    filepath: "src/javascript/tasks/13_promises/level1/4_Finally.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Современный Async/Await",
-        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
-        rawSolution: FinallySolutionRaw,
-        filepath: "src/javascript/tasks/13_promises/level1/4_Finally.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Метод Promise.finally (MDN)",
-        urlTitle: "MDN — Promise.prototype.finally()",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Promise/finally",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Принимает ли колбэк в .finally() какие-либо аргументы?",
-        answer: "Нет, колбэк .finally() не принимает аргументов и пропускает исходный результат или ошибку дальше по цепочке.",
-      },
-    ],
-    checklist: [
-      "Добавление блока .finally(() => ...)",
-    ],
+    checklist: ["Результат: 1, 6, 3, 5, 4, 2"],
   },
 
-  // Уровень 2
   {
-    id: "js107",
-    group: "Промисы",
-    subgroup: "async/await",
-    title: "5. Базовый async/await (Уровень 2)",
-    desc: "Перепишите функцию обработки асинхронного вызова с цепочек .then() на использование синтаксиса async/await.",
+    id: "js180",
+    group: "Асинхронность",
+    subgroup: "Event Loop",
+    title: "11. Вложенные таймеры и микрозадачи (Company X)",
+    desc: "Подробный разбор последовательности создания и опустошения очередей при перекрестном создании таймеров и промисов.",
     isRaw: true,
-    candidate: BasicAsyncAwaitCandidateRaw,
-    rawCandidate: BasicAsyncAwaitCandidateRaw,
-    solution: BasicAsyncAwaitSolutionRaw,
-    rawSolution: BasicAsyncAwaitSolutionRaw,
-    filepath: "src/javascript/tasks/13_promises/level2/5_BasicAsyncAwait.js",
+    candidate: NestedTimersAndPromisesCandidateRaw,
+    rawCandidate: NestedTimersAndPromisesCandidateRaw,
+    solution: NestedTimersAndPromisesSolutionRaw,
+    rawSolution: NestedTimersAndPromisesSolutionRaw,
+    filepath: "src/javascript/tasks/22_event_loop/6_NestedTimersAndPromises.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
         isRecommended: true,
-        badge: "Современный Async/Await",
-        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
-        rawSolution: BasicAsyncAwaitSolutionRaw,
-        filepath: "src/javascript/tasks/13_promises/level2/5_BasicAsyncAwait.js",
+        badge: "Приоритет задач Event Loop",
+        recommendationNote: "Синхронный код -> Микрозадачи (Promise, queueMicrotask) -> Макрозадачи (setTimeout, setInterval). Это фундаментальный порядок.",
+        rawSolution: NestedTimersAndPromisesSolutionRaw,
+        filepath: "src/javascript/tasks/22_event_loop/6_NestedTimersAndPromises.js",
       },
     ],
     articles: [
-      {
-        title: "Async/await (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Async/await",
-        url: "https://learn.javascript.ru/async-await",
-      },
+      { title: "Очереди микро и макрозадач (JavaScript.ru)", urlTitle: "Учебник JS — Микрозадачи", url: "https://learn.javascript.ru/microtask-queue" },
     ],
     interviewerQuestions: [
-      {
-        question: "Что всегда возвращает функция, объявленная с ключевым словом async?",
-        answer: "Функция async всегда возвращает Promise (если вернуть значение, оно автоматически обернется в Promise.resolve).",
-      },
+      { question: "В какой момент планируется Таймер 2, находящийся внутри Промиса 1?", answer: "Только когда Event Loop берет микрозадачу Промиса 1 на исполнение." },
     ],
-    checklist: [
-      "Объявление функции async",
-      "Ожидание асинхронного результата через await",
-    ],
-  },
-  {
-    id: "js108",
-    group: "Промисы",
-    subgroup: "async/await",
-    title: "6. try/catch с async/await (Уровень 2)",
-    desc: "Оберните асинхронный вызов await loadData() в конструкцию try/catch для перехвата сбоев и возврата строки с описанием ошибки.",
-    isRaw: true,
-    candidate: TryCatchAsyncAwaitCandidateRaw,
-    rawCandidate: TryCatchAsyncAwaitCandidateRaw,
-    solution: TryCatchAsyncAwaitSolutionRaw,
-    rawSolution: TryCatchAsyncAwaitSolutionRaw,
-    filepath: "src/javascript/tasks/13_promises/level2/6_TryCatchAsyncAwait.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Современный Async/Await",
-        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
-        rawSolution: TryCatchAsyncAwaitSolutionRaw,
-        filepath: "src/javascript/tasks/13_promises/level2/6_TryCatchAsyncAwait.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Обработка ошибок в async/await (Doka.guide)",
-        urlTitle: "Дока — async/await try catch",
-        url: "https://doka.guide/js/async-await/",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Как перехватываются ошибки отменённых промисов внутри async функций?",
-        answer: "Отклоненные промисы выбрасывают исключения в месте await, которые перехватываются блоком catch (err) { ... }.",
-      },
-    ],
-    checklist: [
-      "Оборачивание await в конструкцию try { ... } catch(err) { ... }",
-    ],
-  },
-  {
-    id: "js109",
-    group: "Промисы",
-    subgroup: "async/await",
-    title: "7. Последовательное выполнение в цикле (Уровень 2)",
-    desc: "Загрузите данные пользователей последовательно (один за другим) в цикле for...of с использованием await.",
-    isRaw: true,
-    candidate: SequentialLoopCandidateRaw,
-    rawCandidate: SequentialLoopCandidateRaw,
-    solution: SequentialLoopSolutionRaw,
-    rawSolution: SequentialLoopSolutionRaw,
-    filepath: "src/javascript/tasks/13_promises/level2/7_SequentialLoop.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Современный Async/Await",
-        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
-        rawSolution: SequentialLoopSolutionRaw,
-        filepath: "src/javascript/tasks/13_promises/level2/7_SequentialLoop.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Циклы и асинхронность (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Последовательное выполнение",
-        url: "https://learn.javascript.ru/async-await#последовательное-выполнение",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Почему метод Array.prototype.forEach() не подходит для последовательного выполнения с await?",
-        answer: "forEach запускает функции-колбэки синхронно для всех элементов, не дожидаясь завершения возвращаемых ими промисов.",
-      },
-    ],
-    checklist: [
-      "Использование цикла for (const id of ids)",
-      "Последовательное вычисление await fetchUser(id)",
-    ],
+    checklist: ["Результат: Начало, Конец, Промис 1, Таймер 1, Промис 2, Таймер 2"],
   },
 
-  // Уровень 3
   {
-    id: "js110",
-    group: "Промисы",
-    subgroup: "Комбинаторы",
-    title: "8. Promise.all (Уровень 3)",
-    desc: "Загрузите данные всех товаров параллельно с помощью Promise.all и посчитайте их суммарную стоимость.",
+    id: "js181",
+    group: "Асинхронность",
+    subgroup: "Event Loop",
+    title: "12. Анимационный кадр requestAnimationFrame vs Event Loop",
+    desc: "Сравнение выполнения фаз браузера: синхронный код, микрозадачи (Promise), макрозадачи (setTimeout) и rAF.",
     isRaw: true,
-    candidate: PromiseAllCandidateRaw,
-    rawCandidate: PromiseAllCandidateRaw,
-    solution: PromiseAllSolutionRaw,
-    rawSolution: PromiseAllSolutionRaw,
-    filepath: "src/javascript/tasks/13_promises/level3/8_PromiseAll.js",
+    candidate: RequestAnimationFrameOrderCandidateRaw,
+    rawCandidate: RequestAnimationFrameOrderCandidateRaw,
+    solution: RequestAnimationFrameOrderSolutionRaw,
+    rawSolution: RequestAnimationFrameOrderSolutionRaw,
+    filepath: "src/javascript/tasks/22_event_loop/7_RequestAnimationFrameOrder.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
         isRecommended: true,
-        badge: "Современный Async/Await",
-        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
-        rawSolution: PromiseAllSolutionRaw,
-        filepath: "src/javascript/tasks/13_promises/level3/8_PromiseAll.js",
+        badge: "Приоритет задач Event Loop",
+        recommendationNote: "Синхронный код -> Микрозадачи (Promise, queueMicrotask) -> Макрозадачи (setTimeout, setInterval). Это фундаментальный порядок.",
+        rawSolution: RequestAnimationFrameOrderSolutionRaw,
+        filepath: "src/javascript/tasks/22_event_loop/7_RequestAnimationFrameOrder.js",
       },
     ],
     articles: [
-      {
-        title: "Комбинатор Promise.all (MDN)",
-        urlTitle: "MDN — Promise.all()",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Promise/all",
-      },
+      { title: "window.requestAnimationFrame (MDN)", urlTitle: "MDN — requestAnimationFrame()", url: "https://developer.mozilla.org/ru/docs/Web/API/window/requestAnimationFrame" },
     ],
     interviewerQuestions: [
-      {
-        question: "Что произойдет с Promise.all, если один из промисов отклонится?",
-        answer: "Promise.all моментально отловит ошибку и реджектится с причиной первого упавшего промиса (fail-fast).",
-      },
+      { question: "Перед какой фазой Event Loop вызываются колбэки requestAnimationFrame?", answer: "Перед фазой перерисовки (Repaint / Rendering Pipeline) кадра в браузере." },
     ],
-    checklist: [
-      "Вызов Promise.all(items.map(...))",
-      "Суммирование цен через reduce()",
-    ],
-  },
-  {
-    id: "js111",
-    group: "Промисы",
-    subgroup: "Комбинаторы",
-    title: "9. Promise.allSettled (Уровень 3)",
-    desc: "Выполните массив запросов через Promise.allSettled и отделите массив успешных значений от массива причин ошибок.",
-    isRaw: true,
-    candidate: PromiseAllSettledCandidateRaw,
-    rawCandidate: PromiseAllSettledCandidateRaw,
-    solution: PromiseAllSettledSolutionRaw,
-    rawSolution: PromiseAllSettledSolutionRaw,
-    filepath: "src/javascript/tasks/13_promises/level3/9_PromiseAllSettled.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Современный Async/Await",
-        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
-        rawSolution: PromiseAllSettledSolutionRaw,
-        filepath: "src/javascript/tasks/13_promises/level3/9_PromiseAllSettled.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Комбинатор Promise.allSettled (MDN)",
-        urlTitle: "MDN — Promise.allSettled()",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Какие статусы объектов содержатся в результате Promise.allSettled?",
-        answer: "Объекты содержат status: 'fulfilled' (с полем value) либо status: 'rejected' (с полем reason).",
-      },
-    ],
-    checklist: [
-      "Разделение результатов по status === 'fulfilled' и status === 'rejected'",
-    ],
-  },
-  {
-    id: "js112",
-    group: "Промисы",
-    subgroup: "Комбинаторы",
-    title: "10. Promise.race — таймаут запроса (Уровень 3)",
-    desc: "Напишите функцию withTimeout(promise, ms), отклоняющую запрос с ошибкой 'Timeout' при превышении лимита времени.",
-    isRaw: true,
-    candidate: PromiseRaceTimeoutCandidateRaw,
-    rawCandidate: PromiseRaceTimeoutCandidateRaw,
-    solution: PromiseRaceTimeoutSolutionRaw,
-    rawSolution: PromiseRaceTimeoutSolutionRaw,
-    filepath: "src/javascript/tasks/13_promises/level3/10_PromiseRaceTimeout.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Современный Async/Await",
-        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
-        rawSolution: PromiseRaceTimeoutSolutionRaw,
-        filepath: "src/javascript/tasks/13_promises/level3/10_PromiseRaceTimeout.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Комбинатор Promise.race (MDN)",
-        urlTitle: "MDN — Promise.race()",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Promise/race",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Как работает Promise.race?",
-        answer: "Promise.race возвращает промис, который завершается (успешно или с ошибкой) в зависимости от того, какой из промисов в массиве выполнится первым.",
-      },
-    ],
-    checklist: [
-      "Генерация таймаут-промиса через setTimeout",
-      "Гонка промисов Promise.race([promise, timeout])",
-    ],
-  },
-  {
-    id: "js113",
-    group: "Промисы",
-    subgroup: "Комбинаторы",
-    title: "11. Promise.any (Уровень 3)",
-    desc: "Реализуйте функцию получения ответа от первого успешно ответившего зеркала сервера с помощью Promise.any.",
-    isRaw: true,
-    candidate: PromiseAnyCandidateRaw,
-    rawCandidate: PromiseAnyCandidateRaw,
-    solution: PromiseAnySolutionRaw,
-    rawSolution: PromiseAnySolutionRaw,
-    filepath: "src/javascript/tasks/13_promises/level3/11_PromiseAny.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Современный Async/Await",
-        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
-        rawSolution: PromiseAnySolutionRaw,
-        filepath: "src/javascript/tasks/13_promises/level3/11_PromiseAny.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Комбинатор Promise.any (MDN)",
-        urlTitle: "MDN — Promise.any()",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Promise/any",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Какое исключение выбрасывает Promise.any, если все промисы отклонились?",
-        answer: "Оно выбрасывает AggregateError, содержащий массив всех ошибок в свойстве err.errors.",
-      },
-    ],
-    checklist: [
-      "Использование Promise.any(mirrors)",
-      "Перехват AggregateError",
-    ],
+    checklist: ["Результат: A, E, D, B, C"],
   },
 
-  // Уровень 4
   {
-    id: "js114",
-    group: "Промисы",
-    subgroup: "Паттерны (middle)",
-    title: "12. Промисификация callback-функции (Уровень 4)",
-    desc: "Напишите функцию promisify(fn), превращающую старую колбэк-функцию стандарта Node.js (err, result) в функцию, возвращающую Promise.",
+    id: "js182",
+    group: "Асинхронность",
+    subgroup: "Event Loop",
+    title: "13. Сложная комбинация макро и микрозадач",
+    desc: "Глубокий разбор задачи с вложенными setTimeout внутри исполнителя Promise и обработчиков .then.",
     isRaw: true,
-    candidate: PromisifyCallbackCandidateRaw,
-    rawCandidate: PromisifyCallbackCandidateRaw,
-    solution: PromisifyCallbackSolutionRaw,
-    rawSolution: PromisifyCallbackSolutionRaw,
-    filepath: "src/javascript/tasks/13_promises/level4/12_PromisifyCallback.js",
+    candidate: DeepNestedTimersPromisesCandidateRaw,
+    rawCandidate: DeepNestedTimersPromisesCandidateRaw,
+    solution: DeepNestedTimersPromisesSolutionRaw,
+    rawSolution: DeepNestedTimersPromisesSolutionRaw,
+    filepath: "src/javascript/tasks/22_event_loop/8_DeepNestedTimersPromises.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
         isRecommended: true,
-        badge: "Современный Async/Await",
-        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
-        rawSolution: PromisifyCallbackSolutionRaw,
-        filepath: "src/javascript/tasks/13_promises/level4/12_PromisifyCallback.js",
+        badge: "Приоритет задач Event Loop",
+        recommendationNote: "Синхронный код -> Микрозадачи (Promise, queueMicrotask) -> Макрозадачи (setTimeout, setInterval). Это фундаментальный порядок.",
+        rawSolution: DeepNestedTimersPromisesSolutionRaw,
+        filepath: "src/javascript/tasks/22_event_loop/8_DeepNestedTimersPromises.js",
       },
     ],
     articles: [
-      {
-        title: "Промисификация (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Промисификация",
-        url: "https://learn.javascript.ru/promisify",
-      },
+      { title: "Продвинутый Event Loop (BFE.dev)", urlTitle: "BFE.dev — Event Loop Tasks", url: "https://bigfrontend.dev/" },
     ],
     interviewerQuestions: [
-      {
-        question: "Какова конвенция передачи аргументов в Node.js callback-функциях?",
-        answer: "Первым аргументом всегда передается ошибка (err), а вторым — успешный результат (result).",
-      },
+      { question: "Почему res в .then выводит 'resolve 1' только после выполнения всех предыдущих шагов?", answer: "Потому что resolve() был вызван из макрозадачи setTimeout 2." },
     ],
-    checklist: [
-      "Перехват (err, result) в колбэке и вызов resolve/reject",
-    ],
-  },
-  {
-    id: "js115",
-    group: "Промисы",
-    subgroup: "Паттерны (middle)",
-    title: "13. Retry с задержкой (Уровень 4)",
-    desc: "Напишите функцию retry(fn, attempts, delayMs) для многократного повторения падавшего асинхронного запроса с задержкой.",
-    isRaw: true,
-    candidate: RetryWithDelayCandidateRaw,
-    rawCandidate: RetryWithDelayCandidateRaw,
-    solution: RetryWithDelaySolutionRaw,
-    rawSolution: RetryWithDelaySolutionRaw,
-    filepath: "src/javascript/tasks/13_promises/level4/13_RetryWithDelay.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Современный Async/Await",
-        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
-        rawSolution: RetryWithDelaySolutionRaw,
-        filepath: "src/javascript/tasks/13_promises/level4/13_RetryWithDelay.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Паттерны повторных попыток Retry (Doka.guide)",
-        urlTitle: "Дока — Асинхронные повторы",
-        url: "https://doka.guide/js/async-await/",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Зачем нужна задержка между повторными попытками запроса?",
-        answer: "Задержка снижает нагрузку на сервер (Backoff) и дает временно сбойнувшему сервису время на восстановление.",
-      },
-    ],
-    checklist: [
-      "Цикл попыток от 0 до attempts",
-      "Ожидание задержки перед новой попыткой",
-    ],
-  },
-  {
-    id: "js116",
-    group: "Промисы",
-    subgroup: "Паттерны (middle)",
-    title: "14. Ограничение параллельности (concurrency pool) (Уровень 4)",
-    desc: "Реализуйте функцию runWithLimit(tasks, limit), выполняющую массив задач с параллельным лимитом одновременно работающих потоков.",
-    isRaw: true,
-    candidate: ConcurrencyPoolLimitCandidateRaw,
-    rawCandidate: ConcurrencyPoolLimitCandidateRaw,
-    solution: ConcurrencyPoolLimitSolutionRaw,
-    rawSolution: ConcurrencyPoolLimitSolutionRaw,
-    filepath: "src/javascript/tasks/13_promises/level4/14_ConcurrencyPoolLimit.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Современный Async/Await",
-        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
-        rawSolution: ConcurrencyPoolLimitSolutionRaw,
-        filepath: "src/javascript/tasks/13_promises/level4/14_ConcurrencyPoolLimit.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Пул параллельных задач (MDN)",
-        urlTitle: "MDN — Асинхронный пул задач",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Guide/Using_promises",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Как гарантируется сохранение исходного порядка результатов при параллельном пуле?",
-        answer: "Каждая задача записывает результат в предварительно выделенный массив по её исходному индексу (results[currentIndex] = result).",
-      },
-    ],
-    checklist: [
-      "Соблюдение лимита одновременно исполняемых задач",
-      "Сохранение исходного порядка результатов",
-    ],
-  },
-  {
-    id: "js117",
-    group: "Промисы",
-    subgroup: "Паттерны (middle)",
-    title: "15. Мемоизация асинхронной функции (Уровень 4)",
-    desc: "Напишите memoizeAsync(fn), кэширующую возвращаемый Promise для исключения повторных сетевых запросов.",
-    isRaw: true,
-    candidate: MemoizeAsyncCandidateRaw,
-    rawCandidate: MemoizeAsyncCandidateRaw,
-    solution: MemoizeAsyncSolutionRaw,
-    rawSolution: MemoizeAsyncSolutionRaw,
-    filepath: "src/javascript/tasks/13_promises/level4/15_MemoizeAsync.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Современный Async/Await",
-        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
-        rawSolution: MemoizeAsyncSolutionRaw,
-        filepath: "src/javascript/tasks/13_promises/level4/15_MemoizeAsync.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Кэширование асинхронных промисов (Doka.guide)",
-        urlTitle: "Дока — Мемоизация асинхронного кода",
-        url: "https://doka.guide/js/memoization/",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Что делать с кэшем, если асинхронный промис завершился с ошибкой?",
-        answer: "Кэшированный упавший промис нужно удалять из Map через .catch(err => { cache.delete(key); throw err; }), чтобы повторный вызов попытался выполнить запрос заново.",
-      },
-    ],
-    checklist: [
-      "Кэширование самого объекта Promise в Map",
-      "Удаление из кэша при ошибки для повторной попытки",
-    ],
+    checklist: ["Результат: begins, promise 2, setTimeout 1, promise 1, setTimeout 2, dot then 1, resolve 1"],
   },
 
-  // Уровень 5
   {
     id: "js118",
-    group: "Промисы",
-    subgroup: "Senior и внутренности",
-    title: "16. Порядок вывода: microtask vs macrotask (Уровень 5)",
+    group: "Асинхронность",
+    subgroup: "Event Loop",
+    title: "14. Порядок вывода: microtask vs macrotask (Уровень 5)",
     desc: "Определите порядок выполнения синхронного кода, микротасков (Promise.then) и макротасков (setTimeout) в Event Loop.",
     isRaw: true,
     candidate: MicrotaskVsMacrotaskCandidateRaw,
     rawCandidate: MicrotaskVsMacrotaskCandidateRaw,
     solution: MicrotaskVsMacrotaskSolutionRaw,
     rawSolution: MicrotaskVsMacrotaskSolutionRaw,
-    filepath: "src/javascript/tasks/13_promises/level5/16_MicrotaskVsMacrotask.js",
+    filepath: "src/javascript/tasks/13_promises/level5/27_MicrotaskVsMacrotask.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
@@ -6897,7 +9757,7 @@ export const JS_PROMISES_TASKS = [
         badge: "Современный Async/Await",
         recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
         rawSolution: MicrotaskVsMacrotaskSolutionRaw,
-        filepath: "src/javascript/tasks/13_promises/level5/16_MicrotaskVsMacrotask.js",
+        filepath: "src/javascript/tasks/13_promises/level5/27_MicrotaskVsMacrotask.js",
       },
     ],
     articles: [
@@ -6917,296 +9777,19 @@ export const JS_PROMISES_TASKS = [
       "Порядок: 1, 5, 3, 4, 2",
     ],
   },
-  {
-    id: "js119",
-    group: "Промисы",
-    subgroup: "Senior и внутренности",
-    title: "17. Собственная реализация упрощённого Promise (Уровень 5)",
-    desc: "Реализуйте собственную версию класса MyPromise с поддержкой состояний, конструктора executor и методов then/catch.",
-    isRaw: true,
-    candidate: MyPromiseImplementationCandidateRaw,
-    rawCandidate: MyPromiseImplementationCandidateRaw,
-    solution: MyPromiseImplementationSolutionRaw,
-    rawSolution: MyPromiseImplementationSolutionRaw,
-    filepath: "src/javascript/tasks/13_promises/level5/17_MyPromiseImplementation.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Современный Async/Await",
-        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
-        rawSolution: MyPromiseImplementationSolutionRaw,
-        filepath: "src/javascript/tasks/13_promises/level5/17_MyPromiseImplementation.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Спецификация Promises/A+",
-        urlTitle: "Promises/A+ Specification",
-        url: "https://promisesaplus.com/",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Как обеспечить асинхронный вызов колбэков .then() согласно спецификации Promises/A+?",
-        answer: "С помощью встроенной функции queueMicrotask(() => ...) или process.nextTick / setTimeout.",
-      },
-    ],
-    checklist: [
-      "Поддержка состояний pending / fulfilled / rejected",
-      "Возврат нового промиса из метода then()",
-    ],
-  },
-  {
-    id: "js120",
-    group: "Промисы",
-    subgroup: "Senior и внутренности",
-    title: "18. Отмена промиса через AbortController (Уровень 5)",
-    desc: "Напишите функцию fetchWithCancel(url, signal), отменяющую ожидающий промис при срабатывании сигнала AbortSignal.",
-    isRaw: true,
-    candidate: AbortControllerCancelCandidateRaw,
-    rawCandidate: AbortControllerCancelCandidateRaw,
-    solution: AbortControllerCancelSolutionRaw,
-    rawSolution: AbortControllerCancelSolutionRaw,
-    filepath: "src/javascript/tasks/13_promises/level5/18_AbortControllerCancel.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Современный Async/Await",
-        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
-        rawSolution: AbortControllerCancelSolutionRaw,
-        filepath: "src/javascript/tasks/13_promises/level5/18_AbortControllerCancel.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Отмена асинхронных операций через AbortController (MDN)",
-        urlTitle: "MDN — AbortController",
-        url: "https://developer.mozilla.org/ru/docs/Web/API/AbortController",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Как связать асинхронный таймер или fetch запрос с AbortSignal?",
-        answer: "Подпиской на событие signal.addEventListener('abort', handler), в котором очищается таймер и вызывается reject().",
-      },
-    ],
-    checklist: [
-      "Подписка на событие signal.addEventListener('abort', ...)",
-    ],
-  },
-  {
-    id: "js121",
-    group: "Промисы",
-    subgroup: "Senior и внутренности",
-    title: "19. Очередь асинхронных задач (async task queue) (Уровень 5)",
-    desc: "Напишите класс TaskQueue для строго последовательного выполнения поступающих асинхронных задач.",
-    isRaw: true,
-    candidate: AsyncTaskQueueCandidateRaw,
-    rawCandidate: AsyncTaskQueueCandidateRaw,
-    solution: AsyncTaskQueueSolutionRaw,
-    rawSolution: AsyncTaskQueueSolutionRaw,
-    filepath: "src/javascript/tasks/13_promises/level5/19_AsyncTaskQueue.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Современный Async/Await",
-        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
-        rawSolution: AsyncTaskQueueSolutionRaw,
-        filepath: "src/javascript/tasks/13_promises/level5/19_AsyncTaskQueue.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Асинхронные очереди (Doka.guide)",
-        urlTitle: "Дока — Паттерн Очередь задач",
-        url: "https://doka.guide/js/async-await/",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Как связать цепочку промисов в классе TaskQueue без явного массива задач?",
-        answer: "Присваивать свойству очереди результат chaining: this.queue = this.queue.then(() => taskFn()).",
-      },
-    ],
-    checklist: [
-      "Последовательное выполнение задач независимо от задержек",
-    ],
-  },
-  {
-    id: "js122",
-    group: "Промисы",
-    subgroup: "Senior и внутренности",
-    title: "20. Дебаунс асинхронной функции с отменой устаревших вызовов (Уровень 5)",
-    desc: "Реализуйте асинхронный debounceAsync, который сбрасывает и отменяет предыдущий висящий промис при вызове новой функции.",
-    isRaw: true,
-    candidate: DebounceAsyncCancelCandidateRaw,
-    rawCandidate: DebounceAsyncCancelCandidateRaw,
-    solution: DebounceAsyncCancelSolutionRaw,
-    rawSolution: DebounceAsyncCancelSolutionRaw,
-    filepath: "src/javascript/tasks/13_promises/level5/20_DebounceAsyncCancel.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Современный Async/Await",
-        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
-        rawSolution: DebounceAsyncCancelSolutionRaw,
-        filepath: "src/javascript/tasks/13_promises/level5/20_DebounceAsyncCancel.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Асинхронный Debounce (MDN)",
-        urlTitle: "MDN — Асинхронные паттерны",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Guide/Using_promises",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Зачем отменять устаревшие асинхронные вызовы маркерным значением Symbol?",
-        answer: "Чтобы отменённые промежуточные запросы не засоряли консоль ошибками и не вызывали ложных сбоев приложения.",
-      },
-    ],
-    checklist: [
-      "Отмена предыдущих вызовов маркером CANCELLED",
-      "Выполнение только последнего вызова",
-    ],
-  },
 
-  // Задачи с собеседований
-  {
-    id: "js123",
-    group: "Промисы",
-    subgroup: "Собеседования",
-    title: "21. PromiseAll (Company X)",
-    desc: "Реализуйте собственную версию функции promiseAll(promises), полностью эмулирующую нативный Promise.all.",
-    isRaw: true,
-    candidate: PromiseAllCustomCandidateRaw,
-    rawCandidate: PromiseAllCustomCandidateRaw,
-    solution: PromiseAllCustomSolutionRaw,
-    rawSolution: PromiseAllCustomSolutionRaw,
-    filepath: "src/javascript/tasks/13_promises/interview/21_PromiseAllCustom.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Современный Async/Await",
-        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
-        rawSolution: PromiseAllCustomSolutionRaw,
-        filepath: "src/javascript/tasks/13_promises/interview/21_PromiseAllCustom.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Написание собственного Promise.all (Doka.guide)",
-        urlTitle: "Дока — Реализация Promise.all",
-        url: "https://doka.guide/js/promise-all/",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Как обрабатывать не-промис значения, переданные в массив promiseAll?",
-        answer: "Пропускать каждый элемент через Promise.resolve(item), чтобы приведя обычное значение к промису.",
-      },
-    ],
-    checklist: [
-      "Обработка пустого массива resolve([])",
-      "Сохранение исходных индексов результатов",
-    ],
-  },
-  {
-    id: "js124",
-    group: "Промисы",
-    subgroup: "Собеседования",
-    title: "22. Асинхронное выполнение задач (Company X)",
-    desc: "Реализуйте функцию asyncPool(count, tasks), исполняющую массив функций-промисов с лимитом параллельности.",
-    isRaw: true,
-    candidate: AsyncPoolParallelCandidateRaw,
-    rawCandidate: AsyncPoolParallelCandidateRaw,
-    solution: AsyncPoolParallelSolutionRaw,
-    rawSolution: AsyncPoolParallelSolutionRaw,
-    filepath: "src/javascript/tasks/13_promises/interview/22_AsyncPoolParallel.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Современный Async/Await",
-        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
-        rawSolution: AsyncPoolParallelSolutionRaw,
-        filepath: "src/javascript/tasks/13_promises/interview/22_AsyncPoolParallel.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Задачи с собеседований по асинхронности (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Пул асинхронных функций",
-        url: "https://learn.javascript.ru/async-await",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "В каком порядке должны быть возвращены значения в asyncPool?",
-        answer: "Результаты должны быть уложены строго в соответствии с исходным порядком задач в массиве tasks.",
-      },
-    ],
-    checklist: [
-      "Запуск очередных задач по мере освобождения ресурсов",
-    ],
-  },
-  {
-    id: "js125",
-    group: "Промисы",
-    subgroup: "Собеседования",
-    title: "23. Промис с таймаутом (Company X)",
-    desc: "Напишите функцию withTimeout(promise, timeoutMs), реджектящуюся с ошибкой TimeoutError при превышении лимита времени.",
-    isRaw: true,
-    candidate: WithTimeoutWrapCandidateRaw,
-    rawCandidate: WithTimeoutWrapCandidateRaw,
-    solution: WithTimeoutWrapSolutionRaw,
-    rawSolution: WithTimeoutWrapSolutionRaw,
-    filepath: "src/javascript/tasks/13_promises/interview/23_WithTimeoutWrap.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Современный Async/Await",
-        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
-        rawSolution: WithTimeoutWrapSolutionRaw,
-        filepath: "src/javascript/tasks/13_promises/interview/23_WithTimeoutWrap.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Таймауты в асинхронном коде (MDN)",
-        urlTitle: "MDN — Promise.race и таймауты",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Promise/race",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Как корректно обработать передачу обычного не-промис значения в с таймером?",
-        answer: "Обернуть значение в Promise.resolve(promise), передаваемый в Promise.race.",
-      },
-    ],
-    checklist: [
-      "Использование Promise.race([Promise.resolve(promise), timeoutPromise])",
-    ],
-  },
   {
     id: "js185",
-    group: "Промисы",
-    subgroup: "Собеседования",
-    title: "24. Порядок вывода в Promise-цепочках (Company X)",
+    group: "Асинхронность",
+    subgroup: "Event Loop",
+    title: "15. Порядок вывода в Promise-цепочках (Company X)",
     desc: "Определите точный порядок вывода в консоль при параллельном выполнении двух цепочек промисов с .then() и .catch().",
     isRaw: true,
     candidate: PromiseChainsExecutionOrderCandidateRaw,
     rawCandidate: PromiseChainsExecutionOrderCandidateRaw,
     solution: PromiseChainsExecutionOrderSolutionRaw,
     rawSolution: PromiseChainsExecutionOrderSolutionRaw,
-    filepath: "src/javascript/tasks/13_promises/interview/24_PromiseChainsExecutionOrder.js",
+    filepath: "src/javascript/tasks/13_promises/interview/35_PromiseChainsExecutionOrder.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
@@ -7214,7 +9797,7 @@ export const JS_PROMISES_TASKS = [
         badge: "Порядок микротасок",
         recommendationNote: "Понимание чередования шагов в очереди микрозадач и транзитного проброса статусов является ключевым навыком для прохождения технического интервью.",
         rawSolution: PromiseChainsExecutionOrderSolutionRaw,
-        filepath: "src/javascript/tasks/13_promises/interview/24_PromiseChainsExecutionOrder.js",
+        filepath: "src/javascript/tasks/13_promises/interview/35_PromiseChainsExecutionOrder.js",
       },
     ],
     articles: [
@@ -7274,1322 +9857,458 @@ export const JS_PROMISES_TASKS = [
       "Точный итоговый порядок вывода: 1, 2, 7, 4, 8",
     ],
   },
-];
 
-export const JS_CLOSURES_TASKS = [
   {
-    id: "js126",
-    group: "Замыкания",
-    subgroup: "Базовые механизмы",
-    title: "1. Генератор счетчика на замыкании",
-    desc: "Реализуйте функцию createCounter(), локальная переменная count которой сохраняется между вызовами благодаря замыканию.",
+    id: "js103",
+    group: "Асинхронность",
+    subgroup: "Основы Promise",
+    title: "1. Создание Promise (Уровень 1)",
+    desc: "Напишите функцию delay(ms), возвращающую Promise, который успешно разрешается значением 'done' через ms миллисекунд.",
     isRaw: true,
-    candidate: CounterGeneratorCandidateRaw,
-    rawCandidate: CounterGeneratorCandidateRaw,
-    solution: CounterGeneratorSolutionRaw,
-    rawSolution: CounterGeneratorSolutionRaw,
-    filepath: "src/javascript/tasks/14_closures/1_CounterGenerator.js",
+    candidate: CreatePromiseCandidateRaw,
+    rawCandidate: CreatePromiseCandidateRaw,
+    solution: CreatePromiseSolutionRaw,
+    rawSolution: CreatePromiseSolutionRaw,
+    filepath: "src/javascript/tasks/13_promises/level1/5_CreatePromise.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
         isRecommended: true,
-        badge: "Концепция JS Engine",
-        recommendationNote: "Замыкания позволяют функции сохранять доступ к лексическому окружению даже после завершения работы внешней функции.",
-        rawSolution: CounterGeneratorSolutionRaw,
-        filepath: "src/javascript/solutions/14_closures/1_CounterGenerator.js",
+        badge: "Современный Async/Await",
+        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
+        rawSolution: CreatePromiseSolutionRaw,
+        filepath: "src/javascript/tasks/13_promises/level1/5_CreatePromise.js",
       },
     ],
     articles: [
       {
-        title: "Замыкания в JavaScript (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Замыкания",
-        url: "https://learn.javascript.ru/closure",
+        title: "Промисы, резолв и реджект (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Промисы",
+        url: "https://learn.javascript.ru/promise-basics",
       },
     ],
     interviewerQuestions: [
       {
-        question: "Что такое замыкание (Closure) в JavaScript?",
-        answer: "Замыкание — это комбинация функции и лексического окружения, в котором эта функция была объявлена. Функция сохраняет доступ к переменным внешней функции даже после её завершения.",
+        question: "В каком состоянии находится созданный new Promise() до вызова resolve или reject?",
+        answer: "Промис находится в состоянии 'pending' (ожидание). После вызова resolve переходит в 'fulfilled', а после reject — в 'rejected'.",
       },
     ],
     checklist: [
-      "Объявление локальной переменной let count = 0",
-      "Возврат вложенной функции, изменяющей count",
-    ],
-  },
-  {
-    id: "js127",
-    group: "Замыкания",
-    subgroup: "Область видимости в циклах",
-    title: "2. Обработчики событий в цикле",
-    desc: "Определите, что будет выведено в консоль при клике на кнопки, объясните причину и исправьте код для корректного вывода индекса.",
-    isRaw: true,
-    candidate: LoopEventListenersCandidateRaw,
-    rawCandidate: LoopEventListenersCandidateRaw,
-    solution: LoopEventListenersSolutionRaw,
-    rawSolution: LoopEventListenersSolutionRaw,
-    filepath: "src/javascript/tasks/14_closures/2_LoopEventListeners.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Концепция JS Engine",
-        recommendationNote: "Замыкания позволяют функции сохранять доступ к лексическому окружению даже после завершения работы внешней функции.",
-        rawSolution: LoopEventListenersSolutionRaw,
-        filepath: "src/javascript/solutions/14_closures/2_LoopEventListeners.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Область видимости переменной в циклах (MDN)",
-        urlTitle: "MDN — Блочная область видимости let",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Statements/let",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Почему использование var в цикле приводит к одинаковым значениям во всех обработчиках?",
-        answer: "Переменная var имеет функциональную область видимости и создается в единственном экземпляре для всех итераций цикла.",
-      },
-    ],
-    checklist: [
-      "Замена var i = 0 на let i = 0",
-    ],
-  },
-  {
-    id: "js128",
-    group: "Замыкания",
-    subgroup: "Область видимости в циклах",
-    title: "3. Таймеры и переменная цикла",
-    desc: "Определите, что выведет данный асинхронный цикл с var, объясните механизм замыкания и предложите варианты исправления.",
-    isRaw: true,
-    candidate: LoopTimersVarCandidateRaw,
-    rawCandidate: LoopTimersVarCandidateRaw,
-    solution: LoopTimersVarSolutionRaw,
-    rawSolution: LoopTimersVarSolutionRaw,
-    filepath: "src/javascript/tasks/14_closures/3_LoopTimersVar.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Концепция JS Engine",
-        recommendationNote: "Замыкания позволяют функции сохранять доступ к лексическому окружению даже после завершения работы внешней функции.",
-        rawSolution: LoopTimersVarSolutionRaw,
-        filepath: "src/javascript/solutions/14_closures/3_LoopTimersVar.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Замыкания и setTimeout в циклах (Doka.guide)",
-        urlTitle: "Дока — Ловушки var в таймерах",
-        url: "https://doka.guide/js/closures/",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Как ещё, кроме let, можно исправить проблему захвата var в цикле с setTimeout?",
-        answer: "Использованием IIFE (немедленно вызываемой функции) или передачей i третьим аргументом в setTimeout(fn, delay, i).",
-      },
-    ],
-    checklist: [
-      "Использование let для блочной привязки i на каждой итерации",
-    ],
-  },
-  {
-    id: "js129",
-    group: "Замыкания",
-    subgroup: "Фиксация контекста",
-    title: "4. Фиксация значений локальной переменной",
-    desc: "Определите, какие значения выведет вызов log() с учетом разницы между зафиксированной строкой и ссылкой на изменяемую переменную.",
-    isRaw: true,
-    candidate: MessageVsNumberStateCandidateRaw,
-    rawCandidate: MessageVsNumberStateCandidateRaw,
-    solution: MessageVsNumberStateSolutionRaw,
-    rawSolution: MessageVsNumberStateSolutionRaw,
-    filepath: "src/javascript/tasks/14_closures/4_MessageVsNumberState.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Концепция JS Engine",
-        recommendationNote: "Замыкания позволяют функции сохранять доступ к лексическому окружению даже после завершения работы внешней функции.",
-        rawSolution: MessageVsNumberStateSolutionRaw,
-        filepath: "src/javascript/solutions/14_closures/4_MessageVsNumberState.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Захват переменных в замыканиях (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Замыкания по ссылке и значению",
-        url: "https://learn.javascript.ru/closure",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "В чем разница между захватом примитивного значения свойства и ссылки на объект/переменную?",
-        answer: "Строка message фиксирует свой текст в момент создания, а переменная number доступна по живой ссылке на текущее состояние.",
-      },
-    ],
-    checklist: [
-      "Вывод 'Incremented to 1' и 'Number: 3'",
-    ],
-  },
-  {
-    id: "js130",
-    group: "Замыкания",
-    subgroup: "Фиксация контекста",
-    title: "5. Свежие и зафиксированные значения в замыкании",
-    desc: "Определите, какие сообщения будут выведены в консоль при вызовах increment() и log(), объясните поведение и исправьте функцию log.",
-    isRaw: true,
-    candidate: CreateIncrementFixCandidateRaw,
-    rawCandidate: CreateIncrementFixCandidateRaw,
-    solution: CreateIncrementFixSolutionRaw,
-    rawSolution: CreateIncrementFixSolutionRaw,
-    filepath: "src/javascript/tasks/14_closures/5_CreateIncrementFix.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Концепция JS Engine",
-        recommendationNote: "Замыкания позволяют функции сохранять доступ к лексическому окружению даже после завершения работы внешней функции.",
-        rawSolution: CreateIncrementFixSolutionRaw,
-        filepath: "src/javascript/solutions/14_closures/5_CreateIncrementFix.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Ловушки устаревших замыканий (Doka.guide)",
-        urlTitle: "Дока — Замыкания и устаревший стейт",
-        url: "https://doka.guide/js/closures/",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Как избежать устаревшего состояния (Stale Closure) при формировании сообщений?",
-        answer: "Формировать строки или считывать свойства динамически непосредственно в момент вызова логирующей функции.",
-      },
-    ],
-    checklist: [
-      "Динамическое вычисление строки `Count is ${count}` внутри log()",
-    ],
-  },
-  {
-    id: "js131",
-    group: "Замыкания",
-    subgroup: "Область видимости в циклах",
-    title: "6. Замыкание по элементам массива",
-    desc: "Определите, что выведет данный цикл с setTimeout при обращении к элементам массива, объясните причину и исправьте код.",
-    isRaw: true,
-    candidate: ArrayLoopTimeoutCandidateRaw,
-    rawCandidate: ArrayLoopTimeoutCandidateRaw,
-    solution: ArrayLoopTimeoutSolutionRaw,
-    rawSolution: ArrayLoopTimeoutSolutionRaw,
-    filepath: "src/javascript/tasks/14_closures/6_ArrayLoopTimeout.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Концепция JS Engine",
-        recommendationNote: "Замыкания позволяют функции сохранять доступ к лексическому окружению даже после завершения работы внешней функции.",
-        rawSolution: ArrayLoopTimeoutSolutionRaw,
-        filepath: "src/javascript/solutions/14_closures/6_ArrayLoopTimeout.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Циклы, массивы и асинхронность (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Цикл for и let",
-        url: "https://learn.javascript.ru/let-const",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Какое значение имел индекс i после окончания работы цикла с var?",
-        answer: "Индекс i был равен 4 (arr.length), из-за чего arr[4] возвращал undefined на каждом вызове таймера.",
-      },
-    ],
-    checklist: [
-      "Использование let i = 0",
-      "Корректный вывод по индексам 0, 1, 2, 3",
-    ],
-  },
-];
-
-export const JS_RECURSION_TASKS = [
-  // Уровень 0
-  {
-    id: "js132",
-    group: "Рекурсия",
-    subgroup: "База рекурсии",
-    title: "1. Что такое база рекурсии (base case)",
-    desc: "Напишите функцию countDown(n), печатающую числа от n до 1 с точкой остановки (базой рекурсии).",
-    isRaw: true,
-    candidate: CountDownBaseCaseCandidateRaw,
-    rawCandidate: CountDownBaseCaseCandidateRaw,
-    solution: CountDownBaseCaseSolutionRaw,
-    rawSolution: CountDownBaseCaseSolutionRaw,
-    filepath: "src/javascript/tasks/15_recursion/level0/1_CountDownBaseCase.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Алгоритмический подход",
-        recommendationNote: "Рекурсивный подход идеален для работы с древовидными и вложенными структурами данных. Всегда определяйте базовый случай выхода.",
-        rawSolution: CountDownBaseCaseSolutionRaw,
-        filepath: "src/javascript/tasks/15_recursion/level0/1_CountDownBaseCase.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Рекурсия и стек (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Рекурсия и стек",
-        url: "https://learn.javascript.ru/recursion",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Что происходит, если в рекурсивной функции отсутствует база рекурсии?",
-        answer: "Происходит бесконечный вызов функции самой себя, который приводит к переполнению стека вызовов (RangeError: Maximum call stack size exceeded).",
-      },
-    ],
-    checklist: [
-      "Проверка условия выхода if (n <= 0) return",
-      "Уменьшение аргумента при вызове countDown(n - 1)",
-    ],
-  },
-  {
-    id: "js133",
-    group: "Рекурсия",
-    subgroup: "База рекурсии",
-    title: "2. Рекурсия 'вверх' (печать при возврате)",
-    desc: "Напишите функцию countUp(n), печатающую числа от 1 до n, где вывод происходит ПОСЛЕ рекурсивного вызова.",
-    isRaw: true,
-    candidate: CountUpPostCallCandidateRaw,
-    rawCandidate: CountUpPostCallCandidateRaw,
-    solution: CountUpPostCallSolutionRaw,
-    rawSolution: CountUpPostCallSolutionRaw,
-    filepath: "src/javascript/tasks/15_recursion/level0/2_CountUpPostCall.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Алгоритмический подход",
-        recommendationNote: "Рекурсивный подход идеален для работы с древовидными и вложенными структурами данных. Всегда определяйте базовый случай выхода.",
-        rawSolution: CountUpPostCallSolutionRaw,
-        filepath: "src/javascript/tasks/15_recursion/level0/2_CountUpPostCall.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Порядок размотки стека рекурсии (Doka.guide)",
-        urlTitle: "Дока — Порядок выполнения вызовов",
-        url: "https://doka.guide/js/recursion/",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Почему консоль выводит числа по возрастанию, хотя вызовы идут на уменьшение?",
-        answer: "Вызовы накапливаются в стеке вызовов (спуск), а печать выполняется во время обратного хода (подъема) при разворачивании стека.",
-      },
-    ],
-    checklist: [
-      "Размещение console.log(n) после рекурсивного вызова",
-    ],
-  },
-  {
-    id: "js134",
-    group: "Рекурсия",
-    subgroup: "База рекурсии",
-    title: "3. Факториал (классика синтаксиса)",
-    desc: "Реализуйте классическую функцию вычисления факториала factorial(n) с наглядным рекурсивным шагом.",
-    isRaw: true,
-    candidate: FactorialClassicCandidateRaw,
-    rawCandidate: FactorialClassicCandidateRaw,
-    solution: FactorialClassicSolutionRaw,
-    rawSolution: FactorialClassicSolutionRaw,
-    filepath: "src/javascript/tasks/15_recursion/level0/3_FactorialClassic.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Алгоритмический подход",
-        recommendationNote: "Рекурсивный подход идеален для работы с древовидными и вложенными структурами данных. Всегда определяйте базовый случай выхода.",
-        rawSolution: FactorialClassicSolutionRaw,
-        filepath: "src/javascript/tasks/15_recursion/level0/3_FactorialClassic.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Вычисление факториала (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Задачи на рекурсию",
-        url: "https://learn.javascript.ru/task/factorial",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Чему равны факториалы 0! и 1!?",
-        answer: "Оба значения равны 1, поэтому база рекурсии проверяет if (n === 0 || n === 1) return 1.",
-      },
-    ],
-    checklist: [
-      "Базовое условие n === 0 || n === 1",
-      "Рекурсивное произведение n * factorial(n - 1)",
-    ],
-  },
-  {
-    id: "js135",
-    group: "Рекурсия",
-    subgroup: "База рекурсии",
-    title: "4. Возведение в степень",
-    desc: "Напишите функцию power(base, exp) для вычисления степени числа через последовательные рекурсивные умножения.",
-    isRaw: true,
-    candidate: PowerExpCandidateRaw,
-    rawCandidate: PowerExpCandidateRaw,
-    solution: PowerExpSolutionRaw,
-    rawSolution: PowerExpSolutionRaw,
-    filepath: "src/javascript/tasks/15_recursion/level0/4_PowerExp.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Алгоритмический подход",
-        recommendationNote: "Рекурсивный подход идеален для работы с древовидными и вложенными структурами данных. Всегда определяйте базовый случай выхода.",
-        rawSolution: PowerExpSolutionRaw,
-        filepath: "src/javascript/tasks/15_recursion/level0/4_PowerExp.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Возведение в степень через рекурсию (MDN)",
-        urlTitle: "MDN — Рекурсивное вычисление степеней",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Guide/Functions#recursion",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Какое базовое условие используется при возведении числа в степень?",
-        answer: "Базовое условие exp === 0 возвращает 1, так как любое число в нулевой степени равно единице.",
-      },
-    ],
-    checklist: [
-      "Условие if (exp === 0) return 1",
-      "Возврат base * power(base, exp - 1)",
+      "Возврат new Promise((resolve) => ...)",
+      "Вызов setTimeout() внутри конструктора",
     ],
   },
 
-  // Уровень 1
   {
-    id: "js136",
-    group: "Рекурсия",
-    subgroup: "Массивы и строки",
-    title: "5. Максимум в массиве",
-    desc: "Напишите рекурсивную функцию findMax(arr) для поиска наибольшего элемента массива.",
+    id: "js104",
+    group: "Асинхронность",
+    subgroup: "Основы Promise",
+    title: "2. reject и catch (Уровень 1)",
+    desc: "Напишите функцию checkAge(age), возвращающую разрешенный промис при age >= 18 или отклоненный при age < 18.",
     isRaw: true,
-    candidate: FindMaxArrayCandidateRaw,
-    rawCandidate: FindMaxArrayCandidateRaw,
-    solution: FindMaxArraySolutionRaw,
-    rawSolution: FindMaxArraySolutionRaw,
+    candidate: RejectAndCatchCandidateRaw,
+    rawCandidate: RejectAndCatchCandidateRaw,
+    solution: RejectAndCatchSolutionRaw,
+    rawSolution: RejectAndCatchSolutionRaw,
+    filepath: "src/javascript/tasks/13_promises/level1/2_RejectAndCatch.js",
     solutions: [
       {
-        solution: FindMaxArraySolutionRaw,
-        rawSolution: FindMaxArraySolutionRaw,
-        badge: "Рекурсивное",
-      },
-      {
-        solution: FindMaxArraySolutionRecommendedRaw,
-        rawSolution: FindMaxArraySolutionRecommendedRaw,
+        title: "Рекомендуемое решение",
         isRecommended: true,
-        badge: "Рекомендуется",
-        recommendationNote: "Использование Math.max(...arr) в реальных проектах эффективнее рекурсии O(N) по памяти.",
+        badge: "Современный Async/Await",
+        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
+        rawSolution: RejectAndCatchSolutionRaw,
+        filepath: "src/javascript/tasks/13_promises/level1/2_RejectAndCatch.js",
       },
     ],
-    filepath: "src/javascript/tasks/15_recursion/level1/5_FindMaxArray.js",
     articles: [
       {
-        title: "Поиск максимума в массиве (MDN)",
-        urlTitle: "MDN — Math.max()",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Math/max",
+        title: "Обработка ошибок в Promise (MDN)",
+        urlTitle: "MDN — Promise.prototype.catch()",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch",
       },
     ],
     interviewerQuestions: [
       {
-        question: "Почему срез arr.slice(1) в рекурсивной реализации расходует много памяти?",
-        answer: "slice(1) создаёт новый массив на каждом вызове, создавая доп. память O(N). Лучше передавать текущий индекс.",
+        question: "Чем отличается вызов reject(reason) от выброса ошибки throw new Error(reason) внутри исполнителя?",
+        answer: "Оба варианта переводят промис в состояние 'rejected', но reject предпочтителен для передаваемых причин отмены, а throw перехватывает неизбежные синтаксические и логические сбои.",
       },
     ],
     checklist: [
-      "База рекурсии if (arr.length === 1) return arr[0]",
-      "Рекурсивный срез arr.slice(1)",
+      "Использование параметров (resolve, reject)",
+      "Обработка ошибок через .catch()",
     ],
   },
 
-  // Уровень 3
   {
-    id: "js137",
-    group: "Рекурсия",
-    subgroup: "Вложенные структуры",
-    title: "6. Глубокое сплющивание массива (flatten)",
-    desc: "Напишите функцию flatten(arr) для выравнивания массивов любой глубины вложенности без использования flat().",
+    id: "js105",
+    group: "Асинхронность",
+    subgroup: "Основы Promise",
+    title: "3. Цепочка then (Уровень 1)",
+    desc: "Постройте цепочку вызовов .then(): получить пользователя -> извлечь его id -> вывести 'User id: <id>'.",
     isRaw: true,
-    candidate: DeepFlattenArrayCandidateRaw,
-    rawCandidate: DeepFlattenArrayCandidateRaw,
-    solution: DeepFlattenArraySolutionRaw,
-    rawSolution: DeepFlattenArraySolutionRaw,
-    solutions: [
-      {
-        solution: DeepFlattenArraySolutionRaw,
-        rawSolution: DeepFlattenArraySolutionRaw,
-        badge: "Рекурсивный flat",
-      },
-      {
-        solution: DeepFlattenArraySolutionRecommendedRaw,
-        rawSolution: DeepFlattenArraySolutionRecommendedRaw,
-        isRecommended: true,
-        badge: "Рекомендуется",
-        recommendationNote: "В современном ES2019+ принято использовать встроенный метод arr.flat(Infinity).",
-      },
-    ],
-    filepath: "src/javascript/tasks/15_recursion/level3/6_DeepFlattenArray.js",
-    articles: [
-      {
-        title: "Разворачивание вложенных массивов (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Рекурсивный flat",
-        url: "https://learn.javascript.ru/recursion",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Как проверить, является ли текущий элемент массивом?",
-        answer: "С помощью встроенного метода Array.isArray(el).",
-      },
-    ],
-    checklist: [
-      "Проверка Array.isArray(el)",
-      "Рекурсивный push(...flatten(el))",
-    ],
-  },
-  {
-    id: "js138",
-    group: "Рекурсия",
-    subgroup: "Вложенные структуры",
-    title: "7. Глубокое клонирование объекта",
-    desc: "Напишите функцию deepClone(obj) для полного клонирования объектов и массивов любой вложенности без JSON.parse.",
-    isRaw: true,
-    candidate: DeepCloneObjectCandidateRaw,
-    rawCandidate: DeepCloneObjectCandidateRaw,
-    solution: DeepCloneObjectSolutionRaw,
-    rawSolution: DeepCloneObjectSolutionRaw,
-    solutions: [
-      {
-        solution: DeepCloneObjectSolutionRaw,
-        rawSolution: DeepCloneObjectSolutionRaw,
-        badge: "Ручное клонирование",
-      },
-      {
-        solution: DeepCloneObjectSolutionRecommendedRaw,
-        rawSolution: DeepCloneObjectSolutionRecommendedRaw,
-        isRecommended: true,
-        badge: "Рекомендуется",
-        recommendationNote: "В современном JavaScript стандартной альтернативой является функция structuredClone(value).",
-      },
-    ],
-    filepath: "src/javascript/tasks/15_recursion/level3/7_DeepCloneObject.js",
-    articles: [
-      {
-        title: "Глубокая копия объектов (MDN)",
-        urlTitle: "MDN — structuredClone()",
-        url: "https://developer.mozilla.org/ru/docs/Web/API/structuredClone",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Чем глубокое клонирование отличается от поверхностного (shallow copy)?",
-        answer: "Поверхностное копирует только первые свойства, а вложенные объекты оставляет ссылками. Глубокая копия создает новые объекты для всех уровней.",
-      },
-    ],
-    checklist: [
-      "Проверка примитивов typeof !== 'object' || value === null",
-      "Рекурсивное копирование свойств и элементов",
-    ],
-  },
-  {
-    id: "js139",
-    group: "Рекурсия",
-    subgroup: "Вложенные структуры",
-    title: "8. Сумма всех чисел во вложенном объекте",
-    desc: "Реализуйте функцию deepSum(obj), суммирующую все числовые значения объектов и массивов любой вложенности.",
-    isRaw: true,
-    candidate: DeepSumObjectCandidateRaw,
-    rawCandidate: DeepSumObjectCandidateRaw,
-    solution: DeepSumObjectSolutionRaw,
-    rawSolution: DeepSumObjectSolutionRaw,
-    solutions: [
-      {
-        solution: DeepSumObjectSolutionRaw,
-        rawSolution: DeepSumObjectSolutionRaw,
-        badge: "С защитой от прототипов",
-      },
-      {
-        solution: DeepSumObjectSolutionRecommendedRaw,
-        rawSolution: DeepSumObjectSolutionRecommendedRaw,
-        isRecommended: true,
-        badge: "Рекомендуется",
-        recommendationNote: "Использование Object.values(obj).reduce(...) спасет от необходимости циклов по ключам.",
-      },
-    ],
-    filepath: "src/javascript/tasks/15_recursion/level3/8_DeepSumObject.js",
-    articles: [
-      {
-        title: "Обход вложенных объектов (Doka.guide)",
-        urlTitle: "Дока — Обход объектов",
-        url: "https://doka.guide/js/object-methods/",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Почему нужна явная проверка val === null?",
-        answer: "Потому что typeof null === 'object', и попытка передать null в рекурсию или Object.values прервет работу с ошибкой.",
-      },
-    ],
-    checklist: [
-      "Защита от typeof null === 'object'",
-      "Рекурсивный суммирующий обход",
-    ],
-  },
-  {
-    id: "js140",
-    group: "Рекурсия",
-    subgroup: "Вложенные структуры",
-    title: "9. Обход бинарного дерева (сумма значений)",
-    desc: "Напишите функцию treeSum(node), суммирующую значения всех узлов бинарного дерева { value, left, right }.",
-    isRaw: true,
-    candidate: TreeSumBinaryCandidateRaw,
-    rawCandidate: TreeSumBinaryCandidateRaw,
-    solution: TreeSumBinarySolutionRaw,
-    rawSolution: TreeSumBinarySolutionRaw,
-    filepath: "src/javascript/tasks/15_recursion/level3/9_TreeSumBinary.js",
+    candidate: ThenChainCandidateRaw,
+    rawCandidate: ThenChainCandidateRaw,
+    solution: ThenChainSolutionRaw,
+    rawSolution: ThenChainSolutionRaw,
+    filepath: "src/javascript/tasks/13_promises/level1/3_ThenChain.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
         isRecommended: true,
-        badge: "Алгоритмический подход",
-        recommendationNote: "Рекурсивный подход идеален для работы с древовидными и вложенными структурами данных. Всегда определяйте базовый случай выхода.",
-        rawSolution: TreeSumBinarySolutionRaw,
-        filepath: "src/javascript/tasks/15_recursion/level3/9_TreeSumBinary.js",
+        badge: "Современный Async/Await",
+        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
+        rawSolution: ThenChainSolutionRaw,
+        filepath: "src/javascript/tasks/13_promises/level1/3_ThenChain.js",
       },
     ],
     articles: [
       {
-        title: "Обход бинарных деревьев (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Деревья",
-        url: "https://learn.javascript.ru/recursion#рекурсивные-структуры",
+        title: "Цепочки промисов (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Цепочка промисов",
+        url: "https://learn.javascript.ru/promise-chaining",
       },
     ],
     interviewerQuestions: [
       {
-        question: "Какое условие останавливает суммирование при достижении листьев дерева?",
-        answer: "Условие if (node === null) return 0.",
+        question: "Что возвращает метод .then()?",
+        answer: "Метод .then() всегда возвращает НОВЫЙ Promise, разрешающийся результатом выполнения его колбэка.",
       },
     ],
     checklist: [
-      "Проверка на null",
-      "Возврат node.value + treeSum(node.left) + treeSum(node.right)",
-    ],
-  },
-  {
-    id: "js141",
-    group: "Рекурсия",
-    subgroup: "Вложенные структуры",
-    title: "10. Глубина (высота) дерева",
-    desc: "Напишите функцию treeDepth(node), определяющую максимальную высоту (глубину) бинарного дерева.",
-    isRaw: true,
-    candidate: TreeDepthMaxCandidateRaw,
-    rawCandidate: TreeDepthMaxCandidateRaw,
-    solution: TreeDepthMaxSolutionRaw,
-    rawSolution: TreeDepthMaxSolutionRaw,
-    filepath: "src/javascript/tasks/15_recursion/level3/10_TreeDepthMax.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Алгоритмический подход",
-        recommendationNote: "Рекурсивный подход идеален для работы с древовидными и вложенными структурами данных. Всегда определяйте базовый случай выхода.",
-        rawSolution: TreeDepthMaxSolutionRaw,
-        filepath: "src/javascript/tasks/15_recursion/level3/10_TreeDepthMax.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Высота деревьев поиска (MDN)",
-        urlTitle: "MDN — Агоритмы на деревьях",
-        url: "https://developer.mozilla.org/ru/docs/Glossary/Tree",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Как рассчитывается глубина родительского узла по левому и правому поддереву?",
-        answer: "Глубина равна 1 + Math.max(leftDepth, rightDepth).",
-      },
-    ],
-    checklist: [
-      "Использование Math.max(depthLeft, depthRight)",
-    ],
-  },
-  {
-    id: "js142",
-    group: "Рекурсия",
-    subgroup: "Вложенные структуры",
-    title: "11. Поиск файла в файловой системе",
-    desc: "Напишите функцию findFile(node, name) для рекурсивного поиска файла в древовидной структуре папок.",
-    isRaw: true,
-    candidate: FindFileFileSystemCandidateRaw,
-    rawCandidate: FindFileFileSystemCandidateRaw,
-    solution: FindFileFileSystemSolutionRaw,
-    rawSolution: FindFileFileSystemSolutionRaw,
-    filepath: "src/javascript/tasks/15_recursion/level3/11_FindFileFileSystem.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Алгоритмический подход",
-        recommendationNote: "Рекурсивный подход идеален для работы с древовидными и вложенными структурами данных. Всегда определяйте базовый случай выхода.",
-        rawSolution: FindFileFileSystemSolutionRaw,
-        filepath: "src/javascript/tasks/15_recursion/level3/11_FindFileFileSystem.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Рекурсивный поиск в древовидных объектах (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Поиск в дереве",
-        url: "https://learn.javascript.ru/recursion",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Зачем использовать метод Array.prototype.some в рекурсивном поиске файла по папкам?",
-        answer: "Метод .some останавливает обход дочерних элементов сразу при первом совпадении (short-circuit).",
-      },
-    ],
-    checklist: [
-      "Проверка имени node.name === name",
-      "Рекурсивный обход детей node.children.some(...) ",
+      "Передача значения от одного .then() к следующему",
     ],
   },
 
-  // Практика
   {
-    id: "js143",
-    group: "Рекурсия",
-    subgroup: "Практические задачи",
-    title: "12. Рекурсивное суммирование чисел во вложенных объектах",
-    desc: "Реализуйте рекурсивную функцию sumNumbers(data) для подсчета суммы отрицательных и положительных чисел объекта.",
+    id: "js106",
+    group: "Асинхронность",
+    subgroup: "Основы Promise",
+    title: "4. finally (Уровень 1)",
+    desc: "Дополните цепочку промиса блоком .finally(), который выполняется всегда, независимо от результата запроса.",
     isRaw: true,
-    candidate: SumNumbersNestedObjCandidateRaw,
-    rawCandidate: SumNumbersNestedObjCandidateRaw,
-    solution: SumNumbersNestedObjSolutionRaw,
-    rawSolution: SumNumbersNestedObjSolutionRaw,
-    filepath: "src/javascript/tasks/15_recursion/practice/12_SumNumbersNestedObj.js",
+    candidate: FinallyCandidateRaw,
+    rawCandidate: FinallyCandidateRaw,
+    solution: FinallySolutionRaw,
+    rawSolution: FinallySolutionRaw,
+    filepath: "src/javascript/tasks/13_promises/level1/4_Finally.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
         isRecommended: true,
-        badge: "Алгоритмический подход",
-        recommendationNote: "Рекурсивный подход идеален для работы с древовидными и вложенными структурами данных. Всегда определяйте базовый случай выхода.",
-        rawSolution: SumNumbersNestedObjSolutionRaw,
-        filepath: "src/javascript/tasks/15_recursion/practice/12_SumNumbersNestedObj.js",
+        badge: "Современный Async/Await",
+        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
+        rawSolution: FinallySolutionRaw,
+        filepath: "src/javascript/tasks/13_promises/level1/4_Finally.js",
       },
     ],
     articles: [
       {
-        title: "Рекурсивные структуры данных (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Рекурсия",
-        url: "https://learn.javascript.ru/recursion",
+        title: "Метод Promise.finally (MDN)",
+        urlTitle: "MDN — Promise.prototype.finally()",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Promise/finally",
       },
     ],
     interviewerQuestions: [
       {
-        question: "Как рекурсивно просуммировать данные, если ключи объекта заранее неизвестны?",
-        answer: "С помощью цикла for...in или Object.values() с проверкой типов typeof value === 'number' и 'object'.",
+        question: "Принимает ли колбэк в .finally() какие-либо аргументы?",
+        answer: "Нет, колбэк .finally() не принимает аргументов и пропускает исходный результат или ошибку дальше по цепочке.",
       },
     ],
     checklist: [
-      "Проверка typeof value === 'number'",
-      "Рекурсивное прибавление sum += sumNumbers(value)",
+      "Добавление блока .finally(() => ...)",
     ],
   },
-  {
-    id: "js144",
-    group: "Рекурсия",
-    subgroup: "Практические задачи",
-    title: "13. Сбор всех примитивов из глубокого объекта",
-    desc: "Напишите функцию getAllPrimitives(obj), извлекающую плоский массив всех числовых примитивов из глубоко вложенного объекта.",
-    isRaw: true,
-    candidate: GetAllPrimitivesCandidateRaw,
-    rawCandidate: GetAllPrimitivesCandidateRaw,
-    solution: GetAllPrimitivesSolutionRaw,
-    rawSolution: GetAllPrimitivesSolutionRaw,
-    filepath: "src/javascript/tasks/15_recursion/practice/13_GetAllPrimitives.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Алгоритмический подход",
-        recommendationNote: "Рекурсивный подход идеален для работы с древовидными и вложенными структурами данных. Всегда определяйте базовый случай выхода.",
-        rawSolution: GetAllPrimitivesSolutionRaw,
-        filepath: "src/javascript/tasks/15_recursion/practice/13_GetAllPrimitives.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Преобразование вложенных объектов (MDN)",
-        urlTitle: "MDN — Оператор спред и массивы",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Spread_syntax",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Как извлечь подмассивы в единый массив при помощи spread оператора?",
-        answer: "Вызовом arr.push(...getAllPrimitives(value)).",
-      },
-    ],
-    checklist: [
-      "Пуш примитивов arr.push(value)",
-      "Спред с рекурсией arr.push(...getAllPrimitives(value))",
-    ],
-  },
-  {
-    id: "js145",
-    group: "Рекурсия",
-    subgroup: "Практические задачи",
-    title: "14. Сбор всех значений у узлов дерева",
-    desc: "Напишите функцию recursionTree(tree), собирающую плоский массив значений value всех узлов и потомков дерева.",
-    isRaw: true,
-    candidate: CollectTreeValuesCandidateRaw,
-    rawCandidate: CollectTreeValuesCandidateRaw,
-    solution: CollectTreeValuesSolutionRaw,
-    rawSolution: CollectTreeValuesSolutionRaw,
-    filepath: "src/javascript/tasks/15_recursion/practice/14_CollectTreeValues.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Алгоритмический подход",
-        recommendationNote: "Рекурсивный подход идеален для работы с древовидными и вложенными структурами данных. Всегда определяйте базовый случай выхода.",
-        rawSolution: CollectTreeValuesSolutionRaw,
-        filepath: "src/javascript/tasks/15_recursion/practice/14_CollectTreeValues.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Обход вложенных списков и деревьев (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Связанные списки и деревья",
-        url: "https://learn.javascript.ru/recursion",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Какой порядок обхода реализует предложенная функция recursionTree?",
-        answer: "Обход в глубину (DFS — Depth-First Search), добавляющий текущий узел и рекурсивно всех его детей.",
-      },
-    ],
-    checklist: [
-      "Добавление значения текущего узла [data.value]",
-      "Циклический рекурсивный спред по data.children",
-    ],
-  },
-  {
-    id: "js146",
-    group: "Рекурсия",
-    subgroup: "Практические задачи",
-    title: "15. Суммирование значений дерева с дочерними элементами",
-    desc: "Реализуйте функцию sumTree(tree) для подсчета общей суммы всех свойства value в дереве произвольной ширины.",
-    isRaw: true,
-    candidate: SumTreeValuesCandidateRaw,
-    rawCandidate: SumTreeValuesCandidateRaw,
-    solution: SumTreeValuesSolutionRaw,
-    rawSolution: SumTreeValuesSolutionRaw,
-    filepath: "src/javascript/tasks/15_recursion/practice/15_SumTreeValues.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Алгоритмический подход",
-        recommendationNote: "Рекурсивный подход идеален для работы с древовидными и вложенными структурами данных. Всегда определяйте базовый случай выхода.",
-        rawSolution: SumTreeValuesSolutionRaw,
-        filepath: "src/javascript/tasks/15_recursion/practice/15_SumTreeValues.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Агрегация значений в деревьях (Doka.guide)",
-        urlTitle: "Дока — Суммирование узлов",
-        url: "https://doka.guide/js/recursion/",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Как просуммировать узлы дерева при отсутствии у некоторых из них поля children?",
-        answer: "Проверять существование свойства if (data.children) перед запуском цикла по потомкам.",
-      },
-    ],
-    checklist: [
-      "Инициализация суммы let sum = data.value",
-      "Прибавление сумм потомков в цикле sum += sumTree(child)",
-    ],
-  },
-  {
-    id: "js147",
-    group: "Рекурсия",
-    subgroup: "Практические задачи",
-    title: "16. Вычисление энно-го числа Фибоначчи",
-    desc: "Реализуйте функцию fib(n) для поиска n-го числа Фибоначчи через рекурсивную формулу.",
-    isRaw: true,
-    candidate: FibonacciRecursiveCandidateRaw,
-    rawCandidate: FibonacciRecursiveCandidateRaw,
-    solution: FibonacciRecursiveSolutionRaw,
-    rawSolution: FibonacciRecursiveSolutionRaw,
-    solutions: [
-      {
-        solution: FibonacciRecursiveSolutionRaw,
-        rawSolution: FibonacciRecursiveSolutionRaw,
-        badge: "Рекурсивное O(2^N)",
-      },
-      {
-        solution: FibonacciRecursiveSolutionRecommendedRaw,
-        rawSolution: FibonacciRecursiveSolutionRecommendedRaw,
-        isRecommended: true,
-        badge: "Рекомендуется",
-        recommendationNote: "Итеративное решение за O(N) быстрее и не переполняет стек при больших значениях n.",
-      },
-    ],
-    filepath: "src/javascript/tasks/15_recursion/practice/16_FibonacciRecursive.js",
-    articles: [
-      {
-        title: "Числа Фибоначчи (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Задача Числа Фибоначчи",
-        url: "https://learn.javascript.ru/task/fibonacci-numbers",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Какова временная сложность простой рекурсивной реализации fib(n)?",
-        answer: "Экспоненциальная сложность O(2^N), так как каждый вызов разветвляется на два новых вызова.",
-      },
-    ],
-    checklist: [
-      "Базовый случай n <= 1 ? n : ...",
-      "Рекурсия fib(n - 1) + fib(n - 2)",
-    ],
-  },
-];
 
+  {
+    id: "js107",
+    group: "Асинхронность",
+    subgroup: "async/await",
+    title: "1. Базовый async/await (Уровень 2)",
+    desc: "Перепишите функцию обработки асинхронного вызова с цепочек .then() на использование синтаксиса async/await.",
+    isRaw: true,
+    candidate: BasicAsyncAwaitCandidateRaw,
+    rawCandidate: BasicAsyncAwaitCandidateRaw,
+    solution: BasicAsyncAwaitSolutionRaw,
+    rawSolution: BasicAsyncAwaitSolutionRaw,
+    filepath: "src/javascript/tasks/13_promises/level2/9_BasicAsyncAwait.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Современный Async/Await",
+        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
+        rawSolution: BasicAsyncAwaitSolutionRaw,
+        filepath: "src/javascript/tasks/13_promises/level2/9_BasicAsyncAwait.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Async/await (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Async/await",
+        url: "https://learn.javascript.ru/async-await",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Что всегда возвращает функция, объявленная с ключевым словом async?",
+        answer: "Функция async всегда возвращает Promise (если вернуть значение, оно автоматически обернется в Promise.resolve).",
+      },
+    ],
+    checklist: [
+      "Объявление функции async",
+      "Ожидание асинхронного результата через await",
+    ],
+  },
 
-export const JS_PROTOTYPES_THIS_TASKS = [
   {
-    id: "js148",
-    group: "Прототипы THIS",
-    subgroup: "Потеря контекста и bind",
-    title: "1. Потеря контекста, стрелочные функции и повторный bind",
-    desc: "Проанализируйте поведение this при вызове методов объекта, извлечении их в переменные, вызове стрелочных функций и повторном bind.",
+    id: "js108",
+    group: "Асинхронность",
+    subgroup: "async/await",
+    title: "2. try/catch с async/await (Уровень 2)",
+    desc: "Оберните асинхронный вызов await loadData() в конструкцию try/catch для перехвата сбоев и возврата строки с описанием ошибки.",
     isRaw: true,
-    candidate: ThisObjectArrowMethodsCandidateRaw,
-    rawCandidate: ThisObjectArrowMethodsCandidateRaw,
-    solution: ThisObjectArrowMethodsSolutionRaw,
-    rawSolution: ThisObjectArrowMethodsSolutionRaw,
-    filepath: "src/javascript/tasks/16_prototypes_this/1_ThisObjectArrowMethods.js",
+    candidate: TryCatchAsyncAwaitCandidateRaw,
+    rawCandidate: TryCatchAsyncAwaitCandidateRaw,
+    solution: TryCatchAsyncAwaitSolutionRaw,
+    rawSolution: TryCatchAsyncAwaitSolutionRaw,
+    filepath: "src/javascript/tasks/13_promises/level2/11_TryCatchAsyncAwait.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
         isRecommended: true,
-        badge: "Фундамент JavaScript",
-        recommendationNote: "Понимание контекста исполнения this и прототипного наследования — один из наиболее частых вопросов на собеседовании.",
-        rawSolution: ThisObjectArrowMethodsSolutionRaw,
-        filepath: "src/javascript/tasks/16_prototypes_this/1_ThisObjectArrowMethods.js",
+        badge: "Современный Async/Await",
+        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
+        rawSolution: TryCatchAsyncAwaitSolutionRaw,
+        filepath: "src/javascript/tasks/13_promises/level2/11_TryCatchAsyncAwait.js",
       },
     ],
     articles: [
       {
-        title: "Контекст вызова this (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Объект метода, this",
-        url: "https://learn.javascript.ru/object-methods",
+        title: "Обработка ошибок в async/await (Doka.guide)",
+        urlTitle: "Дока — async/await try catch",
+        url: "https://doka.guide/js/async-await/",
       },
     ],
     interviewerQuestions: [
       {
-        question: "Можно ли изменить this у стрелочной функции с помощью bind, call или apply?",
-        answer: "Нет, стрелочные функции не имеют собственного this и жестко привязываются к лексическому окружению на момент создания.",
+        question: "Как перехватываются ошибки отменённых промисов внутри async функций?",
+        answer: "Отклоненные промисы выбрасывают исключения в месте await, которые перехватываются блоком catch (err) { ... }.",
       },
     ],
     checklist: [
-      "Разница между методом объекта и стрелочным методом",
-      "Применение .bind() к обычным и стрелочным функциям",
+      "Оборачивание await в конструкцию try { ... } catch(err) { ... }",
     ],
   },
-  {
-    id: "js149",
-    group: "Прототипы THIS",
-    subgroup: "Прототипы",
-    title: "2. Переопределение свойства prototype конструктора",
-    desc: "Определите и объясните, что выведет код при обращении к методам объектов, созданных до и после перезаписи Person.prototype.",
-    isRaw: true,
-    candidate: ConstructorPrototypeReassignmentCandidateRaw,
-    rawCandidate: ConstructorPrototypeReassignmentCandidateRaw,
-    solution: ConstructorPrototypeReassignmentSolutionRaw,
-    rawSolution: ConstructorPrototypeReassignmentSolutionRaw,
-    filepath: "src/javascript/tasks/16_prototypes_this/2_ConstructorPrototypeReassignment.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Фундамент JavaScript",
-        recommendationNote: "Понимание контекста исполнения this и прототипного наследования — один из наиболее частых вопросов на собеседовании.",
-        rawSolution: ConstructorPrototypeReassignmentSolutionRaw,
-        filepath: "src/javascript/tasks/16_prototypes_this/2_ConstructorPrototypeReassignment.js",
-      },
-    ],
-    articles: [
-      {
-        title: "F.prototype и наследование (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Свойство F.prototype",
-        url: "https://learn.javascript.ru/function-prototype",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "На что указывает скрытое свойство [[Prototype]] (__proto__) объекта при вызове new Person()?",
-        answer: "Оно указывает на объект, который лежал в Person.prototype в момент выполнения оператора new.",
-      },
-    ],
-    checklist: [
-      "Различие объектов, созданных ДО и ПОСЛЕ замены prototype",
-    ],
-  },
-  {
-    id: "js150",
-    group: "Прототипы THIS",
-    subgroup: "Потеря контекста и bind",
-    title: "3. Извлечение метода объекта в отдельную переменную",
-    desc: "Определите, что выведет данный код при вызове извлечённого метода объекта, объясните поведение this и приведите способы исправления.",
-    isRaw: true,
-    candidate: MethodExtractionContextLossCandidateRaw,
-    rawCandidate: MethodExtractionContextLossCandidateRaw,
-    solution: MethodExtractionContextLossSolutionRaw,
-    rawSolution: MethodExtractionContextLossSolutionRaw,
-    filepath: "src/javascript/tasks/16_prototypes_this/3_MethodExtraction.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Фундамент JavaScript",
-        recommendationNote: "Понимание контекста исполнения this и прототипного наследования — один из наиболее частых вопросов на собеседовании.",
-        rawSolution: MethodExtractionContextLossSolutionRaw,
-        filepath: "src/javascript/tasks/16_prototypes_this/3_MethodExtraction.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Потеря this при присваивании (Doka.guide)",
-        urlTitle: "Дока — Связывание контекста bind",
-        url: "https://doka.guide/js/bind/",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Как привязать контекст к извлеченной функции?",
-        answer: "Использованием obj.getName.bind(obj) или вызовом функции внутри анонимного стрелочного колбэка () => obj.getName().",
-      },
-    ],
-    checklist: [
-      "Привязка контекста через obj.getName.bind(obj)",
-    ],
-  },
-  {
-    id: "js151",
-    group: "Прототипы THIS",
-    subgroup: "Потеря контекста и bind",
-    title: "4. Повторное применение метода bind",
-    desc: "Определите значение this при цепочке вызовов obj1.getName.bind(obj2).bind(obj1).",
-    isRaw: true,
-    candidate: MultipleBindChainingCandidateRaw,
-    rawCandidate: MultipleBindChainingCandidateRaw,
-    solution: MultipleBindChainingSolutionRaw,
-    rawSolution: MultipleBindChainingSolutionRaw,
-    filepath: "src/javascript/tasks/16_prototypes_this/4_MultipleBindChaining.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Фундамент JavaScript",
-        recommendationNote: "Понимание контекста исполнения this и прототипного наследования — один из наиболее частых вопросов на собеседовании.",
-        rawSolution: MultipleBindChainingSolutionRaw,
-        filepath: "src/javascript/tasks/16_prototypes_this/4_MultipleBindChaining.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Привязка контекста и повторный bind (MDN)",
-        urlTitle: "MDN — Function.prototype.bind()",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Function/bind",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Можно ли переопределить контекст у функции, созданной через .bind()?",
-        answer: "Нет, первый вызов .bind() создает постоянно связанную функцию (bound function), свойство this которой нельзя изменить последующими bind/call/apply.",
-      },
-    ],
-    checklist: [
-      "Вывод 'name is: User 2'",
-    ],
-  },
-  {
-    id: "js152",
-    group: "Прототипы THIS",
-    subgroup: "Ссылки и объекты",
-    title: "5. Присваивание объектов по ссылке",
-    desc: "Проследите мутацию свойств объекта при присваивании внешнего объекта в свойство другого объекта.",
-    isRaw: true,
-    candidate: ObjectReferencePropertiesCandidateRaw,
-    rawCandidate: ObjectReferencePropertiesCandidateRaw,
-    solution: ObjectReferencePropertiesSolutionRaw,
-    rawSolution: ObjectReferencePropertiesSolutionRaw,
-    filepath: "src/javascript/tasks/16_prototypes_this/5_ObjectReferenceProperties.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Фундамент JavaScript",
-        recommendationNote: "Понимание контекста исполнения this и прототипного наследования — один из наиболее частых вопросов на собеседовании.",
-        rawSolution: ObjectReferencePropertiesSolutionRaw,
-        filepath: "src/javascript/tasks/16_prototypes_this/5_ObjectReferenceProperties.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Передача по ссылке (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Объекты: копирование по ссылке",
-        url: "https://learn.javascript.ru/object-copy",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Что хранится в переменной, которой присвоен объект?",
-        answer: "В переменной хранится не сам объект, а ссылка на область в оперативной памяти.",
-      },
-    ],
-    checklist: [
-      "Свойство salary = 120 появляется и в person.position, и в position",
-    ],
-  },
-  {
-    id: "js153",
-    group: "Прототипы THIS",
-    subgroup: "Потеря контекста и bind",
-    title: "6. Вызов методов с изменением контекста внешней функции",
-    desc: "Определите вывод для обычных и стрелочных методов объекта при создании его внутри функции foo.call({ x: 30 }).",
-    isRaw: true,
-    candidate: ScopeVsContextArrowMethodsCandidateRaw,
-    rawCandidate: ScopeVsContextArrowMethodsCandidateRaw,
-    solution: ScopeVsContextArrowMethodsSolutionRaw,
-    rawSolution: ScopeVsContextArrowMethodsSolutionRaw,
-    filepath: "src/javascript/tasks/16_prototypes_this/6_ScopeVsContextArrowMethods.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Фундамент JavaScript",
-        recommendationNote: "Понимание контекста исполнения this и прототипного наследования — один из наиболее частых вопросов на собеседовании.",
-        rawSolution: ScopeVsContextArrowMethodsSolutionRaw,
-        filepath: "src/javascript/tasks/16_prototypes_this/6_ScopeVsContextArrowMethods.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Стрелочные функции и this (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Повторяем стрелочные функции",
-        url: "https://learn.javascript.ru/arrow-functions",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Где берет свой this стрелочный метод baz при вызове foo.call({ x: 30 })?",
-        answer: "Из лексического окружения функции foo, контекстом this которой при явном вызове .call({ x: 30 }) стал объект { x: 30 }.",
-      },
-    ],
-    checklist: [
-      "Различие контекста обычных методах и стрелочных методов",
-    ],
-  },
-  {
-    id: "js154",
-    group: "Прототипы THIS",
-    subgroup: "Прототипы",
-    title: "7. Разница между оператором in и методом hasOwnProperty",
-    desc: "Объясните разницу между проверкой собственного свойства через hasOwnProperty и поиском по всей цепочке прототипов через in.",
-    isRaw: true,
-    candidate: HasOwnPropertyVsInOperatorCandidateRaw,
-    rawCandidate: HasOwnPropertyVsInOperatorCandidateRaw,
-    solution: HasOwnPropertyVsInOperatorSolutionRaw,
-    rawSolution: HasOwnPropertyVsInOperatorSolutionRaw,
-    filepath: "src/javascript/tasks/16_prototypes_this/7_HasOwnPropertyVsInOperator.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Фундамент JavaScript",
-        recommendationNote: "Понимание контекста исполнения this и прототипного наследования — один из наиболее частых вопросов на собеседовании.",
-        rawSolution: HasOwnPropertyVsInOperatorSolutionRaw,
-        filepath: "src/javascript/tasks/16_prototypes_this/7_HasOwnPropertyVsInOperator.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Проверка наличия свойств (MDN)",
-        urlTitle: "MDN — in vs hasOwnProperty",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "В чем главное отличие 'property' in obj от obj.hasOwnProperty('property')?",
-        answer: "in проверяет наличие свойства в объекте и всех его прототипах, а hasOwnProperty — только среди собственных свойств самого объекта.",
-      },
-    ],
-    checklist: [
-      "hasOwnProperty('sound') === false",
-      "'sound' in myDog === true",
-    ],
-  },
-];
 
-export const JS_CURRYING_TASKS = [
   {
-    id: "js155",
-    group: "Каррирование",
-    subgroup: "Базовое каррирование",
-    title: "1. Каррирование суммы с двумя аргументами",
-    desc: "Реализуйте функцию sum, поддерживающую как прямой вызов sum(1, 2), так и каррированный вызов sum(1)(2).",
+    id: "js109",
+    group: "Асинхронность",
+    subgroup: "async/await",
+    title: "3. Последовательное выполнение в цикле (Уровень 2)",
+    desc: "Загрузите данные пользователей последовательно (один за другим) в цикле for...of с использованием await.",
     isRaw: true,
-    candidate: CurryingTwoArgumentsCandidateRaw,
-    rawCandidate: CurryingTwoArgumentsCandidateRaw,
-    solution: CurryingTwoArgumentsSolutionRaw,
-    rawSolution: CurryingTwoArgumentsSolutionRaw,
-    filepath: "src/javascript/tasks/17_currying/1_CurryingTwoArguments.js",
+    candidate: SequentialLoopCandidateRaw,
+    rawCandidate: SequentialLoopCandidateRaw,
+    solution: SequentialLoopSolutionRaw,
+    rawSolution: SequentialLoopSolutionRaw,
+    filepath: "src/javascript/tasks/13_promises/level2/13_SequentialLoop.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
         isRecommended: true,
-        badge: "Функциональное программирование",
-        recommendationNote: "Каррирование позволяет трансформировать функцию от N аргументов в цепочку функций от одного аргумента, облегчая композицию.",
-        rawSolution: CurryingTwoArgumentsSolutionRaw,
-        filepath: "src/javascript/tasks/17_currying/1_CurryingTwoArguments.js",
+        badge: "Современный Async/Await",
+        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
+        rawSolution: SequentialLoopSolutionRaw,
+        filepath: "src/javascript/tasks/13_promises/level2/13_SequentialLoop.js",
       },
     ],
     articles: [
       {
-        title: "Каррирование функций в JavaScript (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Каррирование",
-        url: "https://learn.javascript.ru/currying-partials",
+        title: "Циклы и асинхронность (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Последовательное выполнение",
+        url: "https://learn.javascript.ru/async-await#последовательное-выполнение",
       },
     ],
     interviewerQuestions: [
       {
-        question: "Как определить, был ли передан второй аргумент при вызове sum(1, 2)?",
-        answer: "Проверкой параметра на равенство undefined: if (val2 !== undefined).",
+        question: "Почему метод Array.prototype.forEach() не подходит для последовательного выполнения с await?",
+        answer: "forEach запускает функции-колбэки синхронно для всех элементов, не дожидаясь завершения возвращаемых ими промисов.",
       },
     ],
     checklist: [
-      "Поддержка вызова sum(1, 2) === 3",
-      "Поддержка вызова sum(1)(2) === 3",
+      "Использование цикла for (const id of ids)",
+      "Последовательное вычисление await fetchUser(id)",
     ],
   },
-  {
-    id: "js156",
-    group: "Каррирование",
-    subgroup: "Бесконечное каррирование",
-    title: "2. Бесконечное каррирование функции суммирования",
-    desc: "Напишите функцию curry_sum, позволяющую суммировать произвольное количество вызовов до терминального вызова без аргументов ().",
-    isRaw: true,
-    candidate: InfiniteCurryingCandidateRaw,
-    rawCandidate: InfiniteCurryingCandidateRaw,
-    solution: InfiniteCurryingSolutionRaw,
-    rawSolution: InfiniteCurryingSolutionRaw,
-    filepath: "src/javascript/tasks/17_currying/2_InfiniteCurrying.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Функциональное программирование",
-        recommendationNote: "Каррирование позволяет трансформировать функцию от N аргументов в цепочку функций от одного аргумента, облегчая композицию.",
-        rawSolution: InfiniteCurryingSolutionRaw,
-        filepath: "src/javascript/tasks/17_currying/2_InfiniteCurrying.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Продвинутое каррирование (MDN)",
-        urlTitle: "MDN — Замыкания и каррирование",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Closures",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Какое условие завершает цепь рекурсивных вызовов в бесконечном каррировании?",
-        answer: "Проверка y === undefined при финальном вызове без аргумента ().",
-      },
-    ],
-    checklist: [
-      "Результат sum(1)() === 1",
-      "Результат sum(1)(2)(3)() === 6",
-    ],
-  },
-  {
-    id: "js157",
-    group: "Каррирование",
-    subgroup: "Базовое каррирование",
-    title: "3. Гибридная функция суммирования (Company X)",
-    desc: "Реализуйте функцию sum, поддерживающую гибкие вызовы sum(a, b) и sum(a)(b) в стиле задач собеседования Company X.",
-    isRaw: true,
-    candidate: HybridSumCurryingCompanyXCandidateRaw,
-    rawCandidate: HybridSumCurryingCompanyXCandidateRaw,
-    solution: HybridSumCurryingCompanyXSolutionRaw,
-    rawSolution: HybridSumCurryingCompanyXSolutionRaw,
-    filepath: "src/javascript/tasks/17_currying/3_HybridSumCurryingCompanyX.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Функциональное программирование",
-        recommendationNote: "Каррирование позволяет трансформировать функцию от N аргументов в цепочку функций от одного аргумента, облегчая композицию.",
-        rawSolution: HybridSumCurryingCompanyXSolutionRaw,
-        filepath: "src/javascript/tasks/17_currying/3_HybridSumCurryingCompanyX.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Каррирование на собеседованиях (Doka.guide)",
-        urlTitle: "Дока — Функция каррирования",
-        url: "https://doka.guide/js/currying/",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "В чем разница между частичным применением (partial application) и каррированием (currying)?",
-        answer: "Каррирование всегда преобразует функцию с N аргументами в цепочку из N функций от 1 аргумента. Частичное применение фиксирует только часть аргументов.",
-      },
-    ],
-    checklist: [
-      "Проверка b === undefined",
-      "Возврат стрелочной функции (num) => a + num",
-    ],
-  },
-];
 
-export const JS_ASYNC_POLYFILLS_TASKS = [
+  {
+    id: "js110",
+    group: "Асинхронность",
+    subgroup: "Комбинаторы",
+    title: "1. Promise.all (Уровень 3)",
+    desc: "Загрузите данные всех товаров параллельно с помощью Promise.all и посчитайте их суммарную стоимость.",
+    isRaw: true,
+    candidate: PromiseAllCandidateRaw,
+    rawCandidate: PromiseAllCandidateRaw,
+    solution: PromiseAllSolutionRaw,
+    rawSolution: PromiseAllSolutionRaw,
+    filepath: "src/javascript/tasks/13_promises/level3/15_PromiseAll.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Современный Async/Await",
+        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
+        rawSolution: PromiseAllSolutionRaw,
+        filepath: "src/javascript/tasks/13_promises/level3/15_PromiseAll.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Комбинатор Promise.all (MDN)",
+        urlTitle: "MDN — Promise.all()",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Promise/all",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Что произойдет с Promise.all, если один из промисов отклонится?",
+        answer: "Promise.all моментально отловит ошибку и реджектится с причиной первого упавшего промиса (fail-fast).",
+      },
+    ],
+    checklist: [
+      "Вызов Promise.all(items.map(...))",
+      "Суммирование цен через reduce()",
+    ],
+  },
+
+  {
+    id: "js111",
+    group: "Асинхронность",
+    subgroup: "Комбинаторы",
+    title: "2. Promise.allSettled (Уровень 3)",
+    desc: "Выполните массив запросов через Promise.allSettled и отделите массив успешных значений от массива причин ошибок.",
+    isRaw: true,
+    candidate: PromiseAllSettledCandidateRaw,
+    rawCandidate: PromiseAllSettledCandidateRaw,
+    solution: PromiseAllSettledSolutionRaw,
+    rawSolution: PromiseAllSettledSolutionRaw,
+    filepath: "src/javascript/tasks/13_promises/level3/17_PromiseAllSettled.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Современный Async/Await",
+        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
+        rawSolution: PromiseAllSettledSolutionRaw,
+        filepath: "src/javascript/tasks/13_promises/level3/17_PromiseAllSettled.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Комбинатор Promise.allSettled (MDN)",
+        urlTitle: "MDN — Promise.allSettled()",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Какие статусы объектов содержатся в результате Promise.allSettled?",
+        answer: "Объекты содержат status: 'fulfilled' (с полем value) либо status: 'rejected' (с полем reason).",
+      },
+    ],
+    checklist: [
+      "Разделение результатов по status === 'fulfilled' и status === 'rejected'",
+    ],
+  },
+
+  {
+    id: "js112",
+    group: "Асинхронность",
+    subgroup: "Комбинаторы",
+    title: "3. Promise.race — таймаут запроса (Уровень 3)",
+    desc: "Напишите функцию withTimeout(promise, ms), отклоняющую запрос с ошибкой 'Timeout' при превышении лимита времени.",
+    isRaw: true,
+    candidate: PromiseRaceTimeoutCandidateRaw,
+    rawCandidate: PromiseRaceTimeoutCandidateRaw,
+    solution: PromiseRaceTimeoutSolutionRaw,
+    rawSolution: PromiseRaceTimeoutSolutionRaw,
+    filepath: "src/javascript/tasks/13_promises/level3/19_PromiseRaceFetchTimeout.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Современный Async/Await",
+        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
+        rawSolution: PromiseRaceTimeoutSolutionRaw,
+        filepath: "src/javascript/tasks/13_promises/level3/19_PromiseRaceFetchTimeout.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Комбинатор Promise.race (MDN)",
+        urlTitle: "MDN — Promise.race()",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Promise/race",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Как работает Promise.race?",
+        answer: "Promise.race возвращает промис, который завершается (успешно или с ошибкой) в зависимости от того, какой из промисов в массиве выполнится первым.",
+      },
+    ],
+    checklist: [
+      "Генерация таймаут-промиса через setTimeout",
+      "Гонка промисов Promise.race([promise, timeout])",
+    ],
+  },
+
+  {
+    id: "js113",
+    group: "Асинхронность",
+    subgroup: "Комбинаторы",
+    title: "4. Promise.any (Уровень 3)",
+    desc: "Реализуйте функцию получения ответа от первого успешно ответившего зеркала сервера с помощью Promise.any.",
+    isRaw: true,
+    candidate: PromiseAnyCandidateRaw,
+    rawCandidate: PromiseAnyCandidateRaw,
+    solution: PromiseAnySolutionRaw,
+    rawSolution: PromiseAnySolutionRaw,
+    filepath: "src/javascript/tasks/13_promises/level3/21_PromiseAny.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Современный Async/Await",
+        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
+        rawSolution: PromiseAnySolutionRaw,
+        filepath: "src/javascript/tasks/13_promises/level3/21_PromiseAny.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Комбинатор Promise.any (MDN)",
+        urlTitle: "MDN — Promise.any()",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Promise/any",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Какое исключение выбрасывает Promise.any, если все промисы отклонились?",
+        answer: "Оно выбрасывает AggregateError, содержащий массив всех ошибок в свойстве err.errors.",
+      },
+    ],
+    checklist: [
+      "Использование Promise.any(mirrors)",
+      "Перехват AggregateError",
+    ],
+  },
+
   {
     id: "js158",
-    group: "Асинхронные полифилы",
-    subgroup: "Полифилы Promise",
+    group: "Асинхронность",
+    subgroup: "Полифилы",
     title: "1. Полифил Promise.all",
     desc: "Реализуйте собственную функцию promiseAll(promises), которая возвращает промис, резолвящийся массивом всех результатов или отклоняющийся при первой ошибке.",
     isRaw: true,
@@ -8616,10 +10335,11 @@ export const JS_ASYNC_POLYFILLS_TASKS = [
     ],
     checklist: ["Обработка синхронных значений", "Сохранение порядка результатов", "Быстрый reject при ошибке"],
   },
+
   {
     id: "js159",
-    group: "Асинхронные полифилы",
-    subgroup: "Полифилы Promise",
+    group: "Асинхронность",
+    subgroup: "Полифилы",
     title: "2. Полифил Promise.allSettled",
     desc: "Реализуйте функцию promiseAllSettled(promises), которая дожидается завершения всех промисов независимо от статуса.",
     isRaw: true,
@@ -8646,10 +10366,11 @@ export const JS_ASYNC_POLYFILLS_TASKS = [
     ],
     checklist: ["Объекты с полями status, value и reason", "Дожидается завершения всех элементов"],
   },
+
   {
     id: "js160",
-    group: "Асинхронные полифилы",
-    subgroup: "Полифилы Promise",
+    group: "Асинхронность",
+    subgroup: "Полифилы",
     title: "3. Полифил Promise.race и Promise.any",
     desc: "Реализуйте функции promiseRace(promises) и promiseAny(promises).",
     isRaw: true,
@@ -8676,648 +10397,249 @@ export const JS_ASYNC_POLYFILLS_TASKS = [
     ],
     checklist: ["promiseRace резолвит первый завершившийся", "promiseAny резолвит первый успешный"],
   },
-  {
-    id: "js161",
-    group: "Асинхронные полифилы",
-    subgroup: "Асинхронный параллелизм",
-    title: "4. Ограничение параллелизма (Async Limit)",
-    desc: "Напишите функцию asyncLimit(tasks, limit), параллельно исполняющую не более limit задач одновременно.",
-    isRaw: true,
-    candidate: AsyncLimitConcurrencyCandidateRaw,
-    rawCandidate: AsyncLimitConcurrencyCandidateRaw,
-    solution: AsyncLimitConcurrencySolutionRaw,
-    rawSolution: AsyncLimitConcurrencySolutionRaw,
-    filepath: "src/javascript/tasks/18_async_polyfills/4_AsyncLimitConcurrency.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Продвинутый уровень (Senior/Middle)",
-        recommendationNote: "Написание полифилов демонстрирует глубокое понимание внутренних механизмов Promise, микрозадач и работы событийного цикла.",
-        rawSolution: AsyncLimitConcurrencySolutionRaw,
-        filepath: "src/javascript/tasks/18_async_polyfills/4_AsyncLimitConcurrency.js",
-      },
-    ],
-    articles: [
-      { title: "Контроль параллелизма (BFE.dev)", urlTitle: "BFE.dev — Implement throttle/concurrency limit", url: "https://bigfrontend.dev/problem/implement-Promise-all" },
-    ],
-    interviewerQuestions: [
-      { question: "Зачем ограничивать параллельные запросы в браузерах?", answer: "Чтобы не перегружать сеть, сервер и избегать лимитов браузера на одновременные сокет-соединения." },
-    ],
-    checklist: ["Одновременно выполняется не более limit задач", "Порядок результатов соответствует исходным задачам"],
-  },
-  {
-    id: "js162",
-    group: "Асинхронные полифилы",
-    subgroup: "Асинхронная устойчивость",
-    title: "5. Повторные попытки с задержкой (Retry with Delay)",
-    desc: "Реализуйте функцию retryWithDelay(fn, retries, delay), повторно вызывающую упавшую функцию fn с задержкой.",
-    isRaw: true,
-    candidate: RetryWithDelayPolyfillCandidateRaw,
-    rawCandidate: RetryWithDelayPolyfillCandidateRaw,
-    solution: RetryWithDelayPolyfillSolutionRaw,
-    rawSolution: RetryWithDelayPolyfillSolutionRaw,
-    filepath: "src/javascript/tasks/18_async_polyfills/5_RetryWithDelay.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Продвинутый уровень (Senior/Middle)",
-        recommendationNote: "Написание полифилов демонстрирует глубокое понимание внутренних механизмов Promise, микрозадач и работы событийного цикла.",
-        rawSolution: RetryWithDelayPolyfillSolutionRaw,
-        filepath: "src/javascript/tasks/18_async_polyfills/5_RetryWithDelay.js",
-      },
-    ],
-    articles: [
-      { title: "Retry pattern (MDN)", urlTitle: "Асинхронные повторы", url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Guide/Using_promises" },
-    ],
-    interviewerQuestions: [
-      { question: "Что такое exponential backoff?", answer: "Стратегия увеличения задержки между повторами в 2 раза после каждой ошибки." },
-    ],
-    checklist: ["Повторяет попытки при ошибке", "Прекращает попытки при успехе или исчерпании лимита"],
-  },
-  {
-    id: "js163",
-    group: "Асинхронные полифилы",
-    subgroup: "Преобразование асинхронности",
-    title: "6. Преобразование Callback в Promise (Promisify)",
-    desc: "Напишите вспомогательную функцию promisify(fn), преобразующую функцию с Node.js style callback в Promise.",
-    isRaw: true,
-    candidate: PromisifyHelperCandidateRaw,
-    rawCandidate: PromisifyHelperCandidateRaw,
-    solution: PromisifyHelperSolutionRaw,
-    rawSolution: PromisifyHelperSolutionRaw,
-    filepath: "src/javascript/tasks/18_async_polyfills/6_PromisifyHelper.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Продвинутый уровень (Senior/Middle)",
-        recommendationNote: "Написание полифилов демонстрирует глубокое понимание внутренних механизмов Promise, микрозадач и работы событийного цикла.",
-        rawSolution: PromisifyHelperSolutionRaw,
-        filepath: "src/javascript/tasks/18_async_polyfills/6_PromisifyHelper.js",
-      },
-    ],
-    articles: [
-      { title: "util.promisify (Node.js)", urlTitle: "Node.js Utils — Promisify", url: "https://nodejs.org/api/util.html#utilpromisifyoriginal" },
-    ],
-    interviewerQuestions: [
-      { question: "Какое соглашение об аргументах принята в Node.js callback?", answer: "Первым аргументом callback передается ошибка err (null если нет ошибки), затем результат data." },
-    ],
-    checklist: ["Передача аргументов исходной функции", "Резолв при (null, data)", "Реджект при (err, null)"],
-  },
-];
 
-export const JS_CONTROL_FLOW_TASKS = [
   {
-    id: "js164",
-    group: "Контроль частоты",
-    subgroup: "Контроль частоты",
-    title: "1. Реализация функций Debounce (с cancel и leading/trailing)",
-    desc: "Напишите функцию debounce(fn, ms, options) с поддержкой флагов leading, trailing и методом cancel().",
+    id: "js114",
+    group: "Асинхронность",
+    subgroup: "Полифилы",
+    title: "4. Промисификация callback-функции (Уровень 4)",
+    desc: "Напишите функцию promisify(fn), превращающую старую колбэк-функцию стандарта Node.js (err, result) в функцию, возвращающую Promise.",
     isRaw: true,
-    candidate: DebounceFunctionCandidateRaw,
-    rawCandidate: DebounceFunctionCandidateRaw,
-    solution: DebounceFunctionSolutionRaw,
-    rawSolution: DebounceFunctionSolutionRaw,
-    filepath: "src/javascript/tasks/19_control_flow/1_DebounceFunction.js",
+    candidate: PromisifyCallbackCandidateRaw,
+    rawCandidate: PromisifyCallbackCandidateRaw,
+    solution: PromisifyCallbackSolutionRaw,
+    rawSolution: PromisifyCallbackSolutionRaw,
+    filepath: "src/javascript/tasks/13_promises/level4/23_PromisifyCallback.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
         isRecommended: true,
-        badge: "Оптимизация производительности",
-        recommendationNote: "Ограничение частоты вызова функций предотвращает избыточные сетевые запросы и перерисовывание интерфейса.",
-        rawSolution: DebounceFunctionSolutionRaw,
-        filepath: "src/javascript/tasks/19_control_flow/1_DebounceFunction.js",
+        badge: "Современный Async/Await",
+        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
+        rawSolution: PromisifyCallbackSolutionRaw,
+        filepath: "src/javascript/tasks/13_promises/level4/23_PromisifyCallback.js",
       },
     ],
     articles: [
-      { title: "Debounce и Throttle (Doka.guide)", urlTitle: "Дока — Debounce", url: "https://doka.guide/js/debounce/" },
-    ],
-    interviewerQuestions: [
-      { question: "Чем отличается Debounce от Throttle?", answer: "Debounce откладывает вызов до паузы в событиях, Throttle ограничивает вызов не чаще 1 раза в период." },
-    ],
-    checklist: ["Поддержка leading и trailing", "Метод cancel() очищает таймер"],
-  },
-  {
-    id: "js165",
-    group: "Контроль частоты",
-    subgroup: "Контроль частоты",
-    title: "2. Реализация функции Throttle (ограничение частоты)",
-    desc: "Реализуйте функцию throttle(fn, ms), гарантирующую вызов не чаще одного раза в ms миллисекунд.",
-    isRaw: true,
-    candidate: ThrottleFunctionCandidateRaw,
-    rawCandidate: ThrottleFunctionCandidateRaw,
-    solution: ThrottleFunctionSolutionRaw,
-    rawSolution: ThrottleFunctionSolutionRaw,
-    filepath: "src/javascript/tasks/19_control_flow/2_ThrottleFunction.js",
-    solutions: [
       {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Оптимизация производительности",
-        recommendationNote: "Ограничение частоты вызова функций предотвращает избыточные сетевые запросы и перерисовывание интерфейса.",
-        rawSolution: ThrottleFunctionSolutionRaw,
-        filepath: "src/javascript/tasks/19_control_flow/2_ThrottleFunction.js",
+        title: "Промисификация (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Промисификация",
+        url: "https://learn.javascript.ru/promisify",
       },
     ],
-    articles: [
-      { title: "Throttle (JavaScript.ru)", urlTitle: "Учебник JS — Задерживающая декорация", url: "https://learn.javascript.ru/task/throttle" },
-    ],
     interviewerQuestions: [
-      { question: "Где чаще всего используется Throttle?", answer: "Для обработки непрерывных событий scroll, resize, mousemove." },
-    ],
-    checklist: ["Вызов не чаще 1 раза за период ms"],
-  },
-  {
-    id: "js166",
-    group: "Контроль частоты",
-    subgroup: "Композиция функций",
-    title: "3. Композиция функций (Pipe и Compose)",
-    desc: "Реализуйте функции pipe(...fns) и compose(...fns) для последовательного выполнения функций.",
-    isRaw: true,
-    candidate: PipeAndComposeCandidateRaw,
-    rawCandidate: PipeAndComposeCandidateRaw,
-    solution: PipeAndComposeSolutionRaw,
-    rawSolution: PipeAndComposeSolutionRaw,
-    filepath: "src/javascript/tasks/19_control_flow/3_PipeAndCompose.js",
-    solutions: [
       {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Оптимизация производительности",
-        recommendationNote: "Ограничение частоты вызова функций предотвращает избыточные сетевые запросы и перерисовывание интерфейса.",
-        rawSolution: PipeAndComposeSolutionRaw,
-        filepath: "src/javascript/tasks/19_control_flow/3_PipeAndCompose.js",
+        question: "Какова конвенция передачи аргументов в Node.js callback-функциях?",
+        answer: "Первым аргументом всегда передается ошибка (err), а вторым — успешный результат (result).",
       },
     ],
-    articles: [
-      { title: "Композиция функций (MDN)", urlTitle: "MDN — Function Composition", url: "https://developer.mozilla.org/en-US/docs/Glossary/First-class_Function" },
+    checklist: [
+      "Перехват (err, result) в колбэке и вызов resolve/reject",
     ],
-    interviewerQuestions: [
-      { question: "В чем отличие pipe от compose?", answer: "pipe выполняет функции слева направо, compose — справа налево." },
-    ],
-    checklist: ["pipe(f, g)(x) === g(f(x))", "compose(f, g)(x) === f(g(x))"],
   },
-];
 
-export const JS_OBJECT_UTILS_TASKS = [
   {
-    id: "js167",
-    group: "Объекты и Утилиты",
-    subgroup: "Глубокое копирование",
-    title: "1. Глубокое клонирование объекта (Deep Clone)",
-    desc: "Реализуйте функцию deepClone(obj), корректно копирующую вложенные объекты, массивы и цикличные ссылки.",
+    id: "js115",
+    group: "Асинхронность",
+    subgroup: "Продвинутые паттерны",
+    title: "1. Retry с задержкой (Уровень 4)",
+    desc: "Напишите функцию retry(fn, attempts, delayMs) для многократного повторения падавшего асинхронного запроса с задержкой.",
     isRaw: true,
-    candidate: DeepCloneObjectUtilCandidateRaw,
-    rawCandidate: DeepCloneObjectUtilCandidateRaw,
-    solution: DeepCloneObjectUtilSolutionRaw,
-    rawSolution: DeepCloneObjectUtilSolutionRaw,
-    filepath: "src/javascript/tasks/20_object_utils/1_DeepCloneObject.js",
+    candidate: RetryWithDelayCandidateRaw,
+    rawCandidate: RetryWithDelayCandidateRaw,
+    solution: RetryWithDelaySolutionRaw,
+    rawSolution: RetryWithDelaySolutionRaw,
+    filepath: "src/javascript/tasks/13_promises/level4/24_RetryWithDelay.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
         isRecommended: true,
-        badge: "Утилиты работы с объектами",
-        recommendationNote: "Рекурсивный обход свойств объекта с проверкой hasOwnProperty защищает от считывания прототипных свойств.",
-        rawSolution: DeepCloneObjectUtilSolutionRaw,
-        filepath: "src/javascript/tasks/20_object_utils/1_DeepCloneObject.js",
+        badge: "Современный Async/Await",
+        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
+        rawSolution: RetryWithDelaySolutionRaw,
+        filepath: "src/javascript/tasks/13_promises/level4/24_RetryWithDelay.js",
       },
     ],
     articles: [
-      { title: "structuredClone (MDN)", urlTitle: "MDN — structuredClone()", url: "https://developer.mozilla.org/ru/docs/Web/API/structuredClone" },
-    ],
-    interviewerQuestions: [
-      { question: "Почему JSON.parse(JSON.stringify(obj)) не подходят для глубокого копирования?", answer: "Теряет функции, undefined, Symbol, Date, RegExp, Map/Set и падает при цикличных ссылках." },
-    ],
-    checklist: ["Копирование всех вложенных уровней", "Обработка WeakMap/Map для цикличных ссылок"],
-  },
-  {
-    id: "js168",
-    group: "Объекты и Утилиты",
-    subgroup: "Глубокое сравнение",
-    title: "2. Глубокое сравнение объектов (Deep Equal)",
-    desc: "Напишите функцию deepEqual(a, b) для рекурсивного сравнения двух структур данных.",
-    isRaw: true,
-    candidate: DeepEqualObjectUtilCandidateRaw,
-    rawCandidate: DeepEqualObjectUtilCandidateRaw,
-    solution: DeepEqualObjectUtilSolutionRaw,
-    rawSolution: DeepEqualObjectUtilSolutionRaw,
-    filepath: "src/javascript/tasks/20_object_utils/2_DeepEqualObject.js",
-    solutions: [
       {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Утилиты работы с объектами",
-        recommendationNote: "Рекурсивный обход свойств объекта с проверкой hasOwnProperty защищает от считывания прототипных свойств.",
-        rawSolution: DeepEqualObjectUtilSolutionRaw,
-        filepath: "src/javascript/tasks/20_object_utils/2_DeepEqualObject.js",
+        title: "Паттерны повторных попыток Retry (Doka.guide)",
+        urlTitle: "Дока — Асинхронные повторы",
+        url: "https://doka.guide/js/async-await/",
       },
     ],
-    articles: [
-      { title: "Deep comparison (BFE.dev)", urlTitle: "BFE.dev — Implement deep equal", url: "https://bigfrontend.dev/problem/deep-equal" },
-    ],
     interviewerQuestions: [
-      { question: "Как сравнить NaN === NaN при глубоком сравнении?", answer: "С помощью Number.isNaN(a) && Number.isNaN(b) или Object.is(a, b)." },
-    ],
-    checklist: ["Сравнение примитивов и объектов", "Учет ключей и длины массивов"],
-  },
-  {
-    id: "js169",
-    group: "Объекты и Утилиты",
-    subgroup: "Трансформация объектов",
-    title: "3. Преобразование вложенного объекта в плоский путь (Flatten Object)",
-    desc: "Напишите функцию flattenObject(obj), превращающую вложенный объект в объект с ключами через точку.",
-    isRaw: true,
-    candidate: FlattenObjectUtilCandidateRaw,
-    rawCandidate: FlattenObjectUtilCandidateRaw,
-    solution: FlattenObjectUtilSolutionRaw,
-    rawSolution: FlattenObjectUtilSolutionRaw,
-    filepath: "src/javascript/tasks/20_object_utils/3_FlattenObject.js",
-    solutions: [
       {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Утилиты работы с объектами",
-        recommendationNote: "Рекурсивный обход свойств объекта с проверкой hasOwnProperty защищает от считывания прототипных свойств.",
-        rawSolution: FlattenObjectUtilSolutionRaw,
-        filepath: "src/javascript/tasks/20_object_utils/3_FlattenObject.js",
+        question: "Зачем нужна задержка между повторными попытками запроса?",
+        answer: "Задержка снижает нагрузку на сервер (Backoff) и дает временно сбойнувшему сервису время на восстановление.",
       },
     ],
-    articles: [
-      { title: "Object transformation (MDN)", urlTitle: "MDN — Working with Objects", url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Guide/Working_with_Objects" },
+    checklist: [
+      "Цикл попыток от 0 до attempts",
+      "Ожидание задержки перед новой попыткой",
     ],
-    interviewerQuestions: [
-      { question: "Как обработать массивы при выравнивании объекта?", answer: "Ключи элементов массива записываются как индексы через точку: 'users.0.name'." },
-    ],
-    checklist: ["Преобразование {a:{b:1}} в {'a.b': 1}"],
   },
-  {
-    id: "js170",
-    group: "Объекты и Утилиты",
-    subgroup: "Заморозка объектов",
-    title: "4. Глубокая заморозка объектов (Deep Freeze)",
-    desc: "Реализуйте функцию deepFreeze(obj), замораживающую объект и все его вложенные свойства.",
-    isRaw: true,
-    candidate: DeepFreezeObjectUtilCandidateRaw,
-    rawCandidate: DeepFreezeObjectUtilCandidateRaw,
-    solution: DeepFreezeObjectUtilSolutionRaw,
-    rawSolution: DeepFreezeObjectUtilSolutionRaw,
-    filepath: "src/javascript/tasks/20_object_utils/4_DeepFreezeObject.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Утилиты работы с объектами",
-        recommendationNote: "Рекурсивный обход свойств объекта с проверкой hasOwnProperty защищает от считывания прототипных свойств.",
-        rawSolution: DeepFreezeObjectUtilSolutionRaw,
-        filepath: "src/javascript/tasks/20_object_utils/4_DeepFreezeObject.js",
-      },
-    ],
-    articles: [
-      { title: "Object.freeze (MDN)", urlTitle: "MDN — Object.freeze()", url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze" },
-    ],
-    interviewerQuestions: [
-      { question: "Является ли Object.freeze глубоким по умолчанию?", answer: "Нет, Object.freeze замораживает только свойства первого уровня (shallow freeze)." },
-    ],
-    checklist: ["Object.freeze на объекте и всех его вложенных свойствах"],
-  },
-];
 
-export const JS_DESIGN_PATTERNS_TASKS = [
   {
-    id: "js171",
-    group: "Паттерны проектирования",
-    subgroup: "Паттерн Наблюдатель",
-    title: "1. Шина событий (EventEmitter / PubSub)",
-    desc: "Реализуйте класс EventEmitter с методами on(event, fn), off(event, fn), once(event, fn) и emit(event, ...args).",
+    id: "js116",
+    group: "Асинхронность",
+    subgroup: "Продвинутые паттерны",
+    title: "2. Ограничение параллельности (concurrency pool) (Уровень 4)",
+    desc: "Реализуйте функцию runWithLimit(tasks, limit), выполняющую массив задач с параллельным лимитом одновременно работающих потоков.",
     isRaw: true,
-    candidate: EventEmitterPubSubCandidateRaw,
-    rawCandidate: EventEmitterPubSubCandidateRaw,
-    solution: EventEmitterPubSubSolutionRaw,
-    rawSolution: EventEmitterPubSubSolutionRaw,
-    filepath: "src/javascript/tasks/21_design_patterns/1_EventEmitterPubSub.js",
+    candidate: ConcurrencyPoolLimitCandidateRaw,
+    rawCandidate: ConcurrencyPoolLimitCandidateRaw,
+    solution: ConcurrencyPoolLimitSolutionRaw,
+    rawSolution: ConcurrencyPoolLimitSolutionRaw,
+    filepath: "src/javascript/tasks/13_promises/level4/25_ConcurrencyPoolLimit.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
         isRecommended: true,
-        badge: "Архитектура кода",
-        recommendationNote: "Применение паттернов проектирования улучшает связность, масштабируемость и тестируемость приложения.",
-        rawSolution: EventEmitterPubSubSolutionRaw,
-        filepath: "src/javascript/tasks/21_design_patterns/1_EventEmitterPubSub.js",
+        badge: "Современный Async/Await",
+        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
+        rawSolution: ConcurrencyPoolLimitSolutionRaw,
+        filepath: "src/javascript/tasks/13_promises/level4/25_ConcurrencyPoolLimit.js",
       },
     ],
     articles: [
-      { title: "EventEmitter (Node.js)", urlTitle: "Node.js Events — EventEmitter", url: "https://nodejs.org/api/events.html#class-eventemitter" },
-    ],
-    interviewerQuestions: [
-      { question: "Как предотвратить утечку памяти при использовании EventEmitter?", answer: "Всегда отписывать слушатели через .off() при уничтожении компонентов." },
-    ],
-    checklist: ["Методы on, off, once, emit", "Поддержка отписки"],
-  },
-  {
-    id: "js172",
-    group: "Паттерны проектирования",
-    subgroup: "Кэширование и Мемоизация",
-    title: "2. Мемоизация функций с резолвером (Memoize)",
-    desc: "Реализуйте функцию memoize(fn, resolver) для кэширования результатов вычислений.",
-    isRaw: true,
-    candidate: MemoizeResolverCandidateRaw,
-    rawCandidate: MemoizeResolverCandidateRaw,
-    solution: MemoizeResolverSolutionRaw,
-    rawSolution: MemoizeResolverSolutionRaw,
-    filepath: "src/javascript/tasks/21_design_patterns/2_MemoizeResolver.js",
-    solutions: [
       {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Архитектура кода",
-        recommendationNote: "Применение паттернов проектирования улучшает связность, масштабируемость и тестируемость приложения.",
-        rawSolution: MemoizeResolverSolutionRaw,
-        filepath: "src/javascript/tasks/21_design_patterns/2_MemoizeResolver.js",
+        title: "Пул параллельных задач (MDN)",
+        urlTitle: "MDN — Асинхронный пул задач",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Guide/Using_promises",
       },
     ],
-    articles: [
-      { title: "Memoization pattern (MDN)", urlTitle: "MDN — Memoization", url: "https://developer.mozilla.org/en-US/docs/Glossary/Memoization" },
-    ],
     interviewerQuestions: [
-      { question: "Зачем нужен resolver в функции memoize?", answer: "Для генерации уникального ключа кэша на основе аргументов функции." },
-    ],
-    checklist: ["Возвращает кэшированное значение при повторном вызове"],
-  },
-  {
-    id: "js173",
-    group: "Паттерны проектирования",
-    subgroup: "Реактивность",
-    title: "3. Наблюдаемый объект (Observable / Reactive Signal)",
-    desc: "Реализуйте простейшую реактивную переменную createSignal(initialValue).",
-    isRaw: true,
-    candidate: ObservableSignalCandidateRaw,
-    rawCandidate: ObservableSignalCandidateRaw,
-    solution: ObservableSignalSolutionRaw,
-    rawSolution: ObservableSignalSolutionRaw,
-    filepath: "src/javascript/tasks/21_design_patterns/3_ObservableSignal.js",
-    solutions: [
       {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Архитектура кода",
-        recommendationNote: "Применение паттернов проектирования улучшает связность, масштабируемость и тестируемость приложения.",
-        rawSolution: ObservableSignalSolutionRaw,
-        filepath: "src/javascript/tasks/21_design_patterns/3_ObservableSignal.js",
+        question: "Как гарантируется сохранение исходного порядка результатов при параллельном пуле?",
+        answer: "Каждая задача записывает результат в предварительно выделенный массив по её исходному индексу (results[currentIndex] = result).",
       },
     ],
-    articles: [
-      { title: "Reactivity Signals (SolidJS / Vue)", urlTitle: "Signals overview", url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript" },
+    checklist: [
+      "Соблюдение лимита одновременно исполняемых задач",
+      "Сохранение исходного порядка результатов",
     ],
-    interviewerQuestions: [
-      { question: "В чем преимущество сигналов перед традиционным setState?", answer: "Точечное отслеживание зависимостей без перерисовки всего дерева компонентов." },
-    ],
-    checklist: ["Корректные get(), set(val) и subscribe(fn)"],
   },
-];
 
-export const JS_EVENT_LOOP_TASKS = [
   {
-    id: "js174",
-    group: "Event Loop",
-    subgroup: "Event Loop в JavaScript",
-    title: "1. Конструктор Promise и цепочка .then (Company X)",
-    desc: "Определите порядок вывода консоли при выполнении синхронного кода конструктора Promise, резолва и setTimeout.",
+    id: "js120",
+    group: "Асинхронность",
+    subgroup: "Продвинутые паттерны",
+    title: "3. Отмена промиса через AbortController (Уровень 5)",
+    desc: "Напишите функцию fetchWithCancel(url, signal), отменяющую ожидающий промис при срабатывании сигнала AbortSignal.",
     isRaw: true,
-    candidate: PromiseConstructorChainCandidateRaw,
-    rawCandidate: PromiseConstructorChainCandidateRaw,
-    solution: PromiseConstructorChainSolutionRaw,
-    rawSolution: PromiseConstructorChainSolutionRaw,
-    filepath: "src/javascript/tasks/22_event_loop/1_PromiseConstructorChain.js",
+    candidate: AbortControllerCancelCandidateRaw,
+    rawCandidate: AbortControllerCancelCandidateRaw,
+    solution: AbortControllerCancelSolutionRaw,
+    rawSolution: AbortControllerCancelSolutionRaw,
+    filepath: "src/javascript/tasks/13_promises/level5/29_AbortControllerCancel.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
         isRecommended: true,
-        badge: "Приоритет задач Event Loop",
-        recommendationNote: "Синхронный код -> Микрозадачи (Promise, queueMicrotask) -> Макрозадачи (setTimeout, setInterval). Это фундаментальный порядок.",
-        rawSolution: PromiseConstructorChainSolutionRaw,
-        filepath: "src/javascript/tasks/22_event_loop/1_PromiseConstructorChain.js",
+        badge: "Современный Async/Await",
+        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
+        rawSolution: AbortControllerCancelSolutionRaw,
+        filepath: "src/javascript/tasks/13_promises/level5/29_AbortControllerCancel.js",
       },
     ],
     articles: [
-      { title: "Event Loop и микрозадачи (JavaScript.ru)", urlTitle: "Учебник JS — Событийный цикл", url: "https://learn.javascript.ru/event-loop" },
+      {
+        title: "Отмена асинхронных операций через AbortController (MDN)",
+        urlTitle: "MDN — AbortController",
+        url: "https://developer.mozilla.org/ru/docs/Web/API/AbortController",
+      },
     ],
     interviewerQuestions: [
-      { question: "В какой момент выполняется функция-исполнитель (executor) в new Promise((resolve) => ...)?", answer: "Синхронно в момент создания объекта Promise." },
+      {
+        question: "Как связать асинхронный таймер или fetch запрос с AbortSignal?",
+        answer: "Подпиской на событие signal.addEventListener('abort', handler), в котором очищается таймер и вызывается reject().",
+      },
     ],
-    checklist: ["Результат: start, promise1, end, resolve, promise2, setTimeout"],
+    checklist: [
+      "Подписка на событие signal.addEventListener('abort', ...)",
+    ],
   },
+
   {
-    id: "js175",
-    group: "Event Loop",
-    subgroup: "Event Loop в JavaScript",
-    title: "2. IIFE, Конструктор Promise и Микрозадачи (Company X)",
-    desc: "Проанализируйте порядок вызыва IIFE, возврата из функции-исполнителя Promise, .then и setTimeout.",
+    id: "js121",
+    group: "Асинхронность",
+    subgroup: "Продвинутые паттерны",
+    title: "4. Очередь асинхронных задач (async task queue) (Уровень 5)",
+    desc: "Напишите класс TaskQueue для строго последовательного выполнения поступающих асинхронных задач.",
     isRaw: true,
-    candidate: IifePromiseConstructorCandidateRaw,
-    rawCandidate: IifePromiseConstructorCandidateRaw,
-    solution: IifePromiseConstructorSolutionRaw,
-    rawSolution: IifePromiseConstructorSolutionRaw,
-    filepath: "src/javascript/tasks/22_event_loop/2_IifePromiseConstructor.js",
+    candidate: AsyncTaskQueueCandidateRaw,
+    rawCandidate: AsyncTaskQueueCandidateRaw,
+    solution: AsyncTaskQueueSolutionRaw,
+    rawSolution: AsyncTaskQueueSolutionRaw,
+    filepath: "src/javascript/tasks/13_promises/level5/30_AsyncTaskQueue.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
         isRecommended: true,
-        badge: "Приоритет задач Event Loop",
-        recommendationNote: "Синхронный код -> Микрозадачи (Promise, queueMicrotask) -> Макрозадачи (setTimeout, setInterval). Это фундаментальный порядок.",
-        rawSolution: IifePromiseConstructorSolutionRaw,
-        filepath: "src/javascript/tasks/22_event_loop/2_IifePromiseConstructor.js",
+        badge: "Современный Async/Await",
+        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
+        rawSolution: AsyncTaskQueueSolutionRaw,
+        filepath: "src/javascript/tasks/13_promises/level5/30_AsyncTaskQueue.js",
       },
     ],
     articles: [
-      { title: "Микрозадачи и макрозадачи (Doka.guide)", urlTitle: "Дока — Event Loop", url: "https://doka.guide/js/event-loop/" },
+      {
+        title: "Асинхронные очереди (Doka.guide)",
+        urlTitle: "Дока — Паттерн Очередь задач",
+        url: "https://doka.guide/js/async-await/",
+      },
     ],
     interviewerQuestions: [
-      { question: "Каков порядок выполнения IIFE в контексте Event Loop?", answer: "IIFE является обычной функцией, вызов которой происходит полностью синхронно." },
+      {
+        question: "Как связать цепочку промисов в классе TaskQueue без явного массива задач?",
+        answer: "Присваивать свойству очереди результат chaining: this.queue = this.queue.then(() => taskFn()).",
+      },
     ],
-    checklist: ["Результат: 3, 2, 5, 4, 1"],
+    checklist: [
+      "Последовательное выполнение задач независимо от задержек",
+    ],
   },
+
   {
-    id: "js179",
-    group: "Event Loop",
-    subgroup: "Event Loop в JavaScript",
-    title: "3. Вложенные промисы и Async/Await (Company X)",
-    desc: "Определите порядок вывода при возврате Promise.resolve() из .then в сравнении с оператором await.",
+    id: "js117",
+    group: "Асинхронность",
+    subgroup: "Продвинутые паттерны",
+    title: "5. Мемоизация асинхронной функции (Уровень 4)",
+    desc: "Напишите memoizeAsync(fn), кэширующую возвращаемый Promise для исключения повторных сетевых запросов.",
     isRaw: true,
-    candidate: AsyncAwaitNestedPromisesCandidateRaw,
-    rawCandidate: AsyncAwaitNestedPromisesCandidateRaw,
-    solution: AsyncAwaitNestedPromisesSolutionRaw,
-    rawSolution: AsyncAwaitNestedPromisesSolutionRaw,
-    filepath: "src/javascript/tasks/22_event_loop/3_AsyncAwaitNestedPromises.js",
+    candidate: MemoizeAsyncCandidateRaw,
+    rawCandidate: MemoizeAsyncCandidateRaw,
+    solution: MemoizeAsyncSolutionRaw,
+    rawSolution: MemoizeAsyncSolutionRaw,
+    filepath: "src/javascript/tasks/13_promises/level4/26_MemoizeAsync.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
         isRecommended: true,
-        badge: "Приоритет задач Event Loop",
-        recommendationNote: "Синхронный код -> Микрозадачи (Promise, queueMicrotask) -> Макрозадачи (setTimeout, setInterval). Это фундаментальный порядок.",
-        rawSolution: AsyncAwaitNestedPromisesSolutionRaw,
-        filepath: "src/javascript/tasks/22_event_loop/3_AsyncAwaitNestedPromises.js",
+        badge: "Современный Async/Await",
+        recommendationNote: "Обработка промисов через async/await делает асинхронный код визуально синхронным и упрощает обработку ошибок.",
+        rawSolution: MemoizeAsyncSolutionRaw,
+        filepath: "src/javascript/tasks/13_promises/level4/26_MemoizeAsync.js",
       },
     ],
     articles: [
-      { title: "Async/await и порядок задач (MDN)", urlTitle: "MDN — async function", url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Statements/async_function" },
-    ],
-    interviewerQuestions: [
-      { question: "Сколько микрозадач создает возврат нового Promise из колбэка .then()?", answer: "Возврат промиса из .then планирует дополнительные тики очереди микрозадач для разрешения цепочки." },
-    ],
-    checklist: ["Результат: 1, 6, 3, 5, 4, 2"],
-  },
-  {
-    id: "js180",
-    group: "Event Loop",
-    subgroup: "Event Loop в JavaScript",
-    title: "4. Вложенные таймеры и микрозадачи (Company X)",
-    desc: "Подробный разбор последовательности создания и опустошения очередей при перекрестном создании таймеров и промисов.",
-    isRaw: true,
-    candidate: NestedTimersAndPromisesCandidateRaw,
-    rawCandidate: NestedTimersAndPromisesCandidateRaw,
-    solution: NestedTimersAndPromisesSolutionRaw,
-    rawSolution: NestedTimersAndPromisesSolutionRaw,
-    filepath: "src/javascript/tasks/22_event_loop/4_NestedTimersAndPromises.js",
-    solutions: [
       {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Приоритет задач Event Loop",
-        recommendationNote: "Синхронный код -> Микрозадачи (Promise, queueMicrotask) -> Макрозадачи (setTimeout, setInterval). Это фундаментальный порядок.",
-        rawSolution: NestedTimersAndPromisesSolutionRaw,
-        filepath: "src/javascript/tasks/22_event_loop/4_NestedTimersAndPromises.js",
+        title: "Кэширование асинхронных промисов (Doka.guide)",
+        urlTitle: "Дока — Мемоизация асинхронного кода",
+        url: "https://doka.guide/js/memoization/",
       },
     ],
-    articles: [
-      { title: "Очереди микро и макрозадач (JavaScript.ru)", urlTitle: "Учебник JS — Микрозадачи", url: "https://learn.javascript.ru/microtask-queue" },
-    ],
     interviewerQuestions: [
-      { question: "В какой момент планируется Таймер 2, находящийся внутри Промиса 1?", answer: "Только когда Event Loop берет микрозадачу Промиса 1 на исполнение." },
-    ],
-    checklist: ["Результат: Начало, Конец, Промис 1, Таймер 1, Промис 2, Таймер 2"],
-  },
-  {
-    id: "js181",
-    group: "Event Loop",
-    subgroup: "Event Loop в JavaScript",
-    title: "5. Анимационный кадр requestAnimationFrame vs Event Loop",
-    desc: "Сравнение выполнения фаз браузера: синхронный код, микрозадачи (Promise), макрозадачи (setTimeout) и rAF.",
-    isRaw: true,
-    candidate: RequestAnimationFrameOrderCandidateRaw,
-    rawCandidate: RequestAnimationFrameOrderCandidateRaw,
-    solution: RequestAnimationFrameOrderSolutionRaw,
-    rawSolution: RequestAnimationFrameOrderSolutionRaw,
-    filepath: "src/javascript/tasks/22_event_loop/5_RequestAnimationFrameOrder.js",
-    solutions: [
       {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Приоритет задач Event Loop",
-        recommendationNote: "Синхронный код -> Микрозадачи (Promise, queueMicrotask) -> Макрозадачи (setTimeout, setInterval). Это фундаментальный порядок.",
-        rawSolution: RequestAnimationFrameOrderSolutionRaw,
-        filepath: "src/javascript/tasks/22_event_loop/5_RequestAnimationFrameOrder.js",
+        question: "Что делать с кэшем, если асинхронный промис завершился с ошибкой?",
+        answer: "Кэшированный упавший промис нужно удалять из Map через .catch(err => { cache.delete(key); throw err; }), чтобы повторный вызов попытался выполнить запрос заново.",
       },
     ],
-    articles: [
-      { title: "window.requestAnimationFrame (MDN)", urlTitle: "MDN — requestAnimationFrame()", url: "https://developer.mozilla.org/ru/docs/Web/API/window/requestAnimationFrame" },
+    checklist: [
+      "Кэширование самого объекта Promise в Map",
+      "Удаление из кэша при ошибки для повторной попытки",
     ],
-    interviewerQuestions: [
-      { question: "Перед какой фазой Event Loop вызываются колбэки requestAnimationFrame?", answer: "Перед фазой перерисовки (Repaint / Rendering Pipeline) кадра в браузере." },
-    ],
-    checklist: ["Результат: A, E, D, B, C"],
-  },
-  {
-    id: "js182",
-    group: "Event Loop",
-    subgroup: "Event Loop в JavaScript",
-    title: "6. Сложная комбинация макро и микрозадач",
-    desc: "Глубокий разбор задачи с вложенными setTimeout внутри исполнителя Promise и обработчиков .then.",
-    isRaw: true,
-    candidate: DeepNestedTimersPromisesCandidateRaw,
-    rawCandidate: DeepNestedTimersPromisesCandidateRaw,
-    solution: DeepNestedTimersPromisesSolutionRaw,
-    rawSolution: DeepNestedTimersPromisesSolutionRaw,
-    filepath: "src/javascript/tasks/22_event_loop/6_DeepNestedTimersPromises.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Приоритет задач Event Loop",
-        recommendationNote: "Синхронный код -> Микрозадачи (Promise, queueMicrotask) -> Макрозадачи (setTimeout, setInterval). Это фундаментальный порядок.",
-        rawSolution: DeepNestedTimersPromisesSolutionRaw,
-        filepath: "src/javascript/tasks/22_event_loop/6_DeepNestedTimersPromises.js",
-      },
-    ],
-    articles: [
-      { title: "Продвинутый Event Loop (BFE.dev)", urlTitle: "BFE.dev — Event Loop Tasks", url: "https://bigfrontend.dev/" },
-    ],
-    interviewerQuestions: [
-      { question: "Почему res в .then выводит 'resolve 1' только после выполнения всех предыдущих шагов?", answer: "Потому что resolve() был вызван из макрозадачи setTimeout 2." },
-    ],
-    checklist: ["Результат: begins, promise 2, setTimeout 1, promise 1, setTimeout 2, dot then 1, resolve 1"],
-  },
-  {
-    id: "js183",
-    group: "Event Loop",
-    subgroup: "Жизненный цикл React",
-    title: "7. Порядок вызовов Render, Ref Callback и useEffect",
-    desc: "Разбор фаз рендеринга React: Render phase (синхронно), Commit phase (Callback Ref) и Post-commit phase (useEffect).",
-    isRaw: true,
-    candidate: ReactRenderRefUseEffectCandidateRaw,
-    rawCandidate: ReactRenderRefUseEffectCandidateRaw,
-    solution: ReactRenderRefUseEffectSolutionRaw,
-    rawSolution: ReactRenderRefUseEffectSolutionRaw,
-    filepath: "src/javascript/tasks/22_event_loop/7_ReactRenderRefUseEffect.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Приоритет задач Event Loop",
-        recommendationNote: "Синхронный код -> Микрозадачи (Promise, queueMicrotask) -> Макрозадачи (setTimeout, setInterval). Это фундаментальный порядок.",
-        rawSolution: ReactRenderRefUseEffectSolutionRaw,
-        filepath: "src/javascript/tasks/22_event_loop/7_ReactRenderRefUseEffect.js",
-      },
-    ],
-    articles: [
-      { title: "React Render and Commit (React.dev)", urlTitle: "React Docs — Render and Commit", url: "https://react.dev/learn/render-and-commit" },
-    ],
-    interviewerQuestions: [
-      { question: "Почему callback ref вызывается до useEffect?", answer: "Callback ref срабатывает на этапе коммита синхронно при привязке DOM-узла, а useEffect — асинхронно после отрисовки экрана." },
-    ],
-    checklist: ["Результат: 0, 2, 1"],
-  },
-  {
-    id: "js184",
-    group: "Event Loop",
-    subgroup: "Жизненный цикл React",
-    title: "8. Порядок вызовов useLayoutEffect, useEffect и Cleanup при повторном рендере",
-    desc: "Глубокий анализ порядка выполнения синхронных вызовов useLayoutEffect, их очисток и реактивных эффектов useEffect при смене состояния.",
-    isRaw: true,
-    candidate: ReactLayoutEffectCleanupCycleCandidateRaw,
-    rawCandidate: ReactLayoutEffectCleanupCycleCandidateRaw,
-    solution: ReactLayoutEffectCleanupCycleSolutionRaw,
-    rawSolution: ReactLayoutEffectCleanupCycleSolutionRaw,
-    filepath: "src/javascript/tasks/22_event_loop/8_ReactLayoutEffectCleanupCycle.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Приоритет задач Event Loop",
-        recommendationNote: "Синхронный код -> Микрозадачи (Promise, queueMicrotask) -> Макрозадачи (setTimeout, setInterval). Это фундаментальный порядок.",
-        rawSolution: ReactLayoutEffectCleanupCycleSolutionRaw,
-        filepath: "src/javascript/tasks/22_event_loop/8_ReactLayoutEffectCleanupCycle.js",
-      },
-    ],
-    articles: [
-      { title: "useLayoutEffect vs useEffect (React.dev)", urlTitle: "React Docs — useLayoutEffect", url: "https://react.dev/reference/react/useLayoutEffect" },
-    ],
-    interviewerQuestions: [
-      { question: "В чем различие timing-моделей useLayoutEffect и useEffect?", answer: "useLayoutEffect выполняются синхронно сразу после изменений DOM до отрисовки браузера, useEffect — асинхронно после отрисовки." },
-    ],
-    checklist: ["Понимание порядка очисток и фаз 1-го и 2-го рендера"],
-  },
+  }
 ];
 
 export const JS_STRING_DOM_UTILS_TASKS = [
@@ -9351,11 +10673,12 @@ export const JS_STRING_DOM_UTILS_TASKS = [
     ],
     checklist: ["Замена вложенных шаблонов {user.name}"],
   },
+
   {
     id: "js177",
     group: "Строки и Утилиты",
     subgroup: "Парсинг URL",
-    title: "2. Парсер и сериализатор URL Query String",
+    title: "1. Парсер и сериализатор URL Query String",
     desc: "Напишите функции parseQueryString(url) и stringifyQuery(obj) для работы с параметрами URL.",
     isRaw: true,
     candidate: QueryStringParserCandidateRaw,
@@ -9381,11 +10704,12 @@ export const JS_STRING_DOM_UTILS_TASKS = [
     ],
     checklist: ["Декодирование спецсимволов URI", "Поддержка повторяющихся ключей"],
   },
+
   {
     id: "js178",
     group: "Строки и Утилиты",
     subgroup: "CSS утилиты",
-    title: "3. Хелпер условных CSS-классов (ClassNames Polyfill)",
+    title: "1. Хелпер условных CSS-классов (ClassNames Polyfill)",
     desc: "Реализуйте функцию classNames(...args) для условного объединения имён CSS-классов (аналог библиотеки clsx).",
     isRaw: true,
     candidate: ClassNamesHelperCandidateRaw,
@@ -9411,108 +10735,209 @@ export const JS_STRING_DOM_UTILS_TASKS = [
     ],
     checklist: ["Поддержка строк, объектов и массивов", "Фильтрация ложных значений"],
   },
+  {
+    id: "js243",
+    group: "Строки и Утилиты",
+    subgroup: "Строки и Unicode",
+    title: "4. Разворот строки с поддержкой Unicode (Surrogate Pairs)",
+    desc: "Разверните строку с сохранением целостности суррогатных пар и эмодзи без повреждения байтов UTF-16.",
+    isRaw: true,
+    candidate: UnicodeStringReverseCandidateRaw,
+    rawCandidate: UnicodeStringReverseCandidateRaw,
+    solution: UnicodeStringReverseSolutionRaw,
+    rawSolution: UnicodeStringReverseSolutionRaw,
+    filepath: "src/javascript/tasks/23_string_dom_utils/4_UnicodeStringReverse.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Unicode & UTF-16",
+        recommendationNote: "Использует Intl.Segmenter для графем и Array.from для сохранения суррогатов.",
+        rawSolution: UnicodeStringReverseSolutionRaw,
+        filepath: "src/javascript/solutions/23_string_dom_utils/4_UnicodeStringReverse.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Unicode in JavaScript",
+        urlTitle: "JavaScript for impatient programmers — Unicode",
+        url: "https://exploringjs.com/impatient-js/ch_unicode.html",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему '👋'.split('').reverse().join('') ломает символ?",
+        answer: "Эмодзи представлен парой 16-битных чисел (high/low surrogate). split('') меняет их местами, создавая невалидный суррогат.",
+      },
+    ],
+    checklist: [
+      "Использование Intl.Segmenter или Array.from(str)",
+      "Корректная обработка пустых строк и примитивов",
+      "Сохранение графемных кластеров",
+    ],
+  },
+
+  {
+    id: "js244",
+    group: "Строки и Утилиты",
+    subgroup: "Регулярные выражения",
+    title: "5. Лексический анализатор: токенизация строки",
+    desc: "Реализуйте функцию tokenize(input, tokenSpecs) для разбиения входной строки на типизированный поток токенов.",
+    isRaw: true,
+    candidate: RegexTokenizerCandidateRaw,
+    rawCandidate: RegexTokenizerCandidateRaw,
+    solution: RegexTokenizerSolutionRaw,
+    rawSolution: RegexTokenizerSolutionRaw,
+    filepath: "src/javascript/tasks/23_string_dom_utils/5_RegexTokenizer.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Парсеры и Лексеры",
+        recommendationNote: "Сопоставляет шаблоны с текущей позиции курсора и собирает метаданные токенов.",
+        rawSolution: RegexTokenizerSolutionRaw,
+        filepath: "src/javascript/solutions/23_string_dom_utils/5_RegexTokenizer.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Writing a Lexer in JavaScript",
+        urlTitle: "Guide to Lexical Analysis",
+        url: "https://en.wikipedia.org/wiki/Lexical_analysis",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему регулярные выражения лексера проверяются с привязкой к началу строки (^)?",
+        answer: "Чтобы токен сопоставлялся строго с текущей позиции курсора, а не из произвольного места в тексте.",
+      },
+    ],
+    checklist: [
+      "Проход курсором по строке",
+      "Фильтрация ignore-токенов (whitespace)",
+      "Выброс SyntaxError на неожиданный символ",
+    ],
+  },
+
+  {
+    id: "js245",
+    group: "Строки и Утилиты",
+    subgroup: "Полифилы строк",
+    title: "6. Реализация полифила String.prototype.replaceAll",
+    desc: "Реализуйте customReplaceAll(str, searchValue, replaceValue) с валидацией глобального флага RegExp.",
+    isRaw: true,
+    candidate: ReplaceAllPolyfillCandidateRaw,
+    rawCandidate: ReplaceAllPolyfillCandidateRaw,
+    solution: ReplaceAllPolyfillSolutionRaw,
+    rawSolution: ReplaceAllPolyfillSolutionRaw,
+    filepath: "src/javascript/tasks/23_string_dom_utils/6_ReplaceAllPolyfill.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Полифилы",
+        recommendationNote: "Выбрасывает TypeError для неглобального RegExp и безопасно заменяет все строковые вхождения.",
+        rawSolution: ReplaceAllPolyfillSolutionRaw,
+        filepath: "src/javascript/solutions/23_string_dom_utils/6_ReplaceAllPolyfill.js",
+      },
+    ],
+    articles: [
+      {
+        title: "String.prototype.replaceAll (MDN)",
+        urlTitle: "MDN Web Docs — String.prototype.replaceAll",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/String/replaceAll",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Почему replaceAll(/abc/, 'x') выбрасывает ошибку в стандарте JS?",
+        answer: "Спецификация строго требует флаг 'g' для RegExp, чтобы защитить от непреднамеренной замены только первого совпадения.",
+      },
+    ],
+    checklist: [
+      "Проверка RegExp.global флага",
+      "Поддержка функций замены (match, offset, string)",
+      "Безопасная обработка строковых спецсимволов",
+    ],
+  },
 ];
 
-export const JS_TYPES_COERCION_TASKS = [
+
+export const JS_DESIGN_PATTERNS_TASKS = [
   {
-    id: "js186",
-    group: "Типы данных",
-    subgroup: "Приведение типов",
-    title: "1. Типы данных и неявное приведение (Type Coercion)",
-    desc: "Определите и объясните результаты вывода базовых типов данных, сравнений (== / ===) и неявного приведения типов.",
+    id: "js171",
+    group: "Паттерны проектирования",
+    subgroup: "Паттерн Наблюдатель",
+    title: "1. Шина событий (EventEmitter / PubSub)",
+    desc: "Реализуйте класс EventEmitter с методами on(event, fn), off(event, fn), once(event, fn) и emit(event, ...args).",
     isRaw: true,
-    candidate: TypeCoercionBasicsCandidateRaw,
-    rawCandidate: TypeCoercionBasicsCandidateRaw,
-    solution: TypeCoercionBasicsSolutionRaw,
-    rawSolution: TypeCoercionBasicsSolutionRaw,
-    filepath: "src/javascript/tasks/24_types_coercion/1_TypeCoercionBasics.js",
+    candidate: EventEmitterPubSubCandidateRaw,
+    rawCandidate: EventEmitterPubSubCandidateRaw,
+    solution: EventEmitterPubSubSolutionRaw,
+    rawSolution: EventEmitterPubSubSolutionRaw,
+    filepath: "src/javascript/tasks/21_design_patterns/1_EventEmitterPubSub.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
         isRecommended: true,
-        badge: "Фундаментальный JS",
-        recommendationNote: "Понимание неявного приведения типов и ссылочной модели необходимо для предотвращения неочевидных багов.",
-        rawSolution: TypeCoercionBasicsSolutionRaw,
-        filepath: "src/javascript/tasks/24_types_coercion/1_TypeCoercionBasics.js",
+        badge: "Архитектура кода",
+        recommendationNote: "Применение паттернов проектирования улучшает связность, масштабируемость и тестируемость приложения.",
+        rawSolution: EventEmitterPubSubSolutionRaw,
+        filepath: "src/javascript/tasks/21_design_patterns/1_EventEmitterPubSub.js",
       },
     ],
     articles: [
-      { title: "Типы данных (LearnJS)", urlTitle: "Учебник JS — Типы данных", url: "https://learn.javascript.ru/types" },
-      { title: "Преобразование типов (LearnJS)", urlTitle: "Учебник JS — Преобразование типов", url: "https://learn.javascript.ru/type-conversions" },
-      { title: "Операторы сравнения (LearnJS)", urlTitle: "Учебник JS — Сравнения", url: "https://learn.javascript.ru/comparison" },
+      { title: "EventEmitter (Node.js)", urlTitle: "Node.js Events — EventEmitter", url: "https://nodejs.org/api/events.html#class-eventemitter" },
     ],
     interviewerQuestions: [
-      { question: "Почему typeof null возвращает 'object'?", answer: "Это исторический баг первой реализации JS, где значения типа object имели тег типа 0, а null представлялся как нулевой указатель (0x00)." },
-      { question: "Как пошагово вычисляется выражение [] == ![]?", answer: "1) ![] дает false, 2) [] == false -> [].toString() дает '', 3) '' == false -> Number('') и Number(false) оба дают 0, 4) 0 == 0 -> true." },
+      { question: "Как предотвратить утечку памяти при использовании EventEmitter?", answer: "Всегда отписывать слушатели через .off() при уничтожении компонентов." },
     ],
-    checklist: ["Понимание разницы между == и ===", "Правила приведения при операторах + и -", "Ссылочное сравнение объектов и массивов"],
+    checklist: ["Методы on, off, once, emit", "Поддержка отписки"],
   },
+
   {
-    id: "js187",
-    group: "Типы данных",
-    subgroup: "Приведение типов",
-    title: "2. Сложение объектов, массивов и парадоксы сравнения (ToPrimitive)",
-    desc: "Объясните правила сложения объектов ([] + [], [] + {}, {} + []), унарный плюс и краевые случаи сравнения null с нулём.",
+    id: "js173",
+    group: "Паттерны проектирования",
+    subgroup: "Реактивность",
+    title: "1. Наблюдаемый объект (Observable / Reactive Signal)",
+    desc: "Реализуйте простейшую реактивную переменную createSignal(initialValue).",
     isRaw: true,
-    candidate: ObjectsAndComparisonsCandidateRaw,
-    rawCandidate: ObjectsAndComparisonsCandidateRaw,
-    solution: ObjectsAndComparisonsSolutionRaw,
-    rawSolution: ObjectsAndComparisonsSolutionRaw,
-    filepath: "src/javascript/tasks/24_types_coercion/2_ObjectsAndComparisons.js",
+    candidate: ObservableSignalCandidateRaw,
+    rawCandidate: ObservableSignalCandidateRaw,
+    solution: ObservableSignalSolutionRaw,
+    rawSolution: ObservableSignalSolutionRaw,
+    filepath: "src/javascript/tasks/21_design_patterns/3_ObservableSignal.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
         isRecommended: true,
-        badge: "ToPrimitive и реляционные сравнения",
-        recommendationNote: "Алгоритм ToPrimitive вызывает valueOf и toString, а реляционные сравнения (<, >, >=) приводят к числам иначе, чем нестрогое равенство (==).",
-        rawSolution: ObjectsAndComparisonsSolutionRaw,
-        filepath: "src/javascript/tasks/24_types_coercion/2_ObjectsAndComparisons.js",
+        badge: "Архитектура кода",
+        recommendationNote: "Применение паттернов проектирования улучшает связность, масштабируемость и тестируемость приложения.",
+        rawSolution: ObservableSignalSolutionRaw,
+        filepath: "src/javascript/tasks/21_design_patterns/3_ObservableSignal.js",
       },
     ],
     articles: [
-      { title: "Преобразование объектов в примитивы (LearnJS)", urlTitle: "Учебник JS — Symbol.toPrimitive, valueOf, toString", url: "https://learn.javascript.ru/object-toprimitive" },
-      { title: "Неочевидные сравнения в JS (LearnJS)", urlTitle: "Учебник JS — Сравнение разных типов", url: "https://learn.javascript.ru/comparison#sravnenie-raznyh-tipov" },
+      { title: "Reactivity Signals (SolidJS / Vue)", urlTitle: "Signals overview", url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript" },
     ],
     interviewerQuestions: [
-      { question: "Почему null >= 0 возвращает true, а null > 0 и null == 0 возвращают false?", answer: "При >= операнды приводятся к числам (0 >= 0 -> true, вычисляется как !(null < 0)). При == действует специальное правило: null равен только undefined." },
-      { question: "Как вычисляется сложение объектов [] + {}?", answer: "Алгоритм ToPrimitive преобразует [] через toString() в '', а {} через toString() в '[object Object]'. Итого '' + '[object Object]' дает '[object Object]'." },
+      { question: "В чем преимущество сигналов перед традиционным setState?", answer: "Точечное отслеживание зависимостей без перерисовки всего дерева компонентов." },
     ],
-    checklist: ["Алгоритм ToPrimitive (valueOf -> toString)", "Разница между == и реляционными операторами (<, >, <=, >=)", "Унарный плюс для примитивов (true, null, undefined)"],
-  },
-  {
-    id: "js188",
-    group: "Типы данных",
-    subgroup: "Проверка типов",
-    title: "3. Проверка типов, граничные случаи и операторы (Object.is, || vs ??)",
-    desc: "Разберите тонкости сравнения NaN и +0/-0 (Object.is), разницу isNaN vs Number.isNaN, логические операторы (|| vs ??) и надежные методы определения типов.",
-    isRaw: true,
-    candidate: TypeCheckingAndEdgeCasesCandidateRaw,
-    rawCandidate: TypeCheckingAndEdgeCasesCandidateRaw,
-    solution: TypeCheckingAndEdgeCasesSolutionRaw,
-    rawSolution: TypeCheckingAndEdgeCasesSolutionRaw,
-    filepath: "src/javascript/tasks/24_types_coercion/3_TypeCheckingAndEdgeCases.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Проверка типов и граничные случаи",
-        recommendationNote: "Object.is реализует алгоритм SameValue, различая +0 и -0 и считая NaN равным NaN.",
-        rawSolution: TypeCheckingAndEdgeCasesSolutionRaw,
-        filepath: "src/javascript/tasks/24_types_coercion/3_TypeCheckingAndEdgeCases.js",
-      },
-    ],
-    articles: [
-      { title: "Object.is (MDN)", urlTitle: "MDN — Object.is", url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/is" },
-      { title: "Операторы || и ?? (LearnJS)", urlTitle: "Учебник JS — Оператор нулевого слияния '??'", url: "https://learn.javascript.ru/nullish-coalescing-operator" },
-      { title: "Определение типов (LearnJS)", urlTitle: "Учебник JS — Методы проверки типов", url: "https://learn.javascript.ru/type-checking" },
-    ],
-    interviewerQuestions: [
-      { question: "В чем разница между глобальным isNaN() и методом Number.isNaN()?", answer: "Глобальный isNaN('str') сначала приводит аргумент к числу (давая true для любой нечисловой строки). Number.isNaN('str') проверяет строго: тип должен быть number И значение NaN (возвращает false)." },
-      { question: "В чем разница между оператором || и оператором ?? (Nullish Coalescing)?", answer: "Оператор || срабатывает на любые falsy-значения (0, '', false, null, undefined, NaN). Оператор ?? срабатывает только на null и undefined." },
-      { question: "Почему для проверки массивов используют Array.isArray(), а не typeof?", answer: "typeof [] возвращает 'object', так как массивы в JS являются объектами. Array.isArray корректно определяет массив даже между разными фреймами/окнами." },
-    ],
-    checklist: ["Разница между isNaN и Number.isNaN", "Разница между || и ??", "Алгоритм SameValue в Object.is для NaN и +0/-0", "Определение типов через Array.isArray и Object.prototype.toString"],
-  },
+    checklist: ["Корректные get(), set(val) и subscribe(fn)"],
+  }
+];
+
+// Backward-compatibility exports
+export const JS_CLOSURES_TASKS = JS_FUNCTIONS_CLOSURES_TASKS.filter((t) => t.subgroup === "Замыкания (База)");
+export const JS_CURRYING_TASKS = JS_FUNCTIONS_CLOSURES_TASKS.filter((t) => t.subgroup === "Каррирование");
+export const JS_TIMERS_SETTIMEOUT_TASKS = JS_ASYNC_TASKS.filter((t) => t.id === "js69" || (t.subgroup === "Event Loop" && ["js71", "js72", "js73", "js74", "js75"].includes(t.id)));
+export const JS_TIMERS_SETINTERVAL_TASKS = JS_ASYNC_TASKS.filter((t) => t.id === "js76" || t.id === "js77" || (t.subgroup === "Event Loop" && ["js78", "js79", "js80"].includes(t.id)));
+export const JS_PROMISES_TASKS = JS_ASYNC_TASKS.filter((t) => ["Основы Promise", "async/await", "Комбинаторы"].includes(t.subgroup) || ["js114", "js115", "js116", "js117", "js118", "js120", "js121", "js122", "js185"].includes(t.id));
+export const JS_ASYNC_POLYFILLS_TASKS = JS_ASYNC_TASKS.filter((t) => t.subgroup === "Полифилы");
+export const JS_EVENT_LOOP_TASKS = JS_ASYNC_TASKS.filter((t) => t.subgroup === "Event Loop");
+export const JS_CONTROL_FLOW_TASKS = [
+  ...JS_ASYNC_TASKS.filter((t) => t.id === "js165"),
+  ...JS_FUNCTIONS_CLOSURES_TASKS.filter((t) => t.id === "js166"),
 ];
 
 export const JS_TASKS = [
@@ -9523,34 +10948,33 @@ export const JS_TASKS = [
   ...JS_FOR_OF_TASKS,
   ...JS_FOR_IN_TASKS,
 
-  // 2. Работа с данными и коллекциями
+  // 2. Объекты
+  ...JS_OBJECTS_TASKS,
+
+  // 3. Работа с данными и коллекциями
   ...JS_ARRAYS_INCLUDES_TASKS,
   ...JS_ARRAYS_FIND_TASKS,
   ...JS_ARRAYS_FILTER_TASKS,
   ...JS_ARRAYS_MAP_TASKS,
   ...JS_ARRAYS_SORT_TASKS,
   ...JS_ARRAYS_REDUCE_TASKS,
+  ...JS_ARRAYS_POLYFILLS_TASKS,
+  ...JS_ARRAYS_UTILS_TASKS,
   ...JS_COLLECTIONS_SET_TASKS,
   ...JS_COLLECTIONS_MAP_TASKS,
-  ...JS_STRING_DOM_UTILS_TASKS,
-  ...JS_OBJECT_UTILS_TASKS,
+  ...JS_COLLECTIONS_WEAK_TASKS,
 
-  // 3. Фундаментальные механизмы JS
-  ...JS_CLOSURES_TASKS,
+  // 4. Замыкания, функции и рекурсия
+  ...JS_FUNCTIONS_CLOSURES_TASKS,
   ...JS_RECURSION_TASKS,
+
+  // 5. Прототипы и контекст THIS
   ...JS_PROTOTYPES_THIS_TASKS,
-  ...JS_CURRYING_TASKS,
 
-  // 4. Асинхронность и Event Loop
-  ...JS_TIMERS_SETTIMEOUT_TASKS,
-  ...JS_TIMERS_SETINTERVAL_TASKS,
-  ...JS_PROMISES_TASKS,
-  ...JS_ASYNC_POLYFILLS_TASKS,
-  ...JS_EVENT_LOOP_TASKS,
+  // 6. Асинхронность и Event Loop
+  ...JS_ASYNC_TASKS,
 
-  // 5. Продвинутые паттерны и контроль частоты
-  ...JS_CONTROL_FLOW_TASKS,
+  // 7. Строки и паттерны
+  ...JS_STRING_DOM_UTILS_TASKS,
   ...JS_DESIGN_PATTERNS_TASKS,
 ];
-
-export const ALL_JS_TASKS = [...JS_TASKS];

@@ -2,88 +2,48 @@ import React, { memo } from "react";
 import { Code2, Zap, Brain, FileText } from "lucide-react";
 import { clsx } from "clsx";
 import type { Task } from "@/entities/task/meta";
-import { getGroupMeta, getAlgoGroupMeta } from "@/entities/task/groups";
-import { Badge } from "@/shared/ui";
+import { Badge, type BadgeVariant } from "@/shared/ui";
 import styles from "./CommandPalette.module.css";
 
 const SECTION_CONFIG: Record<
   string,
-  { label: string; icon: React.ReactNode; color: string; bg: string }
+  { label: string; icon: React.ReactNode; variant: BadgeVariant }
 > = {
   react: {
     label: "REACT",
-    icon: <Code2 size={11} style={{ color: "#3b82f6" }} />,
-    color: "#3b82f6",
-    bg: "rgba(59, 130, 246, 0.12)",
+    icon: <Code2 size={11} className={styles.iconReact} />,
+    variant: "blue",
   },
   javascript: {
     label: "JS",
-    icon: <Zap size={11} style={{ color: "#f59e0b" }} />,
-    color: "#f59e0b",
-    bg: "rgba(245, 158, 11, 0.12)",
+    icon: <Zap size={11} className={styles.iconJs} />,
+    variant: "yellow",
   },
   algorithms: {
     label: "ALGO",
-    icon: <Brain size={11} style={{ color: "#a855f7" }} />,
-    color: "#a855f7",
-    bg: "rgba(168, 85, 247, 0.12)",
+    icon: <Brain size={11} className={styles.iconAlgo} />,
+    variant: "purple",
   },
 };
 
-const getDifficultyMeta = (diff?: string) => {
+const getDifficultyMeta = (diff?: string): { text: string; variant: BadgeVariant } => {
   const d = String(diff || "").toLowerCase();
-  if (d === "warm-up") {
-    return { text: "Разминка", color: "#ff6b6b", bg: "rgba(255, 107, 107, 0.12)" };
+  if (d === "warm-up" || d === "hard") {
+    return { text: d === "warm-up" ? "Разминка" : "Сложно", variant: "red" };
   }
   if (d === "refactoring") {
-    return { text: "Рефакторинг", color: "#3b82f6", bg: "rgba(59, 130, 246, 0.12)" };
+    return { text: "Рефакторинг", variant: "blue" };
   }
-  if (d === "middle") {
-    return { text: "Middle", color: "#10b981", bg: "rgba(16, 185, 129, 0.12)" };
+  if (d === "middle" || d === "easy") {
+    return { text: d === "middle" ? "Middle" : "Легко", variant: "green" };
   }
   if (d === "strong") {
-    return { text: "Strong", color: "#a855f7", bg: "rgba(168, 85, 247, 0.12)" };
+    return { text: "Strong", variant: "purple" };
   }
-  if (d === "ts") {
-    return { text: "TypeScript", color: "#f59e0b", bg: "rgba(245, 158, 11, 0.12)" };
+  if (d === "ts" || d === "medium") {
+    return { text: d === "ts" ? "TypeScript" : "Средне", variant: "yellow" };
   }
-  if (d === "hard") {
-    return { text: "Сложно", color: "#ef4444", bg: "rgba(239, 68, 68, 0.12)" };
-  }
-  if (d === "medium") {
-    return { text: "Средне", color: "#f59e0b", bg: "rgba(245, 158, 11, 0.12)" };
-  }
-  return { text: "Легко", color: "#10b981", bg: "rgba(16, 185, 129, 0.12)" };
-};
-
-const renderGroupBadge = (task: Task) => {
-  if (task.section === "javascript" && task.group) {
-    const meta = getGroupMeta(task.group);
-    return (
-      <Badge
-        size="sm"
-        uppercase={false}
-        style={{ color: meta.color, backgroundColor: meta.bg }}
-        className={styles.groupBadge}
-      >
-        {task.group}
-      </Badge>
-    );
-  }
-  if (task.section === "algorithms" && task.group) {
-    const meta = getAlgoGroupMeta(task.group);
-    return (
-      <Badge
-        size="sm"
-        uppercase={false}
-        style={{ color: meta.color, backgroundColor: meta.bg }}
-        className={styles.groupBadge}
-      >
-        {task.group}
-      </Badge>
-    );
-  }
-  return null;
+  return { text: "Легко", variant: "green" };
 };
 
 export interface CommandPaletteItemProps {
@@ -109,9 +69,9 @@ export const CommandPaletteItem = memo(
         {showSectionBadge && (
           <Badge
             size="sm"
+            variant={sec.variant}
             icon={sec.icon}
             uppercase={true}
-            style={{ color: sec.color, backgroundColor: sec.bg }}
             className={styles.sectionBadge}
           >
             {sec.label}
@@ -124,15 +84,24 @@ export const CommandPaletteItem = memo(
         {diff && (
           <Badge
             size="sm"
+            variant={diff.variant}
             uppercase={true}
-            style={{ color: diff.color, backgroundColor: diff.bg }}
             className={styles.diffBadge}
           >
             {diff.text}
           </Badge>
         )}
 
-        {renderGroupBadge(task)}
+        {task.group && (
+          <Badge
+            size="sm"
+            variant="gray"
+            uppercase={false}
+            className={styles.groupBadge}
+          >
+            {task.group}
+          </Badge>
+        )}
       </button>
     );
   }

@@ -77,45 +77,33 @@
 
 /* Variants */
 .variant-primary {
-  background: var(--accent-blue, #3b82f6);
-  color: var(--text-on-accent, #ffffff);
+  background: var(--accent-blue);
+  color: var(--text-on-accent);
 }
 
 .variant-primary:hover:not(:disabled) {
-  background: var(--accent-blue-hover, #2563eb);
+  background: var(--accent-blue-hover);
 }
 
 .variant-secondary {
-  background: var(--bg-surface, rgba(255, 255, 255, 0.05));
+  background: var(--state-hover);
   color: var(--text-main);
 }
 
 .variant-secondary:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--state-active);
   color: var(--text-main);
-}
-
-[data-theme="light"] .variant-secondary {
-  background: rgba(55, 53, 47, 0.06);
-  color: var(--text-main, #37352f);
-}
-
-[data-theme="light"] .variant-secondary:hover:not(:disabled) {
-  background: rgba(55, 53, 47, 0.12);
-  color: var(--text-main, #37352f);
 }
 
 .variant-outline {
   background: transparent;
+  border: 1px solid var(--border-color);
   color: var(--text-main);
 }
 
 .variant-outline:hover:not(:disabled) {
-  background: var(--state-hover, rgba(255, 255, 255, 0.08));
-}
-
-[data-theme="light"] .variant-outline:hover:not(:disabled) {
-  background: rgba(55, 53, 47, 0.08);
+  background: var(--state-hover);
+  border-color: var(--border-strong);
 }
 
 .variant-ghost {
@@ -124,60 +112,45 @@
 }
 
 .variant-ghost:hover:not(:disabled) {
-  background: var(--state-hover, rgba(255, 255, 255, 0.08));
+  background: var(--state-hover);
   color: var(--text-main);
 }
 
-[data-theme="light"] .variant-ghost:hover:not(:disabled) {
-  background: rgba(55, 53, 47, 0.08);
-  color: var(--text-main, #37352f);
-}
-
 .variant-danger {
-  background: var(--accent-red-bg, rgba(239, 68, 68, 0.1));
-  color: var(--accent-red, #ef4444);
+  background: var(--accent-red-bg);
+  color: var(--accent-red);
 }
 
 .variant-danger:hover:not(:disabled) {
-  background: var(--accent-red, #ef4444);
-  color: var(--text-on-accent, #ffffff);
+  background: var(--accent-red);
+  color: var(--text-on-accent);
 }
 
 .variant-success {
-  background: var(--accent-green-bg, rgba(34, 197, 94, 0.1));
-  color: var(--accent-green, #22c55e);
+  background: var(--accent-green-bg);
+  color: var(--accent-green);
 }
 
 .variant-success:hover:not(:disabled) {
-  background: var(--accent-green, #22c55e);
-  color: var(--text-on-accent, #ffffff);
+  background: var(--accent-green);
+  color: var(--text-on-accent);
 }
 
 /* Active State for all buttons / toolbars */
 .button.active,
 .button[aria-pressed="true"] {
-  background: var(--state-active, rgba(255, 255, 255, 0.12));
+  background: var(--state-active);
   color: var(--text-main);
 }
 
-[data-theme="light"] .button.active,
-[data-theme="light"] .button[aria-pressed="true"] {
-  background: rgba(55, 53, 47, 0.15);
-  color: var(--text-main, #37352f);
-}
-
 .button.variant-success.active,
-.button.variant-success[aria-pressed="true"],
-[data-theme="light"] .button.variant-success.active,
-[data-theme="light"] .button.variant-success[aria-pressed="true"] {
-  background: var(--accent-green, #10b981);
-  color: #ffffff;
+.button.variant-success[aria-pressed="true"] {
+  background: var(--accent-green);
+  color: var(--text-on-accent);
 }
 
 .button.variant-danger.active,
-.button.variant-danger[aria-pressed="true"],
-[data-theme="light"] .button.variant-danger.active,
-[data-theme="light"] .button.variant-danger[aria-pressed="true"] {
-  background: var(--accent-red, #ef4444);
-  color: #ffffff;
+.button.variant-danger[aria-pressed="true"] {
+  background: var(--accent-red);
+  color: var(--text-on-accent);
 }
