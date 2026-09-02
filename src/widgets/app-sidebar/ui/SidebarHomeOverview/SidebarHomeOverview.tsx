@@ -1,11 +1,7 @@
 import React from "react";
 import { Link } from "@tanstack/react-router";
 import { clsx } from "clsx";
-import {
-  CURRICULUM_COUNTS,
-  SECTIONS_CONFIG,
-  SectionType,
-} from "@/entities/task/meta";
+import { SECTIONS_CONFIG, SectionType } from "@/entities/task/meta";
 import { NodeCount } from "@/shared/ui";
 import { useSidebarHomeStats } from "../../model";
 import styles from "./SidebarHomeOverview.module.css";
@@ -52,11 +48,7 @@ export const SidebarHomeOverview = ({
           className={styles.icon_javascript}
         />
         <span className={styles.homeItemTitle}>JavaScript</span>
-        <NodeCount
-          completed={completedJsTotal}
-          total={totalJs}
-          className={jsCompletionClass}
-        />
+        <NodeCount completed={completedJsTotal} total={totalJs} className={jsCompletionClass} />
       </Link>
 
       <Link to="/react" className={styles.homeOverviewItem}>

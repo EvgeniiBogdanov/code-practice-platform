@@ -29,6 +29,7 @@ export const TreeToggleIcon = React.memo<TreeToggleIconProps>(
       (expanded ? "Свернуть (Alt+клик: свернуть все)" : "Развернуть (Alt+клик: развернуть все)");
 
     const handleClick = (e: React.MouseEvent) => {
+      e.preventDefault();
       e.stopPropagation();
       onToggle(e);
     };
