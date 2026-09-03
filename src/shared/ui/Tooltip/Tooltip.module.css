@@ -29,9 +29,9 @@
   box-sizing: border-box;
 
   /* Theme tokens - Dark Mode (Default) */
-  background: var(--bg-card, #252525);
+  background: var(--bg-card);
   color: var(--text-main, #ffffff);
-  border: 1px solid var(--border-strong, rgba(255, 255, 255, 0.16));
+  border: 1px solid var(--border-color);
 
   font-family: var(--font-sans);
   animation-duration: 140ms;

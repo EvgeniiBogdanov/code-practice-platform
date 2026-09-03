@@ -39,16 +39,16 @@ export const REACT_GROUPS_CONFIG = {
     title: "React + TS (Разминка)",
     desc: "Задачи на типизацию базовых хуков, пропсов и компонентов React в TypeScript.",
     icon: Zap,
-    color: "var(--accent-yellow)",
-    bg: "var(--accent-yellow-bg)",
+    color: "var(--accent-blue)",
+    bg: "var(--accent-blue-bg)",
   },
   "group-ts-practice": {
     name: "React + TS (Практика)",
     title: "React + TS (Практика)",
     desc: "Комплексные практические задания на связку React + TypeScript.",
     icon: Zap,
-    color: "var(--accent-yellow)",
-    bg: "var(--accent-yellow-bg)",
+    color: "var(--accent-blue)",
+    bg: "var(--accent-blue-bg)",
   },
 };
 

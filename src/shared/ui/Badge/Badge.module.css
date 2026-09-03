@@ -55,8 +55,7 @@
 
 /* Variants */
 .variant-medium,
-.variant-yellow,
-.variant-ts {
+.variant-yellow {
   background-color: var(--accent-yellow-bg);
   color: var(--accent-yellow);
 }
@@ -78,6 +77,7 @@
   color: var(--accent-purple);
 }
 
+.variant-ts,
 .variant-blue {
   background-color: var(--accent-blue-bg);
   color: var(--accent-blue);
@@ -91,6 +91,11 @@
 .variant-cyan {
   background-color: var(--accent-cyan-bg);
   color: var(--accent-cyan);
+}
+
+.variant-pink {
+  background-color: var(--accent-pink-bg);
+  color: var(--accent-pink);
 }
 
 .variant-gray {

@@ -178,6 +178,10 @@
   color: var(--color-status-due);
 }
 
+.status_excluded {
+  color: var(--text-muted);
+}
+
 .gallery {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
@@ -227,6 +231,12 @@
 .galleryCard.tone_unsolved,
 .galleryCard.ratingGradientUnsolved {
   border-left-color: var(--color-status-unsolved, #ef4444);
+}
+
+.galleryCard.tone_excluded,
+.galleryCardExcluded {
+  border-left-color: var(--border-color, rgba(255, 255, 255, 0.28)) !important;
+  opacity: 0.7;
 }
 
 .galleryFavoriteAction {
@@ -279,6 +289,15 @@
 .galleryTitleText {
   min-width: 0;
   flex: 0 1 auto;
+}
+
+.galleryTitleTextExcluded {
+  color: var(--text-muted, #787774) !important;
+  opacity: 0.7;
+}
+
+.fileIconExcluded {
+  opacity: 0.6;
 }
 
 .galleryDescription {

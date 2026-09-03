@@ -1,5 +1,4 @@
 .card {
-  background-color: var(--bg-card);
   border: none;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
@@ -11,8 +10,13 @@
     box-shadow var(--transition-fast);
 }
 
+.default {
+  background-color: var(--bg-card);
+}
+
 .subtle {
-  background-color: var(--bg-subtle, rgba(255, 255, 255, 0.03));
+  background-color: var(--bg-subtle);
+  box-shadow: none;
 }
 
 .elevated {
@@ -21,22 +25,13 @@
 }
 
 .interactive {
+  background-color: var(--bg-card);
   cursor: pointer;
   transition: background-color var(--transition-fast);
 }
 
 .interactive:hover {
   background-color: var(--state-hover);
-}
-
-[data-theme="light"] .card {
-  background-color: var(--bg-popover, #ffffff);
-  border: none;
-  box-shadow: var(--shadow-sm);
-}
-
-[data-theme="light"] .subtle {
-  background-color: rgba(55, 53, 47, 0.035);
 }
 
 .header {

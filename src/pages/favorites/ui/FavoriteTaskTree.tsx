@@ -19,6 +19,7 @@ interface NodeDataProps {
   taskRoute: string;
   reviews: Record<string, ReviewItem>;
   getTaskStatus: (taskId: string | number) => FavoriteTaskStatus;
+  excludedTaskIds?: readonly string[];
 }
 
 interface NodeTasksProps extends NodeDataProps {
@@ -30,6 +31,7 @@ const NodeTasks = ({
   taskRoute,
   reviews,
   getTaskStatus,
+  excludedTaskIds = [],
 }: Readonly<NodeTasksProps>): React.JSX.Element => (
   <>
     {tasks.map((task) => (
@@ -39,6 +41,7 @@ const NodeTasks = ({
         to={taskRoute}
         status={getTaskStatus(task.id)}
         review={reviews[String(task.id)]}
+        isExcluded={excludedTaskIds.includes(String(task.id))}
         favoriteMarker={
           <TaskFavoriteButton
             taskId={task.id}

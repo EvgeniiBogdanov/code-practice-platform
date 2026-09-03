@@ -26,5 +26,5 @@
 }
 
 .iconZap {
-  color: #eab308;
+  color: var(--accent-blue, #3b82f6);
 }

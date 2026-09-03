@@ -9,10 +9,14 @@ export const selectTaskReview = (
 };
 
 export const selectIsTaskDue = (state: ReviewState, taskId: string | number): boolean => {
+  if (state.excludedTaskIds.includes(String(taskId))) return false;
   const rev = state.reviews[String(taskId)];
   return Boolean(rev && isTaskDue(rev));
 };
 
 export const selectDueTasksCount = (state: ReviewState): number => {
-  return Object.values(state.reviews).filter((rev) => isTaskDue(rev)).length;
+  const excludedSet = new Set(state.excludedTaskIds.map(String));
+  return Object.entries(state.reviews).filter(
+    ([id, rev]) => !excludedSet.has(String(id)) && isTaskDue(rev)
+  ).length;
 };

@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useLocation } from "@tanstack/react-router";
 import type { Task } from "@/entities/task/meta";
 import { useAllTaskSections } from "@/entities/task/catalog";
+import { useReviewStore } from "@/entities/review";
 
 export interface SpacedRepetitionModalData {
   sectionName: string;
@@ -12,6 +13,7 @@ export interface SpacedRepetitionModalData {
 export const useStatsModalData = (): SpacedRepetitionModalData => {
   const location = useLocation();
   const { tasks } = useAllTaskSections();
+  const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
 
   const activeSection = useMemo<"javascript" | "react" | "algorithms" | "home">(() => {
     const p = location.pathname;
@@ -21,32 +23,37 @@ export const useStatsModalData = (): SpacedRepetitionModalData => {
     return "home";
   }, [location.pathname]);
 
+  const activeTasks = useMemo(() => {
+    const excludedSet = new Set(excludedTaskIds.map(String));
+    return tasks.filter((task) => !excludedSet.has(String(task.id)));
+  }, [tasks, excludedTaskIds]);
+
   return useMemo(() => {
     if (activeSection === "javascript") {
       return {
         sectionName: "JavaScript",
         section: "javascript",
-        taskList: tasks.filter((task) => task.section === "javascript"),
+        taskList: activeTasks.filter((task) => task.section === "javascript"),
       };
     }
     if (activeSection === "react") {
       return {
         sectionName: "React",
         section: "react",
-        taskList: tasks.filter((task) => task.section === "react"),
+        taskList: activeTasks.filter((task) => task.section === "react"),
       };
     }
     if (activeSection === "algorithms") {
       return {
         sectionName: "Алгоритмы",
         section: "algorithms",
-        taskList: tasks.filter((task) => task.section === "algorithms"),
+        taskList: activeTasks.filter((task) => task.section === "algorithms"),
       };
     }
     return {
       sectionName: "Вся платформа",
       section: "home",
-      taskList: Array.from(tasks),
+      taskList: activeTasks,
     };
-  }, [activeSection, tasks]);
+  }, [activeSection, activeTasks]);
 };

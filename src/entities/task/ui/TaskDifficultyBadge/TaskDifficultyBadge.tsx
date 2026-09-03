@@ -25,9 +25,10 @@ const getBadgeVariant = (diff: string): BadgeVariant => {
     case "middle":
       return "easy";
     case "medium":
+      return "medium";
     case "refactoring":
     case "ts":
-      return "medium";
+      return "blue";
     case "hard":
       return "hard";
     case "strong":

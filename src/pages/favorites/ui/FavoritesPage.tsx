@@ -53,6 +53,7 @@ export const FavoritesPage = ({ section }: Readonly<FavoritesPageProps>): React.
                     section={section}
                     getTaskStatus={state.getTaskStatus}
                     reviews={state.reviews}
+                    excludedTaskIds={state.excludedTaskIds}
                   />
                 ) : (
                   <FavoriteTaskList
@@ -60,6 +61,7 @@ export const FavoritesPage = ({ section }: Readonly<FavoritesPageProps>): React.
                     section={section}
                     getTaskStatus={state.getTaskStatus}
                     reviews={state.reviews}
+                    excludedTaskIds={state.excludedTaskIds}
                   />
                 )
               ) : (
@@ -68,6 +70,7 @@ export const FavoritesPage = ({ section }: Readonly<FavoritesPageProps>): React.
                   getTaskStatus={state.getTaskStatus}
                   getTaskIsDue={state.getTaskIsDue}
                   reviews={state.reviews}
+                  excludedTaskIds={state.excludedTaskIds}
                 />
               )
             ) : (

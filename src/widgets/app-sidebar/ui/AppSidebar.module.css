@@ -29,6 +29,7 @@
   width: var(--sidebar-width, 280px);
   height: 100%;
   background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
   opacity: 1;
   transform: translateX(0);
   transform-origin: left center;

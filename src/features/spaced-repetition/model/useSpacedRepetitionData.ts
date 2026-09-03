@@ -21,10 +21,12 @@ export const useSpacedRepetitionData = ({
   const completedTasks = useProgressStore((state) => state.completedTasks);
   const { tasks: catalogTasks } = useAllTaskSections(!taskList?.length);
 
+  const excludedSet = useMemo(() => new Set(excludedTaskIds.map(String)), [excludedTaskIds]);
+
   const targetTasks = useMemo(() => {
     const raw = taskList && taskList.length > 0 ? taskList : catalogTasks;
-    return raw.filter((t) => !excludedTaskIds.includes(String(t.id)));
-  }, [catalogTasks, taskList, excludedTaskIds]);
+    return raw.filter((t) => !excludedSet.has(String(t.id)));
+  }, [catalogTasks, taskList, excludedSet]);
 
   const masteryStats = useMemo(() => {
     return isInitialized
@@ -43,21 +45,24 @@ export const useSpacedRepetitionData = ({
   const dueTasks = useMemo(() => {
     if (!isInitialized) return [];
     return targetTasks.filter((t) => {
+      if (excludedSet.has(String(t.id))) return false;
       const rev = reviews[String(t.id)];
       return isTaskDue(rev);
     });
-  }, [targetTasks, reviews, isInitialized]);
+  }, [targetTasks, reviews, isInitialized, excludedSet]);
 
   const upcomingTasks = useMemo((): UpcomingTaskItem[] => {
     if (!isInitialized) return [];
-    return getUpcomingTasks(targetTasks, reviews);
-  }, [targetTasks, reviews, isInitialized]);
+    return getUpcomingTasks(targetTasks, reviews, excludedTaskIds);
+  }, [targetTasks, reviews, isInitialized, excludedTaskIds]);
 
   const unsolvedTasks = useMemo((): Task[] => {
     return targetTasks.filter((t) => {
-      return completedTasks[String(t.id)] === "unsolved";
+      if (excludedSet.has(String(t.id))) return false;
+      const status = completedTasks[String(t.id)] ?? completedTasks[t.id];
+      return status === "unsolved";
     });
-  }, [targetTasks, completedTasks]);
+  }, [targetTasks, completedTasks, excludedSet]);
 
   const masteryPercent =
     masteryStats.totalReviewed > 0

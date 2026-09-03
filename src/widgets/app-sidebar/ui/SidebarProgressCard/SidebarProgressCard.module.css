@@ -12,7 +12,7 @@
 }
 
 .progressCard {
-  background: color-mix(in srgb, var(--state-active) 40%, var(--bg-sidebar));
+  background: color-mix(in srgb, var(--state-active) 90%, var(--bg-sidebar));
   border-radius: var(--radius-lg);
   padding: 8px 10px;
   cursor: default;
@@ -68,7 +68,7 @@
 
 .barTrack {
   height: 4px;
-  background: var(--border-color);
+  background: var(--border-editor);
   border-radius: 2px;
   overflow: hidden;
 }

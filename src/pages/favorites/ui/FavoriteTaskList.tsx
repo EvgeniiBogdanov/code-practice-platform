@@ -11,6 +11,7 @@ export interface FavoriteTaskListProps {
   section: SectionType;
   reviews: Record<string, ReviewItem>;
   getTaskStatus: (taskId: string | number) => FavoriteTaskStatus;
+  excludedTaskIds?: readonly string[];
 }
 
 export const FavoriteTaskList = ({
@@ -18,6 +19,7 @@ export const FavoriteTaskList = ({
   section,
   reviews,
   getTaskStatus,
+  excludedTaskIds = [],
 }: Readonly<FavoriteTaskListProps>): React.JSX.Element => {
   const taskRoute = `/${section}/$taskId`;
 
@@ -31,6 +33,7 @@ export const FavoriteTaskList = ({
           to={taskRoute}
           status={getTaskStatus(task.id)}
           review={reviews[String(task.id)]}
+          isExcluded={excludedTaskIds.includes(String(task.id))}
           favoriteMarker={
             <TaskFavoriteButton
               taskId={task.id}

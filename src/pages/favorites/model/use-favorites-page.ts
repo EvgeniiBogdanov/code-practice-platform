@@ -25,7 +25,9 @@ export interface FavoritesPageState {
   setListDisplayMode: (mode: FavoriteListDisplayMode) => void;
   getTaskStatus: (taskId: string | number) => FavoriteTaskStatus;
   getTaskIsDue: (taskId: string | number) => boolean;
+  getTaskIsExcluded: (taskId: string | number) => boolean;
   reviews: Record<string, ReviewItem>;
+  excludedTaskIds: readonly string[];
 }
 
 const getInitialViewMode = (): FavoritesViewMode => {
@@ -72,12 +74,22 @@ export const useFavoritesPage = (section: SectionType): FavoritesPageState => {
     [completedTasks]
   );
 
+  const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
+
   const getTaskIsDue = useCallback(
     (taskId: string | number): boolean => {
+      if (excludedTaskIds.includes(String(taskId))) return false;
       const review = reviews[String(taskId)];
       return Boolean(review && isTaskDue(review));
     },
-    [reviews]
+    [reviews, excludedTaskIds]
+  );
+
+  const getTaskIsExcluded = useCallback(
+    (taskId: string | number): boolean => {
+      return excludedTaskIds.includes(String(taskId));
+    },
+    [excludedTaskIds]
   );
 
   const favoriteTasks = useMemo(() => {
@@ -120,6 +132,8 @@ export const useFavoritesPage = (section: SectionType): FavoritesPageState => {
     setListDisplayMode,
     getTaskStatus,
     getTaskIsDue,
+    getTaskIsExcluded,
     reviews,
+    excludedTaskIds,
   };
 };

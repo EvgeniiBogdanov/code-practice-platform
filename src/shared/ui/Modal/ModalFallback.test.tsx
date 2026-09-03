@@ -11,4 +11,10 @@ describe("ModalFallback", () => {
     expect(dialog?.getAttribute("aria-busy")).toBe("true");
     expect(baseElement.querySelector("[role='status']")).not.toBeNull();
   });
+
+  it("applies paletteBackdrop class when isPalette is true", () => {
+    const { baseElement } = render(<ModalFallback isPalette />);
+    const dialog = baseElement.querySelector("[role='dialog']");
+    expect(dialog?.className).toContain("paletteBackdrop");
+  });
 });

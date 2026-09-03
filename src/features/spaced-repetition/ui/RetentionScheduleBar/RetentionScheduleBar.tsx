@@ -6,6 +6,7 @@ import {
   isTaskDue,
   getLocalDateString,
   getStartOfLocalDay,
+  useReviewStore,
 } from "@/entities/review";
 import { type Task } from "@/entities/task";
 import styles from "./RetentionScheduleBar.module.css";
@@ -60,7 +61,8 @@ const BUCKET_DEFINITIONS = [
 
 function calculateScheduleBuckets(
   reviews?: Record<string, ReviewItem>,
-  allTasks: Task[] = []
+  allTasks: Task[] = [],
+  excludedTaskIds: readonly string[] = []
 ): ScheduleBarDatum[] {
   const buckets: ScheduleBarDatum[] = BUCKET_DEFINITIONS.map((def) => ({
     id: def.id,
@@ -72,10 +74,14 @@ function calculateScheduleBuckets(
   if (!reviews) return buckets;
 
   const todayStart = getStartOfLocalDay().getTime();
-  const taskMap = new Map(allTasks.map((t) => [String(t.id), t]));
+  const excludedSet = new Set(excludedTaskIds.map(String));
+  const taskMap = new Map(
+    allTasks.filter((t) => !excludedSet.has(String(t.id))).map((t) => [String(t.id), t])
+  );
 
   for (const [taskId, rev] of Object.entries(reviews)) {
     if (!rev || !rev.stage || rev.stage === 0) continue;
+    if (excludedSet.has(String(taskId))) continue;
 
     const task = taskMap.get(String(taskId));
     if (!task) continue;
@@ -127,12 +133,13 @@ export function RetentionScheduleBar({
   allTasks = [],
   height = 220,
 }: RetentionScheduleBarProps): React.JSX.Element {
+  const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
   const [containerRef, { width: measuredWidth, height: measuredHeight }] =
     useParentSize<HTMLDivElement>({ width: 0, height });
 
   const scheduleData = useMemo(
-    () => calculateScheduleBuckets(reviews, allTasks),
-    [reviews, allTasks]
+    () => calculateScheduleBuckets(reviews, allTasks, excludedTaskIds),
+    [reviews, allTasks, excludedTaskIds]
   );
 
   const maxCount = useMemo(() => {

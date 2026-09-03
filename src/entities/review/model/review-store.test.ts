@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { useReviewStore } from "./review-store";
+import { selectIsTaskDue, selectDueTasksCount } from "./review-selectors";
 import { ReviewItem } from "../types";
 
 vi.mock("@/shared/lib/storage", () => ({
@@ -95,6 +96,34 @@ describe("useReviewStore - Task Exclusion", () => {
     const statsAfter = useReviewStore.getState().getMasteryStats(tasks);
     expect(statsAfter.totalCount).toBe(1);
     expect(statsAfter.learning).toBe(0);
+  });
+
+  it("excludes excluded tasks in selectIsTaskDue and selectDueTasksCount", () => {
+    const mockReview: ReviewItem = {
+      taskId: "task-1",
+      stage: 1,
+      intervalDays: 1,
+      lastReviewedAt: Date.now() - 86400000 * 2,
+      lastReviewedDate: "2026-09-01",
+      dueDate: "2026-09-02",
+      nextReviewAt: Date.now() - 86400000,
+      rating: "medium",
+      history: [],
+    };
+
+    useReviewStore.setState({
+      reviews: { "task-1": mockReview },
+      excludedTaskIds: [],
+    });
+
+    const stateActive = useReviewStore.getState();
+    expect(selectIsTaskDue(stateActive, "task-1")).toBe(true);
+    expect(selectDueTasksCount(stateActive)).toBe(1);
+
+    useReviewStore.setState({ excludedTaskIds: ["task-1"] });
+    const stateExcluded = useReviewStore.getState();
+    expect(selectIsTaskDue(stateExcluded, "task-1")).toBe(false);
+    expect(selectDueTasksCount(stateExcluded)).toBe(0);
   });
 });
 

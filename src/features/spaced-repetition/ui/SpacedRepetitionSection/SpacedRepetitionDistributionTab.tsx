@@ -1,5 +1,4 @@
 import { memo } from "react";
-import { Sparkles } from "lucide-react";
 import { clsx } from "clsx";
 import { MasteryStats } from "@/entities/review";
 import { MasteryDistributionPie } from "../MasteryDistributionPie";
@@ -64,7 +63,6 @@ export const SpacedRepetitionDistributionTab = memo(
           {!hasReviews && (
             <div className={styles.onboardingHint}>
               <div className={styles.onboardingHintTitle}>
-                <Sparkles size={13} className={styles.sparklesIcon} aria-hidden="true" />
                 <span>Как включить задачи в график:</span>
               </div>
               <div className={styles.onboardingHintText}>

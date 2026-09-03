@@ -3,7 +3,19 @@ import { clsx } from "clsx";
 import styles from "./Badge.module.css";
 
 export type BadgeVariant =
-  "easy" | "medium" | "hard" | "green" | "yellow" | "red" | "blue" | "purple" | "gray" | "ts";
+  | "easy"
+  | "medium"
+  | "hard"
+  | "green"
+  | "yellow"
+  | "red"
+  | "blue"
+  | "purple"
+  | "gray"
+  | "ts"
+  | "orange"
+  | "cyan"
+  | "pink";
 
 export type BadgeSize = "sm" | "md" | "lg";
 

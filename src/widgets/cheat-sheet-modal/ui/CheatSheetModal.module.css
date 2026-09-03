@@ -2,19 +2,13 @@
 .drawerOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+  background: var(--bg-overlay);
   z-index: var(--z-modal, 9000);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: var(--space-6);
-  animation: overlayFadeIn 0.2s ease-out;
-}
-
-[data-theme="light"] .drawerOverlay {
-  background: rgba(0, 0, 0, 0.3);
+  animation: overlayFadeIn 150ms ease-out;
 }
 
 .drawer {

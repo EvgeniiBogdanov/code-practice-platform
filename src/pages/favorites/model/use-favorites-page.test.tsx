@@ -68,4 +68,15 @@ describe("useFavoritesPage", () => {
       taskId
     );
   });
+
+  it("provides excludedTaskIds and correctly detects excluded tasks", () => {
+    const taskId = String(getLoadedTaskSection("javascript")[0].id);
+    useReviewStore.setState({ excludedTaskIds: [taskId] });
+
+    const { result } = renderHook(() => useFavoritesPage("javascript"));
+
+    expect(result.current.excludedTaskIds).toContain(taskId);
+    expect(result.current.getTaskIsExcluded(taskId)).toBe(true);
+    expect(result.current.getTaskIsExcluded("non-existent-task-id")).toBe(false);
+  });
 });

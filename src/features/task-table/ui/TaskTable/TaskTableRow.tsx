@@ -39,7 +39,12 @@ export const TaskTableRow = React.memo(
           <FileText size={16} className={styles.fileIcon} />
           <span className={styles.taskTitleText}>{task.title}</span>
         </span>
-        <TaskTableCells status={status} review={review} favoriteMarker={favoriteMarker} />
+        <TaskTableCells
+          status={status}
+          review={review}
+          favoriteMarker={favoriteMarker}
+          isExcluded={isExcluded}
+        />
       </TreeNodeHeader>
     );
   }

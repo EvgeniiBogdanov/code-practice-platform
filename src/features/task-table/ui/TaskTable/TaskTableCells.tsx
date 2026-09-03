@@ -8,6 +8,7 @@ import styles from "./TaskTable.module.css";
 
 interface TaskTableCellProps {
   review?: ReviewItem;
+  isExcluded?: boolean;
 }
 
 const TaskSolutionCell = ({ review }: Readonly<TaskTableCellProps>): React.JSX.Element => (
@@ -39,7 +40,19 @@ const TaskSolutionCell = ({ review }: Readonly<TaskTableCellProps>): React.JSX.E
   </div>
 );
 
-const TaskReviewCell = ({ review }: Readonly<TaskTableCellProps>): React.JSX.Element => {
+const TaskReviewCell = ({ review, isExcluded }: Readonly<TaskTableCellProps>): React.JSX.Element => {
+  if (isExcluded) {
+    return (
+      <div className={styles.columnReview}>
+        <Tooltip content="Исключена из цикла повторений" side="top">
+          <Badge variant="gray" size="sm" uppercase={false}>
+            Исключена
+          </Badge>
+        </Tooltip>
+      </div>
+    );
+  }
+
   const due = isTaskDue(review);
   return (
     <div className={styles.columnReview}>
@@ -77,8 +90,12 @@ interface TaskStatusCellProps extends TaskTableCellProps {
   status: TaskRowStatus;
 }
 
-const TaskStatusCell = ({ status, review }: Readonly<TaskStatusCellProps>): React.JSX.Element => {
-  if (isTaskDue(review)) {
+const TaskStatusCell = ({
+  status,
+  review,
+  isExcluded,
+}: Readonly<TaskStatusCellProps>): React.JSX.Element => {
+  if (!isExcluded && isTaskDue(review)) {
     return <RotateCcw size={11} className={styles.statusDue} aria-label="Пора повторить" />;
   }
   if (status === "solved") {
@@ -98,12 +115,13 @@ export const TaskTableCells = ({
   status,
   review,
   favoriteMarker,
+  isExcluded = false,
 }: Readonly<TaskTableCellsProps>): React.JSX.Element => (
   <div className={styles.rowMeta}>
-    <TaskSolutionCell review={review} />
-    <TaskReviewCell review={review} />
+    <TaskSolutionCell review={review} isExcluded={isExcluded} />
+    <TaskReviewCell review={review} isExcluded={isExcluded} />
     <span className={styles.columnStatus}>
-      <TaskStatusCell status={status} review={review} />
+      <TaskStatusCell status={status} review={review} isExcluded={isExcluded} />
     </span>
     <span className={styles.columnFavorite}>{favoriteMarker}</span>
   </div>

@@ -11,7 +11,7 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const Card = memo(({ variant = "default", children, className, ...props }: CardProps) => {
-  const classNames = clsx(styles.card, variant !== "default" && styles[variant], className);
+  const classNames = clsx(styles.card, styles[variant], className);
 
   return (
     <div className={classNames} {...props}>

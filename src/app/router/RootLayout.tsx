@@ -2,34 +2,20 @@ import React, { lazy, Suspense, useEffect, useLayoutEffect, useRef, memo } from 
 import { Outlet, useLocation, useNavigate } from "@tanstack/react-router";
 import { AppHeader } from "@/widgets/app-header";
 import { AppSidebar } from "@/widgets/app-sidebar";
+import { StatsModal } from "@/widgets/stats-modal";
+import { SettingsModal } from "@/widgets/settings-modal";
+import { CheatSheetModal } from "@/widgets/cheat-sheet-modal";
+import { CommandPalette } from "@/widgets/command-palette";
 import { useProgressStore } from "@/entities/progress";
 import { useReviewStore } from "@/entities/review";
 import { useUIStore } from "@/entities/ui-state";
 import { useGlobalShortcuts } from "@/shared/lib/hooks";
 import { initSolutionsCache } from "@/shared/lib/storage";
-import { ModalFallback, TooltipProvider, UiLoader } from "@/shared/ui";
+import { TooltipProvider, UiLoader } from "@/shared/ui";
 import styles from "./RootLayout.module.css";
 
 const FinderBreadcrumbs = lazy(() =>
   import("@/widgets/finder-breadcrumbs").then(({ FinderBreadcrumbs: component }) => ({
-    default: component,
-  }))
-);
-const StatsModal = lazy(() =>
-  import("@/widgets/stats-modal").then(({ StatsModal: component }) => ({ default: component }))
-);
-const SettingsModal = lazy(() =>
-  import("@/widgets/settings-modal").then(({ SettingsModal: component }) => ({
-    default: component,
-  }))
-);
-const CheatSheetModal = lazy(() =>
-  import("@/widgets/cheat-sheet-modal").then(({ CheatSheetModal: component }) => ({
-    default: component,
-  }))
-);
-const CommandPalette = lazy(() =>
-  import("@/widgets/command-palette").then(({ CommandPalette: component }) => ({
     default: component,
   }))
 );
@@ -123,12 +109,10 @@ export const RootLayout = memo(() => {
         </div>
       )}
 
-      <Suspense fallback={<ModalFallback />}>
-        {statsModalOpen && <StatsModal />}
-        {settingsModalOpen && <SettingsModal />}
-        {cheatSheetOpen && <CheatSheetModal />}
-        {paletteOpen && <CommandPalette />}
-      </Suspense>
+      {statsModalOpen && <StatsModal />}
+      {settingsModalOpen && <SettingsModal />}
+      {cheatSheetOpen && <CheatSheetModal />}
+      {paletteOpen && <CommandPalette />}
     </TooltipProvider>
   );
 });

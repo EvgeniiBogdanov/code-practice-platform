@@ -1,6 +1,7 @@
 import { memo, lazy, Suspense } from "react";
-import { Modal, UiLoader } from "@/shared/ui";
+import { Modal } from "@/shared/ui";
 import { useStatsModalController } from "../model/useStatsModalController";
+import { StatsModalSkeleton } from "./StatsModalSkeleton";
 import styles from "./StatsModal.module.css";
 
 const SpacedRepetitionSection = lazy(() =>
@@ -9,7 +10,7 @@ const SpacedRepetitionSection = lazy(() =>
   }))
 );
 
-export const StatsModal = memo(() => {
+export const StatsModal = memo((): React.JSX.Element => {
   const { isOpen, setIsOpen, statsData } = useStatsModalController();
 
   return (
@@ -21,7 +22,7 @@ export const StatsModal = memo(() => {
       className={styles.statsModal}
       contentClassName={styles.statsModalBody}
     >
-      <Suspense fallback={<UiLoader center size="lg" />}>
+      <Suspense fallback={<StatsModalSkeleton />}>
         <SpacedRepetitionSection
           inModal={true}
           onNavigate={() => setIsOpen(false)}

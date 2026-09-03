@@ -17,6 +17,7 @@ export interface FavoriteTaskGalleryProps {
   getTaskStatus: (taskId: string | number) => TaskStatus;
   getTaskIsDue: (taskId: string | number) => boolean;
   reviews?: Record<string, ReviewItem>;
+  excludedTaskIds?: readonly string[];
 }
 
 const getTaskLocation = (task: Task): string => {
@@ -28,20 +29,26 @@ export const FavoriteTaskGallery = ({
   getTaskStatus,
   getTaskIsDue,
   reviews = {},
+  excludedTaskIds = [],
 }: Readonly<FavoriteTaskGalleryProps>): React.JSX.Element => (
   <div className={styles.gallery}>
     {tasks.map((task) => {
+      const isExcluded = excludedTaskIds.includes(String(task.id));
       const status = getTaskStatus(task.id);
-      const isDue = getTaskIsDue(task.id);
+      const isDue = !isExcluded && getTaskIsDue(task.id);
       const folderTitle = task.group || task.category || "Без папки";
       const folderVisual = getFavoriteFolderVisual(task.section, folderTitle, 14);
       const taskReview = reviews[String(task.id)] || reviews[task.id];
-      const tone = getTaskRowTone(task, status, taskReview);
+      const tone = getTaskRowTone(task, status, taskReview, isExcluded);
 
       return (
         <Card
           key={task.id}
-          className={clsx(styles.galleryCard, styles[`tone_${tone}`])}
+          className={clsx(
+            styles.galleryCard,
+            styles[`tone_${tone}`],
+            isExcluded && styles.galleryCardExcluded
+          )}
           variant="interactive"
         >
           <Link
@@ -54,11 +61,21 @@ export const FavoriteTaskGallery = ({
               <span>{getTaskLocation(task)}</span>
             </span>
             <span className={styles.galleryTitle}>
-              <FileText size={17} className={styles.fileIcon} />
-              <span className={styles.galleryTitleText}>{task.title}</span>
+              <FileText
+                size={17}
+                className={clsx(styles.fileIcon, isExcluded && styles.fileIconExcluded)}
+              />
+              <span
+                className={clsx(
+                  styles.galleryTitleText,
+                  isExcluded && styles.galleryTitleTextExcluded
+                )}
+              >
+                {task.title}
+              </span>
             </span>
             {task.desc ? <span className={styles.galleryDescription}>{task.desc}</span> : null}
-            <FavoriteTaskStatus status={status} isDue={isDue} showLabel />
+            <FavoriteTaskStatus status={status} isDue={isDue} isExcluded={isExcluded} showLabel />
           </Link>
           <TaskFavoriteButton
             taskId={task.id}

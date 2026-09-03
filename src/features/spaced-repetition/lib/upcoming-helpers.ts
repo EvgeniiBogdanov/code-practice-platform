@@ -76,13 +76,16 @@ export function formatUpcomingDate(dueDateOrTimestamp: string | number): string 
 
 export function getUpcomingTasks(
   targetTasks: Task[],
-  reviews: Record<string, ReviewItem>
+  reviews: Record<string, ReviewItem>,
+  excludedTaskIds: readonly string[] = []
 ): UpcomingTaskItem[] {
   if (!targetTasks || !reviews) return [];
 
+  const excludedSet = new Set(excludedTaskIds.map(String));
   const items: UpcomingTaskItem[] = [];
 
   for (const task of targetTasks) {
+    if (excludedSet.has(String(task.id))) continue;
     const rev = reviews[String(task.id)];
     if (rev && rev.stage > 0 && (rev.nextReviewAt || rev.dueDate)) {
       if (isTaskDue(rev)) {

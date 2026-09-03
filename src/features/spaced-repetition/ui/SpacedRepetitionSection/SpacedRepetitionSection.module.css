@@ -461,9 +461,9 @@
 .onboardingHint {
   margin-top: 4px;
   padding: 8px 10px;
-  background: var(--accent-blue-bg);
   border: none;
   border-radius: var(--radius-lg);
+  border: 1px dashed var(--border-editor);
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -631,8 +631,10 @@
   padding: 40px 20px;
   text-align: center;
   gap: 6px;
-  background: var(--bg-subtle);
-  border: none;
+  background: none;
+   border: 1px dashed var(--border-editor);
+  
+  box-shadow: none;
 }
 
 .emptyDueIcon {
@@ -718,7 +720,9 @@
 .upcomingRowArrow {
   color: rgba(255, 255, 255, 0.28);
   flex-shrink: 0;
-  transition: color var(--transition-fast, 0.15s ease), transform var(--transition-fast, 0.15s ease);
+  transition:
+    color var(--transition-fast, 0.15s ease),
+    transform var(--transition-fast, 0.15s ease);
 }
 
 [data-theme="light"] .upcomingRowArrow {

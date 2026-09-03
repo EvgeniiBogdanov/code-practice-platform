@@ -22,6 +22,7 @@ export const HeaderReviewMenu = memo(() => {
 
   const reviews = useReviewStore((state) => state.reviews);
   const isInitialized = useReviewStore((state) => state.isInitialized);
+  const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
   const { tasks } = useAllTaskSections(open);
 
   // Close on click outside
@@ -40,17 +41,22 @@ export const HeaderReviewMenu = memo(() => {
     setOpen(false);
   }, [location.pathname]);
 
+  const excludedSet = useMemo(() => new Set(excludedTaskIds.map(String)), [excludedTaskIds]);
+
   const dueTasks = useMemo(() => {
     if (!isInitialized) return [];
     return tasks.filter((t) => {
+      if (excludedSet.has(String(t.id))) return false;
       const rev = reviews[String(t.id)];
       return isTaskDue(rev);
     });
-  }, [reviews, isInitialized, tasks]);
+  }, [reviews, isInitialized, tasks, excludedSet]);
 
   const hasAnyReviewed = useMemo(() => {
-    return Object.values(reviews).some((r) => r && (r.stage > 0 || r.lastReviewedAt));
-  }, [reviews]);
+    return Object.entries(reviews).some(
+      ([id, r]) => !excludedSet.has(String(id)) && r && (r.stage > 0 || r.lastReviewedAt)
+    );
+  }, [reviews, excludedSet]);
 
   const getTaskPath = (task: Task) => {
     if (task.section === "javascript") return `/javascript/${task.id}`;
