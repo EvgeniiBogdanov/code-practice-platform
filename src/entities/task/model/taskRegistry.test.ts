@@ -276,4 +276,18 @@ describe("taskRegistry", () => {
     expect(arraysIndex).toBeGreaterThan(-1);
     expect(objectsIndex).toBeLessThan(arraysIndex);
   });
+
+  it("should have valid explanations for all React refactoring tasks (r1 - r17)", () => {
+    for (let i = 1; i <= 17; i++) {
+      const taskId = `r${i}`;
+      const explanation = (TASK_EXPLANATIONS as Record<string, string>)[taskId];
+      expect(explanation, `Explanation for ${taskId} should exist`).toBeDefined();
+      expect(
+        explanation.length,
+        `Explanation for ${taskId} should not be empty`
+      ).toBeGreaterThan(100);
+      expect(explanation).toMatch(/(?:суть задачи|разбор задачи)/i);
+    }
+  });
 });
+
