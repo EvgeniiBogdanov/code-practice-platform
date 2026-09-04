@@ -51,8 +51,6 @@ export interface SpacedRepetitionDistributionTabProps {
 
 export const SpacedRepetitionDistributionTab = memo(
   ({ masteryStats, scopeLabel }: SpacedRepetitionDistributionTabProps): React.JSX.Element => {
-    const hasReviews = masteryStats.totalReviewed > 0;
-
     return (
       <div className={styles.distributionView}>
         <div className={styles.chartCol}>
@@ -81,18 +79,6 @@ export const SpacedRepetitionDistributionTab = memo(
               </div>
             ))}
           </div>
-
-          {!hasReviews && (
-            <div className={styles.onboardingHint}>
-              <div className={styles.onboardingHintTitle}>
-                <span>Как включить задачи в график:</span>
-              </div>
-              <div className={styles.onboardingHintText}>
-                При решении задач оценивайте их сложность (Легко / Средне / Сложно). Алгоритм SM-2
-                автоматически сформирует цикл повторений (1д ➔ 3д ➔ 7д ➔ 14д ➔ 30д ➔ 60+д).
-              </div>
-            </div>
-          )}
         </div>
       </div>
     );

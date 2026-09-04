@@ -69,7 +69,7 @@ describe("SpacedRepetitionDistributionTab", () => {
     expect(zeroEl.className).toMatch(/label/);
   });
 
-  it("shows onboarding hint when totalReviewed is 0", () => {
+  it("does not render onboarding hint even when totalReviewed is 0", () => {
     const zeroStats: MasteryStats = {
       ...mockStats,
       totalReviewed: 0,
@@ -78,6 +78,6 @@ describe("SpacedRepetitionDistributionTab", () => {
       <SpacedRepetitionDistributionTab masteryStats={zeroStats} scopeLabel="JavaScript" />
     );
 
-    expect(screen.getByText("Как включить задачи в график:")).toBeInTheDocument();
+    expect(screen.queryByText("Как включить задачи в график:")).not.toBeInTheDocument();
   });
 });

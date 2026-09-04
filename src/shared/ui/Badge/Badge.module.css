@@ -8,6 +8,7 @@
   font-family: var(--font-sans);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
+  line-height: 1;
   vertical-align: middle;
   align-self: center;
   white-space: nowrap;
@@ -23,7 +24,6 @@
   justify-content: center;
   text-align: center;
   line-height: 1;
-  transform: translateY(1px);
 }
 
 .uppercase {
