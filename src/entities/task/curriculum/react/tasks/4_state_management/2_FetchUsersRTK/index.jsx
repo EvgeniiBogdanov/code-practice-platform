@@ -1,11 +1,17 @@
-// Задача: 2. Загрузка данных (Redux Toolkit)
-//
-// ТЗ:
-// 1. Оберните компонент App в React Redux Provider и передайте настроенный store
-// 2. Внутри App используйте хуки useSelector и useDispatch:
-//    - При монтировании отправьте (dispatch) асинхронное действие fetchUsers
-//    - Получите из состояния свойства: users, status, error
-// 3. Отобразите список пользователей, надпись "Загрузка..." или ошибку.
+/**
+ * Задача: Загрузка данных через Redux Toolkit
+ *
+ * ТЗ:
+ * 1. Предоставить Redux Store компоненту App через Provider.
+ * 2. В компоненте App:
+ *    - Запустить получение данных пользователей при монтировании компонента.
+ *    - Извлечь данные и статус запроса из Redux Store.
+ *    - Отобразить состояния интерфейса:
+ *      * Загрузка: текст "Загрузка..."
+ *      * Ошибка: текст "Ошибка: [сообщение]"
+ *      * Успех: заголовок "Список пользователей (Redux Toolkit)"
+ *        и список (<ul>) с именем и email каждого пользователя.
+ */
 
 import React, { useEffect } from 'react'
 import { Provider, useDispatch, useSelector } from 'react-redux'
@@ -13,16 +19,12 @@ import { store } from './store'
 import { fetchUsers } from './usersSlice'
 
 const App = () => {
-  // Напишите ваш код работы с Redux (useDispatch, useSelector, useEffect) здесь
-
   return (
     <div>
-      {/* Напишите вашу верстку здесь */}
     </div>
   )
 }
 
-// Оберните компонент в Provider
 const FetchUsersRTK = () => {
   return (
     <App />

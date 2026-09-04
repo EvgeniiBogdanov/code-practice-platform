@@ -31,6 +31,7 @@ export const CodeEditor = ({
   isFullscreenTransitioning = false,
   fillHeight = false,
   className,
+  disableLinter = false,
 }: CodeEditorProps): React.JSX.Element => {
   const {
     fontSize,
@@ -81,6 +82,7 @@ export const CodeEditor = ({
     readOnly,
     isFullscreen,
     onToggleFullscreen,
+    disableLinter,
   });
 
   return (

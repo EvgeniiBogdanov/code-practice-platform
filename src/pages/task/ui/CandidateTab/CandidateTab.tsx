@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { ArrowDown } from "lucide-react";
 import { clsx } from "clsx";
-import { Task, getTaskFiles, hasTaskVisualComponent } from "@/entities/task";
+import { Task, getTaskFiles, hasTaskVisualComponent, isCandidateLinterDisabled } from "@/entities/task";
 import {
   getUserSolution,
   getUserSolutionSync,
@@ -46,6 +46,8 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
   const [viewMode, setViewMode] = useState<ViewMode>("code");
   const { isFullscreenTransitioning, handleToggleFullscreen, preloadFullscreen } =
     useFullscreenNavigation({ task, tab: "candidate", hasVisualComponent });
+
+  const isLinterDisabled = isCandidateLinterDisabled(task);
 
   // JS Runner state
   const [consoleLogs, setConsoleLogs] = useState<NodeRunnerLogEntry[]>([]);
@@ -220,6 +222,7 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
               activeFileIdx={activeFileIdx}
               onFileSelect={setActiveFileIdx}
               filepath={activeFile.name}
+              disableLinter={isLinterDisabled}
               onToggleFullscreen={handleToggleFullscreen}
               onPreloadFullscreen={preloadFullscreen}
               isFullscreenTransitioning={isFullscreenTransitioning}

@@ -19,6 +19,7 @@ export interface CodeEditorProps {
   isFullscreenTransitioning?: boolean;
   fillHeight?: boolean;
   className?: string;
+  disableLinter?: boolean;
 }
 
 export interface CursorPosition {

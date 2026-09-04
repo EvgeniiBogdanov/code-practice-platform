@@ -4,6 +4,7 @@ export * from "./model/sectionsConfig";
 export * from "./model/taskTree";
 export * from "./model/taskFiles";
 export * from "./model/task-route";
+export * from "./model/task-syntax-check";
 export * from "./ui/TaskDifficultyBadge";
 export * from "./ui/TaskCard";
 export * from "./ui/TaskMetaBadges";

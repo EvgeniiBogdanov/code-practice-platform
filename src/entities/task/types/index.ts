@@ -76,6 +76,7 @@ export interface Task {
   template?: string;
   code?: string;
   isRaw?: boolean;
+  disableCandidateLinter?: boolean;
 }
 
 export interface TaskGroup {

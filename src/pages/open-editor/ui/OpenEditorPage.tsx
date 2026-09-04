@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Home, FileQuestion, ArrowDown } from "lucide-react";
-import { getTaskFiles, hasTaskVisualComponent } from "@/entities/task";
+import { getTaskFiles, hasTaskVisualComponent, isCandidateLinterDisabled } from "@/entities/task";
 import type { SectionType } from "@/entities/task/meta";
 import { useTaskById } from "@/entities/task/catalog";
 import { CodeEditor } from "@/features/code-editor";
@@ -89,6 +89,8 @@ export const OpenEditorPage = ({
     () => (task ? hasTaskVisualComponent(task, files) : isReact),
     [task, files, isReact]
   );
+
+  const isLinterDisabled = tab === "candidate" && isCandidateLinterDisabled(task);
 
   const [viewMode, setViewMode] = useState<ViewMode>(() => {
     if (initialViewMode === "preview") return "preview";
@@ -394,6 +396,7 @@ export const OpenEditorPage = ({
                   activeFileIdx={activeFileIdx}
                   onFileSelect={setActiveFileIdx}
                   filepath={activeFile?.name || ""}
+                  disableLinter={isLinterDisabled}
                   fillHeight={true}
                   isFullscreen={true}
                   onToggleFullscreen={handleExit}
@@ -439,6 +442,7 @@ export const OpenEditorPage = ({
                 activeFileIdx={activeFileIdx}
                 onFileSelect={setActiveFileIdx}
                 filepath={activeFile?.name || ""}
+                disableLinter={isLinterDisabled}
                 fillHeight={true}
                 isFullscreen={true}
                 onToggleFullscreen={handleExit}

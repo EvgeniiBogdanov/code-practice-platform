@@ -5,6 +5,7 @@ import {
   formatJavaScriptCode,
   fixTypoInCode,
   addImportToFile,
+  LintResult,
 } from "@/shared/lib/code-editor";
 import { useUIStore } from "@/entities/ui-state";
 import { useCodeHistory } from "./useCodeHistory";
@@ -15,6 +16,17 @@ import { useMultiCursor } from "./useMultiCursor";
 import { CodeEditorProps, CursorPosition, TypoInfo, MissingImportInfo } from "./types";
 import { getLanguageInfo } from "../lib/editor-utils";
 
+const EMPTY_LINT_RESULT: LintResult = {
+  problems: [],
+  errorCount: 0,
+  warningCount: 0,
+  isValid: true,
+  typoMap: {},
+  missingImportMap: {},
+  allMissingImports: [],
+  unusedImports: new Set<string>(),
+};
+
 export const useCodeEditor = ({
   code,
   onChange,
@@ -24,6 +36,7 @@ export const useCodeEditor = ({
   readOnly = false,
   isFullscreen,
   onToggleFullscreen,
+  disableLinter = false,
 }: CodeEditorProps) => {
   const fontSize = useUIStore((state) => state.editorFontSize);
   const increaseFontSize = useUIStore((state) => state.increaseEditorFontSize);
@@ -130,11 +143,13 @@ export const useCodeEditor = ({
     return () => window.removeEventListener("keydown", handleGlobalKey);
   }, [handleFormat, effectiveFullscreen, toggleFullscreen, intelliSense, toggleWordWrap]);
 
-  const lintResult = useMemo(
-    () => lintJavaScriptCode(deferredCode, { files: deferredFiles, filepath }),
-    [deferredCode, deferredFiles, filepath]
-  );
-  const isAnalysisPending = deferredCode !== code || deferredFiles !== files;
+  const lintResult = useMemo(() => {
+    if (disableLinter) {
+      return EMPTY_LINT_RESULT;
+    }
+    return lintJavaScriptCode(deferredCode, { files: deferredFiles, filepath });
+  }, [disableLinter, deferredCode, deferredFiles, filepath]);
+  const isAnalysisPending = !disableLinter && (deferredCode !== code || deferredFiles !== files);
 
   const activeTypo = useMemo((): TypoInfo | null => {
     if (lintResult.typoMap && lintResult.typoMap[cursorPos.line]) {

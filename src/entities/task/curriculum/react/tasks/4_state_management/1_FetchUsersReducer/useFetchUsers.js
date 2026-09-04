@@ -1,13 +1,16 @@
-// Реализуйте кастомный хук, который будет использовать useReducer для выполнения асинхронного запроса к API
-// URL для запроса: https://jsonplaceholder.typicode.com/users
-//
-// Требования:
-// - Использовать AbortController для предотвращения race conditions и отмены запроса при размонтировании
+/**
+ * Кастомный хук useFetchUsers
+ *
+ * ТЗ:
+ * 1. Выполнить запрос к API: https://jsonplaceholder.typicode.com/users
+ * 2. Управлять состоянием запроса с помощью useReducer (reducer и initialState из ./reducer).
+ * 3. Обеспечить корректную обработку жизненного цикла: отмена запроса при размонтировании
+ *    компонента (AbortController) и защита от состояния гонки (race condition).
+ * 4. Хук должен возвращать объект состояния: { users, loading, error }.
+ */
 
 import { useReducer, useEffect } from 'react'
 import { reducer, initialState, FETCH_INIT, FETCH_SUCCESS, FETCH_FAILURE } from './reducer'
 
 export const useFetchUsers = () => {
-  // Напишите ваш код здесь
-  // Хук должен возвращать состояние (users, loading, error)
 }

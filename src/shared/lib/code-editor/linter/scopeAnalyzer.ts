@@ -169,6 +169,7 @@ export function findDuplicateDeclarations(code: string): DuplicateDeclarationPro
   const lines = code.split("\n");
   const duplicates: DuplicateDeclarationProblem[] = [];
   const scopeStack: Array<Map<string, { line: number; col: number; kind: string }>> = [new Map()];
+  let pendingForVars: Array<{ name: string; kind: string; col: number; line: number }> = [];
   let inBlockComment = false;
   let inString: string | null = null;
 
@@ -226,7 +227,23 @@ export function findDuplicateDeclarations(code: string): DuplicateDeclarationPro
       cleanLine += ch;
     }
 
-    const checkAndAdd = (name: string, kind: string, col: number) => {
+    const checkAndAdd = (name: string, kind: string, col: number, isForHeader = false) => {
+      if (isForHeader) {
+        const existing = pendingForVars.find((p) => p.name === name);
+        if (existing) {
+          duplicates.push({
+            name,
+            kind,
+            line: lineNum,
+            column: col,
+            message: `Повторное объявление идентификатора '${name}' (Duplicate identifier '${name}'). Ранее объявлен на стр. ${existing.line}`,
+          });
+        } else {
+          pendingForVars.push({ name, kind, col, line: lineNum });
+        }
+        return;
+      }
+
       const currentScope = scopeStack[scopeStack.length - 1];
       if (currentScope.has(name)) {
         const prev = currentScope.get(name)!;
@@ -259,6 +276,7 @@ export function findDuplicateDeclarations(code: string): DuplicateDeclarationPro
     const varMatches = cleanLine.matchAll(/\b(?:const|let|var)\s+([^;=\n]+)/g);
     for (const vm of varMatches) {
       const declPart = vm[1];
+      const isForHeader = /\bfor\s*\([^)]*$/.test(cleanLine.slice(0, vm.index || 0));
       const objMatches = declPart.matchAll(/\{([^}]+)\}/g);
       for (const om of objMatches) {
         const entries = om[1].split(",");
@@ -267,7 +285,7 @@ export function findDuplicateDeclarations(code: string): DuplicateDeclarationPro
           const parts = item.split(":");
           const name = (parts[1] || parts[0]).trim();
           if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(name)) {
-            checkAndAdd(name, "variable", (vm.index || 0) + 1);
+            checkAndAdd(name, "variable", (vm.index || 0) + 1, isForHeader);
           }
         }
       }
@@ -280,7 +298,7 @@ export function findDuplicateDeclarations(code: string): DuplicateDeclarationPro
             .replace(/\.\.\./, "")
             .trim();
           if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(name)) {
-            checkAndAdd(name, "variable", (vm.index || 0) + 1);
+            checkAndAdd(name, "variable", (vm.index || 0) + 1, isForHeader);
           }
         }
       }
@@ -289,7 +307,7 @@ export function findDuplicateDeclarations(code: string): DuplicateDeclarationPro
       for (const n of names) {
         const name = n.split("=")[0].trim();
         if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(name)) {
-          checkAndAdd(name, "variable", (vm.index || 0) + 1);
+          checkAndAdd(name, "variable", (vm.index || 0) + 1, isForHeader);
         }
       }
     }
@@ -312,12 +330,23 @@ export function findDuplicateDeclarations(code: string): DuplicateDeclarationPro
     for (let i = 0; i < cleanLine.length; i++) {
       const c = cleanLine[i];
       if (c === "{") {
-        scopeStack.push(new Map());
+        const newScope = new Map<string, { line: number; col: number; kind: string }>();
+        if (pendingForVars.length > 0) {
+          for (const pv of pendingForVars) {
+            newScope.set(pv.name, { line: pv.line, col: pv.col, kind: pv.kind });
+          }
+          pendingForVars = [];
+        }
+        scopeStack.push(newScope);
       } else if (c === "}") {
         if (scopeStack.length > 1) {
           scopeStack.pop();
         }
       }
+    }
+
+    if (!cleanLine.includes("{") && !/\bfor\s*\(/.test(cleanLine)) {
+      pendingForVars = [];
     }
   }
 

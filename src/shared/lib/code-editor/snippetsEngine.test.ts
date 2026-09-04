@@ -227,4 +227,37 @@ describe("Linter Scoping by Environment", () => {
     );
     expect(jsxLint.problems.some((p) => p.symbol === "Context")).toBe(false);
   });
+
+  it("does NOT trigger duplicate identifier for sequential for loops with let i", () => {
+    const code = `
+function hashJoin(users, orders) {
+  for (let i = 0; i < orders.length; i++) {}
+  for (let i = 0; i < users.length; i++) {}
+}
+`;
+    const lint = lintJavaScriptCode(code, { filepath: "solution.js" });
+    const dups = lint.problems.filter((p) => p.rule === "duplicate-identifier");
+    expect(dups).toEqual([]);
+  });
+
+  it("does NOT trigger any errors for js242 HashMapJoinApiResponses solution", () => {
+    const code = `
+const hashJoin = (users, orders, options = {}) => {
+  const ordersMap = new Map();
+  for (let i = 0; i < orders.length; i++) {
+    const order = orders[i];
+  }
+  const result = new Array(users.length);
+  for (let i = 0; i < users.length; i++) {
+    const user = users[i];
+  }
+  return result;
+};
+`;
+    const lint = lintJavaScriptCode(code, {
+      filepath: "src/javascript/solutions/12_collections_map/level3/24_HashMapJoinApiResponses.js",
+    });
+    const errors = lint.problems.filter((p) => p.severity === "error");
+    expect(errors).toEqual([]);
+  });
 });
