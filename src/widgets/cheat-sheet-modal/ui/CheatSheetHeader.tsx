@@ -16,7 +16,12 @@ export const CheatSheetHeader = memo(({ title, onClose }: CheatSheetHeaderProps)
         <span>{title}</span>
       </div>
       <Tooltip content="Закрыть (Esc)" side="bottom">
-        <SquareButton icon={<X size={18} />} onClick={onClose} aria-label="Закрыть шпаргалку" />
+        <SquareButton
+          icon={<X size={18} />}
+          onClick={onClose}
+          aria-label="Закрыть шпаргалку"
+          size="sm"
+        />
       </Tooltip>
     </div>
   );

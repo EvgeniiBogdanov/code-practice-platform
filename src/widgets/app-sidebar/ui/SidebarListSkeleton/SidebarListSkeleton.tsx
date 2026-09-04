@@ -1,27 +1,32 @@
 import React, { memo } from "react";
 import { clsx } from "clsx";
+import type { SectionType } from "@/entities/task";
 import { UiSkeleton } from "@/shared/ui";
 import styles from "./SidebarListSkeleton.module.css";
 
 export interface SidebarListSkeletonProps {
   className?: string;
+  section?: SectionType;
+  foldersCount?: number;
 }
 
-const FOLDER_WIDTHS = [
-  "55%",
-  "70%",
-  "45%",
-  "65%",
-  "50%",
-  "80%",
-  "60%",
-  "75%",
-  "40%",
-  "68%",
-];
+const SECTION_FOLDER_WIDTHS: Record<SectionType, readonly string[]> = {
+  algorithms: ["55%", "70%", "45%", "65%", "50%", "80%", "60%", "75%", "40%", "68%"],
+  javascript: ["55%", "38%", "45%", "45%", "52%", "52%", "48%", "65%", "62%", "72%", "85%"],
+  react: ["48%", "55%", "82%", "75%", "82%", "88%", "90%"],
+};
+
+const getFolderWidths = (section?: SectionType, foldersCount?: number): readonly string[] => {
+  const widths = section ? SECTION_FOLDER_WIDTHS[section] : SECTION_FOLDER_WIDTHS.algorithms;
+  if (foldersCount === undefined) {
+    return widths;
+  }
+  return Array.from({ length: foldersCount }, (_, i) => widths[i % widths.length]);
+};
 
 export const SidebarListSkeleton = memo(
-  ({ className }: SidebarListSkeletonProps): React.JSX.Element => {
+  ({ className, section, foldersCount }: SidebarListSkeletonProps): React.JSX.Element => {
+    const widths = getFolderWidths(section, foldersCount);
     return (
       <div className={clsx(styles.container, className)}>
         {/* Sticky wrapper matching SidebarProgressCard layout */}
@@ -49,10 +54,10 @@ export const SidebarListSkeleton = memo(
           </div>
         </div>
 
-        {/* 10 identical folder skeletons matching SidebarGroupHeader */}
+        {/* Folder skeletons matching SidebarGroupHeader */}
         <div className={styles.foldersList} aria-label="Загрузка списка тем...">
-          {FOLDER_WIDTHS.map((width, idx) => (
-            <div key={idx} className={styles.folderRow}>
+          {widths.map((width, idx) => (
+            <div key={idx} className={styles.folderRow} data-testid="sidebar-folder-skeleton">
               <div className={styles.folderLeft}>
                 <UiSkeleton width={22} height={22} radius={6} />
                 <UiSkeleton width={width} height={14} radius={4} />

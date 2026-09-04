@@ -1,50 +1,68 @@
 .button {
+  box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  vertical-align: middle;
   gap: 6px;
-  font-family: inherit;
+  font-family: var(--font-sans);
   font-size: var(--fs-sm, 13px);
   font-weight: 500;
-  line-height: var(--lh-tight, 1.25);
+  line-height: 1;
   border-radius: var(--radius-lg);
   border: none;
+  outline: none;
   cursor: pointer;
   user-select: none;
   text-decoration: none;
   white-space: nowrap;
   transition:
     background var(--transition-fast, 0.15s ease),
-    color var(--transition-fast, 0.15s ease),
-    transform 0.1s ease;
+    color var(--transition-fast, 0.15s ease);
+}
+
+.button:hover:not(:disabled) {
+  border: none;
+  outline: none;
+}
+
+.button:active:not(:disabled) {
+  transform: none;
+  border: none;
+  outline: none;
+}
+
+.button:focus {
+  outline: none;
 }
 
 .button:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
   pointer-events: none;
 }
 
 .button:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--accent-blue, #3b82f6);
+  box-shadow: 0 0 0 2px var(--bg-surface), 0 0 0 4px var(--accent-blue, #3b82f6);
 }
 
 /* Sizes */
 .size-sm {
-  padding: 5px 10px;
+  padding: 0 12px;
   height: 28px;
   font-size: 12px;
 }
 
 .size-md {
-  padding: 6px 14px;
+  padding: 0 14px;
   height: 34px;
   font-size: var(--fs-sm, 13px);
 }
 
 .size-lg {
-  padding: 8px 16px;
+  padding: 0 18px;
   height: 40px;
   font-size: var(--fs-base, 14px);
 }
@@ -79,61 +97,78 @@
 .variant-primary {
   background: var(--accent-blue);
   color: var(--text-on-accent);
+  border: none;
 }
 
 .variant-primary:hover:not(:disabled) {
   background: var(--accent-blue-hover);
+  color: var(--text-on-accent);
+  border: none;
+  outline: none;
 }
 
 .variant-secondary {
-  background: var(--state-hover);
-  color: var(--text-main);
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  border: none;
 }
 
 .variant-secondary:hover:not(:disabled) {
-  background: var(--state-active);
+  background: var(--bg-elevated);
   color: var(--text-main);
+  border: none;
+  outline: none;
 }
 
 .variant-outline {
   background: transparent;
   border: 1px solid var(--border-color);
-  color: var(--text-main);
+  color: var(--text-muted);
 }
 
 .variant-outline:hover:not(:disabled) {
-  background: var(--state-hover);
-  border-color: var(--border-strong);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
 }
 
 .variant-ghost {
   background: transparent;
   color: var(--text-muted);
+  border: none;
 }
 
 .variant-ghost:hover:not(:disabled) {
-  background: var(--state-hover);
+  background: var(--bg-elevated);
   color: var(--text-main);
+  border: none;
+  outline: none;
 }
 
 .variant-danger {
   background: var(--accent-red-bg);
   color: var(--accent-red);
+  border: none;
 }
 
 .variant-danger:hover:not(:disabled) {
-  background: var(--accent-red);
-  color: var(--text-on-accent);
+  background: var(--accent-red-border);
+  color: var(--accent-red-hover);
+  border: none;
+  outline: none;
 }
 
 .variant-success {
   background: var(--accent-green-bg);
   color: var(--accent-green);
+  border: none;
 }
 
 .variant-success:hover:not(:disabled) {
-  background: var(--accent-green);
-  color: var(--text-on-accent);
+  background: var(--accent-green-border);
+  color: var(--accent-green-hover);
+  border: none;
+  outline: none;
 }
 
 /* Active State for all buttons / toolbars */
@@ -153,4 +188,20 @@
 .button.variant-danger[aria-pressed="true"] {
   background: var(--accent-red);
   color: var(--text-on-accent);
+}
+
+/* Light Theme Overrides */
+:global([data-theme="light"]) .variant-secondary {
+  background: rgba(55, 53, 47, 0.06);
+  color: var(--text-main);
+}
+
+:global([data-theme="light"]) .variant-secondary:hover:not(:disabled) {
+  background: rgba(55, 53, 47, 0.12);
+  color: var(--text-main);
+}
+
+:global([data-theme="light"]) .variant-ghost:hover:not(:disabled) {
+  background: rgba(55, 53, 47, 0.08);
+  color: var(--text-main);
 }

@@ -1,12 +1,28 @@
-import { useState, useMemo, useDeferredValue, useEffect, useCallback } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "@tanstack/react-router";
 import type { Task } from "@/entities/task/meta";
 import { useAllTaskSections } from "@/entities/task/catalog";
 import { useUIStore } from "@/entities/ui-state";
+import { useDebounce } from "@/shared/lib/hooks";
 import { PaletteSection } from "../ui/CommandPaletteTabs";
 import { getSectionFromPathname } from "../lib/getSectionFromPathname";
 
-export const useCommandPalette = () => {
+export interface UseCommandPaletteReturn {
+  isOpen: boolean;
+  setIsOpen: (open: boolean | ((prev: boolean) => boolean)) => void;
+  query: string;
+  setQuery: (query: string) => void;
+  debouncedQuery: string;
+  activeSection: PaletteSection;
+  setActiveSection: (sec: PaletteSection) => void;
+  selectedIndex: number;
+  setSelectedIndex: React.Dispatch<React.SetStateAction<number>>;
+  filteredTasks: Task[];
+  handleSelectTask: (task: Task) => void;
+  handleKeyDown: (e: React.KeyboardEvent) => void;
+}
+
+export const useCommandPalette = (): UseCommandPaletteReturn => {
   const navigate = useNavigate();
   const location = useLocation();
   const isOpen = useUIStore((state) => state.paletteOpen);
@@ -14,21 +30,23 @@ export const useCommandPalette = () => {
   const query = useUIStore((state) => state.paletteQuery);
   const setQuery = useUIStore((state) => state.setPaletteQuery);
 
+  const debouncedQuery = useDebounce(query, 200);
+
   const [activeSection, setActiveSection] = useState<PaletteSection>(() =>
     getSectionFromPathname(location.pathname)
   );
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const deferredQuery = useDeferredValue(query);
   const { tasks } = useAllTaskSections(isOpen);
 
   useEffect(() => {
     if (isOpen) {
       setActiveSection(getSectionFromPathname(location.pathname));
+      setQuery("");
     }
-  }, [isOpen, location.pathname]);
+  }, [isOpen, location.pathname, setQuery]);
 
   const filteredTasks = useMemo(() => {
-    const q = deferredQuery.trim().toLowerCase();
+    const q = debouncedQuery.trim().toLowerCase();
     const pool =
       activeSection === "all" ? tasks : tasks.filter((t) => t.section === activeSection);
     if (!q) return pool;
@@ -43,11 +61,12 @@ export const useCommandPalette = () => {
         t.difficulty?.toLowerCase().includes(q)
       );
     });
-  }, [deferredQuery, activeSection, tasks]);
+  }, [debouncedQuery, activeSection, tasks]);
 
   const handleSelectTask = useCallback(
     (task: Task) => {
       setIsOpen(false);
+      setQuery("");
       if (task.section === "javascript") {
         navigate({ to: "/javascript/$taskId", params: { taskId: String(task.id) } });
       } else if (task.section === "algorithms") {
@@ -56,12 +75,13 @@ export const useCommandPalette = () => {
         navigate({ to: "/react/$taskId", params: { taskId: String(task.id) } });
       }
     },
-    [navigate, setIsOpen]
+    [navigate, setIsOpen, setQuery]
   );
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Escape") {
       setIsOpen(false);
+      setQuery("");
     } else if (e.key === "ArrowDown") {
       e.preventDefault();
       setSelectedIndex((prev) => (prev < filteredTasks.length - 1 ? prev + 1 : 0));
@@ -76,13 +96,14 @@ export const useCommandPalette = () => {
 
   useEffect(() => {
     setSelectedIndex(0);
-  }, [deferredQuery, activeSection]);
+  }, [debouncedQuery, activeSection]);
 
   return {
     isOpen,
     setIsOpen,
     query,
     setQuery,
+    debouncedQuery,
     activeSection,
     setActiveSection,
     selectedIndex,

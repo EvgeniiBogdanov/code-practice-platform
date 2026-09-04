@@ -225,6 +225,56 @@ export function buildSandboxIframeSrcDoc({
       } catch(e) {}
 
       try {
+        var virtualSearch = window.location.search || '';
+        var origReplaceState = window.history && window.history.replaceState;
+        var origPushState = window.history && window.history.pushState;
+
+        function notifyUrl(rawUrl) {
+          try {
+            if (window.parent && window.parent !== window) {
+              window.parent.postMessage({
+                type: 'SANDBOX_URL_CHANGE',
+                url: rawUrl,
+                search: virtualSearch,
+              }, '*');
+            }
+          } catch (e) {}
+        }
+
+        if (window.history) {
+          window.history.replaceState = function(state, title, url) {
+            if (typeof url === 'string') {
+              var q = url.indexOf('?');
+              virtualSearch = q !== -1 ? url.slice(q) : '';
+            }
+            try {
+              if (origReplaceState) origReplaceState.call(window.history, state, title, url);
+            } catch (e) {}
+            notifyUrl(url);
+          };
+
+          window.history.pushState = function(state, title, url) {
+            if (typeof url === 'string') {
+              var q = url.indexOf('?');
+              virtualSearch = q !== -1 ? url.slice(q) : '';
+            }
+            try {
+              if (origPushState) origPushState.call(window.history, state, title, url);
+            } catch (e) {}
+            notifyUrl(url);
+          };
+        }
+
+        try {
+          Object.defineProperty(window.location, 'search', {
+            get: function() { return virtualSearch; },
+            set: function(v) { virtualSearch = v; },
+            configurable: true,
+          });
+        } catch (e) {}
+      } catch (e) {}
+
+      try {
         var runtime = window.parent && window.parent.__SANDBOX_RUNTIME__;
         if (!runtime) throw new Error("Песочница не смогла инициализировать рантайм React");
 

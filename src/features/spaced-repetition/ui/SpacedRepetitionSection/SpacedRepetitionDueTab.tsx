@@ -39,7 +39,7 @@ export const SpacedRepetitionDueTab = memo(
   ({ dueTasks, reviews, scopeLabel, onNavigate }: SpacedRepetitionDueTabProps) => {
     if (dueTasks.length === 0) {
       return (
-        <Card variant="subtle" className={styles.emptyDueCard}>
+        <Card variant="ghost" className={styles.emptyDueCard}>
           <CheckCircle2 size={32} className={styles.emptyDueIcon} />
           <div className={styles.emptyDueTitle}>Все задачи {scopeLabel} повторены!</div>
           <div className={styles.emptyDueDesc}>

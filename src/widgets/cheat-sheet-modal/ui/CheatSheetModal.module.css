@@ -3,6 +3,8 @@
   position: fixed;
   inset: 0;
   background: var(--bg-overlay);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   z-index: var(--z-modal, 9000);
   display: flex;
   align-items: center;
@@ -16,14 +18,15 @@
   max-width: 100%;
   height: calc(100dvh - var(--space-12));
   max-height: 100%;
-  background: var(--bg-card);
+  background: var(--bg-sidebar);
+
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-popover);
   color: var(--text-main);
   display: flex;
   flex-direction: column;
-  padding: 16px;
+  padding: 8px;
   gap: 12px;
   box-sizing: border-box;
   animation: modalShow 200ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -51,24 +54,6 @@
   flex-shrink: 0;
 }
 
-.closeBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  background: transparent;
-  border: none;
-  border-radius: var(--radius-md);
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.closeBtn:hover {
-  background: var(--state-hover);
-  color: var(--text-main);
-}
 
 /* Section Tabs */
 .sectionTabs {
@@ -78,7 +63,7 @@
   background: var(--bg-subtle);
   border: 1px solid var(--border-color);
   padding: 3px;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
   flex-shrink: 0;
 }
 
@@ -131,7 +116,7 @@
   border: 1px solid var(--border-color);
   color: var(--text-main);
   padding: 8px 12px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   font-size: 13px;
   outline: none;
   font-family: var(--font-sans);
@@ -267,35 +252,8 @@
   --code-overflow-x: hidden;
 }
 
-/* Notion-Style Callout Block for CheatSheet Tips */
-.cheatsheetTip {
-  padding: 10px 12px;
-  background: var(--accent-yellow-bg);
-  border-left: 3px solid var(--accent-yellow);
-  border-radius: var(--radius-md);
-  color: var(--text-main);
-  font-size: 12px;
-  line-height: 1.5;
-  margin-top: 4px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.cheatsheetTipHeader {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-weight: 600;
-  color: var(--accent-yellow);
-  font-size: 12px;
-  font-family: var(--font-sans);
-}
-
-.cheatsheetTipContent {
-  color: var(--text-main);
-  font-size: 12px;
+.cheatsheetCallout {
+  margin-top: 2px;
 }
 
 .empty {

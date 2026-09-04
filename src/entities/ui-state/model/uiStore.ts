@@ -14,6 +14,7 @@ const getInitialUISettings = () => {
       consoleCollapsed: true,
       editorWordWrap: false,
       editorSplitRatio: 70,
+      hideTooltips: false,
     };
   }
   try {
@@ -47,6 +48,8 @@ const getInitialUISettings = () => {
             parsed.state.editorSplitRatio <= 80
               ? parsed.state.editorSplitRatio
               : 70,
+          hideTooltips:
+            typeof parsed.state.hideTooltips === "boolean" ? parsed.state.hideTooltips : false,
         };
       }
     }
@@ -59,6 +62,7 @@ const getInitialUISettings = () => {
       consoleCollapsed: legacyConsole !== null ? legacyConsole === "true" : true,
       editorWordWrap: false,
       editorSplitRatio: 70,
+      hideTooltips: false,
     };
   } catch {
     // ignore
@@ -70,6 +74,7 @@ const getInitialUISettings = () => {
     consoleCollapsed: true,
     editorWordWrap: false,
     editorSplitRatio: 70,
+    hideTooltips: false,
   };
 };
 
@@ -113,6 +118,7 @@ export const useUIStore = create<UIState>()(
       advancedExpanded: false,
       reactTsExpanded: false,
       reactTsPracticeExpanded: false,
+      lifecycleExpanded: false,
 
       expandedJsGroups: {},
       expandedJsSubgroups: {},
@@ -120,6 +126,7 @@ export const useUIStore = create<UIState>()(
       expandedAlgoSubgroups: {},
 
       tooltip: null,
+      hideTooltips: initialUI.hideTooltips,
 
       setTheme: (themeOrFn) => {
         const current = get().theme || "dark";
@@ -365,6 +372,13 @@ export const useUIStore = create<UIState>()(
               ? reactTsPracticeExpanded(state.reactTsPracticeExpanded)
               : reactTsPracticeExpanded,
         })),
+      setLifecycleExpanded: (lifecycleExpanded) =>
+        set((state) => ({
+          lifecycleExpanded:
+            typeof lifecycleExpanded === "function"
+              ? lifecycleExpanded(state.lifecycleExpanded)
+              : lifecycleExpanded,
+        })),
       setAllReactCategoriesExpanded: (expanded) =>
         set({
           warmupExpanded: expanded,
@@ -373,6 +387,7 @@ export const useUIStore = create<UIState>()(
           advancedExpanded: expanded,
           reactTsExpanded: expanded,
           reactTsPracticeExpanded: expanded,
+          lifecycleExpanded: expanded,
         }),
       setExpandedJsGroups: (updater) =>
         set((state) => ({
@@ -417,6 +432,11 @@ export const useUIStore = create<UIState>()(
         }),
 
       setTooltip: (tooltip) => set({ tooltip }),
+      setHideTooltips: (hideTooltips) =>
+        set((state) => ({
+          hideTooltips:
+            typeof hideTooltips === "function" ? hideTooltips(state.hideTooltips) : hideTooltips,
+        })),
 
       collapseAllInCurrentSection: (section) => {
         if (section === "javascript") {
@@ -505,10 +525,12 @@ export const useUIStore = create<UIState>()(
           advancedExpanded: false,
           reactTsExpanded: false,
           reactTsPracticeExpanded: false,
+          lifecycleExpanded: false,
           expandedJsGroups: {},
           expandedJsSubgroups: {},
           expandedAlgoGroups: {},
           expandedAlgoSubgroups: {},
+          hideTooltips: false,
         });
       },
     }),
@@ -530,10 +552,12 @@ export const useUIStore = create<UIState>()(
         advancedExpanded: state.advancedExpanded,
         reactTsExpanded: state.reactTsExpanded,
         reactTsPracticeExpanded: state.reactTsPracticeExpanded,
+        lifecycleExpanded: state.lifecycleExpanded,
         expandedJsGroups: state.expandedJsGroups,
         expandedJsSubgroups: state.expandedJsSubgroups,
         expandedAlgoGroups: state.expandedAlgoGroups,
         expandedAlgoSubgroups: state.expandedAlgoSubgroups,
+        hideTooltips: state.hideTooltips,
       }),
       onRehydrateStorage: () => (state) => {
         const activeTheme =

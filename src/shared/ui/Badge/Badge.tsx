@@ -48,7 +48,9 @@ export const Badge = ({
   return (
     <span className={classNames} {...props}>
       {icon && <span className={styles.icon}>{icon}</span>}
-      {children && <span className={styles.label}>{children}</span>}
+      {children !== undefined && children !== null && (
+        <span className={styles.label}>{children}</span>
+      )}
     </span>
   );
 };

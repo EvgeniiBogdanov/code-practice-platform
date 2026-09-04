@@ -1,10 +1,11 @@
-import { memo, ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { memo, ReactNode, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { TooltipProviderContext, DEFAULT_TOOLTIP_DELAY_DURATION } from "./types";
 
 export interface TooltipProviderProps {
   children: ReactNode;
   delayDuration?: number;
   skipDelayDuration?: number;
+  disabled?: boolean;
 }
 
 export const TooltipProvider = memo(
@@ -12,7 +13,11 @@ export const TooltipProvider = memo(
     children,
     delayDuration = DEFAULT_TOOLTIP_DELAY_DURATION,
     skipDelayDuration = 300,
+    disabled: explicitDisabled,
   }: TooltipProviderProps) => {
+    const parentContext = useContext(TooltipProviderContext);
+    const disabled =
+      explicitDisabled !== undefined ? explicitDisabled : Boolean(parentContext.disabled);
     const [isWarm, setIsWarm] = useState(false);
     const warmTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -47,7 +52,7 @@ export const TooltipProvider = memo(
 
     return (
       <TooltipProviderContext.Provider
-        value={{ delayDuration, skipDelayDuration, isWarm, setWarm }}
+        value={{ delayDuration, skipDelayDuration, isWarm, setWarm, disabled }}
       >
         {children}
       </TooltipProviderContext.Provider>

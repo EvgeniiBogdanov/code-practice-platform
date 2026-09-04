@@ -1,5 +1,5 @@
-import { memo, ReactNode, useId, useRef } from "react";
-import { TooltipContext } from "./types";
+import { memo, ReactNode, useContext, useId, useRef } from "react";
+import { TooltipContext, TooltipProviderContext } from "./types";
 import { useTooltipOpenState } from "./useTooltipOpenState";
 
 export interface TooltipRootProps {
@@ -24,17 +24,20 @@ export const TooltipRoot = memo(
     const contentRef = useRef<HTMLDivElement | null>(null);
     const tooltipId = useId();
 
+    const provider = useContext(TooltipProviderContext);
+    const effectiveDisabled = disabled || Boolean(provider.disabled);
+
     const { isOpen, handleOpen, handleClose } = useTooltipOpenState({
       open,
       defaultOpen,
       onOpenChange,
       delayDuration,
-      disabled,
+      disabled: effectiveDisabled,
     });
 
     const contextValue = {
       isOpen,
-      disabled,
+      disabled: effectiveDisabled,
       triggerRef,
       contentRef,
       handleOpen,

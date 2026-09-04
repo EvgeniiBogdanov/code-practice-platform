@@ -33,6 +33,7 @@ export const RootLayout = memo(() => {
   const settingsModalOpen = useUIStore((state) => state.settingsModalOpen);
   const cheatSheetOpen = useUIStore((state) => state.cheatSheetOpen);
   const paletteOpen = useUIStore((state) => state.paletteOpen);
+  const hideTooltips = useUIStore((state) => state.hideTooltips);
 
   const contentAreaRef = useRef<HTMLElement | null>(null);
   const location = useLocation();
@@ -75,7 +76,7 @@ export const RootLayout = memo(() => {
   });
 
   return (
-    <TooltipProvider delayDuration={600} skipDelayDuration={300}>
+    <TooltipProvider disabled={hideTooltips} delayDuration={600} skipDelayDuration={300}>
       {isOpenMode ? (
         <Outlet />
       ) : (

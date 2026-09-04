@@ -100,6 +100,7 @@
   border-left-color: var(--accent-purple);
 }
 
+.color-purple .icon,
 .color-purple .title {
   color: var(--accent-purple);
 }
@@ -111,6 +112,7 @@
   border-left-color: var(--accent-blue);
 }
 
+.color-blue .icon,
 .color-blue .title {
   color: var(--accent-blue);
 }
@@ -122,19 +124,41 @@
   border-left-color: var(--accent-green);
 }
 
+.color-green .icon,
 .color-green .title {
   color: var(--accent-green);
 }
 
-/* Yellow / Amber (Warnings / Highlights) */
-.color-yellow {
-  background: var(--accent-yellow-bg);
-  border-color: var(--accent-yellow-border);
-  border-left-color: var(--accent-yellow);
+/* Yellow & Amber (Warm Tips / Highlights / Lifehacks) */
+.color-yellow,
+.color-amber {
+  background: var(--accent-amber-bg, rgba(245, 158, 11, 0.08));
+  border-color: var(--accent-amber-border, rgba(245, 158, 11, 0.20));
+  border-left-color: var(--accent-amber, #f59e0b);
 }
 
-.color-yellow .title {
-  color: var(--accent-yellow);
+.color-yellow .icon,
+.color-amber .icon {
+  color: var(--accent-amber, #f59e0b);
+}
+
+.color-yellow .title,
+.color-amber .title {
+  color: var(--accent-amber-hover, #fbbf24);
+}
+
+[data-theme="light"] .color-yellow,
+[data-theme="light"] .color-amber {
+  background: var(--accent-amber-bg, rgba(141, 79, 0, 0.08));
+  border-color: var(--accent-amber-border, rgba(141, 79, 0, 0.20));
+  border-left-color: var(--accent-amber, #8d4f00);
+}
+
+[data-theme="light"] .color-yellow .icon,
+[data-theme="light"] .color-amber .icon,
+[data-theme="light"] .color-yellow .title,
+[data-theme="light"] .color-amber .title {
+  color: var(--accent-amber, #8d4f00);
 }
 
 /* Orange (Practice / Actions) */
@@ -144,6 +168,7 @@
   border-left-color: var(--accent-orange);
 }
 
+.color-orange .icon,
 .color-orange .title {
   color: var(--accent-orange);
 }
@@ -155,6 +180,7 @@
   border-left-color: var(--accent-red);
 }
 
+.color-red .icon,
 .color-red .title {
   color: var(--accent-red);
 }
@@ -171,3 +197,88 @@
 .color-default .title {
   color: var(--text-main);
 }
+
+/* ==========================================================================
+   Size Variants
+   ========================================================================== */
+
+/* Small (sm) */
+.size-sm {
+  padding: 10px 12px;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+  border-radius: var(--radius-md, 6px);
+  border-left-width: 3px;
+}
+
+.size-sm .icon {
+  font-size: 15px;
+  min-width: 16px;
+  margin-top: 2px;
+}
+
+.size-sm .content {
+  gap: 4px;
+}
+
+.size-sm .title {
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.size-sm .body {
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.size-sm .body p {
+  margin-bottom: 4px;
+}
+
+/* Extra Small (xs) - for compact cards, tooltips, cheatsheet */
+.size-xs {
+  padding: 7px 10px;
+  gap: 6px;
+  font-size: 11.5px;
+  line-height: 1.4;
+  border-radius: var(--radius-sm, 4px);
+  border-left-width: 3px;
+}
+
+.size-xs .icon {
+  font-size: 13px;
+  min-width: 14px;
+  margin-top: 1px;
+}
+
+.size-xs .content {
+  gap: 2px;
+}
+
+.size-xs .title {
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.size-xs .body {
+  font-size: 11.5px;
+  line-height: 1.4;
+}
+
+.size-xs .body p {
+  margin: 0 0 3px 0;
+}
+
+.size-xs .body ul,
+.size-xs .body ol {
+  padding-left: 14px;
+  gap: 3px;
+}
+
+.size-xs .body li {
+  font-size: 11.5px;
+  line-height: 1.4;
+}
+

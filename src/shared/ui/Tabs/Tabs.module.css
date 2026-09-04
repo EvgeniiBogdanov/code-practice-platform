@@ -83,9 +83,10 @@
   font-weight: 600;
   line-height: 18px;
   border-radius: 9999px;
-  background-color: rgba(255, 255, 255, 0.08);
+  background-color: var(--state-active);
   color: var(--text-muted);
 }
+
 
 .variant_pills {
   border-bottom: none;
@@ -142,8 +143,10 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 7px 10px;
+  padding: 6px 10px;
   border-radius: var(--radius-md, 6px);
+  border: none;
+  outline: none;
   border-bottom: none;
   font-size: 13px;
   font-weight: 500;
@@ -152,27 +155,42 @@
   text-align: left;
   margin-bottom: 0;
   box-sizing: border-box;
+  font-family: var(--font-sans);
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .orientation_vertical .tab:hover:not(:disabled) {
   color: var(--text-main);
-  background: var(--state-hover, rgba(255, 255, 255, 0.05));
+  background: var(--state-hover);
+  border: none;
+  outline: none;
+}
+
+.orientation_vertical .tab:active {
+  transform: none;
+  border: none;
+  outline: none;
+}
+
+.orientation_vertical .tab:focus {
+  outline: none;
+  border: none;
 }
 
 .orientation_vertical .tab.active {
-  background: var(--state-active, rgba(255, 255, 255, 0.08));
+  background: var(--state-active);
   color: var(--text-main);
+  font-weight: 500;
   box-shadow: none;
+  border: none;
+  outline: none;
 }
 
-[data-theme="light"] .orientation_vertical .tab:hover:not(:disabled) {
-  background: rgba(55, 53, 47, 0.06);
-  color: #191919;
-}
-
-[data-theme="light"] .orientation_vertical .tab.active {
-  background: rgba(55, 53, 47, 0.1);
-  color: #191919;
+.orientation_vertical .tab.active:hover {
+  border: none;
+  outline: none;
 }
 
 .orientation_vertical .tabLabel {
@@ -183,3 +201,4 @@
   text-overflow: ellipsis;
   display: block;
 }
+

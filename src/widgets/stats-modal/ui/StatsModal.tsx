@@ -13,20 +13,24 @@ const SpacedRepetitionSection = lazy(() =>
 export const StatsModal = memo((): React.JSX.Element => {
   const { isOpen, setIsOpen, statsData } = useStatsModalController();
 
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
   return (
     <Modal
       isOpen={isOpen}
-      onClose={() => setIsOpen(false)}
+      onClose={handleClose}
       size="xl"
       customHeader={<></>}
       className={styles.statsModal}
       contentClassName={styles.statsModalBody}
     >
-      <Suspense fallback={<StatsModalSkeleton />}>
+      <Suspense fallback={<StatsModalSkeleton onClose={handleClose} />}>
         <SpacedRepetitionSection
           inModal={true}
-          onNavigate={() => setIsOpen(false)}
-          onCloseModal={() => setIsOpen(false)}
+          onNavigate={handleClose}
+          onCloseModal={handleClose}
           taskList={statsData.taskList}
           sectionName={statsData.sectionName}
         />

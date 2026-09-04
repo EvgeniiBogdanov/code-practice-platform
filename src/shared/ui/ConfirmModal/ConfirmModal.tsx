@@ -34,7 +34,14 @@ export const ConfirmModal = memo(
     className,
   }: ConfirmModalProps): React.JSX.Element => {
     return (
-      <Modal isOpen={isOpen} onClose={onClose} size="sm" title={title} icon={icon} className={className}>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        size="sm"
+        title={title}
+        icon={icon}
+        className={className}
+      >
         <div className={styles.body}>
           {typeof description === "string" ? (
             <p className={styles.text}>{description}</p>
@@ -43,9 +50,9 @@ export const ConfirmModal = memo(
           )}
 
           <div className={styles.actions}>
-            {actions.map((act, idx) => (
+            {actions.map((act) => (
               <Button
-                key={idx}
+                key={act.label}
                 variant={act.variant || "danger"}
                 onClick={act.onClick}
                 leftIcon={act.icon}

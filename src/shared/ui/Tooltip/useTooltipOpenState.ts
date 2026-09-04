@@ -14,12 +14,13 @@ export const useTooltipOpenState = ({
   defaultOpen = false,
   onOpenChange,
   delayDuration: customDelay,
-  disabled = false,
+  disabled: localDisabled = false,
 }: UseTooltipOpenStateParams) => {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
   const provider = useContext(TooltipProviderContext);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const disabled = localDisabled || Boolean(provider.disabled);
   const isControlled = controlledOpen !== undefined;
   const isOpen = isControlled ? controlledOpen : uncontrolledOpen;
   const delay =
@@ -50,6 +51,13 @@ export const useTooltipOpenState = ({
     onOpenChange?.(false);
     provider.setWarm(false);
   }, [isControlled, onOpenChange, provider]);
+
+  // Close immediately if disabled becomes true while open
+  useEffect(() => {
+    if (disabled && isOpen) {
+      handleClose();
+    }
+  }, [disabled, isOpen, handleClose]);
 
   // Close tooltip on window blur or tab visibility change (tab switch)
   useEffect(() => {

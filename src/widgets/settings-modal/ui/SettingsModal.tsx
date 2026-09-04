@@ -77,21 +77,27 @@ export const SettingsModal = memo(() => {
         </aside>
 
         <main className={styles.settingsMain}>
-          <div className={styles.mainHeader}>
-            <h2 className={styles.mainHeaderTitle}>
-              {activeTab === "customization" ? "Кастомизация" : "Данные приложения"}
-            </h2>
-            <button
-              type="button"
-              className={styles.closeBtn}
-              onClick={() => setIsOpen(false)}
-              aria-label="Закрыть настройки"
-            >
-              <X size={16} />
-            </button>
-          </div>
+          <button
+            type="button"
+            className={styles.closeBtn}
+            onClick={() => setIsOpen(false)}
+            aria-label="Закрыть настройки"
+          >
+            <X size={16} />
+          </button>
 
           <div className={styles.mainScrollable}>
+            <div className={styles.pageHeader}>
+              <h2 className={styles.pageTitle}>
+                {activeTab === "customization" ? "Кастомизация" : "Данные приложения"}
+              </h2>
+              <p className={styles.pageSubtitle}>
+                {activeTab === "customization"
+                  ? "Настройка вспомогательных элементов интерфейса и персонализация помощника"
+                  : "Управление локальным хранилищем, графиком повторения и сбросом данных"}
+              </p>
+            </div>
+
             {activeTab === "data" && (
               <SettingsResetSection
                 onOpenResetReviews={() => setResetReviewsConfirmOpen(true)}

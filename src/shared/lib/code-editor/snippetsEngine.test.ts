@@ -217,4 +217,14 @@ describe("Linter Scoping by Environment", () => {
     );
     expect(jsxLint.problems.some((p) => p.symbol === "useState")).toBe(true);
   });
+
+  it("does NOT trigger TypeScript type missing import in pure JSX files", () => {
+    const jsxLint = lintJavaScriptCode(
+      "export default function App() { return <p>Работает через Context</p>; }",
+      {
+        filepath: "App.jsx",
+      }
+    );
+    expect(jsxLint.problems.some((p) => p.symbol === "Context")).toBe(false);
+  });
 });

@@ -42,6 +42,7 @@ export const ReactLivePreview = memo(
       iframeHeight,
       reloadKey,
       hasFiles,
+      urlSearch,
       handleManualReload,
       handleIframeLoad,
     } = useReactLiveSandbox({
@@ -65,6 +66,7 @@ export const ReactLivePreview = memo(
       >
         <BrowserMockupHeader
           fileName={activeFile?.name || "index.jsx"}
+          urlSearch={urlSearch}
           onReload={handleManualReload}
           previewTarget={previewTarget}
           onPreviewTargetChange={onPreviewTargetChange}

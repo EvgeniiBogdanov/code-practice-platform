@@ -35,6 +35,7 @@ export * from "./UiLoader";
 export * from "./UiSkeleton";
 export * from "./UiNumberScramble";
 export * from "./GaugeIndicator";
+export * from "./Switch";
 export { clsx } from "clsx";
 
 

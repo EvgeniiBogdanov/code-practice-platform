@@ -1,16 +1,56 @@
-import { memo } from "react";
+import React, { memo } from "react";
 import { clsx } from "clsx";
 import { MasteryStats } from "@/entities/review";
+import { Badge } from "@/shared/ui";
 import { MasteryDistributionPie } from "../MasteryDistributionPie";
 import styles from "./SpacedRepetitionSection.module.css";
 
-interface SpacedRepetitionDistributionTabProps {
+interface StageConfig {
+  id: "mastered" | "reviewing" | "learning" | "unreviewed";
+  title: string;
+  getDesc: (scopeLabel: string) => string;
+  colorClass: "green" | "yellow" | "red" | "gray";
+  countKey: keyof Pick<MasteryStats, "mastered" | "reviewing" | "learning" | "unreviewed">;
+}
+
+const STAGES: readonly StageConfig[] = [
+  {
+    id: "mastered",
+    title: "Мастер (30-60+ дней)",
+    getDesc: () => "Надёжно усвоено в долговременной памяти",
+    colorClass: "green",
+    countKey: "mastered",
+  },
+  {
+    id: "reviewing",
+    title: "Закрепление (7-14 дней)",
+    getDesc: () => "Уверенное решение, интервалы растут",
+    colorClass: "yellow",
+    countKey: "reviewing",
+  },
+  {
+    id: "learning",
+    title: "Изучение (1-3 дня)",
+    getDesc: () => "Активная фаза повторов и разбора нюансов",
+    colorClass: "red",
+    countKey: "learning",
+  },
+  {
+    id: "unreviewed",
+    title: "Ещё не в графике",
+    getDesc: (scopeLabel: string) => `Задачи ${scopeLabel}, ожидающие решения`,
+    colorClass: "gray",
+    countKey: "unreviewed",
+  },
+] as const;
+
+export interface SpacedRepetitionDistributionTabProps {
   masteryStats: MasteryStats;
   scopeLabel: string;
 }
 
 export const SpacedRepetitionDistributionTab = memo(
-  ({ masteryStats, scopeLabel }: SpacedRepetitionDistributionTabProps) => {
+  ({ masteryStats, scopeLabel }: SpacedRepetitionDistributionTabProps): React.JSX.Element => {
     const hasReviews = masteryStats.totalReviewed > 0;
 
     return (
@@ -23,41 +63,23 @@ export const SpacedRepetitionDistributionTab = memo(
           <div className={styles.legendHeader}>Уровни закрепления SM-2:</div>
 
           <div className={styles.stageList}>
-            <div className={styles.stageItem}>
-              <div className={clsx(styles.stageDot, styles.green)} />
-              <div className={styles.stageInfo}>
-                <div className={styles.stageTitle}>Мастер (30-60+ дней)</div>
-                <div className={styles.stageDesc}>Надёжно усвоено в долговременной памяти</div>
+            {STAGES.map((stage) => (
+              <div key={stage.id} className={styles.stageItem}>
+                <div className={clsx(styles.stageDot, styles[stage.colorClass])} />
+                <div className={styles.stageInfo}>
+                  <div className={styles.stageTitle}>{stage.title}</div>
+                  <div className={styles.stageDesc}>{stage.getDesc(scopeLabel)}</div>
+                </div>
+                <Badge
+                  variant="gray"
+                  size="sm"
+                  uppercase={false}
+                  className={styles.stageBadge}
+                >
+                  {masteryStats[stage.countKey]}
+                </Badge>
               </div>
-              <div className={styles.stageCount}>{masteryStats.mastered}</div>
-            </div>
-
-            <div className={styles.stageItem}>
-              <div className={clsx(styles.stageDot, styles.yellow)} />
-              <div className={styles.stageInfo}>
-                <div className={styles.stageTitle}>Закрепление (7-14 дней)</div>
-                <div className={styles.stageDesc}>Уверенное решение, интервалы растут</div>
-              </div>
-              <div className={styles.stageCount}>{masteryStats.reviewing}</div>
-            </div>
-
-            <div className={styles.stageItem}>
-              <div className={clsx(styles.stageDot, styles.red)} />
-              <div className={styles.stageInfo}>
-                <div className={styles.stageTitle}>Изучение (1-3 дня)</div>
-                <div className={styles.stageDesc}>Активная фаза повторов и разбора нюансов</div>
-              </div>
-              <div className={styles.stageCount}>{masteryStats.learning}</div>
-            </div>
-
-            <div className={styles.stageItem}>
-              <div className={clsx(styles.stageDot, styles.gray)} />
-              <div className={styles.stageInfo}>
-                <div className={styles.stageTitle}>Ещё не в графике</div>
-                <div className={styles.stageDesc}>Задачи {scopeLabel}, ожидающие решения</div>
-              </div>
-              <div className={styles.stageCount}>{masteryStats.unreviewed}</div>
-            </div>
+            ))}
           </div>
 
           {!hasReviews && (

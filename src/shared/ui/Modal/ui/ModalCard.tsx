@@ -37,7 +37,7 @@ export const ModalCard = memo(
     hideCloseButton,
     onClose,
     customHeader,
-  }: ModalCardProps) => {
+  }: ModalCardProps): React.JSX.Element => {
     const modalClassNames = clsx(styles.modal, styles[`size-${size}`], className);
 
     return (

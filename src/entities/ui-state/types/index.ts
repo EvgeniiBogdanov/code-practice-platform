@@ -32,6 +32,7 @@ export interface UIState {
   advancedExpanded: boolean;
   reactTsExpanded: boolean;
   reactTsPracticeExpanded: boolean;
+  lifecycleExpanded: boolean;
 
   expandedJsGroups: Record<string, boolean>;
   expandedJsSubgroups: Record<string, boolean>;
@@ -39,6 +40,7 @@ export interface UIState {
   expandedAlgoSubgroups: Record<string, boolean>;
 
   tooltip: string | null;
+  hideTooltips: boolean;
 
   setTheme: (themeOrFn: ThemeMode | ((prev: ThemeMode) => ThemeMode)) => void;
   toggleTheme: () => void;
@@ -84,6 +86,7 @@ export interface UIState {
   setAdvancedExpanded: (open: boolean | ((prev: boolean) => boolean)) => void;
   setReactTsExpanded: (open: boolean | ((prev: boolean) => boolean)) => void;
   setReactTsPracticeExpanded: (open: boolean | ((prev: boolean) => boolean)) => void;
+  setLifecycleExpanded: (open: boolean | ((prev: boolean) => boolean)) => void;
   setAllReactCategoriesExpanded: (expanded: boolean) => void;
   setExpandedJsGroups: (
     updater: Record<string, boolean> | ((prev: Record<string, boolean>) => Record<string, boolean>)
@@ -101,6 +104,7 @@ export interface UIState {
   openSingleCategory: (categoryId: string) => void;
 
   setTooltip: (tooltip: string | null) => void;
+  setHideTooltips: (hideTooltips: boolean | ((prev: boolean) => boolean)) => void;
   collapseAllInCurrentSection: (section: "javascript" | "algorithms" | "react") => void;
   expandAllInCurrentSection: (
     section: "javascript" | "algorithms" | "react",

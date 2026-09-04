@@ -56,6 +56,12 @@ export function detectMissingImports(
     ) {
       return;
     }
+
+    // Do not check TypeScript types in pure JS/JSX files
+    if (!capabilities.supportsTypeScript && info.category === "type") {
+      return;
+    }
+
     symbolRegistry[sym] = info;
   });
 

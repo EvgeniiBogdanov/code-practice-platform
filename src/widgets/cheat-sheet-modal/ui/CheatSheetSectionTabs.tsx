@@ -1,9 +1,10 @@
 import { memo, useMemo } from "react";
 import { Code2, Zap, Brain, BookOpen } from "lucide-react";
 import { Tabs, TabItem } from "@/shared/ui";
+import { SectionType } from "../model/types";
 import styles from "./CheatSheetModal.module.css";
 
-export type SectionType = "react" | "javascript" | "algorithms" | "home";
+export type { SectionType };
 
 interface CheatSheetSectionTabsProps {
   activeSection: SectionType;

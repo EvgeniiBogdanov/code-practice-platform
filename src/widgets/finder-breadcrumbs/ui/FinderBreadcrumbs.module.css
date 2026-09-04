@@ -151,11 +151,11 @@
   width: max-content;
   max-height: 380px;
   background: var(--bg-card, #252525);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-color, #383837);
   border-radius: var(--radius-md, 8px);
   box-shadow:
-    0 4px 20px rgba(0, 0, 0, 0.35),
-    0 1px 4px rgba(0, 0, 0, 0.18);
+    0 12px 32px rgba(0, 0, 0, 0.45),
+    0 2px 8px rgba(0, 0, 0, 0.25);
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -163,12 +163,12 @@
   animation: breadcrumbFadeIn 0.15s cubic-bezier(0, 0, 0.2, 1);
 }
 
-[data-theme="light"] .dropdownMenu {
-  background: var(--bg-popover, #ffffff);
-  border-color: var(--border-color);
+:global([data-theme="light"]) .dropdownMenu {
+  background: var(--bg-card, #ffffff);
+  border-color: var(--border-color, rgba(55, 53, 47, 0.12));
   box-shadow:
-    0 4px 16px rgba(15, 15, 15, 0.08),
-    0 1px 3px rgba(15, 15, 15, 0.04);
+    0 12px 32px rgba(15, 15, 15, 0.12),
+    0 2px 8px rgba(15, 15, 15, 0.06);
 }
 
 @keyframes breadcrumbFadeIn {
@@ -190,18 +190,20 @@
   font-weight: var(--fw-semibold, 600);
   text-transform: uppercase;
   letter-spacing: var(--ls-section, 0.04em);
-  color: var(--text-muted);
-  padding: 8px 10px 5px 10px;
+  color: var(--fg-muted, #75726e);
+  padding: 8px 10px 6px 10px;
   user-select: none;
   background: rgba(255, 255, 255, 0.02);
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color, #383837);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-[data-theme="light"] .dropdownHeader {
-  background: var(--bg-sidebar);
+:global([data-theme="light"]) .dropdownHeader {
+  background: var(--bg-sidebar, #f7f6f3);
+  color: var(--fg-muted, #787774);
+  border-bottom-color: var(--border-color, rgba(55, 53, 47, 0.12));
 }
 
 .dropdownHeaderIcon {
@@ -220,7 +222,7 @@
 .dropdownList {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
   padding: 4px;
   overflow-y: auto;
   max-height: 320px;
@@ -230,28 +232,46 @@
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 5px 8px;
-  min-height: 27px;
+  gap: 8px;
+  padding: 6px 10px;
+  min-height: 30px;
   background: transparent;
   border: none;
-  border-radius: var(--radius-sm, 4px);
-  color: var(--text-main);
-  font-size: 13px;
+  border-radius: var(--radius-md, 6px);
+  color: var(--text-main, #efefed);
+  font-size: 13.5px;
   font-weight: 500;
   font-family: var(--font-sans);
   text-decoration: none;
   cursor: pointer;
   box-sizing: border-box;
-  transition: background var(--transition-fast);
+  transition:
+    background var(--transition-fast, 0.1s ease),
+    color var(--transition-fast, 0.1s ease);
 }
 
 .dropdownItem:hover {
-  background: var(--state-hover);
+  background: var(--state-hover, rgba(255, 255, 255, 0.055));
+  color: var(--text-main, #ffffff);
 }
 
 .dropdownItem.active {
-  background: var(--state-active);
+  background: #333333;
+  color: #ffffff;
+}
+
+:global([data-theme="light"]) .dropdownItem {
+  color: var(--text-main, #37352f);
+}
+
+:global([data-theme="light"]) .dropdownItem:hover {
+  background: rgba(55, 53, 47, 0.055);
+  color: var(--text-main, #37352f);
+}
+
+:global([data-theme="light"]) .dropdownItem.active {
+  background: rgba(55, 53, 47, 0.08);
+  color: var(--text-main, #37352f);
 }
 
 .dropdownItemIcon {
@@ -266,7 +286,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 0;
-  font-size: 14px;
+  font-size: 13.5px;
 }
 
 .sectionBadge {
@@ -274,15 +294,16 @@
   font-size: 11px;
   font-weight: 500;
   font-family: var(--font-sans);
-  padding: 1px 6px;
-  border-radius: 10px;
+  padding: 2px 8px;
+  border-radius: 12px;
   flex-shrink: 0;
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--fg-muted, rgba(255, 255, 255, 0.55));
+  color: var(--fg-muted, #8e8d8c);
 }
 
-[data-theme="light"] .sectionBadge {
+:global([data-theme="light"]) .sectionBadge {
   background: rgba(55, 53, 47, 0.06);
+  color: var(--fg-muted, #787774);
+  border-color: rgba(55, 53, 47, 0.08);
 }
 
 .fileIcon {
@@ -364,7 +385,7 @@
 
 /* Section / Icon Colors */
 .icon_home {
-  color: #60a5fa;
+  color: var(--color-home);
   flex-shrink: 0;
 }
 

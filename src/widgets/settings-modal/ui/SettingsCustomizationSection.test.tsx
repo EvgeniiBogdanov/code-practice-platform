@@ -2,9 +2,11 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { SettingsCustomizationSection } from "./SettingsCustomizationSection";
 import { useReviewStore } from "@/entities/review";
+import { useUIStore } from "@/entities/ui-state";
 
 describe("SettingsCustomizationSection", () => {
   beforeEach(() => {
+    useUIStore.setState({ hideTooltips: false });
     useReviewStore.setState({
       assistantName: "Интервальный помощник",
       setAssistantName: vi.fn().mockImplementation(async (name: string) => {
@@ -50,5 +52,27 @@ describe("SettingsCustomizationSection", () => {
 
     fireEvent.click(resetBtn);
     expect(useReviewStore.getState().assistantName).toBe("Интервальный помощник");
+  });
+
+  it("renders 'Убрать подсказки' switch unchecked by default", () => {
+    render(<SettingsCustomizationSection />);
+
+    expect(screen.getByText("Убрать подсказки")).toBeInTheDocument();
+    const switchEl = screen.getByRole("switch", { name: /Убрать подсказки/i });
+    expect(switchEl).not.toBeChecked();
+  });
+
+  it("toggles hideTooltips in uiStore when switch is clicked", () => {
+    render(<SettingsCustomizationSection />);
+
+    const switchEl = screen.getByRole("switch", { name: /Убрать подсказки/i });
+    fireEvent.click(switchEl);
+
+    expect(useUIStore.getState().hideTooltips).toBe(true);
+    expect(switchEl).toBeChecked();
+
+    fireEvent.click(switchEl);
+    expect(useUIStore.getState().hideTooltips).toBe(false);
+    expect(switchEl).not.toBeChecked();
   });
 });

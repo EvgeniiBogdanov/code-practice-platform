@@ -37,19 +37,35 @@ const SECTION_LOADERS: Record<SectionType, () => Promise<Task[]>> = {
         "Рефакторинг",
         "refactoring"
       ),
-      ...normalizeTasks(module.MAIN_TASKS as readonly RawTask[], "react", "Middle", "middle"),
-      ...normalizeTasks(module.ADVANCED_TASKS as readonly RawTask[], "react", "Strong", "strong"),
+      ...normalizeTasks(
+        module.MAIN_TASKS as readonly RawTask[],
+        "react",
+        "UI-компоненты и паттерны",
+        "middle"
+      ),
+      ...normalizeTasks(
+        module.ADVANCED_TASKS as readonly RawTask[],
+        "react",
+        "Управление состоянием",
+        "strong"
+      ),
       ...normalizeTasks(
         module.REACT_TS_TASKS as readonly RawTask[],
         "react",
-        "React + TS (Разминка)",
+        "TypeScript: Паттерны типизации",
         "ts"
       ),
       ...normalizeTasks(
         module.REACT_TS_PRACTICE_TASKS as readonly RawTask[],
         "react",
-        "React + TS (Практика)",
+        "TypeScript: Прикладные сценарии",
         "ts"
+      ),
+      ...normalizeTasks(
+        module.LIFECYCLE_TASKS as readonly RawTask[],
+        "react",
+        "Жизненный цикл и рантайм",
+        "strong"
       ),
     ];
   },

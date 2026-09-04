@@ -1,14 +1,10 @@
 import { memo } from "react";
-import { Sparkles } from "lucide-react";
+import { Lightbulb } from "lucide-react";
 import { CodeViewer, Callout } from "@/shared/ui";
+import { CheatItem } from "../model/types";
 import styles from "./CheatSheetModal.module.css";
 
-export interface CheatItem {
-  title: string;
-  desc?: string;
-  code: string;
-  tip?: string;
-}
+export type { CheatItem };
 
 interface CheatSheetCardProps {
   item: CheatItem;
@@ -32,8 +28,9 @@ export const CheatSheetCard = memo(({ item }: CheatSheetCardProps) => {
 
       {item.tip && (
         <Callout
-          color="yellow"
-          icon={<Sparkles size={13} />}
+          size="xs"
+          color="amber"
+          icon={<Lightbulb size={13} />}
           title="Лайфхак для интервью"
           className={styles.cheatsheetCallout}
         >

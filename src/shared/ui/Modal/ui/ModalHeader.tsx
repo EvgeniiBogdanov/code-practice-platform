@@ -1,7 +1,6 @@
 import React, { memo } from "react";
 import { clsx } from "clsx";
 import { X } from "lucide-react";
-import { SquareButton } from "../../SquareButton";
 import { Tooltip } from "../../Tooltip";
 import styles from "../Modal.module.css";
 
@@ -15,24 +14,33 @@ export interface ModalHeaderProps {
 }
 
 export const ModalHeader = memo(
-  ({ title, icon, description, hideCloseButton, onClose, className }: ModalHeaderProps) => {
+  ({
+    title,
+    icon,
+    description,
+    hideCloseButton,
+    onClose,
+    className,
+  }: ModalHeaderProps): React.JSX.Element => {
     return (
       <div className={clsx(styles.header, className)}>
         <div className={styles.titleGroup}>
           {icon && <div className={styles.iconWrapper}>{icon}</div>}
-          <div>
+          <div className={styles.titleContent}>
             <h3 className={styles.title}>{title}</h3>
             {description && <div className={styles.description}>{description}</div>}
           </div>
         </div>
         {!hideCloseButton && (
-          <Tooltip content="Закрыть" side="bottom">
-            <SquareButton
-              icon={<X size={18} />}
+          <Tooltip content="Закрыть (Esc)" side="bottom">
+            <button
+              type="button"
+              className={styles.closeBtn}
               onClick={onClose}
               aria-label="Закрыть модальное окно"
-              size="md"
-            />
+            >
+              <X size={16} />
+            </button>
           </Tooltip>
         )}
       </div>

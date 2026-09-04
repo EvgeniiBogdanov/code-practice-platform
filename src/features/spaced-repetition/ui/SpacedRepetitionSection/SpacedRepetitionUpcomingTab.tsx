@@ -38,7 +38,7 @@ export const SpacedRepetitionUpcomingTab = memo(
   ({ upcomingTasks, scopeLabel, onNavigate }: SpacedRepetitionUpcomingTabProps) => {
     if (upcomingTasks.length === 0) {
       return (
-        <Card variant="subtle" className={styles.emptyDueCard}>
+        <Card variant="ghost" className={styles.emptyDueCard}>
           <CalendarClock size={32} className={styles.emptyDueIcon} />
           <div className={styles.emptyDueTitle}>Нет запланированных повторений {scopeLabel}</div>
           <div className={styles.emptyDueDesc}>

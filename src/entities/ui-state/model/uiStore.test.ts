@@ -41,6 +41,7 @@ describe("useUIStore - resetUISettings", () => {
     expect(state.consoleCollapsed).toBe(true);
     expect(state.warmupExpanded).toBe(false);
     expect(state.expandedJsGroups).toEqual({});
+    expect(state.hideTooltips).toBe(false);
 
     expect(localStorage.getItem("playground_group_view_mode")).toBeNull();
     expect(localStorage.getItem("playground_favorites_list_display_mode")).toBeNull();
@@ -48,5 +49,13 @@ describe("useUIStore - resetUISettings", () => {
     expect(localStorage.getItem("playground_theme")).toBeNull();
     expect(sessionStorage.getItem("playground_collapsed_subgroups_1")).toBeNull();
     expect(sessionStorage.getItem("playground_favorite_tree_collapsed_folders_javascript")).toBeNull();
+  });
+
+  it("updates hideTooltips using boolean and function updater", () => {
+    useUIStore.getState().setHideTooltips(true);
+    expect(useUIStore.getState().hideTooltips).toBe(true);
+
+    useUIStore.getState().setHideTooltips((prev) => !prev);
+    expect(useUIStore.getState().hideTooltips).toBe(false);
   });
 });

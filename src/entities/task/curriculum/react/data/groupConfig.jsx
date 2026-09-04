@@ -1,5 +1,5 @@
 import React from "react";
-import { Flame, Wrench, Rocket, Brain, Zap } from "lucide-react";
+import { Flame, Wrench, Rocket, Brain, Zap, RotateCcw } from "lucide-react";
 
 export const REACT_GROUPS_CONFIG = {
   "group-warmup": {
@@ -19,33 +19,41 @@ export const REACT_GROUPS_CONFIG = {
     bg: "var(--accent-blue-bg)",
   },
   "group-middle": {
-    name: "Middle",
-    title: "Middle",
-    desc: "Практические задачи уровня Middle по React с реальных технических собеседований.",
+    name: "UI-компоненты и паттерны",
+    title: "UI-компоненты и паттерны",
+    desc: "Продуктовые виджеты, работа с сетью, формы, a11y и сложные интерфейсные сценарии.",
     icon: Rocket,
     color: "var(--accent-green)",
     bg: "var(--accent-green-bg)",
   },
   "group-strong": {
-    name: "Strong",
-    title: "Strong",
-    desc: "Продвинутые задачи и сложные паттерны проектирования на React.",
+    name: "Управление состоянием",
+    title: "Управление состоянием",
+    desc: "Архитектура хранилища данных, хук useReducer и Redux Toolkit (слайсы, thunk, селекторы).",
     icon: Brain,
     color: "var(--accent-purple)",
     bg: "var(--accent-purple-bg)",
   },
+  "group-lifecycle": {
+    name: "Жизненный цикл и рантайм",
+    title: "Жизненный цикл и рантайм",
+    desc: "Порядок фаз Render, Commit, Paint, синхронный useLayoutEffect, ref callbacks и цикл очистки эффектов.",
+    icon: RotateCcw,
+    color: "var(--accent-orange, #f97316)",
+    bg: "var(--accent-orange-bg, rgba(249, 115, 22, 0.1))",
+  },
   "group-ts": {
-    name: "React + TS (Разминка)",
-    title: "React + TS (Разминка)",
-    desc: "Задачи на типизацию базовых хуков, пропсов и компонентов React в TypeScript.",
+    name: "TypeScript: Паттерны типизации",
+    title: "TypeScript: Паттерны типизации",
+    desc: "Generic-компоненты, полиморфизм, дискриминантные типы и типизация хуков.",
     icon: Zap,
     color: "var(--accent-blue)",
     bg: "var(--accent-blue-bg)",
   },
   "group-ts-practice": {
-    name: "React + TS (Практика)",
-    title: "React + TS (Практика)",
-    desc: "Комплексные практические задания на связку React + TypeScript.",
+    name: "TypeScript: Прикладные сценарии",
+    title: "TypeScript: Прикладные сценарии",
+    desc: "Сквозная разработка компонентов с полной типобезопасностью от DTO до рендера.",
     icon: Zap,
     color: "var(--accent-blue)",
     bg: "var(--accent-blue-bg)",

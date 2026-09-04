@@ -18,10 +18,7 @@ export const SettingsResetSection = memo(
       <div className={styles.settingsSectionWrapper}>
         <section className={styles.settingsSection}>
           <div className={styles.sectionHeader}>
-            <h3 className={styles.sectionTitle}>Прогресс и хранилище</h3>
-            <p className={styles.sectionSubtitle}>
-              Управление локальным прогрессом решений и графиком интервального повторения
-            </p>
+            <h3 className={styles.sectionTitle}>Хранилище данных</h3>
           </div>
 
           <div className={styles.settingsRowList}>
@@ -40,7 +37,15 @@ export const SettingsResetSection = memo(
                 </span>
               </div>
             </div>
+          </div>
+        </section>
 
+        <section className={styles.settingsSection}>
+          <div className={styles.sectionHeader}>
+            <h3 className={styles.sectionTitle}>Сброс параметров</h3>
+          </div>
+
+          <div className={styles.settingsRowList}>
             <div className={styles.settingsRow}>
               <div className={styles.settingsRowInfo}>
                 <div className={styles.settingsRowTitle}>Интервальное повторение (SM-2)</div>
@@ -52,7 +57,6 @@ export const SettingsResetSection = memo(
                 <Button
                   variant="secondary"
                   size="sm"
-                  className={styles.settingsRowBtn}
                   onClick={onOpenResetReviews}
                 >
                   Сбросить график
@@ -71,14 +75,21 @@ export const SettingsResetSection = memo(
                 <Button
                   variant="secondary"
                   size="sm"
-                  className={styles.settingsRowBtn}
                   onClick={onOpenResetUI}
                 >
                   Сбросить интерфейс
                 </Button>
               </div>
             </div>
+          </div>
+        </section>
 
+        <section className={styles.settingsSection}>
+          <div className={styles.sectionHeader}>
+            <h3 className={styles.sectionTitle}>Удаление данных</h3>
+          </div>
+
+          <div className={styles.settingsRowList}>
             <div className={styles.settingsRow}>
               <div className={styles.settingsRowInfo}>
                 <div className={styles.settingsRowTitle}>Удалить все данные платформы</div>
@@ -88,9 +99,8 @@ export const SettingsResetSection = memo(
               </div>
               <div className={styles.settingsRowAction}>
                 <Button
-                  variant="secondary"
+                  variant="danger"
                   size="sm"
-                  className={styles.settingsRowBtn}
                   onClick={onOpenResetAll}
                 >
                   Сбросить всё

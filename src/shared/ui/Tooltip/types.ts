@@ -6,6 +6,7 @@ export interface TooltipProviderContextValue {
   skipDelayDuration: number;
   isWarm: boolean;
   setWarm: (warm: boolean) => void;
+  disabled?: boolean;
 }
 
 export const DEFAULT_TOOLTIP_DELAY_DURATION = 300;
@@ -15,6 +16,7 @@ export const TooltipProviderContext = createContext<TooltipProviderContextValue>
   skipDelayDuration: 300,
   isWarm: false,
   setWarm: () => {},
+  disabled: false,
 });
 
 export interface TooltipContextValue {

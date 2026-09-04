@@ -17,36 +17,38 @@ export const CommandPaletteTabs = memo(
         {
           id: "all",
           label: "Все",
-          icon: <Layers size={12} />,
+          icon: <Layers size={13} />,
         },
         {
           id: "react",
-          label: "React",
-          icon: <Code2 size={12} className={styles.iconReact} />,
+          label: "React & TS",
+          icon: <Code2 size={13} className={styles.iconReact} />,
         },
         {
           id: "javascript",
           label: "JavaScript",
-          icon: <Zap size={12} className={styles.iconJs} />,
+          icon: <Zap size={13} className={styles.iconJs} />,
         },
         {
           id: "algorithms",
           label: "Алгоритмы",
-          icon: <Brain size={12} className={styles.iconAlgo} />,
+          icon: <Brain size={13} className={styles.iconAlgo} />,
         },
       ],
       []
     );
 
     return (
-      <Tabs
-        variant="pills"
-        size="sm"
-        items={tabItems}
-        activeId={activeSection}
-        onChange={(id) => onSelectSection(id as PaletteSection)}
-        className={styles.sectionTabs}
-      />
+      <div className={styles.sectionTabsWrapper}>
+        <Tabs
+          variant="pills"
+          size="sm"
+          items={tabItems}
+          activeId={activeSection}
+          onChange={(id) => onSelectSection(id as PaletteSection)}
+          className={styles.sectionTabs}
+        />
+      </div>
     );
   }
 );

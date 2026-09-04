@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from "react";
-import { Zap, Code2, Brain, Flame, Wrench, Rocket } from "lucide-react";
+import { Zap, Code2, Brain, Flame, Wrench, Rocket, RotateCcw } from "lucide-react";
 import { getGroupMeta, getAlgoGroupMeta } from "@/entities/task/groups";
 import type { SectionType, Task } from "@/entities/task/meta";
 import { useTaskSection } from "@/entities/task/catalog";
@@ -149,7 +149,7 @@ export const useSectionOverview = (
       const categories = [
         {
           id: "warmup",
-          name: "1. Разминка (Warm-up)",
+          name: "1. Разминка",
           icon: React.createElement(Flame, { size: 18, color: "#f97316" }),
           tasks: sectionTasks.filter(
             (t) => t.category === "warmup" || t.difficulty === "warm-up"
@@ -159,7 +159,7 @@ export const useSectionOverview = (
         },
         {
           id: "refactoring",
-          name: "2. Рефакторинг (Refactoring)",
+          name: "2. Рефакторинг",
           icon: React.createElement(Wrench, { size: 18, color: "#06b6d4" }),
           tasks: sectionTasks.filter(
             (t) => t.category === "refactoring" || t.difficulty === "refactoring"
@@ -169,37 +169,51 @@ export const useSectionOverview = (
         },
         {
           id: "middle",
-          name: "3. Middle задачи",
+          name: "3. UI-компоненты и паттерны",
           icon: React.createElement(Rocket, { size: 18, color: "#3b82f6" }),
           tasks: sectionTasks.filter(
-            (t) => t.category === "middle" || t.difficulty === "middle"
+            (t) => t.category === "UI-компоненты и паттерны" || t.difficulty === "middle"
           ),
           firstTaskId: "middle-1",
           color: "#3b82f6",
         },
         {
           id: "strong",
-          name: "4. Strong Middle & Senior",
-          icon: React.createElement(Zap, { size: 18, color: "#a855f7" }),
+          name: "4. Управление состоянием",
+          icon: React.createElement(Brain, { size: 18, color: "#a855f7" }),
           tasks: sectionTasks.filter(
-            (t) => t.category === "strong" || t.difficulty === "strong"
+            (t) => t.category === "Управление состоянием"
           ),
-          firstTaskId: "strong-1",
+          firstTaskId: "a1",
           color: "#a855f7",
         },
         {
-          id: "react-ts",
-          name: "5. React + TypeScript",
+          id: "lifecycle",
+          name: "5. Жизненный цикл и рантайм",
+          icon: React.createElement(RotateCcw, { size: 18, color: "#f97316" }),
+          tasks: sectionTasks.filter(
+            (t) => t.category === "Жизненный цикл и рантайм"
+          ),
+          firstTaskId: "a4",
+          color: "#f97316",
+        },
+        {
+          id: "ts",
+          name: "6. TypeScript: Паттерны типизации",
           icon: React.createElement(Code2, { size: 18, color: "#3178c6" }),
-          tasks: sectionTasks.filter((t) => t.category === "react-ts" || t.difficulty === "ts"),
+          tasks: sectionTasks.filter(
+            (t) => t.category === "TypeScript: Паттерны типизации"
+          ),
           firstTaskId: "ts-1",
           color: "#3178c6",
         },
         {
           id: "ts-practice",
-          name: "6. TS Практика (Middle)",
+          name: "7. TypeScript: Прикладные сценарии",
           icon: React.createElement(Code2, { size: 18, color: "#10b981" }),
-          tasks: sectionTasks.filter((t) => t.category === "ts-practice"),
+          tasks: sectionTasks.filter(
+            (t) => t.category === "TypeScript: Прикладные сценарии"
+          ),
           firstTaskId: "ts-practice-1",
           color: "#10b981",
         },
