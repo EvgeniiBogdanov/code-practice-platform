@@ -21,6 +21,7 @@ export const useSidebarSync = (): void => {
   const setAdvancedExpanded = useUIStore((state) => state.setAdvancedExpanded);
   const setReactTsExpanded = useUIStore((state) => state.setReactTsExpanded);
   const setReactTsPracticeExpanded = useUIStore((state) => state.setReactTsPracticeExpanded);
+  const setLifecycleExpanded = useUIStore((state) => state.setLifecycleExpanded);
 
   const setExpandedJsGroups = useUIStore((state) => state.setExpandedJsGroups);
   const setExpandedJsSubgroups = useUIStore((state) => state.setExpandedJsSubgroups);
@@ -47,16 +48,18 @@ export const useSidebarSync = (): void => {
       const isWarmup = task.difficulty === "warm-up";
       const isRefactoring = task.difficulty === "refactoring";
       const isMiddle = task.difficulty === "middle";
-      const isStrong = task.difficulty === "strong";
-      const isReactTs = task.category === "React + TS (Разминка)";
-      const isReactTsPractice = task.category === "React + TS (Практика)";
+      const isStateManagement = task.category === "Управление состоянием";
+      const isReactTs = task.category === "TypeScript: Паттерны типизации";
+      const isReactTsPractice = task.category === "TypeScript: Прикладные сценарии";
+      const isLifecycle = task.category === "Жизненный цикл и рантайм";
 
       if (isWarmup) setWarmupExpanded(true);
       else if (isRefactoring) setRefactoringExpanded(true);
       else if (isMiddle) setTasksExpanded(true);
-      else if (isStrong) setAdvancedExpanded(true);
+      else if (isStateManagement) setAdvancedExpanded(true);
       else if (isReactTs) setReactTsExpanded(true);
       else if (isReactTsPractice) setReactTsPracticeExpanded(true);
+      else if (isLifecycle) setLifecycleExpanded(true);
     }
 
     // 2. JavaScript tasks synchronization
@@ -108,6 +111,7 @@ export const useSidebarSync = (): void => {
     setAdvancedExpanded,
     setReactTsExpanded,
     setReactTsPracticeExpanded,
+    setLifecycleExpanded,
     setExpandedJsGroups,
     setExpandedJsSubgroups,
     setExpandedAlgoGroups,

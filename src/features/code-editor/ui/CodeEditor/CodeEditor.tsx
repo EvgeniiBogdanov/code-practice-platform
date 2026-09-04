@@ -42,6 +42,7 @@ export const CodeEditor = ({
     wordWrap,
     setWordWrap,
     toggleWordWrap,
+    hideTooltips,
     effectiveFullscreen,
     toggleFullscreen,
     cursorPos,
@@ -212,7 +213,7 @@ export const CodeEditor = ({
               />
             )}
 
-            {hoverSignatures.hoverInfo && (
+            {hoverSignatures.hoverInfo && !hideTooltips && (
               <HoverSignatureCard
                 info={hoverSignatures.hoverInfo}
                 position={hoverSignatures.position}

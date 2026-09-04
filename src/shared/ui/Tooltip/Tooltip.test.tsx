@@ -127,4 +127,74 @@ describe("Tooltip", () => {
     const button = screen.getByRole("button", { name: "Кнопка с title" });
     expect(button).not.toHaveAttribute("title");
   });
+
+  it("does not open tooltip when TooltipProvider is disabled", () => {
+    render(
+      <Tooltip.Provider disabled delayDuration={100}>
+        <Tooltip content="Подсказка отключена">
+          <button type="button">Кнопка</button>
+        </Tooltip>
+      </Tooltip.Provider>
+    );
+
+    const button = screen.getByRole("button", { name: "Кнопка" });
+    fireEvent.mouseEnter(button);
+
+    act(() => {
+      vi.advanceTimersByTime(200);
+    });
+
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+  });
+
+  it("inherits disabled status in nested Tooltip.Provider", () => {
+    render(
+      <Tooltip.Provider disabled delayDuration={100}>
+        <Tooltip.Provider delayDuration={50}>
+          <Tooltip content="Вложенный тултип">
+            <button type="button">Вложенная кнопка</button>
+          </Tooltip>
+        </Tooltip.Provider>
+      </Tooltip.Provider>
+    );
+
+    const button = screen.getByRole("button", { name: "Вложенная кнопка" });
+    fireEvent.mouseEnter(button);
+
+    act(() => {
+      vi.advanceTimersByTime(200);
+    });
+
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+  });
+
+  it("closes open tooltip if disabled becomes true", () => {
+    const { rerender } = render(
+      <Tooltip.Provider disabled={false} delayDuration={100}>
+        <Tooltip content="Динамическая подсказка">
+          <button type="button">Кнопка</button>
+        </Tooltip>
+      </Tooltip.Provider>
+    );
+
+    const button = screen.getByRole("button", { name: "Кнопка" });
+    fireEvent.mouseEnter(button);
+
+    act(() => {
+      vi.advanceTimersByTime(150);
+    });
+
+    expect(screen.getByRole("tooltip")).toBeInTheDocument();
+
+    // Disable provider
+    rerender(
+      <Tooltip.Provider disabled={true} delayDuration={100}>
+        <Tooltip content="Динамическая подсказка">
+          <button type="button">Кнопка</button>
+        </Tooltip>
+      </Tooltip.Provider>
+    );
+
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+  });
 });

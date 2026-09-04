@@ -2,11 +2,7 @@ import React, { useState, useRef, useEffect, memo, useMemo, useCallback } from "
 import { Link } from "@tanstack/react-router";
 import { ChevronDown, PanelLeft, ChevronsDownUp, ChevronsUpDown } from "lucide-react";
 import { clsx } from "clsx";
-import {
-  SECTIONS_CONFIG,
-  SECTIONS_LIST,
-  SectionType,
-} from "@/entities/task/meta";
+import { SECTIONS_CONFIG, SECTIONS_LIST, SectionType } from "@/entities/task/meta";
 import { useTaskSection } from "@/entities/task/catalog";
 import { useUIStore } from "@/entities/ui-state";
 import { Tooltip, SquareButton } from "@/shared/ui";
@@ -18,17 +14,14 @@ export interface SidebarWorkspaceHeaderProps {
 }
 
 export const SidebarWorkspaceHeader = memo(
-  ({ activeSectionKey, onCloseSidebar }: SidebarWorkspaceHeaderProps) => {
+  ({ activeSectionKey, onCloseSidebar }: SidebarWorkspaceHeaderProps): React.JSX.Element => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     const activeSection = SECTIONS_CONFIG[activeSectionKey] || SECTIONS_CONFIG.home;
     const ActiveSectionIcon = activeSection.icon;
     const taskSection = activeSectionKey === "home" ? "react" : activeSectionKey;
-    const { tasks: activeSectionTasks } = useTaskSection(
-      taskSection,
-      activeSectionKey !== "home"
-    );
+    const { tasks: activeSectionTasks } = useTaskSection(taskSection, activeSectionKey !== "home");
     const activeGroupNames = useMemo(
       () => [
         ...new Set(
@@ -125,38 +118,47 @@ export const SidebarWorkspaceHeader = memo(
           <Tooltip content="Выбрать раздел платформы" side="right" sideOffset={8} fullWidth>
             <button
               type="button"
-              className={styles.workspaceInfoBtn}
+              className={clsx(
+                styles.workspaceInfoBtn,
+                dropdownOpen && styles.workspaceInfoBtnActive
+              )}
               onClick={() => setDropdownOpen((prev) => !prev)}
               aria-label="Переключить раздел платформы"
+              aria-expanded={dropdownOpen}
             >
               <ActiveSectionIcon size={16} className={styles[`icon_${activeSection.id}`]} />
               <span>{activeSection.title}</span>
-              <ChevronDown size={13} className={styles.sectionChevron} />
+              <ChevronDown
+                size={13}
+                className={clsx(styles.sectionChevron, dropdownOpen && styles.sectionChevronOpen)}
+              />
             </button>
           </Tooltip>
 
           {dropdownOpen && (
             <div className={styles.sectionDropdownMenu}>
-              <div className={styles.sectionDropdownHeader}>Разделы платформы</div>
-              {SECTIONS_LIST.map((sec) => {
-                const Icon = sec.icon;
-                const isActive = activeSectionKey === sec.id;
-                return (
-                  <Link
-                    key={sec.id}
-                    to={sec.path}
-                    className={clsx(
-                      styles.sectionDropdownItem,
-                      isActive && styles.activeDropdownItem
-                    )}
-                    onClick={() => setDropdownOpen(false)}
-                  >
-                    <Icon size={15} className={styles[`icon_${sec.id}`]} />
-                    <span>{sec.title}</span>
-                    <span className={styles.sectionBadge}>{sec.badge}</span>
-                  </Link>
-                );
-              })}
+              <div className={styles.sectionDropdownHeader}>РАЗДЕЛЫ ПЛАТФОРМЫ</div>
+              <div className={styles.sectionDropdownList}>
+                {SECTIONS_LIST.map((sec) => {
+                  const Icon = sec.icon;
+                  const isActive = activeSectionKey === sec.id;
+                  return (
+                    <Link
+                      key={sec.id}
+                      to={sec.path}
+                      className={clsx(
+                        styles.sectionDropdownItem,
+                        isActive && styles.activeDropdownItem
+                      )}
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      <Icon size={15} className={styles[`icon_${sec.id}`]} />
+                      <span className={styles.sectionDropdownItemTitle}>{sec.title}</span>
+                      <span className={styles.sectionBadge}>{sec.badge}</span>
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
           )}
         </div>

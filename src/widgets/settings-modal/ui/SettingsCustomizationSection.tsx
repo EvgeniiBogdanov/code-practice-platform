@@ -1,9 +1,45 @@
 import React, { memo, useState, useEffect, useCallback } from "react";
-import { Button, Input } from "@/shared/ui";
+import { Button, Input, Switch } from "@/shared/ui";
 import { useReviewStore, DEFAULT_ASSISTANT_NAME } from "@/entities/review";
+import { useUIStore } from "@/entities/ui-state";
 import styles from "./SettingsCustomizationSection.module.css";
 
 const MAX_ASSISTANT_NAME_LENGTH = 30;
+
+const TooltipSettingsSection = memo((): React.JSX.Element => {
+  const hideTooltips = useUIStore((state) => state.hideTooltips);
+  const setHideTooltips = useUIStore((state) => state.setHideTooltips);
+
+  return (
+    <section className={styles.settingsSection}>
+      <div className={styles.sectionHeader}>
+        <h3 className={styles.sectionTitle}>Интерфейс</h3>
+      </div>
+
+      <div className={styles.settingsRowList}>
+        <div className={styles.settingsRow}>
+          <div className={styles.rowInfo}>
+            <div className={styles.rowTitle}>Убрать подсказки</div>
+            <div className={styles.rowDesc}>
+              Отключает всплывающие подсказки при наведении курсора на кнопки, элементы управления и
+              код в редакторе
+            </div>
+          </div>
+
+          <div className={styles.switchAction}>
+            <Switch
+              checked={hideTooltips}
+              onChange={setHideTooltips}
+              aria-label="Убрать подсказки"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+});
+
+TooltipSettingsSection.displayName = "TooltipSettingsSection";
 
 export const SettingsCustomizationSection = memo((): React.JSX.Element => {
   const assistantName = useReviewStore((state) => state.assistantName) || DEFAULT_ASSISTANT_NAME;
@@ -51,63 +87,62 @@ export const SettingsCustomizationSection = memo((): React.JSX.Element => {
 
   return (
     <div className={styles.settingsSectionWrapper}>
+      <TooltipSettingsSection />
+
       <section className={styles.settingsSection}>
         <div className={styles.sectionHeader}>
           <h3 className={styles.sectionTitle}>Персонализация помощника</h3>
-          <p className={styles.sectionSubtitle}>
-            Настройте имя или прозвище интервального помощника под себя
-          </p>
         </div>
 
         <div className={styles.settingsRowList}>
-          <div className={styles.customizationRow}>
+          <div className={styles.settingsRow}>
             <div className={styles.rowInfo}>
               <div className={styles.rowTitle}>Имя интервального помощника</div>
               <div className={styles.rowDesc}>
-                Задайте собственное имя для помощника. Оно будет отображаться в карточке задачи над
-                мотивационными сообщениями.
+                Отображается в карточке задачи над мотивационными сообщениями
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} className={styles.formContainer}>
-              <div className={styles.inputGroup}>
-                <div className={styles.inputWrapper}>
-                  <Input
-                    value={inputValue}
-                    onChange={handleChange}
-                    placeholder="Имя"
-                    maxLength={MAX_ASSISTANT_NAME_LENGTH}
-                    className={styles.nameInput}
-                    aria-label="Имя интервального помощника"
-                  />
-                  <span className={styles.charCounter} aria-live="polite">
-                    {inputValue.length}/{MAX_ASSISTANT_NAME_LENGTH}
-                  </span>
-                </div>
+            <div className={styles.customizationAction}>
+              <form onSubmit={handleSubmit} className={styles.formContainer}>
+                <div className={styles.inputGroup}>
+                  <div className={styles.inputWrapper}>
+                    <Input
+                      value={inputValue}
+                      onChange={handleChange}
+                      placeholder="Имя"
+                      maxLength={MAX_ASSISTANT_NAME_LENGTH}
+                      className={styles.nameInput}
+                      aria-label="Имя интервального помощника"
+                    />
+                    <span className={styles.charCounter} aria-live="polite">
+                      {inputValue.length}/{MAX_ASSISTANT_NAME_LENGTH}
+                    </span>
+                  </div>
 
-                <div className={styles.buttonGroup}>
-                  <Button
-                    type="submit"
-                    size="sm"
-                    variant="primary"
-                    disabled={!isModified}
-                    className={styles.actionBtn}
-                  >
-                    {isSaved ? "Сохранено" : "Сохранить"}
-                  </Button>
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="secondary"
-                    onClick={handleReset}
-                    disabled={!canReset}
-                    className={styles.actionBtn}
-                  >
-                    Сбросить
-                  </Button>
+                  <div className={styles.buttonGroup}>
+                    <Button
+                      type="submit"
+                      size="sm"
+                      variant="primary"
+                      disabled={!isModified}
+                      className={styles.saveBtn}
+                    >
+                      {isSaved ? "Сохранено" : "Сохранить"}
+                    </Button>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="secondary"
+                      onClick={handleReset}
+                      disabled={!canReset}
+                    >
+                      Сбросить
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </form>
+              </form>
+            </div>
           </div>
         </div>
       </section>

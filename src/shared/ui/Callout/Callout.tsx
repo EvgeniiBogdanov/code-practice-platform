@@ -3,12 +3,22 @@ import { clsx } from "clsx";
 import styles from "./Callout.module.css";
 
 export type CalloutColor =
-  "default" | "gray" | "purple" | "blue" | "green" | "yellow" | "orange" | "red";
+  | "default"
+  | "gray"
+  | "purple"
+  | "blue"
+  | "green"
+  | "yellow"
+  | "amber"
+  | "orange"
+  | "red";
 
-export interface CalloutProps extends Omit<
-  React.HTMLAttributes<HTMLDivElement>,
-  "title" | "content"
-> {
+export type CalloutSize = "default" | "md" | "sm" | "xs";
+
+export interface CalloutProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "title" | "content"> {
+  /** Размер Callout (default: "default") */
+  size?: CalloutSize;
   /** Цвет заливки и акцентной рамки (default: "default") */
   color?: CalloutColor;
   /** Иконка (эмодзи, строка, lucide иконка или React Node) */
@@ -23,7 +33,8 @@ export interface CalloutProps extends Omit<
   className?: string;
 }
 
-export function Callout({
+export const Callout = ({
+  size = "default",
   color = "default",
   icon,
   title,
@@ -31,9 +42,10 @@ export function Callout({
   children,
   className,
   ...props
-}: CalloutProps) {
+}: CalloutProps): React.JSX.Element => {
   const colorClass = styles[`color-${color}`] || styles["color-default"];
-  const classNames = clsx(styles.callout, colorClass, className);
+  const sizeClass = size !== "default" && size !== "md" ? styles[`size-${size}`] : undefined;
+  const classNames = clsx(styles.callout, colorClass, sizeClass, className);
 
   const hasBody = content !== undefined || children !== undefined;
 
@@ -53,4 +65,6 @@ export function Callout({
       </div>
     </div>
   );
-}
+};
+
+Callout.displayName = "Callout";

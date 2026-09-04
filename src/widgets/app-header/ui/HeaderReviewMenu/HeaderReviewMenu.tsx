@@ -115,9 +115,7 @@ export const HeaderReviewMenu = memo(() => {
                   >
                     <div className={styles.itemMain}>
                       <FileText size={14} className={styles.itemFileIcon} />
-                      <span className={clsx(styles.itemTitle, ratingClass)}>
-                        {task.title}
-                      </span>
+                      <span className={clsx(styles.itemTitle, ratingClass)}>{task.title}</span>
                     </div>
 
                     <div className={styles.itemMeta}>

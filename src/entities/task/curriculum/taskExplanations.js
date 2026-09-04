@@ -16,7 +16,7 @@ const BASE_TASK_EXPLANATIONS = {
    \`\`\`
 **Разбор**: Используется state machine-подход через переменную \`status\` — это чище и менее error-prone, чем отдельные флаги \`isLoading\`, \`isError\`, \`isEmpty\`.
 
-2. **Функция запроса с \`URLSearchParams\`**:
+2. **Функция запроса с \`URLSearchParams\` — для API или для адресной строки браузера?**:
    \`\`\`jsx
    const fetchPeople = async (name, status, signal) => {
      const params = new URLSearchParams();
@@ -31,17 +31,37 @@ const BASE_TASK_EXPLANATIONS = {
    };
    \`\`\`
 
-   **Что такое \`new URLSearchParams()\` и когда он нужен**:
-   \`URLSearchParams\` — это встроенный Web API для удобного конструирования query-строки.
+   **Важнейшее разграничение**:
+   В задачах «Рик и Морти» \`new URLSearchParams()\` используется **исключительно для формирования параметров сетевого запроса (\`fetch\`) к бэкенду**, а **НЕ** для изменения адресной строки браузера.
 
-   **Когда НУЖЕН**:
-   - Много параметров, которые могут быть пустыми/опциональными (как в задаче — \`name\` или \`status\` могут отсутствовать).
-   - Нужна автоматическая URL-кодировка спецсимволов (например, имя *"Rick & Morty"* превратится в \`Rick%20%26%20Morty\`).
-   - Вы не хотите вручную собирать строку типа \`?name=Rick&status=alive\` через конкатенацию.
+   **Почему сам по себе \`URLSearchParams\` НЕ меняет URL страницы в браузере:**
+   \`URLSearchParams\` — это служебный объект JavaScript для парсинга и сериализации строк вида \`key=value&foo=bar\` в оперативной памяти JS. Сам по себе он никак не связан с навигацией браузера.
+   \`\`\`javascript
+   // 1. Создание параметров в памяти (адресная строка браузера НЕ меняется):
+   const params = new URLSearchParams();
+   params.append("name", "Rick");
+   params.append("status", "alive");
 
-   **Когда НЕ нужен**:
-   - Всего 1 фиксированный параметр (\`?name=\` + name) — как в оригинальном шаблоне задачи.
-   - Параметры всегда обязательны и вы можете просто склеить их через template string.
+   // 2. Использование для HTTP-запроса (как в этой задаче):
+   fetch(\`https://rickandmortyapi.com/api/character?\${params.toString()}\`);
+
+   // 3. И только явный вызов History API изменил бы URL страницы в браузере:
+   // (это фокус отдельной задачи 10 «Синхронизация фильтров с URL»):
+   window.history.replaceState(null, "", \`?\${params.toString()}\`);
+   \`\`\`
+
+   **3 причины использовать \`URLSearchParams\` для сетевых запросов вместо ручной склейки строк:**
+   1. **Автоматическое кодирование (\`encodeURIComponent\`)**:
+      Если пользователь введет имя с пробелом или спецсимволом (например, *"Rick & Morty"*), ручная конкатенация \`"?name=" + name\` сломает запрос, разделив параметры символом \`&\`. \`URLSearchParams\` автоматически превратит его в \`name=Rick+%26+Morty\`.
+   2. **Условное добавление без «битых» параметров**:
+      Не нужно писать громоздкие тернарные операторы для расстановки \`?\` и \`&\`. Если поле не заполнено, мы просто не вызываем \`.append()\`.
+   3. **Детерминированный ключ для кэширования (\`cacheKey\`)**:
+      В Senior-версии задачи (№3) строка \`params.toString()\` (\`"name=rick&status=alive"\`) служит идеальным уникальным ключом для сохранения ответов в \`new Map()\`.
+
+   | Сценарий применения | Роль \`URLSearchParams\` | Влияние на адресную строку браузера |
+   | :--- | :--- | :--- |
+   | **Сетевой запрос (\`fetch\` в задачах «Рик и Морти»)** | Конструирует безопасную строку для \`fetch(apiUrl + "?" + params)\` | ❌ Не затрагивается |
+   | **Роутинг и навигация (Задача 10 «Фильтры с URL»)** | Читает \`window.location.search\` и обновляет \`history.replaceState\` | ✅ Обновляется в реальном времени |
 
 3. **AbortController — отмена устаревших запросов**:
    \`\`\`jsx
@@ -112,7 +132,7 @@ const BASE_TASK_EXPLANATIONS = {
 
 ### � Ключевые выводы:
 - **State machine** для async-состояний (\`idle\`/\`loading\`/\`success\`/\`error\`) — лучше, чем пачка независимых boolean флагов.
-- **\`URLSearchParams\`** — ваш друг при динамических query-параметрах: безопасная кодировка, чистый код без «лапши» из \`?\`, \`&\`, \`=\`.
+- **\`URLSearchParams\` для сетевых запросов** — собирает безопасную query-строку для \`fetch\` с автоматическим экранированием спецсимволов. Не путать с изменением адреса страницы в браузере (для этого требуется отдельный вызов \`window.history.replaceState\`).
 - **\`AbortController\`** обязателен в любом \`useEffect\`, который делает fetch с зависимостями, меняющимися чаще, чем отвечает сервер.
 - **Inline обработчики** — нормально для 1–2 полей. Не бойтесь их использовать.
 - **Отдельный status для HTTP-кодов** (404 = пустой массив, не ошибка) — правильное понимание API. Rick & Morty API возвращает 404 при отсутствии результатов, а не пустой results.
@@ -349,10 +369,334 @@ Todo-приложение с двумя независимыми спискам�
 ### � Ключевые выводы:
 - Добавление \`password\` в массив зависимостей эффекта гарантирует перезапуск 5-секундного отсчета при каждом новом вводимом символе.`,
 
+  13: `### Суть задачи
+Реализация двусторонней синхронизации состояния фильтрации каталога товаров с параметрами URL (\`URLSearchParams\`) и браузерным \`History API\`.
+
+### 💡 Пошаговые этапы решения:
+
+1. **Считывание начального состояния из \`window.location.search\`**:
+   При монтировании компонента начальный стейт фильтров инициализируется из URL-строки:
+   \`\`\`jsx
+   const parseFiltersFromUrl = (searchString) => {
+     const params = new URLSearchParams(searchString);
+     return {
+       query: params.get('query') || '',
+       category: params.get('category') || 'all',
+       // Важно: парсинг булева значения из строки
+       inStock: params.get('inStock') === 'true',
+       sort: params.get('sort') || 'none',
+     };
+   };
+   \`\`\`
+
+2. **Формирование чистого URL при обновлении фильтров**:
+   Чтобы не засорять адресную строку лишними параметрами по умолчанию (\`?query=&category=all&inStock=false\`), дефолтные значения не добавляются:
+   \`\`\`jsx
+   const serializeFiltersToQuery = (filters) => {
+     const params = new URLSearchParams();
+     if (filters.query.trim()) params.set('query', filters.query.trim());
+     if (filters.category && filters.category !== 'all') params.set('category', filters.category);
+     if (filters.inStock) params.set('inStock', 'true');
+     if (filters.sort && filters.sort !== 'none') params.set('sort', filters.sort);
+     return params.toString();
+   };
+   \`\`\`
+
+3. **Синхронизация через \`window.history.replaceState\`**:
+   Для исключения захламления истории переходов браузера каждым вводимым символом или кликом фильтра обновляем URL через \`replaceState\`:
+   \`\`\`jsx
+   const queryString = serializeFiltersToQuery(nextFilters);
+   const newUrl = queryString ? \`?\${queryString}\` : window.location.pathname;
+   window.history.replaceState(null, '', newUrl);
+   \`\`\`
+
+4. **Поддержка навигации кнопками «Назад» / «Вперёд» (\`popstate\`)**:
+   Когда пользователь перемещается по истории браузера, срабатывает событие \`popstate\`:
+   \`\`\`jsx
+   useEffect(() => {
+     const handlePopState = () => {
+       setFilters(parseFiltersFromUrl(window.location.search));
+     };
+     window.addEventListener('popstate', handlePopState);
+     return () => window.removeEventListener('popstate', handlePopState);
+   }, []);
+   \`\`\`
+
+### ⚠️ Частые ошибки на собеседованиях:
+- **Ловушка \`Boolean("false")\`**: Метод \`params.get('inStock')\` возвращает строку \`"false"\`. Конструкция \`Boolean(params.get('inStock'))\` вернет \`true\`, так как строка непустая! Проверяйте строго: \`params.get('inStock') === 'true'\`.
+- **Бесконечный цикл эффектов**: Если синхронизировать URL через \`useEffect([filters])\`, а фильтры через \`useEffect([window.location.search])\`, можно легко получить infinite loop при неаккуратном сравнении. Обновление URL в обработчиках изменения фильтров (или единый источник правды) предотвращает эту проблему.
+- **Отсутствие отписки**: Забытая отписка \`removeEventListener('popstate', ...)\` приводит к утечкам памяти при переходе между страницами.`,
+
+  14: `### Суть задачи
+Реализовать доступный выпадающий список с автодополнением (Combobox / Autocomplete) с поддержкой клавиатурной навигации (\`ArrowDown\`, \`ArrowUp\`, \`Enter\`, \`Escape\`), выбором мышью и управлением фокусом.
+
+### 💡 Пошаговые этапы решения:
+
+1. **Моделирование состояния**:
+   \`\`\`jsx
+   const [query, setQuery] = useState('');
+   const [isOpen, setIsOpen] = useState(false);
+   const [highlightedIndex, setHighlightedIndex] = useState(-1);
+   \`\`\`
+   Для отслеживания подсвеченного элемента клавиатурой используется числовой индекс (\`highlightedIndex\`), где \`-1\` означает отсутствие выделения.
+
+2. **Вычисление списка подсказок**:
+   \`\`\`jsx
+   const filteredItems = useMemo(() => {
+     const trimmed = query.trim().toLowerCase();
+     if (!trimmed) return [];
+     return items.filter((item) => item.toLowerCase().includes(trimmed));
+   }, [items, query]);
+   \`\`\`
+   Если инпут пуст, список подсказок не должен отображаться.
+
+3. **Обработка клавиш в \`onKeyDown\`**:
+   \`\`\`jsx
+   const handleKeyDown = (e) => {
+     if (!isOpen || filteredItems.length === 0) {
+       if (e.key === 'ArrowDown' && query.trim()) setIsOpen(true);
+       return;
+     }
+
+     if (e.key === 'ArrowDown') {
+       e.preventDefault(); // Предотвращаем скролл страницы
+       setHighlightedIndex((prev) => (prev + 1) % filteredItems.length);
+     } else if (e.key === 'ArrowUp') {
+       e.preventDefault();
+       setHighlightedIndex((prev) => (prev - 1 + filteredItems.length) % filteredItems.length);
+     } else if (e.key === 'Enter') {
+       e.preventDefault();
+       if (highlightedIndex >= 0 && highlightedIndex < filteredItems.length) {
+         handleSelect(filteredItems[highlightedIndex]);
+       }
+     } else if (e.key === 'Escape') {
+       e.preventDefault();
+       setIsOpen(false);
+       setHighlightedIndex(-1);
+     }
+   };
+   \`\`\`
+
+4. **Предотвращение преждевременного закрытия на \`onBlur\`**:
+   Классическая ловушка: если закрывать список на \`onBlur\` инпута, клик мышью по подсказке не успевает сработать, так как \`blur\` происходит до события \`click\`.
+   Решение: на элементе списка использовать \`onMouseDown={(e) => e.preventDefault()}\` или производить выбор сразу на \`onMouseDown\`.
+
+5. **Семантика доступности (WAI-ARIA)**:
+   - Инпут: \`role="combobox"\`, \`aria-expanded={isOpen}\`, \`aria-autocomplete="list"\`.
+   - Список: \`role="listbox"\`.
+   - Пункт: \`role="option"\`, \`aria-selected={isSelected}\`.
+
+### ⚠️ Частые ошибки на собеседованиях:
+- Забывают \`e.preventDefault()\` на стрелках, из-за чего каретка прыгает в начало/конец инпута или скроллится страница.
+- Не сбрасывают \`highlightedIndex\` при изменении поискового запроса.
+- Дублируют отфильтрованный список в стейт вместо \`useMemo\` или прямого вычисления во время рендера.`,
+
+  15: `### Суть задачи
+Реализация паттерна **Optimistic UI (оптимистичное обновление)** с сохранением снимка предыдущего состояния и механизмом **отката (Rollback)** при возникновении серверной или сетевой ошибки.
+
+### 💡 Пошаговые этапы решения:
+
+1. **Мгновенное обновление и фиксация снимка (Snapshot)**:
+   \`\`\`jsx
+   const handleToggleLike = async () => {
+     if (isLoading) return;
+
+     // 1. Фиксируем снимок для отката
+     const prevLiked = isLiked;
+     const prevCount = likesCount;
+
+     const nextLiked = !prevLiked;
+     const nextCount = nextLiked ? prevCount + 1 : prevCount - 1;
+
+     // 2. Оптимистичное обновление интерфейса
+     setIsLiked(nextLiked);
+     setLikesCount(nextCount);
+     setErrorMessage('');
+     setIsLoading(true);
+
+     try {
+       await onToggleLike(nextLiked);
+     } catch (error) {
+       // 3. Откат к снимку при сбое
+       setIsLiked(prevLiked);
+       setLikesCount(prevCount);
+       setErrorMessage(error.message || 'Ошибка сохранения');
+     } finally {
+       setIsLoading(false);
+     }
+   };
+   \`\`\`
+
+2. **Предотвращение Race Conditions**:
+   Блокировка кнопки через \`disabled={isLoading}\` гарантирует, что пользователь не сможет отправить череду противоречивых запросов (лайк/дизлайк) до завершения текущей сетевой транзакции.
+
+### ⚠️ Частые ошибки на собеседованиях:
+- **Забытый откат счетчика**: Обновляют только булево состояние \`isLiked\`, забывая синхронно вернуть \`likesCount\` к исходному числу.
+- **Откат к жестко заданным константам**: Пытаются в блоке \`catch\` вызывать обратное действие (\`setLikesCount(c => c - 1)\`), что ломается при повторных или параллельных кликах. Всегда сохраняйте снимок конкретных значений до вызова мутации.
+- **Подавление ошибок**: Пользователь должен четко понимать, почему действие не применилось (показ сообщения об ошибке / toast).`,
+
+  16: `### Суть задачи
+Реализация корзины интернет-магазина с подсчетом стоимости товаров, скидок по промокодам и условий бесплатной доставки.
+
+Главная цель этой задачи на собеседовании — проверить, умеет ли кандидат проектировать **производное состояние (Derived State)** без создания избыточных эффектов-синхронизаторов.
+
+### 💡 Пошаговые этапы решения:
+
+1. **Минимальный стейт**:
+   \`\`\`jsx
+   const [items, setItems] = useState(initialItems);
+   const [appliedPromo, setAppliedPromo] = useState(null);
+   \`\`\`
+   В стейте хранятся **только** изменяемые исходные данные (список товаров и активный промокод).
+
+2. **Иммутабельное изменение количества и удаление**:
+   \`\`\`jsx
+   const handleIncrease = (id) => {
+     setItems((prev) =>
+       prev.map((item) =>
+         item.id === id && item.quantity < item.maxStock
+           ? { ...item, quantity: item.quantity + 1 }
+           : item
+       )
+     );
+   };
+   \`\`\`
+
+3. **Расчет итогов прямо во время рендера**:
+   \`\`\`jsx
+   const subtotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+   let discount = 0;
+   if (appliedPromo === 'SAVE10') {
+     discount = Math.round(subtotal * 0.1);
+   } else if (appliedPromo === 'SALE500') {
+     discount = subtotal >= 2000 ? Math.min(500, subtotal) : 0;
+   }
+
+   const amountAfterDiscount = Math.max(0, subtotal - discount);
+   const delivery = items.length === 0 ? 0 : amountAfterDiscount >= 3000 ? 0 : 300;
+   const total = amountAfterDiscount + delivery;
+   \`\`\`
+
+### ⚠️ Частые ошибки на собеседованиях:
+- **Антипаттерн синхронизирующих useEffect**: Хранение \`totalPrice\` и \`discount\` в отдельных \`useState\` и их обновление через \`useEffect([items, appliedPromo])\`. Это вызывает лишний каскадный рендер и рассинхронизацию интерфейса. Документация React прямо рекомендует вычислять производные значения на лету.
+- **Мутация массива**: Прямое изменение \`item.quantity++\` в массиве вместо возврата нового объекта через \`map\`.
+- **Забытая проверка граничных условий**: Возможность уменьшить количество товара до 0 или отрицательных чисел, а также превысить складской остаток \`maxStock\`.`,
+
+  17: `### Суть задачи
+Реализация паттерна **Compound Components (составные компоненты)** на примере компонента Accordion (\`Accordion\`, \`Accordion.Item\`, \`Accordion.Header\`, \`Accordion.Body\`).
+
+Паттерн позволяет создавать гибкие декларативные UI-компоненты, которые координируют свое состояние через React Context без ручной передачи пропсов (\`prop drilling\`).
+
+### 💡 Пошаговые этапы решения:
+
+1. **Создание контекстов**:
+   \`\`\`jsx
+   const AccordionContext = createContext(null);
+   const AccordionItemContext = createContext(null);
+   \`\`\`
+   - \`AccordionContext\` координирует открытые секции на уровне всего аккордеона.
+   - \`AccordionItemContext\` передает \`id\` и \`isOpen\` вложенным \`Header\` и \`Body\`.
+
+2. **Корневой компонент с поддержкой режимов**:
+   \`\`\`jsx
+   export function Accordion({ children, defaultOpenId = null, allowMultiple = false }) {
+     const [openIds, setOpenIds] = useState(() => {
+       if (!defaultOpenId) return new Set();
+       return new Set(Array.isArray(defaultOpenId) ? defaultOpenId : [defaultOpenId]);
+     });
+
+     const toggleItem = (id) => {
+       setOpenIds((prev) => {
+         const next = new Set(allowMultiple ? prev : []);
+         if (prev.has(id)) next.delete(id);
+         else next.add(id);
+         return next;
+       });
+     };
+
+     const isItemOpen = (id) => openIds.has(id);
+
+     return (
+       <AccordionContext.Provider value={{ isItemOpen, toggleItem }}>
+         <div>{children}</div>
+       </AccordionContext.Provider>
+     );
+   }
+   \`\`\`
+
+3. **Привязка подкомпонентов**:
+   \`\`\`jsx
+   Accordion.Item = AccordionItem;
+   Accordion.Header = AccordionHeader;
+   Accordion.Body = AccordionBody;
+   \`\`\`
+   Это обеспечивает лаконичный синтаксис использования вида \`<Accordion.Item>\`.
+
+4. **Защитные проверки контекста**:
+   В каждом подкомпоненте обязательно проверяется наличие контекста. Если компонент вызван вне правильного родителя — выбрасывается информативная ошибка.
+
+### ⚠️ Частые ошибки на собеседованиях:
+- Пытаются клонировать детей через \`React.Children.map\` и \`React.cloneElement\`. Этот подход устарел, ломается при любой пользовательской обертке и не дает вставить произвольные теги между компонентами.
+- Забывают атрибут доступности \`aria-expanded\` на кнопке заголовка.`,
+
+  18: `### Суть задачи
+Реализовать точный спортивный секундомер с кнопками «Старт», «Пауза», «Круг» (Lap), «Сброс» и компенсацией системного дрейфа таймера.
+
+### 💡 Пошаговые этапы решения:
+
+1. **Проблема дрейфа таймера (Event Loop Drift)**:
+   При наивном подходе:
+   \`\`\`javascript
+   setInterval(() => setTime((t) => t + 10), 10);
+   \`\`\`
+   Таймер неизбежно отстаёт! Из-за загрузки главного потока JavaScript и особенностей планировщика браузера интервалы выполняются с задержками (12–16 мс вместо 10 мс). За несколько минут погрешность достигает нескольких секунд.
+
+2. **Точный расчет через разницу временных меток**:
+   \`\`\`javascript
+   const handleStart = () => {
+     setIsRunning(true);
+     startTimeRef.current = Date.now();
+
+     intervalIdRef.current = setInterval(() => {
+       setElapsedTime(Date.now() - startTimeRef.current + accumulatedTimeRef.current);
+     }, 16);
+   };
+   \`\`\`
+   Интервал служит только тикером перерисовки UI (с частотой ~60 FPS), а само время вычисляется строго математически по системным часам (\`Date.now()\`).
+
+3. **Использование \`useRef\` для технического состояния**:
+   \`startTimeRef\`, \`accumulatedTimeRef\` и \`intervalIdRef\` хранятся в \`useRef\`, потому что их изменение не должно вызывать лишние промежуточные перерендеры.
+
+4. **Фиксация кругов (Laps)**:
+   \`\`\`javascript
+   const handleLap = () => {
+     const currentTotal = elapsedTime;
+     const prevTotal = laps.length > 0 ? laps[0].totalTime : 0;
+     const splitTime = currentTotal - prevTotal;
+
+     setLaps((prev) => [{ id: laps.length + 1, totalTime: currentTotal, splitTime }, ...prev]);
+   };
+   \`\`\`
+
+5. **Обязательная очистка в \`useEffect\`**:
+   \`\`\`javascript
+   useEffect(() => {
+     return () => {
+       if (intervalIdRef.current) clearInterval(intervalIdRef.current);
+     };
+   }, []);
+   \`\`\`
+
+### ⚠️ Частые ошибки на собеседованиях:
+- Отсутствие очистки интервала в cleanup функции, что вызывает утечку памяти при уходе со страницы.
+- Потеря накопленного времени при нажатии «Пауза» и повторном «Старте».
+- Прямое хранение ID интервала в \`useState\`, вызывающее двойные рендеры.`,
+
   51: `### Суть задачи
 Доработать компонент поиска персонажей Rick & Morty API, добавив **Debounce** для откладывания сетевых запросов при быстром наборе текста в инпуте.
 
-### � Пошаговые этапы решения:
+### 💡 Пошаговые этапы решения:
 
 1. **Создание кастомного хука \`useDebounce\`**:
    \`\`\`jsx
@@ -378,14 +722,17 @@ Todo-приложение с двумя независимыми спискам�
    \`\`\`
 **Разбор**: Сетевой эффект завязана на \`debouncedName\`, а не на сырой \`name\`. Текст в инпуте обновляется мгновенно для хорошего UX, а запрос отправляется только после паузы в печати.
 
-### � Ключевые выводы:
+3. **Связка Debounce и URLSearchParams**:
+   Инпут остаётся мгновенно отзывчивым благодаря локальному состоянию \`name\`. Когда пользователь прекращает ввод и таймер \`useDebounce\` (300 мс) истекает, обновляется \`debouncedName\` и запускается сетевой эффект. Внутри \`fetchPeople\` объект \`URLSearchParams\` конструирует валидную query-строку только для фактически отправляемого запроса к API, защищая бэкенд от спама.
+
+### 💡 Ключевые выводы:
 - **Debounce** предотвращает спам сетевыми запросами на каждый введенный символ.
 - Очистка \`clearTimeout\` в \`useEffect\` обязательна, чтобы не было утечек таймеров при быстром вводе.`,
 
   52: `### Суть задачи
 Доработать компонент поиска персонажей Rick & Morty API с задебауншенным вводом, добавив **кэширование сетевых запросов через Map** для предотвращения повторных запросов при одинаковых фильтрах.
 
-### � Пошаговые этапы решения:
+### 💡 Пошаговые этапы решения:
 
 1. **Создание экземпляра \`Map\` в module-scope**:
    \`\`\`jsx
@@ -393,7 +740,7 @@ Todo-приложение с двумя независимыми спискам�
    \`\`\`
 **Разбор**: Объект \`Map\` создается вне компонента. Это позволяет хранить ответы между рендерами и сохранять кэш даже при перемонтировании компонента в рамках сессии.
 
-2. **Формирование ключа кэша и проверка перед \`fetch\`**:
+2. **Формирование ключа кэша через \`URLSearchParams\` и проверка перед \`fetch\`**:
    \`\`\`jsx
    const fetchPeople = async (name, status, signal) => {
      const params = new URLSearchParams();
@@ -415,10 +762,13 @@ Todo-приложение с двумя независимыми спискам�
      return results;
    };
    \`\`\`
-**Разбор**: \`URLSearchParams.toString()\` создает уникальную строку для каждой комбинации фильтров (например \`name=Rick&status=alive\`). При повторном поиске с теми же параметрами данные берутся из \`cache\` мгновенно.
+**Разбор**: \`URLSearchParams.toString()\` создает стандартизированную сериализованную строку параметров (например \`name=Rick&status=alive\`), которая решает две ключевые инженерные задачи:
+1. **Идеальный ключ кэша (\`cacheKey\`)**: исключает коллизии ключей при наивной конкатенации (например \`name="a"\` + \`status="bc"\` vs \`name="ab"\` + \`status="c"\`), гарантируя детерминированное попадание в \`cache.has(cacheKey)\`.
+2. **Параметры сетевого запроса к API**: строка подставляется напрямую в URL для \`fetch\`. При этом данный процесс происходит только в оперативной памяти JS для HTTP-запросов и не влияет на адресную строку браузера (для неё потребовался бы отдельный вызов \`history.replaceState\`).
 
-### � Ключевые выводы:
+### 💡 Ключевые выводы:
 - **In-memory cache на \`Map\`** — простая и эффектная реализация кэширования для собеседований.
+- **\`URLSearchParams.toString()\` в роли ключа кэша** защищает от коллизий и нормализует параметры запроса.
 - **Сочетание \`Debounce\` + \`Map\` + \`AbortController\`** даёт максимальную отзывчивость UI и минимизирует сетевую нагрузку.`,
 
   w1: `### Суть задачи
@@ -715,6 +1065,28 @@ Todo-приложение с двумя независимыми спискам�
 - Никогда не создавайте случайные key (Math.random(), randomUUID()) прямо внутри выражения JSX .map(...).
 - Мапируйте исходные серверные данные один раз, приписывая стабильные id при занесении в state.`,
 
+  w13: `### Суть задачи
+Написание базовой асинхронной функции с синтаксисом \`async/await\` и перехватом ошибок через блок \`try/catch\`.
+
+### 💡 Пошаговые этапы решения:
+
+1. **Объявление async-функции и блок try/catch**:
+   \`\`\`js
+   const fetchData = async () => {
+     try {
+       const response = await someAsyncOperation();
+       return response;
+     } catch (error) {
+       console.error("Ошибка запроса:", error);
+       throw error;
+     }
+   };
+   \`\`\`
+
+### 🎯 Ключевые выводы:
+- Любая функция, объявленная с ключевым словом \`async\`, автоматически возвращает \`Promise\`.
+- Исключения внутри блока \`try\` перехватываются в секции \`catch\`, заменяя цепочки \`.then().catch()\`.`,
+
   w14: `### Суть задачи
 Реализовать сетевой запрос к API с помощью \`fetch\` и \`async/await\`, правильно обрабатывая ошибки HTTP.
 
@@ -996,6 +1368,189 @@ Todo-приложение с двумя независимыми спискам�
 
 ### � Ключевые выводы:
 - Неконтролируемые компоненты оптимизируют формы, так как не вызывают перерисовок при каждом нажатии клавиши.`,
+
+  w25: `### Суть задачи
+Реализация базовых операций управления коллекцией в React (CRUD): добавление, переключение флага и удаление элементов массива с соблюдением строгой иммутабельности.
+
+### Пошаговые этапы решения:
+
+1. **Добавление нового элемента**:
+   \`\`\`jsx
+   const handleAdd = (e) => {
+     e.preventDefault();
+     if (!text.trim()) return;
+     setTodos((prev) => [...prev, { id: crypto.randomUUID(), text: text.trim(), completed: false }]);
+     setText("");
+   };
+   \`\`\`
+
+2. **Переключение статуса (обновление по id)**:
+   \`\`\`jsx
+   const handleToggle = (id) => {
+     setTodos((prev) =>
+       prev.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo))
+     );
+   };
+   \`\`\`
+
+3. **Удаление элемента (фильтрация по id)**:
+   \`\`\`jsx
+   const handleDelete = (id) => {
+     setTodos((prev) => prev.filter((todo) => todo.id !== id));
+   };
+   \`\`\`
+
+### Ключевые выводы:
+- Прямые мутации массива (\`todos.push()\`, \`todos.splice()\`) не создают новую ссылку в памяти, из-за чего React отменяет рендеринг.
+- Всегда используйте методы, возвращающие новый массив: \`[...prev, item]\`, \`.filter()\`, \`.map()\`.`,
+
+  w26: `### Суть задачи
+Организация однонаправленного потока данных (Props Down, Events Up) и поднятие состояния (Lifting State Up) к общему предку.
+
+### Пошаговые этапы решения:
+
+1. **Хранение стейта в родительском контейнере**:
+   \`\`\`jsx
+   const [activeTab, setActiveTab] = useState("overview");
+   \`\`\`
+
+2. **Передача пропсов и колбэка в дочерний компонент**:
+   \`\`\`jsx
+   <TabButton
+     key={tab.id}
+     id={tab.id}
+     label={tab.label}
+     isActive={tab.id === activeTab}
+     onSelect={setActiveTab}
+   />
+   \`\`\`
+
+3. **Вызов колбэка дочерним компонентом**:
+   \`\`\`jsx
+   const TabButton = ({ id, label, isActive, onSelect }) => (
+     <button onClick={() => onSelect(id)} disabled={isActive}>
+       {label} {isActive ? "✓" : ""}
+     </button>
+   );
+   \`\`\`
+
+### Ключевые выводы:
+- Дочерние компоненты не должны дублировать или синхронизировать состояние родителя в собственном \`useState\`.
+- Если состояние нужно нескольким компонентам, его поднимают в ближайшего общего предка.`,
+
+  w27: `### Суть задачи
+Запуск периодического интервала (\`setInterval\`) в \`useEffect\`, обязательная очистка в cleanup-функции и преодоление проблемы устаревшего замыкания (Stale Closure).
+
+### Пошаговые этапы решения:
+
+1. **Запуск интервала при монтировании и очистка**:
+   \`\`\`jsx
+   useEffect(() => {
+     const intervalId = setInterval(() => {
+       // Функциональная форма обновления
+       setSeconds((prev) => prev + 1);
+     }, 1000);
+
+     return () => clearInterval(intervalId);
+   }, []);
+   \`\`\`
+
+### Ключевые выводы:
+- Если использовать \`setSeconds(seconds + 1)\` при \`deps = []\`, интервал навсегда замкнет значение \`0\` и счетчик остановится на \`1\`.
+- Функциональный сеттер \`prev => prev + 1\` всегда получает актуальное значение из внутренней очереди React, позволяя оставлять массив зависимостей пустым.
+- Очистка таймера в \`return () => clearInterval(id)\` обязательна для защиты от утечек памяти.`,
+
+  w28: `### Суть задачи
+Синхронизация компонента с глобальными событиями браузера (\`window.addEventListener\`) и безопасное удаление слушателя при размонтировании или закрытии.
+
+### Пошаговые этапы решения:
+
+1. **Подписка на событие клавиши Escape**:
+   \`\`\`jsx
+   useEffect(() => {
+     if (!isOpen) return;
+
+     const handleKeyDown = (e) => {
+       if (e.key === "Escape") {
+         setIsOpen(false);
+       }
+     };
+
+     window.addEventListener("keydown", handleKeyDown);
+     return () => {
+       window.removeEventListener("keydown", handleKeyDown);
+     };
+   }, [isOpen]);
+   \`\`\`
+
+### Ключевые выводы:
+- Для снятия обработчика через \`removeEventListener\` необходимо передавать ровно ту же функцию по ссылке.
+- Зависимость \`[isOpen]\` обеспечивает подписку только тогда, когда модальное окно действительно открыто.`,
+
+  w29: `### Суть задачи
+Использование \`useRef\` для хранения технического мутабельного значения (ID интервала) между рендерами без вызова повторной перерисовки компонента.
+
+### Пошаговые этапы решения:
+
+1. **Инициализация рефа и управление интервалом**:
+   \`\`\`jsx
+   const timerRef = useRef(null);
+
+   const handleStart = () => {
+     if (timerRef.current !== null) return;
+     timerRef.current = setInterval(() => setTime((prev) => prev + 1), 1000);
+   };
+
+   const handleStop = () => {
+     if (timerRef.current !== null) {
+       clearInterval(timerRef.current);
+       timerRef.current = null;
+     }
+   };
+   \`\`\`
+
+### Ключевые выводы:
+- Обычная локальная переменная \`let timer\` сбрасывается при каждом рендере.
+- Запись в \`useState\` вызывает рендер (а нам не нужно перерисовывать UI при смене id таймера).
+- \`useRef\` сохраняет значение между рендерами и его мутация (\`ref.current = ...\`) не триггерит рендер.`,
+
+  w30: `### Суть задачи
+Применение концепции вычисляемого состояния (Derived State) на лету во время рендеринга и устранение антипаттерна дублирования стейта.
+
+### Пошаговые этапы решения:
+
+1. **Расчет итоговых показателей прямо в теле компонента**:
+   \`\`\`jsx
+   const totalCount = items.reduce((sum, item) => sum + item.count, 0);
+   const totalPrice = items.reduce((sum, item) => sum + item.price * item.count, 0);
+   \`\`\`
+
+### Ключевые выводы:
+- Никогда не создавайте \`useState\` для значений, которые можно быстро вычислить из имеющихся пропсов или другого стейта.
+- Никогда не используйте \`useEffect\` для синхронизации вычисляемых данных — это приводит к каскадным рендерам и ошибкам синхронизации.`,
+
+  w31: `### Суть задачи
+Создание переиспользуемого пользовательского хука (\`useToggle\`) для инкапсуляции типовой логики переключения булевого состояния.
+
+### Пошаговые этапы решения:
+
+1. **Реализация хука**:
+   \`\`\`jsx
+   export const useToggle = (initialValue = false) => {
+     const [value, setValue] = useState(Boolean(initialValue));
+     const toggle = useCallback(() => setValue((prev) => !prev), []);
+     return [value, toggle, setValue];
+   };
+   \`\`\`
+
+2. **Использование в компоненте**:
+   \`\`\`jsx
+   const [isVisible, toggleVisible, setIsVisible] = useToggle(false);
+   \`\`\`
+
+### Ключевые выводы:
+- Кастомные хуки переиспользуют логику работы со стейтом, а не сам стейт. Каждый компонент получает независимый экземпляр.
+- Имя пользовательского хука обязано начинаться с \`use\` для корректной работы линтера правил хуков React.`,
 
   a1: `### Суть задачи
 Организация загрузки асинхронных данных через связку \`useReducer\` + кастомный хук, с чётким разделением состояний загрузки, ошибки и успешного результата, а также отменой запроса через \`AbortController\`.

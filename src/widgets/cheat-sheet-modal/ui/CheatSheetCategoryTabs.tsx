@@ -1,11 +1,9 @@
 import { memo, useMemo } from "react";
 import { Tabs, TabItem } from "@/shared/ui";
+import { CategoryConfig } from "../model/types";
 import styles from "./CheatSheetModal.module.css";
 
-export interface CategoryConfig {
-  id: string;
-  name: string;
-}
+export type { CategoryConfig };
 
 interface CheatSheetCategoryTabsProps {
   categories: CategoryConfig[];

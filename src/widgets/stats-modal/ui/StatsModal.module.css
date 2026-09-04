@@ -2,12 +2,12 @@
 .statsModal {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg, 12px);
-  box-shadow: var(--shadow-lg);
-  width: 90vw;
-  max-width: 940px;
-  height: 560px;
-  max-height: calc(100vh - 64px);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-popover);
+  width: 92vw;
+  max-width: 1080px;
+  height: 680px;
+  max-height: calc(100vh - 48px);
   display: flex;
   flex-direction: row;
   overflow: hidden;
@@ -16,9 +16,17 @@
   box-sizing: border-box;
 }
 
-.statsModalBody {
-  padding: 0 !important;
-  overflow: hidden !important;
+.statsModal.statsModal {
+  width: 92vw;
+  max-width: 1080px;
+  height: 680px;
+  max-height: calc(100vh - 48px);
+}
+
+.statsModalBody,
+.statsModalBody.statsModalBody {
+  padding: 0;
+  overflow: hidden;
   display: flex;
   flex-direction: row;
   flex: 1;
@@ -27,3 +35,4 @@
   min-height: 0;
   box-sizing: border-box;
 }
+

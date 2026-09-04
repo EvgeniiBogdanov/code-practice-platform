@@ -1,5 +1,5 @@
 import React from "react";
-import { Flame, Wrench, Rocket, Brain, Zap } from "lucide-react";
+import { Flame, Wrench, Rocket, Brain, Zap, RotateCcw } from "lucide-react";
 import type { Task } from "@/entities/task/meta";
 import { UIState } from "@/entities/ui-state";
 import { ReactCategoryDef } from "../ui/SidebarReactCategoryItem";
@@ -49,7 +49,7 @@ const CATEGORY_CONFIGS: CategoryConfig[] = [
   {
     id: "middle",
     infoId: "group-middle",
-    label: "Middle",
+    label: "UI-компоненты и паттерны",
     icon: <Rocket size={17} className={styles.iconRocket} />,
     filter: (t) => t.difficulty === "middle",
     getExpanded: (s) => s.tasksExpanded,
@@ -64,9 +64,9 @@ const CATEGORY_CONFIGS: CategoryConfig[] = [
   {
     id: "strong",
     infoId: "group-strong",
-    label: "Strong",
+    label: "Управление состоянием",
     icon: <Brain size={17} className={styles.iconBrain} />,
-    filter: (t) => t.difficulty === "strong",
+    filter: (t) => t.category === "Управление состоянием",
     getExpanded: (s) => s.advancedExpanded,
     getToggle: (s) => (e) => {
       if (e?.altKey) {
@@ -77,11 +77,26 @@ const CATEGORY_CONFIGS: CategoryConfig[] = [
     },
   },
   {
+    id: "lifecycle",
+    infoId: "group-lifecycle",
+    label: "Жизненный цикл и рантайм",
+    icon: <RotateCcw size={17} className={styles.iconRotateCcw} />,
+    filter: (t) => t.category === "Жизненный цикл и рантайм",
+    getExpanded: (s) => s.lifecycleExpanded,
+    getToggle: (s) => (e) => {
+      if (e?.altKey) {
+        s.setAllReactCategoriesExpanded(!s.lifecycleExpanded);
+        return;
+      }
+      s.setLifecycleExpanded(!s.lifecycleExpanded);
+    },
+  },
+  {
     id: "ts",
     infoId: "group-ts",
-    label: "React + TS (Разминка)",
+    label: "TypeScript: Паттерны типизации",
     icon: <Zap size={17} className={styles.iconZap} />,
-    filter: (t) => t.category === "React + TS (Разминка)",
+    filter: (t) => t.category === "TypeScript: Паттерны типизации",
     getExpanded: (s) => s.reactTsExpanded,
     getToggle: (s) => (e) => {
       if (e?.altKey) {
@@ -94,9 +109,9 @@ const CATEGORY_CONFIGS: CategoryConfig[] = [
   {
     id: "ts-practice",
     infoId: "group-ts-practice",
-    label: "React + TS (Практика)",
+    label: "TypeScript: Прикладные сценарии",
     icon: <Zap size={17} className={styles.iconZap} />,
-    filter: (t) => t.category === "React + TS (Практика)",
+    filter: (t) => t.category === "TypeScript: Прикладные сценарии",
     getExpanded: (s) => s.reactTsPracticeExpanded,
     getToggle: (s) => (e) => {
       if (e?.altKey) {

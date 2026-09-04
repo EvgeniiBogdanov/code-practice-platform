@@ -31,6 +31,7 @@ export const useCodeEditor = ({
   const wordWrap = useUIStore((state) => state.editorWordWrap);
   const setWordWrap = useUIStore((state) => state.setEditorWordWrap);
   const toggleWordWrap = useUIStore((state) => state.toggleEditorWordWrap);
+  const hideTooltips = useUIStore((state) => state.hideTooltips);
   const deferredCode = useDeferredValue(code);
   const deferredFiles = useDeferredValue(files);
 
@@ -291,6 +292,7 @@ export const useCodeEditor = ({
     wordWrap,
     setWordWrap,
     toggleWordWrap,
+    hideTooltips,
     effectiveFullscreen,
     toggleFullscreen,
     cursorPos,

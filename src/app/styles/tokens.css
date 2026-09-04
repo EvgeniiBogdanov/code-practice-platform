@@ -139,6 +139,11 @@
   --accent-yellow-bg: rgba(250, 204, 21, 0.14);
   --accent-yellow-border: rgba(250, 204, 21, 0.28);
 
+  --accent-amber: #f59e0b;
+  --accent-amber-hover: #fbbf24;
+  --accent-amber-bg: rgba(245, 158, 11, 0.08);
+  --accent-amber-border: rgba(245, 158, 11, 0.20);
+
   --accent-cyan: #38bdf8;
   --accent-cyan-hover: #67e8f9;
   --accent-cyan-bg: rgba(56, 189, 248, 0.14);
@@ -163,8 +168,9 @@
   --color-js-border: var(--accent-orange-border);
   --color-algo: var(--accent-purple);
   --color-algo-bg: var(--accent-purple-bg);
-  --color-algo-border: var(--accent-purple-border);
-  --color-home: var(--text-main);
+  --color-home: var(--accent-blue);
+  --color-home-bg: var(--accent-blue-bg);
+  --color-home-border: var(--accent-blue-border);
 
   /* Status Colors */
   --color-status-solved: var(--accent-green);
@@ -400,6 +406,11 @@
   --accent-yellow-bg: rgba(121, 74, 0, 0.09);
   --accent-yellow-border: rgba(121, 74, 0, 0.24);
 
+  --accent-amber: #8d4f00;
+  --accent-amber-hover: #713f00;
+  --accent-amber-bg: rgba(141, 79, 0, 0.08);
+  --accent-amber-border: rgba(141, 79, 0, 0.20);
+
   --accent-cyan: #046274;
   --accent-cyan-hover: #034b59;
   --accent-cyan-bg: rgba(4, 98, 116, 0.09);
@@ -425,7 +436,9 @@
   --color-algo: var(--accent-purple);
   --color-algo-bg: var(--accent-purple-bg);
   --color-algo-border: var(--accent-purple-border);
-  --color-home: var(--text-main);
+  --color-home: var(--accent-blue);
+  --color-home-bg: var(--accent-blue-bg);
+  --color-home-border: var(--accent-blue-border);
 
   /* Status Colors Light */
   --color-status-solved: var(--accent-green);

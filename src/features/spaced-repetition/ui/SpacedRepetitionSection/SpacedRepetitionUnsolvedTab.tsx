@@ -22,7 +22,7 @@ export const SpacedRepetitionUnsolvedTab = memo(
   ({ unsolvedTasks, scopeLabel, onNavigate }: SpacedRepetitionUnsolvedTabProps) => {
     if (unsolvedTasks.length === 0) {
       return (
-        <Card variant="subtle" className={styles.emptyDueCard}>
+        <Card variant="ghost" className={styles.emptyDueCard}>
           <CheckCircle2 size={32} className={styles.emptyDueIcon} />
           <div className={styles.emptyDueTitle}>Нет нерешённых задач {scopeLabel}</div>
           <div className={styles.emptyDueDesc}>

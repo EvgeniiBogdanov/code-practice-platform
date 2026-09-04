@@ -25,7 +25,7 @@ export interface ModalProps {
   customHeader?: React.ReactNode;
 }
 
-export const Modal = memo((props: ModalProps) => {
+export const Modal = memo((props: ModalProps): React.JSX.Element | null => {
   const {
     isOpen,
     onClose,

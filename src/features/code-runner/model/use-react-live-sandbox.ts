@@ -24,6 +24,7 @@ export interface UseReactLiveSandboxReturn {
   iframeHeight: number;
   reloadKey: number;
   hasFiles: boolean;
+  urlSearch: string;
   handleManualReload: (e: React.MouseEvent<HTMLButtonElement>) => void;
   handleIframeLoad: (e: React.SyntheticEvent<HTMLIFrameElement>) => void;
 }
@@ -38,6 +39,7 @@ export const useReactLiveSandbox = ({
 }: UseReactLiveSandboxParams): UseReactLiveSandboxReturn => {
   const [reloadKey, setReloadKey] = useState(0);
   const [iframeHeight, setIframeHeight] = useState(260);
+  const [urlSearch, setUrlSearch] = useState("");
   const theme = useUIStore((state) => state.theme) || "dark";
 
   const activeFile = files[activeFileIdx] || files[0] || { name: "index.jsx", code: "" };
@@ -62,13 +64,17 @@ export const useReactLiveSandbox = ({
 
   useEffect(() => {
     setIframeHeight(260);
-  }, [task?.id, storagePrefix, variantIdx, activeFileIdx]);
+    setUrlSearch("");
+  }, [task?.id, storagePrefix, variantIdx, activeFileIdx, reloadKey]);
 
   useEffect(() => {
     const handleMessage = (e: MessageEvent) => {
       if (e.data && e.data.type === "SANDBOX_RESIZE" && typeof e.data.height === "number") {
         const targetH = Math.max(260, Math.ceil(e.data.height));
         setIframeHeight((prev) => (Math.abs(prev - targetH) > 2 ? targetH : prev));
+      }
+      if (e.data && e.data.type === "SANDBOX_URL_CHANGE") {
+        setUrlSearch(typeof e.data.search === "string" ? e.data.search : "");
       }
     };
     window.addEventListener("message", handleMessage);
@@ -99,6 +105,7 @@ export const useReactLiveSandbox = ({
   const handleManualReload = useCallback((e: React.MouseEvent<HTMLButtonElement>): void => {
     e?.stopPropagation();
     clearLiveSandboxTimers();
+    setUrlSearch("");
     setReloadKey((k) => k + 1);
   }, []);
 
@@ -109,6 +116,7 @@ export const useReactLiveSandbox = ({
     iframeHeight,
     reloadKey,
     hasFiles: Object.keys(filesMap).length > 0,
+    urlSearch,
     handleManualReload,
     handleIframeLoad,
   };

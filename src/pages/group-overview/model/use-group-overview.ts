@@ -23,9 +23,10 @@ const isTaskInReactGroup = (task: Task, groupId: string): boolean => {
   if (groupId === "group-warmup") return task.difficulty === "warm-up";
   if (groupId === "group-refactoring") return task.difficulty === "refactoring";
   if (groupId === "group-middle") return task.difficulty === "middle";
-  if (groupId === "group-strong") return task.difficulty === "strong";
-  if (groupId === "group-ts") return task.category === "React + TS (Разминка)";
-  if (groupId === "group-ts-practice") return task.category === "React + TS (Практика)";
+  if (groupId === "group-strong") return task.category === "Управление состоянием";
+  if (groupId === "group-ts") return task.category === "TypeScript: Паттерны типизации";
+  if (groupId === "group-ts-practice") return task.category === "TypeScript: Прикладные сценарии";
+  if (groupId === "group-lifecycle") return task.category === "Жизненный цикл и рантайм";
   return false;
 };
 

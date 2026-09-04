@@ -29,6 +29,14 @@ const TAB_TITLES: Record<SRTabType, string> = {
   unsolved: "Нерешенные задачи",
 };
 
+const TAB_SUBTITLES: Record<SRTabType, string> = {
+  distribution: "Прогресс запоминания по алгоритму SM-2 и статистика освоения задач",
+  schedule: "Прогноз нагрузки и даты следующих повторений по интервалам SM-2",
+  due: "Задачи с наступившим сроком повторения для закрепления в долговременной памяти",
+  upcoming: "Предстоящие запланированные интервалы повторений",
+  unsolved: "Задачи, требующие повторного разбора и решения",
+};
+
 export const SpacedRepetitionSection = memo(
   ({
     inModal = false,
@@ -83,19 +91,16 @@ export const SpacedRepetitionSection = memo(
         </aside>
 
         <main className={styles.modalMain}>
-          <div className={styles.mainHeader}>
-            <h2 className={styles.mainHeaderTitle}>{TAB_TITLES[activeTab]}</h2>
-            {onCloseModal && (
-              <button
-                type="button"
-                className={styles.closeBtn}
-                onClick={onCloseModal}
-                aria-label="Закрыть статистику повторений"
-              >
-                <X size={16} />
-              </button>
-            )}
-          </div>
+          {onCloseModal && (
+            <button
+              type="button"
+              className={styles.closeBtn}
+              onClick={onCloseModal}
+              aria-label="Закрыть статистику повторений"
+            >
+              <X size={16} />
+            </button>
+          )}
 
           <div
             className={clsx(
@@ -103,6 +108,14 @@ export const SpacedRepetitionSection = memo(
               isCompactPadding && styles.mainScrollableCompact
             )}
           >
+            <div className={styles.pageHeader}>
+              <h2 className={styles.pageTitle}>{TAB_TITLES[activeTab]}</h2>
+              <p className={styles.pageSubtitle}>
+                {TAB_SUBTITLES[activeTab]}
+                {scopeLabel ? ` (${scopeLabel})` : ""}
+              </p>
+            </div>
+
             {activeTab === "distribution" && (
               <div className={styles.viewContent}>
                 <SpacedRepetitionKpiGrid
@@ -113,12 +126,14 @@ export const SpacedRepetitionSection = memo(
                   masteryPercent={masteryPercent}
                   avgInterval={avgInterval}
                 />
+                <hr className={styles.sectionDivider} />
                 <SpacedRepetitionDistributionTab
                   masteryStats={masteryStats}
                   scopeLabel={scopeLabel}
                 />
               </div>
             )}
+
 
             {activeTab === "schedule" && (
               <SpacedRepetitionScheduleTab

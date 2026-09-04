@@ -13,6 +13,7 @@ export const CommandPalette = memo(() => {
     setIsOpen,
     query,
     setQuery,
+    debouncedQuery,
     activeSection,
     setActiveSection,
     selectedIndex,
@@ -70,7 +71,9 @@ export const CommandPalette = memo(() => {
               />
             ))
           ) : (
-            <div className={styles.emptyState}>Ничего не найдено по запросу «{query}»</div>
+            <div className={styles.emptyState}>
+              Ничего не найдено по запросу «{debouncedQuery || query}»
+            </div>
           )}
         </div>
       </div>

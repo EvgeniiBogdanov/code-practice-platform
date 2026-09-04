@@ -1,21 +1,21 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
-// **Создай функцию-обработчик с помощью useCallback**
+// **Оптимизируйте компонент с помощью useCallback и React.memo**
 
 // **Требования:**
-// - Создать состояние счетчика (count).
-// - Написать функцию `increment` для увеличения счетчика на 1.
-// - Обернуть функцию `increment` в useCallback так, чтобы её ссылка никогда не менялась (использовать функциональное обновление состояния).
-// - Отрисовать кнопку, вызывающую эту функцию, и само значение счетчика.
+// - Оберните дочерний компонент IncrementButton в React.memo, чтобы избежать лишних ререндеров.
+// - Оберните функцию increment в useCallback с пустым массивом зависимостей [] (используя функциональное обновление).
+// - Передайте мемоизированный колбэк в IncrementButton.
 
-// Вводные:
-// const SimpleCounter = () => {};
+const IncrementButton = ({ onIncrement }) => {
+  return <button onClick={onIncrement}>Увеличить</button>;
+};
 
 const SimpleCounter = () => {
   const [count, setCount] = useState(0);
 
-  // Без useCallback эта функция будет создаваться с новой ссылкой
-  // в памяти при каждом рендере компонента SimpleCounter.
+  // Без useCallback эта функция пересоздается при каждом рендере,
+  // что ломает оптимизацию React.memo у дочернего компонента
   const increment = () => {
     setCount((prev) => prev + 1);
   };
@@ -23,7 +23,7 @@ const SimpleCounter = () => {
   return (
     <div>
       <p>Счетчик: {count}</p>
-      <button onClick={increment}>Увеличить</button>
+      <IncrementButton onIncrement={increment} />
     </div>
   );
 };

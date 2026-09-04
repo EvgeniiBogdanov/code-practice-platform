@@ -145,7 +145,10 @@ export const AppSidebar = ({ className }: AppSidebarProps): React.JSX.Element =>
                 />
               </Suspense>
             ) : (
-              <Suspense fallback={<SidebarListSkeleton />}>
+              <Suspense
+                key={activeSectionKey}
+                fallback={<SidebarListSkeleton section={activeSectionKey} />}
+              >
                 {activeSectionKey === "javascript" && <SidebarJsList />}
                 {activeSectionKey === "algorithms" && <SidebarAlgoList />}
                 {activeSectionKey === "react" && <SidebarReactList />}

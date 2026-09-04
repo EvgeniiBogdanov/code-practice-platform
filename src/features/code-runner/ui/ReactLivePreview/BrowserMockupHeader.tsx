@@ -6,6 +6,7 @@ import styles from "./ReactLivePreview.module.css";
 
 export interface BrowserMockupHeaderProps {
   fileName: string;
+  urlSearch?: string;
   onReload: (e: React.MouseEvent<HTMLButtonElement>) => void;
   previewTarget?: "candidate" | "solution";
   onPreviewTargetChange?: (target: "candidate" | "solution") => void;
@@ -15,6 +16,7 @@ export interface BrowserMockupHeaderProps {
 export const BrowserMockupHeader = memo(
   ({
     fileName,
+    urlSearch = "",
     onReload,
     previewTarget,
     onPreviewTargetChange,
@@ -34,7 +36,7 @@ export const BrowserMockupHeader = memo(
           <div className={styles.addressContent}>
             <Lock size={11} className={styles.lockIcon} />
             <span className={styles.host}>preview</span>
-            <span className={styles.path}>/ {fileName}</span>
+            <span className={styles.path}>/ {fileName}{urlSearch}</span>
           </div>
 
           <button

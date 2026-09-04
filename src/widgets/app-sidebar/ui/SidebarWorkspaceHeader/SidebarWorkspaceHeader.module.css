@@ -35,7 +35,9 @@
   padding: 4px 6px;
   min-height: 26px;
   border-radius: var(--radius-lg, 6px);
-  transition: background var(--transition-fast);
+  transition:
+    background var(--transition-fast, 0.15s ease),
+    color var(--transition-fast, 0.15s ease);
   width: 100%;
   min-width: 0;
   overflow: hidden;
@@ -44,6 +46,12 @@
 
 .workspaceInfoBtn:hover {
   background: var(--state-hover);
+  color: var(--text-main);
+}
+
+.workspaceInfoBtnActive {
+  background: var(--state-active);
+  color: var(--text-main);
 }
 
 .workspaceInfoBtn span:not(.sectionChevron):not(svg) {
@@ -60,6 +68,18 @@
   opacity: 0.5;
   flex-shrink: 0;
   color: var(--text-muted);
+  transition:
+    transform var(--transition-fast, 0.15s ease),
+    opacity var(--transition-fast, 0.15s ease);
+}
+
+.workspaceInfoBtn:hover .sectionChevron,
+.workspaceInfoBtnActive .sectionChevron {
+  opacity: 0.9;
+}
+
+.sectionChevronOpen {
+  transform: rotate(180deg);
 }
 
 .headerActions {
@@ -69,31 +89,34 @@
   flex-shrink: 0;
 }
 
+/* Dropdown menu popup matching AppHeader FinderSectionDropdown & Notion reference */
 .sectionDropdownMenu {
   position: absolute;
-  top: calc(100% + 4px);
+  top: calc(100% + 5px);
   left: 0;
-  width: 230px;
+  min-width: 260px;
+  max-width: 360px;
+  width: max-content;
+  max-height: 380px;
   background: var(--bg-card, #252525);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-color, #383837);
   border-radius: var(--radius-md, 8px);
   box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.22),
-    0 1px 3px rgba(0, 0, 0, 0.12);
+    0 12px 32px rgba(0, 0, 0, 0.45),
+    0 2px 8px rgba(0, 0, 0, 0.25);
   z-index: 1000;
-  padding: 4px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  overflow: hidden;
   animation: dropdownFadeIn 0.15s cubic-bezier(0, 0, 0.2, 1);
 }
 
-[data-theme="light"] .sectionDropdownMenu {
-  background: var(--bg-popover, #ffffff);
-  border-color: var(--border-color);
+:global([data-theme="light"]) .sectionDropdownMenu {
+  background: var(--bg-card, #ffffff);
+  border-color: var(--border-color, rgba(55, 53, 47, 0.12));
   box-shadow:
-    0 4px 16px rgba(15, 15, 15, 0.08),
-    0 1px 3px rgba(15, 15, 15, 0.04);
+    0 12px 32px rgba(15, 15, 15, 0.12),
+    0 2px 8px rgba(15, 15, 15, 0.06);
 }
 
 @keyframes dropdownFadeIn {
@@ -108,42 +131,92 @@
 }
 
 .sectionDropdownHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: var(--fs-sidebar-section, 11px);
   font-weight: var(--fw-semibold, 600);
   font-family: var(--font-sans);
-  line-height: var(--lh-tight, 1.2);
   text-transform: uppercase;
   letter-spacing: var(--ls-section, 0.04em);
-  color: var(--text-muted);
-  padding: 6px 8px 4px 8px;
+  color: var(--fg-muted, #75726e);
+  padding: 8px 10px 6px 10px;
+  user-select: none;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--border-color, #383837);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-width: 0;
-  max-width: 100%;
+}
+
+:global([data-theme="light"]) .sectionDropdownHeader {
+  background: var(--bg-sidebar, #f7f6f3);
+  color: var(--fg-muted, #787774);
+  border-bottom-color: var(--border-color, rgba(55, 53, 47, 0.12));
+}
+
+.sectionDropdownList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 4px;
+  overflow-y: auto;
+  max-height: 320px;
 }
 
 .sectionDropdownItem {
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 6px 10px;
+  min-height: 30px;
   background: transparent;
-  border-radius: var(--radius-sm, 4px);
-  color: var(--text-main);
-  text-decoration: none;
-  font-size: 14px;
+  border: none;
+  border-radius: var(--radius-md, 6px);
+  color: var(--text-main, #efefed);
+  font-size: 13.5px;
   font-weight: 500;
+  font-family: var(--font-sans);
+  text-decoration: none;
   cursor: pointer;
-  transition: background var(--transition-fast);
+  box-sizing: border-box;
+  transition:
+    background var(--transition-fast, 0.1s ease),
+    color var(--transition-fast, 0.1s ease);
 }
 
 .sectionDropdownItem:hover {
-  background: var(--state-hover);
+  background: var(--state-hover, rgba(255, 255, 255, 0.055));
+  color: var(--text-main, #ffffff);
 }
 
 .sectionDropdownItem.activeDropdownItem {
-  background: var(--state-active);
+  background: #333333;
+  color: #ffffff;
+}
+
+:global([data-theme="light"]) .sectionDropdownItem {
+  color: var(--text-main, #37352f);
+}
+
+:global([data-theme="light"]) .sectionDropdownItem:hover {
+  background: rgba(55, 53, 47, 0.055);
+  color: var(--text-main, #37352f);
+}
+
+:global([data-theme="light"]) .sectionDropdownItem.activeDropdownItem {
+  background: rgba(55, 53, 47, 0.08);
+  color: var(--text-main, #37352f);
+}
+
+.sectionDropdownItemTitle {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  font-size: 13.5px;
 }
 
 .sectionBadge {
@@ -151,20 +224,21 @@
   font-size: 11px;
   font-weight: 500;
   font-family: var(--font-sans);
-  padding: 1px 6px;
-  border-radius: 10px;
+  padding: 2px 8px;
+  border-radius: 12px;
   flex-shrink: 0;
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--fg-muted, rgba(255, 255, 255, 0.55));
+  color: var(--fg-muted, #8e8d8c);
 }
 
-[data-theme="light"] .sectionBadge {
+:global([data-theme="light"]) .sectionBadge {
   background: rgba(55, 53, 47, 0.06);
+  color: var(--fg-muted, #787774);
+  border-color: rgba(55, 53, 47, 0.08);
 }
 
 /* Section Colors */
 .icon_home {
-  color: #60a5fa;
+  color: var(--color-home);
   flex-shrink: 0;
 }
 
