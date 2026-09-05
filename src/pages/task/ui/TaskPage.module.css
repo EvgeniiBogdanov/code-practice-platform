@@ -33,6 +33,18 @@
   flex: 1;
 }
 
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .taskDetailTitle {
   font-size: 32px;
   margin: 0;

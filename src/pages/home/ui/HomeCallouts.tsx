@@ -1,6 +1,6 @@
 import React, { memo } from "react";
-import { Lightbulb, Star } from "lucide-react";
-import { Callout } from "@/shared/ui";
+import { Lightbulb } from "lucide-react";
+import { Callout, GitHubIcon } from "@/shared/ui";
 import styles from "./HomePage.module.css";
 
 export const HomeCallouts = memo((): React.JSX.Element => {
@@ -21,7 +21,7 @@ export const HomeCallouts = memo((): React.JSX.Element => {
 
       <Callout
         color="yellow"
-        icon={<Star size={20} />}
+        icon={<GitHubIcon size={20} />}
         title="Open-Source проект"
         className={styles.calloutBanner}
       >

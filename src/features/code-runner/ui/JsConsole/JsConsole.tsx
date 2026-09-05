@@ -1,5 +1,4 @@
 import React, { lazy, Suspense, useState, useEffect, useCallback } from "react";
-import "@xterm/xterm/css/xterm.css";
 import { clsx } from "clsx";
 import { NodeRunnerLogEntry } from "@/shared/lib/code-runners";
 import { useUIStore } from "@/entities/ui-state";

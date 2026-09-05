@@ -27,6 +27,8 @@ export const HeaderReviewMenu = memo(() => {
 
   // Close on click outside
   useEffect(() => {
+    if (!open) return;
+
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setOpen(false);
@@ -34,7 +36,7 @@ export const HeaderReviewMenu = memo(() => {
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [open]);
 
   // Close on route change
   useEffect(() => {

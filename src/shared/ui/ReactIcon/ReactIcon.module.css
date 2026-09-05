@@ -1,0 +1,10 @@
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  color: var(--color-react, #61dafb);
+}
+
+.atom {
+  fill: currentColor;
+}

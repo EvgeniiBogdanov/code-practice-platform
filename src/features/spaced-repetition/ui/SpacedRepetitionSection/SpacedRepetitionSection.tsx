@@ -1,16 +1,27 @@
-import { useState, memo } from "react";
+import { useState, memo, lazy, Suspense } from "react";
 import { Brain, X } from "lucide-react";
 import { clsx } from "clsx";
 import { Task } from "@/entities/task";
 import { useSpacedRepetitionData } from "../../model/useSpacedRepetitionData";
 import { SpacedRepetitionKpiGrid } from "./SpacedRepetitionKpiGrid";
 import { SpacedRepetitionTabBar, SRTabType } from "./SpacedRepetitionTabBar";
-import { SpacedRepetitionDistributionTab } from "./SpacedRepetitionDistributionTab";
-import { SpacedRepetitionScheduleTab } from "./SpacedRepetitionScheduleTab";
 import { SpacedRepetitionDueTab } from "./SpacedRepetitionDueTab";
 import { SpacedRepetitionUpcomingTab } from "./SpacedRepetitionUpcomingTab";
 import { SpacedRepetitionUnsolvedTab } from "./SpacedRepetitionUnsolvedTab";
+import { SpacedRepetitionDistributionSkeleton } from "./SpacedRepetitionDistributionSkeleton";
+import { SpacedRepetitionScheduleSkeleton } from "./SpacedRepetitionScheduleSkeleton";
 import styles from "./SpacedRepetitionSection.module.css";
+
+const SpacedRepetitionDistributionTab = lazy(() =>
+  import("./SpacedRepetitionDistributionTab").then((m) => ({
+    default: m.SpacedRepetitionDistributionTab,
+  }))
+);
+const SpacedRepetitionScheduleTab = lazy(() =>
+  import("./SpacedRepetitionScheduleTab").then((m) => ({
+    default: m.SpacedRepetitionScheduleTab,
+  }))
+);
 
 export interface SpacedRepetitionSectionProps {
   inModal?: boolean;
@@ -102,19 +113,20 @@ export const SpacedRepetitionSection = memo(
             </button>
           )}
 
+          <div className={styles.pageHeader}>
+            <h2 className={styles.pageTitle}>{TAB_TITLES[activeTab]}</h2>
+            <p className={styles.pageSubtitle}>
+              {TAB_SUBTITLES[activeTab]}
+              {scopeLabel ? ` (${scopeLabel})` : ""}
+            </p>
+          </div>
+
           <div
             className={clsx(
               styles.mainScrollable,
               isCompactPadding && styles.mainScrollableCompact
             )}
           >
-            <div className={styles.pageHeader}>
-              <h2 className={styles.pageTitle}>{TAB_TITLES[activeTab]}</h2>
-              <p className={styles.pageSubtitle}>
-                {TAB_SUBTITLES[activeTab]}
-                {scopeLabel ? ` (${scopeLabel})` : ""}
-              </p>
-            </div>
 
             {activeTab === "distribution" && (
               <div className={styles.viewContent}>
@@ -127,20 +139,24 @@ export const SpacedRepetitionSection = memo(
                   avgInterval={avgInterval}
                 />
                 <hr className={styles.sectionDivider} />
-                <SpacedRepetitionDistributionTab
-                  masteryStats={masteryStats}
-                  scopeLabel={scopeLabel}
-                />
+                <Suspense fallback={<SpacedRepetitionDistributionSkeleton />}>
+                  <SpacedRepetitionDistributionTab
+                    masteryStats={masteryStats}
+                    scopeLabel={scopeLabel}
+                  />
+                </Suspense>
               </div>
             )}
 
 
             {activeTab === "schedule" && (
-              <SpacedRepetitionScheduleTab
-                reviews={reviews}
-                targetTasks={targetTasks}
-                scopeLabel={scopeLabel}
-              />
+              <Suspense fallback={<SpacedRepetitionScheduleSkeleton />}>
+                <SpacedRepetitionScheduleTab
+                  reviews={reviews}
+                  targetTasks={targetTasks}
+                  scopeLabel={scopeLabel}
+                />
+              </Suspense>
             )}
 
             {activeTab === "due" && (

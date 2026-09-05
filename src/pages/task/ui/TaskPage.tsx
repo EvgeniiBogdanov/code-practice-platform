@@ -9,13 +9,22 @@ import { useProgressStore, isTaskCompleted } from "@/entities/progress";
 import { useReviewStore } from "@/entities/review";
 import { TaskReviewRatingBar, TaskExcludeButton } from "@/features/spaced-repetition";
 import { TaskFavoriteButton } from "@/features/task-favorite";
-import { TaskButton, NotificationBadge, NotificationBadgeVariant, UiLoader, Tooltip } from "@/shared/ui";
+import {
+  TaskButton,
+  NotificationBadge,
+  NotificationBadgeVariant,
+  Tooltip,
+  UiSkeleton,
+} from "@/shared/ui";
+import { TaskTabSkeleton } from "./skeletons";
 import { CandidateTab } from "./CandidateTab";
 import { SolutionTab } from "./SolutionTab";
-import { MaterialsTab } from "./MaterialsTab";
 import { ChecklistTab } from "./ChecklistTab";
+import { MaterialsTab } from "./MaterialsTab";
 import { QuestionsTab } from "./QuestionsTab";
 import styles from "./TaskPage.module.css";
+
+
 
 export interface TaskPageProps {
   taskId: string;
@@ -40,11 +49,7 @@ export const TaskPage = React.memo<TaskPageProps>(
       }
     }, [initialTab, taskId]);
 
-    if (isLoading) {
-      return <UiLoader center={true} size="lg" label="Загружаем задачу" />;
-    }
-
-    if (!task) {
+    if (!isLoading && !task) {
       return (
         <div className={styles.notFound}>
           <h2>Задача #{taskId} не найдена</h2>
@@ -65,12 +70,12 @@ export const TaskPage = React.memo<TaskPageProps>(
       });
     };
 
-    const isCompleted = isTaskCompleted(completedTasks[String(task.id)]);
-    const isUnsolved = completedTasks[String(task.id)] === "unsolved";
-    const isExcluded = excludedTaskIds.includes(String(task.id));
+    const isCompleted = task ? isTaskCompleted(completedTasks?.[String(task.id)]) : false;
+    const isUnsolved = task ? completedTasks?.[String(task.id)] === "unsolved" : false;
+    const isExcluded = task ? excludedTaskIds.includes(String(task.id)) : false;
 
     const handleToggleSolved = async () => {
-      if (isExcluded) return;
+      if (!task || isExcluded) return;
       const nextStatus = isCompleted ? null : "solved";
       await setTaskStatus(task.id, nextStatus);
       if (!nextStatus) {
@@ -79,7 +84,7 @@ export const TaskPage = React.memo<TaskPageProps>(
     };
 
     const handleToggleUnsolved = async () => {
-      if (isExcluded) return;
+      if (!task || isExcluded) return;
       const nextStatus = isUnsolved ? null : "unsolved";
       await setTaskStatus(task.id, nextStatus);
       if (nextStatus) {
@@ -88,10 +93,10 @@ export const TaskPage = React.memo<TaskPageProps>(
     };
 
     const questionsCount =
-      task.questions?.length ||
-      (task as { interviewerQuestions?: unknown[] }).interviewerQuestions?.length ||
+      task?.questions?.length ||
+      (task as { interviewerQuestions?: unknown[] } | undefined)?.interviewerQuestions?.length ||
       0;
-    const checklistCount = task.checklist?.length || 0;
+    const checklistCount = task?.checklist?.length || 0;
 
     const tabs: Array<{
       id: string;
@@ -136,66 +141,95 @@ export const TaskPage = React.memo<TaskPageProps>(
         <div className={styles.taskDetailCard}>
           {/* Заголовок задачи и кнопки статуса */}
           <div className={styles.taskHeaderRow}>
-            <div className={styles.taskTitleContainer}>
-              <h1 className={styles.taskDetailTitle}>
-                <span className={styles.taskDetailTitleText}>{task.title}</span>
-                {task.section !== "javascript" && task.difficulty && (
-                  <TaskDifficultyBadge difficulty={task.difficulty} className={styles.titleBadge} />
-                )}
-              </h1>
-              <TaskMetaBadges task={task} />
-            </div>
+            {task ? (
+              <div className={styles.taskTitleContainer}>
+                <h1 className={styles.taskDetailTitle}>
+                  <span className={styles.taskDetailTitleText}>{task.title}</span>
+                  {task.section !== "javascript" && task.difficulty && (
+                    <TaskDifficultyBadge difficulty={task.difficulty} className={styles.titleBadge} />
+                  )}
+                </h1>
+                <TaskMetaBadges task={task} />
+              </div>
+            ) : (
+              <div className={styles.taskTitleContainer}>
+                <div className={styles.titleRow}>
+                  <UiSkeleton width="45%" height={32} radius={6} />
+                  <UiSkeleton width={72} height={22} radius={4} />
+                </div>
+                <div className={styles.metaRow}>
+                  <UiSkeleton width={110} height={20} radius={4} />
+                  <UiSkeleton width={90} height={20} radius={4} />
+                  <UiSkeleton width={80} height={20} radius={4} />
+                </div>
+              </div>
+            )}
 
             <div className={styles.taskStatusActions}>
-              <TaskFavoriteButton taskId={task.id} taskTitle={task.title} />
-              <TaskExcludeButton taskId={task.id} taskTitle={task.title} />
+              {task ? (
+                <>
+                  <TaskFavoriteButton taskId={task.id} taskTitle={task.title} />
+                  <TaskExcludeButton taskId={task.id} taskTitle={task.title} />
 
-              <Tooltip
-                content={
-                  isExcluded
-                    ? "Задача исключена из цикла повторений"
-                    : isCompleted
-                      ? "Нажмите повторно, чтобы снять отметку"
-                      : "Пометить как решённую"
-                }
-                side="top"
-              >
-                <TaskButton
-                  statusVariant="solved"
-                  isActive={isCompleted}
-                  onClick={handleToggleSolved}
-                  disabled={isExcluded}
-                >
-                  Решено
-                </TaskButton>
-              </Tooltip>
+                  <Tooltip
+                    content={
+                      isExcluded
+                        ? "Задача исключена из цикла повторений"
+                        : isCompleted
+                          ? "Нажмите повторно, чтобы снять отметку"
+                          : "Пометить как решённую"
+                    }
+                    side="top"
+                  >
+                    <TaskButton
+                      statusVariant="solved"
+                      isActive={isCompleted}
+                      onClick={handleToggleSolved}
+                      disabled={isExcluded}
+                    >
+                      Решено
+                    </TaskButton>
+                  </Tooltip>
 
-              <Tooltip
-                content={
-                  isExcluded
-                    ? "Задача исключена из цикла повторений"
-                    : isUnsolved
-                      ? "Нажмите повторно, чтобы снять отметку"
-                      : "Пометить как нерешённую"
-                }
-                side="top"
-              >
-                <TaskButton
-                  statusVariant="unsolved"
-                  isActive={isUnsolved}
-                  onClick={handleToggleUnsolved}
-                  disabled={isExcluded}
-                >
-                  Не решено
-                </TaskButton>
-              </Tooltip>
+                  <Tooltip
+                    content={
+                      isExcluded
+                        ? "Задача исключена из цикла повторений"
+                        : isUnsolved
+                          ? "Нажмите повторно, чтобы снять отметку"
+                          : "Пометить как нерешённую"
+                    }
+                    side="top"
+                  >
+                    <TaskButton
+                      statusVariant="unsolved"
+                      isActive={isUnsolved}
+                      onClick={handleToggleUnsolved}
+                      disabled={isExcluded}
+                    >
+                      Не решено
+                    </TaskButton>
+                  </Tooltip>
+                </>
+              ) : (
+                <>
+                  <UiSkeleton width={32} height={32} radius={6} />
+                  <UiSkeleton width={32} height={32} radius={6} />
+                  <UiSkeleton width={88} height={32} radius={6} />
+                  <UiSkeleton width={96} height={32} radius={6} />
+                </>
+              )}
             </div>
           </div>
 
           {/* Шкала интервального повторения SM-2 */}
-          <TaskReviewRatingBar taskId={task.id} task={task} />
+          {task ? (
+            <TaskReviewRatingBar taskId={task.id} task={task} />
+          ) : (
+            <UiSkeleton width="100%" height={38} radius={6} />
+          )}
 
-          {/* Единый контейнер вкладок и содержимого */}
+          {/* Единый контейнер вкладок и содержимого: ВСЕГДА СТАТИЧНЫЙ, НИКАКИХ ПЕРЕРИСОВОК ИЛИ СКЕЛЕТОНОВ */}
           <div className={styles.tabsContainer}>
             <div className={styles.tabsHeader} role="tablist">
               {tabs.map((tab) => {
@@ -228,11 +262,17 @@ export const TaskPage = React.memo<TaskPageProps>(
             </div>
 
             <div className={styles.tabsContent}>
-              {activeTab === "candidate" && <CandidateTab task={task} />}
-              {activeTab === "solution" && <SolutionTab task={task} />}
-              {activeTab === "materials" && <MaterialsTab task={task} />}
-              {activeTab === "questions" && <QuestionsTab task={task} />}
-              {activeTab === "checklist" && <ChecklistTab task={task} />}
+              {!task ? (
+                <TaskTabSkeleton tab={activeTab} />
+              ) : (
+                <React.Suspense fallback={<TaskTabSkeleton tab={activeTab} task={task} />}>
+                  {activeTab === "candidate" && <CandidateTab task={task} />}
+                  {activeTab === "solution" && <SolutionTab task={task} />}
+                  {activeTab === "materials" && <MaterialsTab task={task} />}
+                  {activeTab === "questions" && <QuestionsTab task={task} />}
+                  {activeTab === "checklist" && <ChecklistTab task={task} />}
+                </React.Suspense>
+              )}
             </div>
           </div>
         </div>

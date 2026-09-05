@@ -19,6 +19,7 @@ import {
   GitBranch,
   Repeat,
   FileCode,
+  BookOpen,
 } from "lucide-react";
 import { GaugeIndicator, type MetaBadgeVariant } from "@/shared/ui";
 import { isSyntaxTask, getJsTaskProbabilityInfo } from "./get-js-task-probability";
@@ -168,7 +169,7 @@ const getPrimaryBadge = (group: string, subgroup: string, title: string): TaskBa
   if (isSyntaxTask(title)) {
     return { id: "syntax", label: "Синтаксис", variant: "blue", icon: <Code2 size={ICON_SIZE} /> };
   }
-  return { id: "base", label: "База", variant: "yellow", icon: <Zap size={ICON_SIZE} /> };
+  return { id: "base", label: "База", variant: "yellow", icon: <BookOpen size={ICON_SIZE} /> };
 };
 
 const getContextBadge = (group: string, subgroup: string, primaryId: string): TaskBadge | null => {

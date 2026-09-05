@@ -1,46 +1,30 @@
-import { memo, useCallback } from "react";
+import { memo, useCallback, lazy, Suspense } from "react";
 import { createPortal } from "react-dom";
 import { useUIStore } from "@/entities/ui-state";
 import { useModalBehavior } from "@/shared/ui";
-import { useCheatSheetData } from "../model/useCheatSheetData";
-import { CheatSheetDrawerBody } from "./CheatSheetDrawerBody";
+import { CheatSheetDrawerSkeleton } from "./CheatSheetDrawerSkeleton";
 import styles from "./CheatSheetModal.module.css";
 
-export const CheatSheetModal = memo(() => {
+const CheatSheetDrawerBody = lazy(() =>
+  import("./CheatSheetDrawerBody").then((module) => ({
+    default: module.CheatSheetDrawerBody,
+  }))
+);
+
+export const CheatSheetModal = memo((): React.JSX.Element | null => {
   const isOpen = useUIStore((state) => state.cheatSheetOpen);
   const setIsOpen = useUIStore((state) => state.setCheatSheetOpen);
-  const cheatSearch = useUIStore((state) => state.cheatSearch);
-  const setCheatSearch = useUIStore((state) => state.setCheatSearch);
 
   const handleClose = useCallback(() => setIsOpen(false), [setIsOpen]);
   const drawerRef = useModalBehavior(isOpen, true, handleClose);
-
-  const {
-    activeSection,
-    activeCategory,
-    currentSectionConfig,
-    filteredData,
-    handleSelectSection,
-    setActiveCategory,
-  } = useCheatSheetData(cheatSearch);
 
   if (!isOpen) return null;
 
   const drawerNode = (
     <div className={styles.drawerOverlay} onClick={handleClose} role="dialog" aria-modal="true">
-      <CheatSheetDrawerBody
-        drawerRef={drawerRef}
-        title={currentSectionConfig.title}
-        onClose={handleClose}
-        activeSection={activeSection}
-        onSelectSection={handleSelectSection}
-        cheatSearch={cheatSearch}
-        onSearchChange={setCheatSearch}
-        categories={currentSectionConfig.categories}
-        activeCategory={activeCategory}
-        onSelectCategory={setActiveCategory}
-        items={filteredData}
-      />
+      <Suspense fallback={<CheatSheetDrawerSkeleton onClose={handleClose} />}>
+        <CheatSheetDrawerBody drawerRef={drawerRef} onClose={handleClose} />
+      </Suspense>
     </div>
   );
 

@@ -1,52 +1,46 @@
 import React, { memo } from "react";
 import { clsx } from "clsx";
-import { UiSkeleton } from "@/shared/ui";
-import styles from "./TaskTabSkeleton.module.css";
+import { Task } from "@/entities/task";
+import { UiSkeleton, MetaRow } from "@/shared/ui";
+import materialsStyles from "../MaterialsTab/MaterialsTab.module.css";
 
 export interface MaterialsTabSkeletonProps {
+  task?: Task;
   className?: string;
 }
 
 export const MaterialsTabSkeleton = memo(
-  ({ className }: MaterialsTabSkeletonProps): React.JSX.Element => {
+  ({ task, className }: MaterialsTabSkeletonProps): React.JSX.Element => {
+    const hasArticles = Boolean(task?.articles && task.articles.length > 0);
+
     return (
-      <div className={clsx(styles.container, className)}>
-        <article className={styles.articlePage}>
-          {/* Article Header */}
-          <div className={styles.articleHeader}>
-            <UiSkeleton width="55%" height={26} radius={4} />
+      <div className={clsx(materialsStyles.container, className)}>
+        <article className={materialsStyles.articlePage}>
+          {/* Article Header with precision skeletons matching UI elements 1:1 */}
+          <header className={materialsStyles.header}>
+            {task ? (
+              <h1 className={materialsStyles.title}>Разбор решения: {task.title}</h1>
+            ) : (
+              <UiSkeleton width="55%" height={31} radius={6} />
+            )}
 
-            {/* Meta Badges Row */}
-            <div className={styles.articleMetaRow}>
-              <UiSkeleton width={120} height={22} radius={4} />
-              <UiSkeleton width={100} height={22} radius={4} />
-              <UiSkeleton width={190} height={22} radius={4} />
-            </div>
-          </div>
+            <MetaRow>
+              <UiSkeleton width={112} height={22} radius={8} />
+              <UiSkeleton width={102} height={22} radius={8} />
+              {(!task || hasArticles) && (
+                <UiSkeleton width={198} height={22} radius={8} />
+              )}
+            </MetaRow>
+          </header>
 
-          <hr className={styles.divider} />
+          <hr className={materialsStyles.divider} />
 
-          {/* Article Markdown Content with uniform background */}
-          <div className={styles.articleContent}>
-            {/* Paragraph 1 */}
-            <UiSkeleton lines={3} height={15} />
-
-            {/* Code block snippet */}
-            <div className={styles.codeSnippetBlock}>
-              <UiSkeleton width="35%" height={13} radius={3} />
-              <UiSkeleton width="65%" height={13} radius={3} />
-              <UiSkeleton width="50%" height={13} radius={3} />
-              <UiSkeleton width="25%" height={13} radius={3} />
-            </div>
-
-            {/* Paragraph 2 */}
-            <UiSkeleton lines={2} height={15} />
-
-            {/* Callout box */}
-            <div className={styles.calloutBlock}>
-              <UiSkeleton width={210} height={16} radius={4} />
-              <UiSkeleton lines={2} height={13} />
-            </div>
+          {/* Article Markdown Content on transparent background */}
+          <div className={materialsStyles.content}>
+            <UiSkeleton lines={3} height={16} radius={3} />
+            <UiSkeleton lines={4} height={16} radius={3} />
+            <UiSkeleton lines={2} height={16} radius={3} />
+            <UiSkeleton lines={3} height={16} radius={3} />
           </div>
         </article>
       </div>
@@ -55,3 +49,4 @@ export const MaterialsTabSkeleton = memo(
 );
 
 MaterialsTabSkeleton.displayName = "MaterialsTabSkeleton";
+

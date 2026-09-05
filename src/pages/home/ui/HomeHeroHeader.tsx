@@ -10,8 +10,16 @@ export const HomeHeroHeader = memo(({ grandTotal }: HomeHeroHeaderProps) => {
   return (
     <div className={styles.pageHeader}>
       <div className={styles.titleRow}>
+        <img
+          src={`${import.meta.env.BASE_URL}favicon.svg`}
+          alt=""
+          className={styles.titleIcon}
+          width={34}
+          height={34}
+          aria-hidden="true"
+        />
         <h1 className={styles.mainTitle}>Code Practice Platform</h1>
-        <span className={styles.versionTag}>v{APP_VERSION || "2.3.4"}</span>
+        <span className={styles.versionTag}>v{APP_VERSION || "error"}</span>
       </div>
       <p className={styles.subtitle}>
         Интерактивная платформа для подготовки к техническим собеседованиям и практики решения задач

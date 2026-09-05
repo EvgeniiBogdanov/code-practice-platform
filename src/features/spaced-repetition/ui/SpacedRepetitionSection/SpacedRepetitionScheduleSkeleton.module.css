@@ -1,0 +1,97 @@
+.scheduleView {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--bg-subtle);
+  border-radius: var(--radius-lg);
+  padding: 18px 22px;
+}
+
+.scheduleDescWrapper {
+  height: 18px;
+  display: flex;
+  align-items: center;
+}
+
+.chartContainer {
+  height: 220px;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 10px 10px 0;
+  box-sizing: border-box;
+}
+
+.barsGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 16px;
+  align-items: flex-end;
+  flex: 1;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 8px;
+}
+
+.barCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.countPlaceholder {
+  height: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.barTrack {
+  width: 100%;
+  max-width: 48px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.barToday {
+  height: 65%;
+}
+
+.barTomorrow {
+  height: 45%;
+}
+
+.bar23d {
+  height: 80%;
+}
+
+.bar47d {
+  height: 55%;
+}
+
+.bar814d {
+  height: 70%;
+}
+
+.bar1530d {
+  height: 35%;
+}
+
+.barMaster {
+  height: 90%;
+}
+
+.labelsRow {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 16px;
+  padding-top: 8px;
+}
+
+.labelCol {
+  display: flex;
+  justify-content: center;
+}

@@ -1,4 +1,6 @@
 import { describe, it, expect } from "vitest";
+import React from "react";
+import { BookOpen } from "lucide-react";
 import { getJsTaskBadges } from "./get-js-task-badges";
 import type { Task } from "../types";
 
@@ -167,5 +169,9 @@ describe("getJsTaskBadges", () => {
     const baseBadge = badges.find((b) => b.label === "База");
     expect(baseBadge).toBeDefined();
     expect(baseBadge?.variant).toBe("yellow");
+    expect(React.isValidElement(baseBadge?.icon)).toBe(true);
+    const iconElement = baseBadge?.icon as React.ReactElement<{ size?: number }>;
+    expect(iconElement.type).toBe(BookOpen);
+    expect(iconElement.props.size).toBe(12);
   });
 });

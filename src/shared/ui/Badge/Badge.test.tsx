@@ -35,4 +35,28 @@ describe("Badge", () => {
     );
     expect((normalContainer.firstChild as HTMLElement).className).not.toMatch(/uppercase/);
   });
+
+  it("renders icon properly", () => {
+    const { container } = render(
+      <Badge icon={<svg data-testid="test-icon" />}>With Icon</Badge>
+    );
+    expect(screen.getByTestId("test-icon")).toBeInTheDocument();
+    expect(screen.getByText("With Icon")).toBeInTheDocument();
+    const iconWrapper = container.querySelector('[class*="icon"]');
+    expect(iconWrapper).toBeInTheDocument();
+  });
+
+  it("forwards ref to the underlying span element", () => {
+    let spanRef: HTMLSpanElement | null = null;
+    render(
+      <Badge
+        ref={(el) => {
+          spanRef = el;
+        }}
+      >
+        Ref Badge
+      </Badge>
+    );
+    expect(spanRef).toBeInstanceOf(HTMLSpanElement);
+  });
 });

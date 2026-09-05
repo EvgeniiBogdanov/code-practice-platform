@@ -30,7 +30,7 @@ export const FinderSectionDropdown = ({
             activeDropdown === "section" && styles.breadcrumbBtnActive
           )}
           onClick={() => toggleDropdown("section")}
-          aria-label="Переключить раздел практики"
+          aria-label={`${sectionMeta.title}: переключить раздел практики`}
         >
           <SectionIcon size={15} className={styles[`icon_${section}`]} />
           <span className={styles.itemText}>{sectionMeta.title}</span>

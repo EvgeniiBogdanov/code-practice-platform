@@ -1,9 +1,10 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { BookOpen, Clock, ExternalLink } from "lucide-react";
 import { clsx } from "clsx";
 import { parseMarkdownBlocks } from "@/shared/lib/markdown";
 import { Callout, MetaRow, MetaBadge, MarkdownView } from "@/shared/ui";
-import { Task, TASK_EXPLANATIONS } from "@/entities/task";
+import { Task, loadTaskExplanations, getCachedTaskExplanation } from "@/entities/task";
+import { MaterialsTabSkeleton } from "../skeletons";
 import styles from "./MaterialsTab.module.css";
 
 export interface TaskArticleItem {
@@ -18,8 +19,41 @@ export interface MaterialsTabProps {
 }
 
 export const MaterialsTab = ({ task, className }: MaterialsTabProps): React.JSX.Element => {
-  let explanationText =
-    (TASK_EXPLANATIONS as Record<string, string>)[String(task.id)] || task.explanation || null;
+  const [asyncExplanation, setAsyncExplanation] = useState<string | null>(() => {
+    return getCachedTaskExplanation(task.id) ?? task.explanation ?? null;
+  });
+  const [isLoading, setIsLoading] = useState<boolean>(() => {
+    return !getCachedTaskExplanation(task.id) && !task.explanation;
+  });
+
+  useEffect(() => {
+    const cached = getCachedTaskExplanation(task.id);
+    if (cached) {
+      setAsyncExplanation(cached);
+      setIsLoading(false);
+      return;
+    }
+    if (task.explanation) {
+      setAsyncExplanation(task.explanation);
+      setIsLoading(false);
+      return;
+    }
+
+    let isMounted = true;
+    setIsLoading(true);
+    loadTaskExplanations().then((dict) => {
+      if (isMounted) {
+        setAsyncExplanation(dict[String(task.id)] || null);
+        setIsLoading(false);
+      }
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [task.id, task.explanation]);
+
+  let explanationText = asyncExplanation;
 
   if (explanationText) {
     explanationText = explanationText
@@ -48,6 +82,10 @@ export const MaterialsTab = ({ task, className }: MaterialsTabProps): React.JSX.
     const codeBlocks = (explanationText.match(/```[\s\S]*?```/g) || []).length;
     return Math.max(1, Math.ceil(words / 140 + codeBlocks * 0.7));
   }, [explanationText]);
+
+  if (isLoading) {
+    return <MaterialsTabSkeleton task={task} className={className} />;
+  }
 
   const hasExplanation = Boolean(explanationText) && blocks.length > 0;
   const articles = task.articles || [];

@@ -138,10 +138,7 @@
 }
 
 .color-yellow .icon,
-.color-amber .icon {
-  color: var(--accent-amber, #f59e0b);
-}
-
+.color-amber .icon,
 .color-yellow .title,
 .color-amber .title {
   color: var(--accent-amber-hover, #fbbf24);

@@ -19,7 +19,7 @@ interface FullscreenNavigationTarget {
 }
 
 interface UseFullscreenNavigationParams {
-  task: Pick<Task, "id" | "section">;
+  task?: Pick<Task, "id" | "section">;
   tab: EditorTab;
   hasVisualComponent: boolean;
 }
@@ -40,7 +40,11 @@ export const getFullscreenNavigationTarget = ({
   task,
   tab,
   hasVisualComponent,
-}: UseFullscreenNavigationParams): FullscreenNavigationTarget => {
+}: {
+  task: Pick<Task, "id" | "section">;
+  tab: EditorTab;
+  hasVisualComponent: boolean;
+}): FullscreenNavigationTarget => {
   return {
     to: getFullscreenRoute(task.section),
     params: { taskId: String(task.id) },
@@ -62,12 +66,15 @@ export const useFullscreenNavigation = ({
   const isNavigationPendingRef = useRef(false);
   const preloadRef = useRef<{ key: string; promise: Promise<void> } | null>(null);
   const target = useMemo(
-    () => getFullscreenNavigationTarget({ task, tab, hasVisualComponent }),
+    () => (task ? getFullscreenNavigationTarget({ task, tab, hasVisualComponent }) : null),
     [hasVisualComponent, tab, task]
   );
-  const targetKey = `${target.to}:${target.params.taskId}:${tab}:${target.search.view ?? "split"}`;
+  const targetKey = target
+    ? `${target.to}:${target.params.taskId}:${tab}:${target.search.view ?? "split"}`
+    : "";
 
   const ensureFullscreenPreloaded = useCallback((): Promise<void> => {
+    if (!target || !targetKey) return Promise.resolve();
     if (preloadRef.current?.key === targetKey) return preloadRef.current.promise;
 
     const promise = router
@@ -85,7 +92,7 @@ export const useFullscreenNavigation = ({
   }, [ensureFullscreenPreloaded]);
 
   const handleToggleFullscreen = useCallback((): void => {
-    if (isNavigationPendingRef.current) return;
+    if (!target || isNavigationPendingRef.current) return;
 
     isNavigationPendingRef.current = true;
     startTransition(async () => {

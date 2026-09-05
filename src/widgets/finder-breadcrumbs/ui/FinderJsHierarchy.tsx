@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { Link } from "@tanstack/react-router";
-import { ChevronDown, FileText, Folder, Check, X, RotateCcw, Zap } from "lucide-react";
+import { ChevronDown, FileText, Folder, Check, X, RotateCcw } from "lucide-react";
 import { clsx } from "clsx";
 import { selectIsTaskCompleted } from "@/entities/progress";
 import { isTaskDue, useReviewStore } from "@/entities/review";
@@ -10,7 +10,7 @@ import { FinderHierarchyProps } from "../model/types";
 import { useJsHierarchyLists } from "../model/useJsHierarchyLists";
 import { resolveJsHierarchyNames } from "../lib/resolveJsHierarchyNames";
 import { getRatingClass } from "../lib/getRatingClass";
-import { NodeCount, Tooltip } from "@/shared/ui";
+import { NodeCount, Tooltip, JavaScriptIcon } from "@/shared/ui";
 import styles from "./FinderBreadcrumbs.module.css";
 
 export const FinderJsHierarchy = ({
@@ -46,12 +46,12 @@ export const FinderJsHierarchy = ({
             activeDropdown === "group" && styles.breadcrumbBtnActive
           )}
           onClick={() => toggleDropdown("group")}
-          aria-label="Выбрать группу задач"
+          aria-label={`${currentGroupName || "Все темы JavaScript"}: выбрать группу задач`}
         >
           {currentGroupMeta ? (
             currentGroupMeta.renderIcon(14)
           ) : (
-            <Zap size={14} className={styles.iconJs} />
+            <JavaScriptIcon size={14} className={styles.iconJs} />
           )}
           <span className={styles.itemText}>{currentGroupName || "Все темы JavaScript"}</span>
           <ChevronDown size={13} className={styles.chevron} />
@@ -64,7 +64,7 @@ export const FinderJsHierarchy = ({
                 {currentGroupMeta ? (
                   currentGroupMeta.renderIcon(14)
                 ) : (
-                  <Zap size={14} className={styles.iconJs} />
+                  <JavaScriptIcon size={14} className={styles.iconJs} />
                 )}
               </span>
               <span className={styles.dropdownHeaderTitle}>Группы задач JavaScript</span>
@@ -113,7 +113,7 @@ export const FinderJsHierarchy = ({
                 activeDropdown === "subgroup" && styles.breadcrumbBtnActive
               )}
               onClick={() => toggleDropdown("subgroup")}
-              aria-label="Выбрать подгруппу задач"
+              aria-label={`${currentSubgroupName}: выбрать подгруппу задач`}
             >
               <Folder size={14} color={currentGroupMeta?.color} className={styles.iconJs} />
               <span className={styles.itemText}>{currentSubgroupName}</span>
@@ -182,7 +182,7 @@ export const FinderJsHierarchy = ({
                 activeDropdown === "task" && styles.breadcrumbBtnActive
               )}
               onClick={() => toggleDropdown("task")}
-              aria-label="Выбрать задачу из подгруппы"
+              aria-label={`${currentTask.title}: выбрать задачу из подгруппы`}
             >
               <FileText size={14} className={styles.fileIcon} />
               <span className={styles.itemText}>{currentTask.title}</span>

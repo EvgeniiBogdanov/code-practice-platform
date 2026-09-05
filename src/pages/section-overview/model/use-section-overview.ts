@@ -1,10 +1,11 @@
 import React, { useCallback, useMemo } from "react";
-import { Zap, Code2, Brain, Flame, Wrench, Rocket, RotateCcw } from "lucide-react";
+import { Code2, Brain, Flame, Wrench, Rocket, RotateCcw } from "lucide-react";
 import { getGroupMeta, getAlgoGroupMeta } from "@/entities/task/groups";
 import type { SectionType, Task } from "@/entities/task/meta";
 import { useTaskSection } from "@/entities/task/catalog";
 import { useProgressStore, selectIsTaskCompleted, ProgressState } from "@/entities/progress";
 import { useReviewStore, isTaskDue, getGroupCompletionClass, ReviewItem } from "@/entities/review";
+import { JavaScriptIcon, ReactIcon } from "@/shared/ui";
 import { GroupCardData } from "../ui/SectionGroupsGrid";
 import styles from "../ui/SectionOverviewPage.module.css";
 
@@ -63,7 +64,7 @@ export const useSectionOverview = (
         title: "JavaScript Core & Async",
         subtitle:
           "Комплексная практика JavaScript: замыкания, прототипы, Event Loop, промисы, асинхронные генераторы, структуры данных, манипуляции с DOM и чистые алгоритмические функции.",
-        icon: React.createElement(Zap, { size: 24, className: styles.iconJs }),
+        icon: React.createElement(JavaScriptIcon, { size: 24, className: styles.iconJs }),
         tasks: sectionTasks,
         badge: `${activeSectionTasks.length} задач`,
       };
@@ -74,7 +75,7 @@ export const useSectionOverview = (
         title: "React & TypeScript Engineering",
         subtitle:
           "Практика создания современных React-компонентов: кастомные хуки, оптимизация рендеринга, управление состоянием, паттерны рефакторинга и строгая типизация TypeScript.",
-        icon: React.createElement(Code2, { size: 24, className: styles.iconReact }),
+        icon: React.createElement(ReactIcon, { size: 24, className: styles.iconReact }),
         tasks: sectionTasks,
         badge: `${activeSectionTasks.length} задач`,
       };

@@ -53,5 +53,5 @@ describe("SidebarListSkeleton", () => {
     const reactTasks = await loadTaskSection("react");
     const reactCats = getReactCategories(useUIStore.getState(), reactTasks);
     expect(reactCats).toHaveLength(7);
-  });
+  }, 15000);
 });

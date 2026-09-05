@@ -18,6 +18,7 @@ export interface UseCommandPaletteReturn {
   selectedIndex: number;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number>>;
   filteredTasks: Task[];
+  isLoading: boolean;
   handleSelectTask: (task: Task) => void;
   handleKeyDown: (e: React.KeyboardEvent) => void;
 }
@@ -36,7 +37,7 @@ export const useCommandPalette = (): UseCommandPaletteReturn => {
     getSectionFromPathname(location.pathname)
   );
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const { tasks } = useAllTaskSections(isOpen);
+  const { tasks, isLoading } = useAllTaskSections(isOpen);
 
   useEffect(() => {
     if (isOpen) {
@@ -109,6 +110,7 @@ export const useCommandPalette = (): UseCommandPaletteReturn => {
     selectedIndex,
     setSelectedIndex,
     filteredTasks,
+    isLoading,
     handleSelectTask,
     handleKeyDown,
   };

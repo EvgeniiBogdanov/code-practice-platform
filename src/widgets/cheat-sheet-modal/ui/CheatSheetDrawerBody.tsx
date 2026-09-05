@@ -1,57 +1,49 @@
-import React, { memo } from "react";
+import { memo } from "react";
+import { useUIStore } from "@/entities/ui-state";
+import { useCheatSheetData } from "../model/useCheatSheetData";
 import { CheatSheetHeader } from "./CheatSheetHeader";
-import { CheatSheetSectionTabs, SectionType } from "./CheatSheetSectionTabs";
-import { CheatSheetCategoryTabs, CategoryConfig } from "./CheatSheetCategoryTabs";
+import { CheatSheetSectionTabs } from "./CheatSheetSectionTabs";
+import { CheatSheetCategoryTabs } from "./CheatSheetCategoryTabs";
 import { CheatSheetList } from "./CheatSheetList";
-import { CheatItem } from "./CheatSheetCard";
 import styles from "./CheatSheetModal.module.css";
 
-interface CheatSheetDrawerBodyProps {
+export interface CheatSheetDrawerBodyProps {
   drawerRef: React.Ref<HTMLDivElement>;
-  title: string;
   onClose: () => void;
-  activeSection: SectionType;
-  onSelectSection: (section: SectionType) => void;
-  cheatSearch: string;
-  onSearchChange: (query: string) => void;
-  categories: CategoryConfig[];
-  activeCategory: string;
-  onSelectCategory: (id: string) => void;
-  items: CheatItem[];
 }
 
 export const CheatSheetDrawerBody = memo(
-  ({
-    drawerRef,
-    title,
-    onClose,
-    activeSection,
-    onSelectSection,
-    cheatSearch,
-    onSearchChange,
-    categories,
-    activeCategory,
-    onSelectCategory,
-    items,
-  }: CheatSheetDrawerBodyProps) => {
+  ({ drawerRef, onClose }: CheatSheetDrawerBodyProps): React.JSX.Element => {
+    const cheatSearch = useUIStore((state) => state.cheatSearch);
+    const setCheatSearch = useUIStore((state) => state.setCheatSearch);
+
+    const {
+      activeSection,
+      activeCategory,
+      currentSectionConfig,
+      filteredData,
+      handleSelectSection,
+      setActiveCategory,
+    } = useCheatSheetData(cheatSearch);
+
     return (
       <div ref={drawerRef} className={styles.drawer} onClick={(e) => e.stopPropagation()}>
-        <CheatSheetHeader title={title} onClose={onClose} />
-        <CheatSheetSectionTabs activeSection={activeSection} onSelectSection={onSelectSection} />
+        <CheatSheetHeader title={currentSectionConfig.title} onClose={onClose} />
+        <CheatSheetSectionTabs activeSection={activeSection} onSelectSection={handleSelectSection} />
         <input
           type="text"
           value={cheatSearch}
-          onChange={(e) => onSearchChange(e.target.value)}
+          onChange={(e) => setCheatSearch(e.target.value)}
           placeholder="Поиск по методам, типам, паттернам..."
           className={styles.search}
           spellCheck={false}
         />
         <CheatSheetCategoryTabs
-          categories={categories}
+          categories={currentSectionConfig.categories}
           activeCategory={activeCategory}
-          onSelectCategory={onSelectCategory}
+          onSelectCategory={setActiveCategory}
         />
-        <CheatSheetList items={items} activeCategory={activeCategory} />
+        <CheatSheetList items={filteredData} activeCategory={activeCategory} />
       </div>
     );
   }

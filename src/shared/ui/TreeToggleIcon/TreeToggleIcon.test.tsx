@@ -14,7 +14,7 @@ describe("TreeToggleIcon", () => {
       />
     );
 
-    const toggleBtn = screen.getByRole("presentation");
+    const toggleBtn = screen.getByRole("button");
     expect(toggleBtn).toHaveAttribute("data-expanded", "false");
     expect(toggleBtn).toHaveAttribute("aria-expanded", "false");
     expect(screen.getByTestId("test-icon")).toBeInTheDocument();
@@ -35,7 +35,7 @@ describe("TreeToggleIcon", () => {
     const handleToggle = vi.fn();
     render(<TreeToggleIcon icon={<span>📁</span>} expanded={false} onToggle={handleToggle} />);
 
-    const toggleBtn = screen.getByRole("presentation");
+    const toggleBtn = screen.getByRole("button");
     const clickEvent = new MouseEvent("click", {
       bubbles: true,
       cancelable: true,
@@ -61,7 +61,7 @@ describe("TreeToggleIcon", () => {
       </a>
     );
 
-    const toggleBtn = screen.getByRole("presentation");
+    const toggleBtn = screen.getByRole("button");
     fireEvent.click(toggleBtn);
 
     expect(handleToggle).toHaveBeenCalledTimes(1);
@@ -73,7 +73,7 @@ describe("TreeToggleIcon", () => {
     const handleToggle = vi.fn();
     render(<TreeToggleIcon icon={<span>📁</span>} expanded={false} onToggle={handleToggle} />);
 
-    const toggleBtn = screen.getByRole("presentation");
+    const toggleBtn = screen.getByRole("button");
 
     fireEvent.keyDown(toggleBtn, { key: "Enter" });
     expect(handleToggle).toHaveBeenCalledTimes(1);

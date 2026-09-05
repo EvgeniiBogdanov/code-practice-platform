@@ -34,9 +34,11 @@ export const useSettingsModal = () => {
   );
 
   useEffect(() => {
+    if (!isOpen) return;
+
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleKeyDown]);
+  }, [isOpen, handleKeyDown]);
 
   const handleResetSectionReviews = async () => {
     if (activeSection !== "home") {

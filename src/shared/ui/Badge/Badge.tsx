@@ -24,6 +24,7 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   size?: BadgeSize;
   icon?: React.ReactNode;
   uppercase?: boolean;
+  ref?: React.Ref<HTMLSpanElement>;
 }
 
 export const Badge = ({
@@ -33,6 +34,7 @@ export const Badge = ({
   uppercase = true,
   className,
   children,
+  ref,
   ...props
 }: BadgeProps): React.JSX.Element => {
   const variantClass = styles[`variant-${variant}`];
@@ -46,7 +48,7 @@ export const Badge = ({
   );
 
   return (
-    <span className={classNames} {...props}>
+    <span ref={ref} className={classNames} {...props}>
       {icon && <span className={styles.icon}>{icon}</span>}
       {children !== undefined && children !== null && (
         <span className={styles.label}>{children}</span>

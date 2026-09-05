@@ -1,9 +1,11 @@
-import React, { useState, memo, useMemo } from "react";
+import React, { useState, memo, useMemo, useEffect } from "react";
 import { Tabs, TabItem } from "@/shared/ui";
 import { CodeEditor } from "@/features/code-editor";
 import { JsConsole, ReactLivePreview } from "@/features/code-runner";
 import { runNodeJsCode, clearRunningTimers, NodeRunnerLogEntry } from "@/shared/lib/code-runners";
 import styles from "./CodeWorkspace.module.css";
+
+const MAX_CONSOLE_LOGS = 500;
 
 const DEFAULT_REACT_CODE = `import React, { useState } from "react";
 
@@ -44,6 +46,12 @@ export const CodeWorkspace = memo((): React.JSX.Element => {
     exitCode?: number;
   } | null>(null);
 
+  useEffect(() => {
+    return () => {
+      clearRunningTimers();
+    };
+  }, []);
+
   const langTabs: TabItem[] = useMemo(
     () => [
       { id: "react", label: "React" },
@@ -64,10 +72,10 @@ export const CodeWorkspace = memo((): React.JSX.Element => {
     setConsoleLogs([]);
 
     const result = await runNodeJsCode(code, {
-      onLog: (_log, allLogs) => setConsoleLogs(allLogs),
+      onLog: (_log, allLogs) => setConsoleLogs(allLogs.slice(-MAX_CONSOLE_LOGS)),
     });
 
-    setConsoleLogs(result.logs);
+    setConsoleLogs(result.logs.slice(-MAX_CONSOLE_LOGS));
     setLastExecution({ durationMs: result.durationMs, exitCode: result.exitCode });
     setIsRunning(false);
   };

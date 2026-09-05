@@ -48,7 +48,7 @@ export const TreeToggleIcon = React.memo<TreeToggleIconProps>(
         data-expanded={expanded ? "true" : "false"}
         aria-expanded={expanded}
         aria-label={ariaLabel}
-        role="presentation"
+        role="button"
         tabIndex={-1}
       >
         <div className={styles.iconDefault}>{icon}</div>

@@ -12,7 +12,6 @@ import {
   Rocket,
   Brain,
   Zap,
-  Code2,
 } from "lucide-react";
 import { clsx } from "clsx";
 import { useProgressStore, selectIsTaskCompleted } from "@/entities/progress";
@@ -20,7 +19,7 @@ import { useReviewStore, isTaskDue, getGroupCompletionClass } from "@/entities/r
 import { useTaskSection } from "@/entities/task/catalog";
 import { FinderHierarchyProps } from "../model/types";
 import { getRatingClass } from "../lib/getRatingClass";
-import { NodeCount, Tooltip } from "@/shared/ui";
+import { NodeCount, Tooltip, ReactIcon } from "@/shared/ui";
 import styles from "./FinderBreadcrumbs.module.css";
 
 export const FinderReactHierarchy = ({
@@ -115,12 +114,12 @@ export const FinderReactHierarchy = ({
             activeDropdown === "group" && styles.breadcrumbBtnActive
           )}
           onClick={() => toggleDropdown("group")}
-          aria-label="Выбрать категорию задач React"
+          aria-label={`${currentReactCategory?.label || "Все категории React"}: выбрать категорию задач`}
         >
           {currentReactCategory ? (
             currentReactCategory.icon
           ) : (
-            <Code2 size={14} className={styles.iconReact} />
+            <ReactIcon size={14} className={styles.iconReact} />
           )}
           <span className={styles.itemText}>
             {currentReactCategory?.label || "Все категории React"}
@@ -193,7 +192,7 @@ export const FinderReactHierarchy = ({
                 activeDropdown === "task" && styles.breadcrumbBtnActive
               )}
               onClick={() => toggleDropdown("task")}
-              aria-label="Выбрать другую задачу из этого раздела"
+              aria-label={`${currentTask.title}: выбрать другую задачу`}
             >
               <FileText size={14} className={styles.fileIcon} />
               <span className={styles.itemText}>{currentTask.title}</span>

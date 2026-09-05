@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Code2,
-  Brain,
   GitMerge,
   Hash,
   SlidersHorizontal,
@@ -12,6 +11,7 @@ import {
   GitBranch,
   Compass,
   RotateCcw,
+  Brain,
 } from "lucide-react";
 import { GaugeIndicator, type MetaBadgeVariant } from "@/shared/ui";
 import { getAlgoTaskProbabilityInfo } from "./get-algo-task-probability";

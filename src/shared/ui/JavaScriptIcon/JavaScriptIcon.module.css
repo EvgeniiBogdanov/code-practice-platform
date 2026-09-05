@@ -1,0 +1,23 @@
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  color: var(--color-js, #f59e0b);
+}
+
+.bg {
+  fill: currentColor;
+}
+
+.letters {
+  fill: #000000;
+}
+
+:global([data-theme="light"]) .icon {
+  color: var(--color-js, #f59e0b);
+}
+
+:global([data-theme="light"]) .bg {
+  stroke: rgba(0, 0, 0, 0.08);
+  stroke-width: 0.5px;
+}

@@ -14,6 +14,7 @@
   width: 100%;
   box-sizing: border-box;
   padding: 4px 12px;
+  animation: articleFadeIn var(--transition-standard) ease-out both;
 }
 
 .header {
@@ -87,4 +88,19 @@
   font-style: italic;
   padding: 40px 20px;
   text-align: center;
+}
+
+@keyframes articleFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .articlePage {
+    animation: none;
+  }
 }

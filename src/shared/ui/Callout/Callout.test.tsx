@@ -108,4 +108,21 @@ describe("Callout", () => {
     const calloutElement = screen.getByRole("note");
     expect(calloutElement).toHaveClass(styles["color-amber"]);
   });
+
+  it("supports color='yellow' variant with icon and title", () => {
+    render(
+      <Callout
+        color="yellow"
+        icon={<span data-testid="github-icon">icon</span>}
+        title="Open-Source проект"
+      >
+        Поддержите развитие платформы
+      </Callout>
+    );
+
+    const calloutElement = screen.getByRole("note");
+    expect(calloutElement).toHaveClass(styles["color-yellow"]);
+    expect(screen.getByTestId("github-icon")).toBeInTheDocument();
+    expect(screen.getByText("Open-Source проект")).toBeInTheDocument();
+  });
 });

@@ -230,6 +230,13 @@ export const useCodeEditor = ({
     }, 800);
   };
 
+  useEffect(() => {
+    return () => {
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+      if (isScrollingTimeoutRef.current) clearTimeout(isScrollingTimeoutRef.current);
+    };
+  }, []);
+
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const val = e.target.value;
     const pos = e.target.selectionStart;

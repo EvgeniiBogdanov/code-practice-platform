@@ -25,18 +25,19 @@ function githubPagesSpaPlugin() {
   };
 }
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   define: {
     __APP_VERSION__: JSON.stringify(pkg.version),
   },
   base: process.env.VERCEL ? "/" : "/code-practice-platform/",
   plugins: [
-    codeInspectorPlugin({
-      bundler: "vite",
-      hotKeys: ["altKey"],
-      editor: "code",
-      launchType: "open",
-    }),
+    mode === "development" &&
+      codeInspectorPlugin({
+        bundler: "vite",
+        hotKeys: ["altKey"],
+        editor: "code",
+        launchType: "open",
+      }),
     TanStackRouterVite({
       routesDirectory: "./src/routes",
       generatedRouteTree: "./src/routeTree.gen.ts",
@@ -44,7 +45,7 @@ export default defineConfig({
     }),
     react(),
     githubPagesSpaPlugin(),
-  ],
+  ].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
@@ -60,6 +61,9 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
+          if (id.includes("@nivo") || id.includes("d3-") || id.includes("@react-spring")) {
+            return;
+          }
           if (id.includes("node_modules")) {
             if (id.includes("sucrase")) {
               return "vendor-compiler";
@@ -72,9 +76,6 @@ export default defineConfig({
             }
             if (id.includes("@tanstack")) {
               return "vendor-router";
-            }
-            if (id.includes("lucide-react")) {
-              return "vendor-icons";
             }
             return "vendor-framework";
           }
@@ -93,4 +94,4 @@ export default defineConfig({
     port: 4000,
     open: true,
   },
-});
+}));

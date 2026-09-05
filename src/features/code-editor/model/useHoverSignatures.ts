@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import {
   getHoverInfo,
   getSignatureHelp,
@@ -21,6 +21,15 @@ export function useHoverSignatures(filepath = "main.jsx"): HoverSignaturesState 
   const [signatureHelp, setSignatureHelp] = useState<SignatureHelpResult | null>(null);
   const [position, setPosition] = useState({ top: 0, left: 0 });
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current);
+        hoverTimeoutRef.current = null;
+      }
+    };
+  }, []);
 
   const closeHover = useCallback(() => {
     if (hoverTimeoutRef.current) {

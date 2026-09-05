@@ -21,6 +21,34 @@ const memoryCache = new Map<string, string>();
 const pendingTimers = new Map<string, ReturnType<typeof setTimeout>>();
 const pendingWrites = new Map<string, SolutionRecord>();
 
+const MAX_MEMORY_CACHE_ENTRIES = 150;
+
+function setMemoryCache(id: string, code: string): void {
+  if (memoryCache.has(id)) {
+    memoryCache.delete(id);
+  }
+  memoryCache.set(id, code);
+
+  if (memoryCache.size > MAX_MEMORY_CACHE_ENTRIES) {
+    const oldestKey = memoryCache.keys().next().value;
+    if (oldestKey) {
+      // Guarantee no data loss: flush pending write to IndexedDB immediately before evicting from memory
+      const pending = pendingWrites.get(oldestKey);
+      if (pending) {
+        pendingWrites.delete(oldestKey);
+        if (pendingTimers.has(oldestKey)) {
+          clearTimeout(pendingTimers.get(oldestKey)!);
+          pendingTimers.delete(oldestKey);
+        }
+        dbPut(STORES.SOLUTIONS, pending).catch((err) => {
+          console.error("[SolutionsService] Error persisting evicted solution:", err);
+        });
+      }
+      memoryCache.delete(oldestKey);
+    }
+  }
+}
+
 const DEBOUNCE_DELAY_MS = 300;
 
 export async function flushPendingSaves(): Promise<void> {
@@ -43,13 +71,15 @@ export async function flushPendingSaves(): Promise<void> {
   }
 }
 
-if (typeof window !== "undefined") {
-  window.addEventListener("visibilitychange", () => {
+if (typeof document !== "undefined") {
+  document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "hidden") {
       flushPendingSaves();
     }
   });
+}
 
+if (typeof window !== "undefined") {
   window.addEventListener("beforeunload", () => {
     flushPendingSaves();
   });
@@ -65,7 +95,12 @@ export function peekCachedSolution(id: string): string | null {
       dbDelete(STORES.SOLUTIONS, id).catch(() => {});
       return null;
     }
-    return memoryCache.get(id) || null;
+    const val = memoryCache.get(id) || null;
+    if (val !== null) {
+      memoryCache.delete(id);
+      memoryCache.set(id, val);
+    }
+    return val;
   }
   return null;
 }
@@ -88,7 +123,12 @@ export async function getSolution(
       }
       return fallbackCode;
     }
-    return memoryCache.get(id) || fallbackCode;
+    const val = memoryCache.get(id) || fallbackCode;
+    if (val !== null) {
+      memoryCache.delete(id);
+      memoryCache.set(id, val);
+    }
+    return val;
   }
 
   try {
@@ -98,7 +138,7 @@ export async function getSolution(
         await dbDelete(STORES.SOLUTIONS, id);
         return fallbackCode;
       }
-      memoryCache.set(id, record.code);
+      setMemoryCache(id, record.code);
       return record.code;
     }
   } catch (err) {
@@ -115,7 +155,7 @@ export async function saveSolution(
 ): Promise<void> {
   if (!id || typeof code !== "string") return;
 
-  memoryCache.set(id, code);
+  setMemoryCache(id, code);
 
   if (pendingTimers.has(id)) {
     clearTimeout(pendingTimers.get(id)!);
@@ -146,7 +186,7 @@ export function saveSolutionDebounced(
 ): void {
   if (!id || typeof code !== "string") return;
 
-  memoryCache.set(id, code);
+  setMemoryCache(id, code);
 
   const { taskId, fileIdx } = parseIdMetadata(id);
   const record: SolutionRecord = {
@@ -276,10 +316,12 @@ export async function initSolutionsCache(): Promise<void> {
 
   try {
     const allRecords = await dbGetAll<SolutionRecord>(STORES.SOLUTIONS);
-    for (const record of allRecords) {
+    allRecords.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+    const recentRecords = allRecords.slice(0, 100);
+    for (const record of recentRecords) {
       if (record && record.id && typeof record.code === "string") {
         if (!memoryCache.has(record.id)) {
-          memoryCache.set(record.id, record.code);
+          setMemoryCache(record.id, record.code);
         }
       }
     }

@@ -1,6 +1,3 @@
-import { TASK_EXPLANATIONS } from "../../taskExplanations";
-
-
 // Импорт компонентов разминки
 import WarmupCandidate1Raw from "../tasks/1_warmup/1_UseStateBasic.jsx?raw";
 import WarmupCandidate1 from "../tasks/1_warmup/1_UseStateBasic.jsx";
