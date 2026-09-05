@@ -2,10 +2,13 @@ import React, { lazy, Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { loadTaskSection } from "@/entities/task/catalog";
 import { UiLoader } from "@/shared/ui";
-import { TaskPage } from "@/pages/task";
 
 const GroupOverviewPage = lazy(() =>
   import("@/pages/group-overview").then(({ GroupOverviewPage: component }) => ({ default: component }))
+);
+
+const TaskPage = lazy(() =>
+  import("@/pages/task").then(({ TaskPage: component }) => ({ default: component }))
 );
 
 export interface TaskRouteSearch {
@@ -24,11 +27,24 @@ const JsTaskRoute = () => {
     );
   }
 
-  return <TaskPage taskId={taskId} section="javascript" initialTab={search.tab || "candidate"} />;
+  return (
+    <Suspense fallback={<UiLoader center size="lg" label="Загружаем задачу..." />}>
+      <TaskPage taskId={taskId} section="javascript" initialTab={search.tab || "candidate"} />
+    </Suspense>
+  );
 };
 
 export const Route = createFileRoute("/javascript/$taskId")({
-  loader: () => loadTaskSection("javascript"),
+  loader: async ({ params }) => {
+    const isGroup = Boolean(
+      params.taskId && (params.taskId.startsWith("group-") || params.taskId.startsWith("subgroup-"))
+    );
+    const [tasks] = await Promise.all([
+      loadTaskSection("javascript"),
+      isGroup ? import("@/pages/group-overview") : import("@/pages/task"),
+    ]);
+    return tasks;
+  },
   validateSearch: (search: Record<string, unknown>): TaskRouteSearch => ({
     tab: typeof search.tab === "string" ? search.tab : undefined,
   }),

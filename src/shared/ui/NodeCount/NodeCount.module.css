@@ -8,7 +8,7 @@
   font-variant-numeric: tabular-nums lining-nums;
   letter-spacing: 0;
   text-align: center;
-  color: var(--fg-muted, var(--text-muted));
+  color: var(--text-dimmed, #9ca3af);
   padding: 0 6px;
   height: 18px;
   min-height: 18px;
@@ -17,9 +17,9 @@
   font-weight: 600;
   background: transparent;
   flex-shrink: 0;
-  opacity: 0.7;
+  opacity: 1;
   transition:
-    opacity 0.15s ease,
+    color 0.15s ease,
     background 0.15s ease;
 }
 
@@ -50,6 +50,7 @@
 
 [data-theme="light"] .nodeCount {
   background: transparent;
+  color: var(--text-muted, #5c5b56);
 }
 
 [data-theme="light"] .nodeCount.completed,

@@ -58,6 +58,7 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
+    sourcemap: true,
     rollupOptions: {
       output: {
         manualChunks: (id) => {
@@ -73,6 +74,9 @@ export default defineConfig(({ mode }) => ({
             }
             if (id.includes("@xterm")) {
               return "vendor-xterm";
+            }
+            if (id.includes("marked") || id.includes("dompurify")) {
+              return "vendor-markdown";
             }
             if (id.includes("@tanstack")) {
               return "vendor-router";
