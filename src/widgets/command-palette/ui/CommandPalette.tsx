@@ -5,9 +5,10 @@ import { Icon, SquareButton, Tooltip } from "@/shared/ui";
 import { useCommandPalette } from "../model";
 import { CommandPaletteTabs } from "./CommandPaletteTabs";
 import { CommandPaletteItem } from "./CommandPaletteItem";
+import { CommandPaletteSkeleton } from "./CommandPaletteSkeleton";
 import styles from "./CommandPalette.module.css";
 
-export const CommandPalette = memo(() => {
+export const CommandPalette = memo((): React.JSX.Element | null => {
   const {
     isOpen,
     setIsOpen,
@@ -19,6 +20,7 @@ export const CommandPalette = memo(() => {
     selectedIndex,
     setSelectedIndex,
     filteredTasks,
+    isLoading,
     handleSelectTask,
     handleKeyDown,
   } = useCommandPalette();
@@ -59,7 +61,9 @@ export const CommandPalette = memo(() => {
         />
 
         <div className={styles.paletteResults}>
-          {filteredTasks.length > 0 ? (
+          {isLoading && filteredTasks.length === 0 ? (
+            <CommandPaletteSkeleton />
+          ) : filteredTasks.length > 0 ? (
             filteredTasks.map((task, idx) => (
               <CommandPaletteItem
                 key={`${task.section}-${task.id}`}

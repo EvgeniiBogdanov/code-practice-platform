@@ -45,7 +45,19 @@ const formatSafeResult = (val: unknown): unknown => {
   }
 };
 
+let currentUnhandledRejectionHandler: ((event: PromiseRejectionEvent) => void) | null = null;
+
 if (typeof self !== "undefined") {
+  try {
+    self.addEventListener("unhandledrejection", (event: PromiseRejectionEvent) => {
+      if (currentUnhandledRejectionHandler) {
+        currentUnhandledRejectionHandler(event);
+      }
+    });
+  } catch {
+    // ignore
+  }
+
   self.onmessage = async (event: MessageEvent) => {
     const { type, code: codeText } = event.data || {};
     if (type !== "EXECUTE") return;
@@ -267,11 +279,7 @@ if (typeof self !== "undefined") {
       checkAndNotifyComplete();
     };
 
-    try {
-      self.addEventListener("unhandledrejection", handleUnhandledRejection);
-    } catch {
-      // ignore
-    }
+    currentUnhandledRejectionHandler = handleUnhandledRejection;
 
     const sandboxExports: Record<string, unknown> = {};
     const sandboxModule = { exports: sandboxExports };
@@ -355,6 +363,7 @@ if (typeof self !== "undefined") {
         }
 
         isCompletePosted = true;
+        currentUnhandledRejectionHandler = null;
         const durationMs = Math.round((performance.now() - startTime) * 10) / 10;
         const safeResult = formatSafeResult(syncResult);
 

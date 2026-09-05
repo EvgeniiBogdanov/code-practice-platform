@@ -205,6 +205,8 @@
   color: var(--text-main);
   display: inline-flex;
   align-items: center;
+  min-height: 28px;
+  padding: 4px 0;
 }
 
 .groupHeaderMeta {

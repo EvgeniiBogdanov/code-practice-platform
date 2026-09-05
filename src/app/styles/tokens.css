@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
-
 :root {
   /* ==========================================
      1. TYPOGRAPHY TOKENS
@@ -430,9 +428,9 @@
   --color-react: var(--accent-blue);
   --color-react-bg: var(--accent-blue-bg);
   --color-react-border: var(--accent-blue-border);
-  --color-js: var(--accent-orange);
-  --color-js-bg: var(--accent-orange-bg);
-  --color-js-border: var(--accent-orange-border);
+  --color-js: #f59e0b;
+  --color-js-bg: rgba(245, 158, 11, 0.10);
+  --color-js-border: rgba(245, 158, 11, 0.28);
   --color-algo: var(--accent-purple);
   --color-algo-bg: var(--accent-purple-bg);
   --color-algo-border: var(--accent-purple-border);

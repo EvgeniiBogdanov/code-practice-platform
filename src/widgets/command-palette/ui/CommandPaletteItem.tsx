@@ -1,9 +1,9 @@
 import React, { memo } from "react";
-import { Code2, Zap, Brain, FileText } from "lucide-react";
+import { FileText, Brain } from "lucide-react";
 import { clsx } from "clsx";
 import type { Task } from "@/entities/task/meta";
 import { getGroupMeta, getAlgoGroupMeta, REACT_GROUPS_CONFIG } from "@/entities/task/groups";
-import { Badge, type BadgeVariant } from "@/shared/ui";
+import { Badge, type BadgeVariant, JavaScriptIcon, ReactIcon } from "@/shared/ui";
 import styles from "./CommandPalette.module.css";
 
 const SECTION_CONFIG: Record<
@@ -12,12 +12,12 @@ const SECTION_CONFIG: Record<
 > = {
   react: {
     label: "REACT",
-    icon: <Code2 size={11} className={styles.iconReact} />,
+    icon: <ReactIcon size={11} className={styles.iconReact} />,
     variant: "blue",
   },
   javascript: {
     label: "JS",
-    icon: <Zap size={11} className={styles.iconJs} />,
+    icon: <JavaScriptIcon size={11} className={styles.iconJs} />,
     variant: "yellow",
   },
   algorithms: {

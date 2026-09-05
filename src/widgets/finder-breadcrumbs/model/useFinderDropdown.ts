@@ -15,27 +15,28 @@ export const useFinderDropdown = () => {
     setActiveDropdown((prev) => (prev === name ? null : name));
   }, []);
 
-  // Close on click outside
+  // Close on click outside or Escape key
   useEffect(() => {
+    if (!activeDropdown) return;
+
     const handleClickOutside = (event: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         closeAllDropdowns();
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [closeAllDropdowns]);
-
-  // Close on Escape key
-  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         closeAllDropdowns();
       }
     };
+
+    document.addEventListener("mousedown", handleClickOutside);
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [closeAllDropdowns]);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [activeDropdown, closeAllDropdowns]);
 
   // Close on route navigation
   useEffect(() => {

@@ -1,43 +1,34 @@
 import React, { memo } from "react";
 import { clsx } from "clsx";
+import { Task } from "@/entities/task";
 import { UiSkeleton } from "@/shared/ui";
-import styles from "./TaskTabSkeleton.module.css";
+import { ChecklistTab } from "../ChecklistTab";
+import checklistStyles from "../ChecklistTab/ChecklistTab.module.css";
 
 export interface ChecklistTabSkeletonProps {
+  task?: Task;
   className?: string;
 }
 
 export const ChecklistTabSkeleton = memo(
-  ({ className }: ChecklistTabSkeletonProps): React.JSX.Element => {
-    return (
-      <div className={clsx(styles.checklistContainer, className)}>
-        {/* Checklist Header matching ChecklistTab header */}
-        <div className={styles.checklistHeader}>
-          <div className={styles.checklistHeaderLeft}>
-            <UiSkeleton width={160} height={18} radius={4} />
-            <UiSkeleton width="75%" height={14} radius={3} />
-          </div>
-          <UiSkeleton width={135} height={28} radius={100} />
-        </div>
+  ({ task, className }: ChecklistTabSkeletonProps): React.JSX.Element => {
+    if (task) {
+      return <ChecklistTab task={task} className={className} />;
+    }
 
-        {/* Checklist Section matching ChecklistTab section & Checkbox */}
-        <div className={styles.checklistSection}>
-          {Array.from({ length: 6 }).map((_, idx) => (
-            <div key={idx} className={styles.checklistItem}>
-              <UiSkeleton
-                width={16}
-                height={16}
-                radius={3}
-                style={{ flexShrink: 0, marginTop: 2.5 }}
-              />
-              <UiSkeleton
-                width={`${50 + (idx % 4) * 12}%`}
-                height={15}
-                radius={3}
-                style={{ marginTop: 2 }}
-              />
-            </div>
-          ))}
+    return (
+      <div className={clsx(checklistStyles.container, className)}>
+        <div className={checklistStyles.header}>
+          <div>
+            <h3 className={checklistStyles.title}>📋 Самопроверка</h3>
+            <p className={checklistStyles.subtitle}>
+              Убедитесь, что ваше решение соответствует ключевым требованиям задачи и современным
+              лучшим практикам.
+            </p>
+          </div>
+          <div className={checklistStyles.scoreBadge}>
+            <UiSkeleton width={80} height={14} radius={3} />
+          </div>
         </div>
       </div>
     );
@@ -45,3 +36,5 @@ export const ChecklistTabSkeleton = memo(
 );
 
 ChecklistTabSkeleton.displayName = "ChecklistTabSkeleton";
+
+

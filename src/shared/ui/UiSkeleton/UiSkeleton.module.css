@@ -1,30 +1,41 @@
 .skeleton {
   display: block;
   background-color: var(--bg-card, #252525);
-  background-image: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.03) 0%,
-    rgba(255, 255, 255, 0.08) 50%,
-    rgba(255, 255, 255, 0.03) 100%
-  );
-  background-size: 200% 100%;
   position: relative;
   overflow: hidden;
 }
 
 [data-theme="light"] .skeleton {
   background-color: var(--bg-subtle, #f4f4f2);
-  background-image: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0.03) 0%,
-    rgba(0, 0, 0, 0.07) 50%,
-    rgba(0, 0, 0, 0.03) 100%
-  );
 }
 
 /* Animations */
 .animation_shimmer {
-  animation: uiSkeletonFadeIn 150ms ease-out both, uiSkeletonShimmer 1.6s ease-in-out infinite;
+  animation: uiSkeletonFadeIn 150ms ease-out both;
+}
+
+.animation_shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 100%
+  );
+  animation: uiSkeletonShimmer 1.6s ease-in-out infinite;
+  will-change: transform;
+}
+
+[data-theme="light"] .animation_shimmer::after {
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.07) 50%,
+    transparent 100%
+  );
 }
 
 .animation_pulse {
@@ -79,10 +90,10 @@
 
 @keyframes uiSkeletonShimmer {
   0% {
-    background-position: 200% 0;
+    transform: translateX(-100%);
   }
   100% {
-    background-position: -200% 0;
+    transform: translateX(100%);
   }
 }
 

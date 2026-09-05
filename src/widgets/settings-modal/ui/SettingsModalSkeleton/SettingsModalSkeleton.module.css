@@ -1,0 +1,123 @@
+.skeletonContainer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
+  padding: 18px 14px 16px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.sidebarTop {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.workspaceHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 6px;
+}
+
+.workspaceInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.navGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sectionTitle {
+  margin-bottom: 2px;
+  padding: 0 6px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: var(--radius-sm, 6px);
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: var(--bg-card);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.closeBtnPlaceholder {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  z-index: 10;
+}
+
+.mainScrollable {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 32px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+.pageHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.cardsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cardItem {
+  padding: 16px;
+  border-radius: var(--radius-md, 8px);
+  border: 1px solid var(--border-color);
+  background: var(--bg-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.cardLeft {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+}
+
+.cardText {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}

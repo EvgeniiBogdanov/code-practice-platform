@@ -16,9 +16,11 @@ export const useStatsModalController = () => {
   );
 
   useEffect(() => {
+    if (!isOpen) return;
+
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleKeyDown]);
+  }, [isOpen, handleKeyDown]);
 
   const modalTitle =
     statsData.section === "home"

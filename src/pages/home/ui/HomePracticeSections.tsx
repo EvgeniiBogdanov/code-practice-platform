@@ -1,5 +1,6 @@
 import React, { memo } from "react";
-import { FolderGit2, Zap, Code2, Brain } from "lucide-react";
+import { FolderGit2, Brain } from "lucide-react";
+import { JavaScriptIcon, ReactIcon } from "@/shared/ui";
 import { HomeStats } from "../model/use-home-stats";
 import { HomeSectionCard } from "./HomeSectionCard";
 import styles from "./HomePage.module.css";
@@ -20,7 +21,7 @@ export const HomePracticeSections = memo(
         <div className={styles.galleryGrid}>
           <HomeSectionCard
             coverClass={styles.amberCover}
-            coverIcon={<Zap size={24} color="#f59e0b" />}
+            coverIcon={<JavaScriptIcon size={24} color="#f59e0b" />}
             title="JavaScript"
             tagText={`${stats.jsTotal} задач`}
             tagClass={styles.tagAmber}
@@ -35,7 +36,7 @@ export const HomePracticeSections = memo(
 
           <HomeSectionCard
             coverClass={styles.blueCover}
-            coverIcon={<Code2 size={24} color="#3b82f6" />}
+            coverIcon={<ReactIcon size={24} color="#3b82f6" />}
             title="React"
             tagText={`${stats.reactTotal} задач`}
             tagClass={styles.tagBlue}

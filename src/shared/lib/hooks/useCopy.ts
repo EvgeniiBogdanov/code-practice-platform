@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 
 export interface UseCopyReturn {
   copied: boolean;
@@ -7,6 +7,13 @@ export interface UseCopyReturn {
 
 export const useCopy = (defaultText?: string, timeout = 2000): UseCopyReturn => {
   const [copied, setCopied] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   const copy = useCallback(
     async (textToCopy?: string): Promise<boolean> => {
@@ -27,7 +34,8 @@ export const useCopy = (defaultText?: string, timeout = 2000): UseCopyReturn => 
           document.body.removeChild(textarea);
         }
         setCopied(true);
-        setTimeout(() => setCopied(false), timeout);
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        timeoutRef.current = setTimeout(() => setCopied(false), timeout);
         return true;
       } catch {
         return false;

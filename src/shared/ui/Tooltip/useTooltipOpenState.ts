@@ -61,6 +61,8 @@ export const useTooltipOpenState = ({
 
   // Close tooltip on window blur or tab visibility change (tab switch)
   useEffect(() => {
+    if (!isOpen) return;
+
     const handleVisibilityOrBlur = () => {
       if (document.hidden || !document.hasFocus()) {
         handleClose();
@@ -73,7 +75,7 @@ export const useTooltipOpenState = ({
       window.removeEventListener("blur", handleVisibilityOrBlur);
       document.removeEventListener("visibilitychange", handleVisibilityOrBlur);
     };
-  }, [handleClose]);
+  }, [isOpen, handleClose]);
 
   // Close on Escape key
   useEffect(() => {

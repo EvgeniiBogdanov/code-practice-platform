@@ -47,6 +47,8 @@ export interface UseSolutionTabReturn {
   handleClearConsole: () => void;
 }
 
+const MAX_CONSOLE_LOGS = 500;
+
 export function useSolutionTab(task: Task): UseSolutionTabReturn {
   const isReact = task.section === "react";
   const solutions = useMemo(
@@ -161,7 +163,7 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
         const logType =
           e.data.level === "error" ? "error" : e.data.level === "warn" ? "warn" : "stdout";
         setConsoleLogs((prev) => [
-          ...prev,
+          ...prev.slice(-(MAX_CONSOLE_LOGS - 1)),
           {
             id: Date.now() + Math.random(),
             type: logType,

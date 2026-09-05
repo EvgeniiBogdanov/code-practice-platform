@@ -22,6 +22,7 @@
   box-sizing: border-box;
   vertical-align: middle;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .icon {
@@ -42,6 +43,12 @@
   align-items: center;
   justify-content: center;
   line-height: 1;
+}
+
+@supports (text-box: trim-both cap alphabetic) {
+  .text {
+    text-box: trim-both cap alphabetic;
+  }
 }
 
 /* Variants - Exact WCAG-compliant design tokens matching folder icons */

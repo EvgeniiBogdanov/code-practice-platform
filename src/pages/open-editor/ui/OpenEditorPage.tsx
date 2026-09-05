@@ -23,6 +23,8 @@ import { useUIStore } from "@/entities/ui-state";
 import { useFullscreenExitTransition } from "../model/use-fullscreen-exit-transition";
 import styles from "./OpenEditorPage.module.css";
 
+const MAX_CONSOLE_LOGS = 500;
+
 export interface OpenEditorPageProps {
   taskId?: string;
   section?: SectionType;
@@ -136,6 +138,13 @@ export const OpenEditorPage = ({
     clearRunningTimers();
   }, [editorSessionKey, initialFiles, task, tab, initialViewMode, isReact]);
 
+  // Cleanup timers and workers on unmount
+  useEffect(() => {
+    return () => {
+      clearRunningTimers();
+    };
+  }, []);
+
   // Load saved solution
   useEffect(() => {
     if (!task) return;
@@ -170,7 +179,7 @@ export const OpenEditorPage = ({
         const logType =
           e.data.level === "error" ? "error" : e.data.level === "warn" ? "warn" : "stdout";
         setConsoleLogs((prev) => [
-          ...prev,
+          ...prev.slice(-(MAX_CONSOLE_LOGS - 1)),
           {
             id: Date.now() + Math.random(),
             type: logType,

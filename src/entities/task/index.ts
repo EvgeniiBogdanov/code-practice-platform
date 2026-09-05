@@ -20,4 +20,4 @@ export {
   getAlgoGroupMeta,
   getAlgoGroupMetaByInfoId,
 } from "./curriculum/algorithms/data/groupConfig";
-export { TASK_EXPLANATIONS } from "./curriculum/taskExplanations";
+export { loadTaskExplanations, getCachedTaskExplanation } from "./model/task-explanations";

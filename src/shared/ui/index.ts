@@ -36,6 +36,7 @@ export * from "./UiSkeleton";
 export * from "./UiNumberScramble";
 export * from "./GaugeIndicator";
 export * from "./Switch";
+export * from "./JavaScriptIcon";
+export * from "./ReactIcon";
+export * from "./GitHubIcon";
 export { clsx } from "clsx";
-
-

@@ -20,13 +20,16 @@ import { JsConsole, ReactLivePreview } from "@/features/code-runner";
 import { useFullscreenNavigation } from "../../model/use-fullscreen-navigation";
 import styles from "./CandidateTab.module.css";
 
+const MAX_CONSOLE_LOGS = 500;
+
 export interface CandidateTabProps {
-  task: Task;
+  task?: Task;
   className?: string;
 }
 
 export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.Element => {
   const initialFiles: TaskSourceFile[] = useMemo(() => {
+    if (!task) return [{ name: "main.js", code: "" }];
     const rawFiles = getTaskFiles(task, "candidate");
     return rawFiles.map((file, idx) => {
       const cached = getUserSolutionSync(task.id, "cand", idx);
@@ -39,15 +42,22 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
 
   const [activeFileIdx, setActiveFileIdx] = useState(0);
   const [files, setFiles] = useState<TaskSourceFile[]>(initialFiles);
-  const activeFile = files[activeFileIdx] || files[0] || { name: "index.jsx", code: "" };
+  const activeFile = files[activeFileIdx] || files[0] || { name: "main.js", code: "" };
 
-  const hasVisualComponent = useMemo(() => hasTaskVisualComponent(task, files), [task, files]);
+  const hasVisualComponent = useMemo(
+    () => (task ? hasTaskVisualComponent(task, files) : false),
+    [task, files]
+  );
 
   const [viewMode, setViewMode] = useState<ViewMode>("code");
   const { isFullscreenTransitioning, handleToggleFullscreen, preloadFullscreen } =
-    useFullscreenNavigation({ task, tab: "candidate", hasVisualComponent });
+    useFullscreenNavigation({
+      task: task ? { id: task.id, section: task.section } : undefined,
+      tab: "candidate",
+      hasVisualComponent,
+    });
 
-  const isLinterDisabled = isCandidateLinterDisabled(task);
+  const isLinterDisabled = task ? isCandidateLinterDisabled(task) : false;
 
   // JS Runner state
   const [consoleLogs, setConsoleLogs] = useState<NodeRunnerLogEntry[]>([]);
@@ -62,6 +72,7 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
 
   // Reset when task changes
   useEffect(() => {
+    if (!task) return;
     setActiveFileIdx(0);
     setIsConsoleVisible(true);
     setFiles(initialFiles);
@@ -70,13 +81,15 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
     setIsRunning(false);
     setLastExecution(null);
     clearRunningTimers();
-  }, [task.id, initialFiles, task]);
+  }, [task?.id, initialFiles, task]);
 
   // Load saved solution from storage on task mount / file select
   useEffect(() => {
+    if (!task) return;
+    const currentTaskId = task.id;
     let isMounted = true;
     async function loadSaved(): Promise<void> {
-      const saved = await getUserSolution(task.id, "cand", activeFileIdx);
+      const saved = await getUserSolution(currentTaskId, "cand", activeFileIdx);
       if (isMounted && typeof saved === "string") {
         setFiles((prev) => {
           const next = [...prev];
@@ -91,7 +104,7 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
     return () => {
       isMounted = false;
     };
-  }, [task.id, activeFileIdx]);
+  }, [task?.id, activeFileIdx]);
 
   // Listen for console logs from sandbox iframe
   useEffect(() => {
@@ -101,7 +114,7 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
         const logType =
           e.data.level === "error" ? "error" : e.data.level === "warn" ? "warn" : "stdout";
         setConsoleLogs((prev) => [
-          ...prev,
+          ...prev.slice(-(MAX_CONSOLE_LOGS - 1)),
           {
             id: Date.now() + Math.random(),
             type: logType,
@@ -119,7 +132,7 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
   // IntersectionObserver to track console visibility for the quick-scroll button
   useEffect(() => {
     const el = consoleWrapperRef.current;
-    if (!el || viewMode === "preview") {
+    if (!el || viewMode === "preview" || typeof IntersectionObserver === "undefined") {
       setIsConsoleVisible(true);
       return;
     }
@@ -139,7 +152,7 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
       isMounted = false;
       observer.disconnect();
     };
-  }, [viewMode, activeFileIdx, task.id]);
+  }, [viewMode, activeFileIdx, task?.id]);
 
   const handleCodeChange = (newCode: string) => {
     setFiles((prev) => {
@@ -149,10 +162,13 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
       }
       return next;
     });
-    saveUserSolution(task.id, "cand", activeFileIdx, newCode);
+    if (task) {
+      saveUserSolution(task.id, "cand", activeFileIdx, newCode);
+    }
   };
 
   const handleResetCode = async (): Promise<void> => {
+    if (!task) return;
     await deleteUserSolution(task.id, "cand", activeFileIdx);
     const defaults = getTaskFiles(task, "candidate");
     const original = defaults[activeFileIdx]?.code || "";
@@ -213,7 +229,7 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
         ) : (
           <>
             <CodeEditor
-              key={`cand_${task.id}_${activeFileIdx}`}
+              key={`cand_${task?.id ?? "none"}_${activeFileIdx}`}
               code={activeFile?.code || ""}
               onChange={handleCodeChange}
               onRun={() => handleRunCode()}
@@ -222,6 +238,7 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
               activeFileIdx={activeFileIdx}
               onFileSelect={setActiveFileIdx}
               filepath={activeFile.name}
+              readOnly={!task}
               disableLinter={isLinterDisabled}
               onToggleFullscreen={handleToggleFullscreen}
               onPreloadFullscreen={preloadFullscreen}

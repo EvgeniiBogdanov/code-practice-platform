@@ -1,0 +1,23 @@
+.skeletonList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  padding: 2px 0;
+  box-sizing: border-box;
+}
+
+.skeletonItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: var(--radius-md, 6px);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.itemTitle {
+  flex: 1;
+  min-width: 0;
+}

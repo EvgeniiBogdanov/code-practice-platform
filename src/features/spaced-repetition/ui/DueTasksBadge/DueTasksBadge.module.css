@@ -27,6 +27,12 @@
   line-height: 1;
 }
 
+@supports (text-box: trim-both cap alphabetic) {
+  .badge span {
+    text-box: trim-both cap alphabetic;
+  }
+}
+
 .badge:hover {
   background-color: var(--accent-yellow-border);
   transform: translateY(-1px);

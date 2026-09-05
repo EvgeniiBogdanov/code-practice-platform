@@ -90,27 +90,29 @@ export const SidebarWorkspaceHeader = memo(
       isAnyExpanded,
     ]);
 
-    // Close dropdown on click outside
+    // Close dropdown on click outside or Escape key
     useEffect(() => {
+      if (!dropdownOpen) return;
+
       const handleClickOutside = (event: MouseEvent) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
           setDropdownOpen(false);
         }
       };
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
 
-    // Close dropdown on Escape key
-    useEffect(() => {
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape") {
           setDropdownOpen(false);
         }
       };
+
+      document.addEventListener("mousedown", handleClickOutside);
       window.addEventListener("keydown", handleKeyDown);
-      return () => window.removeEventListener("keydown", handleKeyDown);
-    }, []);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+        window.removeEventListener("keydown", handleKeyDown);
+      };
+    }, [dropdownOpen]);
 
     return (
       <div className={styles.header}>
@@ -123,7 +125,7 @@ export const SidebarWorkspaceHeader = memo(
                 dropdownOpen && styles.workspaceInfoBtnActive
               )}
               onClick={() => setDropdownOpen((prev) => !prev)}
-              aria-label="Переключить раздел платформы"
+              aria-label={`${activeSection.title}: переключить раздел платформы`}
               aria-expanded={dropdownOpen}
             >
               <ActiveSectionIcon size={16} className={styles[`icon_${activeSection.id}`]} />

@@ -33,7 +33,7 @@ export const AppSidebar = ({ className }: AppSidebarProps): React.JSX.Element =>
   const location = useLocation();
   const pathname = location.pathname;
 
-  const contentRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLElement>(null);
   useSidebarKeyboardNav(contentRef);
 
   const sidebarOpen = useUIStore((state) => state.sidebarOpen);
@@ -130,11 +130,10 @@ export const AppSidebar = ({ className }: AppSidebarProps): React.JSX.Element =>
             onCloseSidebar={() => setSidebarOpen(false)}
           />
 
-          <div
+          <nav
             ref={contentRef}
             className={styles.content}
             tabIndex={-1}
-            role={activeSectionKey !== "home" ? "tree" : undefined}
             aria-label={activeSectionKey !== "home" ? "Навигация по темам и задачам" : undefined}
           >
             {activeSectionKey === "home" ? (
@@ -154,7 +153,7 @@ export const AppSidebar = ({ className }: AppSidebarProps): React.JSX.Element =>
                 {activeSectionKey === "react" && <SidebarReactList />}
               </Suspense>
             )}
-          </div>
+          </nav>
         </Tooltip.Provider>
       </div>
 

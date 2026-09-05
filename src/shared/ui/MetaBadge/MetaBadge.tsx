@@ -40,7 +40,9 @@ export const MetaBadge = ({
   return (
     <span ref={ref} className={classNames} {...props}>
       {icon && <span className={styles.icon}>{icon}</span>}
-      {children && <span className={styles.text}>{children}</span>}
+      {children !== undefined && children !== null && (
+        <span className={styles.text}>{children}</span>
+      )}
     </span>
   );
 };

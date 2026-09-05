@@ -1,5 +1,6 @@
 import React from "react";
-import { Home, Zap, Code2, Brain } from "lucide-react";
+import { Home, Brain } from "lucide-react";
+import { JavaScriptIcon, ReactIcon } from "@/shared/ui";
 import { CURRICULUM_COUNTS } from "./curriculum-manifest";
 import { SectionType } from "../types";
 
@@ -28,7 +29,7 @@ export const SECTIONS_CONFIG: Record<"home" | SectionType, SectionMeta> = {
     title: "JavaScript",
     label: "JavaScript",
     path: "/javascript",
-    icon: Zap,
+    icon: JavaScriptIcon,
     color: "var(--color-js)",
     badge: `${CURRICULUM_COUNTS.javascript} задач`,
   },
@@ -37,7 +38,7 @@ export const SECTIONS_CONFIG: Record<"home" | SectionType, SectionMeta> = {
     title: "React",
     label: "React",
     path: "/react",
-    icon: Code2,
+    icon: ReactIcon,
     color: "var(--color-react)",
     badge: `${CURRICULUM_COUNTS.react} задач`,
   },

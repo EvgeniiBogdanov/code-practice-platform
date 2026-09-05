@@ -1,4 +1,5 @@
 import React from "react";
+import "@xterm/xterm/css/xterm.css";
 import { NodeRunnerLogEntry } from "@/shared/lib/code-runners";
 import { useXtermConsole } from "../../model/useXtermConsole";
 import styles from "./JsConsole.module.css";

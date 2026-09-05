@@ -1,6 +1,6 @@
 import { memo, useMemo } from "react";
-import { Code2, Zap, Brain, BookOpen } from "lucide-react";
-import { Tabs, TabItem } from "@/shared/ui";
+import { BookOpen, Brain } from "lucide-react";
+import { Tabs, TabItem, JavaScriptIcon, ReactIcon } from "@/shared/ui";
 import { SectionType } from "../model/types";
 import styles from "./CheatSheetModal.module.css";
 
@@ -18,12 +18,12 @@ export const CheatSheetSectionTabs = memo(
         {
           id: "react",
           label: "React & TS",
-          icon: <Code2 size={13} className={styles.iconReact} />,
+          icon: <ReactIcon size={13} className={styles.iconReact} />,
         },
         {
           id: "javascript",
           label: "JavaScript",
-          icon: <Zap size={13} className={styles.iconJs} />,
+          icon: <JavaScriptIcon size={13} className={styles.iconJs} />,
         },
         {
           id: "algorithms",

@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import { Task } from "@/entities/task";
 import { CandidateTabSkeleton } from "./CandidateTabSkeleton";
 import { SolutionTabSkeleton } from "./SolutionTabSkeleton";
 import { MaterialsTabSkeleton } from "./MaterialsTabSkeleton";
@@ -8,22 +9,23 @@ import { ChecklistTabSkeleton } from "./ChecklistTabSkeleton";
 export interface TaskTabSkeletonProps {
   tab: string;
   className?: string;
+  task?: Task;
 }
 
 export const TaskTabSkeleton = memo(
-  ({ tab, className }: TaskTabSkeletonProps): React.JSX.Element => {
+  ({ tab, className, task }: TaskTabSkeletonProps): React.JSX.Element => {
     switch (tab) {
       case "solution":
-        return <SolutionTabSkeleton className={className} />;
+        return <SolutionTabSkeleton task={task} className={className} />;
       case "materials":
-        return <MaterialsTabSkeleton className={className} />;
+        return <MaterialsTabSkeleton task={task} className={className} />;
       case "questions":
-        return <QuestionsTabSkeleton className={className} />;
+        return <QuestionsTabSkeleton task={task} className={className} />;
       case "checklist":
-        return <ChecklistTabSkeleton className={className} />;
+        return <ChecklistTabSkeleton task={task} className={className} />;
       case "candidate":
       default:
-        return <CandidateTabSkeleton className={className} />;
+        return <CandidateTabSkeleton task={task} className={className} />;
     }
   }
 );

@@ -25,6 +25,8 @@ const initialReviews =
 const initialExcluded = getExcludedTasksFromLocalStorage() || [];
 const initialAssistantName = getAssistantNameFromLocalStorage() || DEFAULT_ASSISTANT_NAME;
 
+let unsubscribeSyncEvents: (() => void) | null = null;
+
 export const useReviewStore = create<ReviewState>((set, get) => ({
   reviews: initialReviews,
   excludedTaskIds: initialExcluded,
@@ -45,7 +47,12 @@ export const useReviewStore = create<ReviewState>((set, get) => ({
         isInitialized: true,
       });
 
-      subscribeToSyncEvents((event) => {
+      if (unsubscribeSyncEvents) {
+        unsubscribeSyncEvents();
+        unsubscribeSyncEvents = null;
+      }
+
+      unsubscribeSyncEvents = subscribeToSyncEvents((event) => {
         if (event.type === "TASK_REVIEWED" && event.taskId && event.review) {
           set((state) => ({
             reviews: {

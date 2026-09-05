@@ -37,7 +37,7 @@ describe("SidebarWorkspaceHeader", () => {
       />
     );
 
-    const toggleBtn = screen.getByRole("button", { name: "Переключить раздел платформы" });
+    const toggleBtn = screen.getByRole("button", { name: /переключить раздел платформы/i });
     expect(toggleBtn).toBeInTheDocument();
     expect(screen.getByText("JavaScript")).toBeInTheDocument();
 
@@ -64,7 +64,7 @@ describe("SidebarWorkspaceHeader", () => {
       />
     );
 
-    const toggleBtn = screen.getByRole("button", { name: "Переключить раздел платформы" });
+    const toggleBtn = screen.getByRole("button", { name: /переключить раздел платформы/i });
     fireEvent.click(toggleBtn);
     expect(screen.getByText("РАЗДЕЛЫ ПЛАТФОРМЫ")).toBeInTheDocument();
 

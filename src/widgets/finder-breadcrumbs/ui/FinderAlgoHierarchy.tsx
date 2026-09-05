@@ -78,7 +78,7 @@ export const FinderAlgoHierarchy = ({
             activeDropdown === "group" && styles.breadcrumbBtnActive
           )}
           onClick={() => toggleDropdown("group")}
-          aria-label="Выбрать группу задач Алгоритмы"
+          aria-label={`${currentGroupName || "Все темы алгоритмов"}: выбрать группу задач`}
         >
           {currentGroupMeta ? (
             currentGroupMeta.renderIcon(14)
@@ -146,7 +146,7 @@ export const FinderAlgoHierarchy = ({
                 activeDropdown === "task" && styles.breadcrumbBtnActive
               )}
               onClick={() => toggleDropdown("task")}
-              aria-label="Выбрать материал из группы"
+              aria-label={`${currentTask.title}: выбрать материал из группы`}
             >
               <FileText size={14} className={styles.fileIcon} />
               <span className={styles.itemText}>{currentTask.title}</span>

@@ -1,7 +1,8 @@
 import React from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Atom, Zap, Brain, Code2 } from "lucide-react";
+import { Code2, Brain } from "lucide-react";
 import { clsx } from "clsx";
+import { JavaScriptIcon, ReactIcon } from "@/shared/ui";
 import styles from "./HeaderSectionNav.module.css";
 
 export interface HeaderSectionNavProps {
@@ -20,7 +21,7 @@ export const HeaderSectionNav = ({ className }: HeaderSectionNavProps) => {
   return (
     <nav className={clsx(styles.navContainer, className)}>
       <Link to="/" className={clsx(styles.navItem, isReact && styles.active)}>
-        <Atom size={14} className={styles.iconReact} />
+        <ReactIcon size={14} className={styles.iconReact} />
         <span>React</span>
       </Link>
 
@@ -28,7 +29,7 @@ export const HeaderSectionNav = ({ className }: HeaderSectionNavProps) => {
         to="/javascript"
         className={clsx(styles.navItem, isJs && styles.active)}
       >
-        <Zap size={14} className={styles.iconJs} />
+        <JavaScriptIcon size={14} className={styles.iconJs} />
         <span>JavaScript</span>
       </Link>
 
