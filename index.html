@@ -6,14 +6,10 @@
     <meta name="description" content="Интерактивная платформа для практики JavaScript, React и алгоритмов с онлайн-редактором, тестами и системой интервального повторения." />
     <title>Code Practice Platform</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <!-- Оптимизированное неблокирующее подключение Inter -->
+    <!-- Подключение шрифта Inter с оптимизацией предзагрузки -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
-    <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
-    </noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
     <script>
       (function() {
         try {
@@ -37,6 +33,14 @@
           document.documentElement.setAttribute('data-theme', theme);
           document.documentElement.style.setProperty('--sidebar-width', sidebarWidth + 'px');
         } catch (e) {}
+
+        if (typeof document !== 'undefined' && 'fonts' in document && typeof document.fonts.load === 'function') {
+          try {
+            document.fonts.load('400 1em Inter');
+            document.fonts.load('500 1em Inter');
+            document.fonts.load('600 1em Inter');
+          } catch (e) {}
+        }
       })();
     </script>
     <style>

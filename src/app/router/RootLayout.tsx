@@ -94,11 +94,9 @@ export const RootLayout = memo(() => {
           <div className={styles.appContentWrapper}>
             <AppHeader
               breadcrumbs={
-                location.pathname === "/" || location.pathname === "/home" ? null : (
-                  <Suspense fallback={null}>
-                    <FinderBreadcrumbs />
-                  </Suspense>
-                )
+                <Suspense fallback={null}>
+                  <FinderBreadcrumbs />
+                </Suspense>
               }
             />
             <main className={styles.contentArea} ref={contentAreaRef}>

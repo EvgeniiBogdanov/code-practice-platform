@@ -40,7 +40,7 @@ describe("SidebarHomeOverview", () => {
   it("renders all section navigation links and badges", () => {
     render(<SidebarHomeOverview activeSectionKey="home" isHomeActive={true} />);
 
-    expect(screen.getByText("Главная (Обзор)")).toBeInTheDocument();
+    expect(screen.getByText("Обзор платформы")).toBeInTheDocument();
     expect(screen.getByText("JavaScript")).toBeInTheDocument();
     expect(screen.getByText("React")).toBeInTheDocument();
     expect(screen.getByText("Алгоритмы")).toBeInTheDocument();

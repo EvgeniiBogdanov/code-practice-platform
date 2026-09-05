@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "@tanstack/react-router";
+import { BookOpen } from "lucide-react";
 import { clsx } from "clsx";
 import { SECTIONS_CONFIG, SectionType } from "@/entities/task/meta";
 import { NodeCount } from "@/shared/ui";
@@ -33,12 +34,8 @@ export const SidebarHomeOverview = ({
         to="/home"
         className={clsx(styles.homeOverviewItem, isHomeActive && styles.homeItemActive)}
       >
-        <SECTIONS_CONFIG.home.icon
-          size={17}
-          color={SECTIONS_CONFIG.home.color}
-          className={styles.icon_home}
-        />
-        <span className={styles.homeItemTitle}>Главная (Обзор)</span>
+        <BookOpen size={17} className={styles.icon_home} />
+        <span className={styles.homeItemTitle}>Обзор платформы</span>
       </Link>
 
       <Link to="/javascript" className={styles.homeOverviewItem}>

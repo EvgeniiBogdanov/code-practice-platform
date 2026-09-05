@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { APP_VERSION } from "@/shared/config/ui-constants";
+import { PlatformLogo } from "@/shared/ui";
 import styles from "./HomePage.module.css";
 
 interface HomeHeroHeaderProps {
@@ -10,14 +11,7 @@ export const HomeHeroHeader = memo(({ grandTotal }: HomeHeroHeaderProps) => {
   return (
     <div className={styles.pageHeader}>
       <div className={styles.titleRow}>
-        <img
-          src={`${import.meta.env.BASE_URL}favicon.svg`}
-          alt=""
-          className={styles.titleIcon}
-          width={34}
-          height={34}
-          aria-hidden="true"
-        />
+        <PlatformLogo size={34} className={styles.titleIcon} />
         <h1 className={styles.mainTitle}>Code Practice Platform</h1>
         <span className={styles.versionTag}>v{APP_VERSION || "error"}</span>
       </div>

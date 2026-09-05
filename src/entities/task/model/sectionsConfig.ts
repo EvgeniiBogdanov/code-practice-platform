@@ -18,7 +18,7 @@ export const SECTIONS_CONFIG: Record<"home" | SectionType, SectionMeta> = {
   home: {
     id: "home",
     title: "Главная",
-    label: "Главная (Обзор)",
+    label: "Обзор платформы",
     path: "/home",
     icon: Home,
     color: "var(--color-home)",

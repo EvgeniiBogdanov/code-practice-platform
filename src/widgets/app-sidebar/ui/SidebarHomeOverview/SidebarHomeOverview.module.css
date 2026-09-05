@@ -34,7 +34,7 @@
 }
 
 .icon_home {
-  color: var(--color-home);
+  color: var(--text-muted);
   flex-shrink: 0;
 }
 

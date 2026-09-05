@@ -10,7 +10,7 @@ describe("HomeHeroHeader", () => {
     // App icon
     const icon = container.querySelector(`.${styles.titleIcon}`);
     expect(icon).toBeInTheDocument();
-    expect(icon).toHaveAttribute("src", expect.stringContaining("favicon.svg"));
+    expect(icon?.tagName.toLowerCase()).toBe("svg");
 
     // Main heading
     const heading = screen.getByRole("heading", { level: 1, name: "Code Practice Platform" });
