@@ -4,6 +4,7 @@ import {
   getCompletedTasksWithTimestampsFromDB,
   saveTaskStatusToDB,
   removeTaskStatusesFromDB,
+  clearAllTaskStatusesFromDB,
   getChecklistStateFromDB,
   saveChecklistItemToDB,
   requestPersistentStorage,
@@ -63,7 +64,9 @@ export const useProgressStore = create<ProgressState>((set, get) => ({
           },
         }));
       } else if (event.type === "PROGRESS_RESET") {
-        if (event.idsToRemove && Array.isArray(event.idsToRemove)) {
+        if (event.all) {
+          set({ completedTasks: {}, taskStatusTimestamps: {} });
+        } else if (event.idsToRemove && Array.isArray(event.idsToRemove)) {
           const idsSet = new Set(event.idsToRemove.map(String));
           set((state) => {
             const updated: Record<string, TaskCompletionStatus> = {};
@@ -152,10 +155,10 @@ export const useProgressStore = create<ProgressState>((set, get) => ({
       await clearAllSolutions();
       broadcastSyncEvent("SOLUTIONS_CLEARED", { all: true });
 
+      await clearAllTaskStatusesFromDB();
       const allIds = Object.keys(get().completedTasks);
-      await removeTaskStatusesFromDB(allIds);
       set({ completedTasks: {}, taskStatusTimestamps: {} });
-      broadcastSyncEvent("PROGRESS_RESET", { idsToRemove: allIds });
+      broadcastSyncEvent("PROGRESS_RESET", { all: true, idsToRemove: allIds });
     } else if (taskIds.length > 0) {
       const stringIds = taskIds.map(String);
       await deleteSolutionsForTasks(stringIds);

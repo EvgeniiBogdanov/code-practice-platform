@@ -87,7 +87,6 @@
   color: var(--text-muted);
 }
 
-
 .variant_pills {
   border-bottom: none;
   padding: 4px;
@@ -201,4 +200,3 @@
   text-overflow: ellipsis;
   display: block;
 }
-

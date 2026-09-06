@@ -164,6 +164,16 @@ export async function removeTaskStatusesFromDB(taskIds: Array<string | number>):
   }
 }
 
+export async function clearAllTaskStatusesFromDB(): Promise<void> {
+  saveProgressToLocalStorage({});
+  try {
+    await dbClear(STORES.PROGRESS);
+  } catch (err) {
+    console.error("[ProgressService] Error clearing all task statuses:", err);
+  }
+}
+
+
 export async function getChecklistStateFromDB(): Promise<Record<string, boolean>> {
   try {
     const records = await dbGetAll<ChecklistRecord>(STORES.CHECKLIST);

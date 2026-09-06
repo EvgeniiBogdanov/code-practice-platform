@@ -50,16 +50,12 @@ export const SettingsResetSection = memo(
               <div className={styles.settingsRowInfo}>
                 <div className={styles.settingsRowTitle}>Интервальное повторение (SM-2)</div>
                 <div className={styles.settingsRowDesc}>
-                  Сброс коэффициентов легкости, стадий и расписания повторений задач.
+                  Сброс коэффициентов легкости, стадий, расписания повторений и написанного кода решений (задачи возвращаются в изначальное состояние).
                 </div>
               </div>
               <div className={styles.settingsRowAction}>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={onOpenResetReviews}
-                >
-                  Сбросить график
+                <Button variant="secondary" size="sm" onClick={onOpenResetReviews}>
+                  Сбросить график и код
                 </Button>
               </div>
             </div>
@@ -68,15 +64,12 @@ export const SettingsResetSection = memo(
               <div className={styles.settingsRowInfo}>
                 <div className={styles.settingsRowTitle}>Настройки интерфейса</div>
                 <div className={styles.settingsRowDesc}>
-                  Сброс размеров панелей, масштаба шрифтов, режимов отображения списков и карточек, фильтров и раскрытых разделов.
+                  Сброс размеров панелей, масштаба шрифтов, режимов отображения списков и карточек,
+                  фильтров и раскрытых разделов.
                 </div>
               </div>
               <div className={styles.settingsRowAction}>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={onOpenResetUI}
-                >
+                <Button variant="secondary" size="sm" onClick={onOpenResetUI}>
                   Сбросить интерфейс
                 </Button>
               </div>
@@ -94,15 +87,12 @@ export const SettingsResetSection = memo(
               <div className={styles.settingsRowInfo}>
                 <div className={styles.settingsRowTitle}>Удалить все данные платформы</div>
                 <div className={styles.settingsRowDesc}>
-                  Полный сброс всех решённых задач, написанного кода решений, истории повторений, настройки интерфейса.
+                  Полный сброс всех решённых задач, написанного кода решений, истории повторений,
+                  настройки интерфейса.
                 </div>
               </div>
               <div className={styles.settingsRowAction}>
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={onOpenResetAll}
-                >
+                <Button variant="danger" size="sm" onClick={onOpenResetAll}>
                   Сбросить всё
                 </Button>
               </div>

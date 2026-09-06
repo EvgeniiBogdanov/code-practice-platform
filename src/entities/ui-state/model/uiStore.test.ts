@@ -19,6 +19,7 @@ describe("useUIStore - resetUISettings", () => {
       consoleCollapsed: false,
       warmupExpanded: true,
       expandedJsGroups: { "group-1": true },
+      hideInteractiveAssistant: true,
     });
 
     localStorage.setItem("playground_group_view_mode", "cards");
@@ -42,6 +43,7 @@ describe("useUIStore - resetUISettings", () => {
     expect(state.warmupExpanded).toBe(false);
     expect(state.expandedJsGroups).toEqual({});
     expect(state.hideTooltips).toBe(false);
+    expect(state.hideInteractiveAssistant).toBe(false);
 
     expect(localStorage.getItem("playground_group_view_mode")).toBeNull();
     expect(localStorage.getItem("playground_favorites_list_display_mode")).toBeNull();
@@ -57,5 +59,13 @@ describe("useUIStore - resetUISettings", () => {
 
     useUIStore.getState().setHideTooltips((prev) => !prev);
     expect(useUIStore.getState().hideTooltips).toBe(false);
+  });
+
+  it("updates hideInteractiveAssistant using boolean and function updater", () => {
+    useUIStore.getState().setHideInteractiveAssistant(true);
+    expect(useUIStore.getState().hideInteractiveAssistant).toBe(true);
+
+    useUIStore.getState().setHideInteractiveAssistant((prev) => !prev);
+    expect(useUIStore.getState().hideInteractiveAssistant).toBe(false);
   });
 });

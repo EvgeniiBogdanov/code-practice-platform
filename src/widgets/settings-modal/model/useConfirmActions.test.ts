@@ -21,6 +21,12 @@ describe("useConfirmActions", () => {
     );
 
     expect(result.current.reviewActions).toHaveLength(2);
+    expect(result.current.reviewActions[0].label).toBe(
+      "Сбросить повторения и решения раздела «JavaScript»"
+    );
+    expect(result.current.reviewActions[1].label).toBe(
+      "Сбросить повторения и решения всей платформы"
+    );
     expect(result.current.uiSettingsActions).toHaveLength(1);
     expect(result.current.allDataActions).toHaveLength(1);
 

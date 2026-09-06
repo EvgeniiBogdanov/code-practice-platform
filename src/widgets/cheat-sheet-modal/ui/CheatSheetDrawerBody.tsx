@@ -1,4 +1,6 @@
 import { memo } from "react";
+import { Search } from "lucide-react";
+import { Input } from "@/shared/ui";
 import { useUIStore } from "@/entities/ui-state";
 import { useCheatSheetData } from "../model/useCheatSheetData";
 import { CheatSheetHeader } from "./CheatSheetHeader";
@@ -27,16 +29,28 @@ export const CheatSheetDrawerBody = memo(
     } = useCheatSheetData(cheatSearch);
 
     return (
-      <div ref={drawerRef} className={styles.drawer} onClick={(e) => e.stopPropagation()}>
+      <div
+        ref={drawerRef}
+        className={styles.drawer}
+        onClick={(e) => {
+          e.stopPropagation();
+          if ((e.target as HTMLElement).tagName !== "INPUT") {
+            (document.activeElement as HTMLElement)?.blur?.();
+          }
+        }}
+      >
         <CheatSheetHeader title={currentSectionConfig.title} onClose={onClose} />
         <CheatSheetSectionTabs activeSection={activeSection} onSelectSection={handleSelectSection} />
-        <input
+        <Input
           type="text"
+          size="lg"
+          leftIcon={<Search size={16} />}
+          containerClassName={styles.searchContainer}
           value={cheatSearch}
           onChange={(e) => setCheatSearch(e.target.value)}
           placeholder="Поиск по методам, типам, паттернам..."
-          className={styles.search}
           spellCheck={false}
+          aria-label="Поиск по шпаргалке"
         />
         <CheatSheetCategoryTabs
           categories={currentSectionConfig.categories}

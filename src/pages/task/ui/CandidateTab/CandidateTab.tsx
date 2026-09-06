@@ -7,6 +7,7 @@ import {
   getUserSolutionSync,
   saveUserSolution,
   deleteUserSolution,
+  subscribeToSyncEvents,
 } from "@/shared/lib/storage";
 import {
   runNodeJsCode,
@@ -104,7 +105,30 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
     return () => {
       isMounted = false;
     };
-  }, [task?.id, activeFileIdx]);
+  }, [task, activeFileIdx]);
+
+  // Listen for solution clearing (e.g. from settings reset)
+  useEffect(() => {
+    if (!task) return;
+    const unsubscribe = subscribeToSyncEvents((event) => {
+      if (event.type === "SOLUTIONS_CLEARED") {
+        const isCurrentTaskCleared =
+          event.all ||
+          (Array.isArray(event.taskIds) && event.taskIds.includes(String(task.id)));
+        if (isCurrentTaskCleared) {
+          const defaults = getTaskFiles(task, "candidate");
+          setFiles(defaults);
+          setConsoleLogs([]);
+          setIsRunning(false);
+          setLastExecution(null);
+          clearRunningTimers();
+        }
+      }
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [task]);
 
   // Listen for console logs from sandbox iframe
   useEffect(() => {
