@@ -6,7 +6,7 @@ import { useUIStore } from "@/entities/ui-state";
 
 describe("SettingsCustomizationSection", () => {
   beforeEach(() => {
-    useUIStore.setState({ hideTooltips: false });
+    useUIStore.setState({ hideTooltips: false, hideInteractiveAssistant: false });
     useReviewStore.setState({
       assistantName: "Интервальный помощник",
       setAssistantName: vi.fn().mockImplementation(async (name: string) => {
@@ -43,6 +43,20 @@ describe("SettingsCustomizationSection", () => {
     expect(useReviewStore.getState().assistantName).toBe("Джарвис");
   });
 
+  it("filters out dangerous characters and HTML tags", () => {
+    render(<SettingsCustomizationSection />);
+
+    const input = screen.getByRole("textbox", {
+      name: /Имя интервального помощника/i,
+    }) as HTMLInputElement;
+
+    fireEvent.change(input, { target: { value: "<script>alert('xss')</script>" } });
+    expect(input.value).toBe("alertxss");
+
+    fireEvent.change(input, { target: { value: "   Бот   2.0   " } });
+    expect(input.value).toBe("Бот 2.0 ");
+  });
+
   it("resets assistant name to default on reset button click", async () => {
     useReviewStore.setState({ assistantName: "Мой Бот" });
     render(<SettingsCustomizationSection />);
@@ -74,5 +88,18 @@ describe("SettingsCustomizationSection", () => {
     fireEvent.click(switchEl);
     expect(useUIStore.getState().hideTooltips).toBe(false);
     expect(switchEl).not.toBeChecked();
+  });
+
+  it("toggles interactive assistant visibility in uiStore", () => {
+    render(<SettingsCustomizationSection />);
+
+    const switchEl = screen.getByRole("switch", {
+      name: /Отключить интерактивного помощника/i,
+    });
+    expect(switchEl).not.toBeChecked();
+
+    fireEvent.click(switchEl);
+    expect(useUIStore.getState().hideInteractiveAssistant).toBe(true);
+    expect(switchEl).toBeChecked();
   });
 });

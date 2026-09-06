@@ -17,6 +17,7 @@ import {
   getUserSolutionSync,
   saveUserSolution,
   deleteUserSolution,
+  subscribeToSyncEvents,
 } from "@/shared/lib/storage";
 import { Tooltip, ErrorBoundary, ResizableSplitPane, UiLoader, ViewMode } from "@/shared/ui";
 import { useUIStore } from "@/entities/ui-state";
@@ -170,6 +171,29 @@ export const OpenEditorPage = ({
       isMounted = false;
     };
   }, [task, tab, activeFileIdx]);
+
+  // Listen for solution clearing (e.g. from settings reset)
+  useEffect(() => {
+    if (!task) return;
+    const unsubscribe = subscribeToSyncEvents((event) => {
+      if (event.type === "SOLUTIONS_CLEARED") {
+        const isCurrentTaskCleared =
+          event.all ||
+          (Array.isArray(event.taskIds) && event.taskIds.includes(String(task.id)));
+        if (isCurrentTaskCleared) {
+          const baseFiles = getTaskFiles(task, tab === "solution" ? "solution" : "candidate");
+          setFiles(baseFiles);
+          setConsoleLogs([]);
+          setIsRunning(false);
+          setLastExecution(null);
+          clearRunningTimers();
+        }
+      }
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [task, tab]);
 
   // Listen for console logs from sandbox iframe
   useEffect(() => {

@@ -44,12 +44,14 @@ export const useSettingsModal = () => {
     if (activeSection !== "home") {
       const ids = currentSectionTasks.map((t) => t.id);
       await handleResetReviews("section", ids);
+      await handleFullReset("section", ids);
     }
     setResetReviewsConfirmOpen(false);
   };
 
   const handleResetAllReviews = async () => {
     await handleResetReviews("all");
+    await handleFullReset("all");
     setResetReviewsConfirmOpen(false);
   };
 

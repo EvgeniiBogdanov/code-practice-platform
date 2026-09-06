@@ -2,6 +2,7 @@ import React, { memo, useState, useEffect, useCallback } from "react";
 import { Button, Input, Switch } from "@/shared/ui";
 import { useReviewStore, DEFAULT_ASSISTANT_NAME } from "@/entities/review";
 import { useUIStore } from "@/entities/ui-state";
+import { sanitizeAssistantName, ASSISTANT_NAME_INPUT_PATTERN } from "../lib";
 import styles from "./SettingsCustomizationSection.module.css";
 
 const MAX_ASSISTANT_NAME_LENGTH = 30;
@@ -45,6 +46,8 @@ export const SettingsCustomizationSection = memo((): React.JSX.Element => {
   const assistantName = useReviewStore((state) => state.assistantName) || DEFAULT_ASSISTANT_NAME;
   const setAssistantName = useReviewStore((state) => state.setAssistantName);
   const resetAssistantName = useReviewStore((state) => state.resetAssistantName);
+  const hideInteractiveAssistant = useUIStore((state) => state.hideInteractiveAssistant);
+  const setHideInteractiveAssistant = useUIStore((state) => state.setHideInteractiveAssistant);
 
   const isDefaultName = assistantName === DEFAULT_ASSISTANT_NAME;
   const [inputValue, setInputValue] = useState(isDefaultName ? "" : assistantName);
@@ -55,18 +58,16 @@ export const SettingsCustomizationSection = memo((): React.JSX.Element => {
   }, [assistantName]);
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
-    const value = e.target.value;
-    if (value.length <= MAX_ASSISTANT_NAME_LENGTH) {
-      setInputValue(value);
-      setIsSaved(false);
-    }
+    const sanitized = sanitizeAssistantName(e.target.value, MAX_ASSISTANT_NAME_LENGTH);
+    setInputValue(sanitized);
+    setIsSaved(false);
   }, []);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent): Promise<void> => {
       e.preventDefault();
-      const trimmed = inputValue.trim();
-      const nextName = trimmed || DEFAULT_ASSISTANT_NAME;
+      const sanitized = sanitizeAssistantName(inputValue, MAX_ASSISTANT_NAME_LENGTH).trim();
+      const nextName = sanitized || DEFAULT_ASSISTANT_NAME;
       await setAssistantName(nextName);
       setInputValue(nextName === DEFAULT_ASSISTANT_NAME ? "" : nextName);
       setIsSaved(true);
@@ -98,27 +99,28 @@ export const SettingsCustomizationSection = memo((): React.JSX.Element => {
           <div className={styles.settingsRow}>
             <div className={styles.rowInfo}>
               <div className={styles.rowTitle}>Имя интервального помощника</div>
-              <div className={styles.rowDesc}>
-                Отображается в карточке задачи над мотивационными сообщениями
-              </div>
+              <div className={styles.rowDesc}>Отображается в карточке задачи над сообщениями</div>
             </div>
 
             <div className={styles.customizationAction}>
               <form onSubmit={handleSubmit} className={styles.formContainer}>
                 <div className={styles.inputGroup}>
-                  <div className={styles.inputWrapper}>
-                    <Input
-                      value={inputValue}
-                      onChange={handleChange}
-                      placeholder="Имя"
-                      maxLength={MAX_ASSISTANT_NAME_LENGTH}
-                      className={styles.nameInput}
-                      aria-label="Имя интервального помощника"
-                    />
-                    <span className={styles.charCounter} aria-live="polite">
-                      {inputValue.length}/{MAX_ASSISTANT_NAME_LENGTH}
-                    </span>
-                  </div>
+                  <Input
+                    value={inputValue}
+                    onChange={handleChange}
+                    placeholder="Имя"
+                    size="sm"
+                    maxLength={MAX_ASSISTANT_NAME_LENGTH}
+                    pattern={ASSISTANT_NAME_INPUT_PATTERN}
+                    title="Разрешены буквы, цифры, пробел, дефис, подчёркивание и точка"
+                    containerClassName={styles.nameInputContainer}
+                    aria-label="Имя интервального помощника"
+                    rightIcon={
+                      <span className={styles.charCounter} aria-live="polite">
+                        {inputValue.length}/{MAX_ASSISTANT_NAME_LENGTH}
+                      </span>
+                    }
+                  />
 
                   <div className={styles.buttonGroup}>
                     <Button
@@ -142,6 +144,21 @@ export const SettingsCustomizationSection = memo((): React.JSX.Element => {
                   </div>
                 </div>
               </form>
+            </div>
+          </div>
+
+          <div className={styles.settingsRow}>
+            <div className={styles.rowInfo}>
+              <div className={styles.rowTitle}>Отключить интерактивного помощника</div>
+              <div className={styles.rowDesc}>Скрывает сообщения помощника в карточке задачи</div>
+            </div>
+
+            <div className={styles.switchAction}>
+              <Switch
+                checked={hideInteractiveAssistant}
+                onChange={setHideInteractiveAssistant}
+                aria-label="Отключить интерактивного помощника"
+              />
             </div>
           </div>
         </div>

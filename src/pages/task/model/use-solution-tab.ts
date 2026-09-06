@@ -5,6 +5,7 @@ import {
   getUserSolutionSync,
   saveUserSolution,
   deleteUserSolution,
+  subscribeToSyncEvents,
 } from "@/shared/lib/storage";
 import {
   runNodeJsCode,
@@ -154,6 +155,28 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
       isMounted = false;
     };
   }, [task.id, activeFileIdx, selectedSolutionIdx]);
+
+  // Listen for solution clearing (e.g. from settings reset)
+  useEffect(() => {
+    const unsubscribe = subscribeToSyncEvents((event) => {
+      if (event.type === "SOLUTIONS_CLEARED") {
+        const isCurrentTaskCleared =
+          event.all ||
+          (Array.isArray(event.taskIds) && event.taskIds.includes(String(task.id)));
+        if (isCurrentTaskCleared) {
+          const baseFiles = getTaskFiles(task, "solution");
+          setFiles(baseFiles);
+          setConsoleLogs([]);
+          setIsRunning(false);
+          setLastExecution(null);
+          clearRunningTimers();
+        }
+      }
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [task]);
 
   // Listen for console logs from sandbox iframe
   useEffect(() => {

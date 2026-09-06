@@ -364,9 +364,7 @@
   font-weight: 500;
   line-height: 1;
   color: var(--accent-green);
-  background: var(--accent-green-bg);
   border: none;
-  border-radius: var(--radius-md);
   font-family: var(--font-sans);
   white-space: nowrap;
   user-select: none;

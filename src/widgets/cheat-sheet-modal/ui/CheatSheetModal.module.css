@@ -59,11 +59,6 @@
 .sectionTabs {
   display: flex;
   align-items: center;
-  gap: 4px;
-  background: var(--bg-subtle);
-  border: 1px solid var(--border-color);
-  padding: 3px;
-  border-radius: var(--radius-xl);
   flex-shrink: 0;
 }
 
@@ -73,7 +68,7 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 5px 8px;
+  padding: 0px 8px;
   border-radius: var(--radius-md);
   background: transparent;
   border: 1px solid transparent;
@@ -110,31 +105,9 @@
   color: var(--color-algo);
 }
 
-/* Search input */
-.search {
-  background: var(--bg-subtle);
-  border: 1px solid var(--border-color);
-  color: var(--text-main);
-  padding: 8px 12px;
-  border-radius: var(--radius-lg);
-  font-size: 13px;
-  outline: none;
-  font-family: var(--font-sans);
+/* Search input container */
+.searchContainer {
   flex-shrink: 0;
-  transition:
-    border-color var(--transition-fast),
-    background var(--transition-fast),
-    box-shadow var(--transition-fast);
-}
-
-.search:focus {
-  border-color: var(--accent-blue);
-  background: var(--bg-card);
-  box-shadow: 0 0 0 2px var(--accent-blue-bg);
-}
-
-.search::placeholder {
-  color: var(--text-muted);
 }
 
 /* Category Tabs */

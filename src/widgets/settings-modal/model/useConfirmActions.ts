@@ -15,14 +15,14 @@ export function useConfirmActions(
     const list: ConfirmAction[] = [];
     if (activeSection !== "home") {
       list.push({
-        label: `Сбросить повторения раздела «${sectionName}»`,
+        label: `Сбросить повторения и решения раздела «${sectionName}»`,
         onClick: onResetSectionReviews,
         variant: "danger",
         icon: React.createElement(Trash2, { size: 14 }),
       });
     }
     list.push({
-      label: "Сбросить повторения всей платформы",
+      label: "Сбросить повторения и решения всей платформы",
       onClick: onResetAllReviews,
       variant: "danger",
       icon: React.createElement(Trash2, { size: 14 }),

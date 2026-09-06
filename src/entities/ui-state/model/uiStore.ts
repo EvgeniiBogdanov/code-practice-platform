@@ -15,6 +15,7 @@ const getInitialUISettings = () => {
       editorWordWrap: false,
       editorSplitRatio: 70,
       hideTooltips: false,
+      hideInteractiveAssistant: false,
     };
   }
   try {
@@ -50,6 +51,10 @@ const getInitialUISettings = () => {
               : 70,
           hideTooltips:
             typeof parsed.state.hideTooltips === "boolean" ? parsed.state.hideTooltips : false,
+          hideInteractiveAssistant:
+            typeof parsed.state.hideInteractiveAssistant === "boolean"
+              ? parsed.state.hideInteractiveAssistant
+              : false,
         };
       }
     }
@@ -63,6 +68,7 @@ const getInitialUISettings = () => {
       editorWordWrap: false,
       editorSplitRatio: 70,
       hideTooltips: false,
+      hideInteractiveAssistant: false,
     };
   } catch {
     // ignore
@@ -75,6 +81,7 @@ const getInitialUISettings = () => {
     editorWordWrap: false,
     editorSplitRatio: 70,
     hideTooltips: false,
+    hideInteractiveAssistant: false,
   };
 };
 
@@ -127,6 +134,7 @@ export const useUIStore = create<UIState>()(
 
       tooltip: null,
       hideTooltips: initialUI.hideTooltips,
+      hideInteractiveAssistant: initialUI.hideInteractiveAssistant,
 
       setTheme: (themeOrFn) => {
         const current = get().theme || "dark";
@@ -437,6 +445,13 @@ export const useUIStore = create<UIState>()(
           hideTooltips:
             typeof hideTooltips === "function" ? hideTooltips(state.hideTooltips) : hideTooltips,
         })),
+      setHideInteractiveAssistant: (hideInteractiveAssistant) =>
+        set((state) => ({
+          hideInteractiveAssistant:
+            typeof hideInteractiveAssistant === "function"
+              ? hideInteractiveAssistant(state.hideInteractiveAssistant)
+              : hideInteractiveAssistant,
+        })),
 
       collapseAllInCurrentSection: (section) => {
         if (section === "javascript") {
@@ -531,6 +546,7 @@ export const useUIStore = create<UIState>()(
           expandedAlgoGroups: {},
           expandedAlgoSubgroups: {},
           hideTooltips: false,
+          hideInteractiveAssistant: false,
         });
       },
     }),
@@ -558,6 +574,7 @@ export const useUIStore = create<UIState>()(
         expandedAlgoGroups: state.expandedAlgoGroups,
         expandedAlgoSubgroups: state.expandedAlgoSubgroups,
         hideTooltips: state.hideTooltips,
+        hideInteractiveAssistant: state.hideInteractiveAssistant,
       }),
       onRehydrateStorage: () => (state) => {
         const activeTheme =

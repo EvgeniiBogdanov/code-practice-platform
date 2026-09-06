@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { createPortal } from "react-dom";
 import { Search, X } from "lucide-react";
-import { Icon, SquareButton, Tooltip } from "@/shared/ui";
+import { Input, SquareButton, Tooltip } from "@/shared/ui";
 import { useCommandPalette } from "../model";
 import { CommandPaletteTabs } from "./CommandPaletteTabs";
 import { CommandPaletteItem } from "./CommandPaletteItem";
@@ -31,15 +31,20 @@ export const CommandPalette = memo((): React.JSX.Element | null => {
     <div className={styles.paletteOverlay} onClick={() => setIsOpen(false)}>
       <div
         className={styles.paletteCard}
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e) => {
+          e.stopPropagation();
+          if ((e.target as HTMLElement).tagName !== "INPUT") {
+            (document.activeElement as HTMLElement)?.blur?.();
+          }
+        }}
         onKeyDown={handleKeyDown}
       >
         <div className={styles.paletteHeader}>
-          <Icon size="sm" icon={<Search size={16} />} />
-          <input
-            autoFocus
+          <Input
             type="text"
-            className={styles.paletteInput}
+            size="lg"
+            leftIcon={<Search size={16} />}
+            containerClassName={styles.paletteInputContainer}
             placeholder="Поиск задачи..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}

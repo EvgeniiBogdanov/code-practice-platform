@@ -41,6 +41,7 @@ export interface UIState {
 
   tooltip: string | null;
   hideTooltips: boolean;
+  hideInteractiveAssistant: boolean;
 
   setTheme: (themeOrFn: ThemeMode | ((prev: ThemeMode) => ThemeMode)) => void;
   toggleTheme: () => void;
@@ -105,6 +106,9 @@ export interface UIState {
 
   setTooltip: (tooltip: string | null) => void;
   setHideTooltips: (hideTooltips: boolean | ((prev: boolean) => boolean)) => void;
+  setHideInteractiveAssistant: (
+    hideInteractiveAssistant: boolean | ((prev: boolean) => boolean)
+  ) => void;
   collapseAllInCurrentSection: (section: "javascript" | "algorithms" | "react") => void;
   expandAllInCurrentSection: (
     section: "javascript" | "algorithms" | "react",

@@ -168,23 +168,25 @@ ol {
    3. Style Native Form Controls (Adaptive Base Rules)
    -------------------------------------------------------------------------- */
 
-input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="range"]):not(
-    [type="file"]
-  ),
-input:not([type]),
-input[type="text"],
-input[type="search"],
-input[type="password"],
-input[type="email"],
-input[type="number"],
-input[type="date"],
-input[type="time"],
-input[type="datetime-local"],
-input[type="month"],
-input[type="week"],
-input[type="tel"],
-input[type="url"],
-textarea:not(.vscode-input-textarea) {
+:where(
+  input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="range"]):not(
+      [type="file"]
+    ),
+  input:not([type]),
+  input[type="text"],
+  input[type="search"],
+  input[type="password"],
+  input[type="email"],
+  input[type="number"],
+  input[type="date"],
+  input[type="time"],
+  input[type="datetime-local"],
+  input[type="month"],
+  input[type="week"],
+  input[type="tel"],
+  input[type="url"],
+  textarea:not(.vscode-input-textarea)
+) {
   display: inline-block;
   vertical-align: middle;
   box-sizing: border-box;
@@ -214,23 +216,29 @@ textarea:not(.vscode-input-textarea)::placeholder {
 }
 
 /* Input Hover State */
-input:not([type="checkbox"]):not([type="radio"]):hover,
-textarea:not(.vscode-input-textarea):hover {
+:where(
+  input:not([type="checkbox"]):not([type="radio"]):hover,
+  textarea:not(.vscode-input-textarea):hover
+) {
   border-color: var(--border-hover);
   background-color: var(--bg-input-hover);
 }
 
 /* Input Focus State */
-input:not([type="checkbox"]):not([type="radio"]):focus,
-textarea:not(.vscode-input-textarea):focus {
+:where(
+  input:not([type="checkbox"]):not([type="radio"]):focus,
+  textarea:not(.vscode-input-textarea):focus
+) {
   border-color: var(--accent-blue);
   background-color: var(--bg-input-focus);
   box-shadow: var(--shadow-glow-blue);
 }
 
 /* Invalid Input State */
-input:invalid:not(:placeholder-shown),
-textarea:not(.vscode-input-textarea):invalid:not(:placeholder-shown) {
+:where(
+  input:invalid:not(:placeholder-shown),
+  textarea:not(.vscode-input-textarea):invalid:not(:placeholder-shown)
+) {
   border-color: var(--accent-red);
   box-shadow: var(--shadow-glow-red);
 }

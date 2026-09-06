@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { renderHook } from "@testing-library/react";
 import { useSpacedRepetitionData } from "./useSpacedRepetitionData";
 import { useReviewStore, ReviewItem } from "@/entities/review";
@@ -49,6 +49,8 @@ describe("useSpacedRepetitionData - task exclusion", () => {
   };
 
   beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-09-03T12:00:00Z"));
     useReviewStore.setState({
       reviews: mockReviews,
       excludedTaskIds: [],
@@ -57,6 +59,10 @@ describe("useSpacedRepetitionData - task exclusion", () => {
     useProgressStore.setState({
       completedTasks: { t1: "unsolved", t2: "solved" },
     });
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it("includes all tasks when not excluded", () => {

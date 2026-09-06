@@ -19,28 +19,31 @@
 }
 
 .input {
+  box-sizing: border-box;
   width: 100%;
-  height: 34px;
-  padding: 6px 10px;
   font-family: inherit;
-  font-size: var(--fs-sm);
   line-height: var(--lh-tight);
   color: var(--text-main);
   background-color: var(--bg-surface);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
   outline: none;
+  box-shadow: none;
   transition:
     border-color var(--transition-fast),
     box-shadow var(--transition-fast),
     background-color var(--transition-fast);
 }
 
-.input::placeholder {
-  color: var(--fg-muted);
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px var(--bg-surface) inset !important;
+  -webkit-text-fill-color: var(--text-main) !important;
+  caret-color: var(--text-main);
+  transition: background-color 5000s ease-in-out 0s;
 }
 
-.input:hover:not(:disabled) {
+.input:hover:not(:disabled):not(:focus) {
   border-color: var(--border-hover);
 }
 
@@ -48,6 +51,52 @@
   border-color: var(--accent-blue);
   box-shadow: 0 0 0 2px var(--accent-blue-bg);
   background-color: var(--bg-app);
+}
+
+/* Variants */
+.variant-default {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+}
+
+.variant-transparent {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.variant-transparent:hover:not(:disabled) {
+  border-color: transparent;
+}
+
+.variant-transparent:focus {
+  border-color: transparent;
+  box-shadow: none;
+  background-color: transparent;
+}
+
+/* Sizes */
+.input.size-sm,
+.size-sm {
+  height: 28px;
+  padding: 4px 8px;
+  font-size: var(--fs-caption);
+  border-radius: var(--radius-lg);
+}
+
+.input.size-md,
+.size-md {
+  height: 34px;
+  padding: 6px 10px;
+  font-size: var(--fs-sm);
+  border-radius: var(--radius-lg);
+}
+
+.input.size-lg,
+.size-lg {
+  height: 38px;
+  padding: 8px 12px;
+  font-size: var(--fs-lg);
+  border-radius: var(--radius-lg);
 }
 
 .input:disabled {
@@ -63,6 +112,22 @@
   padding-right: 32px;
 }
 
+.size-sm.hasLeftIcon {
+  padding-left: 28px;
+}
+
+.size-sm.hasRightIcon {
+  padding-right: 44px;
+}
+
+.size-lg.hasLeftIcon {
+  padding-left: 36px;
+}
+
+.size-lg.hasRightIcon {
+  padding-right: 44px;
+}
+
 .leftIcon,
 .rightIcon {
   position: absolute;
@@ -71,6 +136,10 @@
   justify-content: center;
   color: var(--fg-muted);
   pointer-events: none;
+}
+
+.rightIcon > * {
+  pointer-events: auto;
 }
 
 .leftIcon {

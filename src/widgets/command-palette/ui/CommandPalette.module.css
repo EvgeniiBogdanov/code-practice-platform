@@ -59,21 +59,14 @@
   flex-shrink: 0;
 }
 
-.paletteInput {
+.paletteInputContainer {
   flex: 1;
-  background: transparent;
-  border: none;
-  border-radius: var(--radius-lg) !important;
-  color: var(--text-main);
-  font-size: 15px;
-  font-family: var(--font-sans);
-  outline: none;
   min-width: 0;
 }
 
 /* Section Tabs */
 .sectionTabsWrapper {
-  padding: 8px 12px;
+  padding: 0px 12px;
   background: var(--bg-sidebar);
   border-bottom: 1px solid var(--border-color);
   flex-shrink: 0;
@@ -82,10 +75,7 @@
 .sectionTabs {
   display: flex;
   align-items: center;
-  gap: 4px;
-  background: var(--bg-subtle);
-  padding: 3px;
-  border-radius: var(--radius-xl);
+
   flex-shrink: 0;
 }
 
