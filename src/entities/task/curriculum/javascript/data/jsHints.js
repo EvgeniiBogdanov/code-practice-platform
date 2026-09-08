@@ -2558,7 +2558,7 @@ export const JS_HINTS = {
       },
       "level3": {
           "title": "Решение",
-          "content": "const getOwnValues = (obj) => { const res = []; for (const k in obj) if (Object.hasOwn(obj, k)) res.push(obj[k]); return res; };"
+          "content": "const getOwnValues = (obj) => Object.values(obj); // Либо через цикл for...in: const res = []; for (const k in obj) if (Object.hasOwn(obj, k)) res.push(obj[k]); return res;"
       }
   },
   "js194": {

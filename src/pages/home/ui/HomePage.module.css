@@ -30,8 +30,6 @@
 }
 
 .titleIcon {
-  width: 34px;
-  height: 34px;
   flex-shrink: 0;
   display: block;
   user-select: none;
@@ -464,6 +462,25 @@
   margin: 0;
 }
 
+.calloutIconLink {
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: transform var(--transition-fast, 0.15s ease);
+}
+
+.calloutIconLink:hover {
+  transform: scale(1.1);
+}
+
+.calloutIconLink:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--bg-surface), 0 0 0 4px var(--accent-blue);
+  border-radius: var(--radius-sm, 4px);
+}
+
 /* Light Theme Overrides */
 [data-theme="light"] .calloutBanner,
 [data-theme="light"] .statCard,
@@ -478,3 +495,4 @@
   background: rgba(55, 53, 47, 0.06);
   color: #555555;
 }
+

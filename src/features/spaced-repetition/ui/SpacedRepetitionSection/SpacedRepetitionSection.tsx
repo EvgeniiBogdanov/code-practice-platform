@@ -33,8 +33,8 @@ export interface SpacedRepetitionSectionProps {
 }
 
 const TAB_TITLES: Record<SRTabType, string> = {
-  distribution: "Мастерство и распределение",
-  schedule: "График повторений",
+  distribution: "Статистика",
+  schedule: "Графики",
   due: "Повтор",
   upcoming: "В очереди на повторение",
   unsolved: "Нерешенные задачи",
@@ -42,7 +42,7 @@ const TAB_TITLES: Record<SRTabType, string> = {
 
 const TAB_SUBTITLES: Record<SRTabType, string> = {
   distribution: "Прогресс запоминания по алгоритму SM-2 и статистика освоения задач",
-  schedule: "Прогноз нагрузки и даты следующих повторений по интервалам SM-2",
+  schedule: "Расписание и активность по дням",
   due: "Задачи с наступившим сроком повторения для закрепления в долговременной памяти",
   upcoming: "Предстоящие запланированные интервалы повторений",
   unsolved: "Задачи, требующие повторного разбора и решения",
@@ -56,7 +56,7 @@ export const SpacedRepetitionSection = memo(
     onNavigate,
     onCloseModal,
     className,
-  }: SpacedRepetitionSectionProps) => {
+  }: Readonly<SpacedRepetitionSectionProps>): React.JSX.Element => {
     const [activeTab, setActiveTab] = useState<SRTabType>("distribution");
 
     const {
@@ -66,6 +66,8 @@ export const SpacedRepetitionSection = memo(
       dueTasks,
       upcomingTasks,
       unsolvedTasks,
+      dailyTaskStats,
+      reviewActivityByDate,
       masteryPercent,
       avgInterval,
       scopeLabel,
@@ -127,7 +129,6 @@ export const SpacedRepetitionSection = memo(
               isCompactPadding && styles.mainScrollableCompact
             )}
           >
-
             {activeTab === "distribution" && (
               <div className={styles.viewContent}>
                 <SpacedRepetitionKpiGrid
@@ -137,6 +138,8 @@ export const SpacedRepetitionSection = memo(
                   mastered={masteryStats.mastered}
                   masteryPercent={masteryPercent}
                   avgInterval={avgInterval}
+                  solvedToday={dailyTaskStats.solved}
+                  unsolvedToday={dailyTaskStats.unsolved}
                 />
                 <hr className={styles.sectionDivider} />
                 <Suspense fallback={<SpacedRepetitionDistributionSkeleton />}>
@@ -148,13 +151,12 @@ export const SpacedRepetitionSection = memo(
               </div>
             )}
 
-
             {activeTab === "schedule" && (
               <Suspense fallback={<SpacedRepetitionScheduleSkeleton />}>
                 <SpacedRepetitionScheduleTab
                   reviews={reviews}
                   targetTasks={targetTasks}
-                  scopeLabel={scopeLabel}
+                  activityByDate={reviewActivityByDate}
                 />
               </Suspense>
             )}

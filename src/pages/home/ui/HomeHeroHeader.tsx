@@ -11,7 +11,7 @@ export const HomeHeroHeader = memo(({ grandTotal }: HomeHeroHeaderProps) => {
   return (
     <div className={styles.pageHeader}>
       <div className={styles.titleRow}>
-        <PlatformLogo size={34} className={styles.titleIcon} />
+        <PlatformLogo size={30} className={styles.titleIcon} />
         <h1 className={styles.mainTitle}>Code Practice Platform</h1>
         <span className={styles.versionTag}>v{APP_VERSION || "error"}</span>
       </div>

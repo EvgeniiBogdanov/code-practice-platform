@@ -2,6 +2,7 @@ import React from "react";
 import { CodeHistoryState } from "../model/useCodeHistory";
 import { IntelliSenseState } from "../model/useIntelliSense";
 import { moveLines, duplicateLines } from "./line-operations";
+import { toggleLineComment, toggleBlockComment } from "./comment-operations";
 
 export const MATCHING_PAIRS: Record<string, string> = {
   "(": ")",
@@ -102,6 +103,19 @@ export const handleEnterKey = (
   const indentMatch = currentLine.match(/^(\s*)/);
   const indent = indentMatch ? indentMatch[1] : "";
 
+  if (currentLine.trimEnd() === `${indent}/**`) {
+    e.preventDefault();
+    const insertion = `\n${indent} * \n${indent} */`;
+    const newCode = code.substring(0, start) + insertion + code.substring(end);
+    const nextCursor = start + 1 + indent.length + 3;
+    onChange(newCode);
+    history.pushHistory(newCode, nextCursor);
+    setTimeout(() => {
+      textarea.selectionStart = textarea.selectionEnd = nextCursor;
+    }, 0);
+    return true;
+  }
+
   const prevChar = textBefore.trimEnd().slice(-1);
   const nextChar = code.charAt(end);
 
@@ -200,3 +214,76 @@ export const handlePairsAndBackspace = (
 
   return false;
 };
+
+export const isLineCommentShortcut = (
+  e: React.KeyboardEvent<HTMLTextAreaElement>
+): boolean => {
+  if (e.altKey) return false;
+  if (!e.metaKey && !e.ctrlKey) return false;
+  if (e.shiftKey) return false;
+  return e.key === "/" || e.code === "Slash";
+};
+
+export const isBlockCommentShortcut = (
+  e: React.KeyboardEvent<HTMLTextAreaElement>
+): boolean => {
+  const isShiftAltA =
+    e.shiftKey &&
+    e.altKey &&
+    !e.ctrlKey &&
+    !e.metaKey &&
+    (e.code === "KeyA" || e.key.toLowerCase() === "a" || e.key.toLowerCase() === "ф");
+
+  if (isShiftAltA) return true;
+
+  return (
+    (e.metaKey || e.ctrlKey) &&
+    e.shiftKey &&
+    !e.altKey &&
+    (e.key === "/" || e.key === "?" || e.code === "Slash")
+  );
+};
+
+export const handleCommentShortcuts = (
+  e: React.KeyboardEvent<HTMLTextAreaElement>,
+  textarea: HTMLTextAreaElement,
+  code: string,
+  onChange: (newCode: string) => void,
+  history: CodeHistoryState,
+  intelliSense: IntelliSenseState,
+  filepath = "main.jsx",
+  readOnly?: boolean
+): boolean => {
+  const isLine = isLineCommentShortcut(e);
+  const isBlock = isBlockCommentShortcut(e);
+
+  if (!isLine && !isBlock) return false;
+
+  e.preventDefault();
+  e.stopPropagation();
+
+  if (intelliSense.isOpen) {
+    intelliSense.closeCompletions();
+  }
+
+  if (readOnly) return true;
+
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const result = isLine
+    ? toggleLineComment(code, start, end, filepath)
+    : toggleBlockComment(code, start, end, filepath);
+
+  if (result.changed) {
+    onChange(result.newCode);
+    history.pushHistory(result.newCode, result.newSelectionStart);
+    const selDirection = textarea.selectionDirection;
+    textarea.setSelectionRange(result.newSelectionStart, result.newSelectionEnd, selDirection);
+    setTimeout(() => {
+      textarea.setSelectionRange(result.newSelectionStart, result.newSelectionEnd, selDirection);
+    }, 0);
+  }
+
+  return true;
+};
+

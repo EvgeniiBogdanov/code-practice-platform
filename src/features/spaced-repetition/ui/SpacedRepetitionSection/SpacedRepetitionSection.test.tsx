@@ -59,6 +59,8 @@ vi.mock("../../model/useSpacedRepetitionData", () => ({
     dueTasks: [mockTasks[0]],
     upcomingTasks: mockUpcomingTasks,
     unsolvedTasks: [mockTasks[1]],
+    dailyTaskStats: { solved: 1, unsolved: 1 },
+    reviewActivityByDate: { "2026-09-03": 1 },
     masteryPercent: 50,
     avgInterval: 3,
     scopeLabel: "JavaScript",
@@ -94,6 +96,8 @@ describe("SpacedRepetitionSection", () => {
 
     expect(header).toBeInTheDocument();
     expect(scrollable).toBeInTheDocument();
+    expect(screen.getByText("Сегодня решено")).toBeInTheDocument();
+    expect(screen.getByText("Сегодня не решено")).toBeInTheDocument();
     // Header must NOT be a child of scrollable
     expect(scrollable?.contains(header)).toBe(false);
   });
@@ -129,9 +133,7 @@ describe("SpacedRepetitionSection", () => {
     const scrollable = container.querySelector(`.${styles.mainScrollable}`);
 
     expect(header).toHaveTextContent("В очереди на повторение");
-    expect(header).toHaveTextContent(
-      "Предстоящие запланированные интервалы повторений"
-    );
+    expect(header).toHaveTextContent("Предстоящие запланированные интервалы повторений");
 
     // Header is outside the scroll container
     expect(scrollable?.contains(header)).toBe(false);
@@ -150,9 +152,7 @@ describe("SpacedRepetitionSection", () => {
     const scrollable = container.querySelector(`.${styles.mainScrollable}`);
 
     expect(header).toHaveTextContent("Нерешенные задачи");
-    expect(header).toHaveTextContent(
-      "Задачи, требующие повторного разбора и решения"
-    );
+    expect(header).toHaveTextContent("Задачи, требующие повторного разбора и решения");
 
     // Header is outside the scroll container
     expect(scrollable?.contains(header)).toBe(false);

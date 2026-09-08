@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { selectIsTaskCompleted, selectTaskStatus, selectSectionStats } from "./progress-selectors";
+import {
+  selectDailyTaskStats,
+  selectIsTaskCompleted,
+  selectTaskStatus,
+  selectSectionStats,
+} from "./progress-selectors";
 import { ProgressState } from "../types";
 
 describe("progress-selectors", () => {
@@ -44,5 +49,42 @@ describe("progress-selectors", () => {
     expect(stats.total).toBe(0);
     expect(stats.completed).toBe(0);
     expect(stats.percentage).toBe(0);
+  });
+
+  it("selectDailyTaskStats counts statuses changed during the current local day", () => {
+    const now = new Date(2026, 8, 7, 12).getTime();
+    const state: ProgressState = {
+      ...mockState,
+      completedTasks: {
+        todaySolved: "solved",
+        todayUnsolved: "unsolved",
+        yesterdaySolved: "solved",
+        tomorrowUnsolved: "unsolved",
+        missingTimestamp: "solved",
+      },
+      taskStatusTimestamps: {
+        todaySolved: new Date(2026, 8, 7, 0).getTime(),
+        todayUnsolved: new Date(2026, 8, 7, 23, 59, 59).getTime(),
+        yesterdaySolved: new Date(2026, 8, 6, 23, 59, 59).getTime(),
+        tomorrowUnsolved: new Date(2026, 8, 8, 0).getTime(),
+      },
+    };
+    const tasks = Object.keys(state.completedTasks).map((id) => ({ id }));
+
+    expect(selectDailyTaskStats(state, tasks, now)).toEqual({ solved: 1, unsolved: 1 });
+  });
+
+  it("selectDailyTaskStats only counts tasks from the provided scope", () => {
+    const now = new Date(2026, 8, 7, 12).getTime();
+    const state: ProgressState = {
+      ...mockState,
+      completedTasks: { included: "solved", excluded: "unsolved" },
+      taskStatusTimestamps: { included: now, excluded: now },
+    };
+
+    expect(selectDailyTaskStats(state, [{ id: "included" }], now)).toEqual({
+      solved: 1,
+      unsolved: 0,
+    });
   });
 });

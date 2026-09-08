@@ -1,9 +1,8 @@
 import React from "react";
 import { Link } from "@tanstack/react-router";
-import { BookOpen } from "lucide-react";
 import { clsx } from "clsx";
 import { SECTIONS_CONFIG, SectionType } from "@/entities/task/meta";
-import { NodeCount } from "@/shared/ui";
+import { NodeCount, PlatformLogo } from "@/shared/ui";
 import { useSidebarHomeStats } from "../../model";
 import styles from "./SidebarHomeOverview.module.css";
 
@@ -34,7 +33,7 @@ export const SidebarHomeOverview = ({
         to="/home"
         className={clsx(styles.homeOverviewItem, isHomeActive && styles.homeItemActive)}
       >
-        <BookOpen size={17} className={styles.icon_home} />
+        <PlatformLogo size={17} className={styles.icon_home} />
         <span className={styles.homeItemTitle}>Обзор платформы</span>
       </Link>
 

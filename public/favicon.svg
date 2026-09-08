@@ -1,45 +1,32 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="32" height="32" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
   <style>
-    .shadowRect {
-      fill: rgba(0, 0, 0, 0.35);
-    }
     .bgRect {
-      fill: #222222;
-      stroke: rgba(255, 255, 255, 0.14);
+      fill: #ffffff;
+      stroke: transparent;
+      stroke-width: 0;
     }
     .logoStroke {
-      stroke: #ffffff;
-    }
-    .logoDot {
-      fill: #ffffff;
+      stroke: #191919;
     }
 
     @media (prefers-color-scheme: light) {
-      .shadowRect {
-        fill: rgba(55, 53, 47, 0.1);
-      }
       .bgRect {
-        fill: #ffffff;
-        stroke: rgba(55, 53, 47, 0.18);
+        fill: #191919;
+        stroke: transparent;
+        stroke-width: 0;
       }
       .logoStroke {
-        stroke: #191919;
-      }
-      .logoDot {
-        fill: #191919;
+        stroke: #ffffff;
       }
     }
   </style>
 
-  <!-- Notion subtle bottom elevation -->
-  <rect x="2" y="3" width="28" height="27" rx="7" class="shadowRect" />
-
-  <!-- Main squircle card -->
-  <rect x="2" y="2" width="28" height="28" rx="7" stroke-width="1.2" class="bgRect" />
+  <!-- Main Notion-style squircle card -->
+  <rect width="28" height="28" rx="4" class="bgRect" />
 
   <!-- Left code bracket < -->
   <path
-    d="M9.5 11.5L5.5 16L9.5 20.5"
+    d="M7.5 9.5L3.5 14L7.5 18.5"
     class="logoStroke"
     stroke-width="2.2"
     stroke-linecap="round"
@@ -48,7 +35,7 @@
 
   <!-- Right code bracket > -->
   <path
-    d="M22.5 11.5L26.5 16L22.5 20.5"
+    d="M20.5 9.5L24.5 14L20.5 18.5"
     class="logoStroke"
     stroke-width="2.2"
     stroke-linecap="round"
@@ -57,12 +44,9 @@
 
   <!-- Dynamic Practice Slash -->
   <path
-    d="M18 9.5L14 22.5"
+    d="M16 7.5L12 20.5"
     class="logoStroke"
     stroke-width="2.2"
     stroke-linecap="round"
   />
-
-  <!-- Practice Core Node -->
-  <circle cx="16" cy="16" r="1.4" class="logoDot" />
 </svg>

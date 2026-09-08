@@ -35,6 +35,7 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
     consoleWrapperRef,
     recommendationNote,
     isRecommended,
+    hasWarning,
     badgeText,
     isFullscreenTransitioning,
     preloadFullscreen,
@@ -57,8 +58,8 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
       {recommendationNote && (
         <Accordion
           size="xs"
-          color={isRecommended ? "green" : "orange"}
-          icon={<span>{isRecommended ? "💡" : "📌"}</span>}
+          color={isRecommended ? "green" : hasWarning ? "orange" : "orange"}
+          icon={<span>{isRecommended ? "💡" : hasWarning ? "⚠️" : "📌"}</span>}
           title={<strong>{badgeText}:</strong>}
           isOpen={isHintExpanded}
           onToggle={() => setIsHintExpanded((prev) => !prev)}

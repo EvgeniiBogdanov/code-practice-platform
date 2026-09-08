@@ -37,6 +37,7 @@ export interface UseSolutionTabReturn {
   consoleWrapperRef: React.RefObject<HTMLDivElement | null>;
   recommendationNote?: string;
   isRecommended?: boolean;
+  hasWarning?: boolean;
   badgeText: string;
   isFullscreenTransitioning: boolean;
   preloadFullscreen: () => void;
@@ -289,8 +290,14 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
 
   const recommendationNote = activeSolution?.recommendationNote || task.recommendationNote;
   const isRecommended = activeSolution?.isRecommended ?? task.isRecommended;
+  const hasWarning = Boolean(activeSolution?.hasWarning || activeSolution?.warning);
   const badgeText =
-    activeSolution?.badge || (isRecommended ? "Рекомендуемый подход" : "Вариант решения");
+    activeSolution?.badge ||
+    (isRecommended
+      ? "Рекомендуемый подход"
+      : hasWarning
+        ? "Важное замечание"
+        : "Вариант решения");
 
   return {
     isReact,
@@ -313,6 +320,7 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
     consoleWrapperRef,
     recommendationNote,
     isRecommended,
+    hasWarning,
     badgeText,
     isFullscreenTransitioning,
     preloadFullscreen,

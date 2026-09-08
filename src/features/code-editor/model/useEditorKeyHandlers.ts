@@ -4,6 +4,7 @@ import { CodeHistoryState } from "./useCodeHistory";
 import { MultiCursorState } from "./useMultiCursor";
 import {
   handleLineMovement,
+  handleCommentShortcuts,
   handleTabKey,
   handleEnterKey,
   handlePairsAndBackspace,
@@ -18,6 +19,7 @@ export interface EditorKeyHandlersProps {
   onRun?: () => void;
   tabSize?: number;
   readOnly?: boolean;
+  filepath?: string;
 }
 
 const handleUndoRedo = (
@@ -146,6 +148,7 @@ export const useEditorKeyHandlers = ({
   onRun,
   tabSize = 2,
   readOnly = false,
+  filepath = "main.jsx",
 }: EditorKeyHandlersProps): {
   handleKeyDown: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
 } => {
@@ -184,7 +187,23 @@ export const useEditorKeyHandlers = ({
         return;
       }
 
-      // 6. IntelliSense navigation and dismissal
+      // 6. Comment Shortcuts (VS Code: Cmd/Ctrl + /, Shift + Alt/Option + A)
+      if (
+        handleCommentShortcuts(
+          e,
+          textarea,
+          code,
+          onChange,
+          history,
+          intelliSense,
+          filepath,
+          readOnly
+        )
+      ) {
+        return;
+      }
+
+      // 7. IntelliSense navigation and dismissal
       if (handleIntelliSenseKey(e, textarea, code, onChange, history, intelliSense)) {
         return;
       }
@@ -193,20 +212,20 @@ export const useEditorKeyHandlers = ({
         return;
       }
 
-      // 7. Tab key indentation
+      // 8. Tab key indentation
       if (handleTabKey(e, textarea, code, onChange, history, tabSize)) {
         return;
       }
 
-      // 8. Enter key auto-indentation
+      // 9. Enter key auto-indentation
       if (handleEnterKey(e, textarea, code, onChange, history)) {
         return;
       }
 
-      // 9. Matching Pair Insertion & Deletion
+      // 10. Matching Pair Insertion & Deletion
       handlePairsAndBackspace(e, textarea, code, onChange, history);
     },
-    [code, onChange, intelliSense, history, multiCursor, onRun, tabSize, readOnly]
+    [code, onChange, intelliSense, history, multiCursor, onRun, tabSize, readOnly, filepath]
   );
 
   return { handleKeyDown };

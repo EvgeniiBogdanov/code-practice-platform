@@ -1,8 +1,41 @@
 import { describe, it, expect } from "vitest";
 import React from "react";
 import { BookOpen } from "lucide-react";
+import { JS_TASKS } from "../curriculum/javascript/data/tasksData";
 import { getJsTaskBadges } from "./get-js-task-badges";
 import type { Task } from "../types";
+
+const ALGORITHM_BADGES_BY_TASK_ID = [
+  ["js_while_3", "Базовый алгоритм"],
+  ["js_while_4", "Базовый алгоритм"],
+  ["js_while_5", "Алгоритм Евклида"],
+  ["js_while_6", "Binary Search"],
+  ["js_while_7", "Базовый алгоритм"],
+  ["js_while_8", "Two Pointers"],
+  ["js5", "Базовый алгоритм"],
+  ["js7", "Bubble Sort"],
+  ["js96", "Hash Map"],
+  ["js99", "Hash Map"],
+  ["js196", "Hash Map"],
+  ["js242", "Hash Map"],
+  ["js133", "Базовый алгоритм"],
+  ["js134", "Базовый алгоритм"],
+  ["js135", "Базовый алгоритм"],
+  ["js136", "Базовый алгоритм"],
+  ["js137", "DFS"],
+  ["js138", "DFS"],
+  ["js139", "DFS"],
+  ["js140", "DFS"],
+  ["js141", "DFS"],
+  ["js142", "DFS"],
+  ["js143", "DFS"],
+  ["js144", "DFS"],
+  ["js145", "DFS"],
+  ["js146", "DFS"],
+  ["js147", "Базовый алгоритм"],
+] as const;
+
+const javascriptTasks = JS_TASKS as Task[];
 
 describe("getJsTaskBadges", () => {
   it("classifies basic syntax tasks without interview probability badge", () => {
@@ -53,7 +86,7 @@ describe("getJsTaskBadges", () => {
     expect(badges.some((b) => b.label === "Вероятность: 85%")).toBe(true);
   });
 
-  it("classifies Two Pointers algorithm correctly with capitalized label and pink variant", () => {
+  it("classifies js5 by its reverse-scan solution instead of inferring Two Pointers", () => {
     const task: Task = {
       id: "js5",
       title: "5. Палиндром",
@@ -63,10 +96,10 @@ describe("getJsTaskBadges", () => {
     };
 
     const badges = getJsTaskBadges(task);
-    expect(badges.some((b) => b.label === "Алгоритм")).toBe(true);
-    const tpBadge = badges.find((b) => b.label === "Two Pointers");
-    expect(tpBadge).toBeDefined();
-    expect(tpBadge?.variant).toBe("pink");
+    expect(badges.some((b) => b.label === "Базовый алгоритм")).toBe(true);
+    expect(badges.some((b) => b.label === "Алгоритм")).toBe(false);
+    expect(badges.some((b) => b.label === "Two Pointers")).toBe(false);
+    expect(badges.some((b) => b.label === "Циклы")).toBe(true);
   });
 
   it("classifies Hash Map algorithm correctly with capitalized label and yellow variant", () => {
@@ -101,7 +134,7 @@ describe("getJsTaskBadges", () => {
     expect(dfsBadge?.variant).toBe("green");
   });
 
-  it("classifies basic algorithm correctly with capitalized label without redundant Алгоритм badge", () => {
+  it("classifies basic algorithm correctly with capitalized label and folder badge without redundant Алгоритм badge", () => {
     const task: Task = {
       id: "js_while_3",
       title: "3. Сумма цифр числа",
@@ -113,6 +146,28 @@ describe("getJsTaskBadges", () => {
     const badges = getJsTaskBadges(task);
     expect(badges.some((b) => b.label === "Базовый алгоритм")).toBe(true);
     expect(badges.some((b) => b.label === "Алгоритм")).toBe(false);
+    expect(badges.some((b) => b.label === "Циклы")).toBe(true);
+    const loopBadge = badges.find((b) => b.label === "Циклы");
+    expect(loopBadge?.id).toBe("loops");
+    expect(loopBadge?.variant).toBe("blue");
+  });
+
+  it("includes folder badge for basic algorithm tasks in recursion group", () => {
+    const task: Task = {
+      id: "js133",
+      title: "2. Рекурсия 'вверх' (печать при возврате)",
+      group: "Рекурсия",
+      subgroup: "База рекурсии",
+      section: "javascript",
+    };
+
+    const badges = getJsTaskBadges(task);
+    expect(badges.some((b) => b.label === "Базовый алгоритм")).toBe(true);
+    expect(badges.some((b) => b.label === "Алгоритм")).toBe(false);
+    expect(badges.some((b) => b.label === "Рекурсия")).toBe(true);
+    const recursionBadge = badges.find((b) => b.label === "Рекурсия");
+    expect(recursionBadge?.id).toBe("recursion");
+    expect(recursionBadge?.variant).toBe("orange");
   });
 
   it("classifies utility tasks like debounce correctly with capitalized label", () => {
@@ -173,5 +228,38 @@ describe("getJsTaskBadges", () => {
     const iconElement = baseBadge?.icon as React.ReactElement<{ size?: number }>;
     expect(iconElement.type).toBe(BookOpen);
     expect(iconElement.props.size).toBe(12);
+  });
+
+  it.each(ALGORITHM_BADGES_BY_TASK_ID)(
+    "matches the audited solution for %s with the %s badge",
+    (taskId, expectedDetailLabel) => {
+      const task = javascriptTasks.find(({ id }) => id === taskId);
+      expect(task, `JavaScript task ${taskId} must exist`).toBeDefined();
+
+      const algorithmBadges = getJsTaskBadges(task as Task).filter(({ id }) =>
+        id.startsWith("algo")
+      );
+      const expectedLabels =
+        expectedDetailLabel === "Базовый алгоритм"
+          ? [expectedDetailLabel]
+          : ["Алгоритм", expectedDetailLabel];
+
+      expect(algorithmBadges.map(({ label }) => label)).toEqual(expectedLabels);
+    }
+  );
+
+  it("does not infer algorithm badges from task titles", () => {
+    const auditedTaskIds = new Set<string>(
+      ALGORITHM_BADGES_BY_TASK_ID.map(([taskId]) => taskId)
+    );
+    const unexpectedAlgorithmBadges = javascriptTasks.flatMap((task) => {
+      if (auditedTaskIds.has(String(task.id))) return [];
+
+      return getJsTaskBadges(task)
+        .filter(({ id }) => id.startsWith("algo"))
+        .map(({ label }) => `${task.id}: ${label}`);
+    });
+
+    expect(unexpectedAlgorithmBadges).toEqual([]);
   });
 });

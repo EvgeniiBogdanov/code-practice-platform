@@ -22,3 +22,8 @@ export interface SectionProgressStats {
   completed: number;
   percentage: number;
 }
+
+export interface DailyTaskStats {
+  solved: number;
+  unsolved: number;
+}

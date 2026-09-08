@@ -70,9 +70,9 @@ export const TaskPage = React.memo<TaskPageProps>(
       });
     };
 
-    const isCompleted = task ? isTaskCompleted(completedTasks?.[String(task.id)]) : false;
-    const isUnsolved = task ? completedTasks?.[String(task.id)] === "unsolved" : false;
     const isExcluded = task ? excludedTaskIds.includes(String(task.id)) : false;
+    const isCompleted = task && !isExcluded ? isTaskCompleted(completedTasks?.[String(task.id)]) : false;
+    const isUnsolved = task && !isExcluded ? completedTasks?.[String(task.id)] === "unsolved" : false;
 
     const handleToggleSolved = async () => {
       if (!task || isExcluded) return;

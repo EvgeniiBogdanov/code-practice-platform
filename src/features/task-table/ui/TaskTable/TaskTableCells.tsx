@@ -11,34 +11,51 @@ interface TaskTableCellProps {
   isExcluded?: boolean;
 }
 
-const TaskSolutionCell = ({ review }: Readonly<TaskTableCellProps>): React.JSX.Element => (
-  <div className={styles.columnSolution}>
-    {review?.lastReviewedAt ? (
-      <Tooltip
-        content={`Дата последнего решения: ${new Date(review.lastReviewedAt).toLocaleDateString(
-          "ru-RU",
-          { day: "numeric", month: "long", year: "numeric" }
-        )}`}
-        side="top"
-      >
-        <Badge
-          variant="gray"
-          size="sm"
-          uppercase={false}
-          icon={<Calendar size={11} />}
+const TaskSolutionCell = ({
+  review,
+  isExcluded,
+}: Readonly<TaskTableCellProps>): React.JSX.Element => {
+  if (isExcluded) {
+    return (
+      <div className={styles.columnSolution}>
+        <Tooltip content="Исключена из цикла повторений" side="top">
+          <span className={styles.statusUnstarted} aria-label="Исключена">
+            <Minus size={8} />
+          </span>
+        </Tooltip>
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.columnSolution}>
+      {review?.lastReviewedAt ? (
+        <Tooltip
+          content={`Дата последнего решения: ${new Date(review.lastReviewedAt).toLocaleDateString(
+            "ru-RU",
+            { day: "numeric", month: "long", year: "numeric" }
+          )}`}
+          side="top"
         >
-          {formatLastSolved(review.lastReviewedAt)}
-        </Badge>
-      </Tooltip>
-    ) : (
-      <Tooltip content="Ещё не решалась" side="top">
-        <span className={styles.statusUnstarted} aria-label="Ещё не решалась">
-          <Minus size={8} />
-        </span>
-      </Tooltip>
-    )}
-  </div>
-);
+          <Badge
+            variant="gray"
+            size="sm"
+            uppercase={false}
+            icon={<Calendar size={11} />}
+          >
+            {formatLastSolved(review.lastReviewedAt)}
+          </Badge>
+        </Tooltip>
+      ) : (
+        <Tooltip content="Ещё не решалась" side="top">
+          <span className={styles.statusUnstarted} aria-label="Ещё не решалась">
+            <Minus size={8} />
+          </span>
+        </Tooltip>
+      )}
+    </div>
+  );
+};
 
 const TaskReviewCell = ({ review, isExcluded }: Readonly<TaskTableCellProps>): React.JSX.Element => {
   if (isExcluded) {
@@ -95,7 +112,10 @@ const TaskStatusCell = ({
   review,
   isExcluded,
 }: Readonly<TaskStatusCellProps>): React.JSX.Element => {
-  if (!isExcluded && isTaskDue(review)) {
+  if (isExcluded) {
+    return <Minus size={8} className={styles.statusUnstarted} aria-label="Исключена" />;
+  }
+  if (isTaskDue(review)) {
     return <RotateCcw size={11} className={styles.statusDue} aria-label="Пора повторить" />;
   }
   if (status === "solved") {

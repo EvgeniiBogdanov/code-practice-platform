@@ -148,11 +148,11 @@ const TASK_PROBABILITY_OVERRIDES: Readonly<Record<string, number>> = {
   js143: 90, // Recursive sum in arbitrary object
   js144: 91, // Collect primitives from deep tree
   js142: 90, // File search in directory tree
-  js5: 86, // Palindrome (Two Pointers)
+  js5: 86, // Palindrome (reverse scan)
   js_while_6: 85, // Binary search
   js215: 86, // Find missing number
   js214: 82, // Peak element binary search
-  js147: 75, // Fibonacci Nth number (Memo/DP)
+  js147: 75, // Fibonacci Nth number (naive recursion / iterative variant)
 
   // === JS Core, Type Coercion & Prototypes (85-96%) ===
   js186: 96, // Type Coercion edge cases
