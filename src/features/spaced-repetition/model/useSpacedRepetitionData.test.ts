@@ -58,6 +58,10 @@ describe("useSpacedRepetitionData - task exclusion", () => {
     });
     useProgressStore.setState({
       completedTasks: { t1: "unsolved", t2: "solved" },
+      taskStatusTimestamps: {
+        t1: new Date("2026-09-03T08:00:00Z").getTime(),
+        t2: new Date("2026-09-02T08:00:00Z").getTime(),
+      },
     });
   });
 
@@ -77,6 +81,11 @@ describe("useSpacedRepetitionData - task exclusion", () => {
     expect(result.current.unsolvedTasks[0].id).toBe("t1");
     expect(result.current.upcomingTasks.length).toBe(1);
     expect(result.current.upcomingTasks[0].task.id).toBe("t2");
+    expect(result.current.dailyTaskStats).toEqual({ solved: 0, unsolved: 1 });
+    expect(result.current.reviewActivityByDate).toEqual({
+      "2026-09-01": 1,
+      "2026-09-03": 1,
+    });
   });
 
   it("completely excludes task from due, unsolved, upcoming and targetTasks when excluded", () => {
@@ -92,5 +101,7 @@ describe("useSpacedRepetitionData - task exclusion", () => {
     expect(result.current.upcomingTasks.length).toBe(0);
     expect(result.current.masteryStats.totalCount).toBe(0);
     expect(result.current.masteryStats.dueToday).toBe(0);
+    expect(result.current.dailyTaskStats).toEqual({ solved: 0, unsolved: 0 });
+    expect(result.current.reviewActivityByDate).toEqual({});
   });
 });

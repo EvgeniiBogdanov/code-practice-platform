@@ -207,7 +207,7 @@
 /* KPI Grid */
 .kpiGrid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 10px;
   flex-shrink: 0;
 }
@@ -259,6 +259,10 @@
   color: var(--color-status-solved);
 }
 
+.kpiIconRed {
+  color: var(--color-status-unsolved);
+}
+
 .kpiIconBlue {
   color: var(--accent-blue);
 }
@@ -295,6 +299,10 @@
   color: var(--accent-blue);
 }
 
+.kpiValRed {
+  color: var(--color-status-unsolved);
+}
+
 .kpiSub {
   font-size: 11px;
   color: var(--text-muted);
@@ -314,8 +322,13 @@
 
 .kpiProgressBar {
   height: 100%;
+  width: 0;
   border-radius: 2px;
   transition: width 0.4s ease;
+}
+
+.kpiProgressBarActive {
+  width: 100%;
 }
 
 .kpiProgressBar.amber {
@@ -332,6 +345,10 @@
 
 .kpiProgressBar.blue {
   background: var(--accent-blue);
+}
+
+.kpiProgressBar.red {
+  background: var(--color-status-unsolved);
 }
 
 /* Tab Bar */
@@ -489,24 +506,6 @@
   min-width: 28px;
   justify-content: center;
   text-align: center;
-}
-
-
-
-/* Schedule View */
-.scheduleView {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  background: var(--bg-subtle);
-  border-radius: var(--radius-lg);
-  padding: 18px 22px;
-}
-
-.scheduleDesc {
-  font-size: 12.5px;
-  color: var(--fg-muted);
-  line-height: 1.4;
 }
 
 /* Due Tasks Grid View */

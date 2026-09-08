@@ -8,6 +8,7 @@ describe("SpacedRepetitionScheduleSkeleton", () => {
 
     const skeleton = screen.getByRole("status", { name: "Загрузка графика повторений" });
     expect(skeleton).toBeInTheDocument();
+    expect(screen.getByRole("separator")).toBeInTheDocument();
   });
 
   it("applies custom className when provided", () => {

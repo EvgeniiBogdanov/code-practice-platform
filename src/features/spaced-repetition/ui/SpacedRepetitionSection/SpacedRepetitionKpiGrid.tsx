@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { Zap, RotateCcw, Trophy, Clock } from "lucide-react";
+import { Zap, RotateCcw, Trophy, Clock, CircleCheck, CircleX } from "lucide-react";
 import { clsx } from "clsx";
 import styles from "./SpacedRepetitionSection.module.css";
 
@@ -10,6 +10,8 @@ interface SpacedRepetitionKpiGridProps {
   mastered: number;
   masteryPercent: number;
   avgInterval: number;
+  solvedToday: number;
+  unsolvedToday: number;
 }
 
 export const SpacedRepetitionKpiGrid = memo(
@@ -20,7 +22,9 @@ export const SpacedRepetitionKpiGrid = memo(
     mastered,
     masteryPercent,
     avgInterval,
-  }: SpacedRepetitionKpiGridProps): React.JSX.Element => {
+    solvedToday,
+    unsolvedToday,
+  }: Readonly<SpacedRepetitionKpiGridProps>): React.JSX.Element => {
     return (
       <div className={styles.kpiGrid}>
         <div className={styles.kpiCard}>
@@ -38,6 +42,46 @@ export const SpacedRepetitionKpiGrid = memo(
               style={{
                 width: `${totalCount > 0 ? (totalReviewed / totalCount) * 100 : 0}%`,
               }}
+            />
+          </div>
+        </div>
+
+        <div className={styles.kpiCard}>
+          <div className={styles.kpiHeader}>
+            <CircleCheck size={13} className={styles.kpiIconGreen} />
+            <span>Сегодня решено</span>
+          </div>
+          <div className={styles.kpiValRow}>
+            <span className={clsx(styles.kpiVal, styles.kpiValGreen)}>{solvedToday}</span>
+            <span className={styles.kpiSub}>задач</span>
+          </div>
+          <div className={styles.kpiProgress}>
+            <div
+              className={clsx(
+                styles.kpiProgressBar,
+                styles.green,
+                solvedToday > 0 && styles.kpiProgressBarActive
+              )}
+            />
+          </div>
+        </div>
+
+        <div className={styles.kpiCard}>
+          <div className={styles.kpiHeader}>
+            <CircleX size={13} className={styles.kpiIconRed} />
+            <span>Сегодня не решено</span>
+          </div>
+          <div className={styles.kpiValRow}>
+            <span className={clsx(styles.kpiVal, styles.kpiValRed)}>{unsolvedToday}</span>
+            <span className={styles.kpiSub}>задач</span>
+          </div>
+          <div className={styles.kpiProgress}>
+            <div
+              className={clsx(
+                styles.kpiProgressBar,
+                styles.red,
+                unsolvedToday > 0 && styles.kpiProgressBarActive
+              )}
             />
           </div>
         </div>
@@ -70,9 +114,7 @@ export const SpacedRepetitionKpiGrid = memo(
             <span>Уровень Мастер</span>
           </div>
           <div className={styles.kpiValRow}>
-            <span className={clsx(styles.kpiVal, styles.kpiValGreen)}>
-              {masteryPercent}%
-            </span>
+            <span className={clsx(styles.kpiVal, styles.kpiValGreen)}>{masteryPercent}%</span>
             <span className={styles.kpiSub}>{mastered} задач</span>
           </div>
           <div className={styles.kpiProgress}>
@@ -89,9 +131,7 @@ export const SpacedRepetitionKpiGrid = memo(
             <span>Средний интервал</span>
           </div>
           <div className={styles.kpiValRow}>
-            <span className={clsx(styles.kpiVal, styles.kpiValBlue)}>
-              {avgInterval}
-            </span>
+            <span className={clsx(styles.kpiVal, styles.kpiValBlue)}>{avgInterval}</span>
             <span className={styles.kpiSub}>дней</span>
           </div>
           <div className={styles.kpiProgress}>

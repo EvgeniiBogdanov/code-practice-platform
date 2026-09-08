@@ -39,4 +39,5 @@ export * from "./Switch";
 export * from "./JavaScriptIcon";
 export * from "./ReactIcon";
 export * from "./GitHubIcon";
+export * from "./TelegramIcon";
 export { clsx } from "clsx";

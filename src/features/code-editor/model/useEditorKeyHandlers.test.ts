@@ -332,4 +332,194 @@ describe("useEditorKeyHandlers", () => {
 
     expect(onChange).not.toHaveBeenCalled();
   });
+
+  it("handles Cmd+/ on Mac to toggle line comment", () => {
+    const code = "const foo = 123;";
+    const onChange = vi.fn();
+    const history = createMockHistory();
+    const intelliSense = createMockIntelliSense();
+
+    const { result } = renderHook(() =>
+      useEditorKeyHandlers({
+        code,
+        onChange,
+        intelliSense,
+        history,
+      })
+    );
+
+    const textarea = document.createElement("textarea");
+    textarea.value = code;
+    textarea.selectionStart = 0;
+    textarea.selectionEnd = code.length;
+
+    const preventDefault = vi.fn();
+    const stopPropagation = vi.fn();
+
+    const event = {
+      currentTarget: textarea,
+      target: textarea,
+      metaKey: true,
+      ctrlKey: false,
+      altKey: false,
+      shiftKey: false,
+      key: "/",
+      code: "Slash",
+      preventDefault,
+      stopPropagation,
+    } as unknown as React.KeyboardEvent<HTMLTextAreaElement>;
+
+    result.current.handleKeyDown(event);
+
+    expect(preventDefault).toHaveBeenCalled();
+    expect(stopPropagation).toHaveBeenCalled();
+    expect(onChange).toHaveBeenCalledWith("// const foo = 123;");
+  });
+
+  it("handles Ctrl+/ on Windows/Linux to toggle line comment", () => {
+    const code = "// const foo = 123;";
+    const onChange = vi.fn();
+    const history = createMockHistory();
+    const intelliSense = createMockIntelliSense();
+
+    const { result } = renderHook(() =>
+      useEditorKeyHandlers({
+        code,
+        onChange,
+        intelliSense,
+        history,
+      })
+    );
+
+    const textarea = document.createElement("textarea");
+    textarea.value = code;
+    textarea.selectionStart = 0;
+    textarea.selectionEnd = code.length;
+
+    const event = {
+      currentTarget: textarea,
+      target: textarea,
+      metaKey: false,
+      ctrlKey: true,
+      altKey: false,
+      shiftKey: false,
+      key: "/",
+      code: "Slash",
+      preventDefault: vi.fn(),
+      stopPropagation: vi.fn(),
+    } as unknown as React.KeyboardEvent<HTMLTextAreaElement>;
+
+    result.current.handleKeyDown(event);
+
+    expect(onChange).toHaveBeenCalledWith("const foo = 123;");
+  });
+
+  it("handles line comment shortcut on Russian keyboard layout (e.code === 'Slash', e.key === '.')", () => {
+    const code = "const greeting = 'hi';";
+    const onChange = vi.fn();
+    const history = createMockHistory();
+    const intelliSense = createMockIntelliSense();
+
+    const { result } = renderHook(() =>
+      useEditorKeyHandlers({
+        code,
+        onChange,
+        intelliSense,
+        history,
+      })
+    );
+
+    const textarea = document.createElement("textarea");
+    textarea.value = code;
+    textarea.selectionStart = 0;
+    textarea.selectionEnd = code.length;
+
+    const event = {
+      currentTarget: textarea,
+      target: textarea,
+      metaKey: true,
+      ctrlKey: false,
+      altKey: false,
+      shiftKey: false,
+      key: ".",
+      code: "Slash",
+      preventDefault: vi.fn(),
+      stopPropagation: vi.fn(),
+    } as unknown as React.KeyboardEvent<HTMLTextAreaElement>;
+
+    result.current.handleKeyDown(event);
+
+    expect(onChange).toHaveBeenCalledWith("// const greeting = 'hi';");
+  });
+
+  it("handles Shift+Alt+A to toggle block comment", () => {
+    const code = "const value = 42;";
+    const onChange = vi.fn();
+    const history = createMockHistory();
+    const intelliSense = createMockIntelliSense();
+
+    const { result } = renderHook(() =>
+      useEditorKeyHandlers({
+        code,
+        onChange,
+        intelliSense,
+        history,
+      })
+    );
+
+    const textarea = document.createElement("textarea");
+    textarea.value = code;
+    textarea.selectionStart = 6;
+    textarea.selectionEnd = 11; // "value"
+
+    const event = {
+      currentTarget: textarea,
+      target: textarea,
+      metaKey: false,
+      ctrlKey: false,
+      altKey: true,
+      shiftKey: true,
+      key: "A",
+      code: "KeyA",
+      preventDefault: vi.fn(),
+      stopPropagation: vi.fn(),
+    } as unknown as React.KeyboardEvent<HTMLTextAreaElement>;
+
+    result.current.handleKeyDown(event);
+
+    expect(onChange).toHaveBeenCalledWith("const /* value */ = 42;");
+  });
+
+  it("handles Enter after /** to auto-expand JSDoc template", () => {
+    const code = "/**";
+    const onChange = vi.fn();
+    const history = createMockHistory();
+    const intelliSense = createMockIntelliSense();
+
+    const { result } = renderHook(() =>
+      useEditorKeyHandlers({
+        code,
+        onChange,
+        intelliSense,
+        history,
+      })
+    );
+
+    const textarea = document.createElement("textarea");
+    textarea.value = code;
+    textarea.selectionStart = 3;
+    textarea.selectionEnd = 3;
+
+    const event = {
+      currentTarget: textarea,
+      target: textarea,
+      key: "Enter",
+      preventDefault: vi.fn(),
+      stopPropagation: vi.fn(),
+    } as unknown as React.KeyboardEvent<HTMLTextAreaElement>;
+
+    result.current.handleKeyDown(event);
+
+    expect(onChange).toHaveBeenCalledWith("/**\n * \n */");
+  });
 });

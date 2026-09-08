@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { FileCode, Check } from "lucide-react";
+import { FileCode, Check, AlertTriangle } from "lucide-react";
 import { clsx } from "clsx";
 import { TaskSolution } from "@/entities/task";
 import styles from "./SolutionTab.module.css";
@@ -28,6 +28,9 @@ export const SolutionVariantsRow = memo(
               <FileCode size={13} />
               <span>{sol.title || `Вариант ${idx + 1}`}</span>
               {sol.isRecommended && <Check size={13} className={styles.recommendedCheck} />}
+              {!sol.isRecommended && (sol.hasWarning || sol.warning) && (
+                <AlertTriangle size={13} className={styles.warningIcon} />
+              )}
             </button>
           );
         })}

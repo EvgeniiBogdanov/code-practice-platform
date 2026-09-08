@@ -10,7 +10,14 @@
   align-items: center;
   gap: 8px;
   overflow-x: auto;
-  padding-bottom: 2px;
+  overflow-y: hidden;
+  margin-bottom: 6px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.variantsRow::-webkit-scrollbar {
+  display: none;
 }
 
 .variantBtn {
@@ -31,7 +38,8 @@
   transition: all var(--transition-fast);
   white-space: nowrap;
   user-select: none;
-  margin-bottom: 6px;
+  margin-bottom: 0;
+  flex-shrink: 0;
 }
 
 .variantBtn:hover {
@@ -70,6 +78,15 @@
 .recommendedCheck {
   color: var(--color-status-solved, #10b981);
   flex-shrink: 0;
+}
+
+.warningIcon {
+  color: var(--accent-yellow, #facc15);
+  flex-shrink: 0;
+}
+
+[data-theme="light"] .warningIcon {
+  color: var(--color-warning, #d97706);
 }
 
 .recommendationText {

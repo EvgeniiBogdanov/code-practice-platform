@@ -106,6 +106,7 @@ export const useCodeEditor = ({
     multiCursor,
     onRun,
     readOnly,
+    filepath,
   });
 
   useEffect(() => {

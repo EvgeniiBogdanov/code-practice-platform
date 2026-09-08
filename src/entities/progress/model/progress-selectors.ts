@@ -1,4 +1,6 @@
-import { ProgressState, ProgressTaskItem, SectionProgressStats } from "../types";
+import { DailyTaskStats, ProgressState, ProgressTaskItem, SectionProgressStats } from "../types";
+
+type DailyProgressSnapshot = Pick<ProgressState, "completedTasks" | "taskStatusTimestamps">;
 
 export const isTaskCompleted = (status: unknown): boolean => {
   return status === "solved" || status === true;
@@ -50,4 +52,36 @@ export const selectSectionStats = (
 
   const percentage = Math.round((completed / total) * 100);
   return { total, completed, percentage };
+};
+
+export const selectDailyTaskStats = (
+  state: DailyProgressSnapshot,
+  tasks: ProgressTaskItem[],
+  now = Date.now()
+): DailyTaskStats => {
+  const dayStart = new Date(now);
+  dayStart.setHours(0, 0, 0, 0);
+  const dayEnd = new Date(dayStart);
+  dayEnd.setDate(dayEnd.getDate() + 1);
+
+  let solved = 0;
+  let unsolved = 0;
+
+  for (const task of tasks) {
+    const taskId = String(task.id);
+    const updatedAt = state.taskStatusTimestamps[taskId];
+    if (
+      !Number.isFinite(updatedAt) ||
+      updatedAt < dayStart.getTime() ||
+      updatedAt >= dayEnd.getTime()
+    ) {
+      continue;
+    }
+
+    const status = state.completedTasks[taskId];
+    if (isTaskCompleted(status)) solved++;
+    if (isTaskUnsolved(status)) unsolved++;
+  }
+
+  return { solved, unsolved };
 };

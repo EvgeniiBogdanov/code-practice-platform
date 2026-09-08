@@ -136,6 +136,10 @@ export const useReviewStore = create<ReviewState>((set, get) => ({
     set({ excludedTaskIds: next });
     await saveExcludedTasksToDB(next);
     broadcastSyncEvent("TASK_EXCLUSION_CHANGED", { taskIds: next });
+
+    if (!isExcluded) {
+      await get().removeReview(stringId);
+    }
   },
 
   setAssistantName: async (name: string): Promise<void> => {

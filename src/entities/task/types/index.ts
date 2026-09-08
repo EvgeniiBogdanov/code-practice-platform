@@ -19,6 +19,8 @@ export interface TaskSolution {
   title: string;
   name?: string;
   isRecommended?: boolean;
+  hasWarning?: boolean;
+  warning?: boolean;
   badge?: string;
   recommendationNote?: string;
   rawSolution?: string;

@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { clsx } from "clsx";
 import { UiSkeleton } from "@/shared/ui";
+import sectionStyles from "./SpacedRepetitionSection.module.css";
 import styles from "./SpacedRepetitionScheduleSkeleton.module.css";
 
 interface ScheduleBarSkeletonItem {
@@ -27,39 +28,50 @@ export const SpacedRepetitionScheduleSkeleton = memo(
   ({ className }: SpacedRepetitionScheduleSkeletonProps): React.JSX.Element => {
     return (
       <div
-        className={clsx(styles.scheduleView, className)}
+        className={clsx(styles.scheduleCharts, className)}
         role="status"
         aria-label="Загрузка графика повторений"
       >
-        <div className={styles.scheduleDescWrapper}>
-          <UiSkeleton variant="rounded" width={380} height={13} radius={3} />
+        <div className={styles.chartSection}>
+          <div className={styles.titleWrapper}>
+            <UiSkeleton variant="rounded" width={145} height={13} radius={3} />
+          </div>
+          <UiSkeleton variant="rounded" width="100%" height={112} radius={4} />
         </div>
 
-        <div className={styles.chartContainer}>
-          <div className={styles.barsGrid}>
-            {SCHEDULE_BARS_SKELETON.map((bar) => (
-              <div key={bar.id} className={styles.barCol}>
-                <div className={styles.countPlaceholder}>
-                  <UiSkeleton variant="rounded" width={16} height={12} radius={2} />
-                </div>
-                <div className={clsx(styles.barTrack, bar.barClass)}>
-                  <UiSkeleton
-                    variant="rounded"
-                    width="100%"
-                    height="100%"
-                    radius={4}
-                  />
-                </div>
-              </div>
-            ))}
+        <hr className={sectionStyles.sectionDivider} />
+
+        <div className={styles.chartSection}>
+          <div className={styles.titleWrapper}>
+            <UiSkeleton variant="rounded" width={150} height={13} radius={3} />
           </div>
 
-          <div className={styles.labelsRow}>
-            {SCHEDULE_BARS_SKELETON.map((bar) => (
-              <div key={bar.id} className={styles.labelCol}>
-                <UiSkeleton variant="rounded" width={bar.labelWidth} height={10} radius={2} />
-              </div>
-            ))}
+          <div className={styles.chartContainer}>
+            <div className={styles.barsGrid}>
+              {SCHEDULE_BARS_SKELETON.map((bar) => (
+                <div key={bar.id} className={styles.barCol}>
+                  <div className={styles.countPlaceholder}>
+                    <UiSkeleton variant="rounded" width={16} height={12} radius={2} />
+                  </div>
+                  <div className={clsx(styles.barTrack, bar.barClass)}>
+                    <UiSkeleton
+                      variant="rounded"
+                      width="100%"
+                      height="100%"
+                      radius={4}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className={styles.labelsRow}>
+              {SCHEDULE_BARS_SKELETON.map((bar) => (
+                <div key={bar.id} className={styles.labelCol}>
+                  <UiSkeleton variant="rounded" width={bar.labelWidth} height={10} radius={2} />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

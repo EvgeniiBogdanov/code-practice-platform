@@ -11,6 +11,8 @@ describe("HomeHeroHeader", () => {
     const icon = container.querySelector(`.${styles.titleIcon}`);
     expect(icon).toBeInTheDocument();
     expect(icon?.tagName.toLowerCase()).toBe("svg");
+    expect(icon).toHaveAttribute("width", "30");
+    expect(icon).toHaveAttribute("height", "30");
 
     // Main heading
     const heading = screen.getByRole("heading", { level: 1, name: "Code Practice Platform" });

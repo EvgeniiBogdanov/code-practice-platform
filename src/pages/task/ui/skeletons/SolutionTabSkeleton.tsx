@@ -19,8 +19,14 @@ export const SolutionTabSkeleton = memo(
     const activeSolution = solutions[0];
     const recommendationNote = activeSolution?.recommendationNote || task?.recommendationNote;
     const isRecommended = activeSolution?.isRecommended ?? task?.isRecommended;
+    const hasWarning = Boolean(activeSolution?.hasWarning || activeSolution?.warning);
     const badgeText =
-      activeSolution?.badge || (isRecommended ? "Рекомендуемый подход" : "Вариант решения");
+      activeSolution?.badge ||
+      (isRecommended
+        ? "Рекомендуемый подход"
+        : hasWarning
+          ? "Важное замечание"
+          : "Вариант решения");
 
     const files = task ? getTaskFiles(task, "solution") : [];
     const hasVisualComponent = task ? hasTaskVisualComponent(task, files) : false;
@@ -48,8 +54,8 @@ export const SolutionTabSkeleton = memo(
         {recommendationNote && (
           <Accordion
             size="xs"
-            color={isRecommended ? "green" : "orange"}
-            icon={<span>{isRecommended ? "💡" : "📌"}</span>}
+            color={isRecommended ? "green" : hasWarning ? "orange" : "orange"}
+            icon={<span>{isRecommended ? "💡" : hasWarning ? "⚠️" : "📌"}</span>}
             title={<strong>{badgeText}:</strong>}
             isOpen={false}
             onToggle={() => {}}

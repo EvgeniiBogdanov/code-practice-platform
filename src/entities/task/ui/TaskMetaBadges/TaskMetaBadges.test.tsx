@@ -54,6 +54,21 @@ describe("TaskMetaBadges", () => {
     expect(screen.getByText("Асинхронность")).toBeInTheDocument();
   });
 
+  it("renders both basic algorithm and folder badges for JS tasks with basic algorithm", () => {
+    const jsTask: Task = {
+      id: "js133",
+      title: "2. Рекурсия 'вверх' (печать при возврате)",
+      group: "Рекурсия",
+      subgroup: "База рекурсии",
+      section: "javascript",
+    };
+
+    render(<TaskMetaBadges task={jsTask} />);
+    expect(screen.getByText("Базовый алгоритм")).toBeInTheDocument();
+    expect(screen.getByText("Рекурсия")).toBeInTheDocument();
+    expect(screen.getByText(/Вероятность/)).toBeInTheDocument();
+  });
+
   it("renders badges and probability indicator for algorithms tasks", () => {
     const algoTask: Task = {
       id: "algo4",

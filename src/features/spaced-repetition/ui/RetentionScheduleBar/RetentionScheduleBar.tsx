@@ -225,7 +225,7 @@ export function RetentionScheduleBar({
             data={scheduleData}
             keys={["count"]}
             indexBy="label"
-            margin={{ top: 28, right: 16, bottom: 32, left: 16 }}
+            margin={{ top: 20, right: 16, bottom: 28, left: 16 }}
             padding={0.35}
             valueScale={{ type: "linear", min: 0, max: maxCount }}
             indexScale={{ type: "band", round: true }}

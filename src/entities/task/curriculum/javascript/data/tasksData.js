@@ -35,6 +35,7 @@ import PrintNumbersSolutionRaw from "../solutions/1_loops/2_PrintNumbers.js?raw"
 
 import SumToCandidateRaw from "../tasks/1_loops/3_SumTo.js?raw";
 import SumToSolutionRaw from "../solutions/1_loops/3_SumTo.js?raw";
+import SumToFormulaSolutionRaw from "../solutions/1_loops/3_SumTo_Formula.js?raw";
 
 import PrintEvensCandidateRaw from "../tasks/1_loops/4_PrintEvens.js?raw";
 import PrintEvensSolutionRaw from "../solutions/1_loops/4_PrintEvens.js?raw";
@@ -89,6 +90,7 @@ import MultiplyNumericCandidateRaw from "../tasks/2_for_in/4_MultiplyNumeric.js?
 import MultiplyNumericSolutionRaw from "../solutions/2_for_in/4_MultiplyNumeric.js?raw";
 
 import OwnPropertiesOnlyCandidateRaw from "../tasks/2_for_in/5_GetOwnValues.js?raw";
+import OwnPropertiesOnlyObjectValuesSolutionRaw from "../solutions/2_for_in/5_GetOwnValues_ObjectValues.js?raw";
 import OwnPropertiesOnlyHasOwnSolutionRaw from "../solutions/2_for_in/5_GetOwnValues_HasOwn.js?raw";
 import OwnPropertiesOnlyHasOwnPropertySolutionRaw from "../solutions/2_for_in/5_GetOwnValues_HasOwnProperty.js?raw";
 
@@ -1443,7 +1445,7 @@ export const JS_LOOPS_TASKS = [
     group: "Циклы",
     subgroup: "for",
     title: "3. Сумма чисел от 1 до N",
-    desc: "Реализуйте функцию sumTo(n), которая возвращает сумму всех чисел от 1 до n. Пример: sumTo(4) → 10.",
+    desc: "Напишите функцию sumTo(n), которая возвращает сумму всех целых чисел от 1 до n. Пример: sumTo(4) → 10, sumTo(100) → 5050.",
     isRaw: true,
     candidate: SumToCandidateRaw,
     rawCandidate: SumToCandidateRaw,
@@ -1452,12 +1454,20 @@ export const JS_LOOPS_TASKS = [
     filepath: "src/javascript/tasks/1_loops/3_SumTo.js",
     solutions: [
       {
-        title: "Рекомендуемое решение",
+        title: "Вариант 1: Через цикл for",
         isRecommended: true,
-        badge: "Оптимально на собеседовании",
-        recommendationNote: "Однопроходный цикл гарантирует O(N) по времени и O(1) по памяти. Для арифметической суммы O(1) достигается математической формулой.",
+        badge: "Базовый синтаксис",
+        recommendationNote: "Классический однопроходный цикл for гарантирует O(N) по времени и O(1) по памяти, наглядно демонстрируя паттерн аккумуляции.",
         rawSolution: SumToSolutionRaw,
-        filepath: "src/javascript/tasks/1_loops/3_SumTo.js",
+        filepath: "src/javascript/solutions/1_loops/3_SumTo.js",
+      },
+      {
+        title: "Вариант 2: По формуле арифметической прогрессии (O(1))",
+        isRecommended: false,
+        badge: "Математическая оптимизация",
+        recommendationNote: "Формула n * (n + 1) / 2 находит сумму за постоянное время O(1) и O(1) по памяти. Интервьюеры часто просят оптимизировать циклическое решение до этой формулы.",
+        rawSolution: SumToFormulaSolutionRaw,
+        filepath: "src/javascript/solutions/1_loops/3_SumTo_Formula.js",
       },
     ],
     articles: [
@@ -1474,7 +1484,7 @@ export const JS_LOOPS_TASKS = [
     ],
     interviewerQuestions: [
       {
-        question: "Какова временная сложность данного алгоритма и как выкуслить сумму за O(1)?",
+        question: "Какова временная сложность данного алгоритма и как вычислить сумму за O(1)?",
         answer: "Сложность через цикл равна O(N). За O(1) сумму можно найти по формуле арифметической прогрессии: n * (n + 1) / 2.",
       },
     ],
@@ -2242,14 +2252,23 @@ export const JS_FOR_IN_TASKS = [
     solutions: [
       {
         title: "Вариант 1: Через Object.hasOwn() (ES2022)",
-        isRecommended: true,
-        badge: "Современный стандарт",
-        recommendationNote: "Статический метод Object.hasOwn() — современная и безопасная замена obj.hasOwnProperty().",
+        isRecommended: false,
+        hasWarning: true,
+        badge: "Учебный подход / for...in",
+        recommendationNote: "Статический метод Object.hasOwn() отсекает прототипные свойства в цикле for...in. Этот подход важен для демонстрации понимания прототипной цепочки, но в реальном коде эффективнее использовать нативный Object.values().",
         rawSolution: OwnPropertiesOnlyHasOwnSolutionRaw,
         filepath: "src/javascript/solutions/2_for_in/5_GetOwnValues_HasOwn.js",
       },
       {
-        title: "Вариант 2: Через Object.prototype.hasOwnProperty.call()",
+        title: "Вариант 2: Через Object.values() (Production)",
+        isRecommended: true,
+        badge: "Рекомендуемый подход",
+        recommendationNote: "В проде лучше писать через Object.values(obj), так как он нативно забирает только собственные свойства и оптимизирован движком».\n Но если задача проверяет понимание работы for...in и прототипного наследования, то for...in потянет за собой унаследованные перечислимые свойства из прототипов, и их нужно отсекать через Object.hasOwn(obj, key)",
+        rawSolution: OwnPropertiesOnlyObjectValuesSolutionRaw,
+        filepath: "src/javascript/solutions/2_for_in/5_GetOwnValues_ObjectValues.js",
+      },
+      {
+        title: "Вариант 3: Через Object.prototype.hasOwnProperty.call()",
         isRecommended: false,
         badge: "Классический подход",
         recommendationNote: "Безопасный вызов hasOwnProperty через call на случай, если объект создан через Object.create(null).",

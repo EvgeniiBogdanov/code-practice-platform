@@ -14,3 +14,4 @@ export * from "./ui/CodeEditor";
 export * from "./model/useMultiCursor";
 export * from "./lib/line-operations";
 export * from "./lib/multi-cursor-operations";
+export * from "./lib/comment-operations";

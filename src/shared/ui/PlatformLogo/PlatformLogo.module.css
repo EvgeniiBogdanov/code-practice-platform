@@ -2,40 +2,39 @@
   display: inline-block;
   flex-shrink: 0;
   vertical-align: middle;
-  border-radius: var(--radius-sm, 6px);
   user-select: none;
 }
 
-.shadowRect {
-  fill: rgba(0, 0, 0, 0.35);
-}
-
-[data-theme="light"] .shadowRect {
-  fill: rgba(55, 53, 47, 0.1);
-}
 
 .bgRect {
-  fill: #222222;
-  stroke: rgba(255, 255, 255, 0.14);
+  fill: #ffffff;
+  stroke: transparent;
+  stroke-width: 0;
 }
 
+:global([data-theme="light"]) .bgRect,
 [data-theme="light"] .bgRect {
-  fill: #ffffff;
-  stroke: rgba(55, 53, 47, 0.18);
+  fill: #191919;
+  stroke: transparent;
+  stroke-width: 0;
 }
 
 .logoStroke {
-  stroke: #ffffff;
-}
-
-[data-theme="light"] .logoStroke {
   stroke: #191919;
 }
 
-.logoDot {
-  fill: #ffffff;
+:global([data-theme="light"]) .logoStroke,
+[data-theme="light"] .logoStroke {
+  stroke: #ffffff;
 }
 
-[data-theme="light"] .logoDot {
-  fill: #191919;
+.noBackground .logoStroke {
+  stroke: #ffffff;
 }
+
+:global([data-theme="light"]) .noBackground .logoStroke,
+[data-theme="light"] .noBackground .logoStroke,
+[data-theme="light"].noBackground .logoStroke {
+  stroke: #191919;
+}
+

@@ -44,6 +44,29 @@ describe("useReviewStore - Task Exclusion", () => {
     expect(useReviewStore.getState().isTaskExcluded("task-1")).toBe(false);
   });
 
+  it("removes review when task is excluded", async () => {
+    const mockReview: ReviewItem = {
+      taskId: "task-1",
+      stage: 1,
+      intervalDays: 1,
+      lastReviewedAt: Date.now(),
+      lastReviewedDate: "2026-09-01",
+      dueDate: "2026-09-02",
+      nextReviewAt: Date.now() + 86400000,
+      rating: "medium",
+      history: [],
+    };
+
+    useReviewStore.setState({
+      reviews: { "task-1": mockReview },
+      excludedTaskIds: [],
+    });
+
+    await useReviewStore.getState().toggleExcludeTask("task-1");
+    expect(useReviewStore.getState().excludedTaskIds).toContain("task-1");
+    expect(useReviewStore.getState().reviews["task-1"]).toBeUndefined();
+  });
+
   it("filters out excluded tasks from getDueTasks", () => {
     const mockReview: ReviewItem = {
       taskId: "task-1",

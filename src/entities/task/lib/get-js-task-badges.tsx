@@ -22,6 +22,10 @@ import {
   BookOpen,
 } from "lucide-react";
 import { GaugeIndicator, type MetaBadgeVariant } from "@/shared/ui";
+import {
+  getJsTaskAlgorithm,
+  type JsTaskAlgorithm,
+} from "../curriculum/javascript/data/task-algorithms";
 import { isSyntaxTask, getJsTaskProbabilityInfo } from "./get-js-task-probability";
 import type { Task } from "../types";
 
@@ -83,88 +87,77 @@ const isUtilityTask = (group: string, subgroup: string, title: string): boolean 
   title.includes("set / lodash") ||
   title.includes("клонирование");
 
-const isAlgorithmTask = (group: string, title: string): boolean =>
-  title.includes("бинарный поиск") ||
-  title.includes("алгоритм") ||
-  title.includes("евклид") ||
-  title.includes("палиндром") ||
-  title.includes("пузырьковая сортировка") ||
-  title.includes("bubble sort") ||
-  title.includes("анаграмм") ||
-  title.includes("фибоначчи") ||
-  title.includes("обход бинарного дерева") ||
-  title.includes("глубина (высота) дерева") ||
-  title.includes("поиск файла") ||
-  title.includes("сбор всех примитивов") ||
-  title.includes("сумма цифр") ||
-  title.includes("разворот числа") ||
-  title.includes("односвязного списка") ||
-  title.includes("слияние двух") ||
-  title.includes("частоты элементов") ||
-  title.includes("категорий") ||
-  group === "Рекурсия";
-
-const getAlgorithmDetailBadge = (title: string): TaskBadge => {
-  if (title.includes("бинарный поиск") || title.includes("binary search")) {
-    return { id: "algo-bs", label: "Binary Search", variant: "blue", icon: <Search size={ICON_SIZE} /> };
+const getAlgorithmDetailBadge = (algorithm: JsTaskAlgorithm): TaskBadge => {
+  switch (algorithm) {
+    case "binary-search":
+      return {
+        id: "algo-bs",
+        label: "Binary Search",
+        variant: "blue",
+        icon: <Search size={ICON_SIZE} />,
+      };
+    case "euclidean-algorithm":
+      return {
+        id: "algo-euclid",
+        label: "Алгоритм Евклида",
+        variant: "purple",
+        icon: <Cpu size={ICON_SIZE} />,
+      };
+    case "two-pointers":
+      return {
+        id: "algo-two-pointers",
+        label: "Two Pointers",
+        variant: "pink",
+        icon: <GitMerge size={ICON_SIZE} />,
+      };
+    case "bubble-sort":
+      return {
+        id: "algo-bubble",
+        label: "Bubble Sort",
+        variant: "purple",
+        icon: <Layers size={ICON_SIZE} />,
+      };
+    case "hash-map":
+      return {
+        id: "algo-hash-map",
+        label: "Hash Map",
+        variant: "yellow",
+        icon: <Hash size={ICON_SIZE} />,
+      };
+    case "depth-first-search":
+      return {
+        id: "algo-dfs",
+        label: "DFS",
+        variant: "green",
+        icon: <GitBranch size={ICON_SIZE} />,
+      };
+    case "basic":
+      return {
+        id: "algo-base",
+        label: "Базовый алгоритм",
+        variant: "purple",
+        icon: <Brain size={ICON_SIZE} />,
+      };
   }
-  if (title.includes("евклид") || title.includes("gcd")) {
-    return { id: "algo-euclid", label: "Алгоритм Евклида", variant: "purple", icon: <Cpu size={ICON_SIZE} /> };
-  }
-  if (
-    title.includes("палиндром") ||
-    title.includes("слияние двух отсортированных") ||
-    title.includes("two pointers") ||
-    title.includes("два указателя")
-  ) {
-    return { id: "algo-two-pointers", label: "Two Pointers", variant: "pink", icon: <GitMerge size={ICON_SIZE} /> };
-  }
-  if (title.includes("пузырьковая") || title.includes("bubble sort")) {
-    return { id: "algo-bubble", label: "Bubble Sort", variant: "purple", icon: <Layers size={ICON_SIZE} /> };
-  }
-  if (
-    title.includes("частот") ||
-    title.includes("вхождений") ||
-    title.includes("анаграмм") ||
-    title.includes("категорий")
-  ) {
-    return { id: "algo-hash-map", label: "Hash Map", variant: "yellow", icon: <Hash size={ICON_SIZE} /> };
-  }
-  if (
-    title.includes("дерев") ||
-    title.includes("файловой системе") ||
-    title.includes("вложенных объектах") ||
-    title.includes("вложенном объекте") ||
-    title.includes("сбор всех") ||
-    title.includes("бинарного дерева") ||
-    title.includes("flatten") ||
-    title.includes("сплющивание")
-  ) {
-    return { id: "algo-dfs", label: "DFS", variant: "green", icon: <GitBranch size={ICON_SIZE} /> };
-  }
-  if (title.includes("фибоначчи")) {
-    return {
-      id: "algo-dp",
-      label: "Динамическое программирование",
-      variant: "purple",
-      icon: <Cpu size={ICON_SIZE} />,
-    };
-  }
-  return { id: "algo-base", label: "Базовый алгоритм", variant: "purple", icon: <Brain size={ICON_SIZE} /> };
 };
 
-const getPrimaryBadge = (group: string, subgroup: string, title: string): TaskBadge => {
+const getPrimaryBadge = (
+  group: string,
+  subgroup: string,
+  title: string,
+  algorithm: JsTaskAlgorithm | null
+): TaskBadge => {
   if (isPolyfillTask(title, subgroup)) {
     return { id: "polyfill", label: "Полифил", variant: "red", icon: <Package size={ICON_SIZE} /> };
   }
   if (isPatternTask(group, subgroup, title)) {
     return { id: "pattern", label: "Паттерн", variant: "cyan", icon: <Workflow size={ICON_SIZE} /> };
   }
+  if (algorithm) {
+    return { id: "algo", label: "Алгоритм", variant: "purple", icon: <Brain size={ICON_SIZE} /> };
+  }
   if (isUtilityTask(group, subgroup, title)) {
     return { id: "utility", label: "Утилита", variant: "blue", icon: <Wrench size={ICON_SIZE} /> };
-  }
-  if (isAlgorithmTask(group, title) && !isSyntaxTask(title)) {
-    return { id: "algo", label: "Алгоритм", variant: "purple", icon: <Brain size={ICON_SIZE} /> };
   }
   if (isSyntaxTask(title)) {
     return { id: "syntax", label: "Синтаксис", variant: "blue", icon: <Code2 size={ICON_SIZE} /> };
@@ -200,6 +193,9 @@ const getContextBadge = (group: string, subgroup: string, primaryId: string): Ta
   if (subgroup === "Set") {
     return { id: "set", label: "Set", variant: "purple", icon: <Boxes size={ICON_SIZE} /> };
   }
+  if (group === "Коллекции") {
+    return { id: "collections", label: "Коллекции", variant: "purple", icon: <Boxes size={ICON_SIZE} /> };
+  }
   if (group === "Объекты" && primaryId !== "utility") {
     return { id: "objects", label: "Объекты", variant: "blue", icon: <Box size={ICON_SIZE} /> };
   }
@@ -209,6 +205,9 @@ const getContextBadge = (group: string, subgroup: string, primaryId: string): Ta
   if (group === "Строки и Утилиты") {
     return { id: "strings-utils", label: "Строки и Утилиты", variant: "green", icon: <FileCode size={ICON_SIZE} /> };
   }
+  if (group === "Паттерны проектирования" && primaryId !== "pattern") {
+    return { id: "patterns", label: "Паттерны", variant: "cyan", icon: <Workflow size={ICON_SIZE} /> };
+  }
   return null;
 };
 
@@ -216,6 +215,7 @@ export const getJsTaskBadges = (task: Task): TaskBadge[] => {
   const title = (task.title || "").toLowerCase();
   const group = task.group || "";
   const subgroup = task.subgroup || "";
+  const algorithm = getJsTaskAlgorithm(task.id);
 
   const badges: TaskBadge[] = [];
 
@@ -231,12 +231,16 @@ export const getJsTaskBadges = (task: Task): TaskBadge[] => {
     });
   }
 
-  const primaryBadge = getPrimaryBadge(group, subgroup, title);
+  const primaryBadge = getPrimaryBadge(group, subgroup, title, algorithm);
 
-  if (primaryBadge.id === "algo") {
-    const algoDetailBadge = getAlgorithmDetailBadge(title);
+  if (primaryBadge.id === "algo" && algorithm) {
+    const algoDetailBadge = getAlgorithmDetailBadge(algorithm);
     if (algoDetailBadge.id === "algo-base") {
       badges.push(algoDetailBadge);
+      const contextBadge = getContextBadge(group, subgroup, algoDetailBadge.id);
+      if (contextBadge && !badges.some((b) => b.id === contextBadge.id)) {
+        badges.push(contextBadge);
+      }
     } else {
       badges.push(primaryBadge);
       badges.push(algoDetailBadge);
