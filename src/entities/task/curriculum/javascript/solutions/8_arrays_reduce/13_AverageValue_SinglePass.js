@@ -1,7 +1,6 @@
 const average = (numbers) => {
   if (numbers.length === 0) return 0;
-  const sum = numbers.reduce((acc, num) => acc + num, 0);
-  return sum / numbers.length;
+  return numbers.reduce((acc, num, _, arr) => acc + num / arr.length, 0);
 };
 
 // Пример вызова:

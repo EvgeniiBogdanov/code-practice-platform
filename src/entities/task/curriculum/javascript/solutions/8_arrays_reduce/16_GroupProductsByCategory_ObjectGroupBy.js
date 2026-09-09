@@ -1,7 +1,9 @@
 const products = [
-  { name: "Apple", category: "Fruit" },
-  { name: "Banana", category: "Fruit" },
-  { name: "Carrot", category: "Vegetable" },
+  { name: "Яблоко", category: "Фрукты" },
+  { name: "Морковь", category: "Овощи" },
+  { name: "Банан", category: "Фрукты" },
+  { name: "Огурец", category: "Овощи" },
+  { name: "Груша", category: "Фрукты" },
 ];
 
 const groupProductsByCategory = (products) => {
@@ -17,6 +19,6 @@ const groupProductsByCategory = (products) => {
 // Пример вызова:
 console.log(groupProductsByCategory(products));
 // {
-//   Fruit: ["Apple", "Banana"],
-//   Vegetable: ["Carrot"]
+//   "Фрукты": ["Яблоко", "Банан", "Груша"],
+//   "Овощи": ["Морковь", "Огурец"]
 // }

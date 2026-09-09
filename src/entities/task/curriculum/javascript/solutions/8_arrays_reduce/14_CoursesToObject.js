@@ -1,15 +1,16 @@
 const courses = [
-  { count: 12, name: "JS" },
-  { count: 2, name: "React" },
-  { count: 8, name: "Node" },
+  ["JavaScript", 40],
+  ["React", 30],
+  ["TypeScript", 25],
 ];
 
 const coursesToObject = (courses) => {
-  return courses.reduce((acc, course) => {
-    acc[course.name] = course.count;
+  return courses.reduce((acc, [course, hours]) => {
+    acc[course] = hours;
     return acc;
   }, {});
 };
 
 // Пример вызова:
-console.log(coursesToObject(courses)); // { JS: 12, React: 2, Node: 8 }
+console.log(coursesToObject(courses));
+// { JavaScript: 40, React: 30, TypeScript: 25 }

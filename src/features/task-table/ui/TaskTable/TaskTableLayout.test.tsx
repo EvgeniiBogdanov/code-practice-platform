@@ -36,7 +36,7 @@ describe("TaskTable layout", () => {
           taskId: "task-1",
           stage: 1,
           intervalDays: 1,
-          dueDate: "2026-09-08",
+          dueDate: "2099-01-01",
           lastReviewedDate: "2026-09-07",
           history: [],
           nextReviewAt: Date.now() + 86400000,

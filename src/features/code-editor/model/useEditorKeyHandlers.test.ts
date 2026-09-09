@@ -12,7 +12,7 @@ describe("useEditorKeyHandlers", () => {
     items: [],
     selectedIndex: 0,
     word: "",
-    popupPosition: { top: 0, left: 0 },
+    popupPosition: { top: 0, left: 0, placement: "bottom", maxHeight: 220 },
     openCompletions: vi.fn(),
     selectNext: vi.fn(),
     selectPrev: vi.fn(),
@@ -20,6 +20,7 @@ describe("useEditorKeyHandlers", () => {
     applySelected: vi.fn(),
     closeCompletions: vi.fn(),
     handleCursorMove: vi.fn(),
+    updatePosition: vi.fn(),
   });
 
   const createMockHistory = (): CodeHistoryState => ({

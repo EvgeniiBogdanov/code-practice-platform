@@ -6,13 +6,18 @@ import {
   CompletionItem,
   TaskFile,
 } from "@/shared/lib/code-editor";
+import {
+  getCaretCoordinates,
+  calculatePopupPosition,
+  PopupPositionResult,
+} from "../lib/caret-coordinates";
 
 export interface IntelliSenseState {
   isOpen: boolean;
   items: CompletionItem[];
   selectedIndex: number;
   word: string;
-  popupPosition: { top: number; left: number };
+  popupPosition: PopupPositionResult;
   openCompletions: (
     code: string,
     cursorPos: number,
@@ -20,7 +25,8 @@ export interface IntelliSenseState {
     force?: boolean
   ) => void;
   closeCompletions: () => void;
-  handleCursorMove: (code: string, cursorPos: number, textarea: HTMLTextAreaElement) => void;
+  handleCursorMove: (code: string, cursorPos: number, textarea?: HTMLTextAreaElement) => void;
+  updatePosition: (textarea: HTMLTextAreaElement) => void;
   selectNext: () => void;
   selectPrev: () => void;
   selectIndex: (index: number) => void;
@@ -36,6 +42,7 @@ export interface IntelliSenseState {
 interface CompletionSession {
   lineIdx: number;
   startPos: number;
+  cursorPos: number;
   word: string;
 }
 
@@ -44,7 +51,12 @@ export function useIntelliSense(files: TaskFile[] = [], filepath = "main.jsx"): 
   const [items, setItems] = useState<CompletionItem[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [word, setWord] = useState("");
-  const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
+  const [popupPosition, setPopupPosition] = useState<PopupPositionResult>({
+    top: 0,
+    left: 0,
+    placement: "bottom",
+    maxHeight: 220,
+  });
 
   const sessionRef = useRef<CompletionSession | null>(null);
 
@@ -66,27 +78,20 @@ export function useIntelliSense(files: TaskFile[] = [], filepath = "main.jsx"): 
 
       const lines = code.substring(0, cursorPos).split("\n");
       const currentLineIdx = lines.length - 1;
-      const currentColIdx = lines[currentLineIdx].length;
 
-      // Compute dynamic metrics based on current font and styling
-      const computed = window.getComputedStyle(textarea);
-      const parsedFontSize = parseFloat(computed.fontSize) || 14;
-      const lineHeight = parseFloat(computed.lineHeight) || parsedFontSize * 1.5;
-      const charWidth = parsedFontSize * 0.6;
-      const paddingTop = parseFloat(computed.paddingTop) || 16;
-      const paddingLeft = parseFloat(computed.paddingLeft) || 60;
-
-      const top = paddingTop + (currentLineIdx + 1) * lineHeight - textarea.scrollTop;
-      const left = paddingLeft + currentColIdx * charWidth - textarea.scrollLeft;
-
-      setPopupPosition({
-        top: Math.max(10, top),
-        left: Math.max(10, Math.min(left, textarea.clientWidth - 280)),
+      const caret = getCaretCoordinates(textarea, cursorPos);
+      const position = calculatePopupPosition({
+        caret,
+        textarea,
+        itemsCount: res.items.length,
       });
+
+      setPopupPosition(position);
 
       sessionRef.current = {
         lineIdx: currentLineIdx,
         startPos: Math.max(0, cursorPos - res.word.length),
+        cursorPos,
         word: res.word,
       };
 
@@ -98,8 +103,32 @@ export function useIntelliSense(files: TaskFile[] = [], filepath = "main.jsx"): 
     [files, filepath, closeCompletions]
   );
 
+  const updatePosition = useCallback(
+    (textarea: HTMLTextAreaElement) => {
+      if (!sessionRef.current) return;
+      const caret = getCaretCoordinates(textarea, sessionRef.current.cursorPos);
+
+      const clientHeight = textarea.clientHeight || 400;
+      const viewportLineTop = caret.top - textarea.scrollTop;
+      const viewportLineBottom = caret.lineBottom - textarea.scrollTop;
+
+      if (viewportLineBottom < 0 || viewportLineTop > clientHeight) {
+        closeCompletions();
+        return;
+      }
+
+      const next = calculatePopupPosition({
+        caret,
+        textarea,
+        itemsCount: items.length,
+      });
+      setPopupPosition(next);
+    },
+    [items.length, closeCompletions]
+  );
+
   const handleCursorMove = useCallback(
-    (code: string, cursorPos: number, _textarea?: HTMLTextAreaElement) => {
+    (code: string, cursorPos: number, textarea?: HTMLTextAreaElement) => {
       if (!sessionRef.current) return;
 
       const lines = code.substring(0, cursorPos).split("\n");
@@ -122,6 +151,19 @@ export function useIntelliSense(files: TaskFile[] = [], filepath = "main.jsx"): 
       if (res.items.length === 0) {
         closeCompletions();
         return;
+      }
+
+      sessionRef.current.cursorPos = cursorPos;
+      sessionRef.current.word = res.word;
+
+      if (textarea) {
+        const caret = getCaretCoordinates(textarea, cursorPos);
+        const position = calculatePopupPosition({
+          caret,
+          textarea,
+          itemsCount: res.items.length,
+        });
+        setPopupPosition(position);
       }
 
       setItems(res.items);
@@ -206,6 +248,7 @@ export function useIntelliSense(files: TaskFile[] = [], filepath = "main.jsx"): 
     openCompletions,
     closeCompletions,
     handleCursorMove,
+    updatePosition,
     selectNext,
     selectPrev,
     selectIndex,

@@ -2,7 +2,7 @@
 
 # <img src="public/favicon.svg" width="22" height="22" alt="" /> Code Practice Platform
 
-<sub><span style="color:gray">version: 2.3.8</span></sub>
+<sub><span style="color:gray">version: 2.3.81</span></sub>
 
 ### Интерактивная платформа для подготовки к техническим собеседованиям по фронтенду и алгоритмам
 

@@ -5603,49 +5603,50 @@ const averageSinglePass = (numbers) => {
 Двухэтапный расчет через сумму и деление на length — самый чистый и идиоматичный вариант на собеседовании.`,
 
   js64: `### Суть задачи
-Преобразование массива объектов пар ключ-значение в единый объект.
+Преобразование массива пар [курс, часы] в ассоциативный объект.
 
 ### Пошаговые этапы решения:
 
 1. **Наполнение объекта свойствами**:
 \`\`\`js
-let courses = [
-  { course: 'JavaScript', price: '30000' },
-  { course: 'React', price: '40000' },
-  { course: 'HTML + CSS', price: '25000' },
+const courses = [
+  ["JavaScript", 40],
+  ["React", 30],
+  ["TypeScript", 25],
 ];
 
-const coursesToObject = (arr) => {
-  return arr.reduce((acc, { course, price }) => {
-    acc[course] = price;
+const coursesToObject = (courses) => {
+  return courses.reduce((acc, [course, hours]) => {
+    acc[course] = hours;
     return acc;
   }, {});
 };
 
 console.log(coursesToObject(courses));
 \`\`\`
-**Разбор**: Деструктурированные значения \`course\` и \`price\` связываются в аккумулирующем объекте как ключ и значение.
+**Разбор**: Деструктурированные значения \`[course, hours]\` связываются в аккумулирующем объекте как ключ и значение.
 
 ### Ключевые выводы:
-• Прямая запись \`acc[course] = price\` эффективнее иммутабельного спреда внутри редюсера.`,
+• Прямая запись \`acc[course] = hours\` работает за O(N) и эффективнее иммутабельного спреда внутри редюсера, дающего O(N²).
+• В качестве альтернативы можно использовать встроенный метод \`Object.fromEntries(courses)\`.`,
 
   js65: `### Суть задачи
-Суммирование числовых показателей транзакций с группировкой по категориям.
+Суммирование расходов по категориям с помощью метода \`reduce()\`.
 
 ### Пошаговые этапы решения:
 
-1. **Использование nullish-оператора**:
+1. **Использование nullish-оператора для инициализации**:
 \`\`\`js
-const transactions = [
-  { category: 'food', amount: 150 },
-  { category: 'transport', amount: 50 },
-  { category: 'food', amount: 300 },
-  { category: 'entertainment', amount: 200 },
-  { category: 'transport', amount: 70 }
+const expenses = [
+  { category: "Еда", amount: 500 },
+  { category: "Транспорт", amount: 150 },
+  { category: "Еда", amount: 300 },
+  { category: "Развлечения", amount: 1000 },
+  { category: "Транспорт", amount: 200 },
 ];
 
-const sumByCategory = (arr) => {
-  return arr.reduce((acc, { category, amount }) => {
+const sumByCategory = (expenses) => {
+  return expenses.reduce((acc, { category, amount }) => {
     acc[category] ??= 0;
     acc[category] += amount;
 
@@ -5653,13 +5654,14 @@ const sumByCategory = (arr) => {
   }, {});
 };
 
-console.log(sumByCategory(transactions));
-// { food: 450, transport: 120, entertainment: 200 }
+console.log(sumByCategory(expenses));
+// { "Еда": 800, "Транспорт": 350, "Развлечения": 1000 }
 \`\`\`
-**Разбор**: Оператор \`acc[category] ??= 0\` устанавливает начальный ноль для неизвестной категории, после чего значение \`amount\` прибавляется к аккумулируемой сумме.
+**Разбор**: Оператор \`acc[category] ??= 0\` устанавливает начальный ноль для неизвестной категории при первом вхождении, после чего значение \`amount\` суммируется в аккумуляторе.
 
 ### Ключевые выводы:
-• Отличный пример решения реальных бизнес-задач фильтрации и аналитики.`,
+• Оператор \`??=\` семантически точнее \`||\`, так как реагирует строго на \`null\` и \`undefined\`, не сбрасывая существующий нулевой баланс.
+• Решение работает за O(N) времени и использует O(K) памяти по количеству уникальных категорий.`,
 
   js66: `### Суть задачи
 Группировка названий продуктов по их категории с использованием метода \`reduce()\`.

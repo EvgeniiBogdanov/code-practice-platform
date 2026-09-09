@@ -274,6 +274,7 @@ import CustomMapIndexFromEntriesSolutionRaw from "../solutions/8_arrays_reduce/1
 
 import AverageValueCandidateRaw from "../tasks/8_arrays_reduce/13_AverageValue.js?raw";
 import AverageValueSolutionRaw from "../solutions/8_arrays_reduce/13_AverageValue.js?raw";
+import AverageValueSinglePassSolutionRaw from "../solutions/8_arrays_reduce/13_AverageValue_SinglePass.js?raw";
 
 import CoursesToObjectCandidateRaw from "../tasks/8_arrays_reduce/14_CoursesToObject.js?raw";
 import CoursesToObjectSpreadSolutionRaw from "../solutions/8_arrays_reduce/14_CoursesToObject_Spread.js?raw";
@@ -5807,7 +5808,7 @@ export const JS_ARRAYS_REDUCE_TASKS = [
     group: "Массивы",
     subgroup: "reduce",
     title: "11. Среднее арифметическое (Агрегация)",
-    desc: "Вычислите среднее арифметическое числового массива строго внутри метода reduce(), не используя свойства внешней длины вне редюсера.",
+    desc: "Напишите функцию average(numbers), которая вычисляет среднее арифметическое элементов числового массива с помощью метода reduce(). Для пустого массива верните 0.",
     isRaw: true,
     candidate: AverageValueCandidateRaw,
     rawCandidate: AverageValueCandidateRaw,
@@ -5816,12 +5817,20 @@ export const JS_ARRAYS_REDUCE_TASKS = [
     filepath: "src/javascript/tasks/8_arrays_reduce/13_AverageValue.js",
     solutions: [
       {
-        title: "Рекомендуемое решение",
+        title: "Вариант 1: Идиоматичный двухэтапный расчет (Рекомендуется)",
         isRecommended: true,
-        badge: "Идиоматичный подход",
-        recommendationNote: "Метод reduce() является функциональным стандартом для свертки и агрегации данных в JavaScript без мутации исходного массива.",
+        badge: "Оптимально на собеседовании",
+        recommendationNote: "Наиболее чистый и производительный подход: reduce() выполняет свертку суммы за O(N), а деление на общую длину происходит один раз в конце за O(1), избегая многократных операций деления с плавающей точкой.",
         rawSolution: AverageValueSolutionRaw,
         filepath: "src/javascript/tasks/8_arrays_reduce/13_AverageValue.js",
+      },
+      {
+        title: "Вариант 2: Однопроходный расчет через 4-й аргумент (arr)",
+        isRecommended: false,
+        badge: "Альтернативный подход",
+        recommendationNote: "Использует 4-й параметр колбэка reduce (ссылку на исходный массив arr), прибавляя к аккумулятору долю каждого элемента num / arr.length. Подходит при работе в цепочках вызовов без сохранения промежуточных переменных.",
+        rawSolution: AverageValueSinglePassSolutionRaw,
+        filepath: "src/javascript/solutions/8_arrays_reduce/13_AverageValue_SinglePass.js",
       },
     ],
     articles: [
@@ -5830,16 +5839,26 @@ export const JS_ARRAYS_REDUCE_TASKS = [
         urlTitle: "MDN — Четвертый параметр массива в reduce",
         url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce",
       },
+      {
+        title: "Метод Array.prototype.reduce() (Doka.guide)",
+        urlTitle: "Дока — Метод reduce",
+        url: "https://doka.guide/js/array-reduce/",
+      },
     ],
     interviewerQuestions: [
       {
-        question: "Как получить доступ к длине исходного массива внутри редюсера?",
+        question: "Почему двухэтапный расчет (сумма / длина) предпочтительнее расчета долей внутри редюсера?",
+        answer: "Двухэтапный расчет выполняет лишь одно деление в конце вместо N делений с плавающей точкой в цикле, что быстрее и минимизирует накопление погрешности вычислений IEEE 754.",
+      },
+      {
+        question: "Как получить доступ к длине исходного массива внутри редюсера без внешней переменной?",
         answer: "Четвертым аргументом редюсера передается сам исходный массив array, у которого можно взять array.length.",
       },
     ],
     checklist: [
-      "Вычисление acc + num / array.length внутри редюсера",
-      "Возвращается среднее значение (4.5)",
+      "Обработка пустого массива (возврат 0)",
+      "Суммирование элементов через reduce()",
+      "Корректный расчет среднего значения",
     ],
   },
 
@@ -5848,7 +5867,7 @@ export const JS_ARRAYS_REDUCE_TASKS = [
     group: "Массивы",
     subgroup: "reduce",
     title: "12. Создать объект",
-    desc: "Напишите функцию coursesToObject(arr), которая преобразует массив курсов в объект { [course]: price }.",
+    desc: "Напишите функцию coursesToObject(courses), которая принимает массив пар [курс, часы] и возвращает объект, где ключи — названия курсов, а значения — часы.",
     isRaw: true,
     candidate: CoursesToObjectCandidateRaw,
     rawCandidate: CoursesToObjectCandidateRaw,
@@ -5857,28 +5876,18 @@ export const JS_ARRAYS_REDUCE_TASKS = [
     filepath: "src/javascript/tasks/8_arrays_reduce/14_CoursesToObject.js",
     solutions: [
       {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Идиоматичный подход",
-        recommendationNote: "Метод reduce() является функциональным стандартом для свертки и агрегации данных в JavaScript без мутации исходного массива.",
-        rawSolution: CoursesToObjectMutateSolutionRaw,
-        filepath: "src/javascript/tasks/8_arrays_reduce/14_CoursesToObject.js",
-      },
-    ],
-    solutions: [
-      {
-        title: "Вариант 1: Прямое присвоение (Оптимально)",
+        title: "Вариант 1: Прямое присвоение в reduce() (Рекомендуется)",
         isRecommended: true,
         badge: "Оптимально по памяти",
-        recommendationNote: "Мутация аккумулирующего объекта acc[course] = price работает за O(N) без выделения памяти под промежуточные объекты.",
+        recommendationNote: "Мутация локального аккумулирующего объекта acc[course] = hours работает за линейное время O(N) без создания промежуточных копий.",
         rawSolution: CoursesToObjectMutateSolutionRaw,
         filepath: "src/javascript/solutions/8_arrays_reduce/14_CoursesToObject_Mutate.js",
       },
       {
-        title: "Вариант 2: Через spread ({ ...acc, [item.course]: item.price })",
+        title: "Вариант 2: Через spread ({ ...acc, [course]: hours })",
         isRecommended: false,
-        badge: "Однострочный вариант",
-        recommendationNote: "Выглядит лаконично, но создает копию аккумулятора на каждой итерации (аллокация O(N²) объектов).",
+        badge: "Декларативный spread",
+        recommendationNote: "Лаконичный синтаксис, но копирование объекта на каждом шаге приводит к квадратичной сложности O(N²) и повышенной нагрузке на сборщик мусора.",
         rawSolution: CoursesToObjectSpreadSolutionRaw,
         filepath: "src/javascript/solutions/8_arrays_reduce/14_CoursesToObject_Spread.js",
       },
@@ -5889,15 +5898,25 @@ export const JS_ARRAYS_REDUCE_TASKS = [
         urlTitle: "Дока — Вычислимые свойства объектов",
         url: "https://doka.guide/js/object/",
       },
+      {
+        title: "Object.fromEntries() (MDN)",
+        urlTitle: "MDN — Object.fromEntries",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries",
+      },
     ],
     interviewerQuestions: [
       {
-        question: "Почему иммутабельный spread { ...acc } внутри reduce может приводить к просадкам производительности?",
-        answer: "Потому что копирование всего объекта на каждом шаге N раз приводит к квадратичной сложности по времени O(N²) и засорению сборщика мусора.",
+        question: "Почему прямое присвоение acc[course] = hours предпочтительнее спреда { ...acc, [course]: hours }?",
+        answer: "Spread копирует все уже накопленные ключи на каждой итерации, превращая алгоритм в O(N²) по времени и создавая лишние объекты в памяти.",
+      },
+      {
+        question: "Какой стандартный метод JS преобразует массив пар [ключ, значение] в объект без reduce()?",
+        answer: "Метод Object.fromEntries(courses) нативно конструирует объект из списка пар за O(N).",
       },
     ],
     checklist: [
-      "Динамическое присвоение свойства acc[course] = price",
+      "Деструктуризация пары [course, hours]",
+      "Динамическое присвоение свойства acc[course] = hours",
     ],
   },
 
@@ -5905,8 +5924,8 @@ export const JS_ARRAYS_REDUCE_TASKS = [
     id: "js65",
     group: "Массивы",
     subgroup: "reduce",
-    title: "13. Merge объектов с суммированием значений (Сложный)",
-    desc: "Объедините массив транзакций в один объект, суммируя суммы amount по уникальным категориям category.",
+    title: "13. Суммирование расходов по категориям",
+    desc: "Напишите функцию sumByCategory(expenses), которая группирует расходы по категориям и вычисляет общую сумму для каждой категории.",
     isRaw: true,
     candidate: SumByCategoryCandidateRaw,
     rawCandidate: SumByCategoryCandidateRaw,
@@ -5915,20 +5934,10 @@ export const JS_ARRAYS_REDUCE_TASKS = [
     filepath: "src/javascript/tasks/8_arrays_reduce/15_SumByCategory.js",
     solutions: [
       {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Идиоматичный подход",
-        recommendationNote: "Метод reduce() является функциональным стандартом для свертки и агрегации данных в JavaScript без мутации исходного массива.",
-        rawSolution: SumByCategoryNullishSolutionRaw,
-        filepath: "src/javascript/tasks/8_arrays_reduce/15_SumByCategory.js",
-      },
-    ],
-    solutions: [
-      {
-        title: "Вариант 1: Оператор нулевого присваивания (??=)",
+        title: "Вариант 1: Оператор нулевого присваивания (??=) (Рекомендуется)",
         isRecommended: true,
         badge: "Современный ES2020 синтаксис",
-        recommendationNote: "Синтаксис acc[category] ??= 0 гарантирует инициализацию свойства нулем и выглядит опрятно.",
+        recommendationNote: "Идиоматичная инициализация свойства нулем через acc[category] ??= 0 с последующим прибавлением amount.",
         rawSolution: SumByCategoryNullishSolutionRaw,
         filepath: "src/javascript/solutions/8_arrays_reduce/15_SumByCategory_Nullish.js",
       },
@@ -5936,7 +5945,7 @@ export const JS_ARRAYS_REDUCE_TASKS = [
         title: "Вариант 2: Логическое ИЛИ (acc[category] || 0)",
         isRecommended: false,
         badge: "Классический JS",
-        recommendationNote: "Использует классический фалбэк на 0 при отсутствии ключа.",
+        recommendationNote: "Классический фолбэк (acc[category] || 0) + amount без оператора нулевого слияния.",
         rawSolution: SumByCategoryLogicalOrSolutionRaw,
         filepath: "src/javascript/solutions/8_arrays_reduce/15_SumByCategory_LogicalOr.js",
       },
@@ -5950,12 +5959,17 @@ export const JS_ARRAYS_REDUCE_TASKS = [
     ],
     interviewerQuestions: [
       {
-        question: "В чем разница между ||= 0 и ??= 0?",
-        answer: "Оператор ||= реагирует на любые falsy значения (включая 0 и ''), а ??= только на null и undefined.",
+        question: "В чем разница между ||= 0 и ??= 0 при агрегации сумм?",
+        answer: "Оператор ||= реагирует на любые falsy значения (включая 0, пустую строку), из-за чего уже накопленный нулевой баланс перезаписывался бы нулем. Оператор ??= срабатывает строго при null и undefined.",
+      },
+      {
+        question: "Какова временная и пространственная сложность такого суммирования?",
+        answer: "Время O(N) — один проход по массиву расходов. Память O(K), где K — количество уникальных категорий в объекте-аккумуляторе.",
       },
     ],
     checklist: [
-      "Накопление суммы по категориям в объекте",
+      "Инициализация начального баланса категории нулем (acc[category] ??= 0)",
+      "Суммирование расходов amount по уникальным категориям",
     ],
   },
 
@@ -5964,7 +5978,7 @@ export const JS_ARRAYS_REDUCE_TASKS = [
     group: "Массивы",
     subgroup: "reduce",
     title: "14. Группировка названий продуктов по категории",
-    desc: "Напишите функцию groupProductsByCategory(products), которая группирует названия продуктов по их категории.",
+    desc: "Напишите функцию groupProductsByCategory(products), которая возвращает объект, где ключи — категории товаров, а значения — массивы названий товаров.",
     isRaw: true,
     candidate: GroupProductsByCategoryCandidateRaw,
     rawCandidate: GroupProductsByCategoryCandidateRaw,
@@ -5973,28 +5987,18 @@ export const JS_ARRAYS_REDUCE_TASKS = [
     filepath: "src/javascript/tasks/8_arrays_reduce/16_GroupProductsByCategory.js",
     solutions: [
       {
-        title: "Рекомендуемое решение",
+        title: "Вариант 1: Через метод reduce() (Рекомендуется)",
         isRecommended: true,
-        badge: "Идиоматичный подход",
-        recommendationNote: "Метод reduce() является функциональным стандартом для свертки и агрегации данных в JavaScript без мутации исходного массива.",
-        rawSolution: GroupProductsByCategorySolutionRaw,
-        filepath: "src/javascript/tasks/8_arrays_reduce/16_GroupProductsByCategory.js",
-      },
-    ],
-    solutions: [
-      {
-        title: "Вариант 1: Универсальный редюсер reduce()",
-        isRecommended: false,
-        badge: "Классический reduce",
-        recommendationNote: "Ручная универсальная функция группировки через редюсер.",
+        badge: "Однопроходный O(N)",
+        recommendationNote: "Классическая однопроходная группировка за O(N) по времени с извлечением нужного поля (product.name) без создания промежуточных структур.",
         rawSolution: GroupProductsByCategorySolutionRaw,
         filepath: "src/javascript/solutions/8_arrays_reduce/16_GroupProductsByCategory.js",
       },
       {
         title: "Вариант 2: Встроенный метод Object.groupBy() (ES2024)",
-        isRecommended: true,
+        isRecommended: false,
         badge: "Нативный ES2024",
-        recommendationNote: "Демонстрирует знание новейших стандартов веб-разработки (ES2024 Object.groupBy).",
+        recommendationNote: "Современный декларативный стандарт. Поскольку Object.groupBy сохраняет целые объекты, требуется второй шаг маппинга названий.",
         rawSolution: GroupProductsByCategoryObjectGroupBySolutionRaw,
         filepath: "src/javascript/solutions/8_arrays_reduce/16_GroupProductsByCategory_ObjectGroupBy.js",
       },
@@ -6005,15 +6009,25 @@ export const JS_ARRAYS_REDUCE_TASKS = [
         urlTitle: "MDN — Array.prototype.reduce",
         url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce",
       },
+      {
+        title: "Object.groupBy() (MDN)",
+        urlTitle: "MDN — Object.groupBy",
+        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/groupBy",
+      },
     ],
     interviewerQuestions: [
       {
-        question: "Какая встроенная новинка появились в ES2024 для группировки массивов?",
-        answer: "Метод Object.groupBy(arr, callback) позволяет группировать элементы без написания своего reduce.",
+        question: "В чем отличие группировки через reduce() от стандартного Object.groupBy()?",
+        answer: "Object.groupBy() группирует исходные элементы (целые объекты), поэтому для получения массивов конкретных полей (name) требуется второй проход маппинга, в то время как reduce() собирает нужные поля за один проход.",
+      },
+      {
+        question: "Зачем использовать оператор ??= при группировке?",
+        answer: "Логическое присваивание acc[category] ??= [] создает новый массив только если категория еще не встречалась, не перезаписывая уже накопленные элементы.",
       },
     ],
     checklist: [
-      "Универсальная группировка по любому передаваемому свойству",
+      "Инициализация массива группы при первом вхождении категории (acc[category] ??= [])",
+      "Добавление названия товара (product.name) в массив соответствующей категории",
     ],
   },
 
@@ -6031,12 +6045,12 @@ export const JS_ARRAYS_REDUCE_TASKS = [
     filepath: "src/javascript/tasks/8_arrays_reduce/17_GroupCountries.js",
     solutions: [
       {
-        title: "Рекомендуемое решение",
+        title: "Рекомендуемое решение: Двухуровневая группировка за O(N)",
         isRecommended: true,
-        badge: "Идиоматичный подход",
-        recommendationNote: "Метод reduce() является функциональным стандартом для свертки и агрегации данных в JavaScript без мутации исходного массива.",
+        badge: "Оптимально на собеседовании",
+        recommendationNote: "Построение двухуровневого индекса через reduce() за один проход по массиву гарантирует O(N) по времени и мгновенный доступ O(1) к пользователю по паре country + id.",
         rawSolution: GroupCountriesSolutionRaw,
-        filepath: "src/javascript/tasks/8_arrays_reduce/17_GroupCountries.js",
+        filepath: "src/javascript/solutions/8_arrays_reduce/17_GroupCountries.js",
       },
     ],
     articles: [
@@ -6050,6 +6064,10 @@ export const JS_ARRAYS_REDUCE_TASKS = [
       {
         question: "Какова сложность этого алгоритма по времени?",
         answer: "Сложность алгоритма O(N) — ровно один проход по массиву с созданием вложенных объектов.",
+      },
+      {
+        question: "Зачем нужен такой двухуровневый объект вместо плоского массива?",
+        answer: "Такая структура позволяет находить пользователя по паре country + id за время O(1) вместо линейного поиска O(N) по исходному массиву.",
       },
     ],
     checklist: [
