@@ -67,8 +67,9 @@ const TASK_PROBABILITY_OVERRIDES: Readonly<Record<string, number>> = {
   js219: 96, // deepEqual with nested structures, Maps, Sets, Dates
   js220: 95, // deepMerge
   js137: 97, // Array flatten deep (recursive & iterative stack)
-  js66: 96, // Array.prototype.flat / flatMap polyfills
-  js63: 97, // Array.prototype.reduce polyfill
+  js66: 88, // Group product names by category via reduce
+  js63: 90, // Average value calculation via reduce
+  js234: 97, // Array.prototype.reduce polyfill
   js61: 95, // Array.prototype.map polyfill
   js62: 95, // Array.prototype.filter polyfill
   js221: 97, // Function.prototype.myBind (new-binding & currying support)
@@ -189,10 +190,10 @@ const TASK_PROBABILITY_OVERRIDES: Readonly<Record<string, number>> = {
   js184: 78, // WeakSet for visited references
 
   // === Polyfills (Standard) & Chunks (75-88%) ===
-  js67: 88, // Array chunk
+  js67: 88, // Multi-level grouping by country and id (Company X)
   js60: 78, // Array.prototype.forEach polyfill
   js64: 85, // Array.prototype.find / findIndex polyfill
-  js65: 86, // Array.prototype.some / every polyfill
+  js65: 86, // Sum expenses by category via reduce
   js68: 72, // Fisher-Yates shuffle
   js_while_7: 65, // Sum linked list
   js194: 55, // isEmptyObject

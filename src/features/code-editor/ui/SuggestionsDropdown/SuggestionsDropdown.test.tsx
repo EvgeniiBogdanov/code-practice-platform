@@ -62,4 +62,40 @@ describe("SuggestionsDropdown", () => {
 
     expect(onHover).toHaveBeenCalledWith(1);
   });
+
+  it("applies placement='top' styles and transform to position above text", () => {
+    const { container } = render(
+      <SuggestionsDropdown
+        items={mockItems}
+        selectedIndex={0}
+        position={{ top: 200, left: 50, placement: "top", maxHeight: 180 }}
+        onSelect={vi.fn()}
+      />
+    );
+
+    const dropdown = container.firstElementChild as HTMLElement;
+    expect(dropdown).toHaveAttribute("data-placement", "top");
+    expect(dropdown.style.top).toBe("200px");
+    expect(dropdown.style.left).toBe("50px");
+    expect(dropdown.style.transform).toBe("translateY(-100%)");
+    expect(dropdown.style.maxHeight).toBe("180px");
+  });
+
+  it("applies placement='bottom' styles and resets transform to position below text", () => {
+    const { container } = render(
+      <SuggestionsDropdown
+        items={mockItems}
+        selectedIndex={0}
+        position={{ top: 60, left: 30, placement: "bottom", maxHeight: 220 }}
+        onSelect={vi.fn()}
+      />
+    );
+
+    const dropdown = container.firstElementChild as HTMLElement;
+    expect(dropdown).toHaveAttribute("data-placement", "bottom");
+    expect(dropdown.style.top).toBe("60px");
+    expect(dropdown.style.left).toBe("30px");
+    expect(dropdown.style.transform).toBe("none");
+    expect(dropdown.style.maxHeight).toBe("220px");
+  });
 });

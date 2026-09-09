@@ -223,6 +223,9 @@ export const useCodeEditor = ({
       if (gutterRef.current) {
         gutterRef.current.scrollTop = top;
       }
+      if (intelliSense.isOpen) {
+        intelliSense.updatePosition(textareaRef.current);
+      }
     }
     setIsScrolling(true);
     if (isScrollingTimeoutRef.current) clearTimeout(isScrollingTimeoutRef.current);

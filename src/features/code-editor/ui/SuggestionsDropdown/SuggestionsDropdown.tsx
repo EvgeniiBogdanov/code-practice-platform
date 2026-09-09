@@ -6,7 +6,12 @@ import styles from "./SuggestionsDropdown.module.css";
 export interface SuggestionsDropdownProps {
   items: CompletionItem[];
   selectedIndex: number;
-  position: { top: number; left: number };
+  position: {
+    top: number;
+    left: number;
+    placement?: "top" | "bottom";
+    maxHeight?: number;
+  };
   onSelect: (item: CompletionItem) => void;
   onHover?: (index: number) => void;
   className?: string;
@@ -26,8 +31,18 @@ export function SuggestionsDropdown({
     if (containerRef.current) {
       containerRef.current.style.top = `${position.top}px`;
       containerRef.current.style.left = `${position.left}px`;
+      if (position.placement === "top") {
+        containerRef.current.style.transform = "translateY(-100%)";
+      } else {
+        containerRef.current.style.transform = "none";
+      }
+      if (position.maxHeight) {
+        containerRef.current.style.maxHeight = `${position.maxHeight}px`;
+      } else {
+        containerRef.current.style.maxHeight = "";
+      }
     }
-  }, [position.top, position.left]);
+  }, [position.top, position.left, position.placement, position.maxHeight]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -43,6 +58,7 @@ export function SuggestionsDropdown({
   return (
     <div
       ref={containerRef}
+      data-placement={position.placement ?? "bottom"}
       className={clsx(styles.dropdown, className)}
       onMouseDown={(e) => {
         // Prevent clicking inside dropdown container from blurring textarea

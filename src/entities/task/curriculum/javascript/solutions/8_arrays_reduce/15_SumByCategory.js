@@ -1,16 +1,18 @@
-const transactions = [
-  { amount: 100, category: "Food" },
-  { amount: 50, category: "Transport" },
-  { amount: 200, category: "Food" },
-  { amount: 120, category: "Entertainment" },
+const expenses = [
+  { category: "Еда", amount: 500 },
+  { category: "Транспорт", amount: 150 },
+  { category: "Еда", amount: 300 },
+  { category: "Развлечения", amount: 1000 },
+  { category: "Транспорт", amount: 200 },
 ];
 
-const sumByCategory = (transactions) => {
-  return transactions.reduce((acc, tx) => {
-    acc[tx.category] = (acc[tx.category] || 0) + tx.amount;
+const sumByCategory = (expenses) => {
+  return expenses.reduce((acc, { category, amount }) => {
+    acc[category] = (acc[category] || 0) + amount;
     return acc;
   }, {});
 };
 
 // Пример вызова:
-console.log(sumByCategory(transactions)); // { Food: 300, Transport: 50, Entertainment: 120 }
+console.log(sumByCategory(expenses));
+// { "Еда": 800, "Транспорт": 350, "Развлечения": 1000 }

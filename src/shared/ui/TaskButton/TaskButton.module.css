@@ -37,7 +37,9 @@
 
 .taskButton:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--bg-surface), 0 0 0 4px var(--accent-blue);
+  box-shadow:
+    0 0 0 2px var(--bg-surface),
+    0 0 0 4px var(--accent-blue);
 }
 
 /* Active Status Variants */
@@ -55,7 +57,6 @@
 .taskButton.unsolvedActive {
   background: var(--accent-red-bg);
   color: var(--accent-red);
-  font-weight: 600;
 }
 
 .taskButton.unsolvedActive:hover:not(:disabled) {

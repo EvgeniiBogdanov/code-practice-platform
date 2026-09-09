@@ -57,4 +57,58 @@ describe("useIntelliSense", () => {
 
     expect(result.current.selectedIndex).toBe(3);
   });
+
+  it("calculates popup position with placement and maxHeight on open", () => {
+    const { result } = renderHook(() => useIntelliSense([], "solution.js"));
+    const textarea = createTextarea();
+
+    act(() => {
+      result.current.openCompletions("arr.", 4, textarea, true);
+    });
+
+    expect(result.current.isOpen).toBe(true);
+    expect(result.current.popupPosition.placement).toBe("bottom");
+    expect(result.current.popupPosition.top).toBeGreaterThan(0);
+    expect(result.current.popupPosition.maxHeight).toBeGreaterThan(0);
+  });
+
+  it("updates popupPosition when updatePosition is called on scroll", () => {
+    const { result } = renderHook(() => useIntelliSense([], "solution.js"));
+    const textarea = createTextarea();
+
+    act(() => {
+      result.current.openCompletions("arr.", 4, textarea, true);
+    });
+
+    const initialTop = result.current.popupPosition.top;
+
+    act(() => {
+      Object.defineProperty(textarea, "scrollTop", { value: 10, configurable: true });
+      result.current.updatePosition(textarea);
+    });
+
+    expect(result.current.isOpen).toBe(true);
+    // After scrolling down by 10px, viewport position moves up
+    expect(result.current.popupPosition.top).toBe(initialTop - 10);
+  });
+
+  it("closes completions when cursor is scrolled out of view", () => {
+    const { result } = renderHook(() => useIntelliSense([], "solution.js"));
+    const textarea = createTextarea();
+    Object.defineProperty(textarea, "clientHeight", { value: 200, configurable: true });
+
+    act(() => {
+      result.current.openCompletions("arr.", 4, textarea, true);
+    });
+
+    expect(result.current.isOpen).toBe(true);
+
+    act(() => {
+      // Scroll far down so the caret line at top ~14 is completely above the viewport
+      Object.defineProperty(textarea, "scrollTop", { value: 500, configurable: true });
+      result.current.updatePosition(textarea);
+    });
+
+    expect(result.current.isOpen).toBe(false);
+  });
 });

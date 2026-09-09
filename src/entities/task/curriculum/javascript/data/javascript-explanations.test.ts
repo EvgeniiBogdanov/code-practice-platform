@@ -76,8 +76,17 @@ describe("JavaScript task explanations", () => {
   it("calls out mismatches between the wording and current reduce solutions", () => {
     expect(TASK_EXPLANATIONS.js60).toContain("только группирует");
     expect(TASK_EXPLANATIONS.js60).toContain("действительно сортирует группы");
-    expect(TASK_EXPLANATIONS.js63).toContain("формально этому дополнительному ограничению не соответствует");
-    expect(TASK_EXPLANATIONS.js64).toContain("Если во входном примере используются `{ name, count }`");
+  });
+
+  it("covers pair-to-object conversion in js64", () => {
+    expect(TASK_EXPLANATIONS.js64).toContain("Object.fromEntries");
+    expect(TASK_EXPLANATIONS.js64).toContain("acc[course] = hours");
+  });
+
+  it("covers comparison of approaches for reduce average calculation in js63", () => {
+    expect(TASK_EXPLANATIONS.js63).toContain("Два подхода к решению задачи");
+    expect(TASK_EXPLANATIONS.js63).toContain("Идиоматичный двухэтапный расчет");
+    expect(TASK_EXPLANATIONS.js63).toContain("Однопроходный расчет через 4-й аргумент");
   });
 
   it("uses an article description that matches the Company X grouping task", () => {
