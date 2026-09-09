@@ -61,7 +61,7 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
   const [selectedSolutionIdx, setSelectedSolutionIdx] = useState(0);
   const activeSolution = solutions[selectedSolutionIdx];
 
-  const initialFiles: TaskSourceFile[] = useMemo(() => {
+  const defaultFiles: TaskSourceFile[] = useMemo(() => {
     if (activeSolution?.files && activeSolution.files.length > 0) {
       return activeSolution.files.map((f) => ({
         name: f.name || (f.filepath ? f.filepath.split("/").pop() || "main.js" : "main.js"),
@@ -85,15 +85,18 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
       rawSolution: solCode,
       filepath: activeSolution?.filepath || task.filepath,
     };
-    const baseFiles = getTaskFiles(solTask, "solution");
-    return baseFiles.map((file, idx) => {
+    return getTaskFiles(solTask, "solution");
+  }, [activeSolution, task]);
+
+  const initialFiles: TaskSourceFile[] = useMemo(() => {
+    return defaultFiles.map((file, idx) => {
       const cached = getUserSolutionSync(task.id, "sol", idx, selectedSolutionIdx);
       if (typeof cached === "string") {
         return { ...file, code: cached };
       }
       return file;
     });
-  }, [activeSolution, task, selectedSolutionIdx]);
+  }, [defaultFiles, task.id, selectedSolutionIdx]);
 
   const [activeFileIdx, setActiveFileIdx] = useState(0);
   const [files, setFiles] = useState<TaskSourceFile[]>(initialFiles);
@@ -243,9 +246,15 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
 
   const handleResetCode = useCallback(async () => {
     await deleteUserSolution(task.id, "sol", activeFileIdx, selectedSolutionIdx);
-    const original = initialFiles[activeFileIdx]?.code || "";
-    handleCodeChange(original);
-  }, [task.id, activeFileIdx, selectedSolutionIdx, initialFiles, handleCodeChange]);
+    const original = defaultFiles[activeFileIdx]?.code || "";
+    setFiles((prev) => {
+      const next = [...prev];
+      if (next[activeFileIdx]) {
+        next[activeFileIdx] = { ...next[activeFileIdx], code: original };
+      }
+      return next;
+    });
+  }, [task.id, activeFileIdx, selectedSolutionIdx, defaultFiles]);
 
   const handleRunCode = useCallback(
     async (codeToExecute?: string) => {

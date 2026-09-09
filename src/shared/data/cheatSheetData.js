@@ -562,7 +562,7 @@ for (const char of str) {
     const sum = arr[left] + arr[right];
     if (sum === target) return [left, right];
     if (sum < target) left++;
-    else right--;
+    if (sum > target) right--;
   }
   return [];
 }`,

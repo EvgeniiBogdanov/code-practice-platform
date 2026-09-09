@@ -247,8 +247,9 @@ export const useGroupOverview = (groupId: string): GroupOverviewState => {
   }, [filteredTasks]);
 
   const hasSubgroups = useMemo(() => {
+    if (section === "algorithms") return false;
     return !groupId.startsWith("subgroup-") && hasTaskSubgroups(groupTasks);
-  }, [groupId, groupTasks]);
+  }, [groupId, groupTasks, section]);
 
   const isSubgroupOpen = useCallback(
     (subName: string) => {

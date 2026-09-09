@@ -10,6 +10,14 @@ import ThreeSumCandidateRaw from "../tasks/1_two_pointers/3_ThreeSum.js?raw";
 import ThreeSumSolutionRaw from "../solutions/1_two_pointers/3_ThreeSum.js?raw";
 import ThreeSumExplanationRaw from "../explanations/1_two_pointers/3_ThreeSum.md?raw";
 
+import MoveZeroesCandidateRaw from "../tasks/1_two_pointers/4_MoveZeroes.js?raw";
+import MoveZeroesSolutionRaw from "../solutions/1_two_pointers/4_MoveZeroes.js?raw";
+import MoveZeroesExplanationRaw from "../explanations/1_two_pointers/4_MoveZeroes.md?raw";
+
+import RemoveDuplicatesCandidateRaw from "../tasks/1_two_pointers/5_RemoveDuplicates.js?raw";
+import RemoveDuplicatesSolutionRaw from "../solutions/1_two_pointers/5_RemoveDuplicates.js?raw";
+import RemoveDuplicatesExplanationRaw from "../explanations/1_two_pointers/5_RemoveDuplicates.md?raw";
+
 import TwoSumCandidateRaw from "../tasks/2_hash_map/1_TwoSum.js?raw";
 import TwoSumSolutionRaw from "../solutions/2_hash_map/1_TwoSum.js?raw";
 import TwoSumExplanationRaw from "../explanations/2_hash_map/1_TwoSum.md?raw";
@@ -238,6 +246,76 @@ export const ALGO_TWO_POINTERS_TASKS = [
       { question: "Зачем нужна предварительная сортировка?", answer: "Сортировка дает возможность двигать указатели по направлению суммы и эффективнее избегать повторов (дубликатов) в ответе." },
     ],
     checklist: ["Исключение дубликатов троек", "Сортировка входного массива", "Пропуск повторяющихся элементов"],
+  },
+  {
+    id: "algo35",
+    group: "Two Pointers",
+    title: "4. Move Zeroes",
+    desc: "Напишите функцию moveZeroes(nums), которая перемещает все нули в конец массива на месте (in-place) за O(n) времени и O(1) памяти, сохраняя порядок ненулевых чисел.",
+    difficulty: "easy",
+    isRaw: true,
+    candidate: MoveZeroesCandidateRaw,
+    rawCandidate: MoveZeroesCandidateRaw,
+    solution: MoveZeroesSolutionRaw,
+    rawSolution: MoveZeroesSolutionRaw,
+    explanation: MoveZeroesExplanationRaw,
+    filepath: "src/algorithms/tasks/1_two_pointers/4_MoveZeroes.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение (Two Pointers: Slow / Fast)",
+        isRecommended: true,
+        badge: "O(n) время / O(1) память",
+        recommendationNote: "Медленный указатель отмечает позицию для записи ненулевого элемента, а быстрый сканирует массив, меняя элементы местами.",
+        rawSolution: MoveZeroesSolutionRaw,
+        filepath: "src/algorithms/solutions/1_two_pointers/4_MoveZeroes.js",
+      },
+    ],
+    articles: [
+      { title: "LeetCode #283", urlTitle: "LeetCode — Move Zeroes", url: "https://leetcode.com/problems/move-zeroes/" },
+      { title: "Метод двух указателей (Two Pointers)", urlTitle: "Habr — Обзор техники", url: "https://habr.com/ru/articles/" },
+      { title: "Slow & Fast Pointer Pattern", urlTitle: "LeetCode Discuss — Паттерны указателей", url: "https://leetcode.com/discuss/" },
+      { title: "In-place алгоритмы в JavaScript", urlTitle: "MDN Web Docs", url: "https://developer.mozilla.org/" },
+    ],
+    interviewerQuestions: [
+      { question: "Почему нельзя использовать splice для удаления нулей?", answer: "Метод splice сдвигает все последующие элементы массива за O(n). Вызов splice внутри цикла for приведет к квадратичной сложности O(n²)." },
+      { question: "Почему решение через filter(...).concat(...) не подходит на собеседовании?", answer: "Метод filter создает новый массив в памяти O(n), что нарушает требование решить задачу in-place с константной памятью O(1)." },
+    ],
+    checklist: ["Изменение массива на месте (in-place)", "Сохранение исходного порядка ненулевых чисел", "Линейная сложность O(n)", "Константная память O(1)"],
+  },
+  {
+    id: "algo36",
+    group: "Two Pointers",
+    title: "5. Remove Duplicates from Sorted Array",
+    desc: "Напишите функцию removeDuplicates(nums), которая удаляет дубликаты из отсортированного массива на месте (in-place) и возвращает количество уникальных элементов.",
+    difficulty: "easy",
+    isRaw: true,
+    candidate: RemoveDuplicatesCandidateRaw,
+    rawCandidate: RemoveDuplicatesCandidateRaw,
+    solution: RemoveDuplicatesSolutionRaw,
+    rawSolution: RemoveDuplicatesSolutionRaw,
+    explanation: RemoveDuplicatesExplanationRaw,
+    filepath: "src/algorithms/tasks/1_two_pointers/5_RemoveDuplicates.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение (Two Pointers: Slow / Fast)",
+        isRecommended: true,
+        badge: "O(n) время / O(1) память",
+        recommendationNote: "Медленный указатель фиксирует границу уникальных чисел, а быстрый обходит массив и перезаписывает дубликаты при нахождении нового значения.",
+        rawSolution: RemoveDuplicatesSolutionRaw,
+        filepath: "src/algorithms/solutions/1_two_pointers/5_RemoveDuplicates.js",
+      },
+    ],
+    articles: [
+      { title: "LeetCode #26", urlTitle: "LeetCode — Remove Duplicates from Sorted Array", url: "https://leetcode.com/problems/remove-duplicates-from-sorted-array/" },
+      { title: "Метод двух указателей (Two Pointers)", urlTitle: "Habr — Обзор техники", url: "https://habr.com/ru/articles/" },
+      { title: "Two Pointers для начинающих", urlTitle: "SprintCode — Статья и разбор", url: "https://sprintcode.pro/ru/blog/two-pointers" },
+      { title: "Паттерн Slow / Fast", urlTitle: "Habr — Паттерны алгоритмов", url: "https://habr.com/ru/articles/1020222" },
+    ],
+    interviewerQuestions: [
+      { question: "Почему нельзя вернуть [...new Set(nums)].length?", answer: "Хотя Set вернет правильное количество уникальных элементов, он создаст структуру в памяти O(n) и не модифицирует переданный массив nums на месте, как требует условие." },
+      { question: "Зачем проверяется случай nums.length === 0 в самом начале?", answer: "Если входной массив пуст, то цикл не должен выполняться, а возвращаемое значение должно быть 0." },
+    ],
+    checklist: ["Модификация массива nums на месте (in-place)", "Возврат длины k уникального префикса", "Константная дополнительная память O(1)", "Линейное время O(n)", "Корректная обработка пустого массива"],
   },
 ];
 
@@ -1390,8 +1468,8 @@ export const ALGO_BACKTRACKING_TASKS = [
 ];
 
 export const ALGO_TASKS = [
-  ...ALGO_TWO_POINTERS_TASKS,
   ...ALGO_HASH_MAP_TASKS,
+  ...ALGO_TWO_POINTERS_TASKS,
   ...ALGO_SLIDING_WINDOW_TASKS,
   ...ALGO_PREFIX_SUM_TASKS,
   ...ALGO_BINARY_SEARCH_TASKS,

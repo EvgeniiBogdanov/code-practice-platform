@@ -22,6 +22,8 @@ const ALGO_TASK_PROBABILITIES: Readonly<Record<string, number>> = {
   algo1: 92, // Two Sum II - Input Array Is Sorted
   algo2: 95, // Valid Palindrome
   algo3: 95, // 3Sum
+  algo35: 95, // Move Zeroes
+  algo36: 90, // Remove Duplicates from Sorted Array
 
   // Hash Map
   algo4: 98, // Two Sum

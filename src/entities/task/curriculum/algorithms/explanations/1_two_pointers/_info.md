@@ -183,11 +183,15 @@ function twoSum(numbers, target) {
 
     if (sum === target) {
       return [left, right];
-    } else if (sum < target) {
+    }
+
+    if (sum < target) {
       // сумма слишком маленькая — увеличиваем её,
       // сдвигая левый указатель к бОльшим числам
       left++;
-    } else {
+    }
+
+    if (sum > target) {
       // сумма слишком большая — уменьшаем её,
       // сдвигая правый указатель к меньшим числам
       right--;
@@ -391,9 +395,13 @@ while (left < right) {
   // Обработка на основе условия
   if (условие_выполнено) {
     // нашли ответ / зафиксировали результат
-  } else if (нужно_увеличить_сумму) {
+  }
+
+  if (нужно_увеличить_сумму) {
     left++;
-  } else {
+  }
+
+  if (нужно_уменьшить_сумму) {
     right--;
   }
 }
@@ -433,13 +441,13 @@ while (fast && fast.next) {
 Рекомендуемый порядок для отработки навыка (от простого к сложному):
 
 1. Reverse String / разворот массива на месте.
-2. Valid Palindrome (LeetCode #125).
-3. Two Sum II — Input Array Is Sorted (LeetCode #167).
-4. Remove Duplicates from Sorted Array (LeetCode #26).
-5. Move Zeroes (LeetCode #283).
+2. Valid Palindrome (LeetCode #125) — *доступна на платформе*.
+3. Two Sum II — Input Array Is Sorted (LeetCode #167) — *доступна на платформе*.
+4. Remove Duplicates from Sorted Array (LeetCode #26) — *доступна на платформе*.
+5. Move Zeroes (LeetCode #283) — *доступна на платформе*.
 6. Container With Most Water (LeetCode #11).
 7. 3Sum (LeetCode #15) — усложнённая версия с фиксацией одного элемента
-   и Two Pointers по оставшейся части массива.
+   и Two Pointers по оставшейся части массива — *доступна на платформе*.
 8. Linked List Cycle (LeetCode #141) — вариант slow/fast для связного
    списка.
 9. Merge Sorted Array (LeetCode #88) — два указателя по двум массивам.

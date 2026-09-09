@@ -11,6 +11,7 @@ import {
   Binary,
   Boxes,
   Layers,
+  Link2,
   Box,
   Lock,
   Crown,
@@ -24,6 +25,7 @@ import {
 import { GaugeIndicator, type MetaBadgeVariant } from "@/shared/ui";
 import {
   getJsTaskAlgorithm,
+  getJsTaskAlgorithmSubLabel,
   type JsTaskAlgorithm,
 } from "../curriculum/javascript/data/task-algorithms";
 import { isSyntaxTask, getJsTaskProbabilityInfo } from "./get-js-task-probability";
@@ -87,54 +89,66 @@ const isUtilityTask = (group: string, subgroup: string, title: string): boolean 
   title.includes("set / lodash") ||
   title.includes("клонирование");
 
-const getAlgorithmDetailBadge = (algorithm: JsTaskAlgorithm): TaskBadge => {
+const getAlgorithmDetailBadge = (
+  algorithm: JsTaskAlgorithm,
+  taskId?: string | number
+): TaskBadge => {
+  const subLabel = taskId !== undefined ? getJsTaskAlgorithmSubLabel(taskId) : null;
+
   switch (algorithm) {
     case "binary-search":
       return {
         id: "algo-bs",
-        label: "Binary Search",
+        label: subLabel || "Binary Search: Classic",
         variant: "blue",
         icon: <Search size={ICON_SIZE} />,
       };
     case "euclidean-algorithm":
       return {
         id: "algo-euclid",
-        label: "Алгоритм Евклида",
+        label: subLabel || "Math: Euclidean Algorithm",
         variant: "purple",
         icon: <Cpu size={ICON_SIZE} />,
       };
     case "two-pointers":
       return {
         id: "algo-two-pointers",
-        label: "Two Pointers",
+        label: subLabel || "Two Pointers: Classic",
         variant: "pink",
         icon: <GitMerge size={ICON_SIZE} />,
       };
     case "bubble-sort":
       return {
         id: "algo-bubble",
-        label: "Bubble Sort",
+        label: subLabel || "Sorting: Bubble Sort",
         variant: "purple",
         icon: <Layers size={ICON_SIZE} />,
+      };
+    case "linked-list":
+      return {
+        id: "algo-linked-list",
+        label: subLabel || "Linked List: Traversal",
+        variant: "cyan",
+        icon: <Link2 size={ICON_SIZE} />,
       };
     case "hash-map":
       return {
         id: "algo-hash-map",
-        label: "Hash Map",
+        label: subLabel || "Hash Map: Lookup",
         variant: "yellow",
         icon: <Hash size={ICON_SIZE} />,
       };
     case "depth-first-search":
       return {
         id: "algo-dfs",
-        label: "DFS",
+        label: subLabel || "DFS: Traversal",
         variant: "green",
         icon: <GitBranch size={ICON_SIZE} />,
       };
     case "basic":
       return {
         id: "algo-base",
-        label: "Базовый алгоритм",
+        label: subLabel || "Базовый алгоритм",
         variant: "purple",
         icon: <Brain size={ICON_SIZE} />,
       };
@@ -234,7 +248,7 @@ export const getJsTaskBadges = (task: Task): TaskBadge[] => {
   const primaryBadge = getPrimaryBadge(group, subgroup, title, algorithm);
 
   if (primaryBadge.id === "algo" && algorithm) {
-    const algoDetailBadge = getAlgorithmDetailBadge(algorithm);
+    const algoDetailBadge = getAlgorithmDetailBadge(algorithm, task.id);
     if (algoDetailBadge.id === "algo-base") {
       badges.push(algoDetailBadge);
       const contextBadge = getContextBadge(group, subgroup, algoDetailBadge.id);

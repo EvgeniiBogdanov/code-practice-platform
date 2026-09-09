@@ -36,7 +36,7 @@ describe("getAlgoTaskBadges", () => {
 
     const groupBadge = badges.find((b) => b.id === "algo-hash-map");
     expect(groupBadge).toBeDefined();
-    expect(groupBadge?.label).toBe("Hash Map");
+    expect(groupBadge?.label).toBe("Hash Map: Lookup");
     expect(groupBadge?.variant).toBe("yellow");
   });
 
@@ -48,9 +48,20 @@ describe("getAlgoTaskBadges", () => {
       section: "algorithms",
     };
     const tpBadges = getAlgoTaskBadges(twoPointersTask);
-    const tpBadge = tpBadges.find((b) => b.label === "Two Pointers");
+    const tpBadge = tpBadges.find((b) => b.label === "Two Pointers: Classic");
     expect(tpBadge).toBeDefined();
     expect(tpBadge?.variant).toBe("pink");
+
+    const slowFastTask: Task = {
+      id: "algo35",
+      title: "4. Move Zeroes",
+      group: "Two Pointers",
+      section: "algorithms",
+    };
+    const sfBadges = getAlgoTaskBadges(slowFastTask);
+    const sfBadge = sfBadges.find((b) => b.label === "Two Pointers: Slow / Fast");
+    expect(sfBadge).toBeDefined();
+    expect(sfBadge?.variant).toBe("pink");
 
     const binarySearchTask: Task = {
       id: "algo14",
@@ -59,7 +70,7 @@ describe("getAlgoTaskBadges", () => {
       section: "algorithms",
     };
     const bsBadges = getAlgoTaskBadges(binarySearchTask);
-    const bsBadge = bsBadges.find((b) => b.label === "Binary Search");
+    const bsBadge = bsBadges.find((b) => b.label === "Binary Search: Classic");
     expect(bsBadge).toBeDefined();
     expect(bsBadge?.variant).toBe("blue");
 
@@ -70,7 +81,7 @@ describe("getAlgoTaskBadges", () => {
       section: "algorithms",
     };
     const dfsBadges = getAlgoTaskBadges(dfsTask);
-    const dfsBadge = dfsBadges.find((b) => b.label === "DFS");
+    const dfsBadge = dfsBadges.find((b) => b.label === "DFS: Bottom-Up");
     expect(dfsBadge).toBeDefined();
     expect(dfsBadge?.variant).toBe("green");
 
@@ -81,8 +92,30 @@ describe("getAlgoTaskBadges", () => {
       section: "algorithms",
     };
     const llBadges = getAlgoTaskBadges(linkedListTask);
-    const llBadge = llBadges.find((b) => b.label === "Linked List");
+    const llBadge = llBadges.find((b) => b.label === "Linked List: Reversal");
     expect(llBadge).toBeDefined();
     expect(llBadge?.variant).toBe("cyan");
+
+    const stackMonotonicTask: Task = {
+      id: "algo20",
+      title: "3. Daily Temperatures",
+      group: "Stack",
+      section: "algorithms",
+    };
+    const stackBadges = getAlgoTaskBadges(stackMonotonicTask);
+    const stackBadge = stackBadges.find((b) => b.label === "Stack: Monotonic");
+    expect(stackBadge).toBeDefined();
+    expect(stackBadge?.variant).toBe("purple");
+
+    const slidingFixedTask: Task = {
+      id: "algo9",
+      title: "2. Maximum Average Subarray I",
+      group: "Sliding Window",
+      section: "algorithms",
+    };
+    const swBadges = getAlgoTaskBadges(slidingFixedTask);
+    const swBadge = swBadges.find((b) => b.label === "Sliding Window: Fixed");
+    expect(swBadge).toBeDefined();
+    expect(swBadge?.variant).toBe("cyan");
   });
 });
