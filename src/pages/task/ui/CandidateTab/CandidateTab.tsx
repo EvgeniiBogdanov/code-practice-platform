@@ -84,14 +84,15 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
     clearRunningTimers();
   }, [task?.id, initialFiles, task]);
 
-  // Load saved solution from storage on task mount / file select
+  // Load saved solution from storage on task mount / file select / window focus
   useEffect(() => {
     if (!task) return;
     const currentTaskId = task.id;
     let isMounted = true;
     async function loadSaved(): Promise<void> {
       const saved = await getUserSolution(currentTaskId, "cand", activeFileIdx);
-      if (isMounted && typeof saved === "string") {
+      if (!isMounted) return;
+      if (typeof saved === "string") {
         setFiles((prev) => {
           const next = [...prev];
           if (next[activeFileIdx]) {
@@ -99,11 +100,34 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
           }
           return next;
         });
+      } else {
+        const defaults = getTaskFiles(task, "candidate");
+        const defaultCode = defaults[activeFileIdx]?.code || "";
+        setFiles((prev) => {
+          if (prev[activeFileIdx]?.code === defaultCode) return prev;
+          const next = [...prev];
+          if (next[activeFileIdx]) {
+            next[activeFileIdx] = { ...next[activeFileIdx], code: defaultCode };
+          }
+          return next;
+        });
       }
     }
     loadSaved();
+
+    const handleVisibilityOrFocus = () => {
+      if (typeof document !== "undefined" && document.visibilityState === "visible") {
+        loadSaved();
+      }
+    };
+
+    window.addEventListener("focus", handleVisibilityOrFocus);
+    document.addEventListener("visibilitychange", handleVisibilityOrFocus);
+
     return () => {
       isMounted = false;
+      window.removeEventListener("focus", handleVisibilityOrFocus);
+      document.removeEventListener("visibilitychange", handleVisibilityOrFocus);
     };
   }, [task, activeFileIdx]);
 

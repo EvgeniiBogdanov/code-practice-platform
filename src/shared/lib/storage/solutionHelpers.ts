@@ -16,10 +16,17 @@ export function parseIdMetadata(id: string): {
     taskId = id.slice(0, fileMatch.index);
   }
 
+  const isCandidate = taskId.startsWith("cand_");
   taskId = taskId.replace(/^(cand_|sol_)/, "");
 
-  const variantMatch = taskId.match(/^(.+)_(\d+)$/);
-  const rootTaskId = variantMatch ? variantMatch[1] : taskId;
+  // Candidate solutions never have variant suffixes, so rootTaskId === taskId
+  let rootTaskId = taskId;
+  if (!isCandidate) {
+    const variantMatch = taskId.match(/^(.+)_(\d+)$/);
+    if (variantMatch) {
+      rootTaskId = variantMatch[1];
+    }
+  }
 
   return { taskId, rootTaskId, fileIdx };
 }
@@ -40,14 +47,19 @@ export function isReviewDue(review: ReviewRecord): boolean {
 
 export function shouldResetDueSolution(id: string, updatedAt?: number): boolean {
   if (!id || typeof id !== "string" || !id.startsWith("cand_")) return false;
-  const { rootTaskId } = parseIdMetadata(id);
-  if (!rootTaskId) return false;
+  const { taskId, rootTaskId } = parseIdMetadata(id);
+  const lookupId = taskId || rootTaskId;
+  if (!lookupId) return false;
+
+  const now = new Date();
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
 
   // 1. Spaced Repetition Due Check
   const reviews = getReviewsFromLocalStorage();
-  const review = reviews[String(rootTaskId)];
+  const review = reviews[String(taskId)] || reviews[String(rootTaskId)];
   if (review && isReviewDue(review)) {
-    if (!updatedAt || (review.lastReviewedAt && updatedAt <= review.lastReviewedAt)) {
+    // If solution was not saved today, it belongs to previous review cycle and must be reset
+    if (!updatedAt || updatedAt < todayStart) {
       return true;
     }
   }
@@ -55,11 +67,14 @@ export function shouldResetDueSolution(id: string, updatedAt?: number): boolean 
   // 2. Unsolved Next Day Reset Check
   // Если пользователь нажал «Не решено», на следующий календарный день решение сбрасывается
   const progress = getProgressFromLocalStorage();
-  const taskProgress = progress[String(rootTaskId)];
-  if (taskProgress && taskProgress.status === "unsolved" && taskProgress.updatedAt) {
-    const now = new Date();
-    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
-    const unsolvedDate = new Date(taskProgress.updatedAt);
+  const rawProgress = progress[String(taskId)] || progress[String(rootTaskId)];
+  const status =
+    typeof rawProgress === "object" && rawProgress !== null ? rawProgress.status : rawProgress;
+  const unsolvedTimestamp =
+    typeof rawProgress === "object" && rawProgress !== null ? rawProgress.updatedAt : undefined;
+
+  if (status === "unsolved" && unsolvedTimestamp) {
+    const unsolvedDate = new Date(unsolvedTimestamp);
     const unsolvedDayStart = new Date(
       unsolvedDate.getFullYear(),
       unsolvedDate.getMonth(),
@@ -68,7 +83,8 @@ export function shouldResetDueSolution(id: string, updatedAt?: number): boolean 
 
     // Прошёл хотя бы 1 календарный день с момента отметки «Не решено»
     if (todayStart > unsolvedDayStart) {
-      if (!updatedAt || updatedAt <= taskProgress.updatedAt) {
+      // Сбрасываем решение, если оно не было создано заново сегодня
+      if (!updatedAt || updatedAt < todayStart) {
         return true;
       }
     }

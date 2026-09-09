@@ -156,7 +156,8 @@ export const OpenEditorPage = ({
         tab === "solution" ? "sol" : "cand",
         activeFileIdx
       );
-      if (isMounted && typeof saved === "string") {
+      if (!isMounted) return;
+      if (typeof saved === "string") {
         setFiles((prev) => {
           const next = [...prev];
           if (next[activeFileIdx]) {
@@ -164,11 +165,34 @@ export const OpenEditorPage = ({
           }
           return next;
         });
+      } else {
+        const defaults = getTaskFiles(task!, tab === "solution" ? "solution" : "candidate");
+        const defaultCode = defaults[activeFileIdx]?.code || "";
+        setFiles((prev) => {
+          if (prev[activeFileIdx]?.code === defaultCode) return prev;
+          const next = [...prev];
+          if (next[activeFileIdx]) {
+            next[activeFileIdx] = { ...next[activeFileIdx], code: defaultCode };
+          }
+          return next;
+        });
       }
     }
     loadSaved();
+
+    const handleVisibilityOrFocus = () => {
+      if (typeof document !== "undefined" && document.visibilityState === "visible") {
+        loadSaved();
+      }
+    };
+
+    window.addEventListener("focus", handleVisibilityOrFocus);
+    document.addEventListener("visibilitychange", handleVisibilityOrFocus);
+
     return () => {
       isMounted = false;
+      window.removeEventListener("focus", handleVisibilityOrFocus);
+      document.removeEventListener("visibilitychange", handleVisibilityOrFocus);
     };
   }, [task, tab, activeFileIdx]);
 

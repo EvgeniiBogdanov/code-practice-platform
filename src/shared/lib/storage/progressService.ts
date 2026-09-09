@@ -64,7 +64,10 @@ export async function getCompletedTasksWithTimestampsFromDB(): Promise<Completed
     for (const record of records) {
       if (record && record.taskId && record.status) {
         tasks[record.taskId] = record.status;
-        const ts = record.updatedAt || Date.now();
+        const ts = record.updatedAt || localCache[record.taskId]?.updatedAt || Date.now();
+        if (!record.updatedAt && ts) {
+          dbPut(STORES.PROGRESS, { ...record, updatedAt: ts }).catch(() => {});
+        }
         timestamps[record.taskId] = ts;
         localCache[record.taskId] = { status: record.status as TaskStatus, updatedAt: ts };
       }

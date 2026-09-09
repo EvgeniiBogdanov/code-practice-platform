@@ -18,16 +18,21 @@ export interface SolutionRecord {
 }
 
 const memoryCache = new Map<string, string>();
+const memoryCacheTimestamps = new Map<string, number>();
 const pendingTimers = new Map<string, ReturnType<typeof setTimeout>>();
 const pendingWrites = new Map<string, SolutionRecord>();
 
 const MAX_MEMORY_CACHE_ENTRIES = 150;
 
-function setMemoryCache(id: string, code: string): void {
+function setMemoryCache(id: string, code: string, updatedAt?: number): void {
   if (memoryCache.has(id)) {
     memoryCache.delete(id);
+    memoryCacheTimestamps.delete(id);
   }
   memoryCache.set(id, code);
+  if (typeof updatedAt === "number") {
+    memoryCacheTimestamps.set(id, updatedAt);
+  }
 
   if (memoryCache.size > MAX_MEMORY_CACHE_ENTRIES) {
     const oldestKey = memoryCache.keys().next().value;
@@ -45,6 +50,7 @@ function setMemoryCache(id: string, code: string): void {
         });
       }
       memoryCache.delete(oldestKey);
+      memoryCacheTimestamps.delete(oldestKey);
     }
   }
 }
@@ -88,9 +94,10 @@ if (typeof window !== "undefined") {
 export function peekCachedSolution(id: string): string | null {
   if (!id) return null;
   if (memoryCache.has(id)) {
-    const meta = pendingWrites.get(id);
-    if (shouldResetDueSolution(id, meta?.updatedAt)) {
+    const updatedAt = pendingWrites.get(id)?.updatedAt ?? memoryCacheTimestamps.get(id);
+    if (shouldResetDueSolution(id, updatedAt)) {
       memoryCache.delete(id);
+      memoryCacheTimestamps.delete(id);
       pendingWrites.delete(id);
       dbDelete(STORES.SOLUTIONS, id).catch(() => {});
       return null;
@@ -112,9 +119,10 @@ export async function getSolution(
   if (!id) return fallbackCode;
 
   if (memoryCache.has(id)) {
-    const meta = pendingWrites.get(id);
-    if (shouldResetDueSolution(id, meta?.updatedAt)) {
+    const updatedAt = pendingWrites.get(id)?.updatedAt ?? memoryCacheTimestamps.get(id);
+    if (shouldResetDueSolution(id, updatedAt)) {
       memoryCache.delete(id);
+      memoryCacheTimestamps.delete(id);
       pendingWrites.delete(id);
       try {
         await dbDelete(STORES.SOLUTIONS, id);
@@ -138,7 +146,7 @@ export async function getSolution(
         await dbDelete(STORES.SOLUTIONS, id);
         return fallbackCode;
       }
-      setMemoryCache(id, record.code);
+      setMemoryCache(id, record.code, record.updatedAt);
       return record.code;
     }
   } catch (err) {
@@ -164,13 +172,22 @@ export async function saveSolution(
   pendingWrites.delete(id);
 
   const { taskId, fileIdx } = parseIdMetadata(id);
+  const now = Date.now();
   const record: SolutionRecord = {
     id,
     taskId: meta.taskId || taskId,
     fileIdx: meta.fileIdx !== undefined ? meta.fileIdx : fileIdx,
     code,
-    updatedAt: Date.now(),
+    updatedAt: now,
   };
+
+  setMemoryCache(id, code, now);
+
+  if (pendingTimers.has(id)) {
+    clearTimeout(pendingTimers.get(id)!);
+    pendingTimers.delete(id);
+  }
+  pendingWrites.delete(id);
 
   try {
     await dbPut(STORES.SOLUTIONS, record);
@@ -186,16 +203,17 @@ export function saveSolutionDebounced(
 ): void {
   if (!id || typeof code !== "string") return;
 
-  setMemoryCache(id, code);
-
   const { taskId, fileIdx } = parseIdMetadata(id);
+  const now = Date.now();
   const record: SolutionRecord = {
     id,
     taskId: meta.taskId || taskId,
     fileIdx: meta.fileIdx !== undefined ? meta.fileIdx : fileIdx,
     code,
-    updatedAt: Date.now(),
+    updatedAt: now,
   };
+
+  setMemoryCache(id, code, now);
   pendingWrites.set(id, record);
 
   if (pendingTimers.has(id)) {
@@ -222,6 +240,7 @@ export async function deleteSolution(id: string): Promise<void> {
   if (!id) return;
 
   memoryCache.delete(id);
+  memoryCacheTimestamps.delete(id);
 
   if (pendingTimers.has(id)) {
     clearTimeout(pendingTimers.get(id)!);
@@ -254,6 +273,7 @@ export async function deleteSolutionsForTasks(taskIds: Array<string | number>): 
     const { taskId, rootTaskId } = parseIdMetadata(key);
     if (idSet.has(String(taskId)) || idSet.has(String(rootTaskId)) || idSet.has(key)) {
       memoryCache.delete(key);
+      memoryCacheTimestamps.delete(key);
       if (pendingTimers.has(key)) {
         clearTimeout(pendingTimers.get(key)!);
         pendingTimers.delete(key);
@@ -284,6 +304,7 @@ export async function deleteSolutionsForTasks(taskIds: Array<string | number>): 
 
 export async function clearAllSolutions(): Promise<void> {
   memoryCache.clear();
+  memoryCacheTimestamps.clear();
   pendingWrites.clear();
   for (const timer of pendingTimers.values()) {
     clearTimeout(timer);
@@ -320,8 +341,13 @@ export async function initSolutionsCache(): Promise<void> {
     const recentRecords = allRecords.slice(0, 100);
     for (const record of recentRecords) {
       if (record && record.id && typeof record.code === "string") {
+        if (shouldResetDueSolution(record.id, record.updatedAt)) {
+          // Remove due solution from DB directly during cache initialization
+          dbDelete(STORES.SOLUTIONS, record.id).catch(() => {});
+          continue;
+        }
         if (!memoryCache.has(record.id)) {
-          setMemoryCache(record.id, record.code);
+          setMemoryCache(record.id, record.code, record.updatedAt);
         }
       }
     }

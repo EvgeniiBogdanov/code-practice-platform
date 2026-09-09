@@ -50,8 +50,25 @@ describe("solutionHelpers - shouldResetDueSolution", () => {
     expect(shouldResetDueSolution("cand_task-2", yesterday)).toBe(true);
     expect(shouldResetDueSolution("cand_task-2", undefined)).toBe(true);
 
+    // Even if user typed code yesterday after marking unsolved, it resets on next day
+    expect(shouldResetDueSolution("cand_task-2", yesterday + 10000)).toBe(true);
+
     // If new code was saved today (after being marked yesterday), don't reset
     expect(shouldResetDueSolution("cand_task-2", Date.now())).toBe(false);
+  });
+
+  it("resets solution for task IDs with underscore digits (e.g. js_while_1)", () => {
+    const yesterday = Date.now() - 86400000;
+    saveProgressToLocalStorage({
+      js_while_1: {
+        status: "unsolved",
+        updatedAt: yesterday,
+      },
+    });
+
+    expect(shouldResetDueSolution("cand_js_while_1", yesterday)).toBe(true);
+    expect(shouldResetDueSolution("cand_js_while_1", yesterday + 5000)).toBe(true);
+    expect(shouldResetDueSolution("cand_js_while_1", Date.now())).toBe(false);
   });
 
   it("does NOT reset solution on the same day task is marked unsolved", () => {
@@ -65,5 +82,6 @@ describe("solutionHelpers - shouldResetDueSolution", () => {
 
     // Same day -> do not reset yet
     expect(shouldResetDueSolution("cand_task-3", today)).toBe(false);
+    expect(shouldResetDueSolution("cand_task-3", today + 5000)).toBe(false);
   });
 });
