@@ -13,9 +13,9 @@ const DIFFICULTY_LABELS: Record<string, string> = {
   middle: "Middle",
   strong: "Strong",
   ts: "TypeScript",
-  easy: "Easy",
-  medium: "Medium",
-  hard: "Hard",
+  easy: "Лёгкая",
+  medium: "Средняя",
+  hard: "Сложная",
 };
 
 const getBadgeVariant = (diff: string): BadgeVariant => {

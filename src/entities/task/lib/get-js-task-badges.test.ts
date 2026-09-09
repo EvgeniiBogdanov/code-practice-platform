@@ -8,31 +8,34 @@ import type { Task } from "../types";
 const ALGORITHM_BADGES_BY_TASK_ID = [
   ["js_while_3", "Базовый алгоритм"],
   ["js_while_4", "Базовый алгоритм"],
-  ["js_while_5", "Алгоритм Евклида"],
-  ["js_while_6", "Binary Search"],
-  ["js_while_7", "Базовый алгоритм"],
-  ["js_while_8", "Two Pointers"],
+  ["js_while_5", "Math: Euclidean Algorithm"],
+  ["js_while_6", "Binary Search: Classic"],
+  ["js_while_7", "Linked List: Traversal"],
+  ["js_while_8", "Two Pointers: Classic"],
   ["js5", "Базовый алгоритм"],
-  ["js7", "Bubble Sort"],
-  ["js96", "Hash Map"],
-  ["js99", "Hash Map"],
-  ["js196", "Hash Map"],
-  ["js242", "Hash Map"],
+  ["js7", "Sorting: Bubble Sort"],
+  ["js83", "Hash Map: Set"],
+  ["js96", "Hash Map: Frequency"],
+  ["js99", "Hash Map: Grouping"],
+  ["js196", "Hash Map: Lookup"],
+  ["js241", "Hash Map: LRU Cache"],
+  ["js242", "Hash Map: Lookup"],
   ["js133", "Базовый алгоритм"],
   ["js134", "Базовый алгоритм"],
   ["js135", "Базовый алгоритм"],
   ["js136", "Базовый алгоритм"],
-  ["js137", "DFS"],
-  ["js138", "DFS"],
-  ["js139", "DFS"],
-  ["js140", "DFS"],
-  ["js141", "DFS"],
-  ["js142", "DFS"],
-  ["js143", "DFS"],
-  ["js144", "DFS"],
-  ["js145", "DFS"],
-  ["js146", "DFS"],
+  ["js137", "DFS: Traversal"],
+  ["js138", "DFS: Traversal"],
+  ["js139", "DFS: Bottom-Up"],
+  ["js140", "DFS: Bottom-Up"],
+  ["js141", "DFS: Bottom-Up"],
+  ["js142", "DFS: Traversal"],
+  ["js143", "DFS: Bottom-Up"],
+  ["js144", "DFS: Traversal"],
+  ["js145", "DFS: Traversal"],
+  ["js146", "DFS: Bottom-Up"],
   ["js147", "Базовый алгоритм"],
+  ["js227", "DFS: Traversal"],
 ] as const;
 
 const javascriptTasks = JS_TASKS as Task[];
@@ -80,7 +83,7 @@ describe("getJsTaskBadges", () => {
 
     const badges = getJsTaskBadges(task);
     expect(badges.some((b) => b.label === "Алгоритм")).toBe(true);
-    const bsBadge = badges.find((b) => b.label === "Binary Search");
+    const bsBadge = badges.find((b) => b.label === "Binary Search: Classic");
     expect(bsBadge).toBeDefined();
     expect(bsBadge?.variant).toBe("blue");
     expect(badges.some((b) => b.label === "Вероятность: 85%")).toBe(true);
@@ -98,7 +101,7 @@ describe("getJsTaskBadges", () => {
     const badges = getJsTaskBadges(task);
     expect(badges.some((b) => b.label === "Базовый алгоритм")).toBe(true);
     expect(badges.some((b) => b.label === "Алгоритм")).toBe(false);
-    expect(badges.some((b) => b.label === "Two Pointers")).toBe(false);
+    expect(badges.some((b) => b.label === "Two Pointers: Classic")).toBe(false);
     expect(badges.some((b) => b.label === "Циклы")).toBe(true);
   });
 
@@ -113,7 +116,7 @@ describe("getJsTaskBadges", () => {
 
     const badges = getJsTaskBadges(task);
     expect(badges.some((b) => b.label === "Алгоритм")).toBe(true);
-    const hmBadge = badges.find((b) => b.label === "Hash Map");
+    const hmBadge = badges.find((b) => b.label === "Hash Map: Grouping");
     expect(hmBadge).toBeDefined();
     expect(hmBadge?.variant).toBe("yellow");
   });
@@ -129,7 +132,7 @@ describe("getJsTaskBadges", () => {
 
     const badges = getJsTaskBadges(task);
     expect(badges.some((b) => b.label === "Алгоритм")).toBe(true);
-    const dfsBadge = badges.find((b) => b.label === "DFS");
+    const dfsBadge = badges.find((b) => b.label === "DFS: Bottom-Up");
     expect(dfsBadge).toBeDefined();
     expect(dfsBadge?.variant).toBe("green");
   });

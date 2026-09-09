@@ -80,7 +80,7 @@ describe("TaskMetaBadges", () => {
     render(<TaskMetaBadges task={algoTask} />);
     expect(screen.getByText("Вероятность: 98%")).toBeInTheDocument();
     expect(screen.getByText("Алгоритм")).toBeInTheDocument();
-    expect(screen.getByText("Hash Map")).toBeInTheDocument();
+    expect(screen.getByText("Hash Map: Lookup")).toBeInTheDocument();
   });
 
   it("shows custom tooltip with interview probability on hover for algorithms tasks", () => {

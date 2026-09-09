@@ -499,6 +499,35 @@ describe("taskRegistry", () => {
     expect(taskA5?.category).toBe("Жизненный цикл и рантайм");
     expect(taskA5?.title).toContain("Порядок вызовов useLayoutEffect, useEffect и Cleanup");
   });
+
+  it("should retrieve Two Pointers slow/fast tasks (algo35, algo36) with full metadata", async () => {
+    const task35 = await getTaskById("algo35");
+    expect(task35).toBeDefined();
+    expect(task35?.id).toBe("algo35");
+    expect(task35?.group).toBe("Two Pointers");
+    expect(task35?.title).toContain("Move Zeroes");
+    expect(task35?.section).toBe("algorithms");
+    expect(task35?.rawCandidate).toContain("moveZeroes");
+    expect(task35?.rawSolution).toContain("moveZeroes");
+    expect(task35?.explanation).toContain("Slow / Fast");
+    expect(task35?.checklist?.length).toBeGreaterThanOrEqual(4);
+
+    const task36 = await getTaskById("algo36");
+    expect(task36).toBeDefined();
+    expect(task36?.id).toBe("algo36");
+    expect(task36?.group).toBe("Two Pointers");
+    expect(task36?.title).toContain("Remove Duplicates");
+    expect(task36?.section).toBe("algorithms");
+    expect(task36?.rawCandidate).toContain("removeDuplicates");
+    expect(task36?.rawSolution).toContain("removeDuplicates");
+    expect(task36?.explanation).toContain("Slow / Fast");
+    expect(task36?.checklist?.length).toBeGreaterThanOrEqual(5);
+
+    const algoTasks = await getTasksBySection("algorithms");
+    expect(algoTasks.some((t) => t.id === "algo35")).toBe(true);
+    expect(algoTasks.some((t) => t.id === "algo36")).toBe(true);
+    expect(algoTasks.length).toBe(36);
+  });
 });
 
 
