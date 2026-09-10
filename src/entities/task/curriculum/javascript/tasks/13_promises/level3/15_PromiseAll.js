@@ -1,14 +1,14 @@
-// Параллельное выполнение запросов через Promise.all
-// Напишите функцию fetchDashboardData(), которая параллельно запрашивает пользователя, новости и баланс, возвращая единый объект { user, news, balance }.
+// Загрузите данные всех товаров параллельно с помощью Promise.all и посчитайте их суммарную стоимость.
+// Функция totalParallel() должна вернуть итоговую сумму цен товаров.
 
-const getUser = () => Promise.resolve({ name: "Иван" });
-const getNews = () => Promise.resolve(["Новость 1", "Новость 2"]);
-const getBalance = () => Promise.resolve(1500);
+const fetchPrice = (item) =>
+  new Promise((resolve) => setTimeout(() => resolve(item.price), 200));
 
-const fetchDashboardData = async () => {
+const items = [{ price: 100 }, { price: 250 }, { price: 90 }];
+
+async function totalParallel() {
   // Решение тут
-};
+}
 
 // Пример вызова:
-fetchDashboardData().then(console.log);
-// { user: { name: 'Иван' }, news: [ 'Новость 1', 'Новость 2' ], balance: 1500 }
+totalParallel().then(console.log); // 440

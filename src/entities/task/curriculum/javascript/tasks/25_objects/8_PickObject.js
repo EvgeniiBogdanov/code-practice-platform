@@ -1,11 +1,24 @@
 // Выборка заданных свойств объекта (pick)
-// Напишите функцию pick(obj, keys), которая возвращает новый объект, содержащий только те свойства из массива keys, которые реально присутствуют в исходном объекте.
+// Напишите функцию pick(obj, keys = []), которая возвращает новый объект, содержащий только те свойства из массива keys, которые реально присутствуют в исходном объекте.
 
-const pick = (obj, keys) => {
+const pick = (obj, keys = []) => {
   // Решение тут
 };
 
 // Пример вызова:
-const user = { id: 1, name: "John", email: "john@example.com", role: "admin" };
-console.log(pick(user, ["name", "email"])); // { name: 'John', email: 'john@example.com' }
-console.log(pick(user, ["id", "unknownKey"])); // { id: 1 }
+const user = {
+  id: 1,
+  name: "John",
+  email: "john@example.com",
+  age: 30,
+  role: "admin",
+};
+
+console.log(pick(user, ["name", "email"]));
+// { name: 'John', email: 'john@example.com' }
+
+console.log(pick(user, ["id", "unknownKey", "role"]));
+// { id: 1, role: 'admin' }
+
+console.log(pick(user, []));
+// {}

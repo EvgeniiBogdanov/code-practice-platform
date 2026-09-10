@@ -1,41 +1,24 @@
-const safeExecutionTracer = (actionFn, cleanupFn) => {
-  let status = "success";
-  let value;
-  let cleanupExecuted = false;
+// ВЫВОД:
+// 3
+//
+// Объяснение:
+// Блок finally выполняется ВСЕГДА перед завершением работы функции,
+// даже если в блоках try или catch уже сработал оператор return.
+// Когда движок доходит до return 1 в блоке try, возвращаемое значение временно
+// сохраняется (pending completion). Затем управление передается в блок finally.
+// Поскольку блок finally содержит собственный оператор return 3, он безусловно
+// перезаписывает (подавляет) предыдущее сохраненное значение 1.
+// В результате функция возвращает 3.
 
+function testReturn() {
   try {
-    value = actionFn();
-  } catch (err) {
-    status = "caught_error";
-    value = err instanceof Error ? err.message : String(err);
+    return 1;
+  } catch (e) {
+    return 2;
   } finally {
-    if (typeof cleanupFn === "function") {
-      cleanupFn();
-    }
-    cleanupExecuted = true;
+    return 3;
   }
+}
 
-  return {
-    status,
-    value,
-    cleanupExecuted,
-  };
-};
+console.log(testReturn()); // 3
 
-// Пример вызова:
-let cleaned = false;
-console.log(
-  safeExecutionTracer(
-    () => 42,
-    () => { cleaned = true; }
-  )
-);
-// { status: 'success', value: 42, cleanupExecuted: true }
-
-console.log(
-  safeExecutionTracer(
-    () => { throw new Error("database_timeout"); },
-    () => { cleaned = true; }
-  )
-);
-// { status: 'caught_error', value: 'database_timeout', cleanupExecuted: true }

@@ -1,11 +1,14 @@
-const sum = (a) => {
-  if (a === undefined) return 0;
-  return (b) => {
-    if (b === undefined) return a;
-    return sum(a + b);
+function curry_sum(x) {
+  const fn = (y) => {
+    if (y === undefined) {
+      return x;
+    }
+    return curry_sum(x + y);
   };
-};
+  return fn;
+}
 
 // Пример вызова:
-console.log(sum(1)(2)(3)()); // 6
-console.log(sum(5)(-2)());   // 3
+console.log(curry_sum(1)()); // 1
+console.log(curry_sum(1)(2)(3)()); // 6
+

@@ -1,10 +1,11 @@
-// Обработка ошибок в асинхронных функциях
-// Напишите функцию safeExecute(asyncFn), которая вызывает переданную асинхронную функцию и возвращает { ok: true, data } при успехе или { ok: false, error } при ошибке.
+// Напишите асинхронную функцию safeLoad(), которая вызывает loadData() через await
+// внутри блока try/catch. При ошибке возвращает строку `Не удалось загрузить: ${err}`.
 
-const safeExecute = async (asyncFn) => {
+const loadData = () => Promise.reject("сервер недоступен");
+
+async function safeLoad() {
   // Решение тут
-};
+}
 
 // Пример вызова:
-safeExecute(async () => 42).then(console.log); // { ok: true, data: 42 }
-safeExecute(async () => { throw new Error("Упс"); }).then(console.log); // { ok: false, error: "Упс" }
+safeLoad().then(console.log);

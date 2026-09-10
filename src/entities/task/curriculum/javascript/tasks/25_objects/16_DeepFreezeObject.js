@@ -5,8 +5,15 @@ const deepFreeze = (obj) => {
   // Решение тут
 };
 
-// Пример вызова:
-const config = { api: { host: "localhost", port: 8080 } };
-deepFreeze(config);
-console.log(Object.isFrozen(config));     // true
-console.log(Object.isFrozen(config.api)); // true
+// Примеры для проверки:
+const user = {
+  name: "Ivan",
+  profile: {
+    age: 30,
+    address: { city: "Moscow" },
+  },
+};
+
+deepFreeze(user);
+console.log(Object.isFrozen(user.profile)); // true
+console.log(Object.isFrozen(user.profile.address)); // true

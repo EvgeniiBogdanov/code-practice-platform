@@ -20,7 +20,6 @@ import IncludesElementExplanation from "../explanations/2_for_of/4_IncludesEleme
 import FilterByLengthExplanation from "../explanations/2_for_of/5_FilterByLength.md?raw";
 import CountOccurrencesExplanation from "../explanations/2_for_of/6_CountOccurrences.md?raw";
 import CounterGeneratorExplanation from "../explanations/14_closures/1_CounterGenerator.md?raw";
-import LoopEventListenersExplanation from "../explanations/14_closures/2_LoopEventListeners.md?raw";
 import LoopTimersVarExplanation from "../explanations/14_closures/3_LoopTimersVar.md?raw";
 import MessageVsNumberStateExplanation from "../explanations/14_closures/4_MessageVsNumberState.md?raw";
 import CreateIncrementFixExplanation from "../explanations/14_closures/5_CreateIncrementFix.md?raw";
@@ -104,13 +103,8 @@ import JsObjects_DeepCloneCircularExplanation from "../explanations/25_objects/1
 import JsObjects_DeepMergeExplanation from "../explanations/25_objects/15_DeepMerge.md?raw";
 
 import TryCatchFinallyReturnOrderExplanation from "../explanations/14_closures/7_TryCatchFinallyReturnOrder.md?raw";
-import CustomErrorChainingRethrowExplanation from "../explanations/14_closures/8_CustomErrorChainingRethrow.md?raw";
 import OnceDecoratorExplanation from "../explanations/14_closures/9_OnceDecorator.md?raw";
 
-import CustomBindPolyfillExplanation from "../explanations/16_prototypes_this/8_CustomBindPolyfill.md?raw";
-import CustomNewOperatorExplanation from "../explanations/16_prototypes_this/9_CustomNewOperator.md?raw";
-import CustomInstanceOfPolyfillExplanation from "../explanations/16_prototypes_this/10_CustomInstanceOfPolyfill.md?raw";
-import ClassExtendsPrivateStaticExplanation from "../explanations/16_prototypes_this/11_ClassExtendsPrivateStatic.md?raw";
 
 import WeakMapPrivateMetadataExplanation from "../explanations/11_collections_set/9_WeakMapPrivateMetadata.md?raw";
 import WeakSetCircularCycleDetectionExplanation from "../explanations/11_collections_set/10_WeakSetCircularCycleDetection.md?raw";
@@ -134,7 +128,6 @@ import HashMapJoinApiResponsesExplanation from "../explanations/12_collections_m
 
 import UnicodeStringReverseExplanation from "../explanations/23_string_dom_utils/4_UnicodeStringReverse.md?raw";
 import RegexTokenizerExplanation from "../explanations/23_string_dom_utils/5_RegexTokenizer.md?raw";
-import ReplaceAllPolyfillExplanation from "../explanations/23_string_dom_utils/6_ReplaceAllPolyfill.md?raw";
 
 import ObjectDiffPatchExplanation from "../explanations/25_objects/24_ObjectDiffPatch.md?raw";
 import SafeGetSetByPathExplanation from "../explanations/25_objects/25_SafeGetSetByPath.md?raw";
@@ -163,7 +156,6 @@ export const DETAILED_JAVASCRIPT_EXPLANATIONS = Object.freeze({
   js12: FilterByLengthExplanation,
   js13: CountOccurrencesExplanation,
   js126: CounterGeneratorExplanation,
-  js127: LoopEventListenersExplanation,
   js128: LoopTimersVarExplanation,
   js129: MessageVsNumberStateExplanation,
   js130: CreateIncrementFixExplanation,
@@ -247,9 +239,7 @@ export const DETAILED_JAVASCRIPT_EXPLANATIONS = Object.freeze({
   js216: NestedDestructuringDefaultsExplanation,
   js217: FindShallowMutationBugExplanation,
   js218: TryCatchFinallyReturnOrderExplanation,
-  js219: CustomErrorChainingRethrowExplanation,
   js220: OnceDecoratorExplanation,
-  js221: CustomBindPolyfillExplanation,
   js222: PropertyDescriptorsExplanation,
   js223: ObjectKeysVsReflectOwnKeysExplanation,
   js224: SymbolToPrimitiveCoercionExplanation,
@@ -257,9 +247,6 @@ export const DETAILED_JAVASCRIPT_EXPLANATIONS = Object.freeze({
   js226: WeakMapPrivateMetadataExplanation,
   js227: WeakSetCircularCycleDetectionExplanation,
   js228: ObjectCreateNullAndPollutionExplanation,
-  js229: CustomNewOperatorExplanation,
-  js230: CustomInstanceOfPolyfillExplanation,
-  js231: ClassExtendsPrivateStaticExplanation,
   js232: PolyfillArrayMapExplanation,
   js233: PolyfillArrayFilterExplanation,
   js234: PolyfillArrayReduceExplanation,
@@ -268,7 +255,6 @@ export const DETAILED_JAVASCRIPT_EXPLANATIONS = Object.freeze({
   js242: HashMapJoinApiResponsesExplanation,
   js243: UnicodeStringReverseExplanation,
   js244: RegexTokenizerExplanation,
-  js245: ReplaceAllPolyfillExplanation,
   js246: ObjectDiffPatchExplanation,
   js247: SafeGetSetByPathExplanation,
   js248: CamelCaseSnakeCaseKeysExplanation,

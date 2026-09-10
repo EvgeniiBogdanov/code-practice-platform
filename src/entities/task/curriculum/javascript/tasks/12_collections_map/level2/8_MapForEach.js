@@ -1,12 +1,6 @@
-// Обход элементов Map
-// Напишите функцию mapForEach(map, callback), которая вызывает callback(value, key) для каждой записи в Map.
+// Перепишите предыдущую задачу с использованием map.forEach
+// Обратите внимание на порядок аргументов колбэка: (value, key, map)
 
-const mapForEach = (map, callback) => {
-  // Решение тут
-};
+const map = new Map([["fruit", "apple"], ["veg", "carrot"]]);
 
-// Пример вызова:
-const scores = new Map([["Alice", 90], ["Bob", 80]]);
-mapForEach(scores, (val, key) => console.log(`${key}: ${val}`));
-// Alice: 90
-// Bob: 80
+// Ваш код здесь

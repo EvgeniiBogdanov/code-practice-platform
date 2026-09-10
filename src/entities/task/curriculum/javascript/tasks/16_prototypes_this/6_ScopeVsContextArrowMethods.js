@@ -1,16 +1,13 @@
 // Что выведет данный код в консоль и почему?
 
-const obj = {
-  name: "Outer",
-  getName() {
-    return () => {
-      console.log(this.name);
-    };
+const timer = {
+  seconds: 0,
+  start() {
+    setTimeout(() => {
+      this.seconds++;
+      console.log(this.seconds);
+    }, 100);
   },
 };
 
-const fn = obj.getName();
-fn();
-
-const stolen = obj.getName.call({ name: "Inner" });
-stolen();
+timer.start();

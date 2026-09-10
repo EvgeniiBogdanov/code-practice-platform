@@ -1,10 +1,12 @@
-// Мемоизация функции со временем жизни кэша (TTL)
-// Напишите функцию memoizeWithTTL(fn, ttlMs), кэширующую результат на ttlMs миллисекунд.
+// Мемоизация с ограничением времени жизни кэша (TTL)
+// Реализуйте функцию memoize(fn, ms), кэширующую результат вызова fn на ms миллисекунд.
 
-const memoizeWithTTL = (fn, ttlMs) => {
+const memoize = (fn, ms) => {
   // Решение тут
 };
 
 // Пример вызова:
-const slowFn = memoizeWithTTL((x) => x * 2, 1000);
+const slowFn = memoize((x) => x * 2, 1000);
 console.log(slowFn(5)); // 10
+console.log(slowFn(5)); // 10 (из кэша)
+

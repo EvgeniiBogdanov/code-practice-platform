@@ -307,15 +307,6 @@ import BasicOutputOrderSolutionRaw from "../solutions/9_timers_settimeout/3_Basi
 import NestedTimeoutsCandidateRaw from "../tasks/9_timers_settimeout/4_NestedTimeouts.js?raw";
 import NestedTimeoutsSolutionRaw from "../solutions/9_timers_settimeout/4_NestedTimeouts.js?raw";
 
-import ClosureLoopCandidateRaw from "../tasks/9_timers_settimeout/5_ClosureLoop.js?raw";
-import ClosureLoopLetSolutionRaw from "../solutions/9_timers_settimeout/5_ClosureLoop_Let.js?raw";
-import ClosureLoopIIFESolutionRaw from "../solutions/9_timers_settimeout/5_ClosureLoop_IIFE.js?raw";
-import ClosureLoopArgSolutionRaw from "../solutions/9_timers_settimeout/5_ClosureLoop_Arg.js?raw";
-
-import ClosureLoopDelayCandidateRaw from "../tasks/9_timers_settimeout/6_ClosureLoopDelay.js?raw";
-import ClosureLoopDelayLetSolutionRaw from "../solutions/9_timers_settimeout/6_ClosureLoopDelay_Let.js?raw";
-import ClosureLoopDelayIIFESolutionRaw from "../solutions/9_timers_settimeout/6_ClosureLoopDelay_IIFE.js?raw";
-
 import ClearIntervalTimeoutCandidateRaw from "../tasks/9_timers_settimeout/7_ClearIntervalTimeout.js?raw";
 import ClearIntervalTimeoutSolutionRaw from "../solutions/9_timers_settimeout/7_ClearIntervalTimeout.js?raw";
 
@@ -494,9 +485,6 @@ import PromiseChainsExecutionOrderSolutionRaw from "../solutions/13_promises/int
 // JS CLOSURES IMPORTS
 import CounterGeneratorCandidateRaw from "../tasks/14_closures/1_CounterGenerator.js?raw";
 import CounterGeneratorSolutionRaw from "../solutions/14_closures/1_CounterGenerator.js?raw";
-
-import LoopEventListenersCandidateRaw from "../tasks/14_closures/2_LoopEventListeners.js?raw";
-import LoopEventListenersSolutionRaw from "../solutions/14_closures/2_LoopEventListeners.js?raw";
 
 import LoopTimersVarCandidateRaw from "../tasks/14_closures/3_LoopTimersVar.js?raw";
 import LoopTimersVarSolutionRaw from "../solutions/14_closures/3_LoopTimersVar.js?raw";
@@ -740,24 +728,9 @@ import JsObjects_DeepFreezeSolutionRaw from "../solutions/25_objects/16_DeepFree
 import TryCatchFinallyReturnOrderCandidateRaw from "../tasks/14_closures/7_TryCatchFinallyReturnOrder.js?raw";
 import TryCatchFinallyReturnOrderSolutionRaw from "../solutions/14_closures/7_TryCatchFinallyReturnOrder.js?raw";
 
-import CustomErrorChainingRethrowCandidateRaw from "../tasks/14_closures/8_CustomErrorChainingRethrow.js?raw";
-import CustomErrorChainingRethrowSolutionRaw from "../solutions/14_closures/8_CustomErrorChainingRethrow.js?raw";
-
 import OnceDecoratorCandidateRaw from "../tasks/14_closures/9_OnceDecorator.js?raw";
 import OnceDecoratorSolutionRaw from "../solutions/14_closures/9_OnceDecorator.js?raw";
 
-// JS PROTOTYPES & THIS & CLASSES NEW IMPORTS (js221, js229-js231)
-import CustomBindPolyfillCandidateRaw from "../tasks/16_prototypes_this/8_CustomBindPolyfill.js?raw";
-import CustomBindPolyfillSolutionRaw from "../solutions/16_prototypes_this/8_CustomBindPolyfill.js?raw";
-
-import CustomNewOperatorCandidateRaw from "../tasks/16_prototypes_this/9_CustomNewOperator.js?raw";
-import CustomNewOperatorSolutionRaw from "../solutions/16_prototypes_this/9_CustomNewOperator.js?raw";
-
-import CustomInstanceOfPolyfillCandidateRaw from "../tasks/16_prototypes_this/10_CustomInstanceOfPolyfill.js?raw";
-import CustomInstanceOfPolyfillSolutionRaw from "../solutions/16_prototypes_this/10_CustomInstanceOfPolyfill.js?raw";
-
-import ClassExtendsPrivateStaticCandidateRaw from "../tasks/16_prototypes_this/11_ClassExtendsPrivateStatic.js?raw";
-import ClassExtendsPrivateStaticSolutionRaw from "../solutions/16_prototypes_this/11_ClassExtendsPrivateStatic.js?raw";
 
 // JS COLLECTIONS WEAKMAP & WEAKSET NEW IMPORTS (js226-js227)
 import WeakMapPrivateMetadataCandidateRaw from "../tasks/11_collections_set/9_WeakMapPrivateMetadata.js?raw";
@@ -809,15 +782,12 @@ import LruCacheMapSolutionRaw from "../solutions/12_collections_map/level3/23_Lr
 import HashMapJoinApiResponsesCandidateRaw from "../tasks/12_collections_map/level3/24_HashMapJoinApiResponses.js?raw";
 import HashMapJoinApiResponsesSolutionRaw from "../solutions/12_collections_map/level3/24_HashMapJoinApiResponses.js?raw";
 
-// JS STRINGS & UTILS IMPORTS (js243-js245)
+// JS STRINGS & UTILS IMPORTS (js243-js244)
 import UnicodeStringReverseCandidateRaw from "../tasks/23_string_dom_utils/4_UnicodeStringReverse.js?raw";
 import UnicodeStringReverseSolutionRaw from "../solutions/23_string_dom_utils/4_UnicodeStringReverse.js?raw";
 
 import RegexTokenizerCandidateRaw from "../tasks/23_string_dom_utils/5_RegexTokenizer.js?raw";
 import RegexTokenizerSolutionRaw from "../solutions/23_string_dom_utils/5_RegexTokenizer.js?raw";
-
-import ReplaceAllPolyfillCandidateRaw from "../tasks/23_string_dom_utils/6_ReplaceAllPolyfill.js?raw";
-import ReplaceAllPolyfillSolutionRaw from "../solutions/23_string_dom_utils/6_ReplaceAllPolyfill.js?raw";
 
 // JS OBJECTS DIFF, PATH, KEYS IMPORTS (js246-js248)
 import ObjectDiffPatchCandidateRaw from "../tasks/25_objects/24_ObjectDiffPatch.js?raw";
@@ -6293,7 +6263,7 @@ export const JS_COLLECTIONS_SET_TASKS = [
     group: "Коллекции",
     subgroup: "Set",
     title: "1. Создание Set из массива и обратно",
-    desc: "Создайте новый массив, удалив все повторения и дубликаты с помощью объекта Set и оператора spread.",
+    desc: "Напишите функцию getUnique(arr), удаляющую все повторения и дубликаты с помощью объекта Set и оператора spread.",
     isRaw: true,
     candidate: SetFromArrayCandidateRaw,
     rawCandidate: SetFromArrayCandidateRaw,
@@ -6339,7 +6309,7 @@ export const JS_COLLECTIONS_SET_TASKS = [
     group: "Коллекции",
     subgroup: "Set",
     title: "2. Удаление дубликатов строк (слова в тексте)",
-    desc: "Разбейте текстовую строку на массив слов через split(' ') и получите массив уникальных слов.",
+    desc: "Напишите функцию getUniqueWords(text), которая разбивает строку на массив слов через split(' ') и возвращает массив уникальных слов в нижнем регистре.",
     isRaw: true,
     candidate: UniqueWordsCandidateRaw,
     rawCandidate: UniqueWordsCandidateRaw,
@@ -6370,7 +6340,7 @@ export const JS_COLLECTIONS_SET_TASKS = [
       },
     ],
     checklist: [
-      "Разделение текста метод text.split(' ')",
+      "Приведение текста к нижнему регистру и split(' ')",
       "Упаковка в new Set() и разворот в массив",
     ],
   },
@@ -6380,7 +6350,7 @@ export const JS_COLLECTIONS_SET_TASKS = [
     group: "Коллекции",
     subgroup: "Set",
     title: "3. Поиск первого повторяющегося элемента",
-    desc: "Напишите функцию firstRepeated(arr), которая возвращает первый повторившийся элемент массива (или null, если повторов нет).",
+    desc: "Напишите функцию firstRepeated(arr), которая возвращает первый повторившийся элемент массива (или undefined, если повторов нет).",
     isRaw: true,
     candidate: FirstRepeatedCandidateRaw,
     rawCandidate: FirstRepeatedCandidateRaw,
@@ -6430,7 +6400,7 @@ export const JS_COLLECTIONS_SET_TASKS = [
     ],
     checklist: [
       "Ранний возврат при первом же совпадении unique.has(el)",
-      "Возврат null при отсутствии повторов",
+      "Возврат undefined при отсутствии повторов",
     ],
   },
 
@@ -7068,41 +7038,51 @@ export const JS_COLLECTIONS_MAP_TASKS = [
     id: "js241",
     group: "Коллекции",
     subgroup: "Map",
-    title: "18. Реализация LRU Cache на базе ES6 Map",
-    desc: "Реализуйте класс LRUCache(capacity) с методами get и put за O(1) с использованием порядка вставки Map.",
+    title: "11. Мемоизация (Company X) (Уровень 3)",
+    desc: "Реализуйте функцию memoize(fn, ms), которая оборачивает переданную функцию fn и кэширует результаты её вызовов на основе аргументов с учетом времени жизни TTL.",
     isRaw: true,
     candidate: LruCacheMapCandidateRaw,
     rawCandidate: LruCacheMapCandidateRaw,
     solution: LruCacheMapSolutionRaw,
     rawSolution: LruCacheMapSolutionRaw,
-    filepath: "src/javascript/tasks/12_collections_map/level3/23_LruCacheMap.js",
+    filepath: "src/javascript/tasks/12_collections_map/level3/23_Memoize.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
         isRecommended: true,
-        badge: "Алгоритмы и Структуры",
-        recommendationNote: "Map в JS сохраняет insertion order, поэтому delete + set переносит ключ в конец за O(1).",
+        badge: "Оптимизация производительности",
+        recommendationNote: "Использование Map для кэширования результатов вызова с валидацией времени жизни (TTL) за O(1).",
         rawSolution: LruCacheMapSolutionRaw,
-        filepath: "src/javascript/solutions/12_collections_map/level3/23_LruCacheMap.js",
+        filepath: "src/javascript/solutions/12_collections_map/level3/23_Memoize.js",
       },
     ],
     articles: [
       {
-        title: "LRU Cache Mechanism",
-        urlTitle: "LeetCode 146 — LRU Cache",
-        url: "https://leetcode.com/problems/lru-cache/",
+        title: "Мемоизация функций в JS (Doka.guide)",
+        urlTitle: "Дока — Паттерн Мемоизация",
+        url: "https://doka.guide/js/memoization/",
+      },
+      {
+        title: "Кэширование вызовов (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Декораторы и переадресация вызова",
+        url: "https://learn.javascript.ru/call-apply-decorators",
       },
     ],
     interviewerQuestions: [
       {
-        question: "Как получить самый старый ключ в ES6 Map за O(1)?",
-        answer: "Через итератор ключей: map.keys().next().value.",
+        question: "Как отслеживать время жизни кэша (TTL) в Map?",
+        answer: "Сохраняя в качестве значения объект { value, expiry }, где expiry = Date.now() + ms, и при каждом обращении проверяя условие now < expiry.",
+      },
+      {
+        question: "В чем ограничение JSON.stringify для формирования ключа кэша?",
+        answer: "JSON.stringify не различает undefined и отсутствие значения в массиве, теряет функции и Symbol, а также не поддерживает циклические ссылки и BigInt.",
       },
     ],
     checklist: [
-      "Валидация capacity > 0",
-      "Перемещение ключа при get/put",
-      "Вытеснение старого ключа при превышении capacity",
+      "Создание кэша через new Map()",
+      "Формирование ключа через JSON.stringify(args)",
+      "Проверка наличия и срока годности кэша now < expiry",
+      "Сохранение нового результата с временем истечения expiry",
     ],
   },
 
@@ -7110,41 +7090,46 @@ export const JS_COLLECTIONS_MAP_TASKS = [
     id: "js242",
     group: "Коллекции",
     subgroup: "Map",
-    title: "19. Слияние двух API-ответов по ID (Hash Join за O(N + M))",
-    desc: "Объедините массивы пользователей и заказов по общему ключу за линейное время O(N + M) без квадратичных вложенных циклов.",
+    title: "12. Мемоизация 2 (Company X) (Уровень 3)",
+    desc: "Напишите функцию memoize(fn), которая кэширует результаты вызовов с учетом порядка любых примитивных аргументов.",
     isRaw: true,
     candidate: HashMapJoinApiResponsesCandidateRaw,
     rawCandidate: HashMapJoinApiResponsesCandidateRaw,
     solution: HashMapJoinApiResponsesSolutionRaw,
     rawSolution: HashMapJoinApiResponsesSolutionRaw,
-    filepath: "src/javascript/tasks/12_collections_map/level3/24_HashMapJoinApiResponses.js",
+    filepath: "src/javascript/tasks/12_collections_map/level3/24_Memoize2.js",
     solutions: [
       {
         title: "Рекомендуемое решение",
         isRecommended: true,
         badge: "Оптимизация производительности",
-        recommendationNote: "Индексирует правую таблицу в Map за O(M) и итерирует левую за O(N).",
+        recommendationNote: "Кэширование на базе Map с сохранением контекста вызова this через fn.apply(this, args).",
         rawSolution: HashMapJoinApiResponsesSolutionRaw,
-        filepath: "src/javascript/solutions/12_collections_map/level3/24_HashMapJoinApiResponses.js",
+        filepath: "src/javascript/solutions/12_collections_map/level3/24_Memoize2.js",
       },
     ],
     articles: [
       {
-        title: "Hash Join Algorithm",
-        urlTitle: "Wikipedia — Hash Join",
-        url: "https://en.wikipedia.org/wiki/Hash_join",
+        title: "Кэширование результатов вызова (JavaScript.ru)",
+        urlTitle: "Учебник JavaScript — Декораторы и мемоизация",
+        url: "https://learn.javascript.ru/call-apply-decorators",
       },
     ],
     interviewerQuestions: [
       {
-        question: "Почему вложенный filter внутри map не подходит для больших массивов?",
-        answer: "Он имеет квадратичную сложность O(N * M), что при 10k записях дает 100 млн итераций и вешает главный поток.",
+        question: "Почему важен порядок аргументов при мемоизации?",
+        answer: "Для некоммутативных операций результат зависит от порядка аргументов (например, divide(4, 2) !== divide(2, 4)). Сериализация JSON.stringify сохраняет порядок элементов в массиве.",
+      },
+      {
+        question: "Зачем использовать fn.apply(this, args) вместо прямого fn(...args)?",
+        answer: "Чтобы сохранить контекст вызова (this), если мемоизируемая функция вызывается как метод объекта.",
       },
     ],
     checklist: [
-      "Создание хэш-индекса Map за O(M)",
-      "Один проход по основной коллекции за O(N)",
-      "Иммутабельное слияние объектов",
+      "Использование new Map() для кэша",
+      "Сериализация ключа через JSON.stringify(args)",
+      "Проверка кэша через cache.has(key)",
+      "Вызов fn.apply(this, args) для сохранения контекста",
     ],
   },
 ];
@@ -7155,7 +7140,7 @@ export const JS_COLLECTIONS_WEAK_TASKS = [
     group: "Коллекции",
     subgroup: "WeakMap и WeakSet",
     title: "1. WeakMap для приватных метаданных и инкапсуляции",
-    desc: "Реализуйте класс SecureSessionManager на базе WeakMap для безопасного хранения сессионных токенов без утечек памяти и без засорения объектов пользователей.",
+    desc: "Реализуйте систему отслеживания приватных метаданных (количество посещений trackVisit/getVisitCount) на базе WeakMap без утечек памяти при удалении объекта пользователя.",
     isRaw: true,
     candidate: WeakMapPrivateMetadataCandidateRaw,
     rawCandidate: WeakMapPrivateMetadataCandidateRaw,
@@ -7169,7 +7154,7 @@ export const JS_COLLECTIONS_WEAK_TASKS = [
         badge: "Слабые ссылки & GC",
         recommendationNote: "WeakMap хранит слабые ссылки на объекты-ключи, позволяя сборщику мусора автоматически очищать память при удалении самого объекта.",
         rawSolution: WeakMapPrivateMetadataSolutionRaw,
-        filepath: "src/javascript/solutions/11_collections_set/9_WeakMapPrivateMetadata.js",
+        filepath: "src/javascript/tasks/11_collections_set/9_WeakMapPrivateMetadata.js",
       },
     ],
     articles: [
@@ -7190,9 +7175,9 @@ export const JS_COLLECTIONS_WEAK_TASKS = [
       },
     ],
     checklist: [
-      "Проверка ключа на не-null объект (typeof key === 'object' && key !== null)",
-      "Использование приватного #store = new WeakMap()",
-      "Методы setSession, getSession, hasSession, removeSession",
+      "Инициализация коллекции const visitCounts = new WeakMap()",
+      "Реализация функции trackVisit(user) с инкрементом счетчика",
+      "Реализация функции getVisitCount(user) с возвратом счетчика или 0",
     ],
   },
   {
@@ -7200,7 +7185,7 @@ export const JS_COLLECTIONS_WEAK_TASKS = [
     group: "Коллекции",
     subgroup: "WeakMap и WeakSet",
     title: "2. WeakSet для защиты обхода циклической структуры",
-    desc: "Реализуйте функцию hasCircularReference(rootObj) для обнаружения циклических ссылок в графах объектов с помощью WeakSet.",
+    desc: "Реализуйте функцию hasCircularReference(obj) для обнаружения циклических ссылок в графах объектов с помощью WeakSet.",
     isRaw: true,
     candidate: WeakSetCircularCycleDetectionCandidateRaw,
     rawCandidate: WeakSetCircularCycleDetectionCandidateRaw,
@@ -7281,53 +7266,12 @@ export const JS_FUNCTIONS_CLOSURES_TASKS = [
   },
 
   {
-    id: "js127",
-    disableCandidateLinter: true,
-    group: "Замыкания",
-    subgroup: "Замыкания (База)",
-    title: "2. Обработчики событий в цикле",
-    desc: "Определите, что будет выведено в консоль при клике на кнопки, объясните причину и исправьте код для корректного вывода индекса.",
-    isRaw: true,
-    candidate: LoopEventListenersCandidateRaw,
-    rawCandidate: LoopEventListenersCandidateRaw,
-    solution: LoopEventListenersSolutionRaw,
-    rawSolution: LoopEventListenersSolutionRaw,
-    filepath: "src/javascript/tasks/14_closures/2_LoopEventListeners.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Концепция JS Engine",
-        recommendationNote: "Замыкания позволяют функции сохранять доступ к лексическому окружению даже после завершения работы внешней функции.",
-        rawSolution: LoopEventListenersSolutionRaw,
-        filepath: "src/javascript/solutions/14_closures/2_LoopEventListeners.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Область видимости переменной в циклах (MDN)",
-        urlTitle: "MDN — Блочная область видимости let",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Statements/let",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Почему использование var в цикле приводит к одинаковым значениям во всех обработчиках?",
-        answer: "Переменная var имеет функциональную область видимости и создается в единственном экземпляре для всех итераций цикла.",
-      },
-    ],
-    checklist: [
-      "Замена var i = 0 на let i = 0",
-    ],
-  },
-
-  {
     id: "js128",
     disableCandidateLinter: true,
     group: "Замыкания",
     subgroup: "Замыкания (База)",
-    title: "3. Таймеры и переменная цикла",
-    desc: "Определите, что выведет данный асинхронный цикл с var, объясните механизм замыкания и предложите варианты исправления.",
+    title: "2. Таймеры и переменная цикла var",
+    desc: "Определите, что выведет данный асинхронный цикл с var, объясните поведение макротасок в Event Loop и предложите варианты исправления (let, IIFE, аргументы setTimeout).",
     isRaw: true,
     candidate: LoopTimersVarCandidateRaw,
     rawCandidate: LoopTimersVarCandidateRaw,
@@ -7358,7 +7302,9 @@ export const JS_FUNCTIONS_CLOSURES_TASKS = [
       },
     ],
     checklist: [
-      "Использование let для блочной привязки i на каждой итерации",
+      "Вывод 10 раз числа 10 из-за функциональной области видимости var",
+      "Исправление с помощью блочной области видимости let",
+      "Исправление через IIFE или 3-й аргумент setTimeout",
     ],
   },
 
@@ -7366,7 +7312,7 @@ export const JS_FUNCTIONS_CLOSURES_TASKS = [
     id: "js129",
     group: "Замыкания",
     subgroup: "Замыкания (База)",
-    title: "4. Фиксация значений локальной переменной",
+    title: "3. Фиксация значений локальной переменной",
     desc: "Определите, какие значения выведет вызов log() с учетом разницы между зафиксированной строкой и ссылкой на изменяемую переменную.",
     isRaw: true,
     candidate: MessageVsNumberStateCandidateRaw,
@@ -7406,7 +7352,7 @@ export const JS_FUNCTIONS_CLOSURES_TASKS = [
     id: "js130",
     group: "Замыкания",
     subgroup: "Замыкания (База)",
-    title: "5. Свежие и зафиксированные значения в замыкании",
+    title: "4. Свежие и зафиксированные значения в замыкании",
     desc: "Определите, какие сообщения будут выведены в консоль при вызовах increment() и log(), объясните поведение и исправьте функцию log.",
     isRaw: true,
     candidate: CreateIncrementFixCandidateRaw,
@@ -7446,7 +7392,7 @@ export const JS_FUNCTIONS_CLOSURES_TASKS = [
     id: "js131",
     group: "Замыкания",
     subgroup: "Замыкания (База)",
-    title: "6. Замыкание по элементам массива",
+    title: "5. Замыкание по элементам массива в асинхронном цикле",
     desc: "Определите, что выведет данный цикл с setTimeout при обращении к элементам массива, объясните причину и исправьте код.",
     isRaw: true,
     candidate: ArrayLoopTimeoutCandidateRaw,
@@ -7530,7 +7476,7 @@ export const JS_FUNCTIONS_CLOSURES_TASKS = [
     group: "Замыкания",
     subgroup: "Обработка ошибок",
     title: "1. Поток управления в try / catch / finally: Приоритеты return и throw",
-    desc: "Реализуйте безопасный трейсер выполнения с гарантированной очисткой ресурсов и разбором приоритетов return в блоке finally.",
+    desc: "Определите, что выведет функция testReturn() с блоками try/catch/finally и оператором return в каждом блоке, и объясните порядок завершения функции.",
     isRaw: true,
     candidate: TryCatchFinallyReturnOrderCandidateRaw,
     rawCandidate: TryCatchFinallyReturnOrderCandidateRaw,
@@ -7542,7 +7488,7 @@ export const JS_FUNCTIONS_CLOSURES_TASKS = [
         title: "Рекомендуемое решение",
         isRecommended: true,
         badge: "Обработка исключений",
-        recommendationNote: "Блок finally выполняется всегда, но не должен содержать явный return, чтобы не подавлять результаты try/catch.",
+        recommendationNote: "Оператор return в блоке finally всегда выполняется перед возвратом из функции и безусловно перезаписывает результаты try или catch.",
         rawSolution: TryCatchFinallyReturnOrderSolutionRaw,
         filepath: "src/javascript/solutions/14_closures/7_TryCatchFinallyReturnOrder.js",
       },
@@ -7561,51 +7507,9 @@ export const JS_FUNCTIONS_CLOSURES_TASKS = [
       },
     ],
     checklist: [
-      "Выполнение actionFn() внутри try",
-      "Перехват в catch",
-      "Гарантированный вызов cleanupFn() в finally",
-    ],
-  },
-
-  {
-    id: "js219",
-    group: "Замыкания",
-    subgroup: "Обработка ошибок",
-    title: "2. Собственные классы Error, cause и выборочный rethrow",
-    desc: "Создайте иерархию классов ошибок с поддержкой ES2022 Error cause и функцию выборочной обработки с пробросом непредвиденных исключений (rethrow).",
-    isRaw: true,
-    candidate: CustomErrorChainingRethrowCandidateRaw,
-    rawCandidate: CustomErrorChainingRethrowCandidateRaw,
-    solution: CustomErrorChainingRethrowSolutionRaw,
-    rawSolution: CustomErrorChainingRethrowSolutionRaw,
-    filepath: "src/javascript/tasks/14_closures/8_CustomErrorChainingRethrow.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Архитектура ошибок ES2022",
-        recommendationNote: "Иерархия кастомных ошибок с переопределением this.name и опцией cause позволяет выстраивать надежную и прозрачную обработку сбоев.",
-        rawSolution: CustomErrorChainingRethrowSolutionRaw,
-        filepath: "src/javascript/solutions/14_closures/8_CustomErrorChainingRethrow.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Пользовательские ошибки (LearnJS)",
-        urlTitle: "Учебник JavaScript — Пользовательские ошибки, расширение Error",
-        url: "https://learn.javascript.ru/custom-errors",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Зачем нужен второй аргумент { cause: originalError } в конструкторе Error?",
-        answer: "Для связывания первопричины ошибки в цепочку (Error Chaining), сохраняя низкоуровневый контекст отладки при пробросе высокоуровневой доменной ошибки.",
-      },
-    ],
-    checklist: [
-      "Класс AppError extends Error с установкой this.name = this.constructor.name",
-      "Поддержка { cause } в super(message, options)",
-      "Выборочный rethrow через throw err для неизвестных классов",
+      "Вывод: 3",
+      "Блок finally выполняется всегда перед возвратом из функции",
+      "Оператор return в finally безусловно перезаписывает возвращаемое значение",
     ],
   },
 
@@ -7686,8 +7590,8 @@ export const JS_FUNCTIONS_CLOSURES_TASKS = [
       },
     ],
     checklist: [
-      "Результат sum(1)() === 1",
-      "Результат sum(1)(2)(3)() === 6",
+      "Результат curry_sum(1)() === 1",
+      "Результат curry_sum(1)(2)(3)() === 6",
     ],
   },
 
@@ -7695,8 +7599,8 @@ export const JS_FUNCTIONS_CLOSURES_TASKS = [
     id: "js157",
     group: "Замыкания",
     subgroup: "Каррирование",
-    title: "3. Гибридная функция суммирования (Company X)",
-    desc: "Реализуйте функцию sum, поддерживающую гибкие вызовы sum(a, b) и sum(a)(b) в стиле задач собеседования Company X.",
+    title: "3. Каррирование с приведением к числу (Symbol.toPrimitive)",
+    desc: "Реализуйте функцию sum(a), поддерживающую цепочку вызовов любой длины вида sum(1)(2)... и приводящуюся к числу через Symbol.toPrimitive / valueOf.",
     isRaw: true,
     candidate: HybridSumCurryingCompanyXCandidateRaw,
     rawCandidate: HybridSumCurryingCompanyXCandidateRaw,
@@ -7722,13 +7626,13 @@ export const JS_FUNCTIONS_CLOSURES_TASKS = [
     ],
     interviewerQuestions: [
       {
-        question: "В чем разница между частичным применением (partial application) и каррированием (currying)?",
-        answer: "Каррирование всегда преобразует функцию с N аргументами в цепочку из N функций от 1 аргумента. Частичное применение фиксирует только часть аргументов.",
+        question: "Как заставить функцию отдавать число при неявном или явном приведении?",
+        answer: "Определив методы Symbol.toPrimitive или valueOf на возвращаемом объекте функции.",
       },
     ],
     checklist: [
-      "Проверка b === undefined",
-      "Возврат стрелочной функции (num) => a + num",
+      "Накопление суммы в замыкании currentSum",
+      "Реализация f[Symbol.toPrimitive] и f.valueOf для приведения к числу",
     ],
   },
 
@@ -7748,8 +7652,8 @@ export const JS_FUNCTIONS_CLOSURES_TASKS = [
       {
         title: "Рекомендуемое решение",
         isRecommended: true,
-        badge: "Оптимизация производительности",
-        recommendationNote: "Ограничение частоты вызова функций предотвращает избыточные сетевые запросы и перерисовывание интерфейса.",
+        badge: "Функциональное программирование",
+        recommendationNote: "Композиция функций позволяет выстраивать конвейер декларативных преобразований данных: pipe выполняет функции слева направо, а compose — справа налево.",
         rawSolution: PipeAndComposeSolutionRaw,
         filepath: "src/javascript/tasks/19_control_flow/3_PipeAndCompose.js",
       },
@@ -7779,8 +7683,8 @@ export const JS_FUNCTIONS_CLOSURES_TASKS = [
       {
         title: "Рекомендуемое решение",
         isRecommended: true,
-        badge: "Декларативное преобразование",
-        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
+        badge: "Кэширование",
+        recommendationNote: "Мемоизация функций позволяет избежать повторных ресурсоемких вычислений для одинакового набора аргументов.",
         rawSolution: MemoizeBasicSolutionRaw,
         filepath: "src/javascript/tasks/12_collections_map/level3/19_MemoizeBasic.js",
       },
@@ -7820,8 +7724,8 @@ export const JS_FUNCTIONS_CLOSURES_TASKS = [
       {
         title: "Рекомендуемое решение",
         isRecommended: true,
-        badge: "Декларативное преобразование",
-        recommendationNote: "Метод map() гарантирует трансформацию элементов 'один к одному' без побочных эффектов.",
+        badge: "Кэширование с TTL",
+        recommendationNote: "Мемоизация с ограничением по времени (TTL) позволяет кэшировать результаты вычислений и автоматически инвалидировать устаревшие данные.",
         rawSolution: MemoizeWithTTLSolutionRaw,
         filepath: "src/javascript/tasks/12_collections_map/level3/20_MemoizeWithTTL.js",
       },
@@ -8527,8 +8431,8 @@ export const JS_PROTOTYPES_THIS_TASKS = [
     id: "js148",
     group: "Прототипы THIS",
     subgroup: "Потеря контекста и bind",
-    title: "1. Потеря контекста, стрелочные функции и повторный bind",
-    desc: "Проанализируйте поведение this при вызове методов объекта, извлечении их в переменные, вызове стрелочных функций и повторном bind.",
+    title: "1. Контекст this в обычном и стрелочном методе объекта",
+    desc: "Определите, что выведет обращение к свойству this в обычном методе объекта и стрелочной функции-свойстве.",
     isRaw: true,
     candidate: ThisObjectArrowMethodsCandidateRaw,
     rawCandidate: ThisObjectArrowMethodsCandidateRaw,
@@ -8559,8 +8463,8 @@ export const JS_PROTOTYPES_THIS_TASKS = [
       },
     ],
     checklist: [
-      "Разница между методом объекта и стрелочным методом",
-      "Применение .bind() к обычным и стрелочным функциям",
+      "user.regularMethod() возвращает 'Анна'",
+      "user.arrowMethod() возвращает undefined",
     ],
   },
 
@@ -8568,8 +8472,8 @@ export const JS_PROTOTYPES_THIS_TASKS = [
     id: "js150",
     group: "Прототипы THIS",
     subgroup: "Потеря контекста и bind",
-    title: "2. Извлечение метода объекта в отдельную переменную",
-    desc: "Определите, что выведет данный код при вызове извлечённого метода объекта, объясните поведение this и приведите способы исправления.",
+    title: "2. Извлечение метода объекта и потеря контекста this",
+    desc: "Определите поведение this при извлечении метода counter.increment в отдельную переменную и исправьте потерю контекста с помощью .bind().",
     isRaw: true,
     candidate: MethodExtractionContextLossCandidateRaw,
     rawCandidate: MethodExtractionContextLossCandidateRaw,
@@ -8596,11 +8500,12 @@ export const JS_PROTOTYPES_THIS_TASKS = [
     interviewerQuestions: [
       {
         question: "Как привязать контекст к извлеченной функции?",
-        answer: "Использованием obj.getName.bind(obj) или вызовом функции внутри анонимного стрелочного колбэка () => obj.getName().",
+        answer: "Использованием counter.increment.bind(counter) или вызовом функции внутри анонимного стрелочного колбэка () => counter.increment().",
       },
     ],
     checklist: [
-      "Привязка контекста через obj.getName.bind(obj)",
+      "Потеря контекста при вызове inc()",
+      "Привязка контекста через counter.increment.bind(counter)",
     ],
   },
 
@@ -8608,8 +8513,8 @@ export const JS_PROTOTYPES_THIS_TASKS = [
     id: "js151",
     group: "Прототипы THIS",
     subgroup: "Потеря контекста и bind",
-    title: "3. Повторное применение метода bind",
-    desc: "Определите значение this при цепочке вызовов obj1.getName.bind(obj2).bind(obj1).",
+    title: "3. Повторное связывание контекста через bind",
+    desc: "Определите значение this при повторном вызове .bind() на уже связанной функции (bound function).",
     isRaw: true,
     candidate: MultipleBindChainingCandidateRaw,
     rawCandidate: MultipleBindChainingCandidateRaw,
@@ -8640,7 +8545,8 @@ export const JS_PROTOTYPES_THIS_TASKS = [
       },
     ],
     checklist: [
-      "Вывод 'name is: User 2'",
+      "Вывод 'Книга 1'",
+      "Неизменяемость [[BoundThis]] после первого .bind()",
     ],
   },
 
@@ -8648,8 +8554,8 @@ export const JS_PROTOTYPES_THIS_TASKS = [
     id: "js153",
     group: "Прототипы THIS",
     subgroup: "Потеря контекста и bind",
-    title: "4. Вызов методов с изменением контекста внешней функции",
-    desc: "Определите вывод для обычных и стрелочных методов объекта при создании его внутри функции foo.call({ x: 30 }).",
+    title: "4. Стрелочная функция в асинхронном методе и лексический this",
+    desc: "Определите значение this и вывод счетчика при использовании стрелочной функции внутри setTimeout в методе объекта.",
     isRaw: true,
     candidate: ScopeVsContextArrowMethodsCandidateRaw,
     rawCandidate: ScopeVsContextArrowMethodsCandidateRaw,
@@ -8675,12 +8581,13 @@ export const JS_PROTOTYPES_THIS_TASKS = [
     ],
     interviewerQuestions: [
       {
-        question: "Где берет свой this стрелочный метод baz при вызове foo.call({ x: 30 })?",
-        answer: "Из лексического окружения функции foo, контекстом this которой при явном вызове .call({ x: 30 }) стал объект { x: 30 }.",
+        question: "Где берет свой this стрелочный колбэк внутри setTimeout в timer.start()?",
+        answer: "Из лексического окружения метода start(), контекстом которого при вызове timer.start() является объект timer.",
       },
     ],
     checklist: [
-      "Различие контекста обычных методах и стрелочных методов",
+      "Лексический this стрелочной функции захватывает timer",
+      "Вывод в консоль числа 1",
     ],
   },
 
@@ -8720,7 +8627,8 @@ export const JS_PROTOTYPES_THIS_TASKS = [
       },
     ],
     checklist: [
-      "Различие объектов, созданных ДО и ПОСЛЕ замены prototype",
+      "anna.greet() возвращает 'Привет, я Анна'",
+      "ivan.greet() возвращает 'Здравствуйте, я Иван'",
     ],
   },
 
@@ -8728,8 +8636,8 @@ export const JS_PROTOTYPES_THIS_TASKS = [
     id: "js152",
     group: "Прототипы THIS",
     subgroup: "Прототипы",
-    title: "2. Присваивание объектов по ссылке",
-    desc: "Проследите мутацию свойств объекта при присваивании внешнего объекта в свойство другого объекта.",
+    title: "2. Мутабельные свойства в прототипе конструктора",
+    desc: "Проследите мутацию разделяемого массива в prototype конструктора при создании нескольких экземпляров.",
     isRaw: true,
     candidate: ObjectReferencePropertiesCandidateRaw,
     rawCandidate: ObjectReferencePropertiesCandidateRaw,
@@ -8760,7 +8668,8 @@ export const JS_PROTOTYPES_THIS_TASKS = [
       },
     ],
     checklist: [
-      "Свойство salary = 120 появляется и в person.position, и в position",
+      "Разделяемый массив User.prototype.skills",
+      "u2.skills возвращает ['JS']",
     ],
   },
 
@@ -8768,8 +8677,8 @@ export const JS_PROTOTYPES_THIS_TASKS = [
     id: "js154",
     group: "Прототипы THIS",
     subgroup: "Прототипы",
-    title: "3. Разница между оператором in и методом hasOwnProperty",
-    desc: "Объясните разницу между проверкой собственного свойства через hasOwnProperty и поиском по всей цепочке прототипов через in.",
+    title: "3. Проверка свойств: оператор in и метод Object.hasOwn",
+    desc: "Объясните разницу между поиском свойств по цепочке прототипов через оператор in и проверкой собственных свойств через Object.hasOwn.",
     isRaw: true,
     candidate: HasOwnPropertyVsInOperatorCandidateRaw,
     rawCandidate: HasOwnPropertyVsInOperatorCandidateRaw,
@@ -8795,183 +8704,15 @@ export const JS_PROTOTYPES_THIS_TASKS = [
     ],
     interviewerQuestions: [
       {
-        question: "В чем главное отличие 'property' in obj от obj.hasOwnProperty('property')?",
-        answer: "in проверяет наличие свойства в объекте и всех его прототипах, а hasOwnProperty — только среди собственных свойств самого объекта.",
+        question: "В чем главное отличие 'property' in obj от Object.hasOwn(obj, 'property')?",
+        answer: "in проверяет наличие свойства в объекте и всех его прототипах, а Object.hasOwn — только среди собственных свойств самого объекта.",
       },
     ],
     checklist: [
-      "hasOwnProperty('sound') === false",
-      "'sound' in myDog === true",
+      "'inherited' in obj === true",
+      "Object.hasOwn(obj, 'inherited') === false",
     ],
   },
-
-  {
-    id: "js221",
-    group: "Прототипы THIS",
-    subgroup: "Привязка контекста (this)",
-    title: "5. Реализация полифила Function.prototype.myBind",
-    desc: "Реализуйте собственный метод myBind с поддержкой привязки контекста, каррирования начальных аргументов и работы в качестве конструктора (new).",
-    isRaw: true,
-    candidate: CustomBindPolyfillCandidateRaw,
-    rawCandidate: CustomBindPolyfillCandidateRaw,
-    solution: CustomBindPolyfillSolutionRaw,
-    rawSolution: CustomBindPolyfillSolutionRaw,
-    filepath: "src/javascript/tasks/16_prototypes_this/8_CustomBindPolyfill.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Hard: Polyfills",
-        recommendationNote: "Полная реализация bind согласно ECMAScript включает проверку callable-типа, склейку аргументов и сохранение прототипной цепочки при new.",
-        rawSolution: CustomBindPolyfillSolutionRaw,
-        filepath: "src/javascript/solutions/16_prototypes_this/8_CustomBindPolyfill.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Function.prototype.bind() (MDN)",
-        urlTitle: "MDN — Function.prototype.bind",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Function/bind",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Что происходит со связанным контекстом this, если вызывать связанную функцию через new BoundFn()?",
-        answer: "При вызове с new переданный в bind контекст игнорируется, и this ссылается на вновь созданный экземпляр, прототипом которого является исходная функция.",
-      },
-    ],
-    checklist: [
-      "Проверка typeof targetFn === 'function'",
-      "Объединение аргументов [...bindArgs, ...callArgs]",
-      "Корректная обработка вызова с оператором new",
-    ],
-  },
-
-  {
-    id: "js229",
-    group: "Прототипы THIS",
-    subgroup: "Прототипы",
-    title: "4. Эмуляция оператора new (customNew)",
-    desc: "Реализуйте функцию customNew(Constructor, ...args), воспроизводящую 4 шага работы оператора new в JavaScript.",
-    isRaw: true,
-    candidate: CustomNewOperatorCandidateRaw,
-    rawCandidate: CustomNewOperatorCandidateRaw,
-    solution: CustomNewOperatorSolutionRaw,
-    rawSolution: CustomNewOperatorSolutionRaw,
-    filepath: "src/javascript/tasks/16_prototypes_this/9_CustomNewOperator.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "JS Engine Mechanics",
-        recommendationNote: "Создание объекта через Object.create(Constructor.prototype), выполнение конструктора и возврат объекта-результата (если он объект/функция).",
-        rawSolution: CustomNewOperatorSolutionRaw,
-        filepath: "src/javascript/solutions/16_prototypes_this/9_CustomNewOperator.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Оператор new (MDN)",
-        urlTitle: "MDN — new operator",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/new",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Что возвращает new Constructor(), если конструктор явно делает return 42 (примитив)?",
-        answer: "Возвращает созданный экземпляр instance (примитивный return игнорируется). Если же конструктор возвращает объект (return {}), вернется именно этот объект.",
-      },
-    ],
-    checklist: [
-      "Object.create(Constructor.prototype)",
-      "Constructor.apply(instance, args)",
-      "Возврат result, если result объект/функция, иначе instance",
-    ],
-  },
-
-  {
-    id: "js230",
-    group: "Прототипы THIS",
-    subgroup: "Прототипы",
-    title: "5. Реализация полифила instanceof (customInstanceOf)",
-    desc: "Реализуйте функцию customInstanceOf(instance, Constructor) для проверки принадлежности объекта классу по прототипной цепочке.",
-    isRaw: true,
-    candidate: CustomInstanceOfPolyfillCandidateRaw,
-    rawCandidate: CustomInstanceOfPolyfillCandidateRaw,
-    solution: CustomInstanceOfPolyfillSolutionRaw,
-    rawSolution: CustomInstanceOfPolyfillSolutionRaw,
-    filepath: "src/javascript/tasks/16_prototypes_this/10_CustomInstanceOfPolyfill.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Prototype Chain",
-        recommendationNote: "Алгоритм обходит прототипную цепочку через Object.getPrototypeOf(proto), сравнивая с Constructor.prototype.",
-        rawSolution: CustomInstanceOfPolyfillSolutionRaw,
-        filepath: "src/javascript/solutions/16_prototypes_this/10_CustomInstanceOfPolyfill.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Оператор instanceof (LearnJS)",
-        urlTitle: "Учебник JavaScript — Проверка класса: instanceof",
-        url: "https://learn.javascript.ru/instanceof",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Как Symbol.hasInstance влияет на работу оператора instanceof?",
-        answer: "Если у конструктора определен статический метод [Symbol.hasInstance](instance), то instanceof вызывает его вместо стандартного обхода прототипной цепочки.",
-      },
-    ],
-    checklist: [
-      "Проверка на примитив (возврат false)",
-      "Цикл while (proto !== null)",
-      "Сравнение proto === targetPrototype",
-    ],
-  },
-
-  {
-    id: "js231",
-    group: "Прототипы THIS",
-    subgroup: "Классы и ООП",
-    title: "1. Классы, наследование, статические методы и приватные поля (#)",
-    desc: "Создайте иерархию классов BaseCounter и AdvancedCounter с приватными полями (#count), наследованием (extends, super) и статическими фабричными методами.",
-    isRaw: true,
-    candidate: ClassExtendsPrivateStaticCandidateRaw,
-    rawCandidate: ClassExtendsPrivateStaticCandidateRaw,
-    solution: ClassExtendsPrivateStaticSolutionRaw,
-    rawSolution: ClassExtendsPrivateStaticSolutionRaw,
-    filepath: "src/javascript/tasks/16_prototypes_this/11_ClassExtendsPrivateStatic.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "ES2022 OOP",
-        recommendationNote: "Синтаксис приватных полей # гарантирует строгую изоляцию на уровне движка, а extends организует наследование как экземпляров, так и статических методов.",
-        rawSolution: ClassExtendsPrivateStaticSolutionRaw,
-        filepath: "src/javascript/solutions/16_prototypes_this/11_ClassExtendsPrivateStatic.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Приватные и защищённые свойства и методы (LearnJS)",
-        urlTitle: "Учебник JavaScript — Приватные свойства",
-        url: "https://learn.javascript.ru/private-protected-properties-methods",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Наследуются ли статические методы родительского класса в дочернем классе?",
-        answer: "Да, благодаря тому, что extends связывает прототипы самих функций-конструкторов (Child.__proto__ === Parent).",
-      },
-    ],
-    checklist: [
-      "Приватное поле #count",
-      "Вызов super() в конструкторе наследника",
-      "Статический метод getDefaultStep()",
-    ],
-  }
 ];
 
 export const JS_ASYNC_TASKS = [
@@ -9144,7 +8885,48 @@ export const JS_ASYNC_TASKS = [
       },
     ],
     checklist: [
-      "Верная последовательность вывода: Tick 1 -> Tick 2 -> Tick 3 -> Stopped -> Timeout finished",
+      "Верная последовательность вывода: Interval tick: 1 -> Interval tick: 2 -> Interval tick: 3 -> Timeout finished",
+    ],
+  },
+
+  {
+    id: "js78",
+    group: "Асинхронность",
+    subgroup: "Таймеры",
+    title: "5. Что покажет ? - Базовый интервал",
+    desc: "Определите, что выведет код с интервалом, увеличивающим счетчик до 3 и останавливающим себя через clearInterval().",
+    isRaw: true,
+    candidate: BasicIntervalOutputCandidateRaw,
+    rawCandidate: BasicIntervalOutputCandidateRaw,
+    solution: BasicIntervalOutputSolutionRaw,
+    rawSolution: BasicIntervalOutputSolutionRaw,
+    filepath: "src/javascript/tasks/10_timers_setinterval/3_BasicIntervalOutput.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение",
+        isRecommended: true,
+        badge: "Асинхронный таймер",
+        recommendationNote: "При работе с таймерами важно всегда очищать таймер (clearTimeout/clearInterval) для предотвращения утечек памяти.",
+        rawSolution: BasicIntervalOutputSolutionRaw,
+        filepath: "src/javascript/tasks/10_timers_setinterval/3_BasicIntervalOutput.js",
+      },
+    ],
+    articles: [
+      {
+        title: "Событийный цикл Event Loop (Doka.guide)",
+        urlTitle: "Дока — Очередь интервалов",
+        url: "https://doka.guide/js/event-loop/",
+      },
+    ],
+    interviewerQuestions: [
+      {
+        question: "Через какое время выведется первая цифра 1?",
+        answer: "Первая цифра 1 выведется ровно через 1000мс после инициализации интервала (setInterval не вызывает колбэк мгновенно на 0-й секунде).",
+      },
+    ],
+    checklist: [
+      "Вывод чисел 1, 2, 3 последовательно каждые 1000мс",
+      "Полная остановка интервала после вывода 3",
     ],
   },
 
@@ -9195,7 +8977,7 @@ export const JS_ASYNC_TASKS = [
     group: "Асинхронность",
     subgroup: "Контроль частоты",
     title: "2. Реализация функции Throttle (ограничение частоты)",
-    desc: "Реализуйте функцию throttle(fn, ms), гарантирующую вызов не чаще одного раза в ms миллисекунд.",
+    desc: "Реализуйте функцию throttle(fn, limit), гарантирующую вызов не чаще одного раза в limit миллисекунд.",
     isRaw: true,
     candidate: ThrottleFunctionCandidateRaw,
     rawCandidate: ThrottleFunctionCandidateRaw,
@@ -9218,7 +9000,7 @@ export const JS_ASYNC_TASKS = [
     interviewerQuestions: [
       { question: "Где чаще всего используется Throttle?", answer: "Для обработки непрерывных событий scroll, resize, mousemove." },
     ],
-    checklist: ["Вызов не чаще 1 раза за период ms"],
+    checklist: ["Вызов не чаще 1 раза за период limit"],
   },
 
   {
@@ -9341,175 +9123,6 @@ export const JS_ASYNC_TASKS = [
     checklist: [
       "Учитывать интервалы задержек (500ms раньше 1000ms)",
       "Учитывать синхронный вывод внутри таймеров",
-    ],
-  },
-
-  {
-    id: "js73",
-    disableCandidateLinter: true,
-    group: "Асинхронность",
-    subgroup: "Event Loop",
-    title: "3. Замыкание - Что покажет ?",
-    desc: "Определите, что выведет данный цикл с var и setTimeout, объясните причину такого поведения и приведите варианты решения.",
-    isRaw: true,
-    candidate: ClosureLoopCandidateRaw,
-    rawCandidate: ClosureLoopCandidateRaw,
-    solution: ClosureLoopLetSolutionRaw,
-    rawSolution: ClosureLoopLetSolutionRaw,
-    filepath: "src/javascript/tasks/9_timers_settimeout/5_ClosureLoop.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Асинхронный таймер",
-        recommendationNote: "При работе с таймерами важно всегда очищать таймер (clearTimeout/clearInterval) для предотвращения утечек памяти.",
-        rawSolution: ClosureLoopLetSolutionRaw,
-        filepath: "src/javascript/tasks/9_timers_settimeout/5_ClosureLoop.js",
-      },
-    ],
-    solutions: [
-      {
-        title: "Вариант 1: Использование let (Рекомендуется)",
-        isRecommended: true,
-        badge: "Блочная область видимости (ES6)",
-        recommendationNote: "Объявление let i в цикле создает отдельную переменную для каждой итерации.",
-        rawSolution: ClosureLoopLetSolutionRaw,
-        filepath: "src/javascript/solutions/9_timers_settimeout/5_ClosureLoop_Let.js",
-      },
-      {
-        title: "Вариант 2: Замыкание через IIFE",
-        isRecommended: false,
-        badge: "Классический ES5 подход",
-        recommendationNote: "Оборачивание в самовызывающуюся функцию замкнет текущий i в параметре j.",
-        rawSolution: ClosureLoopIIFESolutionRaw,
-        filepath: "src/javascript/solutions/9_timers_settimeout/5_ClosureLoop_IIFE.js",
-      },
-      {
-        title: "Вариант 3: Передача аргументов в setTimeout",
-        isRecommended: false,
-        badge: "Встроенный синтаксис setTimeout",
-        recommendationNote: "Третий и последующие аргументы setTimeout передаются в колбэк как параметры.",
-        rawSolution: ClosureLoopArgSolutionRaw,
-        filepath: "src/javascript/solutions/9_timers_settimeout/5_ClosureLoop_Arg.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Замыкания в JavaScript (JavaScript.ru)",
-        urlTitle: "Учебник JavaScript — Замыкания",
-        url: "https://learn.javascript.ru/closure",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Почему var создает одну общую переменную, а let — для каждой итерации?",
-        answer: "Переменная var имеет функциональную/глобальную область видимости, а let — блочную. В цикле for (let ...) JS движок под капотом привязывает новую лексическую область видимости на каждом шагу.",
-      },
-    ],
-    checklist: [
-      "Понимать, почему переменная var разделяется между всеми итерациями",
-      "Знать решение через let i = 0",
-    ],
-  },
-
-  {
-    id: "js74",
-    disableCandidateLinter: true,
-    group: "Асинхронность",
-    subgroup: "Event Loop",
-    title: "4. Что покажет ? - Замыкания в цикле",
-    desc: "Определите и объясните, что и с какими задержками будет выведено в консоль при выполнении данного цикла с setTimeout.",
-    isRaw: true,
-    candidate: ClosureLoopDelayCandidateRaw,
-    rawCandidate: ClosureLoopDelayCandidateRaw,
-    solution: ClosureLoopDelayLetSolutionRaw,
-    rawSolution: ClosureLoopDelayLetSolutionRaw,
-    filepath: "src/javascript/tasks/9_timers_settimeout/6_ClosureLoopDelay.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Асинхронный таймер",
-        recommendationNote: "При работе с таймерами важно всегда очищать таймер (clearTimeout/clearInterval) для предотвращения утечек памяти.",
-        rawSolution: ClosureLoopDelayLetSolutionRaw,
-        filepath: "src/javascript/tasks/9_timers_settimeout/6_ClosureLoopDelay.js",
-      },
-    ],
-    solutions: [
-      {
-        title: "Вариант 1: Использование let (Рекомендуется)",
-        isRecommended: true,
-        badge: "Рекомендуемое решение",
-        recommendationNote: "Перевод переменной на let создает 3 независимые переменные с значениями 1, 2, 3.",
-        rawSolution: ClosureLoopDelayLetSolutionRaw,
-        filepath: "src/javascript/solutions/9_timers_settimeout/6_ClosureLoopDelay_Let.js",
-      },
-      {
-        title: "Вариант 2: Замыкание IIFE",
-        isRecommended: false,
-        badge: "Классическое замыкание",
-        recommendationNote: "Передача переменной во внешнюю функцию фиксирует ее значение на момент итерации.",
-        rawSolution: ClosureLoopDelayIIFESolutionRaw,
-        filepath: "src/javascript/solutions/9_timers_settimeout/6_ClosureLoopDelay_IIFE.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Замыкания и область видимости (Doka.guide)",
-        urlTitle: "Дока — Область видимости в JS",
-        url: "https://doka.guide/js/closures/",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Почему к моменту срабатывания таймеров значение i равно 4?",
-        answer: "Цикл выполняется при i = 1, 2, 3. После третьей итерации выполняется i++ (станет 4) и условие i <= 3 возвращает false, поэтому цикл завершается при i = 4.",
-      },
-    ],
-    checklist: [
-      "Понимать, почему консоль выводит 4, 4, 4",
-      "Уметь исправить через let i = 1",
-    ],
-  },
-
-  {
-    id: "js78",
-    group: "Асинхронность",
-    subgroup: "Event Loop",
-    title: "5. Что покажет ? - Базовый интервал",
-    desc: "Определите, что выведет код с интервалом, увеличивающим счетчик до 3 и останавливающим себя через clearInterval().",
-    isRaw: true,
-    candidate: BasicIntervalOutputCandidateRaw,
-    rawCandidate: BasicIntervalOutputCandidateRaw,
-    solution: BasicIntervalOutputSolutionRaw,
-    rawSolution: BasicIntervalOutputSolutionRaw,
-    filepath: "src/javascript/tasks/10_timers_setinterval/3_BasicIntervalOutput.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Асинхронный таймер",
-        recommendationNote: "При работе с таймерами важно всегда очищать таймер (clearTimeout/clearInterval) для предотвращения утечек памяти.",
-        rawSolution: BasicIntervalOutputSolutionRaw,
-        filepath: "src/javascript/tasks/10_timers_setinterval/3_BasicIntervalOutput.js",
-      },
-    ],
-    articles: [
-      {
-        title: "Событийный цикл Event Loop (Doka.guide)",
-        urlTitle: "Дока — Очередь интервалов",
-        url: "https://doka.guide/js/event-loop/",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Через какое время выведется первая цифра 1?",
-        answer: "Первая цифра 1 выведется ровно через 1000мс после инициализации интервала (setInterval не вызывает колбэк мгновенно на 0-й секунде).",
-      },
-    ],
-    checklist: [
-      "Вывод чисел 1, 2, 3 последовательно каждые 1000мс",
-      "Полная остановка интервала после вывода 3",
     ],
   },
 
@@ -10690,7 +10303,7 @@ export const JS_STRING_DOM_UTILS_TASKS = [
     group: "Строки и Утилиты",
     subgroup: "Шаблонизация",
     title: "1. Мини-шаблонизатор строк (Template Engine)",
-    desc: "Реализуйте функцию renderTemplate(template, data) для замены подстановок {path.to.prop} на значения из объекта.",
+    desc: "Реализуйте функцию renderTemplate(template, data) для замены подстановок {{path.to.prop}} на значения из объекта.",
     isRaw: true,
     candidate: StringTemplateEngineCandidateRaw,
     rawCandidate: StringTemplateEngineCandidateRaw,
@@ -10713,7 +10326,7 @@ export const JS_STRING_DOM_UTILS_TASKS = [
     interviewerQuestions: [
       { question: "Как достать вложенное свойство объекта по строке 'user.profile.name'?", answer: "Разбить строку по точке через .split('.') и применить .reduce()." },
     ],
-    checklist: ["Замена вложенных шаблонов {user.name}"],
+    checklist: ["Замена вложенных шаблонов {{user.name}}"],
   },
 
   {
@@ -10860,48 +10473,6 @@ export const JS_STRING_DOM_UTILS_TASKS = [
       "Выброс SyntaxError на неожиданный символ",
     ],
   },
-
-  {
-    id: "js245",
-    group: "Строки и Утилиты",
-    subgroup: "Полифилы строк",
-    title: "6. Реализация полифила String.prototype.replaceAll",
-    desc: "Реализуйте customReplaceAll(str, searchValue, replaceValue) с валидацией глобального флага RegExp.",
-    isRaw: true,
-    candidate: ReplaceAllPolyfillCandidateRaw,
-    rawCandidate: ReplaceAllPolyfillCandidateRaw,
-    solution: ReplaceAllPolyfillSolutionRaw,
-    rawSolution: ReplaceAllPolyfillSolutionRaw,
-    filepath: "src/javascript/tasks/23_string_dom_utils/6_ReplaceAllPolyfill.js",
-    solutions: [
-      {
-        title: "Рекомендуемое решение",
-        isRecommended: true,
-        badge: "Полифилы",
-        recommendationNote: "Выбрасывает TypeError для неглобального RegExp и безопасно заменяет все строковые вхождения.",
-        rawSolution: ReplaceAllPolyfillSolutionRaw,
-        filepath: "src/javascript/solutions/23_string_dom_utils/6_ReplaceAllPolyfill.js",
-      },
-    ],
-    articles: [
-      {
-        title: "String.prototype.replaceAll (MDN)",
-        urlTitle: "MDN Web Docs — String.prototype.replaceAll",
-        url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/String/replaceAll",
-      },
-    ],
-    interviewerQuestions: [
-      {
-        question: "Почему replaceAll(/abc/, 'x') выбрасывает ошибку в стандарте JS?",
-        answer: "Спецификация строго требует флаг 'g' для RegExp, чтобы защитить от непреднамеренной замены только первого совпадения.",
-      },
-    ],
-    checklist: [
-      "Проверка RegExp.global флага",
-      "Поддержка функций замены (match, offset, string)",
-      "Безопасная обработка строковых спецсимволов",
-    ],
-  },
 ];
 
 
@@ -10942,7 +10513,7 @@ export const JS_DESIGN_PATTERNS_TASKS = [
     group: "Паттерны проектирования",
     subgroup: "Реактивность",
     title: "1. Наблюдаемый объект (Observable / Reactive Signal)",
-    desc: "Реализуйте простейшую реактивную переменную createSignal(initialValue).",
+    desc: "Реализуйте функцию createSignal(initialValue), возвращающую кортеж [get, set, subscribe] для управления реактивным значением.",
     isRaw: true,
     candidate: ObservableSignalCandidateRaw,
     rawCandidate: ObservableSignalCandidateRaw,
@@ -10972,8 +10543,8 @@ export const JS_DESIGN_PATTERNS_TASKS = [
 // Backward-compatibility exports
 export const JS_CLOSURES_TASKS = JS_FUNCTIONS_CLOSURES_TASKS.filter((t) => t.subgroup === "Замыкания (База)");
 export const JS_CURRYING_TASKS = JS_FUNCTIONS_CLOSURES_TASKS.filter((t) => t.subgroup === "Каррирование");
-export const JS_TIMERS_SETTIMEOUT_TASKS = JS_ASYNC_TASKS.filter((t) => t.id === "js69" || (t.subgroup === "Event Loop" && ["js71", "js72", "js73", "js74", "js75"].includes(t.id)));
-export const JS_TIMERS_SETINTERVAL_TASKS = JS_ASYNC_TASKS.filter((t) => t.id === "js76" || t.id === "js77" || (t.subgroup === "Event Loop" && ["js78", "js79", "js80"].includes(t.id)));
+export const JS_TIMERS_SETTIMEOUT_TASKS = JS_ASYNC_TASKS.filter((t) => t.id === "js69" || (t.subgroup === "Event Loop" && ["js71", "js72", "js75"].includes(t.id)));
+export const JS_TIMERS_SETINTERVAL_TASKS = JS_ASYNC_TASKS.filter((t) => t.id === "js76" || t.id === "js77" || t.id === "js78" || (t.subgroup === "Event Loop" && ["js79", "js80"].includes(t.id)));
 export const JS_PROMISES_TASKS = JS_ASYNC_TASKS.filter((t) => ["Основы Promise", "async/await", "Комбинаторы"].includes(t.subgroup) || ["js114", "js115", "js116", "js117", "js118", "js120", "js121", "js122", "js185"].includes(t.id));
 export const JS_ASYNC_POLYFILLS_TASKS = JS_ASYNC_TASKS.filter((t) => t.subgroup === "Полифилы");
 export const JS_EVENT_LOOP_TASKS = JS_ASYNC_TASKS.filter((t) => t.subgroup === "Event Loop");

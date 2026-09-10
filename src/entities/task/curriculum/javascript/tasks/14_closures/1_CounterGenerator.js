@@ -1,11 +1,13 @@
 // Счетчик на замыкании
-// Напишите функцию createCounter(initialValue), возвращающую функцию, которая при каждом вызове увеличивает и возвращает значение счетчика на 1.
+// Реализуйте функцию createCounter(), локальная переменная count которой сохраняется между вызовами благодаря замыканию.
 
-const createCounter = (initialValue = 0) => {
+const createCounter = () => {
   // Решение тут
 };
 
 // Пример вызова:
-const counter = createCounter(5);
-console.log(counter()); // 6
-console.log(counter()); // 7
+const counter = createCounter();
+console.log(counter()); // 1
+console.log(counter()); // 2
+console.log(counter()); // 3
+

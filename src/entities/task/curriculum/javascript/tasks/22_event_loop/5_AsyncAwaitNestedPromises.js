@@ -1,15 +1,18 @@
 // Каков будет порядок вывода в консоль и почему?
 
-async function f1() {
-  console.log("f1 start");
-  await f2();
-  console.log("f1 end");
-}
+console.log("1");
 
-async function f2() {
-  console.log("f2");
-}
+setTimeout(() => {
+  console.log("2");
+}, 0);
 
-console.log("global start");
-f1();
-console.log("global end");
+Promise.resolve().then(() => {
+  console.log("3");
+  return Promise.resolve("4");
+}).then(console.log);
+
+(async () => {
+  console.log(await Promise.resolve("5"));
+})();
+
+console.log("6");

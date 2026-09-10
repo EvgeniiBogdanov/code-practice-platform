@@ -1,6 +1,6 @@
 const getUniqueWords = (text) => {
-  return [...new Set(text.split(" "))];
+  return [...new Set(text.toLowerCase().split(" "))];
 };
 
 // Пример вызова:
-console.log(getUniqueWords("hello world hello set world")); // ["hello", "world", "set"]
+console.log(getUniqueWords("яблоко банан ЯБЛОКО груша Банан")); // ["яблоко", "банан", "груша"]

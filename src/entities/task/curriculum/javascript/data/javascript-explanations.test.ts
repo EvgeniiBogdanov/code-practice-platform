@@ -160,16 +160,20 @@ describe("JavaScript task explanations", () => {
     ];
     const requestedTaskIds = requestedGroups.flatMap((tasks) => tasks.map(({ id }) => id));
 
-    expect(requestedTaskIds).toHaveLength(41);
+    expect(requestedTaskIds).toHaveLength(39);
     expect(JS_LOOPS_TASKS.map(({ id }) => id)).toEqual(
       Array.from({ length: 7 }, (_, index) => `js${index + 1}`)
     );
     expect(JS_FOR_OF_TASKS.map(({ id }) => id)).toEqual(
       Array.from({ length: 6 }, (_, index) => `js${index + 8}`)
     );
-    expect(JS_CLOSURES_TASKS.map(({ id }) => id)).toEqual(
-      Array.from({ length: 6 }, (_, index) => `js${index + 126}`)
-    );
+    expect(JS_CLOSURES_TASKS.map(({ id }) => id)).toEqual([
+      "js126",
+      "js128",
+      "js129",
+      "js130",
+      "js131",
+    ]);
     expect(JS_RECURSION_TASKS.map(({ id }) => id)).toEqual(
       Array.from({ length: 16 }, (_, index) => `js${index + 132}`)
     );
@@ -269,7 +273,10 @@ describe("JavaScript task explanations", () => {
   });
 
   it("provides deep interview explanations for all newly added JS tasks (js216-js231)", () => {
-    const newInterviewTaskIds = Array.from({ length: 16 }, (_, index) => `js${216 + index}`);
+    const deletedTaskIds = ["js219", "js221", "js229", "js230", "js231"];
+    const newInterviewTaskIds = Array.from({ length: 16 }, (_, index) => `js${216 + index}`).filter(
+      (id) => !deletedTaskIds.includes(id)
+    );
 
     for (const taskId of newInterviewTaskIds) {
       expect(TASK_EXPLANATIONS[taskId], `Explanation for ${taskId} must exist`).toBeDefined();
@@ -284,9 +291,7 @@ describe("JavaScript task explanations", () => {
     expect(TASK_EXPLANATIONS.js216).toContain("деструктуризаци");
     expect(TASK_EXPLANATIONS.js217).toContain("Structural Sharing");
     expect(TASK_EXPLANATIONS.js218).toContain("finally");
-    expect(TASK_EXPLANATIONS.js219).toContain("cause");
     expect(TASK_EXPLANATIONS.js220).toContain("once");
-    expect(TASK_EXPLANATIONS.js221).toContain("myBind");
     expect(TASK_EXPLANATIONS.js222).toContain("Object.defineProperty");
     expect(TASK_EXPLANATIONS.js223).toContain("Reflect.ownKeys");
     expect(TASK_EXPLANATIONS.js224).toContain("Symbol.toPrimitive");
@@ -294,15 +299,12 @@ describe("JavaScript task explanations", () => {
     expect(TASK_EXPLANATIONS.js226).toContain("WeakMap");
     expect(TASK_EXPLANATIONS.js227).toContain("WeakSet");
     expect(TASK_EXPLANATIONS.js228).toContain("Prototype Pollution");
-    expect(TASK_EXPLANATIONS.js229).toContain("Object.create");
-    expect(TASK_EXPLANATIONS.js230).toContain("instanceof");
-    expect(TASK_EXPLANATIONS.js231).toContain("extends");
   });
 
   it("provides deep interview explanations for all newly added array/transformation tasks", () => {
     const newTasks = [
       "js232", "js233", "js234", "js235",
-      "js241", "js242", "js243", "js244", "js245", "js246", "js247", "js248",
+      "js241", "js242", "js243", "js244", "js246", "js247", "js248",
     ];
 
     for (const taskId of newTasks) {
@@ -319,11 +321,10 @@ describe("JavaScript task explanations", () => {
     expect(TASK_EXPLANATIONS.js233).toContain("Array.prototype.filter");
     expect(TASK_EXPLANATIONS.js234).toContain("Array.prototype.reduce");
     expect(TASK_EXPLANATIONS.js235).toContain("chunk");
-    expect(TASK_EXPLANATIONS.js241).toContain("LRUCache");
-    expect(TASK_EXPLANATIONS.js242).toContain("Hash Join");
+    expect(TASK_EXPLANATIONS.js241).toContain("expiry");
+    expect(TASK_EXPLANATIONS.js242).toContain("apply");
     expect(TASK_EXPLANATIONS.js243).toContain("Unicode");
     expect(TASK_EXPLANATIONS.js244).toContain("Лексический");
-    expect(TASK_EXPLANATIONS.js245).toContain("replaceAll");
     expect(TASK_EXPLANATIONS.js246).toContain("diff");
     expect(TASK_EXPLANATIONS.js247).toContain("safeGet");
     expect(TASK_EXPLANATIONS.js248).toContain("camelCase");

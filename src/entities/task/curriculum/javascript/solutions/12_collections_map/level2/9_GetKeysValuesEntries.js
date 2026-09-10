@@ -1,9 +1,13 @@
-const map = new Map([
-  ["a", 1],
-  ["b", 2],
-  ["c", 3],
+const products = new Map([
+  ["bread", 50],
+  ["milk", 80],
+  ["eggs", 120],
 ]);
 
-console.log(Array.from(map.keys())); // ['a', 'b', 'c']
-console.log(Array.from(map.values())); // [1, 2, 3]
-console.log(Array.from(map.entries())); // [['a', 1], ['b', 2], ['c', 3]]
+const keysArr = [...products.keys()];
+const valuesArr = [...products.values()];
+const entriesArr = [...products.entries()];
+
+console.log(keysArr);    // ["bread", "milk", "eggs"]
+console.log(valuesArr);  // [50, 80, 120]
+console.log(entriesArr); // [["bread",50], ["milk",80], ["eggs",120]]

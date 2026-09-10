@@ -1,12 +1,26 @@
-// Защита словаря от Prototype Pollution
-// Напишите функцию createSafeDictionary(), возвращающую чистый словарь без прототипа, защищенный от перезаписи свойств Object.prototype.
+// Object.create(null) и защита от Prototype Pollution
+// 1. Напишите функцию createCleanDictionary(), возвращающую чистый объект без прототипа ([[Prototype]] === null).
+// 2. Напишите функцию safeDeepAssign(target, source), выполняющую безопасное рекурсивное слияние plain-объектов
+// с защитой от Prototype Pollution (блокируя опасные ключи '__proto__', 'constructor', 'prototype').
 
-const createSafeDictionary = () => {
+const createCleanDictionary = () => {
+  // Решение тут
+};
+
+const safeDeepAssign = (target, source) => {
   // Решение тут
 };
 
 // Пример вызова:
-const dict = createSafeDictionary();
-dict["toString"] = 42;
-console.log(dict["toString"]); // 42
-console.log(typeof Object.prototype.toString); // "function" (не поврежден)
+const dict = createCleanDictionary();
+console.log(Object.getPrototypeOf(dict)); // null
+console.log(dict.toString); // undefined
+
+const safeTarget = {};
+const maliciousPayload = JSON.parse('{"__proto__": {"isAdmin": true, "role": "root"}}');
+
+safeDeepAssign(safeTarget, maliciousPayload);
+
+console.log(({}).isAdmin); // undefined
+console.log(({}).role); // undefined
+console.log(safeTarget.isAdmin); // undefined

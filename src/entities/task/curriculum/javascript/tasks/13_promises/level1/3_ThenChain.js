@@ -1,9 +1,9 @@
-// Цепочка преобразований then
-// Напишите функцию processNumber(num), которая создает промис с числом num и последовательно умножает его на 2, затем прибавляет 10.
+// Постройте цепочку вызовов .then(): вызвать getUser(), извлечь user.id и вывести в консоль `User id: ${id}`.
 
-const processNumber = (num) => {
-  // Решение тут
-};
+const getUser = () => Promise.resolve({ id: 42, name: "Alex" });
 
-// Пример вызова:
-processNumber(5).then(console.log); // (5 * 2) + 10 = 20
+// Решение тут:
+getUser()
+  .then((user) => {
+    // Решение тут
+  });

@@ -1,13 +1,12 @@
-// Что выведет данный код в консоль и почему?
+// Что выведет данный код в консоль и почему? Как исправить потерю контекста?
 
 const counter = {
   count: 10,
-  inc() {
+  increment() {
     this.count++;
     return this.count;
   },
 };
 
-const increment = counter.inc;
-console.log(counter.inc());
-console.log(increment());
+const inc = counter.increment;
+console.log(inc());

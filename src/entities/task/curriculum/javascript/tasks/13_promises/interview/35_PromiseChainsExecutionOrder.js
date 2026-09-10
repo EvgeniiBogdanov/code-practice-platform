@@ -1,18 +1,13 @@
 // Каков будет порядок вывода в консоль и почему?
 
 Promise.resolve()
-  .then(() => {
-    console.log("then 1");
-    return Promise.resolve("nested promise");
-  })
-  .then((res) => {
-    console.log("then 2:", res);
-  });
+  .then(() => console.log(1))
+  .then(() => console.log(2))
+  .catch(() => console.log(3))
+  .then(() => console.log(4));
 
-Promise.resolve()
-  .then(() => {
-    console.log("then 3");
-  })
-  .then(() => {
-    console.log("then 4");
-  });
+Promise.reject()
+  .then(() => console.log(5))
+  .then(() => console.log(6))
+  .catch(() => console.log(7))
+  .then(() => console.log(8));

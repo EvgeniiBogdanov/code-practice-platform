@@ -7,4 +7,9 @@ for (const v of set) {
   }
 }
 
-console.log("final", [...set]); // [1, 3]
+console.log("final", [...set]);
+// iter 1
+// iter 2
+// iter 3
+// iter 4
+// final [ 1, 3 ]

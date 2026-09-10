@@ -1,11 +1,11 @@
-// Базовое использование async/await
-// Напишите асинхронную функцию fetchSum(a, b), которая получает значения чисел с задержкой и возвращает их сумму.
+// Напишите асинхронную функцию loadUser(), которая получает пользователя через getUser()
+// с использованием async/await и возвращает приветствие `Привет, ${user.name}`.
 
-const delayNum = (n) => new Promise((r) => setTimeout(() => r(n), 100));
+const getUser = () => Promise.resolve({ id: 1, name: "Maria" });
 
-const fetchSum = async (a, b) => {
+async function loadUser() {
   // Решение тут
-};
+}
 
 // Пример вызова:
-fetchSum(10, 20).then(console.log); // 30
+loadUser().then(console.log);

@@ -1,13 +1,17 @@
-// Безопасная загрузка данных через Promise.allSettled
-// Напишите функцию fetchSafeDashboard(promises), которая ожидает выполнения всех промисов и возвращает массив только успешно полученных значений.
+// Выполните массив запросов через Promise.allSettled и отделите массив успешных значений от массива причин ошибок.
+// Функция splitResults() должна вернуть объект { fulfilled: [...], rejected: [...] }.
 
-const fetchSafeDashboard = async (promises) => {
+const requests = [
+  Promise.resolve(1),
+  Promise.reject("ошибка А"),
+  Promise.resolve(3),
+  Promise.reject("ошибка Б"),
+];
+
+async function splitResults() {
   // Решение тут
-};
+}
 
 // Пример вызова:
-const p1 = Promise.resolve("Данные 1");
-const p2 = Promise.reject("Ошибка сети");
-const p3 = Promise.resolve("Данные 3");
-
-fetchSafeDashboard([p1, p2, p3]).then(console.log); // [ "Данные 1", "Данные 3" ]
+splitResults().then(console.log);
+// { fulfilled: [1, 3], rejected: ["ошибка А", "ошибка Б"] }

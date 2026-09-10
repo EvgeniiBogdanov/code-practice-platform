@@ -1,10 +1,10 @@
 // Что выведет данный код в консоль и почему?
 
-const proto = { inherited: 1 };
-const child = Object.create(proto);
-child.own = 2;
+const proto = { inherited: true };
+const obj = Object.create(proto);
+obj.own = 123;
 
-console.log("own" in child);
-console.log("inherited" in child);
-console.log(child.hasOwnProperty("own"));
-console.log(child.hasOwnProperty("inherited"));
+console.log("own" in obj);
+console.log("inherited" in obj);
+console.log(Object.hasOwn(obj, "own"));
+console.log(Object.hasOwn(obj, "inherited"));

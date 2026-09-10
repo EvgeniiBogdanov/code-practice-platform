@@ -1,12 +1,19 @@
 // Что выведет данный код в консоль и почему?
 
-function createLogger() {
-  let message = "Привет";
-  return function () {
-    console.log(message);
-  };
-}
+let number = 0;
 
-let log = createLogger();
-message = "Пока";
+const increment = () => {
+  number += 1;
+  const message = `Incremented to ${number}`;
+
+  return () => {
+    console.log(message);
+    console.log(`Number: ${number}`);
+  };
+};
+
+const log = increment();
+increment();
+increment();
 log();
+
