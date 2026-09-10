@@ -1,12 +1,12 @@
 // Реализация функции throttle
-// Напишите функцию throttle(fn, ms), которая гарантирует, что функция fn вызывается не чаще одного раза в ms миллисекунд.
+// Напишите функцию throttle(fn, limit), которая гарантирует, что функция fn вызывается не чаще одного раза в limit миллисекунд.
 
-const throttle = (fn, ms) => {
+const throttle = (fn, limit) => {
   // Решение тут
 };
 
 // Пример вызова:
-const log = throttle((val) => console.log("Throttled:", val), 300);
-log("A"); // Выполнится сразу
-log("B"); // Игнорируется
-setTimeout(() => log("C"), 400); // Выполнится
+const throttled = throttle((val) => console.log(val), 200);
+throttled("первый");
+throttled("пропущен");
+

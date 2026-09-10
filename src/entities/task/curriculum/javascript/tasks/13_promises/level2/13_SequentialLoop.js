@@ -1,12 +1,15 @@
-// Последовательная обработка массива асинхронных операций
-// Напишите функцию processInSequence(urls, fetchFn), которая запрашивает данные по URL строго последовательно и возвращает массив результатов.
+// Загрузите данные пользователей последовательно (один за другим) в цикле for...of с использованием await.
+// Функция loadAllSequentially() должна вернуть массив имён ["User1", "User2", "User3"].
 
-const mockFetch = (url) => new Promise((r) => setTimeout(() => r(`data from ${url}`), 50));
+const ids = [1, 2, 3];
+const fetchUser = (id) =>
+  new Promise((resolve) =>
+    setTimeout(() => resolve({ id, name: `User${id}` }), 300)
+  );
 
-const processInSequence = async (urls, fetchFn) => {
+async function loadAllSequentially() {
   // Решение тут
-};
+}
 
 // Пример вызова:
-processInSequence(["/a", "/b", "/c"], mockFetch).then(console.log);
-// [ "data from /a", "data from /b", "data from /c" ]
+loadAllSequentially().then(console.log); // ["User1", "User2", "User3"]

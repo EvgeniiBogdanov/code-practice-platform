@@ -1,14 +1,14 @@
 // Что выведет данный код в консоль и почему?
 
 const user = {
-  name: "Alice",
+  name: "Анна",
   regularMethod() {
-    console.log("regular:", this.name);
+    return this.name;
   },
   arrowMethod: () => {
-    console.log("arrow:", this.name);
+    return this.name;
   },
 };
 
-user.regularMethod();
-user.arrowMethod();
+console.log(user.regularMethod());
+console.log(user.arrowMethod());

@@ -1,22 +1,21 @@
 // Дедупликация массива объектов по полю ID
-// Напишите функцию uniqueUsers(users), которая удаляет дубликаты пользователей по их свойству id, сохраняя первое встреченное вхождение.
+// Напишите функцию getUniqueUsers(users), которая удаляет дубликаты пользователей по их свойству id, сохраняя первое встреченное вхождение.
 
 const users = [
-  { id: 1, name: "Иван" },
-  { id: 2, name: "Анна" },
-  { id: 1, name: "Иван (дубль)" },
-  { id: 3, name: "Петр" },
-  { id: 2, name: "Анна (дубль)" },
+  { id: 1, name: "Ann" },
+  { id: 2, name: "Bob" },
+  { id: 1, name: "Ann 2" },
+  { id: 3, name: "Kate" },
 ];
 
-const uniqueUsers = (users) => {
+const getUniqueUsers = (users) => {
   // Решение тут
 };
 
 // Пример вызова:
-console.log(uniqueUsers(users));
+console.log(getUniqueUsers(users));
 // [
-//   { id: 1, name: "Иван" },
-//   { id: 2, name: "Анна" },
-//   { id: 3, name: "Петр" }
+//   { id: 1, name: "Ann" },
+//   { id: 2, name: "Bob" },
+//   { id: 3, name: "Kate" }
 // ]

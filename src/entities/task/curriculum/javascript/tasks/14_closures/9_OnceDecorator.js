@@ -6,6 +6,13 @@ const once = (fn) => {
 };
 
 // Пример вызова:
-const initialize = once((x) => x * 2);
-console.log(initialize(10)); // 20
-console.log(initialize(50)); // 20
+let callCount = 0;
+const pay = once((amount) => {
+  callCount++;
+  return `Оплачено: ${amount} руб. (транзакция #${callCount})`;
+});
+
+console.log(pay(500)); // 'Оплачено: 500 руб. (транзакция #1)'
+console.log(pay(1000)); // 'Оплачено: 500 руб. (транзакция #1)'
+console.log(callCount); // 1
+

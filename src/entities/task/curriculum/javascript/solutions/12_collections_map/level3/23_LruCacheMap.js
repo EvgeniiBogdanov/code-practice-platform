@@ -1,41 +1,36 @@
-class LRUCache {
-  constructor(capacity) {
-    const cap = Math.floor(Number(capacity));
-    if (!Number.isFinite(cap) || cap <= 0) {
-      throw new RangeError("Capacity must be a positive integer");
+const memoize = (fn, ms) => {
+  const cache = new Map();
+  return (...args) => {
+    const key = JSON.stringify(args);
+    const now = Date.now();
+    if (cache.has(key)) {
+      const { value, expiry } = cache.get(key);
+      if (now < expiry) {
+        return value;
+      }
     }
-    this.capacity = cap;
-    this.cache = new Map();
-  }
+    const result = fn(...args);
+    cache.set(key, {
+      value: result,
+      expiry: now + ms,
+    });
+    return result;
+  };
+};
 
-  get(key) {
-    if (!this.cache.has(key)) {
-      return undefined;
-    }
-    const value = this.cache.get(key);
-    this.cache.delete(key);
-    this.cache.set(key, value);
-    return value;
-  }
+let callCount = 0;
+const slowSquare = (x) => {
+  callCount++;
+  return x * x;
+};
 
-  put(key, value) {
-    if (this.cache.has(key)) {
-      this.cache.delete(key);
-    } else if (this.cache.size >= this.capacity) {
-      const oldestKey = this.cache.keys().next().value;
-      this.cache.delete(oldestKey);
-    }
-    this.cache.set(key, value);
-  }
-}
+const memoSquare = memoize(slowSquare, 1000);
 
-// Пример вызова:
-const cache = new LRUCache(2);
-cache.put("a", 1);
-cache.put("b", 2);
-console.log(cache.get("a")); // 1 ('a' теперь самый свежий)
+console.log(memoSquare(5)); // 25, callCount = 1
+console.log(memoSquare(5)); // 25, callCount = 1 (взято из кэша)
+console.log(callCount);     // 1
 
-cache.put("c", 3); // емкость превышена! 'b' — самый старый, удаляется!
-console.log(cache.get("b")); // undefined
-console.log(cache.get("c")); // 3
-console.log(cache.get("a")); // 1
+setTimeout(() => {
+  console.log(memoSquare(5)); // 25, callCount = 2 (кэш устарел)
+  console.log(callCount);     // 2
+}, 1500);

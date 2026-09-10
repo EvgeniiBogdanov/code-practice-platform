@@ -1,9 +1,12 @@
-// Подсчет частоты символов в строке
-// Напишите функцию countCharFrequency(str), которая возвращает объект/карту частоты каждого символа в строке.
+// Напишите функцию countFrequency(arr), которая возвращает Map,
+// где ключ — элемент массива, значение — количество его вхождений.
+// Вход: ["a","b","a","c","b","a"]
+// Выход: Map { "a" => 3, "b" => 2, "c" => 1 }
 
-const countCharFrequency = (str) => {
-  // Решение тут
+const arr = ["a","b","a","c","b","a"];
+
+const countFrequency = (arr) => {
+  // Ваш код здесь
 };
 
-// Пример вызова:
-console.log(countCharFrequency("hello")); // Map(4) { 'h' => 1, 'e' => 1, 'l' => 2, 'o' => 1 }
+console.log(countFrequency(arr));

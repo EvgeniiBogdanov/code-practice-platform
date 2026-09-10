@@ -5,18 +5,18 @@ function Person(name) {
 }
 
 Person.prototype.greet = function () {
-  return `Hello, ${this.name}`;
+  return `Привет, я ${this.name}`;
 };
 
-const alice = new Person("Alice");
+const anna = new Person("Анна");
 
 Person.prototype = {
   greet() {
-    return `Hi, ${this.name}!`;
+    return `Здравствуйте, я ${this.name}`;
   },
 };
 
-const bob = new Person("Bob");
+const ivan = new Person("Иван");
 
-console.log(alice.greet());
-console.log(bob.greet());
+console.log(anna.greet());
+console.log(ivan.greet());

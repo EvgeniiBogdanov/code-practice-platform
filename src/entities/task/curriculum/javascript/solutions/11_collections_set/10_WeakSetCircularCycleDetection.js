@@ -1,5 +1,5 @@
-const hasCircularReference = (rootObj) => {
-  if (rootObj === null || typeof rootObj !== "object") {
+const hasCircularReference = (obj) => {
+  if (obj === null || typeof obj !== "object") {
     return false;
   }
 
@@ -25,25 +25,17 @@ const hasCircularReference = (rootObj) => {
       }
     }
 
+    visited.delete(current);
     return false;
   };
 
-  return traverse(rootObj);
+  return traverse(obj);
 };
 
 // Пример вызова:
-const acyclicTree = {
-  id: 1,
-  data: { values: [10, 20] },
-  config: { theme: "dark" },
-};
-console.log(hasCircularReference(acyclicTree)); // false
+const objA = { name: "A" };
+const objB = { name: "B", ref: objA };
+console.log(hasCircularReference(objB)); // false
 
-const cyclicObj = { name: "Root" };
-cyclicObj.self = cyclicObj;
-console.log(hasCircularReference(cyclicObj)); // true
-
-const complexCycleA = { name: "A" };
-const complexCycleB = { parent: complexCycleA };
-complexCycleA.child = complexCycleB;
-console.log(hasCircularReference(complexCycleA)); // true
+objA.ref = objB; // создали цикл: objA -> objB -> objA
+console.log(hasCircularReference(objA)); // true

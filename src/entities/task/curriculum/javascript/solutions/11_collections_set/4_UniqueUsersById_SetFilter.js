@@ -16,3 +16,8 @@ const getUniqueUsers = (users) => {
 
 // Пример вызова:
 console.log(getUniqueUsers(users));
+// [
+//   { id: 1, name: "Ann" },
+//   { id: 2, name: "Bob" },
+//   { id: 3, name: "Kate" }
+// ]

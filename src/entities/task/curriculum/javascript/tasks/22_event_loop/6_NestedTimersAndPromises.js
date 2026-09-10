@@ -1,13 +1,19 @@
 // Каков будет порядок вывода в консоль и почему?
 
-setTimeout(() => {
-  console.log("timer 1");
-  Promise.resolve().then(() => console.log("promise in timer 1"));
-}, 0);
+console.log("Начало");
 
-Promise.resolve().then(() => {
-  console.log("promise 1");
-  setTimeout(() => console.log("timer in promise 1"), 0);
+const promise1 = Promise.resolve().then(() => {
+  console.log("Промис 1");
+  setTimeout(() => {
+    console.log("Таймер 2");
+  }, 0);
 });
 
-console.log("sync log");
+const timer1 = setTimeout(() => {
+  console.log("Таймер 1");
+  Promise.resolve().then(() => {
+    console.log("Промис 2");
+  });
+}, 0);
+
+console.log("Конец");

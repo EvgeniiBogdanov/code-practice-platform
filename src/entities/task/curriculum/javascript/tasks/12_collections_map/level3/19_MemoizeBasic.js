@@ -6,7 +6,12 @@ const memoize = (fn) => {
 };
 
 // Пример вызова:
-const sum = (a, b) => a + b;
-const memoizedSum = memoize(sum);
-console.log(memoizedSum(1, 2)); // 3
-console.log(memoizedSum(1, 2)); // 3
+const add = (a, b) => {
+  console.log("Вычисляю...");
+  return a + b;
+};
+
+const memoizedAdd = memoize(add);
+console.log(memoizedAdd(2, 3)); // Выведет "Вычисляю..." и 5
+console.log(memoizedAdd(2, 3)); // Вернет 5 из кэша (без "Вычисляю...")
+

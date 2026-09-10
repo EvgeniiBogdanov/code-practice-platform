@@ -26,7 +26,7 @@ export const JS_ALGO_SUB_LABELS: Record<string, string> = {
   js196: "Hash Map: Lookup",
   js242: "Hash Map: Lookup",
   js83: "Hash Map: Set",
-  js241: "Hash Map: LRU Cache",
+  js241: "Hash Map: Memoization",
 
   // DFS: Bottom-Up
   js141: "DFS: Bottom-Up",

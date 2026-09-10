@@ -2,10 +2,11 @@
 
 const set = new Set([1, 2, 3, 4]);
 
-set.forEach((value) => {
-  if (value === 2) {
-    set.delete(2);
-    set.add(5);
+for (const v of set) {
+  console.log("iter", v);
+  if (v % 2 === 0) {
+    set.delete(v);
   }
-  console.log(value);
-});
+}
+
+console.log("final", [...set]);

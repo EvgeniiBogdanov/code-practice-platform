@@ -1,9 +1,17 @@
 // Каков будет порядок выполнения в цикле событий браузера?
 
-console.log("start");
+console.log("A");
 
-setTimeout(() => console.log("setTimeout 0"), 0);
+setTimeout(() => {
+  console.log("B");
+}, 0);
 
-Promise.resolve().then(() => console.log("microtask"));
+requestAnimationFrame(() => {
+  console.log("C");
+});
 
-console.log("end");
+Promise.resolve().then(() => {
+  console.log("D");
+});
+
+console.log("E");

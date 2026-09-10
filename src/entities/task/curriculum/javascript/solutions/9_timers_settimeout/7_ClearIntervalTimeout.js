@@ -10,3 +10,10 @@ const intervalId = setInterval(() => {
 setTimeout(() => {
   console.log("Timeout finished");
 }, 5000);
+
+// Порядок вывода в консоль:
+// Interval tick: 1 (через 1000 мс)
+// Interval tick: 2 (через 2000 мс)
+// Interval tick: 3 (через 3000 мс, затем clearInterval останавливает интервал)
+// Timeout finished (через 5000 мс)
+

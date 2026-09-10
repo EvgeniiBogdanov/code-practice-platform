@@ -1,15 +1,10 @@
-// Что выведет данный код в консоль и почему?
+// Дополните цепочку вызова fetchData(true) блоком .finally(), который выполняется всегда,
+// независимо от результата запроса, выводя в консоль "Запрос завершён".
 
-let isLoading = true;
+const fetchData = (shouldFail) =>
+  shouldFail ? Promise.reject("Ошибка сети") : Promise.resolve("Данные получены");
 
-Promise.resolve("Данные получены")
-  .then((data) => {
-    console.log(data);
-  })
-  .catch((err) => {
-    console.log("Ошибка:", err);
-  })
-  .finally(() => {
-    isLoading = false;
-    console.log("isLoading:", isLoading);
-  });
+// Решение тут:
+fetchData(true)
+  .then(console.log)
+  .catch(console.error);

@@ -8,7 +8,9 @@ class EventEmitter {
       this.events.set(event, []);
     }
     this.events.get(event).push(listener);
-    return () => this.off(event, listener);
+    return {
+      unsubscribe: () => this.off(event, listener),
+    };
   }
 
   off(event, listener) {
@@ -23,8 +25,8 @@ class EventEmitter {
   }
 
   once(event, listener) {
-    const remove = this.on(event, (...args) => {
-      remove();
+    const sub = this.on(event, (...args) => {
+      sub.unsubscribe();
       listener(...args);
     });
   }
@@ -32,5 +34,7 @@ class EventEmitter {
 
 // Пример вызова:
 const emitter = new EventEmitter();
-const unsubscribe = emitter.on("event", (data) => console.log("Received:", data));
-emitter.emit("event", "Hello!"); // Received: Hello!
+const sub = emitter.on("message", (msg) => console.log("Получено:", msg));
+emitter.emit("message", "Привет, мир!"); // "Получено: Привет, мир!"
+sub.unsubscribe();
+emitter.emit("message", "Снова привет"); // ничего не выводит

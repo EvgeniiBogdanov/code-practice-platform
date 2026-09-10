@@ -64,7 +64,6 @@ const TASK_PROBABILITY_OVERRIDES: Readonly<Record<string, number>> = {
   js171: 98, // EventEmitter / PubSub (once, unsubscribe, error handling)
   js218: 98, // deepClone with circular references (WeakMap) & Symbol keys
   js138: 96, // deepClone recursive
-  js219: 96, // deepEqual with nested structures, Maps, Sets, Dates
   js220: 95, // deepMerge
   js137: 97, // Array flatten deep (recursive & iterative stack)
   js66: 88, // Group product names by category via reduce
@@ -72,9 +71,6 @@ const TASK_PROBABILITY_OVERRIDES: Readonly<Record<string, number>> = {
   js234: 97, // Array.prototype.reduce polyfill
   js61: 95, // Array.prototype.map polyfill
   js62: 95, // Array.prototype.filter polyfill
-  js221: 97, // Function.prototype.myBind (new-binding & currying support)
-  js229: 94, // customNew (emulating `new` operator mechanics)
-  js230: 93, // customInstanceOf (prototype chain traversal)
 
   // === Concurrency, Async Control & Cancellation (92-98%) ===
   js116: 98, // Concurrency pool (p-limit, parallel promise limiter)
@@ -99,8 +95,6 @@ const TASK_PROBABILITY_OVERRIDES: Readonly<Record<string, number>> = {
   js175: 96, // IIFE, Promise, Microtasks
   js180: 94, // Timers & microtask interactions
   js181: 92, // requestAnimationFrame vs Event Loop rendering
-  js74: 95, // Closures in loops (var vs let, execution context)
-  js73: 88, // Closures scope output
   js72: 84, // Nested setTimeout output
   js75: 78, // Timeout cleanup
   js77: 75, // Custom timer implementation
@@ -129,7 +123,6 @@ const TASK_PROBABILITY_OVERRIDES: Readonly<Record<string, number>> = {
   js125: 94, // Once function wrapper
   js128: 88, // Call limiter
   js126: 86, // After wrapper
-  js127: 86, // Before wrapper
   js123: 88, // Counter with private closure
   js130: 87, // Method chaining pattern
   js124: 82, // Unique ID generator
@@ -159,21 +152,19 @@ const TASK_PROBABILITY_OVERRIDES: Readonly<Record<string, number>> = {
   js186: 96, // Type Coercion edge cases
   js187: 93, // Reference types & mutation traps
   js188: 92, // Object.is, || vs ??
-  js148: 96, // Context loss, arrow fns & bind
-  js150: 93, // Extract method to variable
+  js148: 96, // Context loss, regular vs arrow methods
+  js150: 93, // Extract method to variable & bind
   js151: 92, // Repeated bind
-  js153: 90, // Call method with changed context
-  js154: 88, // 'in' vs hasOwnProperty vs hasOwn
+  js153: 90, // Arrow function in async timer method
+  js154: 88, // 'in' vs Object.hasOwn
   js149: 86, // Prototype constructor overwrite
-  js152: 85, // Prototype by reference
-  js231: 82, // Classes & OOP private fields (#)
+  js152: 85, // Mutable property on prototype
 
   // === Strings, Patterns, DOM Utilities (80-91%) ===
   js178: 90, // ClassNames Polyfill
   js177: 88, // URL Query String parser & serializer
   js173: 91, // Reactive Signal / Observable
   js176: 85, // Template engine
-  js245: 84, // String.prototype.replaceAll polyfill
   js243: 82, // Unicode reverse (surrogate pairs)
   js244: 75, // Lexer tokenization
 

@@ -1,72 +1,23 @@
-// Слияние двух наборов данных по ID (Hash Join за O(N + M))
-
-const users = [
-  { id: 1, name: "Alice" },
-  { id: 2, name: "Bob" },
-  { id: 3, name: "Charlie" },
-];
-
-const orders = [
-  { orderId: 101, userId: 1, amount: 250 },
-  { orderId: 102, userId: 2, amount: 400 },
-  { orderId: 103, userId: 1, amount: 150 },
-];
-
-const hashJoin = (users, orders, options = {}) => {
-  const opts = options || {};
-  const userKey = opts.userKey || "id";
-  const orderKey = opts.orderKey || "userId";
-  const outputField = opts.outputField || "orders";
-
-  if (!Array.isArray(users)) return [];
-  if (!Array.isArray(orders)) {
-    return users.map((u) => (u && typeof u === "object" ? { ...u, [outputField]: [] } : u));
-  }
-
-  // 1. Построение хэш-таблицы (Build phase): O(M)
-  const ordersMap = new Map();
-
-  for (let i = 0; i < orders.length; i++) {
-    const order = orders[i];
-    if (order && typeof order === "object") {
-      const foreignId = order[orderKey];
-      if (foreignId !== undefined) {
-        let group = ordersMap.get(foreignId);
-        if (!group) {
-          group = [];
-          ordersMap.set(foreignId, group);
-        }
-        group.push(order);
-      }
+function memoize(fn) {
+  const cache = new Map();
+  return function (...args) {
+    const key = JSON.stringify(args);
+    if (cache.has(key)) {
+      return cache.get(key);
     }
-  }
+    const result = fn.apply(this, args);
+    cache.set(key, result);
+    return result;
+  };
+}
 
-  // 2. Слияние с основной коллекцией (Probe phase): O(N)
-  const result = new Array(users.length);
+// Пример использования:
+function sum(a, b) {
+  return a + b;
+}
 
-  for (let i = 0; i < users.length; i++) {
-    const user = users[i];
-    if (user && typeof user === "object") {
-      const primaryId = user[userKey];
-      const userOrders = (primaryId !== undefined ? ordersMap.get(primaryId) : null) || [];
+const memoizedSum = memoize(sum);
 
-      result[i] = {
-        ...user,
-        [outputField]: userOrders,
-      };
-    } else {
-      result[i] = user;
-    }
-  }
-
-  return result;
-};
-
-// Пример вызова:
-const result = hashJoin(users, orders, {
-  userKey: "id",
-  orderKey: "userId",
-  outputField: "orders",
-});
-
-console.log(result);
+console.log(memoizedSum(1, 2)); // 3 (вычислено)
+console.log(memoizedSum(1, 2)); // 3 (взято из кэша)
+console.log(memoizedSum(2, 1)); // 3 (вычислено заново, порядок другой)

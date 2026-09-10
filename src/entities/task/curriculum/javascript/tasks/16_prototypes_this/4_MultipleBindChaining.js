@@ -1,12 +1,13 @@
 // Что выведет данный код в консоль и почему?
 
-function show() {
-  console.log(this.x);
+function getInfo() {
+  return this.title;
 }
 
-const obj1 = { x: 10 };
-const obj2 = { x: 20 };
-const obj3 = { x: 30 };
+const obj1 = { title: "Книга 1" };
+const obj2 = { title: "Книга 2" };
 
-const bound = show.bind(obj1).bind(obj2).bind(obj3);
-bound();
+const bound1 = getInfo.bind(obj1);
+const bound2 = bound1.bind(obj2);
+
+console.log(bound2());

@@ -1,41 +1,26 @@
-// Слияние двух наборов данных по ключу (Hash Join за O(N + M))
-// Реализуйте функцию hashJoin(users, orders, options), которая объединяет два массива объектов по связующему ключу за линейное время O(N + M).
-//
-// Параметры options:
-// - userKey: поле в объекте пользователя (по умолчанию "id")
-// - orderKey: поле связи в объекте заказа (по умолчанию "userId")
-// - outputField: имя результирующего поля с массивом связанных заказов (по умолчанию "orders")
-//
-// Требования:
-// 1. Исходные массивы и объекты не должны мутироваться.
-// 2. Если у пользователя нет связанных заказов, в outputField должен быть пустой массив [].
+/** Напишите функцию memoize, которая оборачивает переданную функцию fn
+ * и кэширует результаты её вызовов.
+ *
+ * Требования:
+ * - Функция должна поддерживать любое количество аргументов
+ * - Аргументы — примитивы (числа, строки и т.д.)
+ * - Порядок аргументов важен: memoized(1, 2) и memoized(2, 1) должны
+ *   считаться разными вызовами и кэшироваться отдельно
+ * - При повторном вызове с теми же аргументами (в том же порядке) —
+ *   исходная функция fn не должна вызываться повторно, должен
+ *   возвращаться результат из кэша
+ */
+function memoize(fn) {
+  // Ваш код здесь
+}
 
-const users = [
-  { id: 1, name: "Alice" },
-  { id: 2, name: "Bob" },
-  { id: 3, name: "Charlie" },
-];
+// Пример использования:
+function sum(a, b) {
+  return a + b;
+}
 
-const orders = [
-  { orderId: 101, userId: 1, amount: 250 },
-  { orderId: 102, userId: 2, amount: 400 },
-  { orderId: 103, userId: 1, amount: 150 },
-];
+const memoizedSum = memoize(sum);
 
-const hashJoin = (users, orders, options = {}) => {
-  // Решение тут
-};
-
-// Пример вызова:
-const result = hashJoin(users, orders, {
-  userKey: "id",
-  orderKey: "userId",
-  outputField: "orders",
-});
-
-console.log(result);
-// [
-//   { id: 1, name: "Alice", orders: [ { orderId: 101, ... }, { orderId: 103, ... } ] },
-//   { id: 2, name: "Bob", orders: [ { orderId: 102, ... } ] },
-//   { id: 3, name: "Charlie", orders: [] }
-// ]
+console.log(memoizedSum(1, 2)); // 3 (вычислено)
+console.log(memoizedSum(1, 2)); // 3 (взято из кэша)
+console.log(memoizedSum(2, 1)); // 3 (вычислено заново, порядок другой)

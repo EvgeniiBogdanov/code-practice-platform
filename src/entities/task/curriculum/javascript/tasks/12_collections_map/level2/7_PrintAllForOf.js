@@ -1,12 +1,13 @@
-// Итерация по парам Map
-// Напишите функцию printMapEntries(map), которая выводит в консоль все пары в формате "ключ = значение".
+// Напишите функцию printAll(map), которая выводит все пары
+// в формате "ключ: значение", используя цикл for...of
+// Вывод:
+// fruit: apple
+// veg: carrot
 
-const printMapEntries = (map) => {
-  // Решение тут
+const map = new Map([["fruit", "apple"], ["veg", "carrot"]]);
+
+const printAll = (map) => {
+  // Ваш код здесь
 };
 
-// Пример вызова:
-const map = new Map([["a", 1], ["b", 2]]);
-printMapEntries(map);
-// a = 1
-// b = 2
+printAll(map);

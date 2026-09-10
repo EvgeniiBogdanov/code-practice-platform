@@ -18,7 +18,7 @@ const ALGORITHM_BADGES_BY_TASK_ID = [
   ["js96", "Hash Map: Frequency"],
   ["js99", "Hash Map: Grouping"],
   ["js196", "Hash Map: Lookup"],
-  ["js241", "Hash Map: LRU Cache"],
+  ["js241", "Hash Map: Memoization"],
   ["js242", "Hash Map: Lookup"],
   ["js133", "Базовый алгоритм"],
   ["js134", "Базовый алгоритм"],

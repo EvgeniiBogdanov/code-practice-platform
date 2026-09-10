@@ -6,5 +6,6 @@ const printAll = (map) => {
   }
 };
 
-// Пример вызова:
 printAll(map);
+// fruit: apple
+// veg: carrot
