@@ -24,6 +24,8 @@ const ALGO_TASK_PROBABILITIES: Readonly<Record<string, number>> = {
   algo3: 95, // 3Sum
   algo35: 95, // Move Zeroes
   algo36: 90, // Remove Duplicates from Sorted Array
+  algo37: 90, // Sort Array By Parity
+  algo38: 90, // Remove Element
 
   // Hash Map
   algo4: 98, // Two Sum
@@ -40,6 +42,7 @@ const ALGO_TASK_PROBABILITIES: Readonly<Record<string, number>> = {
   algo11: 80, // Range Sum Query - Immutable
   algo12: 92, // Subarray Sum Equals K
   algo13: 84, // Find Pivot Index
+  algo39: 76, // Running Sum of 1d Array
 
   // Binary Search
   algo14: 94, // Binary Search
@@ -51,6 +54,7 @@ const ALGO_TASK_PROBABILITIES: Readonly<Record<string, number>> = {
   algo18: 98, // Valid Parentheses
   algo19: 90, // Min Stack
   algo20: 90, // Daily Temperatures
+  algo40: 86, // Remove All Adjacent Duplicates in String
 
   // Linked List
   algo21: 95, // Reverse Linked List
@@ -62,17 +66,21 @@ const ALGO_TASK_PROBABILITIES: Readonly<Record<string, number>> = {
   algo25: 94, // Invert Binary Tree
   algo26: 90, // Same Tree
   algo27: 88, // Diameter of Binary Tree
+  algo41: 88, // Binary Tree Preorder Traversal
 
   // Breadth-First Search (BFS)
   algo28: 92, // Binary Tree Level Order Traversal
   algo29: 95, // Number of Islands
   algo30: 89, // Rotting Oranges
+  algo42: 86, // Minimum Depth of Binary Tree
+  algo43: 88, // Flood Fill
 
   // Backtracking
   algo31: 88, // Subsets
   algo32: 88, // Permutations
   algo33: 87, // Combination Sum
   algo34: 94, // Generate Parentheses
+  algo44: 75, // Generate Binary Strings
 };
 
 const inferFallbackAlgoProbability = (group: string): number => {

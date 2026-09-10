@@ -238,7 +238,7 @@ describe("taskRegistry", () => {
     expect(task14?.category).toBe("UI-компоненты и паттерны");
     expect(task14?.title).toContain("Автокомплит с клавиатурой");
     expect(task14?.rawCandidate).toContain("AutocompleteCombobox");
-    expect(task14?.rawCandidate).toContain("role=\"combobox\"");
+    expect(task14?.rawCandidate).toContain('role="combobox"');
     expect(task14?.rawSolution).toContain("highlightedIndex");
     expect(task14?.rawSolution).toContain("ArrowDown");
     expect(task14?.rawSolution).toContain("handleSelect");
@@ -305,7 +305,10 @@ describe("taskRegistry", () => {
     // Verify all exist in React section
     const reactTasks = await getTasksBySection("react");
     for (const id of [14, 15, 16, 17, 18]) {
-      expect(reactTasks.some((t) => t.id === id), `Task ${id} should be present in react tasks`).toBe(true);
+      expect(
+        reactTasks.some((t) => t.id === id),
+        `Task ${id} should be present in react tasks`
+      ).toBe(true);
     }
   });
   it("should retrieve React lifecycle tasks (a4, a5) with Company X metadata", async () => {
@@ -408,10 +411,9 @@ describe("taskRegistry", () => {
       const taskId = `r${i}`;
       const explanation = (TASK_EXPLANATIONS as Record<string, string>)[taskId];
       expect(explanation, `Explanation for ${taskId} should exist`).toBeDefined();
-      expect(
-        explanation.length,
-        `Explanation for ${taskId} should not be empty`
-      ).toBeGreaterThan(100);
+      expect(explanation.length, `Explanation for ${taskId} should not be empty`).toBeGreaterThan(
+        100
+      );
       expect(explanation).toMatch(/(?:суть задачи|разбор задачи)/i);
     }
   });
@@ -433,7 +435,9 @@ describe("taskRegistry", () => {
       expect(task?.solution || task?.rawSolution).toBeDefined();
       expect(task?.checklist && task.checklist.length).toBeGreaterThanOrEqual(3);
       expect(task?.articles && task.articles.length).toBeGreaterThanOrEqual(1);
-      expect(task?.interviewerQuestions && task.interviewerQuestions.length).toBeGreaterThanOrEqual(1);
+      expect(task?.interviewerQuestions && task.interviewerQuestions.length).toBeGreaterThanOrEqual(
+        1
+      );
 
       const explanation = (TASK_EXPLANATIONS as Record<string, string>)[taskId];
       expect(explanation, `Explanation for ${taskId} should exist`).toBeDefined();
@@ -523,11 +527,18 @@ describe("taskRegistry", () => {
     expect(task36?.explanation).toContain("Slow / Fast");
     expect(task36?.checklist?.length).toBeGreaterThanOrEqual(5);
 
+    const task37 = await getTaskById("algo37");
+    expect(task37).toBeDefined();
+    expect(task37?.id).toBe("algo37");
+    expect(task37?.group).toBe("Two Pointers");
+    expect(task37?.title).toContain("Sort Array By Parity");
+    expect(task37?.section).toBe("algorithms");
+    expect(task37?.rawCandidate).toContain("sortArrayByParity");
+    expect(task37?.rawSolution).toContain("sortArrayByParity");
+    expect(task37?.explanation).toContain("Partitioning");
+    expect(task37?.checklist?.length).toBeGreaterThanOrEqual(4);
+
     const algoTasks = await getTasksBySection("algorithms");
-    expect(algoTasks.some((t) => t.id === "algo35")).toBe(true);
-    expect(algoTasks.some((t) => t.id === "algo36")).toBe(true);
-    expect(algoTasks.length).toBe(36);
+    expect(algoTasks).toHaveLength(44);
   });
 });
-
-
