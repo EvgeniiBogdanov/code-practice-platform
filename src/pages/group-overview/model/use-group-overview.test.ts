@@ -17,10 +17,10 @@ describe("useGroupOverview - algorithms section", () => {
 
     expect(result.current.section).toBe("algorithms");
     expect(result.current.hasSubgroups).toBe(false);
-    expect(result.current.filteredTasks.length).toBe(5);
+    expect(result.current.filteredTasks.length).toBe(7);
 
     const taskIds = result.current.filteredTasks.map((t) => t.id);
-    expect(taskIds).toEqual(["algo1", "algo2", "algo3", "algo35", "algo36"]);
+    expect(taskIds).toEqual(["algo38", "algo36", "algo35", "algo2", "algo37", "algo1", "algo3"]);
 
     // Ensure no task in Two Pointers has a subgroup
     expect(result.current.filteredTasks.every((t) => !t.subgroup)).toBe(true);

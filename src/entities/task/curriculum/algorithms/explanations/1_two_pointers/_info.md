@@ -438,19 +438,29 @@ while (fast && fast.next) {
 
 ## 10. Практика: задачи для закрепления
 
-Рекомендуемый порядок для отработки навыка (от простого к сложному):
+Рекомендуемый порядок: сначала семейство паттерна, затем рост сложности внутри
+него.
 
-1. Reverse String / разворот массива на месте.
-2. Valid Palindrome (LeetCode #125) — *доступна на платформе*.
-3. Two Sum II — Input Array Is Sorted (LeetCode #167) — *доступна на платформе*.
-4. Remove Duplicates from Sorted Array (LeetCode #26) — *доступна на платформе*.
-5. Move Zeroes (LeetCode #283) — *доступна на платформе*.
-6. Container With Most Water (LeetCode #11).
-7. 3Sum (LeetCode #15) — усложнённая версия с фиксацией одного элемента
-   и Two Pointers по оставшейся части массива — *доступна на платформе*.
-8. Linked List Cycle (LeetCode #141) — вариант slow/fast для связного
+1. Remove Element (LeetCode #27) — минимальный шаблон `read / write`,
+   *доступна на платформе*.
+2. Remove Duplicates from Sorted Array (LeetCode #26) — сонаправленные
+   `slow / fast`, *доступна на платформе*.
+3. Move Zeroes (LeetCode #283) — усложнение того же `slow / fast`,
+   *доступна на платформе*.
+4. Merge Sorted Array (LeetCode #88) — параллельные указатели по двум
+   массивам.
+5. Linked List Cycle (LeetCode #141) — указатели с разной скоростью для связного
    списка.
-9. Merge Sorted Array (LeetCode #88) — два указателя по двум массивам.
+6. Reverse String — базовые встречные указатели.
+7. Valid Palindrome (LeetCode #125) — встречные указатели с пропуском символов,
+   *доступна на платформе*.
+8. Sort Array By Parity (LeetCode #905) — встречное разбиение массива,
+   *доступна на платформе*.
+9. Two Sum II — Input Array Is Sorted (LeetCode #167) — движение по условию
+   суммы, *доступна на платформе*.
+10. Container With Most Water (LeetCode #11) — жадный выбор движения указателя.
+11. 3Sum (LeetCode #15) — усложнённая версия с фиксацией одного элемента
+   и Two Pointers по оставшейся части массива — *доступна на платформе*.
 
 ## 11. Полезные материалы
 

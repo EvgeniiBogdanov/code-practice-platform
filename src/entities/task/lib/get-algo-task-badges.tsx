@@ -34,6 +34,8 @@ const ALGO_SUB_LABELS: Record<string, string> = {
   algo3: "Two Pointers: Classic",
   algo35: "Two Pointers: Slow / Fast",
   algo36: "Two Pointers: Slow / Fast",
+  algo37: "Two Pointers: Partitioning",
+  algo38: "Two Pointers: Read / Write",
   // Hash Map
   algo4: "Hash Map: Lookup",
   algo5: "Hash Map: Frequency",
@@ -47,6 +49,7 @@ const ALGO_SUB_LABELS: Record<string, string> = {
   algo11: "Prefix Sum: Array",
   algo12: "Prefix Sum: Hash Map",
   algo13: "Prefix Sum: Balance",
+  algo39: "Prefix Sum: Running",
   // Binary Search
   algo14: "Binary Search: Classic",
   algo15: "Binary Search: Insertion",
@@ -56,6 +59,7 @@ const ALGO_SUB_LABELS: Record<string, string> = {
   algo18: "Stack: LIFO",
   algo19: "Stack: Min Stack",
   algo20: "Stack: Monotonic",
+  algo40: "Stack: LIFO",
   // Linked List
   algo21: "Linked List: Reversal",
   algo22: "Linked List: Merge",
@@ -65,15 +69,19 @@ const ALGO_SUB_LABELS: Record<string, string> = {
   algo25: "DFS: Transformation",
   algo26: "DFS: Simultaneous",
   algo27: "DFS: Bottom-Up",
+  algo41: "DFS: Preorder",
   // Breadth-First Search
   algo28: "BFS: Level Order",
   algo29: "BFS: Flood Fill",
   algo30: "BFS: Multi-Source",
+  algo42: "BFS: Early Exit",
+  algo43: "BFS: Flood Fill",
   // Backtracking
   algo31: "Backtracking: Subsets",
   algo32: "Backtracking: Permutations",
   algo33: "Backtracking: Combinations",
   algo34: "Backtracking: Constraints",
+  algo44: "Backtracking: Binary Choice",
 };
 
 /**
