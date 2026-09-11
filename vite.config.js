@@ -62,6 +62,10 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
+          // Route availability must not pull trace builders into the initial task bundle.
+          if (id.includes("/algorithm-trace/config/available-visualizations.ts")) {
+            return "algorithm-availability";
+          }
           if (id.includes("@nivo") || id.includes("d3-") || id.includes("@react-spring")) {
             return;
           }

@@ -37,6 +37,11 @@ export const createTraceRecorder = (
       pointers: (detail.pointers ?? current.pointers).map((pointer) => ({ ...pointer })),
       settled: [...(detail.settled ?? current.settled ?? [])],
       dimmed: [...(detail.dimmed ?? current.dimmed ?? [])],
+      panels: (detail.panels ?? current.panels)?.map((panel) => ({
+        ...panel,
+        entries: panel.entries.map((entry) => ({ ...entry })),
+      })),
+      band: (detail.band ?? current.band) ? { ...(detail.band ?? current.band)! } : undefined,
       found: current.found?.map((tuple) => [...tuple]),
     });
   };

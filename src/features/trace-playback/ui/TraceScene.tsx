@@ -1,4 +1,5 @@
 import { useState, useCallback, type JSX } from "react";
+import { UiDataBoard } from "@/shared/ui/UiDataBoard";
 import { NumberScene } from "@/shared/ui/NumberScene";
 import type { TraceSceneProps } from "../model/trace-view";
 import { TraceSceneFallback } from "./TraceSceneFallback";
@@ -27,6 +28,8 @@ export const AlgorithmTraceScene = ({
         <TraceSceneFallback step={step} onRetry={() => setUnavailable(false)} />
       ) : (
         <NumberScene
+          shape={step.shape}
+          band={step.band}
           values={step.values}
           markers={step.pointers}
           focus={step.focus}
@@ -40,6 +43,15 @@ export const AlgorithmTraceScene = ({
         />
       )}
       <TracePointerLegend step={step} />
+      {step.panels?.map((panel, index) => (
+        <UiDataBoard
+          key={`${panel.kind}-${index}`}
+          label={panel.label}
+          variant={panel.kind}
+          entries={panel.entries}
+          reducedMotion={reducedMotion}
+        />
+      ))}
       {!unavailable && <span className={styles.srOnly}>Массив: {JSON.stringify(step.values)}</span>}
       {step.values.length > 8 && (
         <p className={styles.scrollHint}>

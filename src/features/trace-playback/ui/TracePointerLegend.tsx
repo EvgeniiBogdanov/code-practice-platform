@@ -17,6 +17,6 @@ export const TracePointerLegend = ({ step }: Pick<TraceExplanationProps, "step">
         </span>
       </span>
     ))}
-    <span className={styles.settledLegend}>Готовая часть</span>
+    {Boolean(step.settled?.length) && <span className={styles.settledLegend}>Готовая часть</span>}
   </div>
 );

@@ -13,7 +13,11 @@ export const TraceSceneFallback = ({ step, onRetry }: TraceFallbackProps): JSX.E
           className={clsx(
             styles.fallbackCell,
             step.focus?.includes(index) && styles.focusCell,
-            step.settled?.includes(index) && styles.settledCell
+            step.settled?.includes(index) && styles.settledCell,
+            step.dimmed?.includes(index) && styles.dimmedCell,
+            step.band && index >= step.band.start && index <= step.band.end && styles.bandCell,
+            step.shape === "token" && styles.tokenCell,
+            step.shape === "diamond" && styles.searchCell
           )}
         >
           <span>{value === " " ? "␣" : value}</span>

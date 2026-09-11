@@ -1,5 +1,6 @@
 import {
   CanvasTexture,
+  CylinderGeometry,
   Color,
   Group,
   Mesh,
@@ -9,7 +10,7 @@ import {
   SRGBColorSpace,
 } from "three";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
-import type { ScenePalette, SceneTile } from "../model/number-scene";
+import type { NumberSceneProps, ScenePalette, SceneTile } from "../model/number-scene";
 
 export const TILE_PITCH = 1.22;
 export const tileX = (index: number, count: number): number =>
@@ -62,9 +63,19 @@ export const disposeLabel = (label: Sprite): void => {
   label.removeFromParent();
 };
 
-export const makeTile = (index: number, count: number, palette: ScenePalette): SceneTile => {
+export const makeTile = (
+  index: number,
+  count: number,
+  palette: ScenePalette,
+  shape: NumberSceneProps["shape"] = "box"
+): SceneTile => {
   const group = new Group();
-  const geometry = new RoundedBoxGeometry(1.02, 0.94, 0.35, 3, 0.07);
+  const geometry =
+    shape === "token"
+      ? new CylinderGeometry(0.52, 0.52, 0.3, 32).rotateX(Math.PI / 2)
+      : shape === "diamond"
+        ? new CylinderGeometry(0.62, 0.62, 0.3, 4).rotateX(Math.PI / 2)
+        : new RoundedBoxGeometry(1.02, 0.94, 0.35, 3, 0.07);
   const material = new MeshStandardMaterial({
     color: new Color(palette.surface),
     roughness: 0.38,

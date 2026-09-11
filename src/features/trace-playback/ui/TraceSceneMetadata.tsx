@@ -7,9 +7,10 @@ export const TraceSceneMetadata = ({
   definition,
 }: Pick<TraceSceneProps, "step" | "definition">): JSX.Element => {
   const hintText = definition
-    ? definition.inputKind === "text"
-      ? "До 32 символов ASCII. ␣ обозначает пробел."
-      : `До 16 целых чисел. ${definition.inputKind === "sorted" ? "Массив по возрастанию. " : ""}Пустой массив: [].`
+    ? (definition.inputHint ??
+      (definition.inputKind === "text"
+        ? "До 32 символов ASCII. ␣ обозначает пробел."
+        : `До 16 целых чисел. ${definition.inputKind === "sorted" ? "Массив по возрастанию. " : ""}Пустой массив: [].`))
     : null;
 
   return (

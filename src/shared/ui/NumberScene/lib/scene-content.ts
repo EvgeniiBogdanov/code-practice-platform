@@ -1,11 +1,20 @@
-import { ConeGeometry, Group, Mesh, MeshBasicMaterial, Scene, Sprite, type Object3D } from "three";
+import {
+  BoxGeometry,
+  ConeGeometry,
+  Group,
+  Mesh,
+  MeshBasicMaterial,
+  Scene,
+  Sprite,
+  type Object3D,
+} from "three";
 import type {
   NumberSceneMarker,
   NumberSceneProps,
   ScenePalette,
   SceneTile,
 } from "../model/number-scene";
-import { makeLabel, makeTile, readScenePalette, tileX } from "./scene-objects";
+import { makeLabel, makeTile, readScenePalette, tileX, TILE_PITCH } from "./scene-objects";
 import { updateSceneTile } from "./update-scene-tile";
 
 export interface SceneContent {
@@ -68,14 +77,25 @@ export const createSceneContent = (scene: Scene, host: HTMLElement): SceneConten
   let markers: MarkerAnimation[] = [];
   const decorations = new Group();
   scene.add(decorations);
+  const band = new Mesh(
+    new BoxGeometry(1, 1.35, 0.08),
+    new MeshBasicMaterial({ transparent: true, opacity: 0.18, depthWrite: false })
+  );
+  band.position.z = -0.3;
+  band.visible = false;
+  scene.add(band);
+  let bandX = 0;
+  let bandWidth = 1;
   let previous: NumberSceneProps | undefined;
   const update = (props: NumberSceneProps): void => {
     const palette = readScenePalette(host);
     const positions = new Map(markers.map(({ group }) => [group.name, group.position.x]));
     decorations.children.slice().forEach(disposeSceneObject);
-    if (tiles.length !== props.values.length) {
+    if (tiles.length !== props.values.length || previous?.shape !== props.shape) {
       tiles.forEach(({ group }) => disposeSceneObject(group));
-      tiles = props.values.map((_, index) => makeTile(index, props.values.length, palette));
+      tiles = props.values.map((_, index) =>
+        makeTile(index, props.values.length, palette, props.shape)
+      );
       tiles.forEach(({ group }) => scene.add(group));
     }
     tiles.forEach((tile, index) =>
@@ -90,9 +110,24 @@ export const createSceneContent = (scene: Scene, host: HTMLElement): SceneConten
       )
     );
     markers.forEach(({ group }) => decorations.add(group));
+    const start = Math.max(0, props.band?.start ?? 0);
+    const end = Math.min(props.values.length - 1, props.band?.end ?? -1);
+    const wasVisible = band.visible;
+    band.visible = Boolean(props.band) && start <= end;
+    if (band.visible && props.band) {
+      bandX = tileX((start + end) / 2, props.values.length);
+      bandWidth = (end - start + 1) * TILE_PITCH;
+      band.material.color.set(palette[props.band.tone]);
+      if (props.reducedMotion || !wasVisible) {
+        band.position.x = bandX;
+        band.scale.x = bandWidth;
+      }
+    }
     previous = props;
   };
   const animate = (amount: number): void => {
+    band.position.x += (bandX - band.position.x) * amount;
+    band.scale.x += (bandWidth - band.scale.x) * amount;
     tiles.forEach((tile) => {
       tile.group.position.x += (tile.targetX - tile.group.position.x) * amount;
       tile.group.position.y += (tile.targetY - tile.group.position.y) * amount;
@@ -104,6 +139,7 @@ export const createSceneContent = (scene: Scene, host: HTMLElement): SceneConten
   const dispose = (): void => {
     tiles.forEach(({ group }) => disposeSceneObject(group));
     disposeSceneObject(decorations);
+    disposeSceneObject(band);
     tiles = [];
     markers = [];
   };
