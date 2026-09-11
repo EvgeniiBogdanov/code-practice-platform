@@ -84,3 +84,12 @@
   line-height: var(--lh-body);
   color: var(--accent-red);
 }
+
+.textParameter {
+  min-width: var(--trace-input-min-width);
+  flex: 1;
+}
+.textParameter .parameterInputContainer {
+  flex: 1;
+  min-width: var(--space-0);
+}

@@ -1,3 +1,4 @@
+import { clsx } from "clsx";
 import type { JSX } from "react";
 import { Input } from "@/shared/ui";
 import type { TraceParameterInputProps } from "../model/algorithm-input";
@@ -9,17 +10,23 @@ export const TraceParameterInput = ({
 }: TraceParameterInputProps): JSX.Element | null => {
   if (!props.definition.parameter) return null;
   return (
-    <label className={styles.parameter}>
+    <label
+      className={clsx(styles.parameter, props.definition.parameter === "t" && styles.textParameter)}
+    >
       <span className={styles.labelText}>{props.definition.parameter}</span>
       <Input
         containerClassName={styles.parameterInputContainer}
         size="md"
-        inputMode="numeric"
+        inputMode={
+          props.definition.parameter === "t" || props.definition.parameter === "left, right"
+            ? "text"
+            : "numeric"
+        }
         value={props.parameter}
         onChange={(event) => props.onParameter(event.target.value)}
         aria-invalid={Boolean(props.error)}
         aria-describedby={props.error ? errorId : undefined}
-        maxLength={16}
+        maxLength={props.definition.parameter === "t" ? 32 : 16}
       />
     </label>
   );

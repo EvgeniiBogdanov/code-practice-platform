@@ -23,7 +23,8 @@ export const TraceInputs = (props: TraceInputProps): JSX.Element => {
         />
         <label className={styles.dataField}>
           <span className={styles.labelText}>
-            {props.definition.inputKind === "text" ? "Строка" : "Массив"}
+            {props.definition.inputLabel ??
+              (props.definition.inputKind === "text" ? "Строка" : "Массив")}
           </span>
           <Input
             containerClassName={styles.dataInputContainer}

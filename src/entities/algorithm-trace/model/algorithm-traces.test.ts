@@ -26,8 +26,8 @@ const arrays = (length: number): number[][] =>
     : arrays(length - 1).flatMap((prefix) => [-2, 0, 1, 2].map((value) => [...prefix, value]));
 
 describe("algorithm traces", () => {
-  it("registers exactly the seven tasks and excludes unrelated routes", () => {
-    expect(VISUALIZED_ALGORITHM_IDS).toHaveLength(7);
+  it("registers all supported tasks and excludes unrelated routes", () => {
+    expect(VISUALIZED_ALGORITHM_IDS).toHaveLength(22);
     expect(hasAlgorithmVisualization("algo1", "algorithms")).toBe(true);
     expect(hasAlgorithmVisualization("algo1", "react")).toBe(false);
     expect(getAlgorithmDefinition("toString")).toBeUndefined();
@@ -47,7 +47,9 @@ describe("algorithm traces", () => {
         expect(last(trace).result).not.toBeUndefined();
         expect(new Set(trace.map((step) => step.id)).size).toBe(trace.length);
         expect(trace[0].values).toEqual(
-          definition.inputKind === "text" ? parsed.input.text.split("") : parsed.input.values
+          definition.inputKind === "text"
+            ? parsed.input.text.split("")
+            : (parsed.input.words ?? parsed.input.values)
         );
         trace.forEach((step) => {
           expect(step.line).toBeTruthy();

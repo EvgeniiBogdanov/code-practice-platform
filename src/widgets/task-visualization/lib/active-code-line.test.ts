@@ -7,7 +7,7 @@ import {
 import { getActiveCodeLine, getSolutionCode } from "./active-code-line";
 
 const sources = import.meta.glob<string>(
-  "/src/entities/task/curriculum/algorithms/solutions/1_two_pointers/*.js",
+  "/src/entities/task/curriculum/algorithms/solutions/{1_two_pointers,2_hash_map,3_sliding_window,4_prefix_sum,5_binary_search}/*.js",
   { query: "?raw", import: "default", eager: true }
 );
 const files: Record<string, string> = {
@@ -18,6 +18,21 @@ const files: Record<string, string> = {
   algo37: "6_SortArrayByParity.js",
   algo1: "1_TwoSumII.js",
   algo3: "3_ThreeSum.js",
+  algo4: "1_TwoSum.js",
+  algo5: "2_ValidAnagram.js",
+  algo6: "3_ContainsDuplicate.js",
+  algo7: "4_GroupAnagrams.js",
+  algo8: "1_LongestSubstring.js",
+  algo9: "2_MaxAverageSubarray.js",
+  algo10: "3_MinSizeSubarraySum.js",
+  algo11: "1_RangeSumQueryImmutable.js",
+  algo12: "2_SubarraySumEqualsK.js",
+  algo13: "3_FindPivotIndex.js",
+  algo14: "1_BinarySearch.js",
+  algo15: "2_SearchInsertPosition.js",
+  algo16: "3_FirstBadVersion.js",
+  algo17: "4_SearchInRotatedArray.js",
+  algo39: "4_RunningSum.js",
 };
 
 describe("trace to recommended solution mapping", () => {
@@ -25,7 +40,7 @@ describe("trace to recommended solution mapping", () => {
     "maps every step in every %s preset to a real source line",
     (id) => {
       const code = getSolutionCode(
-        sources[`/src/entities/task/curriculum/algorithms/solutions/1_two_pointers/${files[id]}`]
+        sources[Object.keys(sources).find((path) => path.endsWith(`/${files[id]}`))!]
       );
       const definition = getAlgorithmDefinition(id)!;
       for (const example of definition.examples) {

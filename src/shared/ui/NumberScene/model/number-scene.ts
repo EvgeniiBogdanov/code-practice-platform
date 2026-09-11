@@ -7,6 +7,12 @@ export interface NumberSceneMarker {
 }
 
 export interface NumberSceneProps {
+  readonly shape?: "box" | "token" | "diamond";
+  readonly band?: {
+    readonly start: number;
+    readonly end: number;
+    readonly tone: "primary" | "secondary" | "anchor";
+  };
   readonly values: readonly (number | string)[];
   readonly markers: readonly NumberSceneMarker[];
   readonly focus?: readonly number[];

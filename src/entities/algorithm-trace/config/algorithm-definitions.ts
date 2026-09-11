@@ -1,3 +1,7 @@
+import { hashDefinitions } from "./hash-definitions";
+import { windowDefinitions } from "./window-definitions";
+import { prefixDefinitions } from "./prefix-definitions";
+import { searchDefinitions } from "./search-definitions";
 import {
   buildMoveZeroesTrace,
   buildRemoveDuplicatesTrace,
@@ -12,7 +16,11 @@ import { buildThreeSumTrace } from "../model/three-sum-trace";
 import type { AlgorithmDefinition } from "../model/algorithm-trace";
 import type { VisualizedAlgorithmId } from "./available-visualizations";
 
-const definitions: Record<VisualizedAlgorithmId, AlgorithmDefinition> = {
+const definitions: Record<VisualizedAlgorithmId, AlgorithmDefinition> = /* @__PURE__ */ (() => ({
+  ...hashDefinitions,
+  ...windowDefinitions,
+  ...prefixDefinitions,
+  ...searchDefinitions,
   algo38: {
     pattern: "Чтение → запись",
     invariant: "До write — только оставленные числа. read проверяет каждый элемент.",
@@ -120,7 +128,7 @@ const definitions: Record<VisualizedAlgorithmId, AlgorithmDefinition> = {
       { id: "empty", label: "Пустой массив", input: "[]" },
     ],
   },
-};
+}))();
 
 export const getAlgorithmDefinition = (taskId: string): AlgorithmDefinition | undefined =>
   Object.hasOwn(definitions, taskId) ? definitions[taskId as VisualizedAlgorithmId] : undefined;

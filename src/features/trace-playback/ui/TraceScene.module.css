@@ -162,3 +162,16 @@
   color: var(--text-dimmed);
   font-size: var(--fs-caption);
 }
+
+.dimmedCell {
+  opacity: var(--trace-inactive-opacity);
+}
+.bandCell {
+  border-block-end: var(--space-1) solid var(--accent-blue);
+}
+.tokenCell {
+  border-radius: var(--radius-full);
+}
+.searchCell {
+  border-color: var(--accent-orange);
+}

@@ -9,6 +9,7 @@ export type {
   AlgorithmExample,
   AlgorithmInput,
   TracePointer,
+  TracePanel,
   TraceScene,
   TraceStep,
   TraceValue,

@@ -1,4 +1,5 @@
 :root {
+  --trace-inactive-opacity: 0.4;
   --trace-tile-surface: #2f2f2f;
   --trace-scene-height: 248px;
   --trace-scene-fullscreen-height: clamp(280px, 30vh, 380px);
