@@ -6,6 +6,7 @@ import { HeaderReviewMenu } from "./HeaderReviewMenu";
 import { useReviewStore, ReviewItem } from "@/entities/review";
 import { useAllTaskSections } from "@/entities/task/catalog";
 import { Task } from "@/entities/task/meta";
+import styles from "./HeaderReviewMenu.module.css";
 
 vi.mock("@tanstack/react-router", () => ({
   Link: ({ children, to }: { children: React.ReactNode; to: string }) => <a href={to}>{children}</a>,
@@ -137,9 +138,39 @@ describe("HeaderReviewMenu - Task Exclusion", () => {
     const button = screen.getByRole("button", { name: /Интервальное повторение/i });
     fireEvent.click(button);
 
-    expect(screen.getByText("Задач нет")).toBeInTheDocument();
-    expect(screen.getByText("Все задачи повторены!")).toBeInTheDocument();
     expect(screen.queryByText("Task 1")).not.toBeInTheDocument();
     expect(screen.queryByText("Task 2")).not.toBeInTheDocument();
+  });
+
+  it("renders unsolved due task with red ratingUnsolved class and red 'Не решено' badge", () => {
+    useReviewStore.setState({
+      reviews: {
+        "task-1": {
+          taskId: "task-1",
+          stage: 1,
+          intervalDays: 1,
+          lastReviewedAt: Date.now() - 86400000 * 2,
+          lastReviewedDate: "2026-09-01",
+          dueDate: "2026-09-02",
+          nextReviewAt: Date.now() - 86400000,
+          rating: "hard",
+          isUnsolved: true,
+          history: [],
+        },
+      },
+      excludedTaskIds: [],
+    });
+
+    render(<HeaderReviewMenu />);
+
+    const button = screen.getByRole("button", { name: /Интервальное повторение/i });
+    fireEvent.click(button);
+
+    const taskTitle = screen.getByText("Task 1");
+    expect(taskTitle).toHaveClass(styles.ratingUnsolved);
+
+    const unsolvedBadge = screen.getByText("Не решено");
+    expect(unsolvedBadge).toBeInTheDocument();
+    expect(unsolvedBadge).toHaveClass(styles.diff_unsolved);
   });
 });

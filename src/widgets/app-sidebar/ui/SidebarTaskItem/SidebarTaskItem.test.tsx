@@ -3,6 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { Tooltip } from "@/shared/ui";
 import { SidebarTaskItem } from "./SidebarTaskItem";
+import styles from "./SidebarTaskItem.module.css";
 
 vi.mock("@tanstack/react-router", () => ({
   Link: ({
@@ -99,5 +100,28 @@ describe("SidebarTaskItem", () => {
 
     expect(screen.queryByLabelText("Решено")).not.toBeInTheDocument();
     expect(screen.queryByLabelText("Не решено")).not.toBeInTheDocument();
+  });
+
+  it("applies ratingUnsolved class even when reviewRating is 'hard'", () => {
+    render(
+      <Tooltip.Provider>
+        <SidebarTaskItem
+          id="task-unsolved-hard"
+          to="/javascript/$taskId"
+          params={{ taskId: "task-unsolved-hard" }}
+          title="Нерешённая задача"
+          isActive={false}
+          isSolved={false}
+          isUnsolved={true}
+          isDue={false}
+          isExcluded={false}
+          reviewRating="hard"
+        />
+      </Tooltip.Provider>
+    );
+
+    const titleEl = screen.getByText("Нерешённая задача");
+    expect(titleEl).toHaveClass(styles.ratingUnsolved);
+    expect(titleEl).not.toHaveClass(styles.ratingHard);
   });
 });

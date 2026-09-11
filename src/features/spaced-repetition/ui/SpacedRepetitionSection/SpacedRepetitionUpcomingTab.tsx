@@ -3,7 +3,9 @@ import { Link } from "@tanstack/react-router";
 import { CalendarClock, ArrowRight, Clock, FileText } from "lucide-react";
 import { clsx } from "clsx";
 import { Task } from "@/entities/task";
+import { useProgressStore } from "@/entities/progress";
 import { Card, NotificationBadge, Tooltip } from "@/shared/ui";
+import { isDueTaskUnsolved } from "../../lib/sort-due-tasks";
 import { UpcomingTaskItem } from "../../lib/upcoming-helpers";
 import styles from "./SpacedRepetitionSection.module.css";
 
@@ -19,7 +21,12 @@ const getTaskPath = (t: Task): string => {
   return `/react/${t.id}`;
 };
 
-const getTaskRatingClass = (difficulty?: string, reviewRating?: string): string => {
+const getTaskRatingClass = (
+  difficulty?: string,
+  reviewRating?: string,
+  isUnsolved?: boolean
+): string => {
+  if (isUnsolved) return styles.ratingUnsolved;
   const r = reviewRating?.toLowerCase();
   if (r === "hard") return styles.ratingHard;
   if (r === "medium") return styles.ratingMedium;
@@ -36,6 +43,8 @@ const getTaskRatingClass = (difficulty?: string, reviewRating?: string): string 
 
 export const SpacedRepetitionUpcomingTab = memo(
   ({ upcomingTasks, scopeLabel, onNavigate }: SpacedRepetitionUpcomingTabProps) => {
+    const completedTasks = useProgressStore((state) => state.completedTasks);
+
     if (upcomingTasks.length === 0) {
       return (
         <Card variant="ghost" className={styles.emptyDueCard}>
@@ -52,9 +61,14 @@ export const SpacedRepetitionUpcomingTab = memo(
     return (
       <div className={styles.upcomingList}>
         {upcomingTasks.map((item) => {
-          const { task, review, stage, intervalDays, daysUntil, relativeTime, formattedDate } =
+          const { task, review, stage, daysUntil, relativeTime, formattedDate } =
             item;
 
+          const isUnsolved = isDueTaskUnsolved(
+            task.id,
+            { [String(task.id)]: review },
+            completedTasks
+          );
           const badgeVariant = daysUntil <= 2 ? "blue" : "neutral";
 
           return (
@@ -70,7 +84,7 @@ export const SpacedRepetitionUpcomingTab = memo(
                   <span
                     className={clsx(
                       styles.upcomingRowTitle,
-                      getTaskRatingClass(task.difficulty, review?.rating)
+                      getTaskRatingClass(task.difficulty, review?.rating, isUnsolved)
                     )}
                   >
                     {task.title}
@@ -79,12 +93,12 @@ export const SpacedRepetitionUpcomingTab = memo(
 
                 <div className={styles.upcomingRowRight}>
                   <NotificationBadge
-                    variant="neutral"
+                    variant={isUnsolved ? "red" : "neutral"}
                     pinned={false}
                     ring={false}
                     size="tab"
                   >
-                    Этап {stage}
+                    {isUnsolved ? "Не решено" : `Этап ${stage}`}
                   </NotificationBadge>
 
                   <Tooltip content={formattedDate} side="top">

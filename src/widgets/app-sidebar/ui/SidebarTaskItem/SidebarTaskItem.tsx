@@ -27,12 +27,12 @@ const getRatingClass = (
   isExcluded?: boolean
 ) => {
   if (isExcluded) return styles.taskTitleExcluded;
+  if (isUnsolved) return styles.ratingUnsolved;
   if (reviewRating === "hard") return styles.ratingHard;
   if (reviewRating === "medium") return styles.ratingMedium;
   if (reviewRating === "easy") return styles.ratingEasy;
 
   if (isSolved) return styles.ratingSolved;
-  if (isUnsolved) return styles.ratingUnsolved;
   return "";
 };
 

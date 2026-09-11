@@ -2,6 +2,7 @@ import React, { memo } from "react";
 import { Task } from "@/entities/task";
 import { isTaskCompleted, ProgressState } from "@/entities/progress";
 import { isTaskDue, ReviewItem, useReviewStore } from "@/entities/review";
+import { isDueTaskUnsolved } from "@/features/spaced-repetition";
 import { TaskListWrapper } from "@/shared/ui";
 import { SidebarTaskItem } from "./SidebarTaskItem";
 
@@ -24,7 +25,7 @@ export const SidebarTasksList = memo(
           const stringId = String(task.id);
           const isActive = stringId === currentTaskId;
           const isCompleted = isTaskCompleted(completedTasks[stringId]);
-          const isUnsolved = completedTasks[stringId] === "unsolved";
+          const isUnsolved = isDueTaskUnsolved(task.id, reviews, completedTasks);
           const rev = reviews[stringId];
           const isExcluded = excludedTaskIds.includes(stringId);
 
