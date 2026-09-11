@@ -5,7 +5,6 @@ node_modules/
 .yarn/unplugged/
 .yarn/build-state.yml
 .yarn/install-state.gz
-.playwright-mcp
 
 # Production / Build Output
 dist/
@@ -21,6 +20,7 @@ out/
 *.tsbuildinfo
 .turbo/
 .cache/
+.playwright-mcp/
 
 # Logs
 logs/
