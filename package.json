@@ -1,7 +1,7 @@
 {
   "name": "Code-Practice-Platform",
   "private": true,
-  "version": "2.3.84",
+  "version": "2.3.85",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -34,6 +34,7 @@
     "react-dom": "^19.2.8",
     "react-redux": "^9.3.0",
     "sucrase": "^3.35.1",
+    "three": "^0.186.0",
     "zustand": "^5.0.15"
   },
   "devDependencies": {
@@ -45,6 +46,7 @@
     "@testing-library/react": "^16.3.2",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
+    "@types/three": "^0.185.4",
     "@typescript-eslint/eslint-plugin": "^8.67.0",
     "@typescript-eslint/parser": "^8.67.0",
     "@typescript-eslint/utils": "^8.67.0",

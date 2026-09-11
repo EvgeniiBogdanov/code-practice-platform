@@ -7,6 +7,9 @@ export interface UIState {
   editorFontSize: number;
   editorWordWrap: boolean;
   editorSplitRatio: number;
+  visualizerSplitRatio: number;
+  visualizerZoom: number;
+  visualizerCodeFontSize: number;
   consoleFontSize: number;
   consoleCollapsed: boolean;
 
@@ -57,6 +60,16 @@ export interface UIState {
   toggleEditorWordWrap: () => void;
   setEditorSplitRatio: (ratio: number) => void;
   resetEditorSplitRatio: () => void;
+  setVisualizerSplitRatio: (ratio: number) => void;
+  resetVisualizerSplitRatio: () => void;
+  setVisualizerZoom: (zoom: number) => void;
+  increaseVisualizerZoom: () => void;
+  decreaseVisualizerZoom: () => void;
+  resetVisualizerZoom: () => void;
+  setVisualizerCodeFontSize: (size: number) => void;
+  increaseVisualizerCodeFontSize: () => void;
+  decreaseVisualizerCodeFontSize: () => void;
+  resetVisualizerCodeFontSize: () => void;
   setConsoleFontSize: (size: number) => void;
   increaseConsoleFontSize: () => void;
   decreaseConsoleFontSize: () => void;

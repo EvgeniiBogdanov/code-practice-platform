@@ -2,7 +2,7 @@ import { useCallback, useMemo, useRef, useTransition } from "react";
 import { useNavigate, useRouter } from "@tanstack/react-router";
 import { Task } from "@/entities/task";
 
-type EditorTab = "candidate" | "solution";
+type EditorTab = "candidate" | "solution" | "visualization";
 
 type FullscreenRoute =
   "/open/algorithms/$taskId" | "/open/javascript/$taskId" | "/open/react/$taskId";
@@ -50,7 +50,7 @@ export const getFullscreenNavigationTarget = ({
     params: { taskId: String(task.id) },
     search: {
       tab,
-      ...(hasVisualComponent ? {} : { view: "code" }),
+      ...(tab === "visualization" ? {} : hasVisualComponent ? {} : { view: "code" }),
     },
   };
 };

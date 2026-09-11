@@ -92,10 +92,14 @@ export const useReviewStore = create<ReviewState>((set, get) => ({
     }
   },
 
-  submitReview: async (taskId: string | number, rating: ReviewRating = "medium"): Promise<void> => {
+  submitReview: async (
+    taskId: string | number,
+    rating: ReviewRating = "medium",
+    isUnsolved = false
+  ): Promise<void> => {
     const stringId = String(taskId);
     const existing = get().reviews[stringId] || null;
-    const item = calculateNextReview(existing, rating);
+    const item = calculateNextReview(existing, rating, isUnsolved);
     item.taskId = stringId;
 
     set((state) => ({
@@ -172,7 +176,13 @@ export const useReviewStore = create<ReviewState>((set, get) => ({
         ...task,
         reviewData: reviews[String(task.id)],
       }))
-      .sort((a, b) => (a.reviewData?.nextReviewAt || 0) - (b.reviewData?.nextReviewAt || 0));
+      .sort((a, b) => {
+        const aUnsolved = Boolean(a.reviewData?.isUnsolved);
+        const bUnsolved = Boolean(b.reviewData?.isUnsolved);
+        if (aUnsolved && !bUnsolved) return -1;
+        if (!aUnsolved && bUnsolved) return 1;
+        return (a.reviewData?.nextReviewAt || 0) - (b.reviewData?.nextReviewAt || 0);
+      });
   },
 
   getMasteryStats: (customTaskList: ReviewTaskItem[] = []): MasteryStats => {

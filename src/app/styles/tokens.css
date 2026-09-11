@@ -530,3 +530,19 @@
   --hl-doctype: #57606a;
   --hl-entity: #0550ae;
 }
+
+:root {
+  --code-step-font-12: 12px;
+  --code-step-font-13: 13px;
+  --code-step-font-14: 14px;
+  --code-step-font-15: 15px;
+  --code-step-font-16: 16px;
+  --code-step-font-17: 17px;
+  --code-step-font-18: 18px;
+  --code-step-font-19: 19px;
+  --code-step-font-20: 20px;
+  --code-step-font-21: 21px;
+  --code-step-font-22: 22px;
+  --code-step-font-23: 23px;
+  --code-step-font-24: 24px;
+}

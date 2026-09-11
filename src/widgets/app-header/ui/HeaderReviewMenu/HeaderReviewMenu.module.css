@@ -191,6 +191,16 @@
   color: var(--text-muted);
 }
 
+.diff_unsolved {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--color-error);
+}
+
+[data-theme="light"] .diff_unsolved {
+  background: #fee2e2;
+  color: var(--color-error);
+}
+
 .emptyState {
   display: flex;
   align-items: center;
@@ -244,4 +254,12 @@
 
 [data-theme="light"] .ratingEasy {
   color: #16a34a !important;
+}
+
+.ratingUnsolved {
+  color: var(--color-error) !important;
+}
+
+[data-theme="light"] .ratingUnsolved {
+  color: var(--color-error) !important;
 }

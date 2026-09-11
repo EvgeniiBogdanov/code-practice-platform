@@ -19,6 +19,7 @@ export interface ReviewItem {
   nextReviewAt: number;
   userTimezone?: string;
   rating: ReviewRating;
+  isUnsolved?: boolean;
   history: ReviewHistoryEntry[];
 }
 
@@ -43,7 +44,11 @@ export interface ReviewState {
   assistantName: string;
   isInitialized: boolean;
   initReviews: () => Promise<void>;
-  submitReview: (taskId: string | number, rating?: ReviewRating) => Promise<void>;
+  submitReview: (
+    taskId: string | number,
+    rating?: ReviewRating,
+    isUnsolved?: boolean
+  ) => Promise<void>;
   removeReview: (taskId: string | number) => Promise<void>;
   toggleExcludeTask: (taskId: string | number) => Promise<void>;
   isTaskExcluded: (taskId: string | number) => boolean;

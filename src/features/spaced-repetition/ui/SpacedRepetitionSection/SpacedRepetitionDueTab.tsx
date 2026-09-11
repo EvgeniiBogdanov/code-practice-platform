@@ -4,7 +4,9 @@ import { CheckCircle2, ArrowRight, FileText } from "lucide-react";
 import { clsx } from "clsx";
 import { Task } from "@/entities/task";
 import { ReviewItem } from "@/entities/review";
+import { useProgressStore } from "@/entities/progress";
 import { Card, NotificationBadge } from "@/shared/ui";
+import { isDueTaskUnsolved } from "../../lib/sort-due-tasks";
 import styles from "./SpacedRepetitionSection.module.css";
 
 interface SpacedRepetitionDueTabProps {
@@ -20,7 +22,12 @@ const getTaskPath = (t: Task): string => {
   return `/react/${t.id}`;
 };
 
-const getTaskRatingClass = (difficulty?: string, reviewRating?: string): string => {
+const getTaskRatingClass = (
+  difficulty?: string,
+  reviewRating?: string,
+  isUnsolved?: boolean
+): string => {
+  if (isUnsolved) return styles.ratingUnsolved;
   const r = reviewRating?.toLowerCase();
   if (r === "hard") return styles.ratingHard;
   if (r === "medium") return styles.ratingMedium;
@@ -37,6 +44,8 @@ const getTaskRatingClass = (difficulty?: string, reviewRating?: string): string 
 
 export const SpacedRepetitionDueTab = memo(
   ({ dueTasks, reviews, scopeLabel, onNavigate }: SpacedRepetitionDueTabProps) => {
+    const completedTasks = useProgressStore((state) => state.completedTasks);
+
     if (dueTasks.length === 0) {
       return (
         <Card variant="ghost" className={styles.emptyDueCard}>
@@ -56,6 +65,7 @@ export const SpacedRepetitionDueTab = memo(
           const rev = reviews[String(task.id)];
           const stage = rev?.stage ?? 1;
           const intervalDays = rev?.intervalDays ?? 1;
+          const isUnsolved = isDueTaskUnsolved(task.id, reviews, completedTasks);
 
           return (
             <Link
@@ -70,7 +80,7 @@ export const SpacedRepetitionDueTab = memo(
                   <span
                     className={clsx(
                       styles.upcomingRowTitle,
-                      getTaskRatingClass(task.difficulty, rev?.rating)
+                      getTaskRatingClass(task.difficulty, rev?.rating, isUnsolved)
                     )}
                   >
                     {task.title}
@@ -79,12 +89,12 @@ export const SpacedRepetitionDueTab = memo(
 
                 <div className={styles.upcomingRowRight}>
                   <NotificationBadge
-                    variant="yellow"
+                    variant={isUnsolved ? "red" : "yellow"}
                     pinned={false}
                     ring={false}
                     size="tab"
                   >
-                    Этап {stage} • {intervalDays} дн.
+                    {isUnsolved ? "Не решено • 1 дн." : `Этап ${stage} • ${intervalDays} дн.`}
                   </NotificationBadge>
 
                   <ArrowRight size={13} className={styles.upcomingRowArrow} />

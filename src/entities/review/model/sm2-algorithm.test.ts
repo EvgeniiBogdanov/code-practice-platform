@@ -105,6 +105,14 @@ describe("sm2-algorithm", () => {
     expect(isTaskDue(futureItem)).toBe(false);
   });
 
+  it("should support isUnsolved flag with HARD rating", () => {
+    const item = calculateNextReview(null, RATINGS.HARD, true);
+    expect(item.stage).toBe(1);
+    expect(item.intervalDays).toBe(1);
+    expect(item.rating).toBe("hard");
+    expect(item.isUnsolved).toBe(true);
+  });
+
   it("should format next review date correctly", () => {
     expect(formatNextReviewDate(undefined, undefined)).toBe("Не запланировано");
     expect(formatNextReviewDate(Date.now() - 1000)).toBe("Пора повторить сегодня!");

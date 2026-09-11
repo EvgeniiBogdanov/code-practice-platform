@@ -1,0 +1,86 @@
+.inputs {
+  padding-inline: var(--space-5);
+  padding-block: var(--space-3) 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+}
+
+.inputRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: var(--space-3);
+  min-width: 0;
+  width: 100%;
+}
+
+.field,
+.dataField,
+.parameter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-caption);
+  color: var(--text-muted);
+  min-width: 0;
+}
+
+.labelText {
+  font-size: var(--fs-caption);
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+  user-select: none;
+  line-height: var(--lh-none);
+}
+
+.field {
+  flex: 1 1 var(--trace-select-width);
+  min-width: var(--trace-select-min-width);
+}
+
+.dataField {
+  flex: 2 1 var(--trace-input-width);
+  min-width: var(--trace-input-min-width);
+}
+
+.dataInputContainer {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+}
+
+.parameter {
+  flex: 0 0 auto;
+}
+
+.parameterInputContainer {
+  width: var(--trace-parameter-input-width);
+  flex-shrink: 0;
+}
+
+.dataField input,
+.parameter input {
+  font-family: var(--font-mono);
+}
+
+.apply {
+  flex-shrink: 0;
+  height: var(--trace-control-height);
+  white-space: nowrap;
+}
+
+.select {
+  height: var(--trace-control-height);
+  width: 100%;
+  flex: 1 1 auto;
+}
+
+.error {
+  font-size: var(--fs-caption);
+  margin: var(--space-2) var(--space-0) var(--space-0);
+  line-height: var(--lh-body);
+  color: var(--accent-red);
+}

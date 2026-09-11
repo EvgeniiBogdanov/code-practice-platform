@@ -1,3 +1,4 @@
+import { getTaskSolutionSource } from "@/entities/task";
 import React, { useCallback, useState, useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Home, FileQuestion, ArrowDown } from "lucide-react";
@@ -21,6 +22,7 @@ import {
 } from "@/shared/lib/storage";
 import { Tooltip, ErrorBoundary, ResizableSplitPane, UiLoader, ViewMode } from "@/shared/ui";
 import { useUIStore } from "@/entities/ui-state";
+import { TaskVisualization } from "@/widgets/task-visualization";
 import { useFullscreenExitTransition } from "../model/use-fullscreen-exit-transition";
 import styles from "./OpenEditorPage.module.css";
 
@@ -29,7 +31,7 @@ const MAX_CONSOLE_LOGS = 500;
 export interface OpenEditorPageProps {
   taskId?: string;
   section?: SectionType;
-  tab?: "candidate" | "solution";
+  tab?: "candidate" | "solution" | "visualization";
   initialViewMode?: ViewMode;
 }
 
@@ -86,7 +88,9 @@ export const OpenEditorPage = ({
     return solutionFiles.length > 0 && solutionFiles.some((f) => Boolean(f.code?.trim()));
   }, [task, solutionFiles]);
 
-  const [previewTarget, setPreviewTarget] = useState<"candidate" | "solution">(tab);
+  const [previewTarget, setPreviewTarget] = useState<"candidate" | "solution">(
+    tab === "solution" ? "solution" : "candidate"
+  );
 
   const hasVisualComponent = useMemo(
     () => (task ? hasTaskVisualComponent(task, files) : isReact),
@@ -122,7 +126,7 @@ export const OpenEditorPage = ({
     setActiveFileIdx(0);
     setIsConsoleVisible(true);
     setFiles(initialFiles);
-    setPreviewTarget(tab);
+    setPreviewTarget(tab === "solution" ? "solution" : "candidate");
     const hasVis = task ? hasTaskVisualComponent(task, initialFiles) : isReact;
     setViewMode(
       initialViewMode === "preview"
@@ -148,7 +152,7 @@ export const OpenEditorPage = ({
 
   // Load saved solution
   useEffect(() => {
-    if (!task) return;
+    if (!task || tab === "visualization") return;
     let isMounted = true;
     async function loadSaved() {
       const saved = await getUserSolution(
@@ -198,7 +202,7 @@ export const OpenEditorPage = ({
 
   // Listen for solution clearing (e.g. from settings reset)
   useEffect(() => {
-    if (!task) return;
+    if (!task || tab === "visualization") return;
     const unsubscribe = subscribeToSyncEvents((event) => {
       if (event.type === "SOLUTIONS_CLEARED") {
         const isCurrentTaskCleared =
@@ -221,6 +225,7 @@ export const OpenEditorPage = ({
 
   // Listen for console logs from sandbox iframe
   useEffect(() => {
+    if (tab === "visualization") return;
     const handleMessage = (e: MessageEvent) => {
       if (e.data && e.data.type === "SANDBOX_CONSOLE") {
         const text = String(e.data.text ?? "");
@@ -240,12 +245,12 @@ export const OpenEditorPage = ({
     };
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
-  }, []);
+  }, [tab]);
 
   // Track console visibility
   useEffect(() => {
     const el = consoleWrapperRef.current;
-    if (!el || isReact || viewMode === "preview") {
+    if (!el || isReact || viewMode === "preview" || tab === "visualization") {
       setIsConsoleVisible(true);
       return;
     }
@@ -380,7 +385,13 @@ export const OpenEditorPage = ({
   }, [handleExit]);
 
   if (taskId && isTaskLoading) {
-    return <UiLoader fullscreen={true} size="lg" label="Загружаем редактор" />;
+    return (
+      <UiLoader
+        fullscreen={true}
+        size="lg"
+        label={tab === "visualization" ? "Загружаем визуализатор" : "Загружаем редактор"}
+      />
+    );
   }
 
   if (taskId && !task) {
@@ -392,6 +403,24 @@ export const OpenEditorPage = ({
           <Home size={14} />
           <span>На главную</span>
         </button>
+      </div>
+    );
+  }
+
+  if (tab === "visualization" && task) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.mainContent}>
+          <ErrorBoundary>
+            <TaskVisualization
+              taskId={String(task.id)}
+              solution={getTaskSolutionSource(task)}
+              isFullscreen={true}
+              isActive={true}
+              onToggleFullscreen={handleExit}
+            />
+          </ErrorBoundary>
+        </div>
       </div>
     );
   }

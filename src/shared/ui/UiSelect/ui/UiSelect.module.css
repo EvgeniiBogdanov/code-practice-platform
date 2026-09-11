@@ -1,0 +1,25 @@
+.select {
+  min-width: var(--space-0);
+  border: var(--space-px) solid var(--border-color);
+  border-radius: var(--radius-lg);
+  color: var(--text-main);
+  background-color: var(--bg-input);
+  font: inherit;
+  font-size: var(--fs-caption);
+  padding-inline: var(--space-2) var(--space-6);
+  cursor: pointer;
+}
+.md {
+  height: var(--space-8);
+}
+.sm {
+  height: var(--space-6);
+  border-radius: var(--radius-md);
+}
+.select:hover {
+  border-color: var(--border-hover);
+}
+.select:focus-visible {
+  outline: var(--space-0-5) solid var(--accent-blue);
+  outline-offset: calc(-1 * var(--space-0-5));
+}

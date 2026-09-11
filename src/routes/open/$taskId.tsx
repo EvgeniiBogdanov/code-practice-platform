@@ -5,7 +5,7 @@ import { loadTaskSection } from "@/entities/task/catalog";
 import { getTaskSectionById } from "@/entities/task/meta";
 
 export interface OpenTaskSearch {
-  tab?: "candidate" | "solution";
+  tab?: "candidate" | "solution" | "visualization";
   view?: "preview" | "code";
 }
 
@@ -27,7 +27,12 @@ const OpenTaskRoute = () => {
 export const Route = createFileRoute("/open/$taskId")({
   loader: ({ params }) => loadTaskSection(getTaskSectionById(params.taskId)),
   validateSearch: (search: Record<string, unknown>): OpenTaskSearch => ({
-    tab: search.tab === "solution" ? "solution" : "candidate",
+    tab:
+      search.tab === "solution"
+        ? "solution"
+        : search.tab === "visualization"
+          ? "visualization"
+          : "candidate",
     view: search.view === "code" ? "code" : search.view === "preview" ? "preview" : undefined,
   }),
   component: OpenTaskRoute,

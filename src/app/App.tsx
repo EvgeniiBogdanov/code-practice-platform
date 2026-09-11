@@ -5,6 +5,7 @@ import { UiLoader } from "@/shared/ui";
 import { AppProviders } from "./providers";
 import "./styles/reset.css";
 import "./styles/tokens.css";
+import "./styles/trace-tokens.css";
 import "./styles/global.css";
 
 export const router = createRouter({

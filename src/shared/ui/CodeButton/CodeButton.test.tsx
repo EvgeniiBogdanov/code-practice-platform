@@ -37,4 +37,10 @@ describe("CodeButton", () => {
     const button = screen.getByRole("button", { name: /active btn/i });
     expect(button.className).toContain("active");
   });
+
+  it("applies primary variant correctly", () => {
+    render(<CodeButton variant="primary">Primary Btn</CodeButton>);
+    const button = screen.getByRole("button", { name: /primary btn/i });
+    expect(button.className).toContain("variant_primary");
+  });
 });

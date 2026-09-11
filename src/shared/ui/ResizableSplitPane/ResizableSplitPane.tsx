@@ -14,6 +14,7 @@ export interface ResizableSplitPaneProps {
   className?: string;
   disabled?: boolean;
   ariaLabel?: string;
+  layout?: "split" | "stack";
 }
 
 const DEFAULT_MIN = 20;
@@ -32,6 +33,7 @@ export const ResizableSplitPane = memo(
     className,
     disabled = false,
     ariaLabel = "Разделитель панелей кода и интерфейса",
+    layout = "split",
   }: ResizableSplitPaneProps): React.JSX.Element => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [isDragging, setIsDragging] = useState(false);
@@ -142,48 +144,59 @@ export const ResizableSplitPane = memo(
       [disabled, handleDoubleClick, localRatio, maxLeftPercent, minLeftPercent, updateRatio]
     );
 
+    const isStacked = layout === "stack";
+
     return (
       <div
         ref={containerRef}
-        className={clsx(styles.splitContainer, isDragging && styles.isDragging, className)}
+        className={clsx(
+          styles.splitContainer,
+          isStacked && styles.stacked,
+          isDragging && styles.isDragging,
+          className
+        )}
       >
         <div
-          className={clsx(styles.pane, styles.leftPane)}
-          style={{ width: `${localRatio}%` }}
+          className={clsx(styles.pane, styles.leftPane, isStacked && styles.stackedPane)}
+          style={isStacked ? undefined : { width: `${localRatio}%` }}
         >
           {left}
         </div>
 
-        <Tooltip
-          content="Потяните для изменения пропорции (двойной клик — сброс 70/30)"
-          side="top"
-        >
-          <div
-            role="separator"
-            tabIndex={disabled ? -1 : 0}
-            aria-label={ariaLabel}
-            aria-orientation="vertical"
-            aria-valuenow={Math.round(localRatio)}
-            aria-valuemin={minLeftPercent}
-            aria-valuemax={maxLeftPercent}
-            className={styles.resizer}
-            onPointerDown={handlePointerDown}
-            onPointerMove={handlePointerMove}
-            onPointerUp={handlePointerUp}
-            onPointerCancel={handlePointerUp}
-            onDoubleClick={handleDoubleClick}
-            onKeyDown={handleKeyDown}
+        {!isStacked && (
+          <Tooltip
+            content="Потяните для изменения пропорции (двойной клик — сброс 70/30)"
+            side="top"
           >
-            <div className={styles.resizerBar} />
-            <div className={styles.resizerGrip}>
-              <div className={styles.gripDots} />
+            <div
+              role="separator"
+              tabIndex={disabled ? -1 : 0}
+              aria-label={ariaLabel}
+              aria-orientation="vertical"
+              aria-valuenow={Math.round(localRatio)}
+              aria-valuemin={minLeftPercent}
+              aria-valuemax={maxLeftPercent}
+              className={styles.resizer}
+              onPointerDown={handlePointerDown}
+              onPointerMove={handlePointerMove}
+              onPointerUp={handlePointerUp}
+              onPointerCancel={handlePointerUp}
+              onDoubleClick={handleDoubleClick}
+              onKeyDown={handleKeyDown}
+            >
+              <div className={styles.resizerBar} />
+              <div className={styles.resizerGrip}>
+                <div className={styles.gripDots} />
+              </div>
             </div>
-          </div>
-        </Tooltip>
+          </Tooltip>
+        )}
 
-        <div className={clsx(styles.pane, styles.rightPane)}>{right}</div>
+        <div className={clsx(styles.pane, styles.rightPane, isStacked && styles.stackedPane)}>
+          {right}
+        </div>
 
-        {isDragging && <div className={styles.dragOverlay} aria-hidden="true" />}
+        {isDragging && !isStacked && <div className={styles.dragOverlay} aria-hidden="true" />}
       </div>
     );
   }

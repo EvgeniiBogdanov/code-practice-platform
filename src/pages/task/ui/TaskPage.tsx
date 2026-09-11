@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Play, CheckCircle, BookOpen, HelpCircle, ListChecks } from "lucide-react";
+import { Play, CheckCircle, BookOpen, HelpCircle, ListChecks, Box } from "lucide-react";
 import { clsx } from "clsx";
 import { TaskDifficultyBadge, TaskMetaBadges } from "@/entities/task";
 import type { SectionType } from "@/entities/task/meta";
@@ -9,6 +9,8 @@ import { useProgressStore, isTaskCompleted } from "@/entities/progress";
 import { useReviewStore } from "@/entities/review";
 import { TaskReviewRatingBar, TaskExcludeButton } from "@/features/spaced-repetition";
 import { TaskFavoriteButton } from "@/features/task-favorite";
+import { preloadTaskVisualization } from "@/widgets/task-visualization";
+import { hasAlgorithmVisualization } from "@/entities/algorithm-trace";
 import {
   TaskButton,
   NotificationBadge,
@@ -17,14 +19,13 @@ import {
   UiSkeleton,
 } from "@/shared/ui";
 import { TaskTabSkeleton } from "./skeletons";
+import { TaskVisualizationTab } from "./TaskVisualizationTab";
 import { CandidateTab } from "./CandidateTab";
 import { SolutionTab } from "./SolutionTab";
 import { ChecklistTab } from "./ChecklistTab";
 import { MaterialsTab } from "./MaterialsTab";
 import { QuestionsTab } from "./QuestionsTab";
 import styles from "./TaskPage.module.css";
-
-
 
 export interface TaskPageProps {
   taskId: string;
@@ -36,10 +37,14 @@ export const TaskPage = React.memo<TaskPageProps>(
   ({ taskId, section, initialTab }: TaskPageProps): React.JSX.Element => {
     const navigate = useNavigate();
     const { task, isLoading } = useTaskById(taskId, section);
-    const [activeTab, setActiveTab] = useState(initialTab || "candidate");
+    const [requestedTab, setActiveTab] = useState(initialTab || "candidate");
+    const hasVisualization = hasAlgorithmVisualization(taskId, section);
+    const activeTab =
+      requestedTab === "visualization" && !hasVisualization ? "candidate" : requestedTab;
 
     const completedTasks = useProgressStore((state) => state.completedTasks);
     const setTaskStatus = useProgressStore((state) => state.setTaskStatus);
+    const submitReview = useReviewStore((state) => state.submitReview);
     const removeReview = useReviewStore((state) => state.removeReview);
     const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
 
@@ -67,12 +72,15 @@ export const TaskPage = React.memo<TaskPageProps>(
         to: ".",
         search: (prev: Record<string, unknown>) => ({ ...prev, tab: tabId }),
         replace: true,
+        resetScroll: false,
       });
     };
 
     const isExcluded = task ? excludedTaskIds.includes(String(task.id)) : false;
-    const isCompleted = task && !isExcluded ? isTaskCompleted(completedTasks?.[String(task.id)]) : false;
-    const isUnsolved = task && !isExcluded ? completedTasks?.[String(task.id)] === "unsolved" : false;
+    const isCompleted =
+      task && !isExcluded ? isTaskCompleted(completedTasks?.[String(task.id)]) : false;
+    const isUnsolved =
+      task && !isExcluded ? completedTasks?.[String(task.id)] === "unsolved" : false;
 
     const handleToggleSolved = async () => {
       if (!task || isExcluded) return;
@@ -88,6 +96,8 @@ export const TaskPage = React.memo<TaskPageProps>(
       const nextStatus = isUnsolved ? null : "unsolved";
       await setTaskStatus(task.id, nextStatus);
       if (nextStatus) {
+        await submitReview(task.id, "hard", true);
+      } else {
         await removeReview(task.id);
       }
     };
@@ -135,6 +145,12 @@ export const TaskPage = React.memo<TaskPageProps>(
         badgeVariant: "neutral",
       },
     ];
+    if (hasVisualization)
+      tabs.splice(2, 0, {
+        id: "visualization",
+        label: "Визуализация",
+        icon: <Box size={14} className={styles.tabIcon} />,
+      });
 
     return (
       <div className={styles.pageContainer}>
@@ -146,7 +162,10 @@ export const TaskPage = React.memo<TaskPageProps>(
                 <h1 className={styles.taskDetailTitle}>
                   <span className={styles.taskDetailTitleText}>{task.title}</span>
                   {task.section !== "javascript" && task.difficulty && (
-                    <TaskDifficultyBadge difficulty={task.difficulty} className={styles.titleBadge} />
+                    <TaskDifficultyBadge
+                      difficulty={task.difficulty}
+                      className={styles.titleBadge}
+                    />
                   )}
                 </h1>
                 <TaskMetaBadges task={task} />
@@ -231,7 +250,7 @@ export const TaskPage = React.memo<TaskPageProps>(
 
           {/* Единый контейнер вкладок и содержимого: ВСЕГДА СТАТИЧНЫЙ, НИКАКИХ ПЕРЕРИСОВОК ИЛИ СКЕЛЕТОНОВ */}
           <div className={styles.tabsContainer}>
-            <div className={styles.tabsHeader} role="tablist">
+            <div className={styles.tabsHeader} role="tablist" aria-label="Разделы задачи">
               {tabs.map((tab) => {
                 const isActive = activeTab === tab.id;
                 const tabModifier = styles[`tab_${tab.id}`];
@@ -241,9 +260,15 @@ export const TaskPage = React.memo<TaskPageProps>(
                     key={tab.id}
                     type="button"
                     role="tab"
+                    id={`task-tab-${tab.id}`}
+                    aria-controls="task-tab-panel"
                     aria-selected={isActive}
                     className={clsx(styles.tabLink, tabModifier, isActive && styles.tabActive)}
                     onClick={() => handleTabChange(tab.id)}
+                    onPointerEnter={
+                      tab.id === "visualization" ? preloadTaskVisualization : undefined
+                    }
+                    onFocus={tab.id === "visualization" ? preloadTaskVisualization : undefined}
                   >
                     {tab.icon}
                     <span className={styles.tabLabel}>{tab.label}</span>
@@ -261,13 +286,25 @@ export const TaskPage = React.memo<TaskPageProps>(
               })}
             </div>
 
-            <div className={styles.tabsContent}>
+            <div
+              className={styles.tabsContent}
+              id="task-tab-panel"
+              role="tabpanel"
+              aria-labelledby={`task-tab-${activeTab}`}
+            >
               {!task ? (
                 <TaskTabSkeleton tab={activeTab} />
               ) : (
                 <React.Suspense fallback={<TaskTabSkeleton tab={activeTab} task={task} />}>
                   {activeTab === "candidate" && <CandidateTab task={task} />}
                   {activeTab === "solution" && <SolutionTab task={task} />}
+                  {hasVisualization && (
+                    <TaskVisualizationTab
+                      key={taskId}
+                      task={task}
+                      active={activeTab === "visualization"}
+                    />
+                  )}
                   {activeTab === "materials" && <MaterialsTab task={task} />}
                   {activeTab === "questions" && <QuestionsTab task={task} />}
                   {activeTab === "checklist" && <ChecklistTab task={task} />}

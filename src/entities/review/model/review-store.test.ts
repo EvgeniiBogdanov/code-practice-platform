@@ -92,6 +92,60 @@ describe("useReviewStore - Task Exclusion", () => {
     expect(useReviewStore.getState().getDueTasks(tasks).length).toBe(0);
   });
 
+  it("prioritizes unsolved tasks at the top in getDueTasks", async () => {
+    const solvedReview: ReviewItem = {
+      taskId: "task-solved",
+      stage: 1,
+      intervalDays: 1,
+      lastReviewedAt: Date.now() - 86400000 * 3,
+      lastReviewedDate: "2026-09-01",
+      dueDate: "2026-09-02",
+      nextReviewAt: Date.now() - 86400000 * 2, // earlier / more overdue
+      rating: "hard",
+      isUnsolved: false,
+      history: [],
+    };
+
+    const unsolvedReview: ReviewItem = {
+      taskId: "task-unsolved",
+      stage: 1,
+      intervalDays: 1,
+      lastReviewedAt: Date.now() - 86400000,
+      lastReviewedDate: "2026-09-03",
+      dueDate: "2026-09-04",
+      nextReviewAt: Date.now() - 86400000, // later than task-solved
+      rating: "hard",
+      isUnsolved: true,
+      history: [],
+    };
+
+    useReviewStore.setState({
+      reviews: {
+        "task-solved": solvedReview,
+        "task-unsolved": unsolvedReview,
+      },
+      excludedTaskIds: [],
+    });
+
+    const tasks = [{ id: "task-solved" }, { id: "task-unsolved" }];
+    const due = useReviewStore.getState().getDueTasks(tasks);
+
+    expect(due.length).toBe(2);
+    // Unsolved task must be first despite later nextReviewAt
+    expect(due[0].id).toBe("task-unsolved");
+    expect(due[1].id).toBe("task-solved");
+  });
+
+  it("saves review with isUnsolved flag when submitted", async () => {
+    await useReviewStore.getState().submitReview("task-unsolved-new", "hard", true);
+    const rev = useReviewStore.getState().reviews["task-unsolved-new"];
+    expect(rev).toBeDefined();
+    expect(rev?.stage).toBe(1);
+    expect(rev?.intervalDays).toBe(1);
+    expect(rev?.rating).toBe("hard");
+    expect(rev?.isUnsolved).toBe(true);
+  });
+
   it("excludes excluded tasks from mastery stats calculations", () => {
     const mockReview: ReviewItem = {
       taskId: "task-1",

@@ -1,0 +1,85 @@
+.range {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  height: var(--space-4);
+  cursor: pointer;
+  margin: 0;
+  vertical-align: middle;
+}
+.range:focus {
+  outline: none;
+}
+.range::-webkit-slider-runnable-track {
+  width: 100%;
+  height: var(--space-1);
+  background: var(--border-strong);
+  border-radius: var(--radius-full);
+  transition: background var(--transition-fast);
+}
+.range:hover::-webkit-slider-runnable-track {
+  background: var(--border-hover);
+}
+.range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--space-2-5);
+  height: var(--space-2-5);
+  border-radius: var(--radius-full);
+  background: var(--accent-blue);
+  border: none;
+  margin-top: calc(var(--space-px) - var(--space-1));
+  transition:
+    transform var(--transition-fast),
+    background var(--transition-fast);
+}
+.range:hover::-webkit-slider-thumb {
+  background: var(--accent-blue-hover);
+  transform: scale(1.15);
+}
+.range:active::-webkit-slider-thumb {
+  transform: scale(1.25);
+}
+.range:focus-visible::-webkit-slider-thumb {
+  box-shadow:
+    0 0 0 var(--space-0-5) var(--bg-editor-status),
+    0 0 0 var(--space-1) var(--accent-blue);
+}
+.range::-moz-range-track {
+  width: 100%;
+  height: var(--space-1);
+  background: var(--border-strong);
+  border-radius: var(--radius-full);
+  border: none;
+  transition: background var(--transition-fast);
+}
+.range:hover::-moz-range-track {
+  background: var(--border-hover);
+}
+.range::-moz-range-thumb {
+  width: var(--space-2-5);
+  height: var(--space-2-5);
+  border-radius: var(--radius-full);
+  background: var(--accent-blue);
+  border: none;
+  transition:
+    transform var(--transition-fast),
+    background var(--transition-fast);
+}
+.range:hover::-moz-range-thumb {
+  background: var(--accent-blue-hover);
+  transform: scale(1.15);
+}
+.range:active::-moz-range-thumb {
+  transform: scale(1.25);
+}
+.range:focus-visible::-moz-range-thumb {
+  box-shadow:
+    0 0 0 var(--space-0-5) var(--bg-editor-status),
+    0 0 0 var(--space-1) var(--accent-blue);
+}
+.range::-moz-range-progress {
+  background: var(--accent-blue);
+  height: var(--space-1);
+  border-radius: var(--radius-full);
+}

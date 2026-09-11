@@ -1,0 +1,25 @@
+:root {
+  --trace-tile-surface: #2f2f2f;
+  --trace-scene-height: 248px;
+  --trace-scene-fullscreen-height: clamp(280px, 30vh, 380px);
+  --trace-code-height: 220px;
+  --trace-code-max-height: 440px;
+  --trace-select-min-width: 140px;
+  --trace-input-min-width: 160px;
+  --trace-parameter-input-width: 64px;
+  --trace-select-width: 190px;
+  --trace-input-width: 200px;
+  --trace-parameter-width: 70px;
+  --trace-control-height: 34px;
+  --trace-play-width: 112px;
+  --trace-timeline-width: 90px;
+  --trace-speed-width: 64px;
+  --trace-explanation-height: 102px;
+  --trace-explanation-mobile-height: 144px;
+  --trace-copy-width: 80ch;
+  --trace-fallback-cell: 54px;
+}
+
+[data-theme="light"] {
+  --trace-tile-surface: #c1c6ce;
+}

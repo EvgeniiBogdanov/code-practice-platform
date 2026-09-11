@@ -1,5 +1,6 @@
 export * from "./model";
 export * from "./lib/upcoming-helpers";
+export * from "./lib/sort-due-tasks";
 export * from "./ui/DueTasksBadge";
 export * from "./ui/MasteryProgress";
 export * from "./ui/TaskReviewRatingBar";

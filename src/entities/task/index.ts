@@ -21,3 +21,5 @@ export {
   getAlgoGroupMetaByInfoId,
 } from "./curriculum/algorithms/data/groupConfig";
 export { loadTaskExplanations, getCachedTaskExplanation } from "./model/task-explanations";
+
+export { getTaskSolutionSource } from "./lib/get-task-solution-source";
