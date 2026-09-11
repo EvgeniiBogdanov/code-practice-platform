@@ -1,0 +1,10 @@
+.controls {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-0-5);
+}
+.value {
+  min-width: var(--space-8);
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+}

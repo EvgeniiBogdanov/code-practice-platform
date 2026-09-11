@@ -160,4 +160,47 @@ describe("TaskPage - Status Buttons", () => {
     expect(setTaskStatusSpy).not.toHaveBeenCalled();
     expect(useProgressStore.getState().completedTasks["test-task-1"]).toBeUndefined();
   });
+
+  it("submits review with 'hard' and isUnsolved=true when clicking 'Не решено'", async () => {
+    const submitReviewSpy = vi.spyOn(useReviewStore.getState(), "submitReview");
+    const setTaskStatusSpy = vi.spyOn(useProgressStore.getState(), "setTaskStatus");
+
+    render(
+      <Tooltip.Provider>
+        <TaskPage taskId="test-task-1" section="javascript" />
+      </Tooltip.Provider>
+    );
+
+    const unsolvedButton = screen.getByRole("button", { name: "Не решено" });
+    fireEvent.click(unsolvedButton);
+
+    await vi.waitFor(() => {
+      expect(setTaskStatusSpy).toHaveBeenCalledWith("test-task-1", "unsolved");
+      expect(submitReviewSpy).toHaveBeenCalledWith("test-task-1", "hard", true);
+    });
+  });
+
+  it("removes review when unchecking 'Не решено'", async () => {
+    useProgressStore.setState({
+      completedTasks: { "test-task-1": "unsolved" },
+    });
+    const removeReviewSpy = vi.spyOn(useReviewStore.getState(), "removeReview");
+    const setTaskStatusSpy = vi.spyOn(useProgressStore.getState(), "setTaskStatus");
+
+    render(
+      <Tooltip.Provider>
+        <TaskPage taskId="test-task-1" section="javascript" />
+      </Tooltip.Provider>
+    );
+
+    const unsolvedButton = screen.getByRole("button", { name: "Не решено" });
+    expect(unsolvedButton).toHaveAttribute("aria-pressed", "true");
+
+    fireEvent.click(unsolvedButton);
+
+    await vi.waitFor(() => {
+      expect(setTaskStatusSpy).toHaveBeenCalledWith("test-task-1", null);
+      expect(removeReviewSpy).toHaveBeenCalledWith("test-task-1");
+    });
+  });
 });

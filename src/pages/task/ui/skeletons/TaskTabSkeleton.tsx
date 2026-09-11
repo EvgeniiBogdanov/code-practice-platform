@@ -5,6 +5,7 @@ import { SolutionTabSkeleton } from "./SolutionTabSkeleton";
 import { MaterialsTabSkeleton } from "./MaterialsTabSkeleton";
 import { QuestionsTabSkeleton } from "./QuestionsTabSkeleton";
 import { ChecklistTabSkeleton } from "./ChecklistTabSkeleton";
+import { VisualizationSkeleton } from "@/widgets/task-visualization";
 
 export interface TaskTabSkeletonProps {
   tab: string;
@@ -15,6 +16,8 @@ export interface TaskTabSkeletonProps {
 export const TaskTabSkeleton = memo(
   ({ tab, className, task }: TaskTabSkeletonProps): React.JSX.Element => {
     switch (tab) {
+      case "visualization":
+        return <VisualizationSkeleton />;
       case "solution":
         return <SolutionTabSkeleton task={task} className={className} />;
       case "materials":

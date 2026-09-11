@@ -4,6 +4,8 @@ import { UIState, ThemeMode } from "../types";
 
 export const MIN_FONT_SIZE = 14;
 export const MAX_FONT_SIZE = 24;
+export const MIN_CODE_FONT_SIZE = 12;
+export const MAX_CODE_FONT_SIZE = 24;
 
 const getInitialUISettings = () => {
   if (typeof window === "undefined") {
@@ -14,6 +16,9 @@ const getInitialUISettings = () => {
       consoleCollapsed: true,
       editorWordWrap: false,
       editorSplitRatio: 70,
+      visualizerSplitRatio: 70,
+      visualizerZoom: 1,
+      visualizerCodeFontSize: 14,
       hideTooltips: false,
       hideInteractiveAssistant: false,
     };
@@ -49,6 +54,24 @@ const getInitialUISettings = () => {
             parsed.state.editorSplitRatio <= 80
               ? parsed.state.editorSplitRatio
               : 70,
+          visualizerSplitRatio:
+            typeof parsed.state.visualizerSplitRatio === "number" &&
+            parsed.state.visualizerSplitRatio >= 20 &&
+            parsed.state.visualizerSplitRatio <= 80
+              ? parsed.state.visualizerSplitRatio
+              : 70,
+          visualizerZoom:
+            typeof parsed.state.visualizerZoom === "number" &&
+            parsed.state.visualizerZoom >= 0.5 &&
+            parsed.state.visualizerZoom <= 2.5
+              ? parsed.state.visualizerZoom
+              : 1,
+          visualizerCodeFontSize:
+            typeof parsed.state.visualizerCodeFontSize === "number" &&
+            parsed.state.visualizerCodeFontSize >= MIN_CODE_FONT_SIZE &&
+            parsed.state.visualizerCodeFontSize <= MAX_CODE_FONT_SIZE
+              ? parsed.state.visualizerCodeFontSize
+              : 14,
           hideTooltips:
             typeof parsed.state.hideTooltips === "boolean" ? parsed.state.hideTooltips : false,
           hideInteractiveAssistant:
@@ -60,6 +83,30 @@ const getInitialUISettings = () => {
     }
     const legacy = localStorage.getItem("playground_theme");
     const legacyConsole = localStorage.getItem("playground_console_collapsed");
+    const legacyVisualizerSplit = localStorage.getItem("playground_visualizer_split_ratio");
+    const parsedVisualizerSplit = legacyVisualizerSplit ? Number(legacyVisualizerSplit) : 70;
+    const validVisualizerSplit =
+      !Number.isNaN(parsedVisualizerSplit) &&
+      parsedVisualizerSplit >= 20 &&
+      parsedVisualizerSplit <= 80
+        ? parsedVisualizerSplit
+        : 70;
+    const legacyVisualizerZoom = localStorage.getItem("playground_visualizer_zoom");
+    const parsedVisualizerZoom = legacyVisualizerZoom ? Number(legacyVisualizerZoom) : 1;
+    const validVisualizerZoom =
+      !Number.isNaN(parsedVisualizerZoom) &&
+      parsedVisualizerZoom >= 0.5 &&
+      parsedVisualizerZoom <= 2.5
+        ? parsedVisualizerZoom
+        : 1;
+    const legacyVisualizerCodeFont = localStorage.getItem("playground_visualizer_code_font_size");
+    const parsedVisualizerCodeFont = legacyVisualizerCodeFont ? Number(legacyVisualizerCodeFont) : 14;
+    const validVisualizerCodeFont =
+      !Number.isNaN(parsedVisualizerCodeFont) &&
+      parsedVisualizerCodeFont >= MIN_CODE_FONT_SIZE &&
+      parsedVisualizerCodeFont <= MAX_CODE_FONT_SIZE
+        ? parsedVisualizerCodeFont
+        : 14;
     return {
       theme: (legacy === "light" || legacy === "dark" ? legacy : "dark") as ThemeMode,
       sidebarOpen: true,
@@ -67,6 +114,9 @@ const getInitialUISettings = () => {
       consoleCollapsed: legacyConsole !== null ? legacyConsole === "true" : true,
       editorWordWrap: false,
       editorSplitRatio: 70,
+      visualizerSplitRatio: validVisualizerSplit,
+      visualizerZoom: validVisualizerZoom,
+      visualizerCodeFontSize: validVisualizerCodeFont,
       hideTooltips: false,
       hideInteractiveAssistant: false,
     };
@@ -80,6 +130,9 @@ const getInitialUISettings = () => {
     consoleCollapsed: true,
     editorWordWrap: false,
     editorSplitRatio: 70,
+    visualizerSplitRatio: 70,
+    visualizerZoom: 1,
+    visualizerCodeFontSize: 14,
     hideTooltips: false,
     hideInteractiveAssistant: false,
   };
@@ -100,6 +153,9 @@ export const useUIStore = create<UIState>()(
       editorFontSize: 14,
       editorWordWrap: initialUI.editorWordWrap,
       editorSplitRatio: initialUI.editorSplitRatio,
+      visualizerSplitRatio: initialUI.visualizerSplitRatio,
+      visualizerZoom: initialUI.visualizerZoom,
+      visualizerCodeFontSize: initialUI.visualizerCodeFontSize,
       consoleFontSize: 14,
       consoleCollapsed: true,
 
@@ -200,6 +256,114 @@ export const useUIStore = create<UIState>()(
       setEditorSplitRatio: (ratio) =>
         set({ editorSplitRatio: Math.min(80, Math.max(20, ratio)) }),
       resetEditorSplitRatio: () => set({ editorSplitRatio: 70 }),
+
+      setVisualizerSplitRatio: (ratio) => {
+        const clamped = Math.min(80, Math.max(20, ratio));
+        try {
+          localStorage.setItem("playground_visualizer_split_ratio", String(clamped));
+        } catch {
+          // ignore
+        }
+        set({ visualizerSplitRatio: clamped });
+      },
+      resetVisualizerSplitRatio: () => {
+        try {
+          localStorage.setItem("playground_visualizer_split_ratio", "70");
+        } catch {
+          // ignore
+        }
+        set({ visualizerSplitRatio: 70 });
+      },
+
+      setVisualizerZoom: (zoom) => {
+        const clamped = Math.min(2.5, Math.max(0.5, Math.round(zoom * 100) / 100));
+        try {
+          localStorage.setItem("playground_visualizer_zoom", String(clamped));
+        } catch {
+          // ignore
+        }
+        set({ visualizerZoom: clamped });
+      },
+      increaseVisualizerZoom: () => {
+        set((state) => {
+          const current = state.visualizerZoom ?? 1;
+          const presets = [0.5, 0.65, 0.8, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5];
+          const next = presets.find((p) => p > current + 0.05) ?? Math.min(2.5, current + 0.25);
+          const clamped = Math.min(2.5, Math.round(next * 100) / 100);
+          try {
+            localStorage.setItem("playground_visualizer_zoom", String(clamped));
+          } catch {
+            // ignore
+          }
+          return { visualizerZoom: clamped };
+        });
+      },
+      decreaseVisualizerZoom: () => {
+        set((state) => {
+          const current = state.visualizerZoom ?? 1;
+          const presets = [0.5, 0.65, 0.8, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5];
+          const next =
+            presets.slice().reverse().find((p) => p < current - 0.05) ??
+            Math.max(0.5, current - 0.25);
+          const clamped = Math.max(0.5, Math.round(next * 100) / 100);
+          try {
+            localStorage.setItem("playground_visualizer_zoom", String(clamped));
+          } catch {
+            // ignore
+          }
+          return { visualizerZoom: clamped };
+        });
+      },
+      resetVisualizerZoom: () => {
+        try {
+          localStorage.setItem("playground_visualizer_zoom", "1");
+        } catch {
+          // ignore
+        }
+        set({ visualizerZoom: 1 });
+      },
+
+      setVisualizerCodeFontSize: (size) => {
+        const clamped = Math.min(MAX_CODE_FONT_SIZE, Math.max(MIN_CODE_FONT_SIZE, size));
+        try {
+          localStorage.setItem("playground_visualizer_code_font_size", String(clamped));
+        } catch {
+          // ignore
+        }
+        set({ visualizerCodeFontSize: clamped });
+      },
+      increaseVisualizerCodeFontSize: () => {
+        set((state) => {
+          const current = state.visualizerCodeFontSize ?? 14;
+          const clamped = Math.min(MAX_CODE_FONT_SIZE, current + 1);
+          try {
+            localStorage.setItem("playground_visualizer_code_font_size", String(clamped));
+          } catch {
+            // ignore
+          }
+          return { visualizerCodeFontSize: clamped };
+        });
+      },
+      decreaseVisualizerCodeFontSize: () => {
+        set((state) => {
+          const current = state.visualizerCodeFontSize ?? 14;
+          const clamped = Math.max(MIN_CODE_FONT_SIZE, current - 1);
+          try {
+            localStorage.setItem("playground_visualizer_code_font_size", String(clamped));
+          } catch {
+            // ignore
+          }
+          return { visualizerCodeFontSize: clamped };
+        });
+      },
+      resetVisualizerCodeFontSize: () => {
+        try {
+          localStorage.setItem("playground_visualizer_code_font_size", "14");
+        } catch {
+          // ignore
+        }
+        set({ visualizerCodeFontSize: 14 });
+      },
 
       setConsoleFontSize: (size) => {
         const clamped = Math.min(MAX_FONT_SIZE, Math.max(MIN_FONT_SIZE, size));
@@ -507,6 +671,8 @@ export const useUIStore = create<UIState>()(
             localStorage.removeItem("playground_favorites_list_display_mode");
             localStorage.removeItem("playground_console_collapsed");
             localStorage.removeItem("playground_theme");
+            localStorage.removeItem("playground_visualizer_split_ratio");
+            localStorage.removeItem("playground_visualizer_zoom");
           } catch {
             // ignore
           }
@@ -532,6 +698,9 @@ export const useUIStore = create<UIState>()(
           editorFontSize: 14,
           editorWordWrap: false,
           editorSplitRatio: 70,
+          visualizerSplitRatio: 70,
+          visualizerZoom: 1,
+          visualizerCodeFontSize: 14,
           consoleFontSize: 14,
           consoleCollapsed: true,
           warmupExpanded: false,
@@ -560,6 +729,9 @@ export const useUIStore = create<UIState>()(
         editorFontSize: state.editorFontSize,
         editorWordWrap: state.editorWordWrap,
         editorSplitRatio: state.editorSplitRatio,
+        visualizerSplitRatio: state.visualizerSplitRatio,
+        visualizerZoom: state.visualizerZoom,
+        visualizerCodeFontSize: state.visualizerCodeFontSize,
         consoleFontSize: state.consoleFontSize,
         consoleCollapsed: state.consoleCollapsed,
         warmupExpanded: state.warmupExpanded,

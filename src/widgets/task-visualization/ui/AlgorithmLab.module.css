@@ -1,0 +1,167 @@
+.lab {
+  width: 100%;
+  max-width: 100%;
+  color: var(--text-main);
+  min-width: var(--space-0);
+  font-size: var(--fs-body-sm);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: transparent;
+}
+.visualizerCard {
+  width: 100%;
+  background: var(--bg-editor);
+  color: var(--text-main);
+  border: var(--space-px) solid var(--border-editor);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-width: var(--space-0);
+}
+.player {
+  min-width: var(--space-0);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  background: transparent;
+}
+.visualPane {
+  min-width: var(--space-0);
+}
+.fullscreen {
+  --trace-scene-height: var(--trace-scene-fullscreen-height);
+  height: 100%;
+  min-height: 100%;
+  border: none;
+  border-radius: var(--space-0);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+}
+.fullscreen .toolbar {
+  position: sticky;
+  inset-block-start: var(--space-0);
+  z-index: var(--z-sticky);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  border: none;
+  border-bottom: var(--space-px) solid var(--border-editor);
+  box-shadow: none;
+  flex-shrink: 0;
+  background: var(--bg-editor-status);
+}
+.fullscreen .player {
+  flex: 1;
+  min-height: var(--space-0);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+}
+.fullscreen .splitContainer {
+  flex: 1;
+  min-height: var(--space-0);
+  height: 100%;
+  gap: var(--space-2);
+}
+.fullscreen .visualPane {
+  flex: 1;
+  min-height: var(--space-0);
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-editor);
+  border: var(--space-px) solid var(--border-editor);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+.fullscreen .codeInspector {
+  --trace-code-height: 100%;
+  flex: 1;
+  height: 100%;
+  max-height: none;
+  min-height: var(--space-0);
+  min-width: var(--space-0);
+  margin: var(--space-0);
+  background: var(--bg-editor);
+  border: var(--space-px) solid var(--border-editor);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.codeInspector {
+  margin: var(--space-0);
+  max-height: var(--trace-code-max-height);
+}
+.muted {
+  color: var(--text-dimmed);
+  font-size: var(--fs-caption);
+}
+.loadError {
+  padding: var(--space-10);
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: var(--space-3);
+}
+.loadError p {
+  margin: var(--space-0);
+}
+.skeleton {
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  background: var(--bg-editor);
+  border: var(--space-px) solid var(--border-editor);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+.skeletonTitle {
+  width: 45%;
+  height: var(--space-6);
+}
+.skeletonInput {
+  width: 100%;
+  height: var(--space-8);
+}
+.skeletonScene {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  height: var(--trace-scene-height);
+  overflow: hidden;
+}
+.skeletonCell {
+  width: var(--trace-fallback-cell);
+  height: var(--trace-fallback-cell);
+  flex-shrink: 0;
+}
+.skeletonCode {
+  width: 100%;
+  height: var(--trace-code-height);
+}
+.player:focus-visible {
+  outline: var(--space-0-5) solid var(--accent-blue);
+  outline-offset: calc(-1 * var(--space-0-5));
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton :global([aria-hidden="true"]) {
+    animation: none;
+  }
+}
+
+.splitContainer {
+  gap: var(--space-2);
+}

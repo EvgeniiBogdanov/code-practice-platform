@@ -44,6 +44,20 @@ describe("getFullscreenNavigationTarget", () => {
       search: { tab: "solution", view: "code" },
     });
   });
+
+  it("opens an algorithm visualizer task with tab: visualization", () => {
+    expect(
+      getFullscreenNavigationTarget({
+        task: { id: "algo35", section: "algorithms" },
+        tab: "visualization",
+        hasVisualComponent: false,
+      })
+    ).toEqual({
+      to: "/open/algorithms/$taskId",
+      params: { taskId: "algo35" },
+      search: { tab: "visualization" },
+    });
+  });
 });
 
 describe("useFullscreenNavigation", () => {

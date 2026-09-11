@@ -66,6 +66,9 @@ export default defineConfig(({ mode }) => ({
             return;
           }
           if (id.includes("node_modules")) {
+            if (id.includes("/three/")) {
+              return "vendor-three";
+            }
             if (id.includes("sucrase")) {
               return "vendor-compiler";
             }

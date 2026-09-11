@@ -8,6 +8,7 @@ import { useAllTaskSections } from "@/entities/task/catalog";
 import { getUpcomingTasks } from "../lib/upcoming-helpers";
 import type { UpcomingTaskItem } from "../lib/upcoming-helpers";
 import { getReviewActivityByDate } from "../lib/get-review-activity";
+import { sortDueTasks } from "../lib/sort-due-tasks";
 
 export interface UseSpacedRepetitionDataProps {
   taskList?: Task[];
@@ -63,12 +64,13 @@ export const useSpacedRepetitionData = ({
 
   const dueTasks = useMemo(() => {
     if (!isInitialized) return [];
-    return targetTasks.filter((t) => {
+    const due = targetTasks.filter((t) => {
       if (excludedSet.has(String(t.id))) return false;
       const rev = reviews[String(t.id)];
       return isTaskDue(rev);
     });
-  }, [targetTasks, reviews, isInitialized, excludedSet]);
+    return sortDueTasks(due, reviews, completedTasks);
+  }, [targetTasks, reviews, completedTasks, isInitialized, excludedSet]);
 
   const upcomingTasks = useMemo((): UpcomingTaskItem[] => {
     if (!isInitialized) return [];

@@ -2,7 +2,7 @@ import React, { ButtonHTMLAttributes, forwardRef, memo, ReactNode } from "react"
 import { clsx } from "clsx";
 import styles from "./CodeButton.module.css";
 
-export type CodeButtonVariant = "default" | "active" | "success" | "danger";
+export type CodeButtonVariant = "default" | "active" | "success" | "danger" | "primary";
 export type CodeButtonSize = "xs" | "sm" | "md";
 
 export interface CodeButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

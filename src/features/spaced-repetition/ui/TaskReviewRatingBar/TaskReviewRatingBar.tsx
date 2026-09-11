@@ -46,7 +46,10 @@ const TaskReviewRatingBarComponent = ({
 
   const badgeMeta = getReviewBadgeMeta(taskReview);
   const isNeverReviewed = !taskReview || !taskReview.stage || taskReview.stage === 0;
-  const canRate = !isExcluded && !isCurrentlyUnsolved && (isNeverReviewed || badgeMeta.isDue);
+  const canRate =
+    !isExcluded &&
+    !isCurrentlyUnsolved &&
+    (isNeverReviewed || badgeMeta.isDue || Boolean(taskReview?.isUnsolved));
 
   if (hideInteractiveAssistant && !canRate) {
     return null;

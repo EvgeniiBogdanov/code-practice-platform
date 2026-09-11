@@ -144,7 +144,7 @@
   max-width: 260px;
   overflow: hidden;
   white-space: nowrap;
-  flex-shrink: 1;
+  flex-shrink: 0;
 }
 
 .tabLink:hover {
@@ -212,6 +212,13 @@
   border-bottom-color: #06b6d4;
 }
 
+.tab_visualization .tabIcon {
+  color: var(--accent-blue);
+}
+.tab_visualization.tabActive {
+  border-bottom-color: var(--accent-blue);
+}
+
 .tabLabel {
   white-space: nowrap;
   overflow: hidden;
@@ -239,4 +246,13 @@
   text-decoration: underline;
   margin-top: 12px;
   display: inline-block;
+}
+
+@media (max-width: 640px) {
+  .pageContainer {
+    padding: var(--space-0) var(--space-3) var(--space-8);
+  }
+  .tabLink {
+    flex-shrink: 0;
+  }
 }

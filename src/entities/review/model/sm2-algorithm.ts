@@ -56,7 +56,8 @@ export function calculateNextReviewDay(
 
 export function calculateNextReview(
   currentReview: ReviewItem | null | undefined,
-  rating: ReviewRating
+  rating: ReviewRating,
+  isUnsolved = false
 ): ReviewItem {
   const prevStage = currentReview?.stage || 0;
   const prevHistory = currentReview?.history || [];
@@ -115,6 +116,7 @@ export function calculateNextReview(
     nextReviewAt,
     userTimezone,
     rating,
+    isUnsolved: Boolean(isUnsolved),
     history: [...prevHistory, historyEntry],
   };
 }

@@ -3,12 +3,15 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { RotateCcw, FileText, Sparkles, BookOpen } from "lucide-react";
 import { clsx } from "clsx";
 import { useReviewStore, isTaskDue, getReviewBadgeMeta } from "@/entities/review";
+import { useProgressStore } from "@/entities/progress";
+import { sortDueTasks, isDueTaskUnsolved } from "@/features/spaced-repetition";
 import type { Task } from "@/entities/task/meta";
 import { useAllTaskSections } from "@/entities/task/catalog";
 import { Tooltip, SquareButton, NotificationBadge } from "@/shared/ui";
 import styles from "./HeaderReviewMenu.module.css";
 
-const getRatingClass = (_difficulty?: string, reviewRating?: string) => {
+const getRatingClass = (_difficulty?: string, reviewRating?: string, isUnsolved?: boolean) => {
+  if (isUnsolved) return styles.ratingUnsolved;
   if (reviewRating === "hard") return styles.ratingHard;
   if (reviewRating === "medium") return styles.ratingMedium;
   if (reviewRating === "easy") return styles.ratingEasy;
@@ -43,16 +46,18 @@ export const HeaderReviewMenu = memo(() => {
     setOpen(false);
   }, [location.pathname]);
 
+  const completedTasks = useProgressStore((state) => state.completedTasks);
   const excludedSet = useMemo(() => new Set(excludedTaskIds.map(String)), [excludedTaskIds]);
 
   const dueTasks = useMemo(() => {
     if (!isInitialized) return [];
-    return tasks.filter((t) => {
+    const due = tasks.filter((t) => {
       if (excludedSet.has(String(t.id))) return false;
       const rev = reviews[String(t.id)];
       return isTaskDue(rev);
     });
-  }, [reviews, isInitialized, tasks, excludedSet]);
+    return sortDueTasks(due, reviews, completedTasks);
+  }, [reviews, isInitialized, tasks, excludedSet, completedTasks]);
 
   const hasAnyReviewed = useMemo(() => {
     return Object.entries(reviews).some(
@@ -106,7 +111,8 @@ export const HeaderReviewMenu = memo(() => {
                 const rev = reviews[String(task.id)];
                 const badge = getReviewBadgeMeta(rev);
                 const section = task.section || "react";
-                const ratingClass = getRatingClass(task.difficulty, rev?.rating);
+                const isUnsolved = isDueTaskUnsolved(task.id, reviews, completedTasks);
+                const ratingClass = getRatingClass(task.difficulty, rev?.rating, isUnsolved);
 
                 return (
                   <Link
@@ -131,10 +137,11 @@ export const HeaderReviewMenu = memo(() => {
                       <span
                         className={clsx(
                           styles.difficultyBadge,
-                          styles[`diff_${badge.badgeVariant}`]
+                          styles[`diff_${badge.badgeVariant}`],
+                          isUnsolved && styles.diff_unsolved
                         )}
                       >
-                        {badge.stageName || badge.label}
+                        {isUnsolved ? "Не решено" : badge.stageName || badge.label}
                       </span>
                     </div>
                   </Link>

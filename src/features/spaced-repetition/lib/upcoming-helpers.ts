@@ -119,8 +119,17 @@ export function getUpcomingTasks(
     }
   }
 
-  // Sort from closest/earliest due date to furthest in the future
-  items.sort((a, b) => a.nextReviewAt - b.nextReviewAt);
+  // Sort from closest/earliest due date to furthest in the future, prioritizing unsolved
+  items.sort((a, b) => {
+    if (a.nextReviewAt !== b.nextReviewAt) {
+      return a.nextReviewAt - b.nextReviewAt;
+    }
+    const aUnsolved = Boolean(a.review.isUnsolved);
+    const bUnsolved = Boolean(b.review.isUnsolved);
+    if (aUnsolved && !bUnsolved) return -1;
+    if (!aUnsolved && bUnsolved) return 1;
+    return 0;
+  });
 
   return items;
 }

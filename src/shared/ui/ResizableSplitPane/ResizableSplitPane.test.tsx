@@ -93,4 +93,18 @@ describe("ResizableSplitPane", () => {
     const separator = screen.getByRole("separator");
     expect(separator).toHaveAttribute("aria-valuenow", "70");
   });
+
+  it("renders both panes without separator when layout='stack'", () => {
+    render(
+      <ResizableSplitPane
+        layout="stack"
+        left={<div data-testid="left-stacked">Left Stacked</div>}
+        right={<div data-testid="right-stacked">Right Stacked</div>}
+      />
+    );
+
+    expect(screen.getByTestId("left-stacked")).toBeInTheDocument();
+    expect(screen.getByTestId("right-stacked")).toBeInTheDocument();
+    expect(screen.queryByRole("separator")).not.toBeInTheDocument();
+  });
 });

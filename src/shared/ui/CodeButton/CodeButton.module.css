@@ -64,6 +64,25 @@
   color: var(--accent-blue);
 }
 
+/* Primary / Blue Variant */
+.variant_primary {
+  color: var(--accent-blue);
+}
+
+.variant_primary:hover:not(:disabled) {
+  background: var(--accent-blue-bg);
+  color: var(--accent-blue-hover);
+}
+
+[data-theme="light"] .variant_primary {
+  color: var(--accent-blue);
+}
+
+[data-theme="light"] .variant_primary:hover:not(:disabled) {
+  background: var(--accent-blue-bg);
+  color: var(--accent-blue-hover);
+}
+
 /* Success / Run Variant */
 .variant_success {
   color: var(--color-success, #10b981);

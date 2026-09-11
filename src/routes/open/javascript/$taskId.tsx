@@ -4,7 +4,7 @@ import { OpenEditorPage } from "@/pages/open-editor";
 import { loadTaskSection } from "@/entities/task/catalog";
 
 export interface OpenTaskSearch {
-  tab?: "candidate" | "solution";
+  tab?: "candidate" | "solution" | "visualization";
   view?: "split" | "preview" | "code";
 }
 
@@ -20,7 +20,12 @@ const OpenJsTaskRoute = () => {
 export const Route = createFileRoute("/open/javascript/$taskId")({
   loader: () => loadTaskSection("javascript"),
   validateSearch: (search: Record<string, unknown>): OpenTaskSearch => ({
-    tab: search.tab === "solution" ? "solution" : "candidate",
+    tab:
+      search.tab === "solution"
+        ? "solution"
+        : search.tab === "visualization"
+          ? "visualization"
+          : "candidate",
     view:
       search.view === "code"
         ? "code"

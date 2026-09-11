@@ -1,0 +1,31 @@
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  padding: 0 var(--space-2);
+  height: var(--space-6);
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  color: var(--text-main);
+  user-select: none;
+  white-space: nowrap;
+}
+
+.icon {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.title {
+  line-height: var(--lh-none);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.toolbarActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-0-5);
+  height: var(--space-6);
+}
