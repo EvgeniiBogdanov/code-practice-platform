@@ -51,3 +51,12 @@
     padding: var(--space-4);
   }
 }
+
+.result {
+  display: block;
+  max-height: var(--trace-explanation-height);
+  overflow: auto;
+  overflow-wrap: anywhere;
+  color: var(--accent-green);
+  font: var(--fs-caption) var(--font-mono);
+}

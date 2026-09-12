@@ -27,7 +27,7 @@ const arrays = (length: number): number[][] =>
 
 describe("algorithm traces", () => {
   it("registers all supported tasks and excludes unrelated routes", () => {
-    expect(VISUALIZED_ALGORITHM_IDS).toHaveLength(22);
+    expect(VISUALIZED_ALGORITHM_IDS).toHaveLength(44);
     expect(hasAlgorithmVisualization("algo1", "algorithms")).toBe(true);
     expect(hasAlgorithmVisualization("algo1", "react")).toBe(false);
     expect(getAlgorithmDefinition("toString")).toBeUndefined();
@@ -46,11 +46,12 @@ describe("algorithm traces", () => {
         expect(trace.length).toBeGreaterThan(1);
         expect(last(trace).result).not.toBeUndefined();
         expect(new Set(trace.map((step) => step.id)).size).toBe(trace.length);
-        expect(trace[0].values).toEqual(
-          definition.inputKind === "text"
-            ? parsed.input.text.split("")
-            : (parsed.input.words ?? parsed.input.values)
-        );
+        if (!trace[0].structure)
+          expect(trace[0].values).toEqual(
+            definition.inputKind === "text"
+              ? parsed.input.text.split("")
+              : (parsed.input.words ?? parsed.input.values)
+          );
         trace.forEach((step) => {
           expect(step.line).toBeTruthy();
           expect(step.title).toBeTruthy();

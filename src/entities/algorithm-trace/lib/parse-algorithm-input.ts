@@ -1,3 +1,4 @@
+import { parseStructureInput } from "./parse-structure-input";
 import type { AlgorithmDefinition, ParsedAlgorithmInput } from "../model/algorithm-trace";
 
 const invalid = (error: string): ParsedAlgorithmInput => ({ ok: false, error });
@@ -11,6 +12,8 @@ export const parseAlgorithmInput = (
   raw: string,
   parameter: string
 ): ParsedAlgorithmInput => {
+  const structured = parseStructureInput(definition, raw, parameter);
+  if (structured) return structured;
   if (definition.inputKind === "text") {
     if (!isVisualText(raw) || (definition.parameter === "t" && !isVisualText(parameter))) {
       return invalid("Введите до 32 символов: латиница, цифры, пробелы и знаки ASCII.");

@@ -22,9 +22,12 @@ describe("number scene initialization", () => {
     frames.clear();
     act(() => pending.forEach((callback) => callback(performance.now())));
   };
-  const flushInit = (): void => {
+  const flushInit = async (): Promise<void> => {
     flushFrame();
     flushFrame();
+    await act(async () => {
+      await vi.dynamicImportSettled();
+    });
   };
   beforeEach(() => {
     let nextId = 0;
@@ -41,13 +44,13 @@ describe("number scene initialization", () => {
   });
   afterEach(() => vi.unstubAllGlobals());
 
-  it("lets the controls paint and initializes once with the latest props", () => {
+  it("lets the controls paint and initializes once with the latest props", async () => {
     const { rerender, unmount } = render(<NumberScene {...props} />);
     flushFrame();
     expect(createNumberScene).not.toHaveBeenCalled();
     const updated = { ...props, values: [1, 0] };
     rerender(<NumberScene {...updated} />);
-    flushInit();
+    await flushInit();
     expect(createNumberScene).toHaveBeenCalledExactlyOnceWith(
       expect.any(HTMLElement),
       updated,
@@ -60,18 +63,18 @@ describe("number scene initialization", () => {
     expect(controller.dispose).toHaveBeenCalledTimes(1);
   });
 
-  it("cancels initialization if the task is left before the next paint", () => {
+  it("cancels initialization if the task is left before the next paint", async () => {
     const { unmount } = render(<NumberScene {...props} />);
     flushFrame();
     unmount();
-    flushInit();
+    await flushInit();
     expect(createNumberScene).not.toHaveBeenCalled();
   });
 
-  it("syncs zoom prop to controller", () => {
+  it("syncs zoom prop to controller", async () => {
     const onZoomChange = vi.fn();
     const { rerender } = render(<NumberScene {...props} zoom={1} onZoomChange={onZoomChange} />);
-    flushInit();
+    await flushInit();
 
     expect(controller.setZoom).toHaveBeenCalledWith(1);
 
@@ -79,10 +82,10 @@ describe("number scene initialization", () => {
     expect(controller.setZoom).toHaveBeenCalledWith(1.5);
   });
 
-  it("supports keyboard shortcuts +, -, 0 for zoom control", () => {
+  it("supports keyboard shortcuts +, -, 0 for zoom control", async () => {
     const onZoomChange = vi.fn();
     const { rerender } = render(<NumberScene {...props} zoom={1} onZoomChange={onZoomChange} />);
-    flushInit();
+    await flushInit();
 
     const viewport = screen.getByRole("group", { name: /Числовая сцена/ });
 
@@ -103,10 +106,10 @@ describe("number scene initialization", () => {
     expect(onZoomChange).toHaveBeenCalledWith(1);
   });
 
-  it("syncs UI and calls onZoomChange when interaction callback is triggered by scene events", () => {
+  it("syncs UI and calls onZoomChange when interaction callback is triggered by scene events", async () => {
     const onZoomChange = vi.fn();
     render(<NumberScene {...props} zoom={1} onZoomChange={onZoomChange} />);
-    flushInit();
+    await flushInit();
 
     const viewport = screen.getByRole("group", { name: /Числовая сцена/ });
     expect(viewport.className).not.toMatch(/draggable/);

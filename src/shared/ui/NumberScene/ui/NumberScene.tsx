@@ -1,6 +1,13 @@
-import { useEffect, useRef, useState, useCallback, memo, type JSX, type KeyboardEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  memo,
+  type JSX,
+  type KeyboardEvent,
+} from "react";
 import { clsx } from "clsx";
-import { createNumberScene } from "../lib/create-number-scene";
 import type { NumberSceneController, NumberSceneProps } from "../model/number-scene";
 import styles from "./NumberScene.module.css";
 
@@ -21,22 +28,24 @@ export const NumberScene = memo((props: NumberSceneProps): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    // Let the tab and controls paint before synchronous WebGL initialization.
+    // Import WebGL only when this scene is mounted.
+    let cancelled = false;
     let frame = requestAnimationFrame(() => {
       frame = requestAnimationFrame(() => {
-        if (!host.current) return;
-        try {
-          const inst = createNumberScene(host.current, latest.current, handleInteraction);
-          controller.current = inst;
-          if (typeof latest.current.zoom === "number") {
-            inst.setZoom(latest.current.zoom);
-          }
-        } catch {
-          latest.current.onUnavailable();
-        }
+        void import("../lib/create-number-scene")
+          .then(({ createNumberScene }) => {
+            if (cancelled || !host.current) return;
+            const inst = createNumberScene(host.current, latest.current, handleInteraction);
+            controller.current = inst;
+            if (typeof latest.current.zoom === "number") inst.setZoom(latest.current.zoom);
+          })
+          .catch(() => {
+            if (!cancelled) latest.current.onUnavailable();
+          });
       });
     });
     return (): void => {
+      cancelled = true;
       cancelAnimationFrame(frame);
       controller.current?.dispose();
       controller.current = null;
@@ -91,4 +100,3 @@ export const NumberScene = memo((props: NumberSceneProps): JSX.Element => {
     />
   );
 });
-

@@ -18,7 +18,9 @@ export const TraceParameterInput = ({
         containerClassName={styles.parameterInputContainer}
         size="md"
         inputMode={
-          props.definition.parameter === "t" || props.definition.parameter === "left, right"
+          props.definition.parameter === "t" ||
+          props.definition.parameter === "left, right" ||
+          props.definition.parameter === "sr, sc, color"
             ? "text"
             : "numeric"
         }

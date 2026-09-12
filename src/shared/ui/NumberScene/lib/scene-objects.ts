@@ -1,67 +1,12 @@
-import {
-  CanvasTexture,
-  CylinderGeometry,
-  Color,
-  Group,
-  Mesh,
-  MeshStandardMaterial,
-  Sprite,
-  SpriteMaterial,
-  SRGBColorSpace,
-} from "three";
+import { CylinderGeometry, Color, Group, Mesh, MeshStandardMaterial } from "three";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
+import { makeLabel } from "../../../lib/three-scene";
 import type { NumberSceneProps, ScenePalette, SceneTile } from "../model/number-scene";
+export { readScenePalette, makeLabel, disposeLabel } from "../../../lib/three-scene";
 
 export const TILE_PITCH = 1.22;
 export const tileX = (index: number, count: number): number =>
   (index - (count - 1) / 2) * TILE_PITCH;
-
-export const readScenePalette = (host: HTMLElement): ScenePalette => {
-  const styles = getComputedStyle(host);
-  const read = (name: string): string => styles.getPropertyValue(name).trim();
-  return {
-    surface: read("--trace-tile-surface"),
-    text: read("--text-main"),
-    muted: read("--text-dimmed"),
-    border: read("--text-placeholder"),
-    primary: read("--accent-blue"),
-    secondary: read("--accent-purple"),
-    anchor: read("--accent-orange"),
-    success: read("--accent-green"),
-    font: read("--font-mono"),
-  };
-};
-
-export const makeLabel = (
-  text: string,
-  color: string,
-  font: string,
-  width = 1.1,
-  fontSize = 56
-): Sprite => {
-  const canvas = document.createElement("canvas");
-  canvas.width = 512;
-  canvas.height = 128;
-  const context = canvas.getContext("2d");
-  if (!context) throw new Error("Canvas 2D is unavailable");
-  context.font = `500 ${fontSize}px ${font}`;
-  context.fillStyle = color;
-  context.textAlign = "center";
-  context.textBaseline = "middle";
-  context.fillText(text, 256, 64, 496);
-  const map = new CanvasTexture(canvas);
-  map.colorSpace = SRGBColorSpace;
-  const sprite = new Sprite(new SpriteMaterial({ map, transparent: true, depthTest: false }));
-  sprite.scale.set(width, width / 4, 1);
-  sprite.renderOrder = 2;
-  return sprite;
-};
-
-export const disposeLabel = (label: Sprite): void => {
-  label.material.map?.dispose();
-  label.material.dispose();
-  label.removeFromParent();
-};
 
 export const makeTile = (
   index: number,

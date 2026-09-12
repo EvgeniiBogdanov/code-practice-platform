@@ -1,0 +1,213 @@
+.scene {
+  min-width: var(--space-0);
+}
+.heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-4);
+  padding: var(--space-3) var(--space-5);
+}
+.heading strong {
+  font: var(--fw-semibold) var(--fs-body-sm) var(--font-mono);
+  color: var(--accent-blue);
+}
+.heading span {
+  font: var(--fs-caption) var(--font-sans);
+  color: var(--text-muted);
+}
+.viewport {
+  overflow: auto;
+  max-height: var(--trace-stack-height);
+  overscroll-behavior: contain;
+}
+.viewport:focus-visible {
+  outline: var(--space-0-5) solid var(--accent-blue);
+  outline-offset: calc(-1 * var(--space-0-5));
+}
+.diagram {
+  display: block;
+  margin-inline: auto;
+}
+.frameLabel {
+  fill: var(--text-muted);
+  font: var(--fw-medium) var(--fs-caption) var(--font-mono);
+  letter-spacing: var(--ls-section);
+}
+.laneLabel {
+  fill: var(--text-main);
+  font: var(--fs-caption) var(--font-sans);
+}
+.container {
+  fill: none;
+  stroke: var(--accent-cyan);
+  stroke-width: var(--space-0-5);
+}
+.tile rect {
+  fill: var(--accent-blue-bg);
+  stroke: var(--accent-blue);
+  stroke-width: var(--space-px);
+}
+.tile text {
+  fill: var(--text-main);
+  font: var(--fw-semibold) var(--fs-body-sm) var(--font-mono);
+}
+.topTile rect {
+  fill: var(--accent-blue);
+}
+.topTile text {
+  fill: var(--text-on-accent);
+}
+.removing rect {
+  fill: var(--accent-orange-bg);
+  stroke: var(--accent-orange);
+}
+.removing text {
+  fill: var(--accent-orange);
+}
+.topMarker path,
+.pushArrow,
+.popArrow,
+.operationArrow path {
+  fill: none;
+  stroke: var(--text-muted);
+  stroke-width: var(--space-0-5);
+}
+.topMarker text {
+  fill: var(--accent-blue);
+  font: var(--fw-semibold) var(--fs-caption) var(--font-mono);
+}
+.arrowHead {
+  fill: var(--text-muted);
+}
+.empty,
+.bottomLabel {
+  fill: var(--text-dimmed);
+  font: var(--fs-caption) var(--font-sans);
+}
+.removedLabel {
+  fill: var(--accent-orange);
+  font: var(--fs-xs) var(--font-sans);
+}
+.readLabel {
+  fill: var(--accent-blue);
+  font: var(--fs-caption) var(--font-mono);
+}
+.entering {
+  animation: push-in var(--trace-stack-motion-duration) ease-out both;
+}
+.leaving {
+  animation: pop-out var(--trace-stack-motion-duration) ease-out both;
+}
+@keyframes push-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(-1 * var(--trace-stack-travel)));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(var(--space-0));
+  }
+}
+@keyframes pop-out {
+  from {
+    opacity: 0;
+    transform: translateY(var(--trace-stack-travel));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(var(--space-0));
+  }
+}
+.still .entering,
+.still .leaving {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .entering,
+  .leaving {
+    animation: none;
+  }
+}
+.stage {
+  background: var(--bg-editor);
+}
+.webgl {
+  position: relative;
+  width: 100%;
+  height: var(--trace-stack-height);
+  overflow: hidden;
+  cursor: grab;
+}
+.webgl:active {
+  cursor: grabbing;
+}
+.webgl:focus-visible {
+  outline: var(--space-0-5) solid var(--accent-blue);
+  outline-offset: calc(-1 * var(--space-0-5));
+}
+.webgl canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+.loading {
+  display: grid;
+  place-items: center;
+}
+.loadingText {
+  color: var(--text-dimmed);
+  font: var(--fs-caption) var(--font-mono);
+}
+.sceneFooter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-5);
+  border-top: var(--space-px) solid var(--border-editor);
+}
+.gestureHint {
+  color: var(--text-dimmed);
+  font: var(--fs-xs) var(--font-mono);
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  color: var(--text-muted);
+  font: var(--fs-caption) var(--font-sans);
+}
+.legend span::before {
+  content: "●";
+  margin-inline-end: var(--space-2);
+}
+.legendTop {
+  color: var(--accent-blue);
+}
+.legendOut {
+  color: var(--accent-orange);
+}
+.legendMin {
+  color: var(--accent-purple);
+}
+.recovery {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--fs-caption);
+}
+.srOnly {
+  position: absolute;
+  width: var(--space-px);
+  height: var(--space-px);
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

@@ -1,3 +1,8 @@
+import { backtrackingDefinitions } from "./backtracking-definitions";
+import { gridDefinitions } from "./grid-definitions";
+import { treeDefinitions } from "./tree-definitions";
+import { listDefinitions } from "./list-definitions";
+import { stackDefinitions } from "./stack-definitions";
 import { hashDefinitions } from "./hash-definitions";
 import { windowDefinitions } from "./window-definitions";
 import { prefixDefinitions } from "./prefix-definitions";
@@ -17,6 +22,11 @@ import type { AlgorithmDefinition } from "../model/algorithm-trace";
 import type { VisualizedAlgorithmId } from "./available-visualizations";
 
 const definitions: Record<VisualizedAlgorithmId, AlgorithmDefinition> = /* @__PURE__ */ (() => ({
+  ...stackDefinitions,
+  ...listDefinitions,
+  ...treeDefinitions,
+  ...gridDefinitions,
+  ...backtrackingDefinitions,
   ...hashDefinitions,
   ...windowDefinitions,
   ...prefixDefinitions,
@@ -29,15 +39,22 @@ const definitions: Record<VisualizedAlgorithmId, AlgorithmDefinition> = /* @__PU
     parameter: "val",
     build: buildRemoveElementTrace,
     examples: [
-      { id: "basic", label: "Удаление числа", input: "3, 2, 2, 3", parameter: "3" },
       {
-        id: "mixed",
-        label: "Несколько вхождений",
+        id: "task-1",
+        label: "Пример 1: [3, 2, 2, 3], val = 3",
+        input: "3, 2, 2, 3",
+        parameter: "3",
+        isTask: true,
+      },
+      {
+        id: "task-2",
+        label: "Пример 2: [0, 1, 2, 2, 3, 0, 4, 2], val = 2",
         input: "0, 1, 2, 2, 3, 0, 4, 2",
         parameter: "2",
+        isTask: true,
       },
-      { id: "all", label: "Удаляем всё", input: "2, 2, 2", parameter: "2" },
-      { id: "none", label: "Нет совпадений", input: "1, 3, 4", parameter: "2" },
+      { id: "all", label: "Удаляем всё: [2, 2, 2], val = 2", input: "2, 2, 2", parameter: "2" },
+      { id: "none", label: "Нет совпадений: [1, 3, 4], val = 2", input: "1, 3, 4", parameter: "2" },
       { id: "empty", label: "Пустой массив", input: "[]", parameter: "2" },
     ],
   },
@@ -48,11 +65,32 @@ const definitions: Record<VisualizedAlgorithmId, AlgorithmDefinition> = /* @__PU
     inputKind: "sorted",
     build: buildRemoveDuplicatesTrace,
     examples: [
-      { id: "basic", label: "Повторяющиеся числа", input: "0, 0, 1, 1, 2, 2, 3" },
-      { id: "same", label: "Все одинаковые", input: "2, 2, 2, 2" },
-      { id: "unique", label: "Без дубликатов", input: "-3, -1, 0, 2" },
-      { id: "single", label: "Одно число", input: "1" },
-      { id: "empty", label: "Пустой массив", input: "[]" },
+      {
+        id: "task-1",
+        label: "Пример 1: [1, 1, 2]",
+        input: "1, 1, 2",
+        isTask: true,
+      },
+      {
+        id: "task-2",
+        label: "Пример 2: [0, 0, 1, 1, 1, 2, 2, 3, 3, 4]",
+        input: "0, 0, 1, 1, 1, 2, 2, 3, 3, 4",
+        isTask: true,
+      },
+      {
+        id: "task-3",
+        label: "Пример 3: [1]",
+        input: "1",
+        isTask: true,
+      },
+      {
+        id: "task-4",
+        label: "Пример 4: []",
+        input: "[]",
+        isTask: true,
+      },
+      { id: "same", label: "Все одинаковые: [2, 2, 2, 2]", input: "2, 2, 2, 2" },
+      { id: "unique", label: "Без дубликатов: [-3, -1, 0, 2]", input: "-3, -1, 0, 2" },
     ],
   },
   algo35: {
@@ -62,11 +100,33 @@ const definitions: Record<VisualizedAlgorithmId, AlgorithmDefinition> = /* @__PU
     inputKind: "array",
     build: buildMoveZeroesTrace,
     examples: [
-      { id: "basic", label: "Нули между числами", input: "0, 1, 0, 3, 12" },
-      { id: "zero", label: "Только нули", input: "0, 0, 0" },
-      { id: "none", label: "Без нулей", input: "1, -2, 3" },
-      { id: "single", label: "Одно число", input: "0" },
-      { id: "empty", label: "Пустой массив", input: "[]" },
+      {
+        id: "task-1",
+        label: "Пример 1: [0, 1, 0, 3, 12]",
+        input: "0, 1, 0, 3, 12",
+        isTask: true,
+      },
+      {
+        id: "task-2",
+        label: "Пример 2: [0]",
+        input: "0",
+        isTask: true,
+      },
+      {
+        id: "task-3",
+        label: "Пример 3: [1, 2, 3]",
+        input: "1, 2, 3",
+        isTask: true,
+      },
+      {
+        id: "task-4",
+        label: "Пример 4: [0, 0, 1]",
+        input: "0, 0, 1",
+        isTask: true,
+      },
+      { id: "zero", label: "Только нули: [0, 0, 0]", input: "0, 0, 0" },
+      { id: "none", label: "Без нулей: [1, -2, 3]", input: "1, -2, 3" },
+      { id: "empty", label: "Пустой массив: []", input: "[]" },
     ],
   },
   algo2: {
@@ -77,10 +137,26 @@ const definitions: Record<VisualizedAlgorithmId, AlgorithmDefinition> = /* @__PU
     inputKind: "text",
     build: buildPalindromeTrace,
     examples: [
-      { id: "basic", label: "Регистр и знаки", input: "A,b a" },
-      { id: "classic", label: "Panama", input: "A man, a plan, a canal: Panama" },
-      { id: "false", label: "Не палиндром", input: "race a car" },
-      { id: "signs", label: "Только знаки", input: " , : " },
+      {
+        id: "task-1",
+        label: 'Пример 1: "A man, a plan, a canal: Panama"',
+        input: "A man, a plan, a canal: Panama",
+        isTask: true,
+      },
+      {
+        id: "task-2",
+        label: 'Пример 2: "race a car"',
+        input: "race a car",
+        isTask: true,
+      },
+      {
+        id: "task-3",
+        label: 'Пример 3: " "',
+        input: " ",
+        isTask: true,
+      },
+      { id: "basic", label: "Регистр и знаки: A,b a", input: "A,b a" },
+      { id: "signs", label: "Только знаки: , : ", input: " , : " },
       { id: "empty", label: "Пустая строка", input: "" },
     ],
   },
@@ -91,11 +167,38 @@ const definitions: Record<VisualizedAlgorithmId, AlgorithmDefinition> = /* @__PU
     inputKind: "array",
     build: buildParityTrace,
     examples: [
-      { id: "basic", label: "Чётные и нечётные", input: "3, 1, 2, 4, 7, 6" },
-      { id: "negative", label: "Отрицательные числа", input: "-3, -2, -1, 0, 4" },
-      { id: "even", label: "Только чётные", input: "2, 4, 6" },
-      { id: "odd", label: "Только нечётные", input: "1, 3, 5" },
-      { id: "empty", label: "Пустой массив", input: "[]" },
+      {
+        id: "task-1",
+        label: "Пример 1: [3, 1, 2, 4]",
+        input: "3, 1, 2, 4",
+        isTask: true,
+      },
+      {
+        id: "task-2",
+        label: "Пример 2: [0]",
+        input: "0",
+        isTask: true,
+      },
+      {
+        id: "task-3",
+        label: "Пример 3: [1, 2]",
+        input: "1, 2",
+        isTask: true,
+      },
+      {
+        id: "task-4",
+        label: "Пример 4: [2, 4, 6]",
+        input: "2, 4, 6",
+        isTask: true,
+      },
+      {
+        id: "task-5",
+        label: "Пример 5: [1, 3, 5]",
+        input: "1, 3, 5",
+        isTask: true,
+      },
+      { id: "negative", label: "Отрицательные: [-3, -2, -1, 0, 4]", input: "-3, -2, -1, 0, 4" },
+      { id: "empty", label: "Пустой массив: []", input: "[]" },
     ],
   },
   algo1: {
@@ -107,10 +210,30 @@ const definitions: Record<VisualizedAlgorithmId, AlgorithmDefinition> = /* @__PU
     parameter: "target",
     build: buildTwoSumTrace,
     examples: [
-      { id: "basic", label: "Поиск с двух сторон", input: "1, 2, 4, 6, 8, 9", parameter: "10" },
-      { id: "moves", label: "Движение обеих границ", input: "1, 3, 4, 5, 7, 11", parameter: "9" },
-      { id: "negative", label: "Отрицательные числа", input: "-5, -2, 0, 3, 7", parameter: "1" },
-      { id: "none", label: "Нет пары", input: "1, 2, 4", parameter: "10" },
+      {
+        id: "task-1",
+        label: "Пример 1: [2, 7, 11, 15], target = 9",
+        input: "2, 7, 11, 15",
+        parameter: "9",
+        isTask: true,
+      },
+      {
+        id: "task-2",
+        label: "Пример 2: [2, 3, 4], target = 6",
+        input: "2, 3, 4",
+        parameter: "6",
+        isTask: true,
+      },
+      {
+        id: "task-3",
+        label: "Пример 3: [-1, 0], target = -1",
+        input: "-1, 0",
+        parameter: "-1",
+        isTask: true,
+      },
+      { id: "moves", label: "Движение обеих границ: [1, 3, 4, 5, 7, 11], target = 9", input: "1, 3, 4, 5, 7, 11", parameter: "9" },
+      { id: "negative", label: "Отрицательные: [-5, -2, 0, 3, 7], target = 1", input: "-5, -2, 0, 3, 7", parameter: "1" },
+      { id: "none", label: "Нет пары: [1, 2, 4], target = 10", input: "1, 2, 4", parameter: "10" },
       { id: "empty", label: "Пустой массив", input: "[]", parameter: "0" },
     ],
   },
@@ -121,11 +244,26 @@ const definitions: Record<VisualizedAlgorithmId, AlgorithmDefinition> = /* @__PU
     inputKind: "array",
     build: buildThreeSumTrace,
     examples: [
-      { id: "basic", label: "Две уникальные тройки", input: "-1, 0, 1, 2, -1, -4" },
-      { id: "duplicates", label: "Пропуск дубликатов", input: "-2, 0, 0, 2, 2" },
-      { id: "zeros", label: "Все нули", input: "0, 0, 0, 0" },
-      { id: "none", label: "Нет троек", input: "0, 1, 1" },
-      { id: "empty", label: "Пустой массив", input: "[]" },
+      {
+        id: "task-1",
+        label: "Пример 1: [-1, 0, 1, 2, -1, -4]",
+        input: "-1, 0, 1, 2, -1, -4",
+        isTask: true,
+      },
+      {
+        id: "task-2",
+        label: "Пример 2: [0, 1, 1]",
+        input: "0, 1, 1",
+        isTask: true,
+      },
+      {
+        id: "task-3",
+        label: "Пример 3: [0, 0, 0]",
+        input: "0, 0, 0",
+        isTask: true,
+      },
+      { id: "duplicates", label: "Пропуск дубликатов: [-2, 0, 0, 2, 2]", input: "-2, 0, 0, 2, 2" },
+      { id: "empty", label: "Пустой массив: []", input: "[]" },
     ],
   },
 }))();

@@ -14,10 +14,17 @@
   margin: var(--space-0);
   padding: var(--space-1) var(--space-0);
   overflow-x: auto;
+  box-sizing: border-box;
+  min-height: calc(var(--trace-fallback-cell) + var(--space-3));
+}
+.buckets .entries {
+  flex-wrap: wrap;
+  min-height: calc(var(--space-8) + var(--space-3));
 }
 .entry {
   --entry-accent: var(--accent-blue);
   flex: 0 0 auto;
+  box-sizing: border-box;
   min-width: var(--trace-fallback-cell);
   border: var(--space-px) solid var(--border-color);
   border-radius: var(--radius-lg);
@@ -26,16 +33,32 @@
   background: var(--bg-elevated);
   text-align: center;
   font-family: var(--font-mono);
+  line-height: var(--lh-tight);
   transition:
-    border-color var(--duration-medium),
-    background-color var(--duration-medium),
-    opacity var(--duration-medium),
-    transform var(--duration-medium);
-  animation: appear var(--duration-medium) ease-out;
+    border-color var(--duration-fast),
+    background-color var(--duration-fast);
+}
+.placeholder {
+  border-style: dashed;
+  border-color: var(--border-color);
+  background: color-mix(in srgb, var(--bg-elevated) 45%, transparent);
+  opacity: 0.45;
+  user-select: none;
+  pointer-events: none;
+}
+.placeholder dt {
+  color: var(--text-placeholder);
+}
+.placeholder dd {
+  color: var(--text-placeholder);
+}
+.emptyPlaceholder {
+  opacity: 0.35;
 }
 .entry dt {
   font-size: var(--fs-caption);
   color: var(--text-dimmed);
+  line-height: var(--lh-tight);
 }
 .entry dd {
   margin: var(--space-1) var(--space-0) var(--space-0);
@@ -43,6 +66,7 @@
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   max-width: var(--trace-copy-width);
+  line-height: var(--lh-tight);
 }
 .primary {
   --entry-accent: var(--accent-blue);
@@ -57,38 +81,46 @@
   border-color: var(--entry-accent);
   background: color-mix(in srgb, var(--entry-accent) 12%, var(--bg-elevated));
 }
-.buckets .entries {
-  flex-wrap: wrap;
-}
 .buckets .entry {
   display: flex;
   align-items: center;
   gap: var(--space-3);
   border-radius: var(--radius-full);
+  min-height: calc(var(--space-8) + var(--space-1));
+  box-sizing: border-box;
 }
 .buckets .entry dt {
   color: var(--entry-accent);
   padding-inline-end: var(--space-3);
   border-inline-end: var(--space-px) solid var(--border-color);
+  line-height: var(--lh-tight);
+}
+.buckets .placeholder dt {
+  color: var(--text-placeholder);
+  border-inline-end: var(--space-px) dashed var(--border-color);
 }
 .buckets .entry dd {
   margin: var(--space-0);
+  line-height: var(--lh-tight);
 }
 .window .entries {
   gap: var(--space-0);
 }
 .window .entry {
   border-radius: var(--space-0);
+  border-block-end: var(--space-1) solid transparent;
 }
 .window .entry:not(.active) {
   opacity: var(--trace-inactive-opacity);
 }
 .window .active {
-  border-block-end: var(--space-1) solid var(--entry-accent);
+  border-block-end-color: var(--entry-accent);
 }
 .prefix .entry {
   border-block-start: var(--space-1) solid var(--accent-green);
-  animation-name: accumulate;
+}
+.prefix .placeholder {
+  border-block-start: var(--space-1) dashed color-mix(in srgb, var(--accent-green) 40%, transparent);
 }
 .balance .entries {
   justify-content: space-around;
@@ -102,36 +134,28 @@
 .balance .entry dd {
   font-size: var(--fs-3xl);
 }
+.balance .placeholder {
+  border-block-end: var(--space-1) dashed var(--border-color);
+}
 .search .entry {
   border-radius: var(--radius-sm);
 }
 .search .active {
   border-color: var(--accent-orange);
 }
-.empty {
-  margin: var(--space-0);
-  color: var(--text-dimmed);
-  font-size: var(--fs-caption);
+.search .placeholder {
+  border-style: dashed;
 }
-@keyframes appear {
-  from {
-    opacity: 0;
-    transform: translateY(var(--space-2));
-  }
-  to {
-    opacity: 1;
-    transform: translateY(var(--space-0));
-  }
+.sequence .entry {
+  border-radius: var(--radius-full);
+  min-width: calc(var(--trace-fallback-cell) - var(--space-2));
 }
-@keyframes accumulate {
-  from {
-    opacity: 0;
-    transform: translateX(calc(-1 * var(--space-3)));
-  }
-  to {
-    opacity: 1;
-    transform: translateX(var(--space-0));
-  }
+.sequence .entry dt {
+  color: var(--text-placeholder);
+}
+.sequence .placeholder {
+  border-style: dashed;
+  border-radius: var(--radius-full);
 }
 .still .entry {
   animation: none;

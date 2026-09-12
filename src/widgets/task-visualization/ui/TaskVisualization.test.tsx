@@ -55,7 +55,9 @@ describe("TaskVisualization public widget", () => {
     fireEvent.change(within(players[0]).getByRole("textbox", { name: "Массив" }), {
       target: { value: "[0, 7]" },
     });
-    expect(within(players[1]).getByRole("textbox", { name: "Строка" })).toHaveValue("A,b a");
+    expect(within(players[1]).getByRole("textbox", { name: "Строка" })).toHaveValue(
+      "A man, a plan, a canal: Panama"
+    );
   });
 
   it("keeps the scene and step when expanding and collapsing locally", async () => {

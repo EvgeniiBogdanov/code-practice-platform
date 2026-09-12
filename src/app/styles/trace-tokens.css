@@ -1,4 +1,8 @@
 :root {
+  --trace-structure-height: 340px;
+  --trace-stack-height: 380px;
+  --trace-stack-motion-duration: 450ms;
+  --trace-stack-travel: 80px;
   --trace-inactive-opacity: 0.4;
   --trace-tile-surface: #2f2f2f;
   --trace-scene-height: 248px;
@@ -14,7 +18,7 @@
   --trace-control-height: 34px;
   --trace-play-width: 112px;
   --trace-timeline-width: 90px;
-  --trace-speed-width: 64px;
+  --trace-speed-width: 72px;
   --trace-explanation-height: 102px;
   --trace-explanation-mobile-height: 144px;
   --trace-copy-width: 80ch;

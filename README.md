@@ -2,7 +2,7 @@
 
 # <img src="public/favicon.svg" width="22" height="22" alt="" /> Code Practice Platform
 
-<sub><span style="color:gray">version: 2.3.86</span></sub>
+<sub><span style="color:gray">version: 2.3.87</span></sub>
 
 ### Интерактивная платформа для подготовки к техническим собеседованиям по фронтенду и алгоритмам
 
@@ -97,15 +97,15 @@
   <img src="https://img.shields.io/badge/Prettier_3-F7B93E?style=for-the-badge&logo=prettier&logoColor=black" alt="Prettier 3" />
 </p>
 
-| Категория | Технологии |
-| :--- | :--- |
-| **Frontend Core** | React 19.2, TypeScript 7.0 (Strict), Vite 8 (Rolldown) |
-| **Архитектура и роутинг** | Feature-Sliced Design (FSD v2.1), TanStack Router (типизированная файловая маршрутизация) |
-| **Управление состоянием** | Zustand 5 (UI и данные приложения), Redux Toolkit 2 (песочница Redux-задач) |
-| **Исполнение кода & Sandbox** | Sucrase (транспиляция JSX/TSX/CommonJS), xterm.js 6, Web Workers, изолированный `iframe` |
-| **Аналитика & графики** | Nivo Charts (`@nivo/core`, `@nivo/pie`, `@nivo/bar`) |
-| **Хранилище & синхронизация** | LocalStorage (L1-кэш), IndexedDB (L2 хранилище), `BroadcastChannel API` |
-| **Инструменты редактора** | Prettier 3 Standalone, Emmet, лексеры JS/TSX/CSS/HTML, встроенный линтинг и IntelliSense |
+| Категория                     | Технологии                                                                                |
+| :---------------------------- | :---------------------------------------------------------------------------------------- |
+| **Frontend Core**             | React 19.2, TypeScript 7.0 (Strict), Vite 8 (Rolldown)                                    |
+| **Архитектура и роутинг**     | Feature-Sliced Design (FSD v2.1), TanStack Router (типизированная файловая маршрутизация) |
+| **Управление состоянием**     | Zustand 5 (UI и данные приложения), Redux Toolkit 2 (песочница Redux-задач)               |
+| **Исполнение кода & Sandbox** | Sucrase (транспиляция JSX/TSX/CommonJS), xterm.js 6, Web Workers, изолированный `iframe`  |
+| **Аналитика & графики**       | Nivo Charts (`@nivo/core`, `@nivo/pie`, `@nivo/bar`)                                      |
+| **Хранилище & синхронизация** | LocalStorage (L1-кэш), IndexedDB (L2 хранилище), `BroadcastChannel API`                   |
+| **Инструменты редактора**     | Prettier 3 Standalone, Emmet, лексеры JS/TSX/CSS/HTML, встроенный линтинг и IntelliSense  |
 
 ---
 
@@ -139,27 +139,27 @@ npm run build
 
 ### Редактор кода (VS Code Style)
 
-| macOS | Windows / Linux | Действие |
-| :--- | :--- | :--- |
-| <kbd>⌘</kbd> + <kbd>D</kbd> | <kbd>Ctrl</kbd> + <kbd>D</kbd> | Выделить слово / добавить следующее совпадение (мультикурсор) |
-| <kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>L</kbd> | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>L</kbd> | Выделить все совпадения выделенного слова |
-| <kbd>Option</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd> | <kbd>Alt</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd> | Переместить текущую строку или блок строк вверх / вниз |
-| <kbd>Shift</kbd> + <kbd>Option</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd> | <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd> | Продублировать текущую строку или блок строк |
-| <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>F</kbd> | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>L</kbd> | Форматирование кода через Prettier 3 |
-| <kbd>Ctrl</kbd> + <kbd>Space</kbd> | <kbd>Ctrl</kbd> + <kbd>Space</kbd> | Вызов меню контекстных подсказок IntelliSense |
-| <kbd>⌘</kbd> + <kbd>/</kbd> | <kbd>Ctrl</kbd> + <kbd>/</kbd> | Строчный комментарий (Toggle Line Comment) |
-| <kbd>Shift</kbd> + <kbd>Option</kbd> + <kbd>A</kbd> | <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>A</kbd> | Блочный комментарий (Toggle Block Comment) |
+| macOS                                                              | Windows / Linux                                                 | Действие                                                      |
+| :----------------------------------------------------------------- | :-------------------------------------------------------------- | :------------------------------------------------------------ |
+| <kbd>⌘</kbd> + <kbd>D</kbd>                                        | <kbd>Ctrl</kbd> + <kbd>D</kbd>                                  | Выделить слово / добавить следующее совпадение (мультикурсор) |
+| <kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>L</kbd>                     | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>L</kbd>               | Выделить все совпадения выделенного слова                     |
+| <kbd>Option</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd>                    | <kbd>Alt</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd>                    | Переместить текущую строку или блок строк вверх / вниз        |
+| <kbd>Shift</kbd> + <kbd>Option</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd> | <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd> | Продублировать текущую строку или блок строк                  |
+| <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>F</kbd>                   | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>L</kbd>                 | Форматирование кода через Prettier 3                          |
+| <kbd>Ctrl</kbd> + <kbd>Space</kbd>                                 | <kbd>Ctrl</kbd> + <kbd>Space</kbd>                              | Вызов меню контекстных подсказок IntelliSense                 |
+| <kbd>⌘</kbd> + <kbd>/</kbd>                                        | <kbd>Ctrl</kbd> + <kbd>/</kbd>                                  | Строчный комментарий (Toggle Line Comment)                    |
+| <kbd>Shift</kbd> + <kbd>Option</kbd> + <kbd>A</kbd>                | <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>A</kbd>                | Блочный комментарий (Toggle Block Comment)                    |
 
 ### Навигация и глобальные действия
 
-| Сочетание / Клавиша | Область | Действие |
-| :--- | :--- | :--- |
-| <kbd>⌘</kbd> + <kbd>K</kbd> / <kbd>Ctrl</kbd> + <kbd>K</kbd> | Глобально | Палитра быстрого поиска задач (Command Palette) |
-| <kbd>⌘</kbd> + <kbd>Enter</kbd> / <kbd>Ctrl</kbd> + <kbd>Enter</kbd> | Редактор | Быстрый запуск кода / тестов в песочнице |
-| <kbd>F11</kbd> | Редактор | Переключение полноэкранного режима редактора |
-| <kbd>↓</kbd> / <kbd>↑</kbd>, <kbd>→</kbd> / <kbd>←</kbd> | Сайдбар | Навигация по дереву задач (WAI-ARIA Treeview) |
-| <kbd>Alt</kbd> + Клик | Сайдбар | Свернуть / развернуть все папки текущего раздела |
-| <kbd>Esc</kbd> | Глобально | Закрыть модальное окно, подсказку или палитру поиска |
+| Сочетание / Клавиша                                                  | Область   | Действие                                             |
+| :------------------------------------------------------------------- | :-------- | :--------------------------------------------------- |
+| <kbd>⌘</kbd> + <kbd>K</kbd> / <kbd>Ctrl</kbd> + <kbd>K</kbd>         | Глобально | Палитра быстрого поиска задач (Command Palette)      |
+| <kbd>⌘</kbd> + <kbd>Enter</kbd> / <kbd>Ctrl</kbd> + <kbd>Enter</kbd> | Редактор  | Быстрый запуск кода / тестов в песочнице             |
+| <kbd>F11</kbd>                                                       | Редактор  | Переключение полноэкранного режима редактора         |
+| <kbd>↓</kbd> / <kbd>↑</kbd>, <kbd>→</kbd> / <kbd>←</kbd>             | Сайдбар   | Навигация по дереву задач (WAI-ARIA Treeview)        |
+| <kbd>Alt</kbd> + Клик                                                | Сайдбар   | Свернуть / развернуть все папки текущего раздела     |
+| <kbd>Esc</kbd>                                                       | Глобально | Закрыть модальное окно, подсказку или палитру поиска |
 
 ---
 

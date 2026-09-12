@@ -1,0 +1,201 @@
+.heading {
+  padding: var(--space-3) var(--space-5);
+  color: var(--text-muted);
+  font: var(--fs-caption) var(--font-mono);
+}
+.viewport {
+  height: var(--trace-scene-height);
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+.viewport:focus-visible {
+  outline: var(--space-0-5) solid var(--accent-blue);
+  outline-offset: calc(-1 * var(--space-0-5));
+}
+.diagram {
+  display: block;
+  margin-inline: auto;
+  overflow: visible;
+}
+.shape {
+  fill: var(--bg-elevated);
+  stroke: var(--border-color);
+  stroke-width: var(--space-0-5);
+  transition:
+    fill var(--transition-medium),
+    stroke var(--transition-medium);
+}
+.node {
+  animation: appear var(--duration-medium) ease-out;
+  transition: transform var(--transition-medium);
+}
+.value {
+  fill: var(--text-main);
+  font: var(--fw-semibold) var(--fs-body-sm) var(--font-mono);
+}
+.caption {
+  fill: var(--text-muted);
+  font: var(--fs-xs) var(--font-mono);
+}
+.edge path {
+  fill: none;
+  stroke: var(--text-dimmed);
+  stroke-width: var(--space-0-5);
+}
+.edge text {
+  fill: var(--text-dimmed);
+  text-anchor: middle;
+  font: var(--fs-xs) var(--font-mono);
+}
+.arrow {
+  fill: var(--text-dimmed);
+}
+.activeEdge path {
+  stroke: var(--accent-blue);
+}
+.active {
+  color: var(--accent-blue);
+}
+.frontier {
+  color: var(--accent-purple);
+}
+.done {
+  color: var(--accent-green);
+}
+.rejected {
+  color: var(--accent-orange);
+}
+.active .shape {
+  fill: var(--accent-blue-bg);
+  stroke: var(--accent-blue);
+}
+.frontier .shape {
+  fill: var(--accent-purple-bg);
+  stroke: var(--accent-purple);
+}
+.done .shape {
+  fill: var(--accent-green-bg);
+  stroke: var(--accent-green);
+}
+.rejected .shape {
+  fill: var(--accent-orange-bg);
+  stroke: var(--accent-orange);
+}
+.muted {
+  opacity: var(--trace-inactive-opacity);
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2) var(--space-4);
+  padding: var(--space-3);
+  font: var(--fs-caption) var(--font-sans);
+}
+.empty {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  color: var(--text-dimmed);
+}
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.still .node {
+  transition: none;
+  animation: none;
+}
+.still .shape {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .node {
+    transition: none;
+    animation: none;
+  }
+  .shape {
+    transition: none;
+  }
+}
+
+.stage {
+  background: var(--bg-editor);
+}
+.stage .heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.dimension {
+  color: var(--text-dimmed);
+  letter-spacing: var(--ls-section);
+}
+.webgl {
+  position: relative;
+  width: 100%;
+  height: max(var(--trace-scene-height), var(--trace-structure-height));
+  overflow: hidden;
+  cursor: grab;
+}
+.webgl:active {
+  cursor: grabbing;
+}
+.webgl:focus-visible {
+  outline: var(--space-0-5) solid var(--accent-blue);
+  outline-offset: calc(-1 * var(--space-0-5));
+}
+.webgl canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+.loading {
+  display: grid;
+  place-items: center;
+}
+.loadingText {
+  color: var(--text-dimmed);
+  font: var(--fs-caption) var(--font-mono);
+}
+.sceneFooter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-5);
+  border-top: var(--space-px) solid var(--border-editor);
+}
+.sceneFooter .legend {
+  padding: var(--space-0);
+}
+.gestureHint {
+  color: var(--text-dimmed);
+  font: var(--fs-xs) var(--font-mono);
+}
+.recovery {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--fs-caption);
+}
+.srOnly {
+  position: absolute;
+  width: var(--space-px);
+  height: var(--space-px);
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

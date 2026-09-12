@@ -42,6 +42,7 @@ export const TracePlayer = ({
             {inputs}
             <AlgorithmTraceScene
               step={step}
+              steps={steps}
               reducedMotion={playback.reducedMotion}
               definition={definition}
               zoom={zoom}

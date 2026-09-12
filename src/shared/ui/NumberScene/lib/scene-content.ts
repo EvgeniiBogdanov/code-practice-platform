@@ -1,13 +1,6 @@
-import {
-  BoxGeometry,
-  ConeGeometry,
-  Group,
-  Mesh,
-  MeshBasicMaterial,
-  Scene,
-  Sprite,
-  type Object3D,
-} from "three";
+import { disposeSceneObject } from "../../../lib/three-scene";
+export { disposeSceneObject } from "../../../lib/three-scene";
+import { BoxGeometry, ConeGeometry, Group, Mesh, MeshBasicMaterial, Scene } from "three";
 import type {
   NumberSceneMarker,
   NumberSceneProps,
@@ -26,21 +19,6 @@ interface MarkerAnimation {
   group: Group;
   targetX: number;
 }
-
-export const disposeSceneObject = (object: Object3D): void => {
-  object.traverse((child) => {
-    if (child instanceof Sprite) {
-      child.material.map?.dispose();
-      child.material.dispose();
-    } else if (child instanceof Mesh) {
-      child.geometry.dispose();
-      const materials = Array.isArray(child.material) ? child.material : [child.material];
-      materials.forEach((material) => material.dispose());
-    }
-  });
-  object.removeFromParent();
-  object.clear();
-};
 
 const makeMarker = (
   marker: NumberSceneMarker,
