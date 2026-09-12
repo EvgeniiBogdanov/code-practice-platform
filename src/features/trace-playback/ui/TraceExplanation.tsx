@@ -17,6 +17,11 @@ export const TraceExplanation = ({ step, playing }: TraceExplanationProps): JSX.
       {step.formula && <output className={styles.formula}>{step.formula}</output>}
     </div>
     <p>{step.explanation}</p>
+    {step.structure && step.result !== undefined && (
+      <output className={styles.result} aria-label="Результат алгоритма">
+        {JSON.stringify(step.result)}
+      </output>
+    )}
     {step.found && step.found.length > 0 && (
       <div className={styles.found}>
         <span>Найдено:</span>

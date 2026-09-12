@@ -11,6 +11,7 @@ export type {
   TracePointer,
   TracePanel,
   TraceScene,
+  TraceStructure,
   TraceStep,
   TraceValue,
 } from "./model/algorithm-trace";

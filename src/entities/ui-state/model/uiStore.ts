@@ -673,6 +673,7 @@ export const useUIStore = create<UIState>()(
             localStorage.removeItem("playground_theme");
             localStorage.removeItem("playground_visualizer_split_ratio");
             localStorage.removeItem("playground_visualizer_zoom");
+            localStorage.removeItem("playground_visualizer_playback_speed");
           } catch {
             // ignore
           }

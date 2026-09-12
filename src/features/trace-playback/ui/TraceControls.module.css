@@ -21,6 +21,8 @@
   font-variant-numeric: tabular-nums;
   font-size: var(--fs-caption);
   white-space: nowrap;
+  min-width: 7ch;
+  text-align: center;
 }
 .speed {
   min-width: var(--trace-speed-width);

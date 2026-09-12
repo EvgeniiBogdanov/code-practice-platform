@@ -34,6 +34,27 @@ export const createTraceRecorder = (
       title,
       explanation,
       values: [...current.values],
+      structure: current.structure
+        ? {
+            ...current.structure,
+            stacks: current.structure.stacks?.map((stack) => ({
+              ...stack,
+              values: [...stack.values],
+            })),
+            stackAction: current.structure.stackAction
+              ? {
+                  ...current.structure.stackAction,
+                  before: current.structure.stackAction.before.map((stack) => ({
+                    ...stack,
+                    values: [...stack.values],
+                  })),
+                  items: current.structure.stackAction.items.map((item) => ({ ...item })),
+                }
+              : undefined,
+            nodes: current.structure.nodes.map((node) => ({ ...node })),
+            edges: current.structure.edges.map((edge) => ({ ...edge })),
+          }
+        : undefined,
       pointers: (detail.pointers ?? current.pointers).map((pointer) => ({ ...pointer })),
       settled: [...(detail.settled ?? current.settled ?? [])],
       dimmed: [...(detail.dimmed ?? current.dimmed ?? [])],

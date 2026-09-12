@@ -1,20 +1,30 @@
 .select {
+  box-sizing: border-box;
   min-width: var(--space-0);
   border: var(--space-px) solid var(--border-color);
   border-radius: var(--radius-lg);
   color: var(--text-main);
   background-color: var(--bg-input);
-  font: inherit;
+  font-family: inherit;
   font-size: var(--fs-caption);
+  line-height: var(--lh-tight);
+  padding-block: var(--space-0);
   padding-inline: var(--space-2) var(--space-6);
   cursor: pointer;
+  vertical-align: middle;
 }
 .md {
   height: var(--space-8);
+  padding-inline: var(--space-2-5) var(--space-7);
+  background-position: right var(--space-2-5) center;
+  background-size: 12px 12px;
 }
 .sm {
   height: var(--space-6);
   border-radius: var(--radius-md);
+  padding-inline: var(--space-1-5) var(--space-5);
+  background-position: right var(--space-1-5) center;
+  background-size: 10px 10px;
 }
 .select:hover {
   border-color: var(--border-hover);
@@ -23,3 +33,17 @@
   outline: var(--space-0-5) solid var(--accent-blue);
   outline-offset: calc(-1 * var(--space-0-5));
 }
+.select optgroup {
+  background-color: var(--bg-card);
+  color: var(--text-muted);
+  font-style: normal;
+  font-weight: 600;
+  font-size: var(--fs-caption);
+}
+.select option {
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: var(--fs-caption);
+}
+

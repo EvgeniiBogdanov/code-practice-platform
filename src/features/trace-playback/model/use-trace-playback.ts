@@ -1,4 +1,9 @@
-import { PLAYBACK_SPEEDS } from "../config/playback-speeds";
+import {
+  getInitialPlaybackSpeed,
+  persistPlaybackSpeed,
+  PLAYBACK_SPEEDS,
+  PLAYBACK_SPEED_STORAGE_KEY,
+} from "../config/playback-speeds";
 import { useCallback, useEffect, useReducer, useState } from "react";
 
 export interface PlaybackState {
@@ -47,7 +52,15 @@ export interface TracePlayback extends PlaybackState {
 }
 
 export const useTracePlayback = (length: number, isActive = true): TracePlayback => {
-  const [state, dispatch] = useReducer(playbackReducer, { index: 0, playing: false, speed: 1 });
+  const [state, dispatch] = useReducer(
+    playbackReducer,
+    undefined,
+    (): PlaybackState => ({
+      index: 0,
+      playing: false,
+      speed: getInitialPlaybackSpeed(),
+    })
+  );
   const [reducedMotion, setReducedMotion] = useState(
     () => window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
@@ -75,11 +88,26 @@ export const useTracePlayback = (length: number, isActive = true): TracePlayback
     document.addEventListener("visibilitychange", pauseWhenHidden);
     return (): void => document.removeEventListener("visibilitychange", pauseWhenHidden);
   }, []);
+  useEffect(() => {
+    const handleStorage = (event: StorageEvent): void => {
+      if (event.key === PLAYBACK_SPEED_STORAGE_KEY && event.newValue) {
+        const parsed = Number(event.newValue);
+        if (PLAYBACK_SPEEDS.includes(parsed)) {
+          dispatch({ type: "speed", speed: parsed });
+        }
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+    return (): void => window.removeEventListener("storage", handleStorage);
+  }, []);
   const toggle = useCallback((): void => dispatch({ type: "toggle", length }), [length]);
   const seek = useCallback(
     (index: number): void => dispatch({ type: "seek", index, length }),
     [length]
   );
-  const setSpeed = useCallback((speed: number): void => dispatch({ type: "speed", speed }), []);
+  const setSpeed = useCallback((speed: number): void => {
+    persistPlaybackSpeed(speed);
+    dispatch({ type: "speed", speed });
+  }, []);
   return { ...state, reducedMotion, toggle, seek, setSpeed };
 };

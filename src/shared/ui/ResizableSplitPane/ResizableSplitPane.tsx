@@ -7,6 +7,7 @@ export interface ResizableSplitPaneProps {
   left: React.ReactNode;
   right: React.ReactNode;
   splitRatio?: number;
+  defaultRatio?: number;
   onSplitRatioChange?: (ratio: number) => void;
   onReset?: () => void;
   minLeftPercent?: number;
@@ -20,12 +21,14 @@ export interface ResizableSplitPaneProps {
 const DEFAULT_MIN = 20;
 const DEFAULT_MAX = 80;
 const DEFAULT_RATIO = 70;
+const DRAG_THRESHOLD = 3;
 
 export const ResizableSplitPane = memo(
   ({
     left,
     right,
     splitRatio = DEFAULT_RATIO,
+    defaultRatio = DEFAULT_RATIO,
     onSplitRatioChange,
     onReset,
     minLeftPercent = DEFAULT_MIN,
@@ -39,8 +42,18 @@ export const ResizableSplitPane = memo(
     const [isDragging, setIsDragging] = useState(false);
     const [localRatio, setLocalRatio] = useState(splitRatio);
 
+    const isPointerDownRef = useRef(false);
+    const isDraggingRef = useRef(false);
+    const startXRef = useRef(0);
+    const startRatioRef = useRef(splitRatio);
+    const activePointerIdRef = useRef<number | null>(null);
+    const lastPointerUpTimeRef = useRef(0);
+    const resetFromPointerUpRef = useRef(false);
+
     useEffect(() => {
-      setLocalRatio(splitRatio);
+      if (!isDraggingRef.current) {
+        setLocalRatio(splitRatio);
+      }
     }, [splitRatio]);
 
     const updateRatio = useCallback(
@@ -52,11 +65,22 @@ export const ResizableSplitPane = memo(
       [maxLeftPercent, minLeftPercent, onSplitRatioChange]
     );
 
+    const performReset = useCallback(() => {
+      if (disabled) return;
+      updateRatio(defaultRatio);
+      onReset?.();
+    }, [defaultRatio, disabled, onReset, updateRatio]);
+
     const handlePointerDown = useCallback(
       (e: React.PointerEvent<HTMLDivElement>) => {
         if (disabled || e.button !== 0) return;
-        e.preventDefault();
-        setIsDragging(true);
+
+        resetFromPointerUpRef.current = false;
+        isPointerDownRef.current = true;
+        isDraggingRef.current = false;
+        startXRef.current = e.clientX;
+        startRatioRef.current = localRatio;
+        activePointerIdRef.current = e.pointerId;
 
         const target = e.currentTarget;
         if (target.setPointerCapture) {
@@ -67,50 +91,101 @@ export const ResizableSplitPane = memo(
           }
         }
       },
-      [disabled]
+      [disabled, localRatio]
     );
 
     const handlePointerMove = useCallback(
       (e: React.PointerEvent<HTMLDivElement>) => {
-        if (!isDragging || !containerRef.current) return;
+        if (!isPointerDownRef.current || !containerRef.current) return;
+
+        const deltaX = e.clientX - startXRef.current;
+
+        if (!isDraggingRef.current) {
+          if (Math.abs(deltaX) > DRAG_THRESHOLD) {
+            isDraggingRef.current = true;
+            setIsDragging(true);
+          } else {
+            return;
+          }
+        }
+
         const rect = containerRef.current.getBoundingClientRect();
         if (rect.width <= 0) return;
 
-        const currentX = e.clientX - rect.left;
-        const calculatedPercent = (currentX / rect.width) * 100;
-        updateRatio(calculatedPercent);
+        const deltaPercent = (deltaX / rect.width) * 100;
+        updateRatio(startRatioRef.current + deltaPercent);
       },
-      [isDragging, updateRatio]
+      [updateRatio]
     );
 
     const handlePointerUp = useCallback(
       (e: React.PointerEvent<HTMLDivElement>) => {
-        if (!isDragging) return;
-        setIsDragging(false);
+        if (!isPointerDownRef.current) return;
+        isPointerDownRef.current = false;
+
         const target = e.currentTarget;
-        if (target.releasePointerCapture) {
+        if (target.releasePointerCapture && activePointerIdRef.current !== null) {
           try {
-            target.releasePointerCapture(e.pointerId);
+            target.releasePointerCapture(activePointerIdRef.current);
           } catch {
             // ignore
           }
         }
+        activePointerIdRef.current = null;
+
+        const wasDragging = isDraggingRef.current;
+        isDraggingRef.current = false;
+
+        if (wasDragging) {
+          setIsDragging(false);
+          return;
+        }
+
+        const now = Date.now();
+        const timeSinceLastUp = now - lastPointerUpTimeRef.current;
+
+        if (lastPointerUpTimeRef.current !== 0 && timeSinceLastUp <= 350) {
+          lastPointerUpTimeRef.current = 0;
+          resetFromPointerUpRef.current = true;
+          performReset();
+        } else {
+          lastPointerUpTimeRef.current = now;
+        }
       },
-      [isDragging]
+      [performReset]
+    );
+
+    const handlePointerCancel = useCallback(
+      (e: React.PointerEvent<HTMLDivElement>) => {
+        isPointerDownRef.current = false;
+        isDraggingRef.current = false;
+        setIsDragging(false);
+
+        const target = e.currentTarget;
+        if (target.releasePointerCapture && activePointerIdRef.current !== null) {
+          try {
+            target.releasePointerCapture(activePointerIdRef.current);
+          } catch {
+            // ignore
+          }
+        }
+        activePointerIdRef.current = null;
+      },
+      []
     );
 
     const handleDoubleClick = useCallback(() => {
-      if (disabled) return;
-      if (onReset) {
-        onReset();
-      } else {
-        updateRatio(DEFAULT_RATIO);
+      if (resetFromPointerUpRef.current) {
+        resetFromPointerUpRef.current = false;
+        return;
       }
-    }, [disabled, onReset, updateRatio]);
+      performReset();
+    }, [performReset]);
 
     const handleKeyDown = useCallback(
       (e: React.KeyboardEvent<HTMLDivElement>) => {
         if (disabled) return;
+        resetFromPointerUpRef.current = false;
         const step = e.shiftKey ? 5 : 2;
 
         switch (e.key) {
@@ -135,13 +210,13 @@ export const ResizableSplitPane = memo(
           case "Enter":
           case " ":
             e.preventDefault();
-            handleDoubleClick();
+            performReset();
             break;
           default:
             break;
         }
       },
-      [disabled, handleDoubleClick, localRatio, maxLeftPercent, minLeftPercent, updateRatio]
+      [disabled, localRatio, maxLeftPercent, minLeftPercent, performReset, updateRatio]
     );
 
     const isStacked = layout === "stack";
@@ -180,7 +255,7 @@ export const ResizableSplitPane = memo(
               onPointerDown={handlePointerDown}
               onPointerMove={handlePointerMove}
               onPointerUp={handlePointerUp}
-              onPointerCancel={handlePointerUp}
+              onPointerCancel={handlePointerCancel}
               onDoubleClick={handleDoubleClick}
               onKeyDown={handleKeyDown}
             >

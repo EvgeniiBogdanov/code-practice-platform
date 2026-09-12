@@ -61,7 +61,9 @@ describe("algorithm lab interactions", () => {
     act(() => vi.advanceTimersByTime(5000));
     expect(screen.getByRole("slider")).toHaveValue("0");
     rerender(<AlgorithmLab taskId="algo2" solution="return true;" />);
-    expect(screen.getByRole("textbox", { name: "Строка" })).toHaveValue("A,b a");
+    expect(screen.getByRole("textbox", { name: "Строка" })).toHaveValue(
+      "A man, a plan, a canal: Panama"
+    );
     expect(screen.getByRole("slider")).toHaveValue("0");
   });
   it("keeps code and controls usable after WebGL failure and offers a retry", () => {
@@ -115,7 +117,21 @@ describe("algorithm lab interactions", () => {
     expect(resizer).toHaveAttribute("aria-valuenow", "68");
     expect(localStorage.getItem("playground_visualizer_split_ratio")).toBe("68");
 
-    // Reset via double click
+    // Micro-movements during clicks do not move panes or trigger dragging
+    fireEvent.pointerDown(resizer, { clientX: 700, pointerId: 1 });
+    fireEvent.pointerMove(resizer, { clientX: 701, pointerId: 1 });
+    fireEvent.pointerUp(resizer, { clientX: 701, pointerId: 1 });
+    expect(resizer).toHaveAttribute("aria-valuenow", "68");
+
+    // Second click completes pointer double-click and cleanly resets to 70/30
+    fireEvent.pointerDown(resizer, { clientX: 701, pointerId: 1 });
+    fireEvent.pointerUp(resizer, { clientX: 700, pointerId: 1 });
+    expect(resizer).toHaveAttribute("aria-valuenow", "70");
+    expect(localStorage.getItem("playground_visualizer_split_ratio")).toBe("70");
+
+    // Also supports native dblclick event
+    fireEvent.keyDown(resizer, { key: "ArrowLeft" });
+    expect(resizer).toHaveAttribute("aria-valuenow", "68");
     fireEvent.doubleClick(resizer);
     expect(resizer).toHaveAttribute("aria-valuenow", "70");
     expect(localStorage.getItem("playground_visualizer_split_ratio")).toBe("70");

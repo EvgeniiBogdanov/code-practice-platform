@@ -26,6 +26,7 @@ describe("useUIStore - resetUISettings", () => {
     localStorage.setItem("playground_favorites_list_display_mode", "tasks");
     localStorage.setItem("playground_console_collapsed", "false");
     localStorage.setItem("playground_theme", "light");
+    localStorage.setItem("playground_visualizer_playback_speed", "2");
     sessionStorage.setItem("playground_collapsed_subgroups_1", "{}");
     sessionStorage.setItem("playground_favorite_tree_collapsed_folders_javascript", "[]");
 
@@ -54,6 +55,7 @@ describe("useUIStore - resetUISettings", () => {
     expect(localStorage.getItem("playground_visualizer_zoom")).toBeNull();
     expect(localStorage.getItem("playground_visualizer_code_font_size")).toBeNull();
     expect(localStorage.getItem("playground_visualizer_split_ratio")).toBeNull();
+    expect(localStorage.getItem("playground_visualizer_playback_speed")).toBeNull();
     expect(sessionStorage.getItem("playground_collapsed_subgroups_1")).toBeNull();
     expect(sessionStorage.getItem("playground_favorite_tree_collapsed_folders_javascript")).toBeNull();
   });

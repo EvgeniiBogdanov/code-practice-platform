@@ -17,7 +17,9 @@ export const TraceSceneMetadata = ({
     <div className={styles.sceneMeta}>
       <span className={styles.sceneMetaStart}>ИНДЕКСЫ С 0</span>
       {hintText && <span className={styles.sceneHint}>{hintText}</span>}
-      <span className={styles.sceneMetaEnd}>{step.values.length} элементов</span>
+      <span className={styles.sceneMetaEnd}>
+        {step.structure?.nodes.length ?? step.values.length} элементов
+      </span>
     </div>
   );
 };
