@@ -125,46 +125,13 @@ npm install
 npm run dev
 ```
 
-Приложение будет доступно по адресу, указанному в терминале (обычно `http://localhost:5173`).
+Приложение будет доступно по адресу, указанному в терминале (`http://localhost:4000`).
 
 Для сборки production-версии:
 
 ```bash
 npm run build
 ```
-
----
-
-## ⚙️ CI/CD
-
-Пайплайн описан в `.github/workflows/` и следует практикам продуктовых репозиториев.
-
-### Что происходит на каждый PR и push в `main` (ci.yml)
-
-Пять параллельных проверок: **lint** (ESLint), **typecheck** (tsc), **format** (prettier --check), **test** (vitest с покрытием), **build** (production-сборка + отчёт о размере бандла). Для PR размер бандла публикуется одним обновляемым комментарием, сводка покрытия — в job summary.
-
-### Что происходит после мержа в `main`
-
-1. **Deploy** — GitHub Pages обновляется только после прохождения всех пяти проверок (сборка выполняется один раз и переиспользуется через артефакт).
-2. **Release** — только для milestone-версий, где patch = `0` (например, `2.4.0`, `3.0.0`): автоматически создаются git-тег `vX.Y.Z` и GitHub Release с автогенерированными notes по всем изменениям с прошлого релиза. Промежуточные патч-версии (`2.3.89`, `2.3.91`) релизов не создают.
-3. Сводки проверки и размер бандла — в GitHub Actions Summary запуска.
-
-### Сопутствующая автоматизация
-
-- **Dependabot** (`.github/dependabot.yml`) — еженедельные обновления npm-зависимостей и GitHub Actions (minor/patch сгруппированы в один PR).
-- **Cleanup merged branches** (`cleanup-branches.yml`) — еженедельное удаление веток, полностью смерженных в `main` (запуск вручную: `gh workflow run "Cleanup merged branches"`).
-
-### Версия Node
-
-Версия Node закреплена в `.nvmrc` (сейчас **22**) — единая точка правды для локальной разработки (`nvm use`) и для CI (`actions/setup-node` c `node-version-file`).
-
-### Рекомендация: branch protection
-
-Чтобы проверки нельзя было обойти, включите в настройках репозитория **Settings → Branches → Add branch protection rule** для `main`:
-
-- ✅ Require a pull request before merging
-- ✅ Require status checks to pass: `Lint`, `Typecheck`, `Format`, `Unit tests`, `Build`
-- ✅ Require branches to be up to date before merging
 
 ---
 
