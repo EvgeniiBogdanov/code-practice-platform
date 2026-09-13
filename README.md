@@ -2,13 +2,13 @@
 
 # <img src="public/favicon.svg" width="22" height="22" alt="" /> Code Practice Platform
 
-<sub><span style="color:gray">version: 2.3.89</span></sub>
+<sub><span style="color:gray">version: 2.4.0</span></sub>
 
 ### Интерактивная платформа для подготовки к техническим собеседованиям по фронтенду и алгоритмам
 
 <br />
 
-<img width="1723" height="964" alt="Code Practice Platform Preview" src="https://github.com/user-attachments/assets/489061bb-f4a9-4417-aa1c-8031295f5eb3" />
+<img width="1723" height="966" alt="Code Practice Platform Preview" src="https://github.com/user-attachments/assets/69d37608-a6b9-4952-8398-d3286575b0a4" />
 
 <br /><br />
 
@@ -167,6 +167,7 @@ npm run build
 
 Полная история изменений доступна в файле **[CHANGELOG.md](CHANGELOG.md)**.
 
+- **[v2.4.0](CHANGELOG.md#v2-4-0)** — Крупный релиз платформы (цикл v2.3.0 – v2.4.0): интерактивный 3D/2D визуализатор алгоритмов на Three.js (10 категорий алгоритмов), интервальные повторения SM-2 с интеграцией нерешённых задач и умным помощником, полноэкранный сплит-режим «Код + Интерфейс» (70/30) с живой React-песочницей, индекс вероятности на собеседованиях с Gauge-индикатором, расширение каталогов JS/React/Algo, оптимизация производительности (Lighthouse 99, FCP 570 мс) и CI/CD-конвейер в GitHub Actions, Визуализация 3D - работы алгоритмов.
 - **[v2.3.89](CHANGELOG.md#v2-3-89)** — CI/CD-конвейер по практикам продуктовых репозиториев: обязательные проверки (lint, typecheck, format, 974 теста, build) перед деплоем GitHub Pages, авто-теги и GitHub Releases, отчёт о размере бандла в PR, покрытие тестами, Dependabot и еженедельная очистка смерженных веток.
 - **[v2.3.88](CHANGELOG.md#v2-3-88)** — Комплексная оптимизация загрузки приложения (локальные WOFF2-шрифты Inter, оптимизация чанков и tree-shaking публичных API, ускорение FCP/LCP), унификация фоновой сетки в 2D и 3D-сценах TaskVisualization.
 - **[v2.3.85](CHANGELOG.md#v2-3-85)** — Визуализатор алгоритмов TaskVisualization на Three.js (Two Pointers), интеграция нерешённых задач в цикл интервальных повторений SM-2 с наивысшим приоритетом.

@@ -6,3 +6,4 @@ export * from "./ui/MasteryProgress";
 export * from "./ui/TaskReviewRatingBar";
 export * from "./ui/SpacedRepetitionSection";
 export * from "./ui/TaskExcludeButton";
+export * from "./ui/SpacedRepetitionActivityChart";

@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { clsx } from "clsx";
 import { UiSkeleton } from "@/shared/ui";
+import { SpacedRepetitionActivityChartSkeleton } from "../SpacedRepetitionActivityChart";
 import sectionStyles from "./SpacedRepetitionSection.module.css";
 import styles from "./SpacedRepetitionScheduleSkeleton.module.css";
 
@@ -32,12 +33,7 @@ export const SpacedRepetitionScheduleSkeleton = memo(
         role="status"
         aria-label="Загрузка графика повторений"
       >
-        <div className={styles.chartSection}>
-          <div className={styles.titleWrapper}>
-            <UiSkeleton variant="rounded" width={145} height={13} radius={3} />
-          </div>
-          <UiSkeleton variant="rounded" width="100%" height={112} radius={4} />
-        </div>
+        <SpacedRepetitionActivityChartSkeleton />
 
         <hr className={sectionStyles.sectionDivider} />
 

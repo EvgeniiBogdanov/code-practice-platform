@@ -27,19 +27,23 @@ export interface UseSpacedRepetitionDataResult {
   masteryPercent: number;
   avgInterval: number;
   scopeLabel: string;
+  isLoading: boolean;
 }
 
 export const useSpacedRepetitionData = ({
   taskList,
   sectionName = "",
-}: UseSpacedRepetitionDataProps): UseSpacedRepetitionDataResult => {
+}: UseSpacedRepetitionDataProps = {}): UseSpacedRepetitionDataResult => {
   const reviews = useReviewStore((state) => state.reviews);
   const isInitialized = useReviewStore((state) => state.isInitialized);
   const getMasteryStats = useReviewStore((state) => state.getMasteryStats);
   const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
   const completedTasks = useProgressStore((state) => state.completedTasks);
   const taskStatusTimestamps = useProgressStore((state) => state.taskStatusTimestamps);
-  const { tasks: catalogTasks } = useAllTaskSections(!taskList?.length);
+  const { tasks: catalogTasks, isLoading: isCatalogLoading } = useAllTaskSections(
+    !taskList?.length
+  );
+  const isLoading = !taskList?.length ? isCatalogLoading || !isInitialized : !isInitialized;
 
   const excludedSet = useMemo(() => new Set(excludedTaskIds.map(String)), [excludedTaskIds]);
 
@@ -128,5 +132,6 @@ export const useSpacedRepetitionData = ({
     masteryPercent,
     avgInterval,
     scopeLabel,
+    isLoading,
   };
 };
