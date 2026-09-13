@@ -4,7 +4,7 @@
 
 ## <a id="v2-3-89"></a> [2.3.89] — 2026-09-13
 
-### CI/CD-конвейер по практикам продуктовых репозиториев
+### CI pipeline actions
 
 - **CI-проверки на каждый PR и push в main**:
   - Новый workflow `.github/workflows/ci.yml`: параллельные джобы lint, typecheck, format (prettier --check), unit-тесты (974 теста) и production-build.

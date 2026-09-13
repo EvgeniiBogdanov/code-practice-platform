@@ -103,6 +103,9 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
 
@@ -132,7 +135,8 @@ jobs:
 
       - name: Comment bundle size on PR
         if: github.event_name == 'pull_request'
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@v3
+        continue-on-error: true
         with:
           header: bundle-size
           path: bundle-report.md
