@@ -10,7 +10,7 @@
   - Новый workflow `.github/workflows/ci.yml`: параллельные джобы lint, typecheck, format (prettier --check), unit-тесты (974 теста) и production-build.
   - Кодовые проверки теперь обязательны перед деплоем: GitHub Pages обновляется только после зелёных lint / typecheck / format / test / build.
 - **Автоматизация релизов**:
-  - После мержа в main автоматически создаётся git-тег `vX.Y.Z` и GitHub Release с автогенерированными notes (версия берётся из `package.json`).
+  - После мержа в main автоматически создаются git-тег `vX.Y.Z` и GitHub Release с автогенерированными notes — только для milestone-версий с patch = 0 (например, `2.4.0`); промежуточные патч-версии (`2.3.89`, `2.3.91`) не создают релизов. Версия берётся из `package.json`, CHANGELOG остаётся ручным.
 - **Отчёт о размере бандла в PR**:
   - Скрипт `scripts/bundle-report.mjs` считает размеры `dist/` по типам файлов (raw и gzip) и публикует сводку в job summary и единый обновляемый комментарий PR.
 - **Покрытие тестами в CI**:
