@@ -206,8 +206,7 @@ export const OpenEditorPage = ({
     const unsubscribe = subscribeToSyncEvents((event) => {
       if (event.type === "SOLUTIONS_CLEARED") {
         const isCurrentTaskCleared =
-          event.all ||
-          (Array.isArray(event.taskIds) && event.taskIds.includes(String(task.id)));
+          event.all || (Array.isArray(event.taskIds) && event.taskIds.includes(String(task.id)));
         if (isCurrentTaskCleared) {
           const baseFiles = getTaskFiles(task, tab === "solution" ? "solution" : "candidate");
           setFiles(baseFiles);

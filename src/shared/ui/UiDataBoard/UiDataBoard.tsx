@@ -33,12 +33,7 @@ export const UiDataBoard = memo(
     minSlots,
     reducedMotion = false,
   }: UiDataBoardProps): JSX.Element => {
-    const totalSlots = Math.max(
-      entries.length,
-      minSlots ?? 0,
-      placeholders?.length ?? 0,
-      1
-    );
+    const totalSlots = Math.max(entries.length, minSlots ?? 0, placeholders?.length ?? 0, 1);
 
     const remainingCount = Math.max(0, totalSlots - entries.length);
 

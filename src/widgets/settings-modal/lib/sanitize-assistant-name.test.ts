@@ -1,8 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  sanitizeAssistantName,
-  ASSISTANT_NAME_INPUT_PATTERN,
-} from "./sanitize-assistant-name";
+import { sanitizeAssistantName, ASSISTANT_NAME_INPUT_PATTERN } from "./sanitize-assistant-name";
 
 describe("sanitizeAssistantName", () => {
   it("allows valid Cyrillic and Latin names", () => {

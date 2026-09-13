@@ -23,7 +23,11 @@ describe("CodeButton", () => {
 
   it("respects disabled attribute", () => {
     const handleClick = vi.fn();
-    render(<CodeButton disabled onClick={handleClick}>Disabled</CodeButton>);
+    render(
+      <CodeButton disabled onClick={handleClick}>
+        Disabled
+      </CodeButton>
+    );
 
     const button = screen.getByRole("button", { name: /disabled/i });
     expect(button).toBeDisabled();

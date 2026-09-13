@@ -17,10 +17,7 @@ const HOME_ITEMS = [
 export const SidebarHomeSkeleton = memo(
   ({ className }: SidebarHomeSkeletonProps): React.JSX.Element => {
     return (
-      <div
-        className={clsx(styles.homeOverviewList, className)}
-        aria-label="Загрузка навигации..."
-      >
+      <div className={clsx(styles.homeOverviewList, className)} aria-label="Загрузка навигации...">
         {HOME_ITEMS.map((item, idx) => (
           <div key={idx} className={styles.homeOverviewItem} style={{ pointerEvents: "none" }}>
             <UiSkeleton width={17} height={17} radius={4} />

@@ -13,7 +13,12 @@ const OpenAlgoTaskRoute = () => {
   const search = Route.useSearch();
 
   return (
-    <OpenEditorPage taskId={taskId} section="algorithms" tab={search.tab || "candidate"} initialViewMode={search.view} />
+    <OpenEditorPage
+      taskId={taskId}
+      section="algorithms"
+      tab={search.tab || "candidate"}
+      initialViewMode={search.view}
+    />
   );
 };
 

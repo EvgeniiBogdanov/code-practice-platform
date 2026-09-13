@@ -61,8 +61,7 @@ export const SpacedRepetitionUpcomingTab = memo(
     return (
       <div className={styles.upcomingList}>
         {upcomingTasks.map((item) => {
-          const { task, review, stage, daysUntil, relativeTime, formattedDate } =
-            item;
+          const { task, review, stage, daysUntil, relativeTime, formattedDate } = item;
 
           const isUnsolved = isDueTaskUnsolved(
             task.id,

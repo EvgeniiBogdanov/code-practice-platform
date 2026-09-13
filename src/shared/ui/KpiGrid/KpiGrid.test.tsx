@@ -13,9 +13,7 @@ describe("KpiGrid", () => {
   });
 
   it("renders excluded tasks count in parentheses next to total", () => {
-    render(
-      <KpiGrid total={318} solved={100} percent={31} remaining={218} excludedCount={2} />
-    );
+    render(<KpiGrid total={318} solved={100} percent={31} remaining={218} excludedCount={2} />);
 
     expect(screen.getByText("Всего задач")).toBeInTheDocument();
     expect(screen.getByText("318")).toBeInTheDocument();

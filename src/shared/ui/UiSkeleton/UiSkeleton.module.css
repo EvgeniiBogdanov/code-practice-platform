@@ -39,7 +39,9 @@
 }
 
 .animation_pulse {
-  animation: uiSkeletonFadeIn 150ms ease-out both, uiSkeletonPulse 1.8s ease-in-out infinite;
+  animation:
+    uiSkeletonFadeIn 150ms ease-out both,
+    uiSkeletonPulse 1.8s ease-in-out infinite;
 }
 
 .animation_none {
@@ -98,7 +100,8 @@
 }
 
 @keyframes uiSkeletonPulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {

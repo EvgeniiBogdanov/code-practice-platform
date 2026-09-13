@@ -71,13 +71,7 @@ describe("SpacedRepetitionDueTab", () => {
   };
 
   it("renders empty state when there are no due tasks", () => {
-    render(
-      <SpacedRepetitionDueTab
-        dueTasks={[]}
-        reviews={{}}
-        scopeLabel="JavaScript"
-      />
-    );
+    render(<SpacedRepetitionDueTab dueTasks={[]} reviews={{}} scopeLabel="JavaScript" />);
 
     expect(screen.getByText("Все задачи JavaScript повторены!")).toBeInTheDocument();
   });

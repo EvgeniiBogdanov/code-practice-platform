@@ -4,7 +4,9 @@ import { loadTaskSection } from "@/entities/task/catalog";
 import { UiLoader } from "@/shared/ui";
 
 const GroupOverviewPage = lazy(() =>
-  import("@/pages/group-overview").then(({ GroupOverviewPage: component }) => ({ default: component }))
+  import("@/pages/group-overview").then(({ GroupOverviewPage: component }) => ({
+    default: component,
+  }))
 );
 
 const TaskPage = lazy(() =>

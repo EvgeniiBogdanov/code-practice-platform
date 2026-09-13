@@ -104,4 +104,3 @@ describe("useSettingsModal - Resets", () => {
     expect(fullResetSpy).not.toHaveBeenCalled();
   });
 });
-

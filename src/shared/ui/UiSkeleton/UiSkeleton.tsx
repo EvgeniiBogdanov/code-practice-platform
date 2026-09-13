@@ -30,8 +30,12 @@ export const UiSkeleton = memo(
   }: UiSkeletonProps): React.JSX.Element => {
     const customStyle: React.CSSProperties = {
       ...(width !== undefined ? { width: typeof width === "number" ? `${width}px` : width } : {}),
-      ...(height !== undefined ? { height: typeof height === "number" ? `${height}px` : height } : {}),
-      ...(radius !== undefined ? { borderRadius: typeof radius === "number" ? `${radius}px` : radius } : {}),
+      ...(height !== undefined
+        ? { height: typeof height === "number" ? `${height}px` : height }
+        : {}),
+      ...(radius !== undefined
+        ? { borderRadius: typeof radius === "number" ? `${radius}px` : radius }
+        : {}),
       ...style,
     };
 
@@ -46,25 +50,13 @@ export const UiSkeleton = memo(
       return (
         <div className={styles.linesContainer} aria-hidden="true">
           {Array.from({ length: lines }).map((_, index) => (
-            <div
-              key={index}
-              className={skeletonClass}
-              style={customStyle}
-              {...props}
-            />
+            <div key={index} className={skeletonClass} style={customStyle} {...props} />
           ))}
         </div>
       );
     }
 
-    return (
-      <div
-        className={skeletonClass}
-        style={customStyle}
-        aria-hidden="true"
-        {...props}
-      />
-    );
+    return <div className={skeletonClass} style={customStyle} aria-hidden="true" {...props} />;
   }
 );
 

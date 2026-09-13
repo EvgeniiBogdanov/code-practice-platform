@@ -5,7 +5,6 @@
   user-select: none;
 }
 
-
 .bgRect {
   fill: #ffffff;
   stroke: transparent;
@@ -37,4 +36,3 @@
 [data-theme="light"].noBackground .logoStroke {
   stroke: #191919;
 }
-

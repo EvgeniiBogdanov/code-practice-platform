@@ -31,10 +31,7 @@ describe("SidebarWorkspaceHeader", () => {
   it("renders active section title and handles dropdown toggle", () => {
     const handleCloseSidebar = vi.fn();
     render(
-      <SidebarWorkspaceHeader
-        activeSectionKey="javascript"
-        onCloseSidebar={handleCloseSidebar}
-      />
+      <SidebarWorkspaceHeader activeSectionKey="javascript" onCloseSidebar={handleCloseSidebar} />
     );
 
     const toggleBtn = screen.getByRole("button", { name: /переключить раздел платформы/i });
@@ -57,12 +54,7 @@ describe("SidebarWorkspaceHeader", () => {
   });
 
   it("closes dropdown on Escape key", () => {
-    render(
-      <SidebarWorkspaceHeader
-        activeSectionKey="react"
-        onCloseSidebar={vi.fn()}
-      />
-    );
+    render(<SidebarWorkspaceHeader activeSectionKey="react" onCloseSidebar={vi.fn()} />);
 
     const toggleBtn = screen.getByRole("button", { name: /переключить раздел платформы/i });
     fireEvent.click(toggleBtn);
@@ -74,12 +66,7 @@ describe("SidebarWorkspaceHeader", () => {
 
   it("calls onCloseSidebar when sidebar collapse button is clicked", () => {
     const handleCloseSidebar = vi.fn();
-    render(
-      <SidebarWorkspaceHeader
-        activeSectionKey="home"
-        onCloseSidebar={handleCloseSidebar}
-      />
-    );
+    render(<SidebarWorkspaceHeader activeSectionKey="home" onCloseSidebar={handleCloseSidebar} />);
 
     const collapseBtn = screen.getByRole("button", { name: "Свернуть боковую панель" });
     expect(collapseBtn).toBeInTheDocument();

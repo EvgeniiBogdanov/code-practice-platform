@@ -15,7 +15,11 @@ import { useReviewStore, isTaskDue, formatNextReviewDate } from "@/entities/revi
 import { safeDecodeURI } from "@/shared/lib/url";
 import { GroupMetaInfo, StatusFilter, ViewMode, GroupOverviewState } from "./types";
 import { formatLastSolved } from "../lib/format-last-solved";
-import { getTaskGradientClass, getTaskTooltipTitle, calculateReadingTime } from "../lib/task-card-helpers";
+import {
+  getTaskGradientClass,
+  getTaskTooltipTitle,
+  calculateReadingTime,
+} from "../lib/task-card-helpers";
 
 export { formatLastSolved, getTaskGradientClass, getTaskTooltipTitle };
 
@@ -35,11 +39,12 @@ export const useGroupOverview = (groupId: string): GroupOverviewState => {
   const isProgressInitialized = useProgressStore((state) => state.isInitialized);
   const reviews = useReviewStore((state) => state.reviews);
   const location = useLocation();
-  const section: SectionType = groupId in REACT_GROUPS_CONFIG
-    ? "react"
-    : getAlgoGroupMetaByInfoId(groupId)
-      ? "algorithms"
-      : "javascript";
+  const section: SectionType =
+    groupId in REACT_GROUPS_CONFIG
+      ? "react"
+      : getAlgoGroupMetaByInfoId(groupId)
+        ? "algorithms"
+        : "javascript";
   const { tasks: loadedTasks, isLoading } = useTaskSection(section);
 
   const [collapsedSubgroups, setCollapsedSubgroupsState] = useState<Record<string, boolean>>(() => {
@@ -258,12 +263,15 @@ export const useGroupOverview = (groupId: string): GroupOverviewState => {
     [collapsedSubgroups]
   );
 
-  const toggleSubgroup = useCallback((subName: string) => {
-    setCollapsedSubgroups((prev) => ({
-      ...prev,
-      [subName]: !prev[subName],
-    }));
-  }, [setCollapsedSubgroups]);
+  const toggleSubgroup = useCallback(
+    (subName: string) => {
+      setCollapsedSubgroups((prev) => ({
+        ...prev,
+        [subName]: !prev[subName],
+      }));
+    },
+    [setCollapsedSubgroups]
+  );
 
   useEffect(() => {
     const handleScrollOrAnchor = () => {

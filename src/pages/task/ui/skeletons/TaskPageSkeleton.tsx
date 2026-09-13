@@ -31,8 +31,9 @@ export const TaskPageSkeleton = memo(
     const isCompleted = isTaskCompleted(
       resolvedTask ? completedTasks?.[String(resolvedTask.id)] : undefined
     );
-    const isUnsolved =
-      resolvedTask ? completedTasks?.[String(resolvedTask.id)] === "unsolved" : false;
+    const isUnsolved = resolvedTask
+      ? completedTasks?.[String(resolvedTask.id)] === "unsolved"
+      : false;
 
     const questionsCount =
       resolvedTask?.questions?.length ||
@@ -112,18 +113,10 @@ export const TaskPageSkeleton = memo(
               <div className={styles.taskStatusActions}>
                 <TaskFavoriteButton taskId={resolvedTask.id} taskTitle={resolvedTask.title} />
                 <TaskExcludeButton taskId={resolvedTask.id} taskTitle={resolvedTask.title} />
-                <TaskButton
-                  statusVariant="solved"
-                  isActive={isCompleted}
-                  disabled
-                >
+                <TaskButton statusVariant="solved" isActive={isCompleted} disabled>
                   Решено
                 </TaskButton>
-                <TaskButton
-                  statusVariant="unsolved"
-                  isActive={isUnsolved}
-                  disabled
-                >
+                <TaskButton statusVariant="unsolved" isActive={isUnsolved} disabled>
                   Не решено
                 </TaskButton>
               </div>

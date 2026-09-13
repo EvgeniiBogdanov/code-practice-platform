@@ -122,7 +122,10 @@ export const toggleLineComment = (
     const charDiff = newLine.length - oldLine.length;
 
     if (charDiff > 0) {
-      if (selectionStart > changePos || (selectionStart === changePos && selectionStart === selectionEnd)) {
+      if (
+        selectionStart > changePos ||
+        (selectionStart === changePos && selectionStart === selectionEnd)
+      ) {
         newSelStart += charDiff;
       }
       if (selectionEnd >= changePos) {

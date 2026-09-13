@@ -25,9 +25,7 @@ export const TaskFavoriteButton = React.memo(
       state.favoriteTaskIds.includes(String(taskId))
     );
     const toggleFavoriteTask = useFavoriteTaskStore((state) => state.toggleFavoriteTask);
-    const label = isFavorite
-      ? "Убрать из избранного"
-      : "Добавить в избранное";
+    const label = isFavorite ? "Убрать из избранного" : "Добавить в избранное";
     const handleToggleFavorite = useCallback(
       (event: React.MouseEvent<HTMLButtonElement>): void => {
         event.preventDefault();

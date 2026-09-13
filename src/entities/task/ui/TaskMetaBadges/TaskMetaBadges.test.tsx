@@ -104,7 +104,9 @@ describe("TaskMetaBadges", () => {
 
       const tooltip = screen.getByRole("tooltip");
       expect(tooltip).toBeInTheDocument();
-      expect(tooltip).toHaveTextContent("Вероятность на Middle/Senior: 98% (Критически высокая — стандарт live coding)");
+      expect(tooltip).toHaveTextContent(
+        "Вероятность на Middle/Senior: 98% (Критически высокая — стандарт live coding)"
+      );
     }
   });
 });

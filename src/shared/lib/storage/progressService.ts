@@ -176,7 +176,6 @@ export async function clearAllTaskStatusesFromDB(): Promise<void> {
   }
 }
 
-
 export async function getChecklistStateFromDB(): Promise<Record<string, boolean>> {
   try {
     const records = await dbGetAll<ChecklistRecord>(STORES.CHECKLIST);

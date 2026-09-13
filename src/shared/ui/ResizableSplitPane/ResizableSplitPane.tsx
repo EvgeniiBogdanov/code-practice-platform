@@ -155,24 +155,21 @@ export const ResizableSplitPane = memo(
       [performReset]
     );
 
-    const handlePointerCancel = useCallback(
-      (e: React.PointerEvent<HTMLDivElement>) => {
-        isPointerDownRef.current = false;
-        isDraggingRef.current = false;
-        setIsDragging(false);
+    const handlePointerCancel = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+      isPointerDownRef.current = false;
+      isDraggingRef.current = false;
+      setIsDragging(false);
 
-        const target = e.currentTarget;
-        if (target.releasePointerCapture && activePointerIdRef.current !== null) {
-          try {
-            target.releasePointerCapture(activePointerIdRef.current);
-          } catch {
-            // ignore
-          }
+      const target = e.currentTarget;
+      if (target.releasePointerCapture && activePointerIdRef.current !== null) {
+        try {
+          target.releasePointerCapture(activePointerIdRef.current);
+        } catch {
+          // ignore
         }
-        activePointerIdRef.current = null;
-      },
-      []
-    );
+      }
+      activePointerIdRef.current = null;
+    }, []);
 
     const handleDoubleClick = useCallback(() => {
       if (resetFromPointerUpRef.current) {

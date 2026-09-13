@@ -26,7 +26,8 @@ export const SpacedRepetitionUnsolvedTab = memo(
           <CheckCircle2 size={32} className={styles.emptyDueIcon} />
           <div className={styles.emptyDueTitle}>Нет нерешённых задач {scopeLabel}</div>
           <div className={styles.emptyDueDesc}>
-            Задачи, отмеченные кнопкой «Не решено», отображаются здесь для повторного решения и разбора.
+            Задачи, отмеченные кнопкой «Не решено», отображаются здесь для повторного решения и
+            разбора.
           </div>
         </Card>
       );
@@ -52,12 +53,7 @@ export const SpacedRepetitionUnsolvedTab = memo(
                   </div>
 
                   <div className={styles.upcomingRowRight}>
-                    <NotificationBadge
-                      variant="neutral"
-                      pinned={false}
-                      ring={false}
-                      size="tab"
-                    >
+                    <NotificationBadge variant="neutral" pinned={false} ring={false} size="tab">
                       {task.group || task.difficulty || "Задача"}
                     </NotificationBadge>
 

@@ -45,9 +45,7 @@ const getInitialUISettings = () => {
               ? parsed.state.consoleCollapsed
               : true,
           editorWordWrap:
-            typeof parsed.state.editorWordWrap === "boolean"
-              ? parsed.state.editorWordWrap
-              : false,
+            typeof parsed.state.editorWordWrap === "boolean" ? parsed.state.editorWordWrap : false,
           editorSplitRatio:
             typeof parsed.state.editorSplitRatio === "number" &&
             parsed.state.editorSplitRatio >= 20 &&
@@ -100,7 +98,9 @@ const getInitialUISettings = () => {
         ? parsedVisualizerZoom
         : 1;
     const legacyVisualizerCodeFont = localStorage.getItem("playground_visualizer_code_font_size");
-    const parsedVisualizerCodeFont = legacyVisualizerCodeFont ? Number(legacyVisualizerCodeFont) : 14;
+    const parsedVisualizerCodeFont = legacyVisualizerCodeFont
+      ? Number(legacyVisualizerCodeFont)
+      : 14;
     const validVisualizerCodeFont =
       !Number.isNaN(parsedVisualizerCodeFont) &&
       parsedVisualizerCodeFont >= MIN_CODE_FONT_SIZE &&
@@ -250,11 +250,9 @@ export const useUIStore = create<UIState>()(
               ? editorWordWrap(state.editorWordWrap)
               : editorWordWrap,
         })),
-      toggleEditorWordWrap: () =>
-        set((state) => ({ editorWordWrap: !state.editorWordWrap })),
+      toggleEditorWordWrap: () => set((state) => ({ editorWordWrap: !state.editorWordWrap })),
 
-      setEditorSplitRatio: (ratio) =>
-        set({ editorSplitRatio: Math.min(80, Math.max(20, ratio)) }),
+      setEditorSplitRatio: (ratio) => set({ editorSplitRatio: Math.min(80, Math.max(20, ratio)) }),
       resetEditorSplitRatio: () => set({ editorSplitRatio: 70 }),
 
       setVisualizerSplitRatio: (ratio) => {
@@ -303,8 +301,10 @@ export const useUIStore = create<UIState>()(
           const current = state.visualizerZoom ?? 1;
           const presets = [0.5, 0.65, 0.8, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5];
           const next =
-            presets.slice().reverse().find((p) => p < current - 0.05) ??
-            Math.max(0.5, current - 0.25);
+            presets
+              .slice()
+              .reverse()
+              .find((p) => p < current - 0.05) ?? Math.max(0.5, current - 0.25);
           const clamped = Math.max(0.5, Math.round(next * 100) / 100);
           try {
             localStorage.setItem("playground_visualizer_zoom", String(clamped));

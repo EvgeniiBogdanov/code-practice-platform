@@ -16,9 +16,7 @@ describe("RetentionScheduleBar", () => {
   });
 
   it("renders with empty reviews without errors", () => {
-    const { container } = render(
-      <RetentionScheduleBar reviews={{}} allTasks={[]} height={220} />
-    );
+    const { container } = render(<RetentionScheduleBar reviews={{}} allTasks={[]} height={220} />);
     expect(container).toBeInTheDocument();
   });
 
@@ -66,11 +64,7 @@ describe("RetentionScheduleBar", () => {
     };
 
     const { container } = render(
-      <RetentionScheduleBar
-        reviews={mockReviews}
-        allTasks={mockTasks}
-        height={220}
-      />
+      <RetentionScheduleBar reviews={mockReviews} allTasks={mockTasks} height={220} />
     );
     expect(container).toBeInTheDocument();
   });
@@ -110,11 +104,7 @@ describe("RetentionScheduleBar", () => {
     };
 
     const { container } = render(
-      <RetentionScheduleBar
-        reviews={mockReviews}
-        allTasks={mockTasks}
-        height={220}
-      />
+      <RetentionScheduleBar reviews={mockReviews} allTasks={mockTasks} height={220} />
     );
     expect(container).toBeInTheDocument();
   });

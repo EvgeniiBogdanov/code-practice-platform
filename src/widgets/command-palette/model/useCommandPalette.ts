@@ -48,8 +48,7 @@ export const useCommandPalette = (): UseCommandPaletteReturn => {
 
   const filteredTasks = useMemo(() => {
     const q = debouncedQuery.trim().toLowerCase();
-    const pool =
-      activeSection === "all" ? tasks : tasks.filter((t) => t.section === activeSection);
+    const pool = activeSection === "all" ? tasks : tasks.filter((t) => t.section === activeSection);
     if (!q) return pool;
 
     return pool.filter((t) => {

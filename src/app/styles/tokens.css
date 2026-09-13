@@ -140,7 +140,7 @@
   --accent-amber: #f59e0b;
   --accent-amber-hover: #fbbf24;
   --accent-amber-bg: rgba(245, 158, 11, 0.08);
-  --accent-amber-border: rgba(245, 158, 11, 0.20);
+  --accent-amber-border: rgba(245, 158, 11, 0.2);
 
   --accent-cyan: #38bdf8;
   --accent-cyan-hover: #67e8f9;
@@ -407,7 +407,7 @@
   --accent-amber: #8d4f00;
   --accent-amber-hover: #713f00;
   --accent-amber-bg: rgba(141, 79, 0, 0.08);
-  --accent-amber-border: rgba(141, 79, 0, 0.20);
+  --accent-amber-border: rgba(141, 79, 0, 0.2);
 
   --accent-cyan: #046274;
   --accent-cyan-hover: #034b59;
@@ -429,7 +429,7 @@
   --color-react-bg: var(--accent-blue-bg);
   --color-react-border: var(--accent-blue-border);
   --color-js: #f59e0b;
-  --color-js-bg: rgba(245, 158, 11, 0.10);
+  --color-js-bg: rgba(245, 158, 11, 0.1);
   --color-js-border: rgba(245, 158, 11, 0.28);
   --color-algo: var(--accent-purple);
   --color-algo-bg: var(--accent-purple-bg);

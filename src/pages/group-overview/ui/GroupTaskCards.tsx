@@ -148,10 +148,16 @@ const GroupTaskCardItem = memo(
                           : styles.statusUnstarted
                   )}
                 >
-                  {isExcluded ? "Исключена" : isDone ? "Решено" : isUnsolved ? "Не решено" : "Не начато"}
+                  {isExcluded
+                    ? "Исключена"
+                    : isDone
+                      ? "Решено"
+                      : isUnsolved
+                        ? "Не решено"
+                        : "Не начато"}
                 </span>
-                {!isExcluded && (
-                  isDue ? (
+                {!isExcluded &&
+                  (isDue ? (
                     <Tooltip content="Пора повторить сегодня!" side="top">
                       <span className={styles.statusIconDue}>
                         <RotateCcw size={11} />
@@ -165,8 +171,7 @@ const GroupTaskCardItem = memo(
                     <span className={styles.statusIconUnsolved}>
                       <X size={13} />
                     </span>
-                  ) : null
-                )}
+                  ) : null)}
               </div>
             </div>
 
@@ -193,9 +198,7 @@ const GroupTaskCardItem = memo(
                   content={`Дата последнего решения: ${new Date(lastReviewedAt).toLocaleDateString("ru-RU")}`}
                   side="top"
                 >
-                  <span
-                    className={clsx(styles.galleryCardBadge, styles.badgeLastSolved)}
-                  >
+                  <span className={clsx(styles.galleryCardBadge, styles.badgeLastSolved)}>
                     <Calendar size={11} />
                     <span>{formatLastSolved(lastReviewedAt)}</span>
                   </span>
@@ -210,9 +213,7 @@ const GroupTaskCardItem = memo(
                   content={`Следующее повторение: ${formatNextReviewDate(nextReviewAt)}`}
                   side="top"
                 >
-                  <span
-                    className={clsx(styles.galleryCardBadge, styles.badgeNextScheduled)}
-                  >
+                  <span className={clsx(styles.galleryCardBadge, styles.badgeNextScheduled)}>
                     <RotateCcw size={11} />
                     <span>{formatNextReviewDate(nextReviewAt)}</span>
                   </span>

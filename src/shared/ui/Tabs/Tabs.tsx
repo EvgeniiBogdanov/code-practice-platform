@@ -74,7 +74,11 @@ export const Tabs = memo(
               role="tab"
               aria-selected={isActive}
               disabled={item.disabled}
-              className={clsx(styles.tab, isActive && styles.active, isActive && activeVariantClass)}
+              className={clsx(
+                styles.tab,
+                isActive && styles.active,
+                isActive && activeVariantClass
+              )}
               onClick={() => onChange(item.id)}
               type="button"
             >

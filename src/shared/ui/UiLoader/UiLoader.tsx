@@ -4,13 +4,7 @@ import styles from "./UiLoader.module.css";
 
 export type UiLoaderSize = "xs" | "sm" | "md" | "lg" | "xl";
 export type UiLoaderVariant =
-  | "primary"
-  | "secondary"
-  | "muted"
-  | "white"
-  | "accent"
-  | "gray"
-  | "blue";
+  "primary" | "secondary" | "muted" | "white" | "accent" | "gray" | "blue";
 
 export interface UiLoaderProps extends React.HTMLAttributes<HTMLDivElement> {
   size?: UiLoaderSize | number;

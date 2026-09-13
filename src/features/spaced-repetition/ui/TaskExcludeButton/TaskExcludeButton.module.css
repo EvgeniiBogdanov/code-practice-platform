@@ -1,6 +1,8 @@
 .excludeIcon {
   color: var(--text-muted, #787774);
-  transition: color var(--transition-fast, 0.15s ease), transform var(--transition-fast, 0.15s ease);
+  transition:
+    color var(--transition-fast, 0.15s ease),
+    transform var(--transition-fast, 0.15s ease);
 }
 
 .excludeIconActive {

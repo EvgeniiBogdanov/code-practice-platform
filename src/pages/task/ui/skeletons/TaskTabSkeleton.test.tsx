@@ -68,4 +68,3 @@ describe("TaskTabSkeleton", () => {
     expect(getByText("Рекомендуемый подход:")).toBeInTheDocument();
   });
 });
-

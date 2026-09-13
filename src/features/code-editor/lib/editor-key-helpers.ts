@@ -215,18 +215,14 @@ export const handlePairsAndBackspace = (
   return false;
 };
 
-export const isLineCommentShortcut = (
-  e: React.KeyboardEvent<HTMLTextAreaElement>
-): boolean => {
+export const isLineCommentShortcut = (e: React.KeyboardEvent<HTMLTextAreaElement>): boolean => {
   if (e.altKey) return false;
   if (!e.metaKey && !e.ctrlKey) return false;
   if (e.shiftKey) return false;
   return e.key === "/" || e.code === "Slash";
 };
 
-export const isBlockCommentShortcut = (
-  e: React.KeyboardEvent<HTMLTextAreaElement>
-): boolean => {
+export const isBlockCommentShortcut = (e: React.KeyboardEvent<HTMLTextAreaElement>): boolean => {
   const isShiftAltA =
     e.shiftKey &&
     e.altKey &&
@@ -286,4 +282,3 @@ export const handleCommentShortcuts = (
 
   return true;
 };
-

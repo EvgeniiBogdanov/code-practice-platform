@@ -20,9 +20,7 @@ describe("SpacedRepetitionDistributionTab", () => {
   };
 
   it("renders all 4 stages with correct titles and descriptions", () => {
-    render(
-      <SpacedRepetitionDistributionTab masteryStats={mockStats} scopeLabel="JavaScript" />
-    );
+    render(<SpacedRepetitionDistributionTab masteryStats={mockStats} scopeLabel="JavaScript" />);
 
     expect(screen.getByText("Уровни закрепления SM-2:")).toBeInTheDocument();
     expect(screen.getByText("Мастер (30-60+ дней)")).toBeInTheDocument();
@@ -30,9 +28,7 @@ describe("SpacedRepetitionDistributionTab", () => {
     expect(screen.getByText("Изучение (1-3 дня)")).toBeInTheDocument();
     expect(screen.getByText("Ещё не в графике")).toBeInTheDocument();
 
-    expect(
-      screen.getByText("Задачи JavaScript, ожидающие решения")
-    ).toBeInTheDocument();
+    expect(screen.getByText("Задачи JavaScript, ожидающие решения")).toBeInTheDocument();
   });
 
   it("renders counts inside reusable gray Badge components", () => {
@@ -74,9 +70,7 @@ describe("SpacedRepetitionDistributionTab", () => {
       ...mockStats,
       totalReviewed: 0,
     };
-    render(
-      <SpacedRepetitionDistributionTab masteryStats={zeroStats} scopeLabel="JavaScript" />
-    );
+    render(<SpacedRepetitionDistributionTab masteryStats={zeroStats} scopeLabel="JavaScript" />);
 
     expect(screen.queryByText("Как включить задачи в график:")).not.toBeInTheDocument();
   });

@@ -37,12 +37,7 @@ export const GitHubIcon = memo(
         aria-hidden={isAriaHidden}
         {...restProps}
       >
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d={GITHUB_MARK_PATH}
-          fill="currentColor"
-        />
+        <path fillRule="evenodd" clipRule="evenodd" d={GITHUB_MARK_PATH} fill="currentColor" />
       </svg>
     );
   }

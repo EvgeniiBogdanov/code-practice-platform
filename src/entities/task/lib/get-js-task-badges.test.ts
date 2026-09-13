@@ -252,9 +252,7 @@ describe("getJsTaskBadges", () => {
   );
 
   it("does not infer algorithm badges from task titles", () => {
-    const auditedTaskIds = new Set<string>(
-      ALGORITHM_BADGES_BY_TASK_ID.map(([taskId]) => taskId)
-    );
+    const auditedTaskIds = new Set<string>(ALGORITHM_BADGES_BY_TASK_ID.map(([taskId]) => taskId));
     const unexpectedAlgorithmBadges = javascriptTasks.flatMap((task) => {
       if (auditedTaskIds.has(String(task.id))) return [];
 

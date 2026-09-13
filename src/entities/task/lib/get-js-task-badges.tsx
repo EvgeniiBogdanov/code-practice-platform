@@ -165,7 +165,12 @@ const getPrimaryBadge = (
     return { id: "polyfill", label: "Полифил", variant: "red", icon: <Package size={ICON_SIZE} /> };
   }
   if (isPatternTask(group, subgroup, title)) {
-    return { id: "pattern", label: "Паттерн", variant: "cyan", icon: <Workflow size={ICON_SIZE} /> };
+    return {
+      id: "pattern",
+      label: "Паттерн",
+      variant: "cyan",
+      icon: <Workflow size={ICON_SIZE} />,
+    };
   }
   if (algorithm) {
     return { id: "algo", label: "Алгоритм", variant: "purple", icon: <Brain size={ICON_SIZE} /> };
@@ -187,15 +192,34 @@ const getContextBadge = (group: string, subgroup: string, primaryId: string): Ta
     return { id: "async", label: "Асинхронность", variant: "pink", icon: <Zap size={ICON_SIZE} /> };
   }
   if (group === "Рекурсия" && primaryId !== "algo") {
-    return { id: "recursion", label: "Рекурсия", variant: "orange", icon: <GitMerge size={ICON_SIZE} /> };
+    return {
+      id: "recursion",
+      label: "Рекурсия",
+      variant: "orange",
+      icon: <GitMerge size={ICON_SIZE} />,
+    };
   }
   if (group === "Типы данных") {
-    return { id: "types", label: "Типы данных", variant: "yellow", icon: <Binary size={ICON_SIZE} /> };
+    return {
+      id: "types",
+      label: "Типы данных",
+      variant: "yellow",
+      icon: <Binary size={ICON_SIZE} />,
+    };
   }
   if (group === "Прототипы THIS") {
-    return { id: "prototypes", label: "This и прототипы", variant: "purple", icon: <Crown size={ICON_SIZE} /> };
+    return {
+      id: "prototypes",
+      label: "This и прототипы",
+      variant: "purple",
+      icon: <Crown size={ICON_SIZE} />,
+    };
   }
-  if (group === "Замыкания" || group === "Замыкания и функции" || subgroup.startsWith("Замыкания")) {
+  if (
+    group === "Замыкания" ||
+    group === "Замыкания и функции" ||
+    subgroup.startsWith("Замыкания")
+  ) {
     return { id: "closures", label: "Замыкания", variant: "cyan", icon: <Lock size={ICON_SIZE} /> };
   }
   if (group === "Циклы" && primaryId !== "base") {
@@ -208,7 +232,12 @@ const getContextBadge = (group: string, subgroup: string, primaryId: string): Ta
     return { id: "set", label: "Set", variant: "purple", icon: <Boxes size={ICON_SIZE} /> };
   }
   if (group === "Коллекции") {
-    return { id: "collections", label: "Коллекции", variant: "purple", icon: <Boxes size={ICON_SIZE} /> };
+    return {
+      id: "collections",
+      label: "Коллекции",
+      variant: "purple",
+      icon: <Boxes size={ICON_SIZE} />,
+    };
   }
   if (group === "Объекты" && primaryId !== "utility") {
     return { id: "objects", label: "Объекты", variant: "blue", icon: <Box size={ICON_SIZE} /> };
@@ -217,10 +246,20 @@ const getContextBadge = (group: string, subgroup: string, primaryId: string): Ta
     return { id: "arrays", label: "Массивы", variant: "green", icon: <Layers size={ICON_SIZE} /> };
   }
   if (group === "Строки и Утилиты") {
-    return { id: "strings-utils", label: "Строки и Утилиты", variant: "green", icon: <FileCode size={ICON_SIZE} /> };
+    return {
+      id: "strings-utils",
+      label: "Строки и Утилиты",
+      variant: "green",
+      icon: <FileCode size={ICON_SIZE} />,
+    };
   }
   if (group === "Паттерны проектирования" && primaryId !== "pattern") {
-    return { id: "patterns", label: "Паттерны", variant: "cyan", icon: <Workflow size={ICON_SIZE} /> };
+    return {
+      id: "patterns",
+      label: "Паттерны",
+      variant: "cyan",
+      icon: <Workflow size={ICON_SIZE} />,
+    };
   }
   return null;
 };

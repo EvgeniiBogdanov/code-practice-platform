@@ -34,11 +34,7 @@ describe("TraceExampleSelect", () => {
   it("renders optgroups for task examples and additional examples", () => {
     const onExample = vi.fn();
     render(
-      <TraceExampleSelect
-        definition={mockDefinition}
-        exampleId="task1"
-        onExample={onExample}
-      />
+      <TraceExampleSelect definition={mockDefinition} exampleId="task1" onExample={onExample} />
     );
 
     const select = screen.getByRole("combobox", { name: "Пример" });
@@ -57,11 +53,7 @@ describe("TraceExampleSelect", () => {
   it("calls onExample when user selects a different option", () => {
     const onExample = vi.fn();
     render(
-      <TraceExampleSelect
-        definition={mockDefinition}
-        exampleId="task1"
-        onExample={onExample}
-      />
+      <TraceExampleSelect definition={mockDefinition} exampleId="task1" onExample={onExample} />
     );
 
     const select = screen.getByRole("combobox", { name: "Пример" });
@@ -73,11 +65,7 @@ describe("TraceExampleSelect", () => {
   it("shows custom example option when exampleId is custom", () => {
     const onExample = vi.fn();
     render(
-      <TraceExampleSelect
-        definition={mockDefinition}
-        exampleId="custom"
-        onExample={onExample}
-      />
+      <TraceExampleSelect definition={mockDefinition} exampleId="custom" onExample={onExample} />
     );
 
     const customOption = screen.getByRole("option", { name: "Свой пример" });

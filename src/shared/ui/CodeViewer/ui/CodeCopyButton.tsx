@@ -14,12 +14,7 @@ export const CodeCopyButton = ({ code, className }: CodeCopyButtonProps): React.
 
   return (
     <Tooltip content={tooltipText} side="left">
-      <button
-        type="button"
-        className={buttonClasses}
-        onClick={copy}
-        aria-label="Скопировать код"
-      >
+      <button type="button" className={buttonClasses} onClick={copy} aria-label="Скопировать код">
         {copied ? <Check size={13} /> : <Copy size={13} />}
       </button>
     </Tooltip>

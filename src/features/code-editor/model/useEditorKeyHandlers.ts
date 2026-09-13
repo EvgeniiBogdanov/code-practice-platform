@@ -65,8 +65,7 @@ const handleMultiSelectionShortcuts = (
   const keyLower = e.key.toLowerCase();
 
   // Cmd+D (Mac) / Ctrl+D (Windows/Linux) / Alt+D: Select next match
-  const isCmdOrCtrlOrAltD =
-    (e.metaKey || e.ctrlKey || e.altKey) && !e.shiftKey && keyLower === "d";
+  const isCmdOrCtrlOrAltD = (e.metaKey || e.ctrlKey || e.altKey) && !e.shiftKey && keyLower === "d";
 
   if (isCmdOrCtrlOrAltD) {
     e.preventDefault();
@@ -181,9 +180,7 @@ export const useEditorKeyHandlers = ({
       }
 
       // 5. Move / Duplicate Lines (VS Code: Alt/Option + ArrowUp/ArrowDown)
-      if (
-        handleLineMovement(e, textarea, code, onChange, history, intelliSense, readOnly)
-      ) {
+      if (handleLineMovement(e, textarea, code, onChange, history, intelliSense, readOnly)) {
         return;
       }
 

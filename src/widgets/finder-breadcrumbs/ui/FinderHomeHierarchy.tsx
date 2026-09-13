@@ -8,10 +8,7 @@ export const FinderHomeHierarchy = (): React.JSX.Element => {
     <>
       <span className={styles.separator}>/</span>
       <div className={styles.dropdownWrapper}>
-        <button
-          type="button"
-          className={clsx(styles.breadcrumbBtn, styles.staticItem)}
-        >
+        <button type="button" className={clsx(styles.breadcrumbBtn, styles.staticItem)}>
           <PlatformLogo size={14} className={styles.iconMuted} />
           <span className={styles.itemText}>Обзор платформы</span>
         </button>

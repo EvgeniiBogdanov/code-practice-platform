@@ -52,15 +52,11 @@ export interface TracePlayback extends PlaybackState {
 }
 
 export const useTracePlayback = (length: number, isActive = true): TracePlayback => {
-  const [state, dispatch] = useReducer(
-    playbackReducer,
-    undefined,
-    (): PlaybackState => ({
-      index: 0,
-      playing: false,
-      speed: getInitialPlaybackSpeed(),
-    })
-  );
+  const [state, dispatch] = useReducer(playbackReducer, undefined, (): PlaybackState => ({
+    index: 0,
+    playing: false,
+    speed: getInitialPlaybackSpeed(),
+  }));
   const [reducedMotion, setReducedMotion] = useState(
     () => window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );

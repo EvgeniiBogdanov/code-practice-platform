@@ -169,7 +169,7 @@
 }
 
 [data-theme="light"] .variant_blue {
-  background: rgba(37, 99, 235, 0.10);
+  background: rgba(37, 99, 235, 0.1);
   color: #1d4ed8;
 }
 
@@ -179,7 +179,7 @@
 }
 
 [data-theme="light"] .variant_red {
-  background: rgba(220, 38, 38, 0.10);
+  background: rgba(220, 38, 38, 0.1);
   color: #b91c1c;
 }
 
@@ -199,7 +199,7 @@
 }
 
 [data-theme="light"] .variant_purple {
-  background: rgba(147, 51, 234, 0.10);
+  background: rgba(147, 51, 234, 0.1);
   color: #7e22ce;
 }
 

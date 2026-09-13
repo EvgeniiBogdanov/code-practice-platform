@@ -54,12 +54,7 @@ export const SpacedRepetitionScheduleSkeleton = memo(
                     <UiSkeleton variant="rounded" width={16} height={12} radius={2} />
                   </div>
                   <div className={clsx(styles.barTrack, bar.barClass)}>
-                    <UiSkeleton
-                      variant="rounded"
-                      width="100%"
-                      height="100%"
-                      radius={4}
-                    />
+                    <UiSkeleton variant="rounded" width="100%" height="100%" radius={4} />
                   </div>
                 </div>
               ))}

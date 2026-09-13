@@ -68,12 +68,7 @@ export const SpacedRepetitionDistributionTab = memo(
                   <div className={styles.stageTitle}>{stage.title}</div>
                   <div className={styles.stageDesc}>{stage.getDesc(scopeLabel)}</div>
                 </div>
-                <Badge
-                  variant="gray"
-                  size="sm"
-                  uppercase={false}
-                  className={styles.stageBadge}
-                >
+                <Badge variant="gray" size="sm" uppercase={false} className={styles.stageBadge}>
                   {masteryStats[stage.countKey]}
                 </Badge>
               </div>

@@ -45,11 +45,7 @@ export const findWordAtPosition = (code: string, pos: number): WordAtPosition | 
   return { start, end, word };
 };
 
-export const findAllMatches = (
-  code: string,
-  target: string,
-  matchCase = true
-): TextRange[] => {
+export const findAllMatches = (code: string, target: string, matchCase = true): TextRange[] => {
   if (!code || !target) return [];
 
   const matches: TextRange[] = [];
@@ -135,10 +131,7 @@ export const applyMultiTextInsert = (
   };
 };
 
-export const applyMultiBackspace = (
-  code: string,
-  selections: TextRange[]
-): MultiEditResult => {
+export const applyMultiBackspace = (code: string, selections: TextRange[]): MultiEditResult => {
   if (selections.length === 0) {
     return { newCode: code, newSelections: selections, changed: false };
   }
@@ -158,10 +151,7 @@ export const applyMultiBackspace = (
   return applyMultiTextInsert(code, rangesToDelete, "");
 };
 
-export const applyMultiDelete = (
-  code: string,
-  selections: TextRange[]
-): MultiEditResult => {
+export const applyMultiDelete = (code: string, selections: TextRange[]): MultiEditResult => {
   if (selections.length === 0) {
     return { newCode: code, newSelections: selections, changed: false };
   }

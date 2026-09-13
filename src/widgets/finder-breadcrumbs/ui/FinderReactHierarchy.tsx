@@ -239,8 +239,8 @@ export const FinderReactHierarchy = ({
                         <span className={clsx(styles.dropdownItemTitle, ratingClass)}>
                           {t.title}
                         </span>
-                        {!isExcluded && (
-                          isDueToday ? (
+                        {!isExcluded &&
+                          (isDueToday ? (
                             <Tooltip content="Пора повторить!" side="left">
                               <span className={styles.statusDue}>
                                 <RotateCcw size={10} />
@@ -258,8 +258,7 @@ export const FinderReactHierarchy = ({
                                 <X size={12} />
                               </span>
                             </Tooltip>
-                          ) : null
-                        )}
+                          ) : null)}
                       </Link>
                     );
                   })}

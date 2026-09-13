@@ -57,7 +57,9 @@ describe("useUIStore - resetUISettings", () => {
     expect(localStorage.getItem("playground_visualizer_split_ratio")).toBeNull();
     expect(localStorage.getItem("playground_visualizer_playback_speed")).toBeNull();
     expect(sessionStorage.getItem("playground_collapsed_subgroups_1")).toBeNull();
-    expect(sessionStorage.getItem("playground_favorite_tree_collapsed_folders_javascript")).toBeNull();
+    expect(
+      sessionStorage.getItem("playground_favorite_tree_collapsed_folders_javascript")
+    ).toBeNull();
   });
 
   it("updates hideTooltips using boolean and function updater", () => {

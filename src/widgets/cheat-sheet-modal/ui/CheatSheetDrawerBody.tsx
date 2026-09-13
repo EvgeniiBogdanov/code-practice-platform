@@ -40,7 +40,10 @@ export const CheatSheetDrawerBody = memo(
         }}
       >
         <CheatSheetHeader title={currentSectionConfig.title} onClose={onClose} />
-        <CheatSheetSectionTabs activeSection={activeSection} onSelectSection={handleSelectSection} />
+        <CheatSheetSectionTabs
+          activeSection={activeSection}
+          onSelectSection={handleSelectSection}
+        />
         <Input
           type="text"
           size="lg"

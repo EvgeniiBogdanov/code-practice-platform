@@ -67,5 +67,7 @@
 
 .squareButton:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--bg-surface), 0 0 0 4px var(--accent-blue);
+  box-shadow:
+    0 0 0 2px var(--bg-surface),
+    0 0 0 4px var(--accent-blue);
 }

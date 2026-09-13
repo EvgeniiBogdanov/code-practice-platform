@@ -38,7 +38,9 @@ export const SidebarJsGroupItem = memo((props: SidebarJsGroupItemProps) => {
   } = props;
 
   const allTasks = Object.values(subgroups).flat();
-  const completed = allTasks.filter((task) => isTaskCompleted(completedTasks[String(task.id)])).length;
+  const completed = allTasks.filter((task) =>
+    isTaskCompleted(completedTasks[String(task.id)])
+  ).length;
   const compClass = getGroupCompletionClass(allTasks, reviews, completedTasks);
   const meta = groupMeta || getGroupMeta(groupName);
   const groupParamId = `group-${groupName}`;

@@ -57,13 +57,7 @@ export const ReactLivePreview = memo(
     const iframeKey = `${task?.id}_${storagePrefix}_${variantIdx}_${reloadKey}`;
 
     return (
-      <div
-        className={clsx(
-          styles.browserMockup,
-          fullHeight && styles.fullHeight,
-          className
-        )}
-      >
+      <div className={clsx(styles.browserMockup, fullHeight && styles.fullHeight, className)}>
         <BrowserMockupHeader
           fileName={activeFile?.name || "index.jsx"}
           urlSearch={urlSearch}

@@ -74,13 +74,11 @@ export const SidebarTaskItem = memo(
         >
           <div className={styles.taskTitleGroup}>
             <FileText size={16} className={styles.fileIcon} />
-            <span className={clsx(styles.taskTitleText, ratingClass)}>
-              {title}
-            </span>
+            <span className={clsx(styles.taskTitleText, ratingClass)}>{title}</span>
           </div>
 
-          {!isExcluded && (
-            isDue ? (
+          {!isExcluded &&
+            (isDue ? (
               <span className={styles.statusIconDue} aria-label="Пора повторить сегодня!">
                 <RotateCcw size={11} />
               </span>
@@ -92,8 +90,7 @@ export const SidebarTaskItem = memo(
               <span className={styles.statusIconUnsolved} aria-label="Не решено">
                 <X size={14} />
               </span>
-            ) : null
-          )}
+            ) : null)}
         </TreeNodeHeader>
       </Tooltip>
     );

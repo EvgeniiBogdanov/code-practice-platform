@@ -38,11 +38,7 @@ describe("TaskReviewHeader", () => {
     };
 
     render(
-      <TaskReviewHeader
-        taskReview={mockReview}
-        badgeMeta={defaultBadgeMeta}
-        canRate={false}
-      />
+      <TaskReviewHeader taskReview={mockReview} badgeMeta={defaultBadgeMeta} canRate={false} />
     );
 
     expect(screen.getByText(/Интервальный помощник/i)).toBeInTheDocument();
@@ -69,13 +65,7 @@ describe("TaskReviewHeader", () => {
       label: "Повтор",
     };
 
-    render(
-      <TaskReviewHeader
-        taskReview={mockReview}
-        badgeMeta={dueBadgeMeta}
-        canRate={true}
-      />
-    );
+    render(<TaskReviewHeader taskReview={mockReview} badgeMeta={dueBadgeMeta} canRate={true} />);
 
     expect(screen.getByText(/Интервальный помощник/i)).toBeInTheDocument();
     expect(screen.getByText(/Пора повторить/i)).toBeInTheDocument();
@@ -92,40 +82,24 @@ describe("TaskReviewHeader", () => {
       isMaster: false,
     };
 
-    render(
-      <TaskReviewHeader
-        taskReview={null}
-        badgeMeta={newBadgeMeta}
-        canRate={true}
-      />
-    );
+    render(<TaskReviewHeader taskReview={null} badgeMeta={newBadgeMeta} canRate={true} />);
 
     expect(
-      screen.getByText(/Оцени сложность задачи, а я рассчитаю оптимальный интервал для повторения:/i)
+      screen.getByText(
+        /Оцени сложность задачи, а я рассчитаю оптимальный интервал для повторения:/i
+      )
     ).toBeInTheDocument();
   });
 
   it("renders unsolved state with support message and without badge when isUnsolved is true", () => {
-    render(
-      <TaskReviewHeader
-        taskReview={null}
-        canRate={false}
-        isUnsolved={true}
-      />
-    );
+    render(<TaskReviewHeader taskReview={null} canRate={false} isUnsolved={true} />);
 
     expect(screen.getByText(/Интервальный помощник/i)).toBeInTheDocument();
     expect(screen.queryByText(/Не решено/i)).not.toBeInTheDocument();
   });
 
   it("renders excluded message without any status badge when isExcluded is true", () => {
-    render(
-      <TaskReviewHeader
-        taskReview={null}
-        canRate={false}
-        isExcluded={true}
-      />
-    );
+    render(<TaskReviewHeader taskReview={null} canRate={false} isExcluded={true} />);
 
     expect(screen.getByText(/Интервальный помощник/i)).toBeInTheDocument();
     expect(screen.getByText("Задача исключена из цикла повторений")).toBeInTheDocument();
@@ -135,12 +109,7 @@ describe("TaskReviewHeader", () => {
   it("renders custom assistant name when configured in review store", () => {
     useReviewStore.setState({ assistantName: "Кибер-Наставник" });
 
-    render(
-      <TaskReviewHeader
-        taskReview={null}
-        canRate={false}
-      />
-    );
+    render(<TaskReviewHeader taskReview={null} canRate={false} />);
 
     expect(screen.getByText("Кибер-Наставник")).toBeInTheDocument();
     expect(screen.queryByText("Интервальный помощник")).not.toBeInTheDocument();

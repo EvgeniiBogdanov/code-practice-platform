@@ -65,7 +65,12 @@ export const prefixDefinitions = {
         parameter: "0, 5",
         isTask: true,
       },
-      { id: "single", label: "Один элемент: [4, -2, 7], [1, 1]", input: "4, -2, 7", parameter: "1, 1" },
+      {
+        id: "single",
+        label: "Один элемент: [4, -2, 7], [1, 1]",
+        input: "4, -2, 7",
+        parameter: "1, 1",
+      },
     ],
   },
   algo13: {
@@ -125,7 +130,12 @@ export const prefixDefinitions = {
         parameter: "0",
         isTask: true,
       },
-      { id: "many", label: "Повторные префиксы: [0, 0, 0], k = 0", input: "0, 0, 0", parameter: "0" },
+      {
+        id: "many",
+        label: "Повторные префиксы: [0, 0, 0], k = 0",
+        input: "0, 0, 0",
+        parameter: "0",
+      },
       { id: "empty", label: "Пустой массив: [], k = -1", input: "[]", parameter: "-1" },
     ],
   },
