@@ -2,7 +2,7 @@
 
 # <img src="public/favicon.svg" width="22" height="22" alt="" /> Code Practice Platform
 
-<sub><span style="color:gray">version: 2.3.88</span></sub>
+<sub><span style="color:gray">version: 2.3.89</span></sub>
 
 ### Интерактивная платформа для подготовки к техническим собеседованиям по фронтенду и алгоритмам
 
@@ -135,6 +135,39 @@ npm run build
 
 ---
 
+## ⚙️ CI/CD
+
+Пайплайн описан в `.github/workflows/` и следует практикам продуктовых репозиториев.
+
+### Что происходит на каждый PR и push в `main` (ci.yml)
+
+Пять параллельных проверок: **lint** (ESLint), **typecheck** (tsc), **format** (prettier --check), **test** (vitest с покрытием), **build** (production-сборка + отчёт о размере бандла). Для PR размер бандла публикуется одним обновляемым комментарием, сводка покрытия — в job summary.
+
+### Что происходит после мержа в `main`
+
+1. **Deploy** — GitHub Pages обновляется только после прохождения всех пяти проверок (сборка выполняется один раз и переиспользуется через артефакт).
+2. **Release** — если версия в `package.json` новее последнего тега, автоматически создаются git-тег `vX.Y.Z` и GitHub Release с автогенерированными notes.
+3. Сводки проверки и размер бандла — в GitHub Actions Summary запуска.
+
+### Сопутствующая автоматизация
+
+- **Dependabot** (`.github/dependabot.yml`) — еженедельные обновления npm-зависимостей и GitHub Actions (minor/patch сгруппированы в один PR).
+- **Cleanup merged branches** (`cleanup-branches.yml`) — еженедельное удаление веток, полностью смерженных в `main` (запуск вручную: `gh workflow run "Cleanup merged branches"`).
+
+### Версия Node
+
+Версия Node закреплена в `.nvmrc` (сейчас **22**) — единая точка правды для локальной разработки (`nvm use`) и для CI (`actions/setup-node` c `node-version-file`).
+
+### Рекомендация: branch protection
+
+Чтобы проверки нельзя было обойти, включите в настройках репозитория **Settings → Branches → Add branch protection rule** для `main`:
+
+- ✅ Require a pull request before merging
+- ✅ Require status checks to pass: `Lint`, `Typecheck`, `Format`, `Unit tests`, `Build`
+- ✅ Require branches to be up to date before merging
+
+---
+
 ## ⌨️ Горячие клавиши
 
 ### Редактор кода (VS Code Style)
@@ -167,6 +200,7 @@ npm run build
 
 Полная история изменений доступна в файле **[CHANGELOG.md](CHANGELOG.md)**.
 
+- **[v2.3.89](CHANGELOG.md#v2-3-89)** — CI/CD-конвейер по практикам продуктовых репозиториев: обязательные проверки (lint, typecheck, format, 974 теста, build) перед деплоем GitHub Pages, авто-теги и GitHub Releases, отчёт о размере бандла в PR, покрытие тестами, Dependabot и еженедельная очистка смерженных веток.
 - **[v2.3.88](CHANGELOG.md#v2-3-88)** — Комплексная оптимизация загрузки приложения (локальные WOFF2-шрифты Inter, оптимизация чанков и tree-shaking публичных API, ускорение FCP/LCP), унификация фоновой сетки в 2D и 3D-сценах TaskVisualization.
 - **[v2.3.85](CHANGELOG.md#v2-3-85)** — Визуализатор алгоритмов TaskVisualization на Three.js (Two Pointers), интеграция нерешённых задач в цикл интервальных повторений SM-2 с наивысшим приоритетом.
 - **[v2.3.8](CHANGELOG.md#v2-3-8)** — Быстрые комментарии (строчные/блочные) и автогенерация JSDoc в редакторе кода, Новый график активности на `@nivo/calendar`, суточные KPI повторений, скрытие статусов исключенных задач. Минорные фиксы задач.

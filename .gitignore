@@ -72,3 +72,6 @@ scratch/
 # Codegraph
 .codegraph/
 codegraph.json
+
+# ZCode local session artifacts
+.zcode/

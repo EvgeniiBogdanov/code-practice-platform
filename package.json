@@ -1,7 +1,7 @@
 {
   "name": "Code-Practice-Platform",
   "private": true,
-  "version": "2.3.88",
+  "version": "2.3.89",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,6 +9,9 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "test:unit": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "coverage:summary": "node scripts/coverage-summary.mjs",
+    "bundle:report": "node scripts/bundle-report.mjs",
     "test": "vitest",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -52,6 +55,7 @@
     "@typescript-eslint/utils": "^8.67.0",
     "@typescript/native": "npm:typescript@^7.0.2",
     "@vitejs/plugin-react": "^6.1.0",
+    "@vitest/coverage-v8": "^4.1.11",
     "code-inspector-plugin": "^2.0.7",
     "eslint": "^9.39.5",
     "eslint-config-prettier": "^10.1.8",

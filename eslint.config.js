@@ -29,7 +29,7 @@ export default tseslint.config(
 
   // 4. Configuration for Node / Build files
   {
-    files: ["*.config.{js,ts}", "vite.config.js"],
+    files: ["*.config.{js,ts}", "vite.config.js", "scripts/**/*.mjs"],
     languageOptions: {
       globals: {
         ...globals.node,
@@ -72,10 +72,7 @@ export default tseslint.config(
       "react/prop-types": "off",
       "react/display-name": "off",
       "react/no-unescaped-entities": "off",
-      "react-refresh/only-export-components": [
-        "warn",
-        { allowConstantExport: true },
-      ],
+      "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
 
       // --- TypeScript Rules ---
       "@typescript-eslint/no-explicit-any": "warn",
