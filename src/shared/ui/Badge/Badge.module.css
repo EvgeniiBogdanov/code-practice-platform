@@ -19,16 +19,21 @@
 }
 
 .label {
-  display: inline-flex;
+  display: inline-block;
   align-items: center;
   justify-content: center;
   text-align: center;
   line-height: 1;
+  /* Optical baseline compensation: numbers & capital glyphs sit on baseline with 0 descenders */
+  transform: translateY(1px);
 }
 
-@supports (text-box: trim-both cap alphabetic) {
+@supports (text-box-trim: both) or (text-box: trim-both cap alphabetic) {
   .label {
+    text-box-trim: both;
+    text-box-edge: cap alphabetic;
     text-box: trim-both cap alphabetic;
+    transform: none;
   }
 }
 

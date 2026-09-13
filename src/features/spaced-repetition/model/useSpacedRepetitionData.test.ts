@@ -104,4 +104,13 @@ describe("useSpacedRepetitionData - task exclusion", () => {
     expect(result.current.dailyTaskStats).toEqual({ solved: 0, unsolved: 0 });
     expect(result.current.reviewActivityByDate).toEqual({});
   });
+
+  it("defaults to empty options and catalog tasks when called with no arguments", () => {
+    const { result } = renderHook(() => useSpacedRepetitionData());
+
+    expect(result.current.scopeLabel).toBe("в каталоге");
+    expect(result.current.targetTasks).toBeDefined();
+    expect(result.current.reviewActivityByDate).toBeDefined();
+    expect(typeof result.current.isLoading).toBe("boolean");
+  });
 });

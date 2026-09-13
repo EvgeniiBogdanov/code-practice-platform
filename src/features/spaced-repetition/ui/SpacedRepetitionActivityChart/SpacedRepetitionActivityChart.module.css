@@ -16,10 +16,26 @@
   line-height: var(--lh-heading);
 }
 
+.titleWrapper {
+  height: calc(var(--fs-base-sm) * var(--lh-heading));
+  display: flex;
+  align-items: center;
+}
+
+.chartPlaceholder {
+  width: 100%;
+}
+
 .chart {
   width: 100%;
-  height: calc(var(--space-7) * 4);
   min-height: calc(var(--space-7) * 4);
+  display: flex;
+  flex-direction: column;
+}
+
+.chart svg {
+  display: block;
+  overflow: visible;
 }
 
 .tooltip {
