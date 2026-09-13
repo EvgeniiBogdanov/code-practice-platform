@@ -7,3 +7,4 @@ export {
   disposeSceneObject,
 } from "./scene-assets";
 export type { ScenePalette } from "./scene-assets";
+export { ensureBackdropGrid, syncBackdropGrid } from "./backdrop-grid";

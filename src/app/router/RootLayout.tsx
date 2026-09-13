@@ -20,7 +20,7 @@ const FinderBreadcrumbs = lazy(() =>
   }))
 );
 
-export const RootLayout = memo(() => {
+export const RootLayout = memo((): React.JSX.Element => {
   const initProgress = useProgressStore((state) => state.initProgress);
   const initReviews = useReviewStore((state) => state.initReviews);
 
@@ -38,9 +38,13 @@ export const RootLayout = memo(() => {
   const contentAreaRef = useRef<HTMLElement | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
+  const previousPathnameRef = useRef(location.pathname);
 
   // Scroll reset on page transition (runs before browser paint to prevent jump)
   useLayoutEffect(() => {
+    // The newly mounted container is already at the top; avoid forcing its initial layout.
+    if (previousPathnameRef.current === location.pathname) return;
+    previousPathnameRef.current = location.pathname;
     if (!window.location.hash && contentAreaRef.current) {
       contentAreaRef.current.scrollTop = 0;
     }

@@ -6,10 +6,9 @@
     <meta name="description" content="Интерактивная платформа для практики JavaScript, React и алгоритмов с онлайн-редактором, тестами и системой интервального повторения." />
     <title>Code Practice Platform</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <!-- Подключение шрифта Inter с оптимизацией предзагрузки -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+    <link rel="preload" href="/src/app/fonts/inter-cyrillic.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/src/app/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/src/app/styles/fonts.css" />
     <script>
       (function() {
         try {
@@ -34,13 +33,6 @@
           document.documentElement.style.setProperty('--sidebar-width', sidebarWidth + 'px');
         } catch (e) {}
 
-        if (typeof document !== 'undefined' && 'fonts' in document && typeof document.fonts.load === 'function') {
-          try {
-            document.fonts.load('400 1em Inter');
-            document.fonts.load('500 1em Inter');
-            document.fonts.load('600 1em Inter');
-          } catch (e) {}
-        }
       })();
     </script>
     <style>

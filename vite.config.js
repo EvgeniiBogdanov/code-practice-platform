@@ -60,6 +60,14 @@ export default defineConfig(({ mode }) => ({
   build: {
     sourcemap: true,
     rollupOptions: {
+      treeshake: {
+        // These public APIs only re-export modules. Unused exports must not pull
+        // their component CSS and feature implementations into the app shell.
+        moduleSideEffects: (id) =>
+          /\/src\/(shared\/ui|entities\/task|features\/spaced-repetition)\/index\.ts$/.test(id)
+            ? false
+            : null,
+      },
       output: {
         manualChunks: (id) => {
           // Route availability must not pull trace builders into the initial task bundle.
@@ -88,7 +96,12 @@ export default defineConfig(({ mode }) => ({
             if (id.includes("@tanstack")) {
               return "vendor-router";
             }
-            return "vendor-framework";
+            // Keep only the runtime shared by every route in the initial vendor chunk.
+            // Editor dependencies and unused Lucide icons follow their lazy consumers.
+            if (/\/node_modules\/(react|react-dom|scheduler)\//.test(id)) {
+              return "vendor-framework";
+            }
+            return;
           }
           if (id.includes("cheatSheetData")) {
             return "data-cheatsheet";

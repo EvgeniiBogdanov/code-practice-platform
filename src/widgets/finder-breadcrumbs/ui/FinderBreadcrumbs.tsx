@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { lazy, Suspense, useMemo } from "react";
 import { useLocation } from "@tanstack/react-router";
 import { Menu, PanelLeft } from "lucide-react";
 import { clsx } from "clsx";
@@ -10,13 +10,24 @@ import { parseBreadcrumbRoute } from "../lib/parseBreadcrumbRoute";
 import { Tooltip } from "@/shared/ui";
 import { FinderSectionDropdown } from "./FinderSectionDropdown";
 import { FinderHomeHierarchy } from "./FinderHomeHierarchy";
-import { FinderJsHierarchy } from "./FinderJsHierarchy";
-import { FinderReactHierarchy } from "./FinderReactHierarchy";
-import { FinderAlgoHierarchy } from "./FinderAlgoHierarchy";
 import { FinderFavoritesHierarchy } from "./FinderFavoritesHierarchy";
 import styles from "./FinderBreadcrumbs.module.css";
 
-export const FinderBreadcrumbs = () => {
+const FinderJsHierarchy = lazy(() =>
+  import("./FinderJsHierarchy").then(({ FinderJsHierarchy }) => ({ default: FinderJsHierarchy }))
+);
+const FinderReactHierarchy = lazy(() =>
+  import("./FinderReactHierarchy").then(({ FinderReactHierarchy }) => ({
+    default: FinderReactHierarchy,
+  }))
+);
+const FinderAlgoHierarchy = lazy(() =>
+  import("./FinderAlgoHierarchy").then(({ FinderAlgoHierarchy }) => ({
+    default: FinderAlgoHierarchy,
+  }))
+);
+
+export const FinderBreadcrumbs = (): React.JSX.Element => {
   const sidebarOpen = useUIStore((state) => state.sidebarOpen);
   const toggleSidebar = useUIStore((state) => state.toggleSidebar);
   const location = useLocation();
@@ -30,7 +41,7 @@ export const FinderBreadcrumbs = () => {
 
   const isFavoritesPage = location.pathname.endsWith("/favorites");
   const taskSection: SectionType = section === "home" ? "react" : section;
-  const { tasks } = useTaskSection(taskSection);
+  const { tasks } = useTaskSection(taskSection, section !== "home" && !isFavoritesPage);
   const currentTask: Task | null = useMemo(() => {
     if (!taskId || isFavoritesPage) return null;
     return tasks.find((task) => String(task.id) === taskId) ?? null;
@@ -69,38 +80,40 @@ export const FinderBreadcrumbs = () => {
 
       {isFavoritesPage && section !== "home" && <FinderFavoritesHierarchy />}
 
-      {/* 3. JavaScript Hierarchy: Group / Subgroup / Task */}
-      {section === "javascript" && !isFavoritesPage && (
-        <FinderJsHierarchy
-          paramId={taskId}
-          currentTask={currentTask}
-          activeDropdown={activeDropdown}
-          toggleDropdown={toggleDropdown}
-          closeAllDropdowns={closeAllDropdowns}
-        />
-      )}
+      <Suspense fallback={null}>
+        {/* 3. JavaScript Hierarchy: Group / Subgroup / Task */}
+        {section === "javascript" && !isFavoritesPage && (
+          <FinderJsHierarchy
+            paramId={taskId}
+            currentTask={currentTask}
+            activeDropdown={activeDropdown}
+            toggleDropdown={toggleDropdown}
+            closeAllDropdowns={closeAllDropdowns}
+          />
+        )}
 
-      {/* 4. React Hierarchy: Category / Task */}
-      {section === "react" && !isFavoritesPage && (
-        <FinderReactHierarchy
-          paramId={taskId}
-          currentTask={currentTask}
-          activeDropdown={activeDropdown}
-          toggleDropdown={toggleDropdown}
-          closeAllDropdowns={closeAllDropdowns}
-        />
-      )}
+        {/* 4. React Hierarchy: Category / Task */}
+        {section === "react" && !isFavoritesPage && (
+          <FinderReactHierarchy
+            paramId={taskId}
+            currentTask={currentTask}
+            activeDropdown={activeDropdown}
+            toggleDropdown={toggleDropdown}
+            closeAllDropdowns={closeAllDropdowns}
+          />
+        )}
 
-      {/* 5. Algorithms Hierarchy: Group / Task */}
-      {section === "algorithms" && !isFavoritesPage && (
-        <FinderAlgoHierarchy
-          paramId={taskId}
-          currentTask={currentTask}
-          activeDropdown={activeDropdown}
-          toggleDropdown={toggleDropdown}
-          closeAllDropdowns={closeAllDropdowns}
-        />
-      )}
+        {/* 5. Algorithms Hierarchy: Group / Task */}
+        {section === "algorithms" && !isFavoritesPage && (
+          <FinderAlgoHierarchy
+            paramId={taskId}
+            currentTask={currentTask}
+            activeDropdown={activeDropdown}
+            toggleDropdown={toggleDropdown}
+            closeAllDropdowns={closeAllDropdowns}
+          />
+        )}
+      </Suspense>
     </nav>
   );
 };
