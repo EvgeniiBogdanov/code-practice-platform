@@ -4,24 +4,18 @@ import {
   ConeGeometry,
   DoubleSide,
   EdgesGeometry,
-  GridHelper,
   Group,
   LineBasicMaterial,
   LineSegments,
   Mesh,
   MeshStandardMaterial,
   TorusGeometry,
-  Vector3,
   type Material,
   type Object3D,
   type Sprite,
 } from "three";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
-import {
-  makeFaceLabel,
-  makeFittedLabel,
-  type ScenePalette,
-} from "../../../lib/three-scene";
+import { makeFaceLabel, makeFittedLabel, type ScenePalette } from "../../../lib/three-scene";
 import type { StackSceneLane } from "../stack-scene";
 
 const BLOCK_WIDTH = 1.7;
@@ -31,8 +25,7 @@ export const BLOCK_PITCH = 0.84;
 export const LANE_PITCH = 3.1;
 
 export const blockY = (index: number): number => BLOCK_HEIGHT / 2 + index * BLOCK_PITCH;
-export const laneX = (lane: number, count: number): number =>
-  (lane - (count - 1) / 2) * LANE_PITCH;
+export const laneX = (lane: number, count: number): number => (lane - (count - 1) / 2) * LANE_PITCH;
 export const displayValue = (value: string | number): string =>
   value === "" ? '""' : value === " " ? "␣" : String(value);
 
@@ -211,22 +204,17 @@ export const makeGhostBlock = (value: string, palette: ScenePalette): Group => {
 
 export const stackContainerHeight = (deepest: number): number => deepest * BLOCK_PITCH + 1.6;
 
-export const stackSpan = (
-  laneCount: number,
-  containerHeight: number,
-  aspect: number
-): number =>
+export const stackSpan = (laneCount: number, containerHeight: number, aspect: number): number =>
   Math.max(
     5.5,
     Math.min(11.5, Math.max(containerHeight + 3.1, (laneCount * LANE_PITCH + 2.6) / aspect))
   );
 
-/** Containers, lane titles, foot/empty labels, top pointers and the backdrop grid. */
+/** Containers, lane titles, foot/empty labels and top pointers. */
 export const makeStackDecorations = (
   lanes: readonly StackSceneLane[],
   containerHeight: number,
-  palette: ScenePalette,
-  center: Vector3
+  palette: ScenePalette
 ): Group => {
   const decorations = new Group();
   const laneCount = Math.max(1, lanes.length);
@@ -252,11 +240,5 @@ export const makeStackDecorations = (
     pointer.position.set(x, blockY(lane.values.length - 1) + 0.62, 0.3);
     decorations.add(pointer);
   });
-  const grid = new GridHelper(100, 80, palette.border, palette.border);
-  grid.rotation.x = Math.PI / 2;
-  grid.position.set(center.x, center.y, -1.35);
-  grid.material.transparent = true;
-  grid.material.opacity = 0.09;
-  decorations.add(grid);
   return decorations;
 };

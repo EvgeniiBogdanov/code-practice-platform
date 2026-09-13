@@ -2,11 +2,9 @@
   position: relative;
   margin-block-start: var(--space-3);
   background-color: var(--bg-editor);
-  background-image: radial-gradient(
-    circle,
-    var(--border-color) var(--space-px),
-    transparent var(--space-px)
-  );
+  background-image:
+    linear-gradient(to right, var(--trace-grid-line) var(--space-px), transparent var(--space-px)),
+    linear-gradient(to bottom, var(--trace-grid-line) var(--space-px), transparent var(--space-px));
   background-size: var(--space-5) var(--space-5);
 }
 .sceneMeta {

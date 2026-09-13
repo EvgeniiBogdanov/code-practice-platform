@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { clsx } from "clsx";
 import { SECTIONS_CONFIG, SectionType } from "@/entities/task/meta";
 import { NodeCount, PlatformLogo } from "@/shared/ui";
-import { useSidebarHomeStats } from "../../model";
+import { useSidebarHomeStats } from "../../model/use-sidebar-home-stats";
 import styles from "./SidebarHomeOverview.module.css";
 
 export interface SidebarHomeOverviewProps {

@@ -2,7 +2,6 @@ import {
   ACESFilmicToneMapping,
   AmbientLight,
   DirectionalLight,
-  GridHelper,
   Group,
   Mesh,
   OrthographicCamera,
@@ -12,12 +11,20 @@ import {
   ShadowMaterial,
   Vector3,
   WebGLRenderer,
+  type GridHelper,
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { disposeSceneObject, readScenePalette } from "../../../lib/three-scene";
+import {
+  disposeSceneObject,
+  ensureBackdropGrid,
+  readScenePalette,
+  syncBackdropGrid,
+} from "../../../lib/three-scene";
 import type { UiDiagramSceneProps } from "../diagram-scene";
 import { makeDiagramNode, nodePosition, type DiagramObject } from "./diagram-objects";
 import { makeConnection, type DiagramConnection } from "./diagram-connections";
+
+const BACKDROP_GRID_OFFSET = -0.42;
 
 export interface DiagramController {
   update: (props: UiDiagramSceneProps) => void;
@@ -84,6 +91,7 @@ export const createDiagramScene = (
   const target = new Vector3();
   let disposed = false;
   let drawing = false;
+  let backdropGrid: GridHelper | undefined;
   const reduced = (): boolean =>
     Boolean(
       current.reducedMotion || window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
@@ -116,6 +124,7 @@ export const createDiagramScene = (
       pulse.visible = !reduced() && progress < 1;
       pulse.position.copy(curve.getPoint(progress));
     });
+    if (backdropGrid) syncBackdropGrid(backdropGrid, controls.target, BACKDROP_GRID_OFFSET);
     try {
       renderer.render(scene, camera);
     } catch {
@@ -159,6 +168,7 @@ export const createDiagramScene = (
       return;
     }
     const palette = readScenePalette(host);
+    backdropGrid = ensureBackdropGrid(backdropGrid, palette, scene, refreshPalette);
     const previous = nodes;
     nodes = new Map();
     decorations.children.slice().forEach(disposeSceneObject);
@@ -209,12 +219,6 @@ export const createDiagramScene = (
       decorations.add(link.group);
       return [link];
     });
-    const grid = new GridHelper(100, 80, palette.border, palette.border);
-    grid.rotation.x = Math.PI / 2;
-    grid.position.set(center.x, center.y, -0.42);
-    grid.material.transparent = true;
-    grid.material.opacity = 0.09;
-    decorations.add(grid);
     key.position.copy(target).add(new Vector3(-4, 7, 10));
     key.target.position.copy(target);
     const shadow = key.shadow.camera;

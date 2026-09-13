@@ -22,7 +22,7 @@ vi.mock("@tanstack/react-router", () => ({
 }));
 
 // Mock sidebar stats hook
-vi.mock("../../model", () => ({
+vi.mock("../../model/use-sidebar-home-stats", () => ({
   useSidebarHomeStats: () => ({
     completedJsTotal: 10,
     completedReactTotal: 5,

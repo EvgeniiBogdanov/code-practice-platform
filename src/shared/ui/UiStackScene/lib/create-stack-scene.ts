@@ -11,9 +11,15 @@ import {
   ShadowMaterial,
   Vector3,
   WebGLRenderer,
+  type GridHelper,
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { disposeSceneObject, readScenePalette } from "../../../lib/three-scene";
+import {
+  disposeSceneObject,
+  ensureBackdropGrid,
+  readScenePalette,
+  syncBackdropGrid,
+} from "../../../lib/three-scene";
 import type { UiStackSceneProps } from "../stack-scene";
 import {
   makeStackDecorations,
@@ -21,10 +27,7 @@ import {
   stackContainerHeight,
   stackSpan,
 } from "./stack-objects";
-import {
-  syncStackFrame,
-  type StackFrameState,
-} from "./stack-choreography";
+import { syncStackFrame, type StackFrameState } from "./stack-choreography";
 
 export interface StackController {
   update: (props: UiStackSceneProps) => void;
@@ -34,6 +37,7 @@ export interface StackController {
 
 const ANGLE = new Vector3(4.6, 6.4, 14);
 const IDENTITY = new Vector3(1, 1, 1);
+const BACKDROP_GRID_OFFSET = -1.35;
 
 export const createStackScene = (
   host: HTMLElement,
@@ -94,6 +98,7 @@ export const createStackScene = (
   const lookAt = new Vector3();
   let disposed = false;
   let drawing = false;
+  let backdropGrid: GridHelper | undefined;
   const reduced = (): boolean =>
     Boolean(
       current.reducedMotion || window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
@@ -125,6 +130,7 @@ export const createStackScene = (
     drawing = true;
     controls.update();
     drawing = false;
+    if (backdropGrid) syncBackdropGrid(backdropGrid, controls.target, BACKDROP_GRID_OFFSET);
     try {
       renderer.render(scene, camera);
     } catch {
@@ -165,6 +171,7 @@ export const createStackScene = (
       return;
     }
     const palette = readScenePalette(host);
+    backdropGrid = ensureBackdropGrid(backdropGrid, palette, scene, refreshPalette);
     const lanes = props.stacks;
     const laneCount = Math.max(1, lanes.length);
     const deepest = Math.max(
@@ -175,8 +182,15 @@ export const createStackScene = (
     containerHeight = stackContainerHeight(deepest);
     center.set(0, containerHeight / 2 - 0.35, 0);
     decorations.children.slice().forEach(disposeSceneObject);
-    decorations.add(makeStackDecorations(lanes, containerHeight, palette, center));
-    frameState = syncStackFrame(props, frameState, palette, containerHeight, reduced(), blocksGroup);
+    decorations.add(makeStackDecorations(lanes, containerHeight, palette));
+    frameState = syncStackFrame(
+      props,
+      frameState,
+      palette,
+      containerHeight,
+      reduced(),
+      blocksGroup
+    );
     lookAt.copy(center);
     const aspect = (host.clientWidth || 640) / (host.clientHeight || 340);
     span = stackSpan(laneCount, containerHeight, aspect);

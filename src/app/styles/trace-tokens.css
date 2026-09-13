@@ -23,8 +23,10 @@
   --trace-explanation-mobile-height: 144px;
   --trace-copy-width: 80ch;
   --trace-fallback-cell: 54px;
+  --trace-grid-line: color-mix(in srgb, var(--border-color) 40%, transparent);
 }
 
 [data-theme="light"] {
   --trace-tile-surface: #c1c6ce;
+  --trace-grid-line: color-mix(in srgb, var(--border-color) 40%, transparent);
 }
