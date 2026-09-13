@@ -20,6 +20,21 @@ export default defineConfig({
     setupFiles: ["./src/test/setup.ts"],
     include: ["src/**/*.{test,spec}.{ts,tsx}"],
     css: true,
+    coverage: {
+      provider: "v8",
+      reportsDirectory: "./coverage",
+      reporter: ["text", "html", "json-summary"],
+      include: ["src/**"],
+      exclude: [
+        "src/routeTree.gen.ts",
+        "src/test/**",
+        "src/entities/task/curriculum/**",
+        "src/shared/data/**",
+        "**/*.test.*",
+        "**/*.spec.*",
+        "**/*.d.ts",
+      ],
+    },
   },
   resolve: {
     alias: {

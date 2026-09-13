@@ -50,7 +50,8 @@ export const SettingsResetSection = memo(
               <div className={styles.settingsRowInfo}>
                 <div className={styles.settingsRowTitle}>Интервальное повторение (SM-2)</div>
                 <div className={styles.settingsRowDesc}>
-                  Сброс коэффициентов легкости, стадий, расписания повторений и написанного кода решений (задачи возвращаются в изначальное состояние).
+                  Сброс коэффициентов легкости, стадий, расписания повторений и написанного кода
+                  решений (задачи возвращаются в изначальное состояние).
                 </div>
               </div>
               <div className={styles.settingsRowAction}>

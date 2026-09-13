@@ -22,7 +22,9 @@ describe("SettingsCustomizationSection", () => {
     render(<SettingsCustomizationSection />);
 
     expect(screen.getByText("Персонализация помощника")).toBeInTheDocument();
-    const input = screen.getByRole("textbox", { name: /Имя интервального помощника/i }) as HTMLInputElement;
+    const input = screen.getByRole("textbox", {
+      name: /Имя интервального помощника/i,
+    }) as HTMLInputElement;
     expect(input.value).toBe("");
     expect(input.placeholder).toBe("Имя");
     expect(screen.getByText("0/30")).toBeInTheDocument();

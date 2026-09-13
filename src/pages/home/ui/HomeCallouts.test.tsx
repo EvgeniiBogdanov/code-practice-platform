@@ -21,7 +21,10 @@ describe("HomeCallouts", () => {
     const telegramTextLink = screen.getByRole("link", { name: "@johnbeelow" });
     const telegramIconLink = screen.getByRole("link", { name: "Telegram: @johnbeelow" });
 
-    expect(githubLink).toHaveAttribute("href", "https://github.com/EvgeniiBogdanov/code-practice-platform");
+    expect(githubLink).toHaveAttribute(
+      "href",
+      "https://github.com/EvgeniiBogdanov/code-practice-platform"
+    );
     expect(telegramTextLink).toHaveAttribute("href", "https://t.me/johnbeelow");
     expect(telegramIconLink).toHaveAttribute("href", "https://t.me/johnbeelow");
 

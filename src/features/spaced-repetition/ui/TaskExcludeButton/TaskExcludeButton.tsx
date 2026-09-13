@@ -22,9 +22,7 @@ export const TaskExcludeButton = React.memo(
     className,
   }: Readonly<TaskExcludeButtonProps>): React.JSX.Element => {
     const stringId = String(taskId);
-    const isExcluded = useReviewStore((state) =>
-      state.excludedTaskIds.includes(stringId)
-    );
+    const isExcluded = useReviewStore((state) => state.excludedTaskIds.includes(stringId));
     const toggleExcludeTask = useReviewStore((state) => state.toggleExcludeTask);
     const removeReview = useReviewStore((state) => state.removeReview);
     const setTaskStatus = useProgressStore((state) => state.setTaskStatus);

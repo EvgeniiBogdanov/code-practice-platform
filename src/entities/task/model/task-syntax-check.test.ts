@@ -1,5 +1,8 @@
 import { describe, it, expect } from "vitest";
-import { isCandidateLinterDisabled, CANDIDATE_SYNTAX_CHECK_DISABLED_TASK_IDS } from "./task-syntax-check";
+import {
+  isCandidateLinterDisabled,
+  CANDIDATE_SYNTAX_CHECK_DISABLED_TASK_IDS,
+} from "./task-syntax-check";
 import { Task } from "../types";
 
 describe("task-syntax-check", () => {

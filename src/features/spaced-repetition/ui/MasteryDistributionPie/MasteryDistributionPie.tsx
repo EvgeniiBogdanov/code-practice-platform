@@ -94,8 +94,7 @@ export function MasteryDistributionPie({
     return activeItems;
   }, [learning, reviewing, mastered, unreviewed]);
 
-  const masteryPercent =
-    totalReviewed > 0 ? Math.round((mastered / totalReviewed) * 100) : 0;
+  const masteryPercent = totalReviewed > 0 ? Math.round((mastered / totalReviewed) * 100) : 0;
   const currentPercent = activeSegment ? activeSegment.pctText : `${masteryPercent}%`;
   const currentSubtitle = activeSegment ? activeSegment.sub : "Мастерство";
 
@@ -121,11 +120,7 @@ export function MasteryDistributionPie({
   const chartHeight = measuredHeight > 0 ? measuredHeight : height;
 
   return (
-    <div
-      ref={containerRef}
-      className={styles.chartWrapper}
-      style={{ height, minHeight: height }}
-    >
+    <div ref={containerRef} className={styles.chartWrapper} style={{ height, minHeight: height }}>
       {chartWidth > 0 && chartHeight > 0 && (
         <div className={styles.container}>
           <Pie<PieChartDatum>

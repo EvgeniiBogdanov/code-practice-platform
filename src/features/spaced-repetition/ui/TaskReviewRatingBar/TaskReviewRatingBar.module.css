@@ -27,7 +27,11 @@
   height: 32px;
   min-width: 32px;
   border-radius: 50%;
-  background: linear-gradient(135deg, color-mix(in srgb, var(--accent-blue) 72%, #000000) 0%, color-mix(in srgb, var(--accent-blue) 52%, #000000) 100%);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent-blue) 72%, #000000) 0%,
+    color-mix(in srgb, var(--accent-blue) 52%, #000000) 100%
+  );
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -39,11 +43,19 @@
 }
 
 [data-theme="light"] .avatar {
-  background: linear-gradient(135deg, var(--accent-blue) 0%, color-mix(in srgb, var(--accent-blue) 75%, #000000) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--accent-blue) 0%,
+    color-mix(in srgb, var(--accent-blue) 75%, #000000) 100%
+  );
 }
 
 .avatarUnsolved {
-  background: linear-gradient(135deg, color-mix(in srgb, var(--accent-red) 72%, #000000) 0%, color-mix(in srgb, var(--accent-red) 60%, #000000) 100%);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent-red) 72%, #000000) 0%,
+    color-mix(in srgb, var(--accent-red) 60%, #000000) 100%
+  );
 }
 
 [data-theme="light"] .avatarUnsolved {
@@ -51,7 +63,11 @@
 }
 
 .avatarDue {
-  background: linear-gradient(135deg, color-mix(in srgb, var(--accent-yellow) 72%, #000000) 0%, color-mix(in srgb, var(--accent-yellow) 48%, #000000) 100%);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent-yellow) 72%, #000000) 0%,
+    color-mix(in srgb, var(--accent-yellow) 48%, #000000) 100%
+  );
   color: #ffffff;
 }
 
@@ -392,4 +408,3 @@
 .reviewBannerExcluded {
   opacity: 0.85;
 }
-

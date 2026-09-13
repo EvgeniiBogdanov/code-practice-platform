@@ -36,5 +36,3 @@ export const ChecklistTabSkeleton = memo(
 );
 
 ChecklistTabSkeleton.displayName = "ChecklistTabSkeleton";
-
-

@@ -13,7 +13,12 @@ const OpenJsTaskRoute = () => {
   const search = Route.useSearch();
 
   return (
-    <OpenEditorPage taskId={taskId} section="javascript" tab={search.tab || "candidate"} initialViewMode={search.view} />
+    <OpenEditorPage
+      taskId={taskId}
+      section="javascript"
+      tab={search.tab || "candidate"}
+      initialViewMode={search.view}
+    />
   );
 };
 

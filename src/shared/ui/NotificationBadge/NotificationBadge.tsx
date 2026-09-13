@@ -3,13 +3,7 @@ import { clsx } from "clsx";
 import styles from "./NotificationBadge.module.css";
 
 export type NotificationBadgeVariant =
-  | "yellow"
-  | "red"
-  | "green"
-  | "blue"
-  | "purple"
-  | "neutral"
-  | "gray";
+  "yellow" | "red" | "green" | "blue" | "purple" | "neutral" | "gray";
 
 export type NotificationBadgeSize = "xs" | "sm" | "md" | "lg" | "xl" | "tab";
 

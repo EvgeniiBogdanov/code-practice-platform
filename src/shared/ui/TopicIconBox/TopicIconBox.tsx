@@ -1,10 +1,6 @@
 import React from "react";
 import { clsx } from "clsx";
-import {
-  TopicIconBoxColor,
-  TopicIconBoxSize,
-  resolveColorVariant,
-} from "./resolveColorVariant";
+import { TopicIconBoxColor, TopicIconBoxSize, resolveColorVariant } from "./resolveColorVariant";
 import styles from "./TopicIconBox.module.css";
 
 export interface TopicIconBoxProps extends React.HTMLAttributes<HTMLDivElement> {

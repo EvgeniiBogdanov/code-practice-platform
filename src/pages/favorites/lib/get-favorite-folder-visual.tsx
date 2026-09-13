@@ -1,9 +1,6 @@
 import React from "react";
 import { Folder } from "lucide-react";
-import {
-  SECTIONS_CONFIG,
-  SectionType,
-} from "@/entities/task";
+import { SECTIONS_CONFIG, SectionType } from "@/entities/task";
 import { getAlgoGroupMeta, getGroupMeta, REACT_GROUPS_CONFIG } from "@/entities/task/groups";
 
 export interface FavoriteFolderVisual {

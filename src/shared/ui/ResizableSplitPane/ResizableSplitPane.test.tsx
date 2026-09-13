@@ -246,12 +246,7 @@ describe("ResizableSplitPane", () => {
   });
 
   it("defaults to 70% split ratio when not specified", () => {
-    render(
-      <ResizableSplitPane
-        left={<div>Left</div>}
-        right={<div>Right</div>}
-      />
-    );
+    render(<ResizableSplitPane left={<div>Left</div>} right={<div>Right</div>} />);
 
     const separator = screen.getByRole("separator");
     expect(separator).toHaveAttribute("aria-valuenow", "70");

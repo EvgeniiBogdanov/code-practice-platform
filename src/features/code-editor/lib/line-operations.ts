@@ -133,11 +133,7 @@ export const duplicateLines = (
   const blockLength = selectedBlock.join("\n").length + 1;
 
   if (direction === "up") {
-    const newLines = [
-      ...lines.slice(0, startLine),
-      ...selectedBlock,
-      ...lines.slice(startLine),
-    ];
+    const newLines = [...lines.slice(0, startLine), ...selectedBlock, ...lines.slice(startLine)];
 
     return {
       newCode: newLines.join("\n"),
@@ -147,11 +143,7 @@ export const duplicateLines = (
     };
   }
 
-  const newLines = [
-    ...lines.slice(0, endLine + 1),
-    ...selectedBlock,
-    ...lines.slice(endLine + 1),
-  ];
+  const newLines = [...lines.slice(0, endLine + 1), ...selectedBlock, ...lines.slice(endLine + 1)];
 
   return {
     newCode: newLines.join("\n"),

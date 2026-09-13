@@ -113,12 +113,7 @@ export const CommandPaletteItem = memo(
         <span className={styles.paletteItemTitle}>{task.title}</span>
 
         {diff && (
-          <Badge
-            size="sm"
-            variant={diff.variant}
-            uppercase={true}
-            className={styles.diffBadge}
-          >
+          <Badge size="sm" variant={diff.variant} uppercase={true} className={styles.diffBadge}>
             {diff.text}
           </Badge>
         )}

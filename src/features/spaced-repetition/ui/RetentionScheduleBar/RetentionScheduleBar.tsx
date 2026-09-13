@@ -96,8 +96,7 @@ function calculateScheduleBuckets(
       continue;
     }
 
-    const targetStr =
-      rev.dueDate || (rev.nextReviewAt ? getLocalDateString(rev.nextReviewAt) : "");
+    const targetStr = rev.dueDate || (rev.nextReviewAt ? getLocalDateString(rev.nextReviewAt) : "");
     let diffDays = 1;
 
     if (targetStr) {
@@ -212,11 +211,7 @@ export function RetentionScheduleBar({
   const chartHeight = measuredHeight > 0 ? measuredHeight : height;
 
   return (
-    <div
-      ref={containerRef}
-      className={styles.chartWrapper}
-      style={{ height, minHeight: height }}
-    >
+    <div ref={containerRef} className={styles.chartWrapper} style={{ height, minHeight: height }}>
       {chartWidth > 0 && chartHeight > 0 && (
         <div className={styles.container}>
           <Bar<ScheduleBarDatum>

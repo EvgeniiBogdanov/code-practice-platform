@@ -1,9 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  toggleLineComment,
-  toggleBlockComment,
-  getCommentSyntax,
-} from "./comment-operations";
+import { toggleLineComment, toggleBlockComment, getCommentSyntax } from "./comment-operations";
 
 describe("comment-operations", () => {
   describe("getCommentSyntax", () => {

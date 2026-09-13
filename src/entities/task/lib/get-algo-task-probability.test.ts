@@ -1,8 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  getAlgoTaskProbability,
-  getAlgoTaskProbabilityInfo,
-} from "./get-algo-task-probability";
+import { getAlgoTaskProbability, getAlgoTaskProbabilityInfo } from "./get-algo-task-probability";
 import type { Task } from "../types";
 
 describe("get-algo-task-probability", () => {

@@ -57,7 +57,11 @@ it("keeps a textual stack description for screen readers", async () => {
   render(
     <UiStackScene
       stacks={[{ label: "stack", values: [1, 2] }]}
-      action={{ kind: "pop", before: [{ label: "stack", values: [1, 2, 3] }], items: [{ lane: 0, value: 3 }] }}
+      action={{
+        kind: "pop",
+        before: [{ label: "stack", values: [1, 2, 3] }],
+        items: [{ lane: 0, value: 3 }],
+      }}
       stepId="pop-3"
       reducedMotion
     />

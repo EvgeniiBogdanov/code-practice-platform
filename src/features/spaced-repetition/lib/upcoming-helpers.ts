@@ -93,8 +93,7 @@ export function getUpcomingTasks(
       }
 
       const nextReviewAt =
-        rev.nextReviewAt ||
-        (rev.dueDate ? new Date(`${rev.dueDate}T00:00:00`).getTime() : 0);
+        rev.nextReviewAt || (rev.dueDate ? new Date(`${rev.dueDate}T00:00:00`).getTime() : 0);
       const daysUntil = getDaysUntil(rev.dueDate || nextReviewAt);
       if (daysUntil <= 0) {
         continue;

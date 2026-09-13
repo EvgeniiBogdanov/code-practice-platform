@@ -1,8 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import {
-  PLAYBACK_SPEED_STORAGE_KEY,
-} from "../config/playback-speeds";
+import { PLAYBACK_SPEED_STORAGE_KEY } from "../config/playback-speeds";
 import { playbackReducer, useTracePlayback } from "./use-trace-playback";
 
 describe("trace playback", () => {

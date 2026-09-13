@@ -120,9 +120,7 @@ export const getCaretCoordinates = (
   const left = markerSpan.offsetLeft;
   const parsedFontSize = parseFloat(computed.fontSize) || 13;
   const lineHeight =
-    markerSpan.offsetHeight ||
-    parseFloat(computed.lineHeight) ||
-    Math.round(parsedFontSize * 1.6);
+    markerSpan.offsetHeight || parseFloat(computed.lineHeight) || Math.round(parsedFontSize * 1.6);
 
   return {
     top,

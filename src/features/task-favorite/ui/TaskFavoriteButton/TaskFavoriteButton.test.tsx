@@ -46,9 +46,7 @@ describe("TaskFavoriteButton", () => {
       </Tooltip.Provider>
     );
 
-    fireEvent.click(
-      screen.getByRole("button", { name: "Добавить в избранное" })
-    );
+    fireEvent.click(screen.getByRole("button", { name: "Добавить в избранное" }));
 
     expect(handleRowClick).not.toHaveBeenCalled();
     expect(useFavoriteTaskStore.getState().favoriteTaskIds).toEqual(["task-1"]);

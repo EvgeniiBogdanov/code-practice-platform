@@ -25,26 +25,17 @@ export const HeaderSectionNav = ({ className }: HeaderSectionNavProps) => {
         <span>React</span>
       </Link>
 
-      <Link
-        to="/javascript"
-        className={clsx(styles.navItem, isJs && styles.active)}
-      >
+      <Link to="/javascript" className={clsx(styles.navItem, isJs && styles.active)}>
         <JavaScriptIcon size={14} className={styles.iconJs} />
         <span>JavaScript</span>
       </Link>
 
-      <Link
-        to="/algorithms"
-        className={clsx(styles.navItem, isAlgo && styles.active)}
-      >
+      <Link to="/algorithms" className={clsx(styles.navItem, isAlgo && styles.active)}>
         <Brain size={14} className={styles.iconAlgo} />
         <span>Алгоритмы</span>
       </Link>
 
-      <Link
-        to="/editor"
-        className={clsx(styles.navItem, isEditor && styles.active)}
-      >
+      <Link to="/editor" className={clsx(styles.navItem, isEditor && styles.active)}>
         <Code2 size={14} className={styles.iconEditor} />
         <span>Песочница</span>
       </Link>

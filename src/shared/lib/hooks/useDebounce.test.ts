@@ -17,12 +17,9 @@ describe("useDebounce", () => {
   });
 
   it("should update debounced value only after delay has passed", () => {
-    const { result, rerender } = renderHook(
-      ({ value, delay }) => useDebounce(value, delay),
-      {
-        initialProps: { value: "hello", delay: 300 },
-      }
-    );
+    const { result, rerender } = renderHook(({ value, delay }) => useDebounce(value, delay), {
+      initialProps: { value: "hello", delay: 300 },
+    });
 
     expect(result.current).toBe("hello");
 
@@ -45,12 +42,9 @@ describe("useDebounce", () => {
   });
 
   it("should cancel previous timer when value changes rapidly", () => {
-    const { result, rerender } = renderHook(
-      ({ value, delay }) => useDebounce(value, delay),
-      {
-        initialProps: { value: "a", delay: 300 },
-      }
-    );
+    const { result, rerender } = renderHook(({ value, delay }) => useDebounce(value, delay), {
+      initialProps: { value: "a", delay: 300 },
+    });
 
     act(() => {
       vi.advanceTimersByTime(100);

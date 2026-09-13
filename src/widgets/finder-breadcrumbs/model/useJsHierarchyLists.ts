@@ -45,9 +45,7 @@ export const useJsHierarchyLists = (currentGroupName: string | null) => {
       subgroupsMap.get(s)!.push(t);
     });
     return Array.from(subgroupsMap.entries()).map(([name, subTasksList]) => {
-      const activeSubTasks = subTasksList.filter(
-        (t) => !excludedTaskIds.includes(String(t.id))
-      );
+      const activeSubTasks = subTasksList.filter((t) => !excludedTaskIds.includes(String(t.id)));
       const completedCount = activeSubTasks.filter((t) =>
         selectIsTaskCompleted(progressState, t.id)
       ).length;

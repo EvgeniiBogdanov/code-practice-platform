@@ -37,22 +37,13 @@ export const PlatformLogo = memo(
         viewBox="0 0 28 28"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className={clsx(
-          styles.logoSvg,
-          !withBackground && styles.noBackground,
-          className
-        )}
+        className={clsx(styles.logoSvg, !withBackground && styles.noBackground, className)}
         aria-hidden="true"
         {...restProps}
       >
         {withBackground && (
           /* Main Notion-style squircle card */
-          <rect
-            width="28"
-            height="28"
-            rx="4"
-            className={styles.bgRect}
-          />
+          <rect width="28" height="28" rx="4" className={styles.bgRect} />
         )}
 
         {/* Left code bracket < */}

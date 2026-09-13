@@ -36,7 +36,10 @@ export const BrowserMockupHeader = memo(
           <div className={styles.addressContent}>
             <Lock size={11} className={styles.lockIcon} />
             <span className={styles.host}>preview</span>
-            <span className={styles.path}>/ {fileName}{urlSearch}</span>
+            <span className={styles.path}>
+              / {fileName}
+              {urlSearch}
+            </span>
           </div>
 
           <button

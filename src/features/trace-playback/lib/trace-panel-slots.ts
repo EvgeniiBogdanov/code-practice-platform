@@ -6,9 +6,7 @@ export interface PanelCapacity {
   readonly placeholders: readonly UiDataBoardPlaceholder[];
 }
 
-export const computePanelCapacities = (
-  steps?: readonly TraceStep[]
-): readonly PanelCapacity[] => {
+export const computePanelCapacities = (steps?: readonly TraceStep[]): readonly PanelCapacity[] => {
   if (!steps || steps.length === 0) {
     return [];
   }
@@ -47,16 +45,13 @@ export const computePanelCapacities = (
       }
     }
 
-    const placeholders: UiDataBoardPlaceholder[] = Array.from(
-      { length: maxEntries },
-      (_, i) => {
-        const key = orderedKeys[i];
-        return {
-          key: key !== undefined && key !== "" ? key : "—",
-          value: "—",
-        };
-      }
-    );
+    const placeholders: UiDataBoardPlaceholder[] = Array.from({ length: maxEntries }, (_, i) => {
+      const key = orderedKeys[i];
+      return {
+        key: key !== undefined && key !== "" ? key : "—",
+        value: "—",
+      };
+    });
 
     capacities.push({
       maxCount: maxEntries,

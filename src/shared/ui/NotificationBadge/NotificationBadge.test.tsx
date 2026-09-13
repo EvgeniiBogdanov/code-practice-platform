@@ -52,7 +52,9 @@ describe("NotificationBadge", () => {
   });
 
   it("supports tab size and neutral variant", () => {
-    render(<NotificationBadge count={8} size="tab" variant="neutral" pinned={false} ring={false} />);
+    render(
+      <NotificationBadge count={8} size="tab" variant="neutral" pinned={false} ring={false} />
+    );
     const badge = screen.getByRole("status");
     expect(badge).toBeInTheDocument();
     expect(badge).toHaveTextContent("8");

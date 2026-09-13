@@ -1,9 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  getCaretCoordinates,
-  calculatePopupPosition,
-  CaretCoordinates,
-} from "./caret-coordinates";
+import { getCaretCoordinates, calculatePopupPosition, CaretCoordinates } from "./caret-coordinates";
 
 describe("caret-coordinates", () => {
   const createMockTextarea = (value: string, overrides: Partial<HTMLTextAreaElement> = {}) => {

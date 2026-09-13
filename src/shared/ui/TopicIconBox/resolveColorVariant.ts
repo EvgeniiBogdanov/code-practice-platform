@@ -1,13 +1,5 @@
 export type TopicIconBoxColor =
-  | "amber"
-  | "blue"
-  | "emerald"
-  | "purple"
-  | "red"
-  | "cyan"
-  | "pink"
-  | "orange"
-  | "default";
+  "amber" | "blue" | "emerald" | "purple" | "red" | "cyan" | "pink" | "orange" | "default";
 
 export type TopicIconBoxSize = "sm" | "md" | "lg";
 

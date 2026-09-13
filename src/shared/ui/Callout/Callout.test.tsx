@@ -26,23 +26,14 @@ describe("Callout", () => {
   });
 
   it("renders icon when provided", () => {
-    render(
-      <Callout
-        icon={<span data-testid="test-icon">⭐</span>}
-        title="С иконкой"
-      />
-    );
+    render(<Callout icon={<span data-testid="test-icon">⭐</span>} title="С иконкой" />);
     expect(screen.getByTestId("test-icon")).toBeInTheDocument();
     expect(screen.getByText("С иконкой")).toBeInTheDocument();
   });
 
   it("applies size='xs' class properly for compact cards", () => {
     render(
-      <Callout
-        size="xs"
-        color="yellow"
-        title="Лайфхак для интервью"
-      >
+      <Callout size="xs" color="yellow" title="Лайфхак для интервью">
         Краткий совет
       </Callout>
     );
@@ -54,10 +45,7 @@ describe("Callout", () => {
 
   it("applies size='sm' class properly", () => {
     render(
-      <Callout
-        size="sm"
-        title="Компактный callout"
-      >
+      <Callout size="sm" title="Компактный callout">
         Небольшой текст
       </Callout>
     );
@@ -68,10 +56,7 @@ describe("Callout", () => {
 
   it("does not apply size modifier class for default size", () => {
     render(
-      <Callout
-        size="default"
-        title="Стандартный callout"
-      >
+      <Callout size="default" title="Стандартный callout">
         Обычный размер
       </Callout>
     );
@@ -82,13 +67,7 @@ describe("Callout", () => {
   });
 
   it("supports custom className and color variant", () => {
-    render(
-      <Callout
-        color="green"
-        className="custom-test-class"
-        title="Успешно"
-      />
-    );
+    render(<Callout color="green" className="custom-test-class" title="Успешно" />);
 
     const calloutElement = screen.getByRole("note");
     expect(calloutElement).toHaveClass(styles["color-green"]);
@@ -97,10 +76,7 @@ describe("Callout", () => {
 
   it("supports color='amber' variant properly", () => {
     render(
-      <Callout
-        color="amber"
-        title="Лайфхак для интервью"
-      >
+      <Callout color="amber" title="Лайфхак для интервью">
         Тест янтарного цвета
       </Callout>
     );

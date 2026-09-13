@@ -55,7 +55,7 @@
   gap: 10px;
   padding: 8px 10px;
   border-bottom: 1px solid var(--border-color);
- background: var(--bg-sidebar);
+  background: var(--bg-sidebar);
   flex-shrink: 0;
 }
 

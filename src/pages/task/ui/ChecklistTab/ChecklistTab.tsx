@@ -61,4 +61,3 @@ export const ChecklistTab = React.memo(
 );
 
 ChecklistTab.displayName = "ChecklistTab";
-

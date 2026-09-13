@@ -57,9 +57,7 @@ describe("UiDataBoard", () => {
   });
 
   it("renders a standard height placeholder stub when completely empty", () => {
-    const { container } = render(
-      <UiDataBoard label="Empty Map" variant="buckets" entries={[]} />
-    );
+    const { container } = render(<UiDataBoard label="Empty Map" variant="buckets" entries={[]} />);
 
     const items = container.querySelectorAll("dl > div");
     expect(items).toHaveLength(1);
@@ -77,12 +75,7 @@ describe("UiDataBoard", () => {
 
     // State 1: all 3 placeholders
     const { rerender, container } = render(
-      <UiDataBoard
-        label="Map"
-        variant="buckets"
-        entries={[]}
-        placeholders={placeholders}
-      />
+      <UiDataBoard label="Map" variant="buckets" entries={[]} placeholders={placeholders} />
     );
 
     expect(container.querySelectorAll("dl > div")).toHaveLength(3);

@@ -59,9 +59,8 @@ export const useFavoritesPage = (section: SectionType): FavoritesPageState => {
   ]);
   const [statusFilter, setStatusFilter] = useState<FavoriteStatusFilter>("all");
   const [viewMode, setViewModeState] = useState<FavoritesViewMode>(getInitialViewMode);
-  const [listDisplayMode, setListDisplayModeState] = useState<FavoriteListDisplayMode>(
-    getInitialListDisplayMode
-  );
+  const [listDisplayMode, setListDisplayModeState] =
+    useState<FavoriteListDisplayMode>(getInitialListDisplayMode);
   const deferredStatusFilter = useDeferredValue(statusFilter);
 
   const getTaskStatus = useCallback(

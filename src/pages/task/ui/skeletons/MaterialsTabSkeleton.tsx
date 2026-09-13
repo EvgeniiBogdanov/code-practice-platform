@@ -27,9 +27,7 @@ export const MaterialsTabSkeleton = memo(
             <MetaRow>
               <UiSkeleton width={112} height={22} radius={8} />
               <UiSkeleton width={102} height={22} radius={8} />
-              {(!task || hasArticles) && (
-                <UiSkeleton width={198} height={22} radius={8} />
-              )}
+              {(!task || hasArticles) && <UiSkeleton width={198} height={22} radius={8} />}
             </MetaRow>
           </header>
 
@@ -49,4 +47,3 @@ export const MaterialsTabSkeleton = memo(
 );
 
 MaterialsTabSkeleton.displayName = "MaterialsTabSkeleton";
-

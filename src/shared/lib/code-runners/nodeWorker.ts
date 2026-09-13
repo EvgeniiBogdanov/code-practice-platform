@@ -286,7 +286,10 @@ if (typeof self !== "undefined") {
 
     const reactMock = {
       default: {},
-      useState: (initial: unknown) => [typeof initial === "function" ? (initial as () => unknown)() : initial, () => {}],
+      useState: (initial: unknown) => [
+        typeof initial === "function" ? (initial as () => unknown)() : initial,
+        () => {},
+      ],
       useEffect: (fn: unknown) => {
         try {
           if (typeof fn === "function") (fn as () => void)();
@@ -317,11 +320,7 @@ if (typeof self !== "undefined") {
     };
 
     const sandboxRequire = (mod: string) => {
-      if (
-        mod === "react" ||
-        mod === "react/jsx-runtime" ||
-        mod === "react/jsx-dev-runtime"
-      ) {
+      if (mod === "react" || mod === "react/jsx-runtime" || mod === "react/jsx-dev-runtime") {
         return reactMock;
       }
       if (mod === "react-dom" || mod === "react-dom/client") {

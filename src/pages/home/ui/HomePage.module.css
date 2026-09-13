@@ -477,7 +477,9 @@
 
 .calloutIconLink:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--bg-surface), 0 0 0 4px var(--accent-blue);
+  box-shadow:
+    0 0 0 2px var(--bg-surface),
+    0 0 0 4px var(--accent-blue);
   border-radius: var(--radius-sm, 4px);
 }
 
@@ -495,4 +497,3 @@
   background: rgba(55, 53, 47, 0.06);
   color: #555555;
 }
-

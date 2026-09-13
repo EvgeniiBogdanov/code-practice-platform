@@ -133,9 +133,7 @@ export const useReviewStore = create<ReviewState>((set, get) => ({
     const stringId = String(taskId);
     const current = get().excludedTaskIds;
     const isExcluded = current.includes(stringId);
-    const next = isExcluded
-      ? current.filter((id) => id !== stringId)
-      : [...current, stringId];
+    const next = isExcluded ? current.filter((id) => id !== stringId) : [...current, stringId];
 
     set({ excludedTaskIds: next });
     await saveExcludedTasksToDB(next);

@@ -152,9 +152,7 @@ export const useSectionOverview = (
           id: "warmup",
           name: "1. Разминка",
           icon: React.createElement(Flame, { size: 18, color: "#f97316" }),
-          tasks: sectionTasks.filter(
-            (t) => t.category === "warmup" || t.difficulty === "warm-up"
-          ),
+          tasks: sectionTasks.filter((t) => t.category === "warmup" || t.difficulty === "warm-up"),
           firstTaskId: "warmup-1",
           color: "#f97316",
         },
@@ -182,9 +180,7 @@ export const useSectionOverview = (
           id: "strong",
           name: "4. Управление состоянием",
           icon: React.createElement(Brain, { size: 18, color: "#a855f7" }),
-          tasks: sectionTasks.filter(
-            (t) => t.category === "Управление состоянием"
-          ),
+          tasks: sectionTasks.filter((t) => t.category === "Управление состоянием"),
           firstTaskId: "a1",
           color: "#a855f7",
         },
@@ -192,9 +188,7 @@ export const useSectionOverview = (
           id: "lifecycle",
           name: "5. Жизненный цикл и рантайм",
           icon: React.createElement(RotateCcw, { size: 18, color: "#f97316" }),
-          tasks: sectionTasks.filter(
-            (t) => t.category === "Жизненный цикл и рантайм"
-          ),
+          tasks: sectionTasks.filter((t) => t.category === "Жизненный цикл и рантайм"),
           firstTaskId: "a4",
           color: "#f97316",
         },
@@ -202,9 +196,7 @@ export const useSectionOverview = (
           id: "ts",
           name: "6. TypeScript: Паттерны типизации",
           icon: React.createElement(Code2, { size: 18, color: "#3178c6" }),
-          tasks: sectionTasks.filter(
-            (t) => t.category === "TypeScript: Паттерны типизации"
-          ),
+          tasks: sectionTasks.filter((t) => t.category === "TypeScript: Паттерны типизации"),
           firstTaskId: "ts-1",
           color: "#3178c6",
         },
@@ -212,9 +204,7 @@ export const useSectionOverview = (
           id: "ts-practice",
           name: "7. TypeScript: Прикладные сценарии",
           icon: React.createElement(Code2, { size: 18, color: "#10b981" }),
-          tasks: sectionTasks.filter(
-            (t) => t.category === "TypeScript: Прикладные сценарии"
-          ),
+          tasks: sectionTasks.filter((t) => t.category === "TypeScript: Прикладные сценарии"),
           firstTaskId: "ts-practice-1",
           color: "#10b981",
         },
@@ -251,9 +241,7 @@ export const useSectionOverview = (
     });
 
     return Array.from(algoGroupsMap.entries()).map(([name, groupTasksList]) => {
-      const activeAlgoTasks = groupTasksList.filter(
-        (t) => !excludedTaskIds.includes(String(t.id))
-      );
+      const activeAlgoTasks = groupTasksList.filter((t) => !excludedTaskIds.includes(String(t.id)));
       const completedCount = activeAlgoTasks.filter((t) => isSolved(t.id)).length;
       const completionClass = getGroupCompletionClass(
         activeAlgoTasks,

@@ -11,11 +11,7 @@ export const StatsModalFooter = memo(({ onOpenResetConfirm }: StatsModalFooterPr
   return (
     <div className={styles.statsModalFooter}>
       <Tooltip content="Сбросить интервалы и прогресс повторений" side="top">
-        <button
-          type="button"
-          className={styles.statsResetBtn}
-          onClick={onOpenResetConfirm}
-        >
+        <button type="button" className={styles.statsResetBtn} onClick={onOpenResetConfirm}>
           <RotateCcw size={14} />
           <span>Сбросить график повторений</span>
         </button>

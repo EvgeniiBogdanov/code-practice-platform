@@ -43,7 +43,8 @@ export const getProbabilityBadgeLabel = (probability: number): string => {
 
 export const getProbabilityBadgeTitle = (probability: number): string => {
   const p = Math.round(probability);
-  if (p >= 90) return `Вероятность на Middle/Senior: ${p}% (Критически высокая — стандарт live coding)`;
+  if (p >= 90)
+    return `Вероятность на Middle/Senior: ${p}% (Критически высокая — стандарт live coding)`;
   if (p >= 75) return `Вероятность на Middle/Senior: ${p}% (Высокая — частый вопрос)`;
   if (p >= 50) return `Вероятность на Middle/Senior: ${p}% (Умеренная — практическая задача)`;
   return `Вероятность на Middle/Senior: ${p}% (Низкая — элементарная разминка)`;
@@ -229,7 +230,10 @@ const inferFallbackProbability = (group: string, subgroup: string, title: string
   if (g === "Массивы" && s === "reduce") return 85;
   if (g === "Коллекции" && (s === "Map" || s === "Set")) return 82;
   if (t.includes("поиск") || t.includes("палиндром")) return 84;
-  if (g === "Циклы" && (t.includes("вывести") || t.includes("сумма чисел") || t.includes("чётные"))) {
+  if (
+    g === "Циклы" &&
+    (t.includes("вывести") || t.includes("сумма чисел") || t.includes("чётные"))
+  ) {
     return 8;
   }
 

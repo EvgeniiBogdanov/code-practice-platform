@@ -1,4 +1,3 @@
-
 .statsModal {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -35,4 +34,3 @@
   min-height: 0;
   box-sizing: border-box;
 }
-

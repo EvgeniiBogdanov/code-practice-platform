@@ -122,9 +122,7 @@ export const getLoadedTaskById = (
   section?: SectionType
 ): Task | undefined => {
   if (taskId === null || taskId === undefined || taskId === "") return undefined;
-  const sections = section
-    ? [getLoadedTaskSection(section)]
-    : Object.values(sectionCache);
+  const sections = section ? [getLoadedTaskSection(section)] : Object.values(sectionCache);
   return sections.flat().find((task) => String(task.id) === String(taskId));
 };
 
@@ -145,10 +143,12 @@ export const useTaskSection = (
   return { tasks, isLoading: enabled && !sectionCache[section] };
 };
 
-export const useAllTaskSections = (
-  enabled = true
-): { tasks: Task[]; isLoading: boolean } => {
-  const tasks = useSyncExternalStore(subscribe, () => allTasksSnapshot, () => EMPTY_TASKS);
+export const useAllTaskSections = (enabled = true): { tasks: Task[]; isLoading: boolean } => {
+  const tasks = useSyncExternalStore(
+    subscribe,
+    () => allTasksSnapshot,
+    () => EMPTY_TASKS
+  );
 
   useEffect(() => {
     if (enabled) void loadAllTaskSections().catch(() => undefined);

@@ -30,16 +30,12 @@ describe("Badge", () => {
     const { container: upperContainer } = render(<Badge uppercase>upper</Badge>);
     expect((upperContainer.firstChild as HTMLElement).className).toMatch(/uppercase/);
 
-    const { container: normalContainer } = render(
-      <Badge uppercase={false}>normal</Badge>
-    );
+    const { container: normalContainer } = render(<Badge uppercase={false}>normal</Badge>);
     expect((normalContainer.firstChild as HTMLElement).className).not.toMatch(/uppercase/);
   });
 
   it("renders icon properly", () => {
-    const { container } = render(
-      <Badge icon={<svg data-testid="test-icon" />}>With Icon</Badge>
-    );
+    const { container } = render(<Badge icon={<svg data-testid="test-icon" />}>With Icon</Badge>);
     expect(screen.getByTestId("test-icon")).toBeInTheDocument();
     expect(screen.getByText("With Icon")).toBeInTheDocument();
     const iconWrapper = container.querySelector('[class*="icon"]');

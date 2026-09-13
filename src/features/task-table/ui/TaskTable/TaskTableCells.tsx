@@ -37,12 +37,7 @@ const TaskSolutionCell = ({
           )}`}
           side="top"
         >
-          <Badge
-            variant="gray"
-            size="sm"
-            uppercase={false}
-            icon={<Calendar size={11} />}
-          >
+          <Badge variant="gray" size="sm" uppercase={false} icon={<Calendar size={11} />}>
             {formatLastSolved(review.lastReviewedAt)}
           </Badge>
         </Tooltip>
@@ -57,7 +52,10 @@ const TaskSolutionCell = ({
   );
 };
 
-const TaskReviewCell = ({ review, isExcluded }: Readonly<TaskTableCellProps>): React.JSX.Element => {
+const TaskReviewCell = ({
+  review,
+  isExcluded,
+}: Readonly<TaskTableCellProps>): React.JSX.Element => {
   if (isExcluded) {
     return (
       <div className={styles.columnReview}>
@@ -80,15 +78,8 @@ const TaskReviewCell = ({ review, isExcluded }: Readonly<TaskTableCellProps>): R
           </Badge>
         </Tooltip>
       ) : review?.nextReviewAt ? (
-        <Tooltip
-          content={`Следующее повторение: ${formatNextReviewDate(review)}`}
-          side="top"
-        >
-          <Badge
-            variant="blue"
-            size="sm"
-            uppercase={false}
-          >
+        <Tooltip content={`Следующее повторение: ${formatNextReviewDate(review)}`} side="top">
+          <Badge variant="blue" size="sm" uppercase={false}>
             {formatNextReviewDate(review)}
           </Badge>
         </Tooltip>

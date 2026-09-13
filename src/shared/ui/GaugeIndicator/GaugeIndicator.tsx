@@ -71,7 +71,10 @@ export const GaugeIndicator = ({
 
         {/* Dynamic needle with rotation */}
         <g transform={`rotate(${needleAngle.toFixed(1)}, 50, 50)`}>
-          <path d="M 44 50 A 6 6 0 0 0 56 50 L 52 14 A 2 2 0 0 0 48 14 Z" className={styles.needle} />
+          <path
+            d="M 44 50 A 6 6 0 0 0 56 50 L 52 14 A 2 2 0 0 0 48 14 Z"
+            className={styles.needle}
+          />
           <circle cx="50" cy="50" r="2.5" className={styles.pivotDot} />
         </g>
       </svg>

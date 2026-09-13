@@ -166,59 +166,60 @@ export const FinderAlgoHierarchy = ({
                   <span className={styles.dropdownHeaderTitle}>Задачи {currentGroupName}</span>
                 </div>
                 <div className={styles.dropdownList}>
-                  {tasks.filter((t) => t.group === currentGroupName).map((t) => {
-                    const isSolved = selectIsTaskCompleted(progressState, t.id);
-                    const isUnsolved =
-                      progressState.completedTasks[t.id] === "unsolved" ||
-                      progressState.completedTasks[String(t.id)] === "unsolved";
-                    const isExcluded = excludedTaskIds.includes(String(t.id));
-                    const rev = reviews[String(t.id)];
-                    const isDueToday = isTaskDue(rev);
-                    const isActive = t.id === currentTask.id;
-                    const ratingClass = getRatingClass(
-                      isSolved,
-                      isUnsolved,
-                      t.difficulty,
-                      rev?.rating,
-                      isExcluded
-                    );
+                  {tasks
+                    .filter((t) => t.group === currentGroupName)
+                    .map((t) => {
+                      const isSolved = selectIsTaskCompleted(progressState, t.id);
+                      const isUnsolved =
+                        progressState.completedTasks[t.id] === "unsolved" ||
+                        progressState.completedTasks[String(t.id)] === "unsolved";
+                      const isExcluded = excludedTaskIds.includes(String(t.id));
+                      const rev = reviews[String(t.id)];
+                      const isDueToday = isTaskDue(rev);
+                      const isActive = t.id === currentTask.id;
+                      const ratingClass = getRatingClass(
+                        isSolved,
+                        isUnsolved,
+                        t.difficulty,
+                        rev?.rating,
+                        isExcluded
+                      );
 
-                    return (
-                      <Link
-                        key={t.id}
-                        to="/algorithms/$taskId"
-                        params={{ taskId: String(t.id) }}
-                        className={clsx(styles.dropdownItem, isActive && styles.active)}
-                        onClick={closeAllDropdowns}
-                      >
-                        <FileText size={14} className={styles.fileIcon} />
-                        <span className={clsx(styles.dropdownItemTitle, ratingClass)}>
-                          {t.title}
-                        </span>
-                        {!isExcluded && (
-                          isDueToday ? (
-                            <Tooltip content="Пора повторить!" side="left">
-                              <span className={styles.statusDue}>
-                                <RotateCcw size={10} />
-                              </span>
-                            </Tooltip>
-                          ) : isSolved ? (
-                            <Tooltip content="Решено" side="left">
-                              <span className={styles.statusSolved}>
-                                <Check size={12} />
-                              </span>
-                            </Tooltip>
-                          ) : isUnsolved ? (
-                            <Tooltip content="Не решено" side="left">
-                              <span className={styles.statusUnsolved}>
-                                <X size={12} />
-                              </span>
-                            </Tooltip>
-                          ) : null
-                        )}
-                      </Link>
-                    );
-                  })}
+                      return (
+                        <Link
+                          key={t.id}
+                          to="/algorithms/$taskId"
+                          params={{ taskId: String(t.id) }}
+                          className={clsx(styles.dropdownItem, isActive && styles.active)}
+                          onClick={closeAllDropdowns}
+                        >
+                          <FileText size={14} className={styles.fileIcon} />
+                          <span className={clsx(styles.dropdownItemTitle, ratingClass)}>
+                            {t.title}
+                          </span>
+                          {!isExcluded &&
+                            (isDueToday ? (
+                              <Tooltip content="Пора повторить!" side="left">
+                                <span className={styles.statusDue}>
+                                  <RotateCcw size={10} />
+                                </span>
+                              </Tooltip>
+                            ) : isSolved ? (
+                              <Tooltip content="Решено" side="left">
+                                <span className={styles.statusSolved}>
+                                  <Check size={12} />
+                                </span>
+                              </Tooltip>
+                            ) : isUnsolved ? (
+                              <Tooltip content="Не решено" side="left">
+                                <span className={styles.statusUnsolved}>
+                                  <X size={12} />
+                                </span>
+                              </Tooltip>
+                            ) : null)}
+                        </Link>
+                      );
+                    })}
                 </div>
               </div>
             )}

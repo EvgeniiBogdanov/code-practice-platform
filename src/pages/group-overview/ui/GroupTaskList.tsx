@@ -103,13 +103,15 @@ export const GroupTaskList = React.memo(
           Object.entries(groupedSubgroups).map(([subgroupName, subTasks]) => {
             if (subTasks.length === 0) return null;
             const isOpen = isSubgroupOpen(subgroupName);
-            const activeSubTasks = subTasks.filter(
-              (t) => !excludedTaskIds.includes(String(t.id))
-            );
+            const activeSubTasks = subTasks.filter((t) => !excludedTaskIds.includes(String(t.id)));
             const completedSubCount = activeSubTasks.filter(
               (t) => getTaskStatus(t.id) === "solved"
             ).length;
-            const completionClass = getGroupCompletionClass(activeSubTasks, reviews, completedTasks);
+            const completionClass = getGroupCompletionClass(
+              activeSubTasks,
+              reviews,
+              completedTasks
+            );
             const subgroupId = `subgroup-${groupName}-${subgroupName}`;
 
             return (

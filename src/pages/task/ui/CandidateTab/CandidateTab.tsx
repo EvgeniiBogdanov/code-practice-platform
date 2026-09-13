@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { ArrowDown } from "lucide-react";
 import { clsx } from "clsx";
-import { Task, getTaskFiles, hasTaskVisualComponent, isCandidateLinterDisabled } from "@/entities/task";
+import {
+  Task,
+  getTaskFiles,
+  hasTaskVisualComponent,
+  isCandidateLinterDisabled,
+} from "@/entities/task";
 import {
   getUserSolution,
   getUserSolutionSync,
@@ -137,8 +142,7 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
     const unsubscribe = subscribeToSyncEvents((event) => {
       if (event.type === "SOLUTIONS_CLEARED") {
         const isCurrentTaskCleared =
-          event.all ||
-          (Array.isArray(event.taskIds) && event.taskIds.includes(String(task.id)));
+          event.all || (Array.isArray(event.taskIds) && event.taskIds.includes(String(task.id)));
         if (isCurrentTaskCleared) {
           const defaults = getTaskFiles(task, "candidate");
           setFiles(defaults);

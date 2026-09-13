@@ -43,13 +43,18 @@ export function buildSandboxIframeSrcDoc({
   }
 
   const isLight = theme === "light";
-  const bgColor = isLight ? "#ffffff" : "#141414", textColor = isLight ? "#1e293b" : "#cccccc";
+  const bgColor = isLight ? "#ffffff" : "#141414",
+    textColor = isLight ? "#1e293b" : "#cccccc";
   const borderColor = isLight ? "#e2e8f0" : "rgba(255, 255, 255, 0.08)";
-  const inputBg = isLight ? "#f8fafc" : "#1e1e1e", inputBorder = isLight ? "#cbd5e1" : "rgba(255, 255, 255, 0.12)";
-  const btnBg = isLight ? "#f3f4f6" : "#222222", btnText = isLight ? "#1f2937" : "#e5e5e5";
-  const btnBorder = isLight ? "#d1d5db" : "rgba(255, 255, 255, 0.1)", btnHoverBg = isLight ? "#e5e7eb" : "#2d2d2d";
+  const inputBg = isLight ? "#f8fafc" : "#1e1e1e",
+    inputBorder = isLight ? "#cbd5e1" : "rgba(255, 255, 255, 0.12)";
+  const btnBg = isLight ? "#f3f4f6" : "#222222",
+    btnText = isLight ? "#1f2937" : "#e5e5e5";
+  const btnBorder = isLight ? "#d1d5db" : "rgba(255, 255, 255, 0.1)",
+    btnHoverBg = isLight ? "#e5e7eb" : "#2d2d2d";
   const errorBg = isLight ? "rgba(239, 68, 68, 0.08)" : "rgba(239, 68, 68, 0.12)";
-  const errorBorder = isLight ? "rgba(239, 68, 68, 0.3)" : "rgba(239, 68, 68, 0.4)", errorText = isLight ? "#991b1b" : "#fca5a5";
+  const errorBorder = isLight ? "rgba(239, 68, 68, 0.3)" : "rgba(239, 68, 68, 0.4)",
+    errorText = isLight ? "#991b1b" : "#fca5a5";
 
   const srcDoc = `<!DOCTYPE html>
 <html lang="ru" data-theme="${isLight ? "light" : "dark"}">

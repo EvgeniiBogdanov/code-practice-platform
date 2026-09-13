@@ -58,8 +58,8 @@ export const HomeFeaturesGrid = memo((): React.JSX.Element => {
           description={
             <>
               Мгновенный запуск кода (Ctrl+Enter) с замером времени (
-              <Zap size={12} color="#f59e0b" /> ms) и живой рендеринг компонентов React 19 с Zustand,
-              Redux Toolkit и песочницей.
+              <Zap size={12} color="#f59e0b" /> ms) и живой рендеринг компонентов React 19 с
+              Zustand, Redux Toolkit и песочницей.
             </>
           }
         />

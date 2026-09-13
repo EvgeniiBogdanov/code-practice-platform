@@ -7,9 +7,27 @@ import { CompletionItem } from "@/shared/lib/code-editor";
 
 describe("SuggestionsDropdown", () => {
   const mockItems: CompletionItem[] = [
-    { prefix: "map", label: "map", detail: "Array.prototype.map()", insertText: "map()", kind: "method" },
-    { prefix: "filter", label: "filter", detail: "Array.prototype.filter()", insertText: "filter()", kind: "method" },
-    { prefix: "reduce", label: "reduce", detail: "Array.prototype.reduce()", insertText: "reduce()", kind: "method" },
+    {
+      prefix: "map",
+      label: "map",
+      detail: "Array.prototype.map()",
+      insertText: "map()",
+      kind: "method",
+    },
+    {
+      prefix: "filter",
+      label: "filter",
+      detail: "Array.prototype.filter()",
+      insertText: "filter()",
+      kind: "method",
+    },
+    {
+      prefix: "reduce",
+      label: "reduce",
+      detail: "Array.prototype.reduce()",
+      insertText: "reduce()",
+      kind: "method",
+    },
   ];
 
   it("renders completion items correctly", () => {

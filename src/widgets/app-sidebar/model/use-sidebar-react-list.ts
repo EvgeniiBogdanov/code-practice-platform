@@ -32,8 +32,7 @@ export const useSidebarReactList = (): UseSidebarReactListReturn => {
   );
 
   const completedTotal = useMemo(
-    () =>
-      activeTasks.filter((task) => isTaskCompleted(completedTasks[String(task.id)])).length,
+    () => activeTasks.filter((task) => isTaskCompleted(completedTasks[String(task.id)])).length,
     [completedTasks, activeTasks]
   );
 

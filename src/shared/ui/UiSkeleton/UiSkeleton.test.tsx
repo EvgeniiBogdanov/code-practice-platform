@@ -14,9 +14,7 @@ describe("UiSkeleton", () => {
   });
 
   it("supports text variant, custom dimensions, and radius", () => {
-    const { container } = render(
-      <UiSkeleton variant="text" width={200} height={20} radius={8} />
-    );
+    const { container } = render(<UiSkeleton variant="text" width={200} height={20} radius={8} />);
 
     const skeleton = container.firstElementChild as HTMLElement;
     expect(skeleton.className).toContain("variant_text");
@@ -48,7 +46,9 @@ describe("UiSkeleton", () => {
 
   it("supports pulse and none animations", () => {
     const { container: pulseContainer } = render(<UiSkeleton animation="pulse" />);
-    expect((pulseContainer.firstElementChild as HTMLElement).className).toContain("animation_pulse");
+    expect((pulseContainer.firstElementChild as HTMLElement).className).toContain(
+      "animation_pulse"
+    );
 
     const { container: noneContainer } = render(<UiSkeleton animation="none" />);
     expect((noneContainer.firstElementChild as HTMLElement).className).toContain("animation_none");

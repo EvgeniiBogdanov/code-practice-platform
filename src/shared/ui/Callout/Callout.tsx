@@ -3,20 +3,14 @@ import { clsx } from "clsx";
 import styles from "./Callout.module.css";
 
 export type CalloutColor =
-  | "default"
-  | "gray"
-  | "purple"
-  | "blue"
-  | "green"
-  | "yellow"
-  | "amber"
-  | "orange"
-  | "red";
+  "default" | "gray" | "purple" | "blue" | "green" | "yellow" | "amber" | "orange" | "red";
 
 export type CalloutSize = "default" | "md" | "sm" | "xs";
 
-export interface CalloutProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "title" | "content"> {
+export interface CalloutProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  "title" | "content"
+> {
   /** Размер Callout (default: "default") */
   size?: CalloutSize;
   /** Цвет заливки и акцентной рамки (default: "default") */

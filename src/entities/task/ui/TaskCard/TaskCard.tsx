@@ -31,9 +31,7 @@ export function TaskCard({
       tabIndex={0}
     >
       <div className={styles.left}>
-        <span
-          className={clsx(styles.statusIcon, isCompleted && styles.statusCompleted)}
-        >
+        <span className={clsx(styles.statusIcon, isCompleted && styles.statusCompleted)}>
           {isCompleted ? <CheckCircle2 size={18} /> : <Circle size={18} />}
         </span>
 

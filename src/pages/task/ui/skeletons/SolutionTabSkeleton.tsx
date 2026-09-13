@@ -37,11 +37,7 @@ export const SolutionTabSkeleton = memo(
       <div className={clsx(styles.container, className)} aria-hidden="true">
         {/* Solution Variant Row with real buttons if multiple solutions exist */}
         {task ? (
-          <SolutionVariantsRow
-            solutions={solutions}
-            selectedIdx={0}
-            onSelect={() => {}}
-          />
+          <SolutionVariantsRow solutions={solutions} selectedIdx={0} onSelect={() => {}} />
         ) : (
           <div className={styles.variantsRow}>
             <div className={styles.variantBtn}>
@@ -81,6 +77,3 @@ export const SolutionTabSkeleton = memo(
 );
 
 SolutionTabSkeleton.displayName = "SolutionTabSkeleton";
-
-
-

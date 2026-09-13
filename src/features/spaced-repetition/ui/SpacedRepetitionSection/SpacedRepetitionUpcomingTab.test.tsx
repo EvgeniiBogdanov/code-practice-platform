@@ -105,10 +105,7 @@ describe("SpacedRepetitionUpcomingTab", () => {
 
   it("renders normal upcoming task with stage badge and ratingMedium color", () => {
     render(
-      <SpacedRepetitionUpcomingTab
-        upcomingTasks={[mockUpcomingNormal]}
-        scopeLabel="JavaScript"
-      />
+      <SpacedRepetitionUpcomingTab upcomingTasks={[mockUpcomingNormal]} scopeLabel="JavaScript" />
     );
 
     const titleEl = screen.getByText("Normal Task Title");
@@ -122,10 +119,7 @@ describe("SpacedRepetitionUpcomingTab", () => {
 
   it("renders unsolved task with ratingUnsolved (red) class and red 'Не решено' badge", () => {
     render(
-      <SpacedRepetitionUpcomingTab
-        upcomingTasks={[mockUpcomingUnsolved]}
-        scopeLabel="JavaScript"
-      />
+      <SpacedRepetitionUpcomingTab upcomingTasks={[mockUpcomingUnsolved]} scopeLabel="JavaScript" />
     );
 
     const titleEl = screen.getByText("Unsolved Task Title");
@@ -146,10 +140,7 @@ describe("SpacedRepetitionUpcomingTab", () => {
     });
 
     render(
-      <SpacedRepetitionUpcomingTab
-        upcomingTasks={[mockUpcomingNormal]}
-        scopeLabel="JavaScript"
-      />
+      <SpacedRepetitionUpcomingTab upcomingTasks={[mockUpcomingNormal]} scopeLabel="JavaScript" />
     );
 
     const titleEl = screen.getByText("Normal Task Title");

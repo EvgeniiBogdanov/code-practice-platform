@@ -6,11 +6,7 @@ import { ModalHeader } from "./ui/ModalHeader";
 describe("ModalHeader", () => {
   it("renders title and description", () => {
     render(
-      <ModalHeader
-        title="Заголовок модалки"
-        description="Поясняющий текст"
-        onClose={vi.fn()}
-      />
+      <ModalHeader title="Заголовок модалки" description="Поясняющий текст" onClose={vi.fn()} />
     );
 
     expect(screen.getByText("Заголовок модалки")).toBeInTheDocument();
@@ -43,6 +39,8 @@ describe("ModalHeader", () => {
   it("hides close button when hideCloseButton is true", () => {
     render(<ModalHeader title="Заголовок" hideCloseButton={true} onClose={vi.fn()} />);
 
-    expect(screen.queryByRole("button", { name: "Закрыть модальное окно" })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Закрыть модальное окно" })
+    ).not.toBeInTheDocument();
   });
 });

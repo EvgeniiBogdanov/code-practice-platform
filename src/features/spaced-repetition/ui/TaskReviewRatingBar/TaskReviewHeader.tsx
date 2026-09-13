@@ -1,7 +1,13 @@
 import { memo } from "react";
 import { Calendar, Lock, Bot, RotateCcw } from "lucide-react";
 import { clsx, Tooltip } from "@/shared/ui";
-import { ReviewItem, ReviewBadgeMeta, formatLastSolved, useReviewStore, DEFAULT_ASSISTANT_NAME } from "@/entities/review";
+import {
+  ReviewItem,
+  ReviewBadgeMeta,
+  formatLastSolved,
+  useReviewStore,
+  DEFAULT_ASSISTANT_NAME,
+} from "@/entities/review";
 import { Task } from "@/entities/task";
 import { getRobotMessage } from "../../lib/get-robot-message";
 import { getOverdueDays } from "../../lib/robot-messages";

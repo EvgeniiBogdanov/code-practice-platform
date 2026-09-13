@@ -49,19 +49,10 @@ export const TaskReviewRatingOptions = memo(
           const isActive = taskReview?.rating === item.rating;
 
           return (
-            <Tooltip
-              key={item.rating}
-              content={item.title}
-              side="bottom"
-              delayDuration={800}
-            >
+            <Tooltip key={item.rating} content={item.title} side="bottom" delayDuration={800}>
               <button
                 type="button"
-                className={clsx(
-                  styles.reviewRateBtn,
-                  item.modifier,
-                  isActive && styles.active
-                )}
+                className={clsx(styles.reviewRateBtn, item.modifier, isActive && styles.active)}
                 onClick={() => onRate(item.rating)}
               >
                 <div className={styles.rateBtnContent}>

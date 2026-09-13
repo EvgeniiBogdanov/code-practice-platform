@@ -1,10 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  highlightCode,
-  highlightCSS,
-  highlightHTML,
-  highlightJS,
-} from "./codeHighlighter";
+import { highlightCode, highlightCSS, highlightHTML, highlightJS } from "./codeHighlighter";
 
 describe("codeHighlighter - CSS", () => {
   it("highlights CSS class selectors, properties, values, and dimensions", () => {

@@ -1,5 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { calculateReadingTime, getTaskGradientClass, getTaskTooltipTitle } from "./task-card-helpers";
+import {
+  calculateReadingTime,
+  getTaskGradientClass,
+  getTaskTooltipTitle,
+} from "./task-card-helpers";
 import { Task } from "@/entities/task";
 import { ReviewItem } from "@/entities/review";
 import styles from "../ui/GroupOverviewPage.module.css";
@@ -47,7 +51,12 @@ describe("task-card-helpers", () => {
   it("getTaskGradientClass should return correct class for unsolved, unstarted and solved with ratings", () => {
     const easyTask: Task = { id: "1", title: "Task 1", section: "javascript", difficulty: "easy" };
     const hardTask: Task = { id: "2", title: "Task 2", section: "javascript", difficulty: "hard" };
-    const mediumTask: Task = { id: "3", title: "Task 3", section: "javascript", difficulty: "medium" };
+    const mediumTask: Task = {
+      id: "3",
+      title: "Task 3",
+      section: "javascript",
+      difficulty: "medium",
+    };
 
     expect(getTaskGradientClass(easyTask, "unstarted", null)).toBe("");
     expect(getTaskGradientClass(easyTask, "unsolved", null)).toBe(styles.ratingGradientUnsolved);
@@ -67,6 +76,8 @@ describe("task-card-helpers", () => {
       history: [],
     };
 
-    expect(getTaskGradientClass(easyTask, "solved", overrideReview)).toBe(styles.ratingGradientHard);
+    expect(getTaskGradientClass(easyTask, "solved", overrideReview)).toBe(
+      styles.ratingGradientHard
+    );
   });
 });

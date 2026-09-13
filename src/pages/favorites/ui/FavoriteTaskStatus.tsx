@@ -41,10 +41,7 @@ export const FavoriteTaskStatus = ({
   const statusType = isExcluded ? "excluded" : isDue ? "due" : status;
 
   const statusNode = (
-    <span
-      className={clsx(styles.taskStatus, styles[`status_${statusType}`])}
-      aria-label={label}
-    >
+    <span className={clsx(styles.taskStatus, styles[`status_${statusType}`])} aria-label={label}>
       {icon}
       {showLabel ? <span>{label}</span> : null}
     </span>
