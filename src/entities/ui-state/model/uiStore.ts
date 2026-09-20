@@ -15,6 +15,7 @@ const getInitialUISettings = () => {
       sidebarWidth: 280,
       consoleCollapsed: true,
       editorWordWrap: false,
+      editorLinterEnabled: false,
       editorSplitRatio: 70,
       visualizerSplitRatio: 70,
       visualizerZoom: 1,
@@ -46,6 +47,10 @@ const getInitialUISettings = () => {
               : true,
           editorWordWrap:
             typeof parsed.state.editorWordWrap === "boolean" ? parsed.state.editorWordWrap : false,
+          editorLinterEnabled:
+            typeof parsed.state.editorLinterEnabled === "boolean"
+              ? parsed.state.editorLinterEnabled
+              : false,
           editorSplitRatio:
             typeof parsed.state.editorSplitRatio === "number" &&
             parsed.state.editorSplitRatio >= 20 &&
@@ -107,12 +112,14 @@ const getInitialUISettings = () => {
       parsedVisualizerCodeFont <= MAX_CODE_FONT_SIZE
         ? parsedVisualizerCodeFont
         : 14;
+    const legacyLinter = localStorage.getItem("playground_editor_linter_enabled");
     return {
       theme: (legacy === "light" || legacy === "dark" ? legacy : "dark") as ThemeMode,
       sidebarOpen: true,
       sidebarWidth: 280,
       consoleCollapsed: legacyConsole !== null ? legacyConsole === "true" : true,
       editorWordWrap: false,
+      editorLinterEnabled: legacyLinter !== null ? legacyLinter === "true" : false,
       editorSplitRatio: 70,
       visualizerSplitRatio: validVisualizerSplit,
       visualizerZoom: validVisualizerZoom,
@@ -129,6 +136,7 @@ const getInitialUISettings = () => {
     sidebarWidth: 280,
     consoleCollapsed: true,
     editorWordWrap: false,
+    editorLinterEnabled: false,
     editorSplitRatio: 70,
     visualizerSplitRatio: 70,
     visualizerZoom: 1,
@@ -152,6 +160,7 @@ export const useUIStore = create<UIState>()(
       sidebarWidth: initialUI.sidebarWidth,
       editorFontSize: 14,
       editorWordWrap: initialUI.editorWordWrap,
+      editorLinterEnabled: initialUI.editorLinterEnabled,
       editorSplitRatio: initialUI.editorSplitRatio,
       visualizerSplitRatio: initialUI.visualizerSplitRatio,
       visualizerZoom: initialUI.visualizerZoom,
@@ -183,6 +192,8 @@ export const useUIStore = create<UIState>()(
       reactTsPracticeExpanded: false,
       lifecycleExpanded: false,
 
+      expandedTsGroups: {},
+      expandedTsSubgroups: {},
       expandedJsGroups: {},
       expandedJsSubgroups: {},
       expandedAlgoGroups: {},
@@ -251,6 +262,34 @@ export const useUIStore = create<UIState>()(
               : editorWordWrap,
         })),
       toggleEditorWordWrap: () => set((state) => ({ editorWordWrap: !state.editorWordWrap })),
+
+      setEditorLinterEnabled: (editorLinterEnabled) =>
+        set((state) => {
+          const next =
+            typeof editorLinterEnabled === "function"
+              ? editorLinterEnabled(state.editorLinterEnabled)
+              : editorLinterEnabled;
+          if (typeof localStorage !== "undefined") {
+            try {
+              localStorage.setItem("playground_editor_linter_enabled", String(next));
+            } catch {
+              // ignore
+            }
+          }
+          return { editorLinterEnabled: next };
+        }),
+      toggleEditorLinterEnabled: () =>
+        set((state) => {
+          const next = !state.editorLinterEnabled;
+          if (typeof localStorage !== "undefined") {
+            try {
+              localStorage.setItem("playground_editor_linter_enabled", String(next));
+            } catch {
+              // ignore
+            }
+          }
+          return { editorLinterEnabled: next };
+        }),
 
       setEditorSplitRatio: (ratio) => set({ editorSplitRatio: Math.min(80, Math.max(20, ratio)) }),
       resetEditorSplitRatio: () => set({ editorSplitRatio: 70 }),
@@ -561,6 +600,16 @@ export const useUIStore = create<UIState>()(
           reactTsPracticeExpanded: expanded,
           lifecycleExpanded: expanded,
         }),
+      setExpandedTsGroups: (updater) =>
+        set((state) => ({
+          expandedTsGroups:
+            typeof updater === "function" ? updater(state.expandedTsGroups) : updater,
+        })),
+      setExpandedTsSubgroups: (updater) =>
+        set((state) => ({
+          expandedTsSubgroups:
+            typeof updater === "function" ? updater(state.expandedTsSubgroups) : updater,
+        })),
       setExpandedJsGroups: (updater) =>
         set((state) => ({
           expandedJsGroups:
@@ -618,7 +667,9 @@ export const useUIStore = create<UIState>()(
         })),
 
       collapseAllInCurrentSection: (section) => {
-        if (section === "javascript") {
+        if (section === "typescript") {
+          set({ expandedTsGroups: {}, expandedTsSubgroups: {} });
+        } else if (section === "javascript") {
           set({ expandedJsGroups: {}, expandedJsSubgroups: {} });
         } else if (section === "algorithms") {
           set({ expandedAlgoGroups: {}, expandedAlgoSubgroups: {} });
@@ -635,7 +686,9 @@ export const useUIStore = create<UIState>()(
       },
 
       expandAllInCurrentSection: (section, allGroupNames = []) => {
-        if (section === "javascript") {
+        if (section === "typescript") {
+          set({ expandedTsGroups: Object.fromEntries(allGroupNames.map((name) => [name, true])) });
+        } else if (section === "javascript") {
           const nextGroups: Record<string, boolean> = {};
           for (const name of allGroupNames) {
             nextGroups[name] = true;
@@ -674,6 +727,7 @@ export const useUIStore = create<UIState>()(
             localStorage.removeItem("playground_visualizer_split_ratio");
             localStorage.removeItem("playground_visualizer_zoom");
             localStorage.removeItem("playground_visualizer_playback_speed");
+            localStorage.removeItem("playground_editor_linter_enabled");
           } catch {
             // ignore
           }
@@ -698,6 +752,7 @@ export const useUIStore = create<UIState>()(
           sidebarWidth: 280,
           editorFontSize: 14,
           editorWordWrap: false,
+          editorLinterEnabled: false,
           editorSplitRatio: 70,
           visualizerSplitRatio: 70,
           visualizerZoom: 1,
@@ -711,6 +766,8 @@ export const useUIStore = create<UIState>()(
           reactTsExpanded: false,
           reactTsPracticeExpanded: false,
           lifecycleExpanded: false,
+          expandedTsGroups: {},
+          expandedTsSubgroups: {},
           expandedJsGroups: {},
           expandedJsSubgroups: {},
           expandedAlgoGroups: {},
@@ -729,6 +786,7 @@ export const useUIStore = create<UIState>()(
         sidebarWidth: state.sidebarWidth,
         editorFontSize: state.editorFontSize,
         editorWordWrap: state.editorWordWrap,
+        editorLinterEnabled: state.editorLinterEnabled,
         editorSplitRatio: state.editorSplitRatio,
         visualizerSplitRatio: state.visualizerSplitRatio,
         visualizerZoom: state.visualizerZoom,
@@ -742,6 +800,8 @@ export const useUIStore = create<UIState>()(
         reactTsExpanded: state.reactTsExpanded,
         reactTsPracticeExpanded: state.reactTsPracticeExpanded,
         lifecycleExpanded: state.lifecycleExpanded,
+        expandedTsGroups: state.expandedTsGroups,
+        expandedTsSubgroups: state.expandedTsSubgroups,
         expandedJsGroups: state.expandedJsGroups,
         expandedJsSubgroups: state.expandedJsSubgroups,
         expandedAlgoGroups: state.expandedAlgoGroups,

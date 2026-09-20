@@ -2,12 +2,7 @@ import React, { useMemo, useState, useEffect, useCallback, useDeferredValue } fr
 import { useLocation } from "@tanstack/react-router";
 import { Folder } from "lucide-react";
 import { groupTasksBySubgroup, hasTaskSubgroups } from "@/entities/task";
-import {
-  REACT_GROUPS_CONFIG,
-  JS_GROUP_CONFIG,
-  getGroupMeta,
-  getAlgoGroupMetaByInfoId,
-} from "@/entities/task/groups";
+import { REACT_GROUPS_CONFIG, getScriptGroupMeta, getAlgoGroupMetaByInfoId } from "@/entities/task";
 import type { Task, SectionType } from "@/entities/task/meta";
 import { useTaskSection } from "@/entities/task/catalog";
 import { useProgressStore } from "@/entities/progress";
@@ -39,8 +34,9 @@ export const useGroupOverview = (groupId: string): GroupOverviewState => {
   const isProgressInitialized = useProgressStore((state) => state.isInitialized);
   const reviews = useReviewStore((state) => state.reviews);
   const location = useLocation();
-  const section: SectionType =
-    groupId in REACT_GROUPS_CONFIG
+  const section: SectionType = location.pathname.startsWith("/typescript")
+    ? "typescript"
+    : groupId in REACT_GROUPS_CONFIG
       ? "react"
       : getAlgoGroupMetaByInfoId(groupId)
         ? "algorithms"
@@ -116,7 +112,6 @@ export const useGroupOverview = (groupId: string): GroupOverviewState => {
         bg?: string;
       }
     >;
-    const jsGroups = JS_GROUP_CONFIG as unknown as Record<string, { desc?: string }>;
 
     if (reactGroups[groupId]) {
       const cfg = reactGroups[groupId];
@@ -173,8 +168,10 @@ export const useGroupOverview = (groupId: string): GroupOverviewState => {
         }
       }
 
-      const jsCfg = jsGroups[resolvedGroup];
-      const jsMeta = getGroupMeta(resolvedGroup);
+      const jsMeta = getScriptGroupMeta(
+        resolvedGroup,
+        section === "typescript" ? "typescript" : "javascript"
+      );
 
       if (resolvedSubgroup) {
         meta = {
@@ -196,7 +193,7 @@ export const useGroupOverview = (groupId: string): GroupOverviewState => {
         meta = {
           name: resolvedGroup,
           title: resolvedGroup,
-          desc: jsCfg?.desc || `Задачи раздела «${resolvedGroup}».`,
+          desc: jsMeta.desc || `Задачи раздела «${resolvedGroup}».`,
           icon: jsMeta.icon,
           color: jsMeta.color,
           bg: jsMeta.bg,
@@ -210,7 +207,7 @@ export const useGroupOverview = (groupId: string): GroupOverviewState => {
     }
 
     return { groupMeta: meta, groupTasks: tasks };
-  }, [groupId, loadedTasks]);
+  }, [groupId, loadedTasks, section]);
 
   const getTaskStatus = useCallback(
     (taskId: string | number): "solved" | "unsolved" | "unstarted" => {

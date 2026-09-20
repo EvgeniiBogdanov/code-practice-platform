@@ -8,9 +8,13 @@ import styles from "./SidebarJsList.module.css";
 
 export interface SidebarJsListProps {
   className?: string;
+  section?: "javascript" | "typescript";
 }
 
-export const SidebarJsList = ({ className }: SidebarJsListProps): React.JSX.Element => {
+export const SidebarJsList = ({
+  className,
+  section = "javascript",
+}: SidebarJsListProps): React.JSX.Element => {
   useSidebarSync();
   const {
     currentTaskId,
@@ -25,21 +29,22 @@ export const SidebarJsList = ({ className }: SidebarJsListProps): React.JSX.Elem
     groupMetaMap,
     completedTotal,
     totalCount,
-  } = useSidebarJsList();
+  } = useSidebarJsList(section);
 
   return (
     <div className={clsx(styles.listContainer, className)}>
       <SidebarProgressCard
         completedCount={completedTotal}
         totalCount={totalCount}
-        sectionType="javascript"
+        sectionType={section}
       >
-        <SidebarQuickActions section="javascript" currentTaskId={currentTaskId} />
+        <SidebarQuickActions section={section} currentTaskId={currentTaskId} />
       </SidebarProgressCard>
 
       {Object.entries(groupedTasks).map(([groupName, subgroups]) => (
         <SidebarJsGroupItem
           key={groupName}
+          section={section}
           groupName={groupName}
           subgroups={subgroups}
           groupMeta={groupMetaMap[groupName]}

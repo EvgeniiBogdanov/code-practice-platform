@@ -14,7 +14,7 @@ import {
   FileCode,
 } from "lucide-react";
 import { clsx } from "clsx";
-import { Tooltip, CodeButton } from "@/shared/ui";
+import { Tooltip, CodeButton, Switch } from "@/shared/ui";
 import { TaskFile } from "@/shared/lib/code-editor";
 import { useCopy } from "@/shared/lib/hooks";
 import styles from "./EditorToolbar.module.css";
@@ -28,6 +28,8 @@ export interface EditorToolbarProps {
   canRedo?: boolean;
   onUndo?: () => void;
   onRedo?: () => void;
+  isLinterEnabled?: boolean;
+  onToggleLinter?: (enabled: boolean) => void;
   onFormat?: () => void;
   wordWrap?: boolean;
   onToggleWordWrap?: () => void;
@@ -55,6 +57,8 @@ export const EditorToolbar = memo(
     canRedo,
     onUndo,
     onRedo,
+    isLinterEnabled,
+    onToggleLinter,
     onFormat,
     wordWrap,
     onToggleWordWrap,
@@ -131,6 +135,26 @@ export const EditorToolbar = memo(
                 disabled={!canRedo}
                 aria-label="Повторить (Ctrl+Y)"
               />
+            </Tooltip>
+          )}
+
+          {onToggleLinter && typeof isLinterEnabled === "boolean" && (
+            <Tooltip
+              content={
+                isLinterEnabled
+                  ? "Выключить проверку ошибок"
+                  : "Включить проверку ошибок"
+              }
+              side="bottom"
+            >
+              <div className={styles.linterSwitchWrapper}>
+                <Switch
+                  size="sm"
+                  checked={isLinterEnabled}
+                  onChange={onToggleLinter}
+                  aria-label="Проверка ошибок"
+                />
+              </div>
             </Tooltip>
           )}
 

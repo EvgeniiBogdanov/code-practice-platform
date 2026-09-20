@@ -1,9 +1,9 @@
 import { memo, useMemo } from "react";
 import { Layers, Brain } from "lucide-react";
-import { Tabs, TabItem, JavaScriptIcon, ReactIcon } from "@/shared/ui";
+import { Tabs, TabItem, JavaScriptIcon, TypeScriptIcon, ReactIcon } from "@/shared/ui";
 import styles from "./CommandPalette.module.css";
 
-export type PaletteSection = "all" | "react" | "javascript" | "algorithms";
+export type PaletteSection = "all" | "react" | "javascript" | "typescript" | "algorithms";
 
 interface CommandPaletteTabsProps {
   activeSection: PaletteSection;
@@ -28,6 +28,11 @@ export const CommandPaletteTabs = memo(
           id: "javascript",
           label: "JavaScript",
           icon: <JavaScriptIcon size={13} className={styles.iconJs} />,
+        },
+        {
+          id: "typescript",
+          label: "TypeScript",
+          icon: <TypeScriptIcon size={13} className={styles.iconTs} />,
         },
         {
           id: "algorithms",

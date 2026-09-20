@@ -54,3 +54,7 @@
   color: var(--color-algo);
   flex-shrink: 0;
 }
+
+.icon_typescript {
+  color: var(--color-ts);
+}

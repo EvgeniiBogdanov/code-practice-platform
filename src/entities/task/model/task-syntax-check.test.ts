@@ -6,32 +6,19 @@ import {
 import { Task } from "../types";
 
 describe("task-syntax-check", () => {
-  it("contains specified task IDs", () => {
-    expect(CANDIDATE_SYNTAX_CHECK_DISABLED_TASK_IDS.has("js188")).toBe(true);
-    expect(CANDIDATE_SYNTAX_CHECK_DISABLED_TASK_IDS.has("js128")).toBe(true);
+  it("defaults to empty set of disabled task IDs", () => {
+    expect(CANDIDATE_SYNTAX_CHECK_DISABLED_TASK_IDS.size).toBe(0);
   });
 
-  it("returns true for tasks in CANDIDATE_SYNTAX_CHECK_DISABLED_TASK_IDS", () => {
+  it("returns false for tasks by default", () => {
     const task188 = { id: "js188", title: "Test", section: "javascript" } as Task;
     const task128 = { id: "js128", title: "Test", section: "javascript" } as Task;
-
-    expect(isCandidateLinterDisabled(task188)).toBe(true);
-    expect(isCandidateLinterDisabled(task128)).toBe(true);
-  });
-
-  it("returns true when disableCandidateLinter flag is explicitly set", () => {
-    const taskCustom = {
-      id: "custom-task",
-      title: "Custom",
-      section: "javascript",
-      disableCandidateLinter: true,
-    } as Task;
-
-    expect(isCandidateLinterDisabled(taskCustom)).toBe(true);
-  });
-
-  it("returns false for tasks with syntax checking enabled", () => {
+    const taskTs = { id: "typescript-1", title: "Test", section: "typescript" } as Task;
     const taskOther = { id: "js1", title: "Test", section: "javascript" } as Task;
+
+    expect(isCandidateLinterDisabled(task188)).toBe(false);
+    expect(isCandidateLinterDisabled(task128)).toBe(false);
+    expect(isCandidateLinterDisabled(taskTs)).toBe(false);
     expect(isCandidateLinterDisabled(taskOther)).toBe(false);
     expect(isCandidateLinterDisabled(null)).toBe(false);
     expect(isCandidateLinterDisabled(undefined)).toBe(false);

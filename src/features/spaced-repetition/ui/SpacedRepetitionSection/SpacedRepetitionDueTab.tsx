@@ -17,9 +17,7 @@ interface SpacedRepetitionDueTabProps {
 }
 
 const getTaskPath = (t: Task): string => {
-  if (t.section === "javascript") return `/javascript/${t.id}`;
-  if (t.section === "algorithms") return `/algorithms/${t.id}`;
-  return `/react/${t.id}`;
+  return `/${t.section}/${t.id}`;
 };
 
 const getTaskRatingClass = (

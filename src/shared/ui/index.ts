@@ -48,3 +48,5 @@ export * from "./ExpandablePanel";
 export * from "./ZoomControls";
 export * from "./UiSelect";
 export * from "./UiRange";
+
+export * from "./TypeScriptIcon";

@@ -33,6 +33,7 @@ export const SidebarWorkspaceHeader = memo(
       [activeSectionTasks]
     );
 
+    const expandedTsGroups = useUIStore((state) => state.expandedTsGroups);
     const expandedJsGroups = useUIStore((state) => state.expandedJsGroups);
     const expandedAlgoGroups = useUIStore((state) => state.expandedAlgoGroups);
     const warmupExpanded = useUIStore((state) => state.warmupExpanded);
@@ -46,6 +47,7 @@ export const SidebarWorkspaceHeader = memo(
     const expandAllInCurrentSection = useUIStore((state) => state.expandAllInCurrentSection);
 
     const isAnyExpanded = useMemo(() => {
+      if (activeSectionKey === "typescript") return Object.values(expandedTsGroups).some(Boolean);
       if (activeSectionKey === "javascript") {
         return Object.values(expandedJsGroups || {}).some(Boolean);
       }
@@ -65,6 +67,7 @@ export const SidebarWorkspaceHeader = memo(
       return false;
     }, [
       activeSectionKey,
+      expandedTsGroups,
       expandedJsGroups,
       expandedAlgoGroups,
       warmupExpanded,

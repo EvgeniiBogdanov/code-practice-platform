@@ -4,8 +4,7 @@ import { Task } from "@/entities/task";
 
 type EditorTab = "candidate" | "solution" | "visualization";
 
-type FullscreenRoute =
-  "/open/algorithms/$taskId" | "/open/javascript/$taskId" | "/open/react/$taskId";
+type FullscreenRoute = `/open/${Task["section"]}/$taskId`;
 
 interface FullscreenNavigationTarget {
   to: FullscreenRoute;
@@ -31,9 +30,7 @@ export interface UseFullscreenNavigationReturn {
 }
 
 const getFullscreenRoute = (section: Task["section"]): FullscreenRoute => {
-  if (section === "algorithms") return "/open/algorithms/$taskId";
-  if (section === "react") return "/open/react/$taskId";
-  return "/open/javascript/$taskId";
+  return `/open/${section}/$taskId`;
 };
 
 export const getFullscreenNavigationTarget = ({

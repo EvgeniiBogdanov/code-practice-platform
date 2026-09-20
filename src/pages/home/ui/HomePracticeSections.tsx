@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { FolderGit2, Brain } from "lucide-react";
-import { JavaScriptIcon, ReactIcon } from "@/shared/ui";
+import { JavaScriptIcon, TypeScriptIcon, ReactIcon } from "@/shared/ui";
 import { HomeStats } from "../model/use-home-stats";
 import { HomeSectionCard } from "./HomeSectionCard";
 import styles from "./HomePage.module.css";
@@ -24,7 +24,7 @@ export const HomePracticeSections = memo(
             coverIcon={<JavaScriptIcon size={24} color="#f59e0b" />}
             title="JavaScript"
             tagText={`${stats.jsTotal} задач`}
-            tagClass={styles.tagAmber}
+            tagVariant="yellow"
             description="Синтаксис и циклы, объекты и глубокие манипуляции, замыкания, функции высшего порядка, Event Loop, Promise, таймеры, контроль частоты и паттерны."
             tags={["#objects", "#async", "#closures", "#event-loop", "#promises"]}
             solved={stats.jsSolved}
@@ -36,10 +36,25 @@ export const HomePracticeSections = memo(
 
           <HomeSectionCard
             coverClass={styles.blueCover}
+            coverIcon={<TypeScriptIcon size={24} />}
+            title="TypeScript"
+            tagText={`${stats.tsTotal} задач`}
+            tagVariant="blue"
+            description="От первых аннотаций до типизированного EventEmitter: интерфейсы, обобщённые и служебные типы, преобразования типов, классы и прикладные паттерны."
+            tags={["#typescript", "#generics", "#utility-types", "#type-safety"]}
+            solved={stats.tsSolved}
+            total={stats.tsTotal}
+            pct={stats.tsPct}
+            to="/typescript"
+            actionBtnClass={styles.actionBtnBlue}
+          />
+
+          <HomeSectionCard
+            coverClass={styles.blueCover}
             coverIcon={<ReactIcon size={24} color="#3b82f6" />}
             title="React"
             tagText={`${stats.reactTotal} задач`}
-            tagClass={styles.tagBlue}
+            tagVariant="blue"
             description="Паттерны хуков React 19, рефакторинг компонентов, оптимизация перерендеров, состояние с Zustand и Redux Toolkit, живой запуск и TypeScript."
             tags={["#react19", "#hooks", "#refactoring", "#typescript"]}
             solved={stats.reactSolved}
@@ -54,7 +69,7 @@ export const HomePracticeSections = memo(
             coverIcon={<Brain size={24} color="#a855f7" />}
             title="Алгоритмы"
             tagText={`${stats.algoTotal} задач`}
-            tagClass={styles.tagPurple}
+            tagVariant="purple"
             description="Классические алгоритмические задачи с собеседований: два указателя, скользящее окно, бинарный поиск, графы и деревья с анализом O(N) / O(1)."
             tags={["#two-pointers", "#sliding-window", "#binary-search"]}
             solved={stats.algoSolved}

@@ -38,4 +38,14 @@ describe("useSidebarHomeStats", () => {
     const { result: after } = renderHook(() => useSidebarHomeStats());
     expect(after.current.totalJs).toBe(CURRICULUM_COUNTS.javascript - 2);
   });
+  it("keeps the TypeScript counter separate from React TypeScript exercises", () => {
+    useProgressStore.setState({
+      completedTasks: { "typescript-1": "solved", "typescript-2": "solved", "ts-1": "solved" },
+    });
+    useReviewStore.setState({ excludedTaskIds: ["typescript-2"] });
+    const { result } = renderHook(() => useSidebarHomeStats());
+    expect(result.current.totalTs).toBe(23);
+    expect(result.current.completedTsTotal).toBe(1);
+    expect(result.current.completedReactTotal).toBe(1);
+  });
 });

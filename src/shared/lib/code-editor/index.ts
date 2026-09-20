@@ -17,3 +17,4 @@ export * from "./componentPropsChecker";
 export * from "./typeChecker";
 export * from "./codeLinter";
 export * from "./codeFormatter";
+export * from "./typescript-checker";

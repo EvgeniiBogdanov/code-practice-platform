@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from "react";
+import type { SectionType } from "@/entities/task";
 import { clsx } from "clsx";
 import { CheckSquare } from "lucide-react";
 import styles from "./SidebarProgressCard.module.css";
@@ -6,7 +7,7 @@ import styles from "./SidebarProgressCard.module.css";
 export interface SidebarProgressCardProps {
   completedCount: number;
   totalCount: number;
-  sectionType: "javascript" | "algorithms" | "react";
+  sectionType: SectionType;
   className?: string;
   children?: React.ReactNode;
 }

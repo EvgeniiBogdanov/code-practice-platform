@@ -10,6 +10,7 @@ export interface SidebarHomeSkeletonProps {
 const HOME_ITEMS = [
   { titleWidth: 125, hasBadge: false },
   { titleWidth: 85, hasBadge: true },
+  { titleWidth: 85, hasBadge: true },
   { titleWidth: 55, hasBadge: true },
   { titleWidth: 95, hasBadge: true },
 ];

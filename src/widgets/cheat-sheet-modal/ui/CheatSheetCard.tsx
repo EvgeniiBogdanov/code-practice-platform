@@ -23,7 +23,11 @@ export const CheatSheetCard = memo(({ item }: CheatSheetCardProps) => {
       {item.desc && <p className={styles.cardDesc}>{item.desc}</p>}
 
       <div className={styles.codeBlockWrapper}>
-        <CodeViewer code={item.code} language="javascript" showLineNumbers={false} />
+        <CodeViewer
+          code={item.code}
+          language={item.language || "javascript"}
+          showLineNumbers={false}
+        />
       </div>
 
       {item.tip && (

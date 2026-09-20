@@ -11,7 +11,6 @@ import {
   Wrench,
   Rocket,
   Brain,
-  Zap,
 } from "lucide-react";
 import { clsx } from "clsx";
 import { useProgressStore, selectIsTaskCompleted } from "@/entities/progress";
@@ -19,7 +18,7 @@ import { useReviewStore, isTaskDue, getGroupCompletionClass } from "@/entities/r
 import { useTaskSection } from "@/entities/task/catalog";
 import { FinderHierarchyProps } from "../model/types";
 import { getRatingClass } from "../lib/getRatingClass";
-import { NodeCount, Tooltip, ReactIcon } from "@/shared/ui";
+import { NodeCount, Tooltip, ReactIcon, TypeScriptIcon } from "@/shared/ui";
 import styles from "./FinderBreadcrumbs.module.css";
 
 export const FinderReactHierarchy = ({
@@ -74,14 +73,14 @@ export const FinderReactHierarchy = ({
       {
         id: "ts",
         label: "TypeScript: Паттерны типизации",
-        icon: <Zap size={14} className={styles.iconZap} />,
+        icon: <TypeScriptIcon size={14} />,
         infoId: "group-ts",
         tasks: tasks.filter((t) => t.category === "TypeScript: Паттерны типизации"),
       },
       {
         id: "ts-practice",
         label: "TypeScript: Прикладные сценарии",
-        icon: <Zap size={14} className={styles.iconZap} />,
+        icon: <TypeScriptIcon size={14} />,
         infoId: "group-ts-practice",
         tasks: tasks.filter((t) => t.category === "TypeScript: Прикладные сценарии"),
       },

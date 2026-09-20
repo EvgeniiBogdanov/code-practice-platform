@@ -25,10 +25,6 @@
   color: #a855f7;
 }
 
-.iconZap {
-  color: var(--accent-blue, #3b82f6);
-}
-
 .iconRotateCcw {
   color: var(--accent-orange, #f97316);
 }

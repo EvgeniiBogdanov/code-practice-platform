@@ -187,7 +187,6 @@ export function getGeneralCompletions(
           kind: "type",
           insertText: cleanInsert,
           cursorOffset,
-          autoImport: t.autoImport,
           score: score + 7,
         });
       }

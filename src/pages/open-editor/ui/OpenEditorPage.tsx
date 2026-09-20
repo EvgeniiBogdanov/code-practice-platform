@@ -2,7 +2,7 @@ import { getTaskSolutionSource } from "@/entities/task";
 import React, { useCallback, useState, useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Home, FileQuestion, ArrowDown } from "lucide-react";
-import { getTaskFiles, hasTaskVisualComponent, isCandidateLinterDisabled } from "@/entities/task";
+import { getTaskFiles, hasTaskVisualComponent } from "@/entities/task";
 import type { SectionType } from "@/entities/task/meta";
 import { useTaskById } from "@/entities/task/catalog";
 import { CodeEditor } from "@/features/code-editor";
@@ -67,7 +67,12 @@ export const OpenEditorPage = ({
         return file;
       });
     }
-    return [{ name: isReact ? "index.jsx" : "solution.js", code: defaultCode }];
+    return [
+      {
+        name: isReact ? "index.jsx" : section === "typescript" ? "solution.ts" : "solution.js",
+        code: defaultCode,
+      },
+    ];
   }, [task, tab, isReact, defaultCode]);
 
   const [files, setFiles] = useState<TaskSourceFile[]>(initialFiles);
@@ -96,8 +101,6 @@ export const OpenEditorPage = ({
     () => (task ? hasTaskVisualComponent(task, files) : isReact),
     [task, files, isReact]
   );
-
-  const isLinterDisabled = tab === "candidate" && isCandidateLinterDisabled(task);
 
   const [viewMode, setViewMode] = useState<ViewMode>(() => {
     if (initialViewMode === "preview") return "preview";
@@ -304,7 +307,7 @@ export const OpenEditorPage = ({
     setIsRunning(true);
     const start = performance.now();
     try {
-      const result = await runNodeJsCode(code);
+      const result = await runNodeJsCode(code, { filename: activeFile.name });
       const duration = Math.round(performance.now() - start);
       setConsoleLogs((prev) => [...prev, ...result.logs]);
       setLastExecution({ durationMs: duration, exitCode: result.exitCode });
@@ -352,9 +355,11 @@ export const OpenEditorPage = ({
         to:
           section === "algorithms"
             ? "/algorithms/$taskId"
-            : section === "react"
-              ? "/react/$taskId"
-              : "/javascript/$taskId",
+            : section === "typescript"
+              ? "/typescript/$taskId"
+              : section === "react"
+                ? "/react/$taskId"
+                : "/javascript/$taskId",
         params: { taskId: String(task.id) },
         search: { tab },
         resetScroll: false,
@@ -481,7 +486,6 @@ export const OpenEditorPage = ({
                   activeFileIdx={activeFileIdx}
                   onFileSelect={setActiveFileIdx}
                   filepath={activeFile?.name || ""}
-                  disableLinter={isLinterDisabled}
                   fillHeight={true}
                   isFullscreen={true}
                   onToggleFullscreen={handleExit}
@@ -527,7 +531,6 @@ export const OpenEditorPage = ({
                 activeFileIdx={activeFileIdx}
                 onFileSelect={setActiveFileIdx}
                 filepath={activeFile?.name || ""}
-                disableLinter={isLinterDisabled}
                 fillHeight={true}
                 isFullscreen={true}
                 onToggleFullscreen={handleExit}

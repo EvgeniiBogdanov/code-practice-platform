@@ -90,3 +90,10 @@
 .react .barFill {
   background: var(--color-react, #3b82f6);
 }
+
+.typescript .countBadge {
+  color: var(--color-ts);
+}
+.typescript .barFill {
+  background: var(--color-ts);
+}

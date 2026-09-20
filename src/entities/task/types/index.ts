@@ -1,6 +1,6 @@
 import React from "react";
 
-export type SectionType = "react" | "javascript" | "algorithms";
+export type SectionType = "javascript" | "typescript" | "react" | "algorithms";
 
 export type TaskDifficulty =
   "warm-up" | "refactoring" | "middle" | "strong" | "ts" | "easy" | "medium" | "hard";
@@ -78,7 +78,6 @@ export interface Task {
   template?: string;
   code?: string;
   isRaw?: boolean;
-  disableCandidateLinter?: boolean;
 }
 
 export interface TaskGroup {

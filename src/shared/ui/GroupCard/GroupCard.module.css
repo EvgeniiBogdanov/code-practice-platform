@@ -45,33 +45,6 @@
   text-overflow: ellipsis;
 }
 
-.countBadge {
-  font-size: 11.5px;
-  font-family: var(--font-sans);
-  color: var(--fg-muted);
-  flex-shrink: 0;
-  padding: 2px 7px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.countBadge.completed,
-.countBadge.completedGreen {
-  color: var(--color-status-solved, #10b981);
-  background: rgba(16, 185, 129, 0.12);
-  font-weight: 600;
-}
-
-.countBadge.completedYellow {
-  color: var(--color-status-due, #f59e0b);
-  background: rgba(245, 158, 11, 0.12);
-  font-weight: 600;
-}
-
-[data-theme="light"] .countBadge {
-  background: rgba(55, 53, 47, 0.06);
-}
-
 .progressBar {
   height: 4px;
   background: rgba(255, 255, 255, 0.08);

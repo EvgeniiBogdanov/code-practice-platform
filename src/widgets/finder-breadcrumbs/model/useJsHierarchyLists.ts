@@ -1,15 +1,18 @@
 import { useMemo } from "react";
-import { getGroupMeta } from "@/entities/task/groups";
+import { getScriptGroupMeta } from "@/entities/task";
 import type { Task } from "@/entities/task/meta";
 import { useTaskSection } from "@/entities/task/catalog";
 import { useProgressStore, selectIsTaskCompleted } from "@/entities/progress";
 import { useReviewStore, getGroupCompletionClass } from "@/entities/review";
 
-export const useJsHierarchyLists = (currentGroupName: string | null) => {
+export const useJsHierarchyLists = (
+  currentGroupName: string | null,
+  section: "javascript" | "typescript" = "javascript"
+) => {
   const progressState = useProgressStore();
   const reviews = useReviewStore((state) => state.reviews);
   const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
-  const { tasks } = useTaskSection("javascript");
+  const { tasks } = useTaskSection(section);
 
   const jsGroupsList = useMemo(() => {
     const groupsMap = new Map<string, Task[]>();
@@ -30,10 +33,10 @@ export const useJsHierarchyLists = (currentGroupName: string | null) => {
         reviews,
         progressState.completedTasks
       );
-      const meta = getGroupMeta(name);
+      const meta = getScriptGroupMeta(name, section);
       return { name, tasks: activeGroupTasks, completedCount, completionClass, meta };
     });
-  }, [progressState, reviews, tasks, excludedTaskIds]);
+  }, [progressState, reviews, tasks, excludedTaskIds, section]);
 
   const jsSubgroupsList = useMemo(() => {
     if (!currentGroupName) return [];

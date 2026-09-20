@@ -1,6 +1,6 @@
 import React from "react";
 import { Home, Brain } from "lucide-react";
-import { JavaScriptIcon, ReactIcon } from "@/shared/ui";
+import { JavaScriptIcon, TypeScriptIcon, ReactIcon } from "@/shared/ui";
 import { CURRICULUM_COUNTS } from "./curriculum-manifest";
 import { SectionType } from "../types";
 
@@ -33,6 +33,15 @@ export const SECTIONS_CONFIG: Record<"home" | SectionType, SectionMeta> = {
     color: "var(--color-js)",
     badge: `${CURRICULUM_COUNTS.javascript} задач`,
   },
+  typescript: {
+    id: "typescript",
+    title: "TypeScript",
+    label: "TypeScript",
+    path: "/typescript",
+    icon: TypeScriptIcon,
+    color: "var(--color-ts)",
+    badge: `${CURRICULUM_COUNTS.typescript} задачи`,
+  },
   react: {
     id: "react",
     title: "React",
@@ -56,6 +65,7 @@ export const SECTIONS_CONFIG: Record<"home" | SectionType, SectionMeta> = {
 export const SECTIONS_LIST: SectionMeta[] = [
   SECTIONS_CONFIG.home,
   SECTIONS_CONFIG.javascript,
+  SECTIONS_CONFIG.typescript,
   SECTIONS_CONFIG.react,
   SECTIONS_CONFIG.algorithms,
 ];

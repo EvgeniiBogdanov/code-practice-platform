@@ -2,8 +2,8 @@ import React, { memo } from "react";
 import { FileText, Brain } from "lucide-react";
 import { clsx } from "clsx";
 import type { Task } from "@/entities/task/meta";
-import { getGroupMeta, getAlgoGroupMeta, REACT_GROUPS_CONFIG } from "@/entities/task/groups";
-import { Badge, type BadgeVariant, JavaScriptIcon, ReactIcon } from "@/shared/ui";
+import { getScriptGroupMeta, getAlgoGroupMeta, REACT_GROUPS_CONFIG } from "@/entities/task";
+import { Badge, type BadgeVariant, JavaScriptIcon, TypeScriptIcon, ReactIcon } from "@/shared/ui";
 import styles from "./CommandPalette.module.css";
 
 const SECTION_CONFIG: Record<
@@ -19,6 +19,11 @@ const SECTION_CONFIG: Record<
     label: "JS",
     icon: <JavaScriptIcon size={11} className={styles.iconJs} />,
     variant: "yellow",
+  },
+  typescript: {
+    label: "TS",
+    icon: <TypeScriptIcon size={11} className={styles.iconTs} />,
+    variant: "blue",
   },
   algorithms: {
     label: "ALGO",
@@ -54,8 +59,8 @@ const getGroupBadgeVariant = (group?: string, section?: string): BadgeVariant =>
   if (!group) return "gray";
 
   let colorStr = "";
-  if (section === "javascript") {
-    colorStr = getGroupMeta(group)?.color || "";
+  if (section === "javascript" || section === "typescript") {
+    colorStr = getScriptGroupMeta(group, section)?.color || "";
   } else if (section === "algorithms") {
     colorStr = getAlgoGroupMeta(group)?.color || "";
   } else {

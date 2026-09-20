@@ -160,3 +160,7 @@
   color: var(--text-muted);
   font-size: 13px;
 }
+
+.iconTs {
+  color: var(--color-ts);
+}

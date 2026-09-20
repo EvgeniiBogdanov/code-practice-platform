@@ -432,12 +432,11 @@
   flex-shrink: 0;
 }
 
-.iconZap {
-  color: var(--accent-blue, #3b82f6);
-  flex-shrink: 0;
-}
-
 .iconFavorites {
   color: var(--accent-yellow);
   flex-shrink: 0;
+}
+
+.icon_typescript {
+  color: var(--color-ts);
 }

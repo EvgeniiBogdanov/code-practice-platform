@@ -60,6 +60,22 @@ describe("getFullscreenNavigationTarget", () => {
   });
 });
 
+describe("TypeScript fullscreen route", () => {
+  it("keeps TypeScript tasks in their own section", () => {
+    expect(
+      getFullscreenNavigationTarget({
+        task: { id: "typescript-22", section: "typescript" },
+        tab: "solution",
+        hasVisualComponent: false,
+      })
+    ).toEqual({
+      to: "/open/typescript/$taskId",
+      params: { taskId: "typescript-22" },
+      search: { tab: "solution", view: "code" },
+    });
+  });
+});
+
 describe("useFullscreenNavigation", () => {
   beforeEach(() => {
     routerMocks.navigate.mockReset().mockResolvedValue(undefined);

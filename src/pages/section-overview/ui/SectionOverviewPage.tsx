@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import type { SectionType } from "@/entities/task";
 import { useSectionOverview } from "../model/use-section-overview";
 import { SectionHeroHeader } from "./SectionHeroHeader";
 import { SectionKpiGrid } from "./SectionKpiGrid";
@@ -6,7 +7,7 @@ import { SectionGroupsGrid } from "./SectionGroupsGrid";
 import styles from "./SectionOverviewPage.module.css";
 
 export interface SectionOverviewPageProps {
-  section: "javascript" | "react" | "algorithms";
+  section: SectionType;
 }
 
 export const SectionOverviewPage = memo(
@@ -65,6 +66,10 @@ export const JavascriptOverviewPage = memo((): React.JSX.Element => {
   return <SectionOverviewPage section="javascript" />;
 });
 JavascriptOverviewPage.displayName = "JavascriptOverviewPage";
+
+export const TypescriptOverviewPage = (): React.JSX.Element => (
+  <SectionOverviewPage section="typescript" />
+);
 
 export const AlgorithmsOverviewPage = memo((): React.JSX.Element => {
   return <SectionOverviewPage section="algorithms" />;

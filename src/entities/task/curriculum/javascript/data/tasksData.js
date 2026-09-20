@@ -869,7 +869,6 @@ export const JS_TYPES_COERCION_TASKS = [
 
   {
     id: "js188",
-    disableCandidateLinter: true,
     group: "Типы данных",
     subgroup: "Проверка типов",
     title: "1. Проверка типов, граничные случаи и операторы (Object.is, || vs ??)",
@@ -7267,7 +7266,6 @@ export const JS_FUNCTIONS_CLOSURES_TASKS = [
 
   {
     id: "js128",
-    disableCandidateLinter: true,
     group: "Замыкания",
     subgroup: "Замыкания (База)",
     title: "2. Таймеры и переменная цикла var",

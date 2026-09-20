@@ -1,7 +1,7 @@
 import React from "react";
 import { Folder } from "lucide-react";
 import { SECTIONS_CONFIG, SectionType } from "@/entities/task";
-import { getAlgoGroupMeta, getGroupMeta, REACT_GROUPS_CONFIG } from "@/entities/task/groups";
+import { getAlgoGroupMeta, getScriptGroupMeta, REACT_GROUPS_CONFIG } from "@/entities/task";
 
 export interface FavoriteFolderVisual {
   color: string;
@@ -14,8 +14,8 @@ export const getFavoriteFolderVisual = (
   folderTitle: string,
   size = 17
 ): FavoriteFolderVisual => {
-  if (section === "javascript") {
-    const meta = getGroupMeta(folderTitle);
+  if (section === "javascript" || section === "typescript") {
+    const meta = getScriptGroupMeta(folderTitle, section);
     return { color: meta.color, icon: meta.renderIcon(size), routeId: `group-${folderTitle}` };
   }
 

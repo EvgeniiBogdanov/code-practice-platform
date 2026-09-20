@@ -8,11 +8,13 @@ export const useSidebarSync = (): void => {
   const location = useLocation();
   const pathname = location.pathname;
   const currentTaskId = pathname.split("/").pop() || "";
-  const section: SectionType = pathname.startsWith("/javascript")
-    ? "javascript"
-    : pathname.startsWith("/algorithms")
-      ? "algorithms"
-      : "react";
+  const section: SectionType = pathname.startsWith("/typescript")
+    ? "typescript"
+    : pathname.startsWith("/javascript")
+      ? "javascript"
+      : pathname.startsWith("/algorithms")
+        ? "algorithms"
+        : "react";
   const { tasks } = useTaskSection(section);
 
   const setWarmupExpanded = useUIStore((state) => state.setWarmupExpanded);
@@ -23,8 +25,12 @@ export const useSidebarSync = (): void => {
   const setReactTsPracticeExpanded = useUIStore((state) => state.setReactTsPracticeExpanded);
   const setLifecycleExpanded = useUIStore((state) => state.setLifecycleExpanded);
 
-  const setExpandedJsGroups = useUIStore((state) => state.setExpandedJsGroups);
-  const setExpandedJsSubgroups = useUIStore((state) => state.setExpandedJsSubgroups);
+  const setExpandedJsGroups = useUIStore((state) =>
+    section === "typescript" ? state.setExpandedTsGroups : state.setExpandedJsGroups
+  );
+  const setExpandedJsSubgroups = useUIStore((state) =>
+    section === "typescript" ? state.setExpandedTsSubgroups : state.setExpandedJsSubgroups
+  );
   const setExpandedAlgoGroups = useUIStore((state) => state.setExpandedAlgoGroups);
   const setExpandedAlgoSubgroups = useUIStore((state) => state.setExpandedAlgoSubgroups);
 
@@ -32,7 +38,6 @@ export const useSidebarSync = (): void => {
 
   useEffect(() => {
     if (!currentTaskId || currentTaskId === prevSyncedIdRef.current) return;
-    prevSyncedIdRef.current = currentTaskId;
 
     // A. Handle Group / Subgroup Overview URLs — do NOT auto-expand list (reserved strictly for chevron click)
     if (currentTaskId.startsWith("group-") || currentTaskId.startsWith("subgroup-")) {
@@ -42,6 +47,7 @@ export const useSidebarSync = (): void => {
     // B. Handle Specific Task URLs
     const task = tasks.find((item) => String(item.id) === currentTaskId);
     if (!task) return;
+    prevSyncedIdRef.current = currentTaskId;
 
     // 1. React tasks synchronization
     if (pathname.startsWith("/react")) {
@@ -63,7 +69,7 @@ export const useSidebarSync = (): void => {
     }
 
     // 2. JavaScript tasks synchronization
-    if (pathname.startsWith("/javascript") && task.group) {
+    if ((section === "javascript" || section === "typescript") && task.group) {
       setExpandedJsGroups((prev) => {
         if (prev[task.group!]) return prev;
         return { ...prev, [task.group!]: true };
@@ -103,6 +109,7 @@ export const useSidebarSync = (): void => {
     });
   }, [
     currentTaskId,
+    section,
     pathname,
     tasks,
     setWarmupExpanded,

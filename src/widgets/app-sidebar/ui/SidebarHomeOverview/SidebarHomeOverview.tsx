@@ -16,6 +16,9 @@ export const SidebarHomeOverview = ({
   isHomeActive = activeSectionKey === "home",
 }: SidebarHomeOverviewProps): React.JSX.Element => {
   const {
+    completedTsTotal,
+    totalTs,
+    tsCompletionClass,
     completedJsTotal,
     completedReactTotal,
     completedAlgoTotal,
@@ -45,6 +48,12 @@ export const SidebarHomeOverview = ({
         />
         <span className={styles.homeItemTitle}>JavaScript</span>
         <NodeCount completed={completedJsTotal} total={totalJs} className={jsCompletionClass} />
+      </Link>
+
+      <Link to="/typescript" className={styles.homeOverviewItem}>
+        <SECTIONS_CONFIG.typescript.icon size={17} className={styles.icon_typescript} />
+        <span className={styles.homeItemTitle}>TypeScript</span>
+        <NodeCount completed={completedTsTotal} total={totalTs} className={tsCompletionClass} />
       </Link>
 
       <Link to="/react" className={styles.homeOverviewItem}>
