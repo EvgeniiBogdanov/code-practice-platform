@@ -13,6 +13,9 @@ export const parseBreadcrumbRoute = (pathname: string): ParsedBreadcrumbRoute =>
   if (parts[0] === "react") {
     return { section: "react", taskId: parts[1] ? safeDecodeURI(parts[1]) : null };
   }
+  if (parts[0] === "typescript") {
+    return { section: "typescript", taskId: parts[1] ? safeDecodeURI(parts[1]) : null };
+  }
   if (parts[0] === "javascript") {
     return { section: "javascript", taskId: parts[1] ? safeDecodeURI(parts[1]) : null };
   }

@@ -36,4 +36,10 @@ describe("NodeCount", () => {
     expect(screen.getByText("5")).toBeInTheDocument();
     expect(container.firstChild).not.toHaveClass(/completed/);
   });
+
+  it("renders count directly inside the root container without redundant wrapper", () => {
+    const { container } = render(<NodeCount completed={1} total={4} />);
+    expect(container.firstChild).toHaveTextContent("1/4");
+    expect(container.querySelector('[class*="inner"]')).toBeNull();
+  });
 });

@@ -1,5 +1,6 @@
 import React from "react";
-import { Flame, Wrench, Rocket, Brain, Zap, RotateCcw } from "lucide-react";
+import { Flame, Wrench, Rocket, Brain, RotateCcw } from "lucide-react";
+import { TypeScriptIcon } from "@/shared/ui";
 
 export const REACT_GROUPS_CONFIG = {
   "group-warmup": {
@@ -46,7 +47,7 @@ export const REACT_GROUPS_CONFIG = {
     name: "TypeScript: Паттерны типизации",
     title: "TypeScript: Паттерны типизации",
     desc: "Generic-компоненты, полиморфизм, дискриминантные типы и типизация хуков.",
-    icon: Zap,
+    icon: TypeScriptIcon,
     color: "var(--accent-blue)",
     bg: "var(--accent-blue-bg)",
   },
@@ -54,7 +55,7 @@ export const REACT_GROUPS_CONFIG = {
     name: "TypeScript: Прикладные сценарии",
     title: "TypeScript: Прикладные сценарии",
     desc: "Сквозная разработка компонентов с полной типобезопасностью от DTO до рендера.",
-    icon: Zap,
+    icon: TypeScriptIcon,
     color: "var(--accent-blue)",
     bg: "var(--accent-blue-bg)",
   },

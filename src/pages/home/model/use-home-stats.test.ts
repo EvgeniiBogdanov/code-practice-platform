@@ -37,7 +37,10 @@ describe("useHomeStats - excluded tasks deduction", () => {
     expect(result.current.reactTotal).toBe(CURRICULUM_COUNTS.react);
     expect(result.current.algoTotal).toBe(CURRICULUM_COUNTS.algorithms);
     expect(result.current.grandTotal).toBe(
-      CURRICULUM_COUNTS.javascript + CURRICULUM_COUNTS.react + CURRICULUM_COUNTS.algorithms
+      CURRICULUM_COUNTS.javascript +
+        CURRICULUM_COUNTS.typescript +
+        CURRICULUM_COUNTS.react +
+        CURRICULUM_COUNTS.algorithms
     );
   });
 
@@ -52,7 +55,11 @@ describe("useHomeStats - excluded tasks deduction", () => {
     expect(result.current.reactTotal).toBe(CURRICULUM_COUNTS.react - 1);
     expect(result.current.algoTotal).toBe(CURRICULUM_COUNTS.algorithms - 1);
     expect(result.current.grandTotal).toBe(
-      CURRICULUM_COUNTS.javascript + CURRICULUM_COUNTS.react + CURRICULUM_COUNTS.algorithms - 3
+      CURRICULUM_COUNTS.javascript +
+        CURRICULUM_COUNTS.typescript +
+        CURRICULUM_COUNTS.react +
+        CURRICULUM_COUNTS.algorithms -
+        3
     );
     expect(result.current.grandExcluded).toBe(3);
   });
@@ -75,5 +82,18 @@ describe("useHomeStats - excluded tasks deduction", () => {
     const { result: afterExclusion } = renderHook(() => useHomeStats());
     expect(afterExclusion.current.jsSolved).toBe(1);
     expect(afterExclusion.current.jsTotal).toBe(CURRICULUM_COUNTS.javascript - 1);
+  });
+  it("counts TypeScript separately from React and excludes it from active totals", () => {
+    useProgressStore.setState({
+      completedTasks: { "typescript-1": "solved", "typescript-2": "solved", "ts-1": "solved" },
+    });
+    useReviewStore.setState({ excludedTaskIds: ["typescript-2"] });
+    const { result } = renderHook(() => useHomeStats());
+    expect(result.current.tsTotal).toBe(23);
+    expect(result.current.tsSolved).toBe(1);
+    expect(result.current.tsPct).toBe(4);
+    expect(result.current.reactSolved).toBe(1);
+    expect(result.current.grandSolved).toBe(2);
+    expect(result.current.grandExcluded).toBe(1);
   });
 });

@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { Task } from "@/entities/task";
+import { Task, TaskRoute } from "@/entities/task";
 import { isTaskCompleted, ProgressState } from "@/entities/progress";
 import { isTaskDue, ReviewItem, useReviewStore } from "@/entities/review";
 import { isDueTaskUnsolved } from "@/features/spaced-repetition";
@@ -8,7 +8,7 @@ import { SidebarTaskItem } from "./SidebarTaskItem";
 
 export interface SidebarTasksListProps {
   tasks: Task[];
-  to: "/javascript/$taskId" | "/algorithms/$taskId" | "/react/$taskId";
+  to: TaskRoute;
   currentTaskId: string;
   completedTasks: ProgressState["completedTasks"];
   reviews: Record<string, ReviewItem>;

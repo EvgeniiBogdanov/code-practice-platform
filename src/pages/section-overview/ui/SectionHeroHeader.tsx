@@ -13,7 +13,7 @@ export interface SectionHeroHeaderProps {
 
 const getSectionColorVariant = (section?: SectionType): TopicIconBoxColor => {
   if (section === "javascript") return "amber";
-  if (section === "react") return "blue";
+  if (section === "react" || section === "typescript") return "blue";
   if (section === "algorithms") return "purple";
   return "default";
 };

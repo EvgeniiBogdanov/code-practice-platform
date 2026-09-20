@@ -5,7 +5,6 @@ import {
   Task,
   getTaskFiles,
   hasTaskVisualComponent,
-  isCandidateLinterDisabled,
 } from "@/entities/task";
 import {
   getUserSolution,
@@ -62,8 +61,6 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
       tab: "candidate",
       hasVisualComponent,
     });
-
-  const isLinterDisabled = task ? isCandidateLinterDisabled(task) : false;
 
   // JS Runner state
   const [consoleLogs, setConsoleLogs] = useState<NodeRunnerLogEntry[]>([]);
@@ -234,6 +231,7 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
 
     const codeToRun = codeToExecute !== undefined ? codeToExecute : activeFile?.code || "";
     const result = await runNodeJsCode(codeToRun, {
+      filename: activeFile.name,
       onLog: (_newLog, allLogs) => setConsoleLogs(allLogs),
     });
 
@@ -291,7 +289,6 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
               onFileSelect={setActiveFileIdx}
               filepath={activeFile.name}
               readOnly={!task}
-              disableLinter={isLinterDisabled}
               onToggleFullscreen={handleToggleFullscreen}
               onPreloadFullscreen={preloadFullscreen}
               isFullscreenTransitioning={isFullscreenTransitioning}

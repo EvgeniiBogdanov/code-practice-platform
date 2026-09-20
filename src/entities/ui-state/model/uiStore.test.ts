@@ -14,6 +14,7 @@ describe("useUIStore - resetUISettings", () => {
       sidebarWidth: 360,
       editorFontSize: 18,
       editorWordWrap: true,
+      editorLinterEnabled: true,
       editorSplitRatio: 50,
       consoleFontSize: 16,
       consoleCollapsed: false,
@@ -27,6 +28,7 @@ describe("useUIStore - resetUISettings", () => {
     localStorage.setItem("playground_console_collapsed", "false");
     localStorage.setItem("playground_theme", "light");
     localStorage.setItem("playground_visualizer_playback_speed", "2");
+    localStorage.setItem("playground_editor_linter_enabled", "true");
     sessionStorage.setItem("playground_collapsed_subgroups_1", "{}");
     sessionStorage.setItem("playground_favorite_tree_collapsed_folders_javascript", "[]");
 
@@ -38,6 +40,7 @@ describe("useUIStore - resetUISettings", () => {
     expect(state.sidebarWidth).toBe(280);
     expect(state.editorFontSize).toBe(14);
     expect(state.editorWordWrap).toBe(false);
+    expect(state.editorLinterEnabled).toBe(false);
     expect(state.visualizerZoom).toBe(1);
     expect(state.visualizerCodeFontSize).toBe(14);
     expect(state.visualizerSplitRatio).toBe(70);
@@ -56,6 +59,7 @@ describe("useUIStore - resetUISettings", () => {
     expect(localStorage.getItem("playground_visualizer_code_font_size")).toBeNull();
     expect(localStorage.getItem("playground_visualizer_split_ratio")).toBeNull();
     expect(localStorage.getItem("playground_visualizer_playback_speed")).toBeNull();
+    expect(localStorage.getItem("playground_editor_linter_enabled")).toBeNull();
     expect(sessionStorage.getItem("playground_collapsed_subgroups_1")).toBeNull();
     expect(
       sessionStorage.getItem("playground_favorite_tree_collapsed_folders_javascript")
@@ -157,5 +161,22 @@ describe("useUIStore - resetUISettings", () => {
     store.resetVisualizerCodeFontSize();
     expect(useUIStore.getState().visualizerCodeFontSize).toBe(14);
     expect(localStorage.getItem("playground_visualizer_code_font_size")).toBe("14");
+  });
+
+  it("updates and toggles editorLinterEnabled with localStorage persistence", () => {
+    const store = useUIStore.getState();
+    expect(store.editorLinterEnabled).toBe(false);
+
+    store.setEditorLinterEnabled(true);
+    expect(useUIStore.getState().editorLinterEnabled).toBe(true);
+    expect(localStorage.getItem("playground_editor_linter_enabled")).toBe("true");
+
+    store.toggleEditorLinterEnabled();
+    expect(useUIStore.getState().editorLinterEnabled).toBe(false);
+    expect(localStorage.getItem("playground_editor_linter_enabled")).toBe("false");
+
+    store.setEditorLinterEnabled((prev) => !prev);
+    expect(useUIStore.getState().editorLinterEnabled).toBe(true);
+    expect(localStorage.getItem("playground_editor_linter_enabled")).toBe("true");
   });
 });

@@ -24,6 +24,7 @@ export interface NodeRunnerResult {
 }
 
 export interface NodeRunnerOptions {
+  filename?: string;
   onLog?: (log: NodeRunnerLogEntry | null, allLogs: NodeRunnerLogEntry[]) => void;
   timeoutMs?: number;
 }
@@ -50,7 +51,7 @@ export function runNodeJsCode(
   codeText: string,
   options: NodeRunnerOptions = {}
 ): Promise<NodeRunnerResult> {
-  const { onLog, timeoutMs = 12000 } = options;
+  const { onLog, timeoutMs = 12000, filename = "index.tsx" } = options;
 
   clearRunningTimers();
 
@@ -67,7 +68,7 @@ export function runNodeJsCode(
       return;
     }
 
-    const { code: transpiledCode, error: transpileErr } = transpileCode(trimmedCode, "index.tsx");
+    const { code: transpiledCode, error: transpileErr } = transpileCode(trimmedCode, filename);
     if (transpileErr) {
       resolve({
         logs: [

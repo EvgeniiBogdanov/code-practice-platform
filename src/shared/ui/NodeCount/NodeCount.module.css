@@ -2,7 +2,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  line-height: 1;
+  line-height: normal;
   font-size: 11px;
   font-family: var(--font-sans);
   font-variant-numeric: tabular-nums lining-nums;
@@ -21,15 +21,6 @@
   transition:
     color 0.15s ease,
     background 0.15s ease;
-}
-
-.inner {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  line-height: 1;
-  pointer-events: none;
 }
 
 .nodeCount.completed,

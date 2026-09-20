@@ -66,9 +66,7 @@ export const HeaderReviewMenu = memo(() => {
   }, [reviews, excludedSet]);
 
   const getTaskPath = (task: Task) => {
-    if (task.section === "javascript") return `/javascript/${task.id}`;
-    if (task.section === "algorithms") return `/algorithms/${task.id}`;
-    return `/react/${task.id}`;
+    return `/${task.section}/${task.id}`;
   };
 
   const tooltipContent =
@@ -128,11 +126,13 @@ export const HeaderReviewMenu = memo(() => {
 
                     <div className={styles.itemMeta}>
                       <span className={clsx(styles.sectionTag, styles[`tag_${section}`])}>
-                        {section === "javascript"
-                          ? "JS"
-                          : section === "algorithms"
-                            ? "Algo"
-                            : "React"}
+                        {section === "typescript"
+                          ? "TS"
+                          : section === "javascript"
+                            ? "JS"
+                            : section === "algorithms"
+                              ? "Algo"
+                              : "React"}
                       </span>
                       <span
                         className={clsx(

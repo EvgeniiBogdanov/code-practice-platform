@@ -263,3 +263,8 @@
 [data-theme="light"] .ratingUnsolved {
   color: var(--color-error) !important;
 }
+
+.tag_typescript {
+  background: var(--color-ts-bg);
+  color: var(--color-ts);
+}

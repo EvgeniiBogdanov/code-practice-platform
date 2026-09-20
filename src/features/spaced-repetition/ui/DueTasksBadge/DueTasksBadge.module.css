@@ -8,7 +8,7 @@
   border-radius: var(--radius-full, 9999px);
   font-size: var(--fs-xs, 10px);
   font-weight: 600;
-  line-height: 1;
+  line-height: normal;
   background-color: var(--color-status-due-bg, var(--accent-yellow-bg));
   color: var(--color-status-due, var(--accent-yellow));
   border: none;
@@ -24,13 +24,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  line-height: 1;
-}
-
-@supports (text-box: trim-both cap alphabetic) {
-  .badge span {
-    text-box: trim-both cap alphabetic;
-  }
+  line-height: normal;
 }
 
 .badge:hover {

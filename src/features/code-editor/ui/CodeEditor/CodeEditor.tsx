@@ -31,7 +31,6 @@ export const CodeEditor = ({
   isFullscreenTransitioning = false,
   fillHeight = false,
   className,
-  disableLinter = false,
 }: CodeEditorProps): React.JSX.Element => {
   const {
     fontSize,
@@ -62,6 +61,8 @@ export const CodeEditor = ({
     lineCount,
     langInfo,
     isScrolling,
+    isLinterEnabled,
+    handleToggleLinter,
     handleFormat,
     updateCursorCoords,
     handleScroll,
@@ -82,7 +83,6 @@ export const CodeEditor = ({
     readOnly,
     isFullscreen,
     onToggleFullscreen,
-    disableLinter,
   });
 
   return (
@@ -112,6 +112,8 @@ export const CodeEditor = ({
             const res = history.redo(code);
             if (res) onChange(res.code);
           }}
+          isLinterEnabled={isLinterEnabled}
+          onToggleLinter={handleToggleLinter}
           onFormat={handleFormat}
           wordWrap={wordWrap}
           onToggleWordWrap={toggleWordWrap}

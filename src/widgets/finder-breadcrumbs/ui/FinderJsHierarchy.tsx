@@ -4,34 +4,39 @@ import { ChevronDown, FileText, Folder, Check, X, RotateCcw } from "lucide-react
 import { clsx } from "clsx";
 import { selectIsTaskCompleted } from "@/entities/progress";
 import { isTaskDue, useReviewStore } from "@/entities/review";
-import { getGroupMeta } from "@/entities/task/groups";
+import { getScriptGroupMeta, SECTIONS_CONFIG } from "@/entities/task";
 import { useTaskSection } from "@/entities/task/catalog";
 import { FinderHierarchyProps } from "../model/types";
 import { useJsHierarchyLists } from "../model/useJsHierarchyLists";
 import { resolveJsHierarchyNames } from "../lib/resolveJsHierarchyNames";
 import { getRatingClass } from "../lib/getRatingClass";
-import { NodeCount, Tooltip, JavaScriptIcon } from "@/shared/ui";
+import { NodeCount, Tooltip } from "@/shared/ui";
 import styles from "./FinderBreadcrumbs.module.css";
 
 export const FinderJsHierarchy = ({
+  section = "javascript",
   paramId,
   currentTask,
   activeDropdown,
   toggleDropdown,
   closeAllDropdowns,
-}: FinderHierarchyProps) => {
-  const { tasks } = useTaskSection("javascript");
+}: FinderHierarchyProps & { section?: "javascript" | "typescript" }): React.JSX.Element => {
+  const SectionIcon = SECTIONS_CONFIG[section].icon;
+  const sectionTitle = SECTIONS_CONFIG[section].title;
+  const { tasks } = useTaskSection(section);
   const { currentGroupName, currentSubgroupName } = useMemo(
     () => resolveJsHierarchyNames(currentTask, paramId, tasks),
     [currentTask, paramId, tasks]
   );
 
-  const currentGroupMeta = currentGroupName ? getGroupMeta(currentGroupName) : null;
+  const currentGroupMeta = currentGroupName ? getScriptGroupMeta(currentGroupName, section) : null;
 
   const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
 
-  const { jsGroupsList, jsSubgroupsList, progressState, reviews } =
-    useJsHierarchyLists(currentGroupName);
+  const { jsGroupsList, jsSubgroupsList, progressState, reviews } = useJsHierarchyLists(
+    currentGroupName,
+    section
+  );
 
   return (
     <>
@@ -46,14 +51,14 @@ export const FinderJsHierarchy = ({
             activeDropdown === "group" && styles.breadcrumbBtnActive
           )}
           onClick={() => toggleDropdown("group")}
-          aria-label={`${currentGroupName || "Все темы JavaScript"}: выбрать группу задач`}
+          aria-label={`${currentGroupName || `Все темы ${sectionTitle}`}: выбрать группу задач`}
         >
           {currentGroupMeta ? (
             currentGroupMeta.renderIcon(14)
           ) : (
-            <JavaScriptIcon size={14} className={styles.iconJs} />
+            <SectionIcon size={14} color={SECTIONS_CONFIG[section].color} />
           )}
-          <span className={styles.itemText}>{currentGroupName || "Все темы JavaScript"}</span>
+          <span className={styles.itemText}>{currentGroupName || `Все темы ${sectionTitle}`}</span>
           <ChevronDown size={13} className={styles.chevron} />
         </button>
 
@@ -64,10 +69,10 @@ export const FinderJsHierarchy = ({
                 {currentGroupMeta ? (
                   currentGroupMeta.renderIcon(14)
                 ) : (
-                  <JavaScriptIcon size={14} className={styles.iconJs} />
+                  <SectionIcon size={14} color={SECTIONS_CONFIG[section].color} />
                 )}
               </span>
-              <span className={styles.dropdownHeaderTitle}>Группы задач JavaScript</span>
+              <span className={styles.dropdownHeaderTitle}>Группы задач {sectionTitle}</span>
             </div>
             <div className={styles.dropdownList}>
               {jsGroupsList.map((g) => {
@@ -75,7 +80,7 @@ export const FinderJsHierarchy = ({
                 return (
                   <Link
                     key={g.name}
-                    to="/javascript/$taskId"
+                    to={`/${section}/$taskId`}
                     params={{ taskId: `group-${g.name}` }}
                     className={clsx(styles.dropdownItem, isActive && styles.active)}
                     onClick={() => {
@@ -134,7 +139,7 @@ export const FinderJsHierarchy = ({
                     return (
                       <Link
                         key={sub.name}
-                        to="/javascript/$taskId"
+                        to={`/${section}/$taskId`}
                         params={{ taskId: `subgroup-${currentGroupName}-${sub.name}` }}
                         className={clsx(styles.dropdownItem, isActive && styles.active)}
                         onClick={() => {
@@ -226,7 +231,7 @@ export const FinderJsHierarchy = ({
                       return (
                         <Link
                           key={t.id}
-                          to="/javascript/$taskId"
+                          to={`/${section}/$taskId`}
                           params={{ taskId: String(t.id) }}
                           className={clsx(styles.dropdownItem, isActive && styles.active)}
                           onClick={closeAllDropdowns}

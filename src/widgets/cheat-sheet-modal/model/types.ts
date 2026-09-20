@@ -1,4 +1,4 @@
-export type SectionType = "react" | "javascript" | "algorithms" | "home";
+export type SectionType = "react" | "javascript" | "typescript" | "algorithms" | "home";
 
 export interface CategoryConfig {
   id: string;
@@ -15,5 +15,6 @@ export interface CheatItem {
   title: string;
   desc?: string;
   code: string;
+  language?: string;
   tip?: string;
 }

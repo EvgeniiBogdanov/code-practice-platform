@@ -27,6 +27,10 @@ const SECTION_LOADERS: Record<SectionType, () => Promise<Task[]>> = {
     const module = await import("../curriculum/javascript/data/tasksData");
     return normalizeTasks(module.JS_TASKS as readonly RawTask[], "javascript", "JavaScript");
   },
+  typescript: async () => {
+    const { TYPESCRIPT_TASKS } = await import("../curriculum/typescript/data/tasks-data");
+    return normalizeTasks(TYPESCRIPT_TASKS, "typescript", "TypeScript");
+  },
   react: async () => {
     const module = await import("../curriculum/react/data/tasksData");
     return [
@@ -108,6 +112,7 @@ export const loadTaskSection = (section: SectionType): Promise<Task[]> => {
 export const loadAllTaskSections = async (): Promise<Task[]> => {
   const sections = await Promise.all([
     loadTaskSection("javascript"),
+    loadTaskSection("typescript"),
     loadTaskSection("react"),
     loadTaskSection("algorithms"),
   ]);
@@ -154,7 +159,8 @@ export const useAllTaskSections = (enabled = true): { tasks: Task[]; isLoading: 
     if (enabled) void loadAllTaskSections().catch(() => undefined);
   }, [enabled]);
 
-  const isLoading = enabled && Object.keys(sectionCache).length < 3;
+  const isLoading =
+    enabled && Object.keys(sectionCache).length < Object.keys(SECTION_LOADERS).length;
   return { tasks, isLoading };
 };
 

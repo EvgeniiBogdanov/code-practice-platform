@@ -75,3 +75,20 @@
   color: var(--text-main);
   line-height: 1.3;
 }
+
+/* Size sm */
+.size_sm .track {
+  width: 26px;
+  height: 15px;
+}
+
+.size_sm .thumb {
+  width: 11px;
+  height: 11px;
+  top: 2px;
+  left: 2px;
+}
+
+.size_sm .nativeInput:checked + .track .thumb {
+  transform: translateX(11px);
+}

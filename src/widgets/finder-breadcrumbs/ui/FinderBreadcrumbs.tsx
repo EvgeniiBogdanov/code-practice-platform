@@ -82,8 +82,9 @@ export const FinderBreadcrumbs = (): React.JSX.Element => {
 
       <Suspense fallback={null}>
         {/* 3. JavaScript Hierarchy: Group / Subgroup / Task */}
-        {section === "javascript" && !isFavoritesPage && (
+        {(section === "javascript" || section === "typescript") && !isFavoritesPage && (
           <FinderJsHierarchy
+            section={section}
             paramId={taskId}
             currentTask={currentTask}
             activeDropdown={activeDropdown}

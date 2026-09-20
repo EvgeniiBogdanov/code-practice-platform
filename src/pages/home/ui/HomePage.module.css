@@ -180,7 +180,7 @@
 /* Gallery Grid (3 columns) */
 .galleryGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
 }
 
@@ -241,31 +241,6 @@
   font-weight: 700;
   color: var(--text-main);
   margin: 0;
-}
-
-.cardTag {
-  display: inline-flex;
-  align-items: center;
-  font-size: 11.5px;
-  font-weight: 600;
-  padding: 2px 8px;
-  border-radius: 12px;
-  line-height: 1.2;
-}
-
-.tagBlue {
-  background: rgba(35, 131, 226, 0.15);
-  color: var(--accent-blue, #3b82f6);
-}
-
-.tagAmber {
-  background: rgba(245, 158, 11, 0.15);
-  color: #f59e0b;
-}
-
-.tagPurple {
-  background: rgba(168, 85, 247, 0.15);
-  color: #a855f7;
 }
 
 .cardDesc {

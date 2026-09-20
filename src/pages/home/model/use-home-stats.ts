@@ -12,6 +12,9 @@ export interface HomeStats {
   reactTotal: number;
   reactSolved: number;
   reactPct: number;
+  tsTotal: number;
+  tsSolved: number;
+  tsPct: number;
   jsTotal: number;
   jsSolved: number;
   jsPct: number;
@@ -28,6 +31,7 @@ export const useHomeStats = (): HomeStats => {
     const excludedSet = new Set(excludedTaskIds);
 
     let reactExcluded = 0;
+    let tsExcluded = 0;
     let jsExcluded = 0;
     let algoExcluded = 0;
 
@@ -35,10 +39,12 @@ export const useHomeStats = (): HomeStats => {
       const section = getTaskSectionById(taskId);
       if (section === "react") reactExcluded += 1;
       if (section === "javascript") jsExcluded += 1;
+      if (section === "typescript") tsExcluded += 1;
       if (section === "algorithms") algoExcluded += 1;
     });
 
     let reactSolved = 0;
+    let tsSolved = 0;
     let jsSolved = 0;
     let algoSolved = 0;
 
@@ -48,6 +54,7 @@ export const useHomeStats = (): HomeStats => {
       const section = getTaskSectionById(taskId);
       if (section === "react") reactSolved += 1;
       if (section === "javascript") jsSolved += 1;
+      if (section === "typescript") tsSolved += 1;
       if (section === "algorithms") algoSolved += 1;
     });
 
@@ -57,14 +64,17 @@ export const useHomeStats = (): HomeStats => {
     const jsTotal = Math.max(0, CURRICULUM_COUNTS.javascript - jsExcluded);
     const jsPct = jsTotal > 0 ? Math.round((jsSolved / jsTotal) * 100) : 0;
 
+    const tsTotal = Math.max(0, CURRICULUM_COUNTS.typescript - tsExcluded);
+    const tsPct = tsTotal > 0 ? Math.round((tsSolved / tsTotal) * 100) : 0;
+
     const algoTotal = Math.max(0, CURRICULUM_COUNTS.algorithms - algoExcluded);
     const algoPct = algoTotal > 0 ? Math.round((algoSolved / algoTotal) * 100) : 0;
 
-    const grandTotal = reactTotal + jsTotal + algoTotal;
-    const grandSolved = reactSolved + jsSolved + algoSolved;
+    const grandTotal = reactTotal + jsTotal + tsTotal + algoTotal;
+    const grandSolved = reactSolved + jsSolved + tsSolved + algoSolved;
     const grandPct = grandTotal > 0 ? Math.round((grandSolved / grandTotal) * 100) : 0;
     const grandRemaining = Math.max(0, grandTotal - grandSolved);
-    const grandExcluded = reactExcluded + jsExcluded + algoExcluded;
+    const grandExcluded = reactExcluded + jsExcluded + tsExcluded + algoExcluded;
 
     return {
       grandTotal,
@@ -75,6 +85,9 @@ export const useHomeStats = (): HomeStats => {
       reactTotal,
       reactSolved,
       reactPct,
+      tsTotal,
+      tsSolved,
+      tsPct,
       jsTotal,
       jsSolved,
       jsPct,

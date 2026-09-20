@@ -23,9 +23,13 @@ import { Route as OpenTaskIdRouteImport } from './routes/open/$taskId'
 import { Route as ReactIndexRouteImport } from './routes/react/index'
 import { Route as ReactTaskIdRouteImport } from './routes/react/$taskId'
 import { Route as ReactFavoritesRouteImport } from './routes/react/favorites'
+import { Route as TypescriptIndexRouteImport } from './routes/typescript/index'
+import { Route as TypescriptTaskIdRouteImport } from './routes/typescript/$taskId'
+import { Route as TypescriptFavoritesRouteImport } from './routes/typescript/favorites'
 import { Route as OpenAlgorithmsTaskIdRouteImport } from './routes/open/algorithms/$taskId'
 import { Route as OpenJavascriptTaskIdRouteImport } from './routes/open/javascript/$taskId'
 import { Route as OpenReactTaskIdRouteImport } from './routes/open/react/$taskId'
+import { Route as OpenTypescriptTaskIdRouteImport } from './routes/open/typescript/$taskId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -97,6 +101,21 @@ const ReactFavoritesRoute = ReactFavoritesRouteImport.update({
   path: '/react/favorites',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TypescriptIndexRoute = TypescriptIndexRouteImport.update({
+  id: '/typescript/',
+  path: '/typescript/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TypescriptTaskIdRoute = TypescriptTaskIdRouteImport.update({
+  id: '/typescript/$taskId',
+  path: '/typescript/$taskId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TypescriptFavoritesRoute = TypescriptFavoritesRouteImport.update({
+  id: '/typescript/favorites',
+  path: '/typescript/favorites',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OpenAlgorithmsTaskIdRoute = OpenAlgorithmsTaskIdRouteImport.update({
   id: '/open/algorithms/$taskId',
   path: '/open/algorithms/$taskId',
@@ -112,6 +131,11 @@ const OpenReactTaskIdRoute = OpenReactTaskIdRouteImport.update({
   path: '/open/react/$taskId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OpenTypescriptTaskIdRoute = OpenTypescriptTaskIdRouteImport.update({
+  id: '/open/typescript/$taskId',
+  path: '/open/typescript/$taskId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -124,13 +148,17 @@ export interface FileRoutesByFullPath {
   '/open/$taskId': typeof OpenTaskIdRoute
   '/react/$taskId': typeof ReactTaskIdRoute
   '/react/favorites': typeof ReactFavoritesRoute
+  '/typescript/$taskId': typeof TypescriptTaskIdRoute
+  '/typescript/favorites': typeof TypescriptFavoritesRoute
   '/algorithms/': typeof AlgorithmsIndexRoute
   '/javascript/': typeof JavascriptIndexRoute
   '/open/': typeof OpenIndexRoute
   '/react/': typeof ReactIndexRoute
+  '/typescript/': typeof TypescriptIndexRoute
   '/open/algorithms/$taskId': typeof OpenAlgorithmsTaskIdRoute
   '/open/javascript/$taskId': typeof OpenJavascriptTaskIdRoute
   '/open/react/$taskId': typeof OpenReactTaskIdRoute
+  '/open/typescript/$taskId': typeof OpenTypescriptTaskIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -143,13 +171,17 @@ export interface FileRoutesByTo {
   '/open/$taskId': typeof OpenTaskIdRoute
   '/react/$taskId': typeof ReactTaskIdRoute
   '/react/favorites': typeof ReactFavoritesRoute
+  '/typescript/$taskId': typeof TypescriptTaskIdRoute
+  '/typescript/favorites': typeof TypescriptFavoritesRoute
   '/algorithms': typeof AlgorithmsIndexRoute
   '/javascript': typeof JavascriptIndexRoute
   '/open': typeof OpenIndexRoute
   '/react': typeof ReactIndexRoute
+  '/typescript': typeof TypescriptIndexRoute
   '/open/algorithms/$taskId': typeof OpenAlgorithmsTaskIdRoute
   '/open/javascript/$taskId': typeof OpenJavascriptTaskIdRoute
   '/open/react/$taskId': typeof OpenReactTaskIdRoute
+  '/open/typescript/$taskId': typeof OpenTypescriptTaskIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -163,13 +195,17 @@ export interface FileRoutesById {
   '/open/$taskId': typeof OpenTaskIdRoute
   '/react/$taskId': typeof ReactTaskIdRoute
   '/react/favorites': typeof ReactFavoritesRoute
+  '/typescript/$taskId': typeof TypescriptTaskIdRoute
+  '/typescript/favorites': typeof TypescriptFavoritesRoute
   '/algorithms/': typeof AlgorithmsIndexRoute
   '/javascript/': typeof JavascriptIndexRoute
   '/open/': typeof OpenIndexRoute
   '/react/': typeof ReactIndexRoute
+  '/typescript/': typeof TypescriptIndexRoute
   '/open/algorithms/$taskId': typeof OpenAlgorithmsTaskIdRoute
   '/open/javascript/$taskId': typeof OpenJavascriptTaskIdRoute
   '/open/react/$taskId': typeof OpenReactTaskIdRoute
+  '/open/typescript/$taskId': typeof OpenTypescriptTaskIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -184,13 +220,17 @@ export interface FileRouteTypes {
     | '/open/$taskId'
     | '/react/$taskId'
     | '/react/favorites'
+    | '/typescript/$taskId'
+    | '/typescript/favorites'
     | '/algorithms/'
     | '/javascript/'
     | '/open/'
     | '/react/'
+    | '/typescript/'
     | '/open/algorithms/$taskId'
     | '/open/javascript/$taskId'
     | '/open/react/$taskId'
+    | '/open/typescript/$taskId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -203,13 +243,17 @@ export interface FileRouteTypes {
     | '/open/$taskId'
     | '/react/$taskId'
     | '/react/favorites'
+    | '/typescript/$taskId'
+    | '/typescript/favorites'
     | '/algorithms'
     | '/javascript'
     | '/open'
     | '/react'
+    | '/typescript'
     | '/open/algorithms/$taskId'
     | '/open/javascript/$taskId'
     | '/open/react/$taskId'
+    | '/open/typescript/$taskId'
   id:
     | '__root__'
     | '/'
@@ -222,13 +266,17 @@ export interface FileRouteTypes {
     | '/open/$taskId'
     | '/react/$taskId'
     | '/react/favorites'
+    | '/typescript/$taskId'
+    | '/typescript/favorites'
     | '/algorithms/'
     | '/javascript/'
     | '/open/'
     | '/react/'
+    | '/typescript/'
     | '/open/algorithms/$taskId'
     | '/open/javascript/$taskId'
     | '/open/react/$taskId'
+    | '/open/typescript/$taskId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -242,13 +290,17 @@ export interface RootRouteChildren {
   OpenTaskIdRoute: typeof OpenTaskIdRoute
   ReactTaskIdRoute: typeof ReactTaskIdRoute
   ReactFavoritesRoute: typeof ReactFavoritesRoute
+  TypescriptTaskIdRoute: typeof TypescriptTaskIdRoute
+  TypescriptFavoritesRoute: typeof TypescriptFavoritesRoute
   AlgorithmsIndexRoute: typeof AlgorithmsIndexRoute
   JavascriptIndexRoute: typeof JavascriptIndexRoute
   OpenIndexRoute: typeof OpenIndexRoute
   ReactIndexRoute: typeof ReactIndexRoute
+  TypescriptIndexRoute: typeof TypescriptIndexRoute
   OpenAlgorithmsTaskIdRoute: typeof OpenAlgorithmsTaskIdRoute
   OpenJavascriptTaskIdRoute: typeof OpenJavascriptTaskIdRoute
   OpenReactTaskIdRoute: typeof OpenReactTaskIdRoute
+  OpenTypescriptTaskIdRoute: typeof OpenTypescriptTaskIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -351,6 +403,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReactFavoritesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/typescript/': {
+      id: '/typescript/'
+      path: '/typescript'
+      fullPath: '/typescript/'
+      preLoaderRoute: typeof TypescriptIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/typescript/$taskId': {
+      id: '/typescript/$taskId'
+      path: '/typescript/$taskId'
+      fullPath: '/typescript/$taskId'
+      preLoaderRoute: typeof TypescriptTaskIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/typescript/favorites': {
+      id: '/typescript/favorites'
+      path: '/typescript/favorites'
+      fullPath: '/typescript/favorites'
+      preLoaderRoute: typeof TypescriptFavoritesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/open/algorithms/$taskId': {
       id: '/open/algorithms/$taskId'
       path: '/open/algorithms/$taskId'
@@ -372,6 +445,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OpenReactTaskIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/open/typescript/$taskId': {
+      id: '/open/typescript/$taskId'
+      path: '/open/typescript/$taskId'
+      fullPath: '/open/typescript/$taskId'
+      preLoaderRoute: typeof OpenTypescriptTaskIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -386,13 +466,17 @@ const rootRouteChildren: RootRouteChildren = {
   OpenTaskIdRoute: OpenTaskIdRoute,
   ReactTaskIdRoute: ReactTaskIdRoute,
   ReactFavoritesRoute: ReactFavoritesRoute,
+  TypescriptTaskIdRoute: TypescriptTaskIdRoute,
+  TypescriptFavoritesRoute: TypescriptFavoritesRoute,
   AlgorithmsIndexRoute: AlgorithmsIndexRoute,
   JavascriptIndexRoute: JavascriptIndexRoute,
   OpenIndexRoute: OpenIndexRoute,
   ReactIndexRoute: ReactIndexRoute,
+  TypescriptIndexRoute: TypescriptIndexRoute,
   OpenAlgorithmsTaskIdRoute: OpenAlgorithmsTaskIdRoute,
   OpenJavascriptTaskIdRoute: OpenJavascriptTaskIdRoute,
   OpenReactTaskIdRoute: OpenReactTaskIdRoute,
+  OpenTypescriptTaskIdRoute: OpenTypescriptTaskIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

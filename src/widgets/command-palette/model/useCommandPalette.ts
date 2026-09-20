@@ -67,13 +67,7 @@ export const useCommandPalette = (): UseCommandPaletteReturn => {
     (task: Task) => {
       setIsOpen(false);
       setQuery("");
-      if (task.section === "javascript") {
-        navigate({ to: "/javascript/$taskId", params: { taskId: String(task.id) } });
-      } else if (task.section === "algorithms") {
-        navigate({ to: "/algorithms/$taskId", params: { taskId: String(task.id) } });
-      } else {
-        navigate({ to: "/react/$taskId", params: { taskId: String(task.id) } });
-      }
+      void navigate({ to: `/${task.section}/$taskId`, params: { taskId: String(task.id) } });
     },
     [navigate, setIsOpen, setQuery]
   );

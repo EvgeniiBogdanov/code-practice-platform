@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { clsx } from "clsx";
-import { Card, UiNumberScramble } from "@/shared/ui";
+import { Card, UiNumberScramble, Badge, type BadgeVariant, type BadgeSize } from "@/shared/ui";
 import styles from "./HomePage.module.css";
 
 export interface HomeSectionCardProps {
@@ -10,7 +10,9 @@ export interface HomeSectionCardProps {
   coverIcon: React.ReactNode;
   title: string;
   tagText: string;
-  tagClass: string;
+  tagVariant?: BadgeVariant;
+  tagClass?: string;
+  tagSize?: BadgeSize;
   description: string;
   tags: string[];
   solved: number;
@@ -26,7 +28,9 @@ export const HomeSectionCard = memo(
     coverIcon,
     title,
     tagText,
+    tagVariant = "gray",
     tagClass,
+    tagSize = "sm",
     description,
     tags,
     solved,
@@ -41,7 +45,14 @@ export const HomeSectionCard = memo(
         <div className={styles.cardBody}>
           <div className={styles.cardHeaderRow}>
             <h3 className={styles.cardTitle}>{title}</h3>
-            <span className={clsx(styles.cardTag, tagClass)}>{tagText}</span>
+            <Badge
+              variant={tagVariant}
+              size={tagSize}
+              uppercase={false}
+              className={tagClass}
+            >
+              {tagText}
+            </Badge>
           </div>
           <p className={styles.cardDesc}>{description}</p>
           <div className={styles.cardTags}>

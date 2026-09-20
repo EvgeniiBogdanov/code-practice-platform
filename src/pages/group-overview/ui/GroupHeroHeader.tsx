@@ -19,7 +19,7 @@ const getFolderColorVariant = (color?: string, section?: SectionType): AccentBut
     if (resolved !== "default") return resolved;
   }
   if (section === "javascript") return "amber";
-  if (section === "react") return "blue";
+  if (section === "react" || section === "typescript") return "blue";
   return "purple";
 };
 

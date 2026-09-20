@@ -6,6 +6,7 @@ export interface UIState {
   sidebarWidth: number;
   editorFontSize: number;
   editorWordWrap: boolean;
+  editorLinterEnabled: boolean;
   editorSplitRatio: number;
   visualizerSplitRatio: number;
   visualizerZoom: number;
@@ -37,6 +38,8 @@ export interface UIState {
   reactTsPracticeExpanded: boolean;
   lifecycleExpanded: boolean;
 
+  expandedTsGroups: Record<string, boolean>;
+  expandedTsSubgroups: Record<string, boolean>;
   expandedJsGroups: Record<string, boolean>;
   expandedJsSubgroups: Record<string, boolean>;
   expandedAlgoGroups: Record<string, boolean>;
@@ -58,6 +61,8 @@ export interface UIState {
   decreaseFontSize: () => void;
   setEditorWordWrap: (wrap: boolean | ((prev: boolean) => boolean)) => void;
   toggleEditorWordWrap: () => void;
+  setEditorLinterEnabled: (enabled: boolean | ((prev: boolean) => boolean)) => void;
+  toggleEditorLinterEnabled: () => void;
   setEditorSplitRatio: (ratio: number) => void;
   resetEditorSplitRatio: () => void;
   setVisualizerSplitRatio: (ratio: number) => void;
@@ -102,6 +107,12 @@ export interface UIState {
   setReactTsPracticeExpanded: (open: boolean | ((prev: boolean) => boolean)) => void;
   setLifecycleExpanded: (open: boolean | ((prev: boolean) => boolean)) => void;
   setAllReactCategoriesExpanded: (expanded: boolean) => void;
+  setExpandedTsGroups: (
+    updater: Record<string, boolean> | ((prev: Record<string, boolean>) => Record<string, boolean>)
+  ) => void;
+  setExpandedTsSubgroups: (
+    updater: Record<string, boolean> | ((prev: Record<string, boolean>) => Record<string, boolean>)
+  ) => void;
   setExpandedJsGroups: (
     updater: Record<string, boolean> | ((prev: Record<string, boolean>) => Record<string, boolean>)
   ) => void;
@@ -122,9 +133,11 @@ export interface UIState {
   setHideInteractiveAssistant: (
     hideInteractiveAssistant: boolean | ((prev: boolean) => boolean)
   ) => void;
-  collapseAllInCurrentSection: (section: "javascript" | "algorithms" | "react") => void;
+  collapseAllInCurrentSection: (
+    section: "javascript" | "typescript" | "algorithms" | "react"
+  ) => void;
   expandAllInCurrentSection: (
-    section: "javascript" | "algorithms" | "react",
+    section: "javascript" | "typescript" | "algorithms" | "react",
     allGroupNames?: string[]
   ) => void;
   resetUISettings: () => void;

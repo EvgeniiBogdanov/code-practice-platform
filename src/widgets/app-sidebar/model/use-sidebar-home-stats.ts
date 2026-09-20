@@ -4,6 +4,9 @@ import { useProgressStore, isTaskCompleted } from "@/entities/progress";
 import { useReviewStore } from "@/entities/review";
 
 export interface UseSidebarHomeStatsReturn {
+  completedTsTotal: number;
+  totalTs: number;
+  tsCompletionClass: string;
   completedJsTotal: number;
   completedReactTotal: number;
   completedAlgoTotal: number;
@@ -21,8 +24,8 @@ export const useSidebarHomeStats = (): UseSidebarHomeStatsReturn => {
 
   const { completedTotals, activeTotals } = useMemo(() => {
     const excludedSet = new Set(excludedTaskIds);
-    const completed = { javascript: 0, react: 0, algorithms: 0 };
-    const excluded = { javascript: 0, react: 0, algorithms: 0 };
+    const completed = { javascript: 0, typescript: 0, react: 0, algorithms: 0 };
+    const excluded = { javascript: 0, typescript: 0, react: 0, algorithms: 0 };
 
     excludedSet.forEach((taskId) => {
       const section = getTaskSectionById(taskId);
@@ -39,6 +42,7 @@ export const useSidebarHomeStats = (): UseSidebarHomeStatsReturn => {
 
     const active = {
       javascript: Math.max(0, CURRICULUM_COUNTS.javascript - excluded.javascript),
+      typescript: Math.max(0, CURRICULUM_COUNTS.typescript - excluded.typescript),
       react: Math.max(0, CURRICULUM_COUNTS.react - excluded.react),
       algorithms: Math.max(0, CURRICULUM_COUNTS.algorithms - excluded.algorithms),
     };
@@ -46,13 +50,18 @@ export const useSidebarHomeStats = (): UseSidebarHomeStatsReturn => {
     return { completedTotals: completed, activeTotals: active };
   }, [completedTasks, excludedTaskIds]);
 
-  const getCompletionClass = (section: "javascript" | "react" | "algorithms"): string => {
+  const getCompletionClass = (
+    section: "javascript" | "typescript" | "react" | "algorithms"
+  ): string => {
     return activeTotals[section] > 0 && completedTotals[section] === activeTotals[section]
       ? "completedGreen"
       : "";
   };
 
   return {
+    completedTsTotal: completedTotals.typescript,
+    totalTs: activeTotals.typescript,
+    tsCompletionClass: getCompletionClass("typescript"),
     completedJsTotal: completedTotals.javascript,
     completedReactTotal: completedTotals.react,
     completedAlgoTotal: completedTotals.algorithms,

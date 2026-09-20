@@ -263,6 +263,7 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
 
       const codeToRun = codeToExecute !== undefined ? codeToExecute : activeFile?.code || "";
       const result = await runNodeJsCode(codeToRun, {
+        filename: activeFile.name,
         onLog: (_newLog, allLogs) => setConsoleLogs(allLogs),
       });
 
@@ -270,7 +271,7 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
       setLastExecution({ durationMs: result.durationMs, exitCode: result.exitCode });
       setIsRunning(false);
     },
-    [isRunning, activeFile?.code]
+    [isRunning, activeFile?.code, activeFile.name]
   );
 
   const handleStopCode = useCallback(() => {

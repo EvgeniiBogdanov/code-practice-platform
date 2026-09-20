@@ -6,7 +6,7 @@ import { useReviewStore } from "@/entities/review";
 
 export interface SpacedRepetitionModalData {
   sectionName: string;
-  section: "javascript" | "react" | "algorithms" | "home";
+  section: "javascript" | "typescript" | "react" | "algorithms" | "home";
   taskList: Task[];
 }
 
@@ -15,8 +15,11 @@ export const useStatsModalData = (): SpacedRepetitionModalData => {
   const { tasks } = useAllTaskSections();
   const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
 
-  const activeSection = useMemo<"javascript" | "react" | "algorithms" | "home">(() => {
+  const activeSection = useMemo<
+    "javascript" | "typescript" | "react" | "algorithms" | "home"
+  >(() => {
     const p = location.pathname;
+    if (p.startsWith("/typescript") || p.startsWith("/open/typescript")) return "typescript";
     if (p.startsWith("/javascript")) return "javascript";
     if (p.startsWith("/react")) return "react";
     if (p.startsWith("/algorithms")) return "algorithms";
@@ -29,6 +32,13 @@ export const useStatsModalData = (): SpacedRepetitionModalData => {
   }, [tasks, excludedTaskIds]);
 
   return useMemo(() => {
+    if (activeSection === "typescript") {
+      return {
+        sectionName: "TypeScript",
+        section: "typescript",
+        taskList: activeTasks.filter((task) => task.section === "typescript"),
+      };
+    }
     if (activeSection === "javascript") {
       return {
         sectionName: "JavaScript",

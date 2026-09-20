@@ -1,11 +1,11 @@
 import React, { useCallback, useMemo } from "react";
-import { Code2, Brain, Flame, Wrench, Rocket, RotateCcw } from "lucide-react";
-import { getGroupMeta, getAlgoGroupMeta } from "@/entities/task/groups";
+import { Brain, Flame, Wrench, Rocket, RotateCcw } from "lucide-react";
+import { getScriptGroupMeta, getAlgoGroupMeta } from "@/entities/task";
 import type { SectionType, Task } from "@/entities/task/meta";
 import { useTaskSection } from "@/entities/task/catalog";
 import { useProgressStore, selectIsTaskCompleted, ProgressState } from "@/entities/progress";
 import { useReviewStore, isTaskDue, getGroupCompletionClass, ReviewItem } from "@/entities/review";
-import { JavaScriptIcon, ReactIcon } from "@/shared/ui";
+import { JavaScriptIcon, TypeScriptIcon, ReactIcon } from "@/shared/ui";
 import { GroupCardData } from "../ui/SectionGroupsGrid";
 import styles from "../ui/SectionOverviewPage.module.css";
 
@@ -39,9 +39,7 @@ export interface UseSectionOverviewReturn {
   isInitialized: boolean;
 }
 
-export const useSectionOverview = (
-  section: "javascript" | "react" | "algorithms"
-): UseSectionOverviewReturn => {
+export const useSectionOverview = (section: SectionType): UseSectionOverviewReturn => {
   const progressState = useProgressStore();
   const reviews = useReviewStore((state) => state.reviews);
   const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
@@ -65,6 +63,17 @@ export const useSectionOverview = (
         subtitle:
           "Комплексная практика JavaScript: замыкания, прототипы, Event Loop, промисы, асинхронные генераторы, структуры данных, манипуляции с DOM и чистые алгоритмические функции.",
         icon: React.createElement(JavaScriptIcon, { size: 24, className: styles.iconJs }),
+        tasks: sectionTasks,
+        badge: `${activeSectionTasks.length} задач`,
+      };
+    }
+    if (section === "typescript") {
+      return {
+        id: "typescript",
+        title: "TypeScript: от основ к практике",
+        subtitle:
+          "24 задачи по возрастанию сложности: аннотации, интерфейсы, обобщённые и служебные типы, преобразования типов и прикладные паттерны.",
+        icon: React.createElement(TypeScriptIcon, { size: 24, className: styles.iconTs }),
         tasks: sectionTasks,
         badge: `${activeSectionTasks.length} задач`,
       };
@@ -113,7 +122,7 @@ export const useSectionOverview = (
   }, [activeSectionTasks, sectionTasks.length, isSolved, reviews]);
 
   const groups = useMemo((): GroupCardData[] => {
-    if (section === "javascript") {
+    if (section === "javascript" || section === "typescript") {
       const groupsMap = new Map<string, Task[]>();
       sectionTasks.forEach((t) => {
         const g = t.group || "Общие";
@@ -131,7 +140,7 @@ export const useSectionOverview = (
           reviews,
           progressState.completedTasks
         );
-        const meta = getGroupMeta(name);
+        const meta = getScriptGroupMeta(name, section);
         return {
           id: name,
           groupId: `group-${name}`,
@@ -140,7 +149,7 @@ export const useSectionOverview = (
           tasks: activeGroupTasks,
           completedCount,
           completionClass,
-          firstTaskId: String(groupTasksList[0]?.id || "js-1"),
+          firstTaskId: String(groupTasksList[0]?.id || ""),
           color: meta.color,
         };
       });
@@ -195,7 +204,7 @@ export const useSectionOverview = (
         {
           id: "ts",
           name: "6. TypeScript: Паттерны типизации",
-          icon: React.createElement(Code2, { size: 18, color: "#3178c6" }),
+          icon: React.createElement(TypeScriptIcon, { size: 18 }),
           tasks: sectionTasks.filter((t) => t.category === "TypeScript: Паттерны типизации"),
           firstTaskId: "ts-1",
           color: "#3178c6",
@@ -203,7 +212,7 @@ export const useSectionOverview = (
         {
           id: "ts-practice",
           name: "7. TypeScript: Прикладные сценарии",
-          icon: React.createElement(Code2, { size: 18, color: "#10b981" }),
+          icon: React.createElement(TypeScriptIcon, { size: 18 }),
           tasks: sectionTasks.filter((t) => t.category === "TypeScript: Прикладные сценарии"),
           firstTaskId: "ts-practice-1",
           color: "#10b981",

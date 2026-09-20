@@ -158,6 +158,10 @@
   --accent-gray-border: rgba(164, 164, 162, 0.28);
 
   /* Section Colors */
+  --color-ts: #3178c6;
+  --color-ts-bg: rgba(49, 120, 198, 0.14);
+  --color-ts-border: rgba(49, 120, 198, 0.28);
+  --color-ts-contrast: #ffffff;
   --color-react: var(--accent-blue);
   --color-react-bg: var(--accent-blue-bg);
   --color-react-border: var(--accent-blue-border);
@@ -425,6 +429,10 @@
   --accent-gray-border: rgba(87, 96, 106, 0.24);
 
   /* Section Colors Light */
+  --color-ts: #3178c6;
+  --color-ts-bg: rgba(49, 120, 198, 0.1);
+  --color-ts-border: rgba(49, 120, 198, 0.28);
+  --color-ts-contrast: #ffffff;
   --color-react: var(--accent-blue);
   --color-react-bg: var(--accent-blue-bg);
   --color-react-border: var(--accent-blue-border);

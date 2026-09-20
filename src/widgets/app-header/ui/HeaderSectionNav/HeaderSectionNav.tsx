@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Code2, Brain } from "lucide-react";
 import { clsx } from "clsx";
-import { JavaScriptIcon, ReactIcon } from "@/shared/ui";
+import { JavaScriptIcon, TypeScriptIcon, ReactIcon } from "@/shared/ui";
 import styles from "./HeaderSectionNav.module.css";
 
 export interface HeaderSectionNavProps {
@@ -28,6 +28,14 @@ export const HeaderSectionNav = ({ className }: HeaderSectionNavProps) => {
       <Link to="/javascript" className={clsx(styles.navItem, isJs && styles.active)}>
         <JavaScriptIcon size={14} className={styles.iconJs} />
         <span>JavaScript</span>
+      </Link>
+
+      <Link
+        to="/typescript"
+        className={clsx(styles.navItem, pathname.startsWith("/typescript") && styles.active)}
+      >
+        <TypeScriptIcon size={14} className={styles.iconTs} />
+        <span>TypeScript</span>
       </Link>
 
       <Link to="/algorithms" className={clsx(styles.navItem, isAlgo && styles.active)}>

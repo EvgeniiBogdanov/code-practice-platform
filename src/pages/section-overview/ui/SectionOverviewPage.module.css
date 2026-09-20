@@ -333,3 +333,11 @@
     grid-template-columns: 1fr;
   }
 }
+
+.iconTs {
+  color: var(--color-ts);
+}
+
+.fill_typescript {
+  background: var(--color-ts);
+}

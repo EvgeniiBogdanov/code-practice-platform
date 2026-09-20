@@ -12,6 +12,7 @@ export interface SidebarFavoritesProps {
 
 const FAVORITES_ROUTES = {
   javascript: "/javascript/favorites",
+  typescript: "/typescript/favorites",
   react: "/react/favorites",
   algorithms: "/algorithms/favorites",
 } as const satisfies Record<SectionType, string>;

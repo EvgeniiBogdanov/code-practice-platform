@@ -30,10 +30,17 @@ export function getTaskFiles(
       : task.rawSolution || (typeof task.solution === "string" ? task.solution : "");
 
   const defaultName = task.filepath
-    ? task.filepath.split("/").pop() || (task.section === "react" ? "index.jsx" : "solution.js")
+    ? task.filepath.split("/").pop() ||
+      (task.section === "react"
+        ? "index.jsx"
+        : task.section === "typescript"
+          ? "solution.ts"
+          : "solution.js")
     : task.section === "react"
       ? "index.jsx"
-      : "solution.js";
+      : task.section === "typescript"
+        ? "solution.ts"
+        : "solution.js";
 
   if (!rawText) {
     return [

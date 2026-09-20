@@ -51,6 +51,7 @@ export const AppSidebar = ({ className }: AppSidebarProps): React.JSX.Element =>
   const displayedSidebarWidth = isResizing ? draftSidebarWidth : sidebarWidth;
 
   const activeSectionKey: "home" | SectionType = useMemo(() => {
+    if (pathname.startsWith("/typescript")) return "typescript";
     if (pathname.startsWith("/javascript")) return "javascript";
     if (pathname.startsWith("/algorithms")) return "algorithms";
     if (pathname.startsWith("/react")) return "react";
@@ -148,7 +149,9 @@ export const AppSidebar = ({ className }: AppSidebarProps): React.JSX.Element =>
                 key={activeSectionKey}
                 fallback={<SidebarListSkeleton section={activeSectionKey} />}
               >
-                {activeSectionKey === "javascript" && <SidebarJsList />}
+                {(activeSectionKey === "javascript" || activeSectionKey === "typescript") && (
+                  <SidebarJsList section={activeSectionKey} />
+                )}
                 {activeSectionKey === "algorithms" && <SidebarAlgoList />}
                 {activeSectionKey === "react" && <SidebarReactList />}
               </Suspense>

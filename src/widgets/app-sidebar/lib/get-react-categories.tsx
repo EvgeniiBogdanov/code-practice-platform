@@ -1,7 +1,8 @@
 import React from "react";
-import { Flame, Wrench, Rocket, Brain, Zap, RotateCcw } from "lucide-react";
+import { Flame, Wrench, Rocket, Brain, RotateCcw } from "lucide-react";
 import type { Task } from "@/entities/task/meta";
 import { UIState } from "@/entities/ui-state";
+import { TypeScriptIcon } from "@/shared/ui";
 import { ReactCategoryDef } from "../ui/SidebarReactCategoryItem";
 import styles from "../ui/SidebarReactList.module.css";
 
@@ -95,7 +96,7 @@ const CATEGORY_CONFIGS: CategoryConfig[] = [
     id: "ts",
     infoId: "group-ts",
     label: "TypeScript: Паттерны типизации",
-    icon: <Zap size={17} className={styles.iconZap} />,
+    icon: <TypeScriptIcon size={17} />,
     filter: (t) => t.category === "TypeScript: Паттерны типизации",
     getExpanded: (s) => s.reactTsExpanded,
     getToggle: (s) => (e) => {
@@ -110,7 +111,7 @@ const CATEGORY_CONFIGS: CategoryConfig[] = [
     id: "ts-practice",
     infoId: "group-ts-practice",
     label: "TypeScript: Прикладные сценарии",
-    icon: <Zap size={17} className={styles.iconZap} />,
+    icon: <TypeScriptIcon size={17} />,
     filter: (t) => t.category === "TypeScript: Прикладные сценарии",
     getExpanded: (s) => s.reactTsPracticeExpanded,
     getToggle: (s) => (e) => {

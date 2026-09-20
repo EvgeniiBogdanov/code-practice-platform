@@ -15,6 +15,7 @@ import { useEditorKeyHandlers } from "./useEditorKeyHandlers";
 import { useMultiCursor } from "./useMultiCursor";
 import { CodeEditorProps, CursorPosition, TypoInfo, MissingImportInfo } from "./types";
 import { getLanguageInfo } from "../lib/editor-utils";
+import { useTypeScriptDiagnostics } from "./use-typescript-diagnostics";
 
 const EMPTY_LINT_RESULT: LintResult = {
   problems: [],
@@ -36,7 +37,6 @@ export const useCodeEditor = ({
   readOnly = false,
   isFullscreen,
   onToggleFullscreen,
-  disableLinter = false,
 }: CodeEditorProps) => {
   const fontSize = useUIStore((state) => state.editorFontSize);
   const increaseFontSize = useUIStore((state) => state.increaseEditorFontSize);
@@ -45,6 +45,9 @@ export const useCodeEditor = ({
   const setWordWrap = useUIStore((state) => state.setEditorWordWrap);
   const toggleWordWrap = useUIStore((state) => state.toggleEditorWordWrap);
   const hideTooltips = useUIStore((state) => state.hideTooltips);
+  const isLinterEnabled = useUIStore((state) => state.editorLinterEnabled);
+  const setEditorLinterEnabled = useUIStore((state) => state.setEditorLinterEnabled);
+  const toggleEditorLinterEnabled = useUIStore((state) => state.toggleEditorLinterEnabled);
   const deferredCode = useDeferredValue(code);
   const deferredFiles = useDeferredValue(files);
 
@@ -64,6 +67,17 @@ export const useCodeEditor = ({
   const [cursorPos, setCursorPos] = useState<CursorPosition>({ line: 1, col: 1 });
   const [saveStatus, setSaveStatus] = useState<"saved" | "saving">("saved");
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleToggleLinter = useCallback(
+    (checked?: boolean) => {
+      if (typeof checked === "boolean") {
+        setEditorLinterEnabled(checked);
+      } else {
+        toggleEditorLinterEnabled();
+      }
+    },
+    [setEditorLinterEnabled, toggleEditorLinterEnabled]
+  );
 
   const history = useCodeHistory(code);
   const intelliSense = useIntelliSense(files, filepath);
@@ -144,13 +158,28 @@ export const useCodeEditor = ({
     return () => window.removeEventListener("keydown", handleGlobalKey);
   }, [handleFormat, effectiveFullscreen, toggleFullscreen, intelliSense, toggleWordWrap]);
 
+  const useCompiler = isLinterEnabled && filepath.endsWith(".ts");
+  const typeScriptAnalysis = useTypeScriptDiagnostics(
+    { code: deferredCode, filepath, files: deferredFiles },
+    useCompiler
+  );
   const lintResult = useMemo(() => {
-    if (disableLinter) {
+    if (!isLinterEnabled) {
       return EMPTY_LINT_RESULT;
     }
+    if (useCompiler) return typeScriptAnalysis.result ?? EMPTY_LINT_RESULT;
     return lintJavaScriptCode(deferredCode, { files: deferredFiles, filepath });
-  }, [disableLinter, deferredCode, deferredFiles, filepath]);
-  const isAnalysisPending = !disableLinter && (deferredCode !== code || deferredFiles !== files);
+  }, [
+    isLinterEnabled,
+    deferredCode,
+    deferredFiles,
+    filepath,
+    useCompiler,
+    typeScriptAnalysis.result,
+  ]);
+  const isAnalysisPending =
+    isLinterEnabled &&
+    (deferredCode !== code || deferredFiles !== files || typeScriptAnalysis.isPending);
 
   const activeTypo = useMemo((): TypoInfo | null => {
     if (lintResult.typoMap && lintResult.typoMap[cursorPos.line]) {
@@ -337,6 +366,8 @@ export const useCodeEditor = ({
     lineCount,
     langInfo,
     isScrolling,
+    isLinterEnabled,
+    handleToggleLinter,
     handleFormat,
     updateCursorCoords,
     handleScroll,

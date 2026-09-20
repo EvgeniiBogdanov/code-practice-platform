@@ -47,3 +47,7 @@
 .iconEditor {
   color: #34d399;
 }
+
+.iconTs {
+  color: var(--color-ts);
+}

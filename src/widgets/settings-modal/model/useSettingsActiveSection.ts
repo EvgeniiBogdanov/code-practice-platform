@@ -8,6 +8,7 @@ export function useSettingsActiveSection() {
 
   const activeSection = useMemo(() => {
     const path = location.pathname;
+    if (path.includes("/typescript")) return "typescript";
     if (path.includes("/javascript")) return "javascript";
     if (path.includes("/algorithms")) return "algorithms";
     if (path.includes("/react")) return "react";
@@ -16,6 +17,8 @@ export function useSettingsActiveSection() {
 
   const sectionName = useMemo(() => {
     switch (activeSection) {
+      case "typescript":
+        return "TypeScript";
       case "javascript":
         return "JavaScript";
       case "algorithms":
@@ -29,6 +32,8 @@ export function useSettingsActiveSection() {
 
   const currentSectionTasks = useMemo(() => {
     switch (activeSection) {
+      case "typescript":
+        return tasks.filter((task) => task.section === "typescript");
       case "javascript":
         return tasks.filter((task) => task.section === "javascript");
       case "algorithms":

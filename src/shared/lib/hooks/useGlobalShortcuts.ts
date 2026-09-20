@@ -77,12 +77,7 @@ export function useGlobalShortcuts({
           const nextTask = allTasksList[currentIdx + 1];
           const section = nextTask.section;
           navigate({
-            to:
-              section === "javascript"
-                ? "/javascript/$taskId"
-                : section === "algorithms"
-                  ? "/algorithms/$taskId"
-                  : "/react/$taskId",
+            to: `/${section}/$taskId`,
             params: { taskId: String(nextTask.id) },
             search: (prev) => prev,
           });
@@ -91,12 +86,7 @@ export function useGlobalShortcuts({
           const prevTask = allTasksList[currentIdx - 1];
           const section = prevTask.section;
           navigate({
-            to:
-              section === "javascript"
-                ? "/javascript/$taskId"
-                : section === "algorithms"
-                  ? "/algorithms/$taskId"
-                  : "/react/$taskId",
+            to: `/${section}/$taskId`,
             params: { taskId: String(prevTask.id) },
             search: (prev) => prev,
           });

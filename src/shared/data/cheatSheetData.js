@@ -1,4 +1,7 @@
+import { TYPESCRIPT_CHEAT_SHEETS } from "./typescript-cheat-sheets";
+
 export const CHEAT_SHEET_DATA = {
+  ...TYPESCRIPT_CHEAT_SHEETS,
   // === REACT SECTION ===
   hooks: [
     {
@@ -1081,6 +1084,17 @@ export const SECTION_CHEAT_SHEETS = {
     ],
     defaultCategory: "js_async",
   },
+  typescript: {
+    title: "Шпаргалка TypeScript",
+    categories: [
+      { id: "ts_basics", name: "Основы" },
+      { id: "ts_generics", name: "Обобщённые типы" },
+      { id: "ts_utilities", name: "Служебные типы" },
+      { id: "ts_transformations", name: "Преобразования" },
+      { id: "ts_patterns", name: "Прикладные паттерны" },
+    ],
+    defaultCategory: "ts_basics",
+  },
   algorithms: {
     title: "Шпаргалка по Алгоритмам",
     categories: [
@@ -1104,7 +1118,7 @@ export const SECTION_CHEAT_SHEETS = {
       { id: "hooks", name: "React Hooks" },
       { id: "js_async", name: "JavaScript Core" },
       { id: "algo_twopointers", name: "Алгоритмы" },
-      { id: "ts", name: "TypeScript" },
+      { id: "ts_basics", name: "TypeScript" },
     ],
     defaultCategory: "hooks",
   },
