@@ -8,9 +8,9 @@
 
 <br />
 
-<img width="1723" height="966" alt="Code Practice Platform Preview" src="https://github.com/user-attachments/assets/69d37608-a6b9-4952-8398-d3286575b0a4" />
+<img width="1536" height="1024" alt="Code Practice Platform Preview" src="https://github.com/user-attachments/assets/4f39e3d7-39f5-4053-8f5d-16c8d3189df2" />
 
-<br /><br />
+<br />
 
 [![Онлайн-версия](https://img.shields.io/badge/Открыть_в_браузере-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://code-practice-platform-omega.vercel.app/home)
 
