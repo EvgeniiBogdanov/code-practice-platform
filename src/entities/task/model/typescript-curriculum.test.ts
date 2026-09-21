@@ -5,7 +5,10 @@ import { getTaskById, getAdjacentTasks, searchTasks } from "./taskRegistry";
 import { getTaskSectionById, CURRICULUM_COUNTS } from "./curriculum-manifest";
 import { SECTIONS_LIST } from "./sectionsConfig";
 import { getTaskFiles, hasTaskVisualComponent } from "./taskFiles";
-import { getTypeScriptGroupMeta, TYPESCRIPT_GROUP_CONFIG } from "../curriculum/typescript/data/group-config";
+import {
+  getTypeScriptGroupMeta,
+  TYPESCRIPT_GROUP_CONFIG,
+} from "../curriculum/typescript/data/group-config";
 
 const titles = [
   "Первые аннотации",
@@ -115,7 +118,9 @@ describe("TypeScript curriculum", () => {
 
     // Verify expected semantic assignments
     expect(getTypeScriptGroupMeta("Основы типизации").color).toBe("var(--accent-blue)");
-    expect(getTypeScriptGroupMeta("Обобщённые и составные типы").color).toBe("var(--accent-purple)");
+    expect(getTypeScriptGroupMeta("Обобщённые и составные типы").color).toBe(
+      "var(--accent-purple)"
+    );
     expect(getTypeScriptGroupMeta("Служебные типы").color).toBe("var(--accent-orange)");
     expect(getTypeScriptGroupMeta("Преобразования типов").color).toBe("var(--accent-cyan)");
     expect(getTypeScriptGroupMeta("Прикладные паттерны").color).toBe("var(--accent-green)");
