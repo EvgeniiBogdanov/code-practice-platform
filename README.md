@@ -4,8 +4,6 @@
 
 <sub><span style="color:gray">version: 2.4.11</span></sub>
 
-### Интерактивная платформа для подготовки к техническим собеседованиям по фронтенду и алгоритмам
-
 <br />
 
 <img width="1536" height="1024" alt="Code Practice Platform Preview" src="https://github.com/user-attachments/assets/4f39e3d7-39f5-4053-8f5d-16c8d3189df2" />
