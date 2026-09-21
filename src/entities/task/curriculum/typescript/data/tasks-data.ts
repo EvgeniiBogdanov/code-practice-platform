@@ -1,52 +1,76 @@
 import type { Task } from "../../../types";
 import candidate1 from "../tasks/1_basics/01-first-annotations.ts?raw";
 import solution1 from "../solutions/1_basics/01-first-annotations.ts?raw";
+import explanation1 from "../explanations/1_basics/01-first-annotations.md?raw";
 import candidate2 from "../tasks/1_basics/02-tuple-values.ts?raw";
 import solution2 from "../solutions/1_basics/02-tuple-values.ts?raw";
+import explanation2 from "../explanations/1_basics/02-tuple-values.md?raw";
 import candidate3 from "../tasks/1_basics/03-optional-readonly-fields.ts?raw";
 import solution3 from "../solutions/1_basics/03-optional-readonly-fields.ts?raw";
+import explanation3 from "../explanations/1_basics/03-optional-readonly-fields.md?raw";
 import candidate4 from "../tasks/1_basics/04-user-role.ts?raw";
 import solution4 from "../solutions/1_basics/04-user-role.ts?raw";
+import explanation4 from "../explanations/1_basics/04-user-role.md?raw";
 import candidate5 from "../tasks/1_basics/05-type-narrowing.ts?raw";
 import solution5 from "../solutions/1_basics/05-type-narrowing.ts?raw";
+import explanation5 from "../explanations/1_basics/05-type-narrowing.md?raw";
 import candidate6 from "../tasks/1_basics/06-order-status.ts?raw";
 import solution6 from "../solutions/1_basics/06-order-status.ts?raw";
+import explanation6 from "../explanations/1_basics/06-order-status.md?raw";
 import candidate7 from "../tasks/2_generics_and_composition/07-indexed-value.ts?raw";
 import solution7 from "../solutions/2_generics_and_composition/07-indexed-value.ts?raw";
+import explanation7 from "../explanations/2_generics_and_composition/07-indexed-value.md?raw";
 import candidate8 from "../tasks/2_generics_and_composition/08-generic-object-access.ts?raw";
 import solution8 from "../solutions/2_generics_and_composition/08-generic-object-access.ts?raw";
+import explanation8 from "../explanations/2_generics_and_composition/08-generic-object-access.md?raw";
 import candidate9 from "../tasks/2_generics_and_composition/09-intersection-capabilities.ts?raw";
 import solution9 from "../solutions/2_generics_and_composition/09-intersection-capabilities.ts?raw";
+import explanation9 from "../explanations/2_generics_and_composition/09-intersection-capabilities.md?raw";
 import candidate10 from "../tasks/3_utility_types/10-pick-and-omit.ts?raw";
 import solution10 from "../solutions/3_utility_types/10-pick-and-omit.ts?raw";
+import explanation10 from "../explanations/3_utility_types/10-pick-and-omit.md?raw";
 import candidate11 from "../tasks/3_utility_types/11-stock-record.ts?raw";
 import solution11 from "../solutions/3_utility_types/11-stock-record.ts?raw";
+import explanation11 from "../explanations/3_utility_types/11-stock-record.md?raw";
 import candidate12 from "../tasks/3_utility_types/12-exclude-and-extract.ts?raw";
 import solution12 from "../solutions/3_utility_types/12-exclude-and-extract.ts?raw";
+import explanation12 from "../explanations/3_utility_types/12-exclude-and-extract.md?raw";
 import candidate13 from "../tasks/3_utility_types/13-validated-user.ts?raw";
 import solution13 from "../solutions/3_utility_types/13-validated-user.ts?raw";
+import explanation13 from "../explanations/3_utility_types/13-validated-user.md?raw";
 import candidate14 from "../tasks/3_utility_types/14-function-introspection.ts?raw";
 import solution14 from "../solutions/3_utility_types/14-function-introspection.ts?raw";
+import explanation14 from "../explanations/3_utility_types/14-function-introspection.md?raw";
 import candidate15 from "../tasks/4_type_transformations/15-typed-api-template.ts?raw";
 import solution15 from "../solutions/4_type_transformations/15-typed-api-template.ts?raw";
+import explanation15 from "../explanations/4_type_transformations/15-typed-api-template.md?raw";
 import candidate16 from "../tasks/4_type_transformations/16-conditional-element-type.ts?raw";
 import solution16 from "../solutions/4_type_transformations/16-conditional-element-type.ts?raw";
+import explanation16 from "../explanations/4_type_transformations/16-conditional-element-type.md?raw";
 import candidate17 from "../tasks/4_type_transformations/17-template-event-names.ts?raw";
 import solution17 from "../solutions/4_type_transformations/17-template-event-names.ts?raw";
+import explanation17 from "../explanations/4_type_transformations/17-template-event-names.md?raw";
 import candidate18 from "../tasks/4_type_transformations/18-discriminated-events.ts?raw";
 import solution18 from "../solutions/4_type_transformations/18-discriminated-events.ts?raw";
+import explanation18 from "../explanations/4_type_transformations/18-discriminated-events.md?raw";
 import candidate19 from "../tasks/5_application_patterns/19-fetch-comments.ts?raw";
 import solution19 from "../solutions/5_application_patterns/19-fetch-comments.ts?raw";
+import explanation19 from "../explanations/5_application_patterns/19-fetch-comments.md?raw";
 import candidate20 from "../tasks/5_application_patterns/20-employee-hierarchy.ts?raw";
 import solution20 from "../solutions/5_application_patterns/20-employee-hierarchy.ts?raw";
+import explanation20 from "../explanations/5_application_patterns/20-employee-hierarchy.md?raw";
 import candidate21 from "../tasks/5_application_patterns/21-element-overloads.ts?raw";
 import solution21 from "../solutions/5_application_patterns/21-element-overloads.ts?raw";
+import explanation21 from "../explanations/5_application_patterns/21-element-overloads.md?raw";
 import candidate22 from "../tasks/5_application_patterns/22-typed-event-emitter.ts?raw";
 import solution22 from "../solutions/5_application_patterns/22-typed-event-emitter.ts?raw";
+import explanation22 from "../explanations/5_application_patterns/22-typed-event-emitter.md?raw";
 import candidate23 from "../tasks/5_application_patterns/23-deep-partial-config.ts?raw";
 import solution23 from "../solutions/5_application_patterns/23-deep-partial-config.ts?raw";
+import explanation23 from "../explanations/5_application_patterns/23-deep-partial-config.md?raw";
 import candidate24 from "../tasks/5_application_patterns/24-branded-identifiers.ts?raw";
 import solution24 from "../solutions/5_application_patterns/24-branded-identifiers.ts?raw";
+import explanation24 from "../explanations/5_application_patterns/24-branded-identifiers.md?raw";
 
 export const TYPESCRIPT_TASKS: Task[] = [
 {
@@ -64,7 +88,7 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "isRaw": true,
   "filepath": "1_basics/01-first-annotations.ts",
-  "explanation": "## Разбор решения\n\nЯвные аннотации описывают допустимые значения переменных. Массив number[] содержит только числа. TypeScript уже выводит эти типы из инициализаторов, поэтому присваивание числа в userName ошибочно и без аннотации. Удалите или закомментируйте намеренно неверное присваивание после того, как увидите ошибку.",
+  "explanation": explanation1,
   "checklist": [
     "Переменные имеют типы string, number и boolean.",
     "scores принимает только числовые элементы; userName не принимает число.",
@@ -78,9 +102,14 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "articles": [
     {
-      "title": "TypeScript Handbook",
-      "url": "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html",
-      "urlTitle": "Официальная документация"
+      "title": "Аннотации примитивных типов: string, number, boolean",
+      "url": "https://metanit.com/web/typescript/2.5.php",
+      "urlTitle": "METANIT — типы данных"
+    },
+    {
+      "title": "Массивы чисел и запись number[]",
+      "url": "https://metanit.com/web/typescript/2.9.php",
+      "urlTitle": "METANIT — массивы"
     }
   ],
   "rawCandidate": candidate1,
@@ -99,7 +128,7 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "isRaw": true,
   "filepath": "1_basics/02-tuple-values.ts",
-  "explanation": "## Разбор решения\n\nКортеж задаёт тип каждой позиции и фиксированную структуру пары. Именованные элементы name и age помогают читать подсказки редактора. printEntry принимает этот кортеж и возвращает void, потому что только выводит данные.",
+  "explanation": explanation2,
   "checklist": [
     "Пара описана кортежем [string, number].",
     "Переставленные элементы и лишние значения не подходят под тип Entry.",
@@ -113,9 +142,14 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "articles": [
     {
-      "title": "TypeScript Handbook",
-      "url": "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html",
-      "urlTitle": "Официальная документация"
+      "title": "Кортеж: тип каждой позиции и фиксированная структура",
+      "url": "https://metanit.com/web/typescript/2.10.php",
+      "urlTitle": "METANIT — кортежи"
+    },
+    {
+      "title": "Типы параметров и результата функции",
+      "url": "https://scriptdev.ru/guide/020/",
+      "urlTitle": "ScriptDev — типизация функций"
     }
   ],
   "rawCandidate": candidate2,
@@ -135,7 +169,7 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "isRaw": true,
   "filepath": "1_basics/03-optional-readonly-fields.ts",
-  "explanation": "## Разбор решения\n\nЗнак ? делает middleName необязательным. Модификатор readonly запрещает присваивание person.id через этот тип. Это ограничение проверки типов: оно не замораживает объект во время выполнения.",
+  "explanation": explanation3,
   "checklist": [
     "middleName можно пропустить при создании Person.",
     "Присваивание нового id вызывает ошибку типов.",
@@ -149,9 +183,14 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "articles": [
     {
-      "title": "TypeScript Handbook",
-      "url": "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html",
-      "urlTitle": "Официальная документация"
+      "title": "Необязательные свойства интерфейса",
+      "url": "https://metanit.com/web/typescript/3.3.php",
+      "urlTitle": "METANIT — интерфейсы"
+    },
+    {
+      "title": "Ограничения readonly и отличие от const",
+      "url": "https://scriptdev.ru/guide/027/",
+      "urlTitle": "ScriptDev — модификатор readonly"
     }
   ],
   "rawCandidate": candidate3,
@@ -171,7 +210,7 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "isRaw": true,
   "filepath": "1_basics/04-user-role.ts",
-  "explanation": "## Разбор решения\n\nОбщие поля остаются в User, а UserWithRole расширяет его через extends. Литеральное объединение Role перечисляет допустимые значения и не допускает произвольную строку. Так общие поля не приходится дублировать.",
+  "explanation": explanation4,
   "checklist": [
     "UserWithRole переиспользует поля User.",
     "role принимает только admin или user.",
@@ -185,9 +224,14 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "articles": [
     {
-      "title": "TypeScript Handbook",
-      "url": "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html",
-      "urlTitle": "Официальная документация"
+      "title": "Расширение интерфейсов через extends",
+      "url": "https://metanit.com/web/typescript/3.3.php",
+      "urlTitle": "METANIT — интерфейсы"
+    },
+    {
+      "title": "Строковые литералы для конечного набора ролей",
+      "url": "https://scriptdev.ru/guide/018/",
+      "urlTitle": "ScriptDev — литеральные типы"
     }
   ],
   "rawCandidate": candidate4,
@@ -207,7 +251,7 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "isRaw": true,
   "filepath": "1_basics/05-type-narrowing.ts",
-  "explanation": "## Разбор решения\n\nПроверка typeof сужает string | number до string в первой ветке. После возврата в этой ветке оставшийся путь работает с number. Оба метода возвращают строку, поэтому возвращаемый тип функции — string.",
+  "explanation": explanation5,
   "checklist": [
     "Обрабатываются строковый и числовой аргументы.",
     "Методы вызываются только после сужения типа.",
@@ -221,9 +265,14 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "articles": [
     {
-      "title": "TypeScript Handbook",
-      "url": "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html",
-      "urlTitle": "Официальная документация"
+      "title": "Сужение типа через typeof и анализ веток",
+      "url": "https://scriptdev.ru/guide/036/",
+      "urlTitle": "ScriptDev — защитники типа"
+    },
+    {
+      "title": "Объединение string | number",
+      "url": "https://metanit.com/web/typescript/2.13.php",
+      "urlTitle": "METANIT — объединения union"
     }
   ],
   "rawCandidate": candidate5,
@@ -242,7 +291,7 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "isRaw": true,
   "filepath": "1_basics/06-order-status.ts",
-  "explanation": "## Разбор решения\n\nСтроковый enum задаёт именованный набор статусов и создаёт объект во время выполнения. Аннотация OrderStatus ограничивает параметры функции значениями перечисления. В отличие от type, обычный enum не исчезает полностью при компиляции.",
+  "explanation": explanation6,
   "checklist": [
     "Перечислены все четыре статуса заказа.",
     "changeStatus принимает OrderStatus и возвращает void.",
@@ -256,9 +305,14 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "articles": [
     {
-      "title": "TypeScript Handbook",
-      "url": "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html",
-      "urlTitle": "Официальная документация"
+      "title": "Перечисления и строковые значения статусов",
+      "url": "https://metanit.com/web/typescript/2.11.php",
+      "urlTitle": "METANIT — enum"
+    },
+    {
+      "title": "Литеральные типы и члены перечислений",
+      "url": "https://scriptdev.ru/guide/018/",
+      "urlTitle": "ScriptDev — строковые литералы и enum"
     }
   ],
   "rawCandidate": candidate6,
@@ -278,7 +332,7 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "isRaw": true,
   "filepath": "2_generics_and_composition/07-indexed-value.ts",
-  "explanation": "## Разбор решения\n\nПараметр T сохраняет структуру переданного значения, K ограничивается его ключами через keyof T. Возвращаемый тип T[K] связывает результат с выбранным ключом, поэтому a даёт number, а c — string.",
+  "explanation": explanation7,
   "checklist": [
     "Несуществующий ключ нельзя передать в getValue.",
     "Для разных ключей сохраняется точный тип результата.",
@@ -292,9 +346,14 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "articles": [
     {
-      "title": "TypeScript Handbook",
-      "url": "https://www.typescriptlang.org/docs/handbook/2/generics.html",
-      "urlTitle": "Официальная документация"
+      "title": "Связь ключа объекта и типа значения: keyof и T[K]",
+      "url": "https://scriptdev.ru/guide/042/",
+      "urlTitle": "ScriptDev — keyof и индексированный доступ"
+    },
+    {
+      "title": "Параметры типов и их вывод из аргументов",
+      "url": "https://metanit.com/web/typescript/3.5.php",
+      "urlTitle": "METANIT — обобщения"
     }
   ],
   "rawCandidate": candidate7,
@@ -314,7 +373,7 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "isRaw": true,
   "filepath": "2_generics_and_composition/08-generic-object-access.ts",
-  "explanation": "## Разбор решения\n\nДополнительное ограничение T extends object исключает примитивы из первого аргумента. Остальной контракт сохраняет связь ключа с типом свойства. Функция применима к разным объектам без ручного перечисления их полей.",
+  "explanation": explanation8,
   "checklist": [
     "Первый аргумент ограничен объектами.",
     "Новые структуры работают без изменения сигнатуры функции.",
@@ -328,9 +387,14 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "articles": [
     {
-      "title": "TypeScript Handbook",
-      "url": "https://www.typescriptlang.org/docs/handbook/2/generics.html",
-      "urlTitle": "Официальная документация"
+      "title": "Ограничения параметров типа через extends",
+      "url": "https://scriptdev.ru/guide/032/",
+      "urlTitle": "ScriptDev — обобщения и ограничения"
+    },
+    {
+      "title": "Типобезопасный доступ к свойству по ключу",
+      "url": "https://scriptdev.ru/guide/042/",
+      "urlTitle": "ScriptDev — keyof и T[K]"
     }
   ],
   "rawCandidate": candidate8,
@@ -349,7 +413,7 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "isRaw": true,
   "filepath": "2_generics_and_composition/09-intersection-capabilities.ts",
-  "explanation": "## Разбор решения\n\nПересечение Serializable & Loggable требует реализации обеих возможностей. Исходные интерфейсы остаются независимыми. Объект подходит под итоговый тип только при наличии serialize и log с правильными сигнатурами.",
+  "explanation": explanation9,
   "checklist": [
     "Итоговый тип построен пересечением интерфейсов.",
     "Объект реализует оба метода с указанными результатами.",
@@ -363,9 +427,14 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "articles": [
     {
-      "title": "TypeScript Handbook",
-      "url": "https://www.typescriptlang.org/docs/handbook/2/generics.html",
-      "urlTitle": "Официальная документация"
+      "title": "Пересечение требований и отличие от объединения",
+      "url": "https://scriptdev.ru/guide/016/",
+      "urlTitle": "ScriptDev — Union и Intersection"
+    },
+    {
+      "title": "Контракты объектов и сигнатуры методов",
+      "url": "https://metanit.com/web/typescript/3.3.php",
+      "urlTitle": "METANIT — интерфейсы"
     }
   ],
   "rawCandidate": candidate9,
@@ -384,7 +453,7 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "isRaw": true,
   "filepath": "3_utility_types/10-pick-and-omit.ts",
-  "explanation": "## Разбор решения\n\nOmit исключает password из публичной модели, а Pick выбирает name и password для формы. Оба типа выводятся из User и следуют изменениям его полей. Эти утилиты не удаляют свойства из реального объекта во время выполнения.",
+  "explanation": explanation10,
   "checklist": [
     "PublicUser не содержит password в контракте.",
     "RegistrationForm содержит только name и password.",
@@ -398,9 +467,14 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "articles": [
     {
-      "title": "TypeScript Handbook",
-      "url": "https://www.typescriptlang.org/docs/handbook/utility-types.html",
-      "urlTitle": "Официальная документация"
+      "title": "Выбор полей формы через Pick",
+      "url": "https://scriptdev.ru/guide/044/",
+      "urlTitle": "ScriptDev — утилита Pick"
+    },
+    {
+      "title": "Исключение полей модели через Omit",
+      "url": "https://scriptdev.ru/guide/045/",
+      "urlTitle": "ScriptDev — утилита Omit"
     }
   ],
   "rawCandidate": candidate10,
@@ -419,7 +493,7 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "isRaw": true,
   "filepath": "3_utility_types/11-stock-record.ts",
-  "explanation": "## Разбор решения\n\nRecord<string, number> описывает словарь с числовыми значениями. Оператор ?? подставляет ноль для ещё отсутствующего артикула. Такой тип не гарантирует, что конкретный ключ действительно присутствует в объекте.",
+  "explanation": explanation11,
   "checklist": [
     "Склад имеет строковые ключи и числовые значения.",
     "Новый артикул начинается с нуля, существующий увеличивается.",
@@ -433,9 +507,14 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "articles": [
     {
-      "title": "TypeScript Handbook",
-      "url": "https://www.typescriptlang.org/docs/handbook/utility-types.html",
-      "urlTitle": "Официальная документация"
+      "title": "Словарь со строковыми ключами через Record",
+      "url": "https://scriptdev.ru/guide/044/",
+      "urlTitle": "ScriptDev — утилита Record"
+    },
+    {
+      "title": "Начальное значение для отсутствующего артикула: ??",
+      "url": "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing",
+      "urlTitle": "MDN на русском — оператор нулевого слияния"
     }
   ],
   "rawCandidate": candidate11,
@@ -455,7 +534,7 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "isRaw": true,
   "filepath": "3_utility_types/12-exclude-and-extract.ts",
-  "explanation": "## Разбор решения\n\nExclude удаляет варианты из объединения, а Extract оставляет только совместимые варианты. Здесь операции применяются к строковым правам доступа, а не к полям объекта.",
+  "explanation": explanation12,
   "checklist": [
     "ActivePermission не допускает banned.",
     "WritePermission допускает только create и update.",
@@ -469,9 +548,14 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "articles": [
     {
-      "title": "TypeScript Handbook",
-      "url": "https://www.typescriptlang.org/docs/handbook/utility-types.html",
-      "urlTitle": "Официальная документация"
+      "title": "Фильтрация объединений через Exclude и Extract",
+      "url": "https://scriptdev.ru/guide/045/",
+      "urlTitle": "ScriptDev — Exclude и Extract"
+    },
+    {
+      "title": "Почему условный тип обрабатывает варианты объединения",
+      "url": "https://scriptdev.ru/guide/043/",
+      "urlTitle": "ScriptDev — условные типы"
     }
   ],
   "rawCandidate": candidate12,
@@ -490,7 +574,7 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "isRaw": true,
   "filepath": "3_utility_types/13-validated-user.ts",
-  "explanation": "## Разбор решения\n\nPartial<User> делает поля результата необязательными: каждое появляется только после своей проверки. Локальный newUser тоже получает этот тип, иначе пустой объект не позволяет добавлять поля. Возраст добавляется строго при age > 18, как указано в исходной задаче.",
+  "explanation": explanation13,
   "checklist": [
     "Пустое имя не попадает в результат.",
     "Возраст 18 и меньше не добавляется; остальные прошедшие проверки поля сохраняются.",
@@ -504,9 +588,14 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "articles": [
     {
-      "title": "TypeScript Handbook",
-      "url": "https://www.typescriptlang.org/docs/handbook/utility-types.html",
-      "urlTitle": "Официальная документация"
+      "title": "Частично заполненный объект через Partial",
+      "url": "https://scriptdev.ru/guide/044/",
+      "urlTitle": "ScriptDev — утилита Partial"
+    },
+    {
+      "title": "Обязательные и необязательные свойства пользователя",
+      "url": "https://metanit.com/web/typescript/3.3.php",
+      "urlTitle": "METANIT — свойства интерфейсов"
     }
   ],
   "rawCandidate": candidate13,
@@ -526,7 +615,7 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "isRaw": true,
   "filepath": "3_utility_types/14-function-introspection.ts",
-  "explanation": "## Разбор решения\n\ntypeof log получает тип функции. ReturnType извлекает её результат, Parameters строит кортеж параметров, а индекс 1 выбирает второй элемент. Полученные типы автоматически следуют изменениям сигнатуры log.",
+  "explanation": explanation14,
   "checklist": [
     "Возвращаемый тип получен через ReturnType.",
     "Тип второго параметра получен из Parameters по индексу 1.",
@@ -540,9 +629,14 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "articles": [
     {
-      "title": "TypeScript Handbook",
-      "url": "https://www.typescriptlang.org/docs/handbook/utility-types.html",
-      "urlTitle": "Официальная документация"
+      "title": "Извлечение результата и кортежа аргументов",
+      "url": "https://scriptdev.ru/guide/045/",
+      "urlTitle": "ScriptDev — ReturnType и Parameters"
+    },
+    {
+      "title": "Получение типа существующей функции через typeof",
+      "url": "https://scriptdev.ru/guide/017/",
+      "urlTitle": "ScriptDev — запросы типов"
     }
   ],
   "rawCandidate": candidate14,
@@ -562,7 +656,7 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "isRaw": true,
   "filepath": "4_type_transformations/15-typed-api-template.ts",
-  "explanation": "## Разбор решения\n\nПараметр K задаёт конечный набор имён endpoints. Отображаемый тип [P in K] создаёт по одному полю на каждый ключ. В отличие от словаря с произвольными строковыми ключами, такой контракт сохраняет обязательные имена методов конкретного API.",
+  "explanation": explanation15,
   "checklist": [
     "Для каждого API задан свой точный набор ключей.",
     "method ограничен допустимыми HTTP-методами.",
@@ -576,9 +670,14 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "articles": [
     {
-      "title": "TypeScript Handbook",
-      "url": "https://www.typescriptlang.org/docs/handbook/2/types-from-types.html",
-      "urlTitle": "Официальная документация"
+      "title": "Создание обязательных полей по набору ключей",
+      "url": "https://scriptdev.ru/guide/042/",
+      "urlTitle": "ScriptDev — отображаемые типы"
+    },
+    {
+      "title": "Record с конечным объединением ключей",
+      "url": "https://scriptdev.ru/guide/044/",
+      "urlTitle": "ScriptDev — утилита Record"
     }
   ],
   "rawCandidate": candidate15,
@@ -597,7 +696,7 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "isRaw": true,
   "filepath": "4_type_transformations/16-conditional-element-type.ts",
-  "explanation": "## Разбор решения\n\nУсловный тип проверяет, является ли T массивом. infer U вводит тип его элемента в истинной ветке; иначе возвращается исходный T. Для readonly-массивов условие можно расширить до readonly (infer U)[].",
+  "explanation": explanation16,
   "checklist": [
     "Из number[] извлекается number.",
     "Не являющийся массивом тип string остаётся string.",
@@ -611,9 +710,14 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "articles": [
     {
-      "title": "TypeScript Handbook",
-      "url": "https://www.typescriptlang.org/docs/handbook/2/types-from-types.html",
-      "urlTitle": "Официальная документация"
+      "title": "Извлечение части типа через условие и infer",
+      "url": "https://scriptdev.ru/guide/043/",
+      "urlTitle": "ScriptDev — условные типы и infer"
+    },
+    {
+      "title": "Получение типа элемента через индексированный доступ",
+      "url": "https://scriptdev.ru/guide/042/",
+      "urlTitle": "ScriptDev — Lookup Types"
     }
   ],
   "rawCandidate": candidate16,
@@ -632,7 +736,7 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "isRaw": true,
   "filepath": "4_type_transformations/17-template-event-names.ts",
-  "explanation": "## Разбор решения\n\nCapitalize преобразует первую букву каждого варианта EventName. Шаблонный строковый тип добавляет префикс on. Результат — конечное объединение onClick, onFocus и onHover, а не произвольная строка.",
+  "explanation": explanation17,
   "checklist": [
     "Имена обработчиков выводятся из EventName.",
     "Неверный регистр и неизвестные события отвергаются.",
@@ -646,9 +750,14 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "articles": [
     {
-      "title": "TypeScript Handbook",
-      "url": "https://www.typescriptlang.org/docs/handbook/2/types-from-types.html",
-      "urlTitle": "Официальная документация"
+      "title": "Построение строкового типа из объединения событий",
+      "url": "https://scriptdev.ru/guide/018/",
+      "urlTitle": "ScriptDev — шаблонные литеральные типы"
+    },
+    {
+      "title": "Изменение регистра строковых типов через Capitalize",
+      "url": "https://habr.com/ru/articles/730906/",
+      "urlTitle": "Хабр — утилиты строковых типов"
     }
   ],
   "rawCandidate": candidate17,
@@ -667,7 +776,7 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "isRaw": true,
   "filepath": "4_type_transformations/18-discriminated-events.ts",
-  "explanation": "## Разбор решения\n\nУ каждой формы события своё литеральное поле type. Проверка этого поля выбирает конкретный интерфейс, после чего доступны только его данные. Это позволяет описать допустимые сочетания полей без необязательных x, y и key в одном общем объекте.",
+  "explanation": explanation18,
   "checklist": [
     "click требует координаты, keypress требует key.",
     "В обработчике поля доступны после проверки type.",
@@ -681,9 +790,14 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "articles": [
     {
-      "title": "TypeScript Handbook",
-      "url": "https://www.typescriptlang.org/docs/handbook/2/types-from-types.html",
-      "urlTitle": "Официальная документация"
+      "title": "Связь поля type с формой события",
+      "url": "https://scriptdev.ru/guide/033/",
+      "urlTitle": "ScriptDev — дискриминантное объединение"
+    },
+    {
+      "title": "Как проверки сужают объектный тип в ветке",
+      "url": "https://scriptdev.ru/guide/036/",
+      "urlTitle": "ScriptDev — защитники типа"
     }
   ],
   "rawCandidate": candidate18,
@@ -702,7 +816,7 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "isRaw": true,
   "filepath": "5_application_patterns/19-fetch-comments.ts",
-  "explanation": "## Разбор решения\n\nФункция getData объявлена как async и возвращает Promise с массивом комментариев (Promise<Comment[]>). Статус ответа проверяется через response.ok до извлечения данных. Вызов response.json() возвращает разобранные данные, которые затем выводятся в консоль для каждого комментария в заданном формате.",
+  "explanation": explanation19,
   "checklist": [
     "Функция типизирована возвращаемым типом Promise<Comment[]>.",
     "Выполняется проверка успешности запроса через response.ok.",
@@ -717,9 +831,19 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "articles": [
     {
-      "title": "TypeScript Handbook",
-      "url": "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html",
-      "urlTitle": "Официальная документация"
+      "title": "HTTP-статус и чтение JSON из ответа",
+      "url": "https://learn.javascript.ru/fetch",
+      "urlTitle": "Современный учебник JavaScript — Fetch"
+    },
+    {
+      "title": "Ожидание промиса и ошибки асинхронной функции",
+      "url": "https://learn.javascript.ru/async-await",
+      "urlTitle": "Современный учебник JavaScript — async/await"
+    },
+    {
+      "title": "Проверка структуры внешних данных",
+      "url": "https://scriptdev.ru/guide/036/",
+      "urlTitle": "ScriptDev — защитники типа"
     }
   ],
   "rawCandidate": candidate19,
@@ -739,7 +863,7 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "isRaw": true,
   "filepath": "5_application_patterns/20-employee-hierarchy.ts",
-  "explanation": "## Разбор решения\n\nabstract запрещает создавать Employee напрямую и требует реализацию calculateBonus в конкретном наследнике. protected открывает salary самому классу и его наследникам. Параметры-свойства конструктора сокращают повторяющиеся объявления и присваивания.",
+  "explanation": explanation20,
   "checklist": [
     "Базовый класс абстрактный, salary защищено.",
     "Manager рассчитывает премию в размере 20% зарплаты.",
@@ -753,9 +877,14 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "articles": [
     {
-      "title": "TypeScript Handbook",
-      "url": "https://www.typescriptlang.org/docs/handbook/2/classes.html",
-      "urlTitle": "Официальная документация"
+      "title": "Обязательная реализация метода в наследнике",
+      "url": "https://metanit.com/web/typescript/3.12.php",
+      "urlTitle": "METANIT — абстрактные классы и методы"
+    },
+    {
+      "title": "Доступ к зарплате через protected",
+      "url": "https://metanit.com/web/typescript/3.4.php",
+      "urlTitle": "METANIT — модификаторы доступа"
     }
   ],
   "rawCandidate": candidate20,
@@ -774,7 +903,7 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "isRaw": true,
   "filepath": "5_application_patterns/21-element-overloads.ts",
-  "explanation": "## Разбор решения\n\nСначала объявляются специфичные перегрузки для img и a, затем общий строковый вариант. Реализация покрывает все допустимые случаи. Вызывающий код видит сигнатуры перегрузок и получает точный тип по переданному литералу.",
+  "explanation": explanation21,
   "checklist": [
     "img возвращает тип с src, a — с href.",
     "Общий тег возвращает базовый объект; реализация совместима со всеми перегрузками.",
@@ -788,9 +917,14 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "articles": [
     {
-      "title": "TypeScript Handbook",
-      "url": "https://www.typescriptlang.org/docs/handbook/2/classes.html",
-      "urlTitle": "Официальная документация"
+      "title": "Несколько сигнатур и одна реализация функции",
+      "url": "https://code-basics.com/ru/languages/typescript/lessons/function-overloads",
+      "urlTitle": "CodeBasics — перегрузка функций"
+    },
+    {
+      "title": "Контракт параметров и возвращаемого значения",
+      "url": "https://scriptdev.ru/guide/020/",
+      "urlTitle": "ScriptDev — типы функций"
     }
   ],
   "rawCandidate": candidate21,
@@ -811,7 +945,7 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "isRaw": true,
   "filepath": "5_application_patterns/22-typed-event-emitter.ts",
-  "explanation": "## Разбор решения\n\nКарта Events связывает каждое имя события с типом payload. on и emit используют один и тот же параметр K, сохраняя эту связь. Хранилище слушателей — отображаемый тип с необязательными массивами. Ограничение Events extends object принимает интерфейс EventMap без лишней строковой индексной сигнатуры.",
+  "explanation": explanation22,
   "checklist": [
     "Неизвестное событие и неверный payload не проходят типизацию.",
     "Подписчик получает точный тип данных своего события.",
@@ -825,9 +959,14 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "articles": [
     {
-      "title": "TypeScript Handbook",
-      "url": "https://www.typescriptlang.org/docs/handbook/2/classes.html",
-      "urlTitle": "Официальная документация"
+      "title": "Связь имени события с payload через keyof и T[K]",
+      "url": "https://scriptdev.ru/guide/042/",
+      "urlTitle": "ScriptDev — ключи и отображаемые типы"
+    },
+    {
+      "title": "Механика подписки, отправки событий и отписки",
+      "url": "https://learn.javascript.ru/mixins#eventmixin",
+      "urlTitle": "Современный учебник JavaScript — EventMixin"
     }
   ],
   "rawCandidate": candidate22,
@@ -847,7 +986,7 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "isRaw": true,
   "filepath": "5_application_patterns/23-deep-partial-config.ts",
-  "explanation": "## Разбор решения\n\nDeepPartial рекурсивно делает поля необязательными. Одного поверхностного spread недостаточно: обновление theme заменило бы весь вложенный объект. Поэтому updateConfig отдельно объединяет каждую известную ветку AppConfig, сохраняя остальные значения.",
+  "explanation": explanation23,
   "checklist": [
     "Можно передать частичное обновление на любой глубине.",
     "Неуказанные вложенные поля остаются в итоговой конфигурации.",
@@ -861,9 +1000,19 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "articles": [
     {
-      "title": "TypeScript Handbook",
-      "url": "https://www.typescriptlang.org/docs/handbook/2/classes.html",
-      "urlTitle": "Официальная документация"
+      "title": "Условное преобразование вложенного типа",
+      "url": "https://scriptdev.ru/guide/043/",
+      "urlTitle": "ScriptDev — условные типы"
+    },
+    {
+      "title": "Обход свойств типа и изменение их обязательности",
+      "url": "https://scriptdev.ru/guide/042/",
+      "urlTitle": "ScriptDev — отображаемые типы"
+    },
+    {
+      "title": "Поверхностное копирование и вложенные объекты",
+      "url": "https://learn.javascript.ru/object-copy",
+      "urlTitle": "Современный учебник JavaScript — копирование объектов"
     }
   ],
   "rawCandidate": candidate23,
@@ -883,7 +1032,7 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "isRaw": true,
   "filepath": "5_application_patterns/24-branded-identifiers.ts",
-  "explanation": "## Разбор решения\n\nBrand добавляет к строке различающий признак на уровне типов. UserId и OrderId перестают быть взаимозаменяемыми, хотя при выполнении оба остаются строками. Утверждение типа сосредоточено в функциях создания; при необходимости именно там проверяют формат идентификатора.",
+  "explanation": explanation24,
   "checklist": [
     "UserId и OrderId имеют разные бренды.",
     "Функции принимают только идентификатор нужного вида.",
@@ -897,9 +1046,14 @@ export const TYPESCRIPT_TASKS: Task[] = [
   ],
   "articles": [
     {
-      "title": "TypeScript Handbook",
-      "url": "https://www.typescriptlang.org/docs/handbook/2/classes.html",
-      "urlTitle": "Официальная документация"
+      "title": "Брендированные идентификаторы и моделирование бизнес-ограничений",
+      "url": "https://habr.com/ru/companies/lanit/articles/908642/",
+      "urlTitle": "Хабр — практическое применение branded types"
+    },
+    {
+      "title": "Что утверждение типа делает и чего не проверяет",
+      "url": "https://scriptdev.ru/guide/035/",
+      "urlTitle": "ScriptDev — утверждение типов"
     }
   ],
   "rawCandidate": candidate24,

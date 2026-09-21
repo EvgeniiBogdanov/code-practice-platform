@@ -140,11 +140,7 @@ export const EditorToolbar = memo(
 
           {onToggleLinter && typeof isLinterEnabled === "boolean" && (
             <Tooltip
-              content={
-                isLinterEnabled
-                  ? "Выключить проверку ошибок"
-                  : "Включить проверку ошибок"
-              }
+              content={isLinterEnabled ? "Выключить проверку ошибок" : "Включить проверку ошибок"}
               side="bottom"
             >
               <div className={styles.linterSwitchWrapper}>

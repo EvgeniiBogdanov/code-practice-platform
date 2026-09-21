@@ -1,11 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { ArrowDown } from "lucide-react";
 import { clsx } from "clsx";
-import {
-  Task,
-  getTaskFiles,
-  hasTaskVisualComponent,
-} from "@/entities/task";
+import { Task, getTaskFiles, hasTaskVisualComponent } from "@/entities/task";
 import {
   getUserSolution,
   getUserSolutionSync,

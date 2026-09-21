@@ -45,12 +45,7 @@ export const HomeSectionCard = memo(
         <div className={styles.cardBody}>
           <div className={styles.cardHeaderRow}>
             <h3 className={styles.cardTitle}>{title}</h3>
-            <Badge
-              variant={tagVariant}
-              size={tagSize}
-              uppercase={false}
-              className={tagClass}
-            >
+            <Badge variant={tagVariant} size={tagSize} uppercase={false} className={tagClass}>
               {tagText}
             </Badge>
           </div>
