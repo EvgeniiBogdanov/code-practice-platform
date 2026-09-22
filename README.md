@@ -10,7 +10,9 @@
 
 <br />
 
-[![Онлайн-версия](https://img.shields.io/badge/Открыть_в_браузере-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://code-practice-platform-omega.vercel.app/home)
+[![Онлайн-версия](https://img.shields.io/badge/Ссылка_1-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://code-practice-platform-omega.vercel.app/home)
+
+[![Онлайн-версия](https://img.shields.io/badge/Ссылка_2-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://evgeniibogdanov.github.io/code-practice-platform/)
 
 <br />
 
