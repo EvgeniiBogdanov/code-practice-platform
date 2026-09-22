@@ -204,9 +204,10 @@ npm run build
 
 <div align="center">
 
-## 👤 Автор
+## 👤 Контакты:
 
-**Евгений Богданов** — [GitHub профиль](https://github.com/EvgeniiBogdanov)
+[GitHub профиль](https://github.com/EvgeniiBogdanov)
+[Telegram](https://t.me/johnbeelow)
 
 <br />
 
