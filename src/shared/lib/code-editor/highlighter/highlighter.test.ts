@@ -103,6 +103,75 @@ describe("codeHighlighter - HTML", () => {
 });
 
 describe("codeHighlighter - Unified Dispatcher", () => {
+  it("shows multi-selection on property names without selecting their dots", () => {
+    const code = "obj.name + other.name";
+    const first = code.indexOf("name");
+    const second = code.lastIndexOf("name");
+    const result = highlightJS(code, {
+      multiSelections: [
+        { start: first, end: first + 4 },
+        { start: second, end: second + 4 },
+      ],
+    });
+
+    expect(result.match(/class="hl-prop hl-multi-selected">name<\/span>/g)).toHaveLength(2);
+    expect(result).not.toContain('class="hl-punct hl-multi-selected">.</span>');
+  });
+
+  it("shows selections on JSX tag names and punctuation", () => {
+    const code = "<div></div>";
+    const result = highlightJS(code, {
+      multiSelections: [
+        { start: 1, end: 4 },
+        { start: 7, end: 10 },
+      ],
+    });
+    expect(result.match(/class="hl-tag hl-multi-selected">div<\/span>/g)).toHaveLength(2);
+  });
+
+  it("shows selections in CSS dimension units", () => {
+    const code = "gap: 12px;";
+    const result = highlightCSS(code, { multiSelections: [{ start: 7, end: 9 }] });
+    expect(result).toContain('class="hl-css-unit hl-multi-selected">px</span>');
+    expect(result).not.toContain('class="hl-num hl-multi-selected">12</span>');
+  });
+
+  it("shows selections in HTML tags and embedded JavaScript at source offsets", () => {
+    const code = "<div><script>obj.name</script></div>";
+    const result = highlightHTML(code, {
+      multiSelections: [
+        { start: 1, end: 4 },
+        { start: code.indexOf("name"), end: code.indexOf("name") + 4 },
+        { start: code.lastIndexOf("div"), end: code.lastIndexOf("div") + 3 },
+      ],
+    });
+    expect(result.match(/class="hl-tag hl-multi-selected">div<\/span>/g)).toHaveLength(2);
+    expect(result).toContain('class="hl-prop hl-multi-selected">name</span>');
+  });
+
+  it("shows selections in embedded CSS at source offsets", () => {
+    const code = "<style>.box { color: red; }</style>";
+    const start = code.indexOf("color");
+    const result = highlightHTML(code, {
+      multiSelections: [{ start, end: start + 5 }],
+    });
+    expect(result).toContain('class="hl-css-prop hl-multi-selected">color</span>');
+  });
+
+  it("shows selections in plain text files", () => {
+    const code = "name name";
+    expect(
+      highlightCode(code, "text", {
+        multiSelections: [
+          { start: 0, end: 4 },
+          { start: 5, end: 9 },
+        ],
+      })
+    ).toBe(
+      '<span class="hl-multi-selected">name</span> <span class="hl-multi-selected">name</span>'
+    );
+  });
+
   it("routes .css files to CSS highlighter", () => {
     const css = `.timer { font-size: 24px; }`;
     const result = highlightCode(css, "App.css");

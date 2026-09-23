@@ -1,4 +1,5 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
+import { getAutoCloseTagEdit } from "@/shared/lib/code-editor";
 import {
   TextRange,
   findWordAtPosition,
@@ -43,8 +44,9 @@ export interface MultiCursorState {
   ) => boolean;
 }
 
-export function useMultiCursor(): MultiCursorState {
+export function useMultiCursor(filepath = "main.jsx"): MultiCursorState {
   const [selections, setSelections] = useState<TextRange[]>([]);
+  const wholeWordRef = useRef(false);
 
   const addNextMatch = useCallback(
     (
@@ -57,6 +59,7 @@ export function useMultiCursor(): MultiCursorState {
       if (currentStart === currentEnd) {
         const wordInfo = findWordAtPosition(code, currentStart);
         if (wordInfo) {
+          wholeWordRef.current = true;
           const initialSelection = [{ start: wordInfo.start, end: wordInfo.end }];
           setSelections(initialSelection);
           if (textarea) {
@@ -68,10 +71,15 @@ export function useMultiCursor(): MultiCursorState {
 
       // Case 2: Text is already selected -> Find and add next match
       const selectedText = code.substring(currentStart, currentEnd);
-      const currentList =
-        selections.length > 0 ? selections : [{ start: currentStart, end: currentEnd }];
+      const continuesSelection = selections.some(
+        (selection) => selection.start === currentStart && selection.end === currentEnd
+      );
+      if (!continuesSelection) wholeWordRef.current = false;
+      const currentList = continuesSelection
+        ? selections
+        : [{ start: currentStart, end: currentEnd }];
 
-      const next = findNextMatch(code, selectedText, currentList);
+      const next = findNextMatch(code, selectedText, currentList, true, wholeWordRef.current);
       if (next) {
         const updated = [...currentList, next];
         setSelections(updated);
@@ -91,18 +99,25 @@ export function useMultiCursor(): MultiCursorState {
       textarea?: HTMLTextAreaElement | null
     ): void => {
       let targetText = "";
+      let wholeWord = false;
       if (currentStart === currentEnd) {
         const wordInfo = findWordAtPosition(code, currentStart);
         if (wordInfo) {
           targetText = wordInfo.word;
+          wholeWord = true;
         }
       } else {
         targetText = code.substring(currentStart, currentEnd);
+        wholeWord =
+          wholeWordRef.current &&
+          selections.some(
+            (selection) => selection.start === currentStart && selection.end === currentEnd
+          );
       }
 
       if (!targetText) return;
 
-      const all = findAllMatches(code, targetText);
+      const all = findAllMatches(code, targetText, true, wholeWord);
       if (all.length > 0) {
         setSelections(all);
         if (textarea) {
@@ -111,7 +126,7 @@ export function useMultiCursor(): MultiCursorState {
         }
       }
     },
-    []
+    [selections]
   );
 
   const undoLastSelection = useCallback((): void => {
@@ -119,6 +134,7 @@ export function useMultiCursor(): MultiCursorState {
   }, []);
 
   const clearSelections = useCallback((): void => {
+    wholeWordRef.current = false;
     setSelections([]);
   }, []);
 
@@ -209,6 +225,19 @@ export function useMultiCursor(): MultiCursorState {
       if (!e.ctrlKey && !e.metaKey && !e.altKey && e.key.length === 1) {
         e.preventDefault();
         const res = applyMultiTextInsert(code, selections, e.key);
+        if (e.key === ">") {
+          for (const cursor of [...res.newSelections].sort((a, b) => b.start - a.start)) {
+            const edit = getAutoCloseTagEdit(res.newCode, cursor.start, filepath);
+            if (!edit) continue;
+            const added = edit.newCode.length - res.newCode.length;
+            res.newCode = edit.newCode;
+            res.newSelections = res.newSelections.map((selection) =>
+              selection.start > cursor.start
+                ? { start: selection.start + added, end: selection.end + added }
+                : selection
+            );
+          }
+        }
         if (res.changed) {
           onChange(res.newCode);
           const cursor = res.newSelections[res.newSelections.length - 1]?.start || 0;
@@ -223,7 +252,7 @@ export function useMultiCursor(): MultiCursorState {
 
       return false;
     },
-    [selections]
+    [selections, filepath]
   );
 
   const handleMultiPaste = useCallback(

@@ -27,6 +27,14 @@ describe("multi-cursor-operations", () => {
       expect(findWordAtPosition(code, 6)).toBeNull(); // middle of 3 spaces
       expect(findWordAtPosition(code, 14)).toBeNull(); // on "="
     });
+
+    it("finds non-Latin words", () => {
+      expect(findWordAtPosition("имя + объект.имя", 1)).toEqual({
+        start: 0,
+        end: 3,
+        word: "имя",
+      });
+    });
   });
 
   describe("findAllMatches", () => {
@@ -43,6 +51,15 @@ describe("multi-cursor-operations", () => {
     it("returns empty array when target not found", () => {
       const code = "const a = 1;";
       expect(findAllMatches(code, "xyz")).toEqual([]);
+    });
+
+    it("matches whole words including properties without matching identifier fragments", () => {
+      const code = "name + obj.name + username + Name + other.name";
+      expect(findAllMatches(code, "name", true, true)).toEqual([
+        { start: 0, end: 4 },
+        { start: 11, end: 15 },
+        { start: 42, end: 46 },
+      ]);
     });
   });
 
@@ -89,6 +106,18 @@ describe("multi-cursor-operations", () => {
         { start: 16, end: 20 },
       ];
       expect(findNextMatch(code, "item", allSelected)).toBeNull();
+    });
+
+    it("continues after the active selection when matches have wrapped", () => {
+      const wrappedSelections = [
+        { start: 14, end: 18 },
+        { start: 21, end: 25 },
+        { start: 0, end: 4 },
+      ];
+      expect(findNextMatch("item | item | item | item", "item", wrappedSelections)).toEqual({
+        start: 7,
+        end: 11,
+      });
     });
   });
 

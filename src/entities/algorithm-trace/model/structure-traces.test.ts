@@ -131,6 +131,17 @@ it("retains independent graph snapshots and real next pointers", () => {
   expect(branches.some((step) => step.title === "Возврат · отменяем выбор")).toBe(true);
 });
 
+it("records orange source scanning before the BFS wave", () => {
+  const steps = trace("algo30", "[[2,1],[0,1]]");
+  const source = steps.find((step) => step.line === "queue.push([r, c])")!;
+  expect(source.panels![0].entries.map((entry) => entry.value)).toEqual(["0,0"]);
+  const counts = steps
+    .filter((step) => step.line === "freshCount += 1")
+    .map((step) => step.panels![1].entries[1].value);
+  expect(counts).toEqual(["Свежих: 1", "Свежих: 2"]);
+  expect(steps.at(-1)!.result).toBe(2);
+});
+
 it("bounds worst-case permitted decision trees and validates edge endpoints", () => {
   for (const [id, input, parameter] of [
     ["algo31", "1,2,3,4,5", ""],
@@ -206,10 +217,16 @@ it("records explicit immutable before/after stack operations", () => {
   expect(steps[0].structure!.stacks![0].values).toEqual([]);
   expect(steps.at(-1)!.structure!.stackAction).toBeUndefined();
   const min = trace("algo19", '[["push",3],["push",1],["pop"],["getMin"]]');
-  const pop = min.find((step) => step.structure?.stackAction?.kind === "pop")!;
-  expect(pop.structure!.stackAction!.before.map((stack) => stack.values)).toEqual([
+  const pops = min.filter((step) => step.structure?.stackAction?.kind === "pop");
+  expect(pops).toHaveLength(2);
+  expect(pops[0].structure!.stackAction!.before.map((stack) => stack.values)).toEqual([
     [3, 1],
     [3, 1],
   ]);
-  expect(pop.structure!.stacks!.map((stack) => stack.values)).toEqual([[3], [3]]);
+  expect(pops[0].structure!.stacks!.map((stack) => stack.values)).toEqual([[3], [3, 1]]);
+  expect(pops[1].structure!.stackAction!.before.map((stack) => stack.values)).toEqual([
+    [3],
+    [3, 1],
+  ]);
+  expect(pops[1].structure!.stacks!.map((stack) => stack.values)).toEqual([[3], [3]]);
 });

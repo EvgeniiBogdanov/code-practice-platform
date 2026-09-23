@@ -1,6 +1,9 @@
 import React, { useState, useMemo, useRef, useEffect, useCallback, useDeferredValue } from "react";
 import {
   highlightCode,
+  getAutoCloseTagEdit,
+  getLanguageId,
+  getLanguageCapabilities,
   lintJavaScriptCode,
   formatJavaScriptCode,
   fixTypoInCode,
@@ -82,7 +85,7 @@ export const useCodeEditor = ({
   const history = useCodeHistory(code);
   const intelliSense = useIntelliSense(files, filepath);
   const hoverSignatures = useHoverSignatures(filepath);
-  const multiCursor = useMultiCursor();
+  const multiCursor = useMultiCursor(filepath);
 
   const handleFormat = useCallback(async () => {
     if (!code || readOnly) return;
@@ -158,7 +161,8 @@ export const useCodeEditor = ({
     return () => window.removeEventListener("keydown", handleGlobalKey);
   }, [handleFormat, effectiveFullscreen, toggleFullscreen, intelliSense, toggleWordWrap]);
 
-  const useCompiler = isLinterEnabled && filepath.endsWith(".ts");
+  const useCompiler =
+    isLinterEnabled && getLanguageCapabilities(getLanguageId(filepath)).supportsTypeScript;
   const typeScriptAnalysis = useTypeScriptDiagnostics(
     { code: deferredCode, filepath, files: deferredFiles },
     useCompiler
@@ -271,8 +275,21 @@ export const useCodeEditor = ({
   }, []);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const val = e.target.value;
-    const pos = e.target.selectionStart;
+    if (readOnly) return;
+    let val = e.target.value;
+    let pos = e.target.selectionStart;
+    const input = e.nativeEvent;
+    const isTyping =
+      input instanceof InputEvent && !input.isComposing && input.inputType === "insertText";
+    if (isTyping && input.data === ">") {
+      const edit = getAutoCloseTagEdit(val, pos, filepath);
+      if (edit) {
+        val = edit.newCode;
+        pos = edit.newCursor;
+        e.target.value = val;
+        e.target.setSelectionRange(pos, pos);
+      }
+    }
     onChange(val);
     history.pushHistory(val, pos);
     updateCursorCoords();

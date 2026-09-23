@@ -38,12 +38,19 @@ const buildSearchTrace = (
   }));
   add("let left", "Начальный диапазон", "Ответ ищем внутри включительных границ left и right.");
   while (left <= right) {
+    add("while (left <= right)", "Проверяем диапазон", `Ищем между индексами ${left} и ${right}.`);
     mid = Math.floor(left + (right - left) / 2);
     decision = `nums[${mid}] = ${values[mid]}`;
     add("const mid", "Проверяем середину", `mid = ${mid}; сравниваем ${values[mid]} с ${target}.`, {
       focus: [mid],
       formula: `${left} + ⌊(${right} − ${left}) / 2⌋ = ${mid}`,
     });
+    if (values[mid] !== target)
+      add(
+        "if (nums[mid] === target) return mid",
+        "Проверяем совпадение",
+        `${values[mid]} ≠ ${target}; поиск продолжается.`
+      );
     if (values[mid] === target) {
       add("if (nums[mid] === target) return mid", "Значение найдено", `Индекс ${mid}.`, {
         result: mid,
@@ -57,6 +64,11 @@ const buildSearchTrace = (
       const leftSorted = values[left] <= values[mid];
       decision = leftSorted ? "Левая половина отсортирована" : "Правая половина отсортирована";
       add("const leftHalfSorted", "Находим упорядоченную половину", decision);
+      add(
+        leftSorted ? "if (leftHalfSorted)" : "if (!leftHalfSorted)",
+        "Выбираем половину",
+        decision
+      );
       moveLeft = leftSorted
         ? !(values[left] <= target && target < values[mid])
         : values[mid] < target && target <= values[right];
@@ -65,6 +77,17 @@ const buildSearchTrace = (
         leftSorted ? "const targetInLeftHalf" : "const targetInRightHalf",
         "Проверяем границы половины",
         `Следующий диапазон: ${moveLeft ? "справа" : "слева"} от mid.`
+      );
+    } else {
+      add(
+        "const isSmaller = nums[mid] < target",
+        "Сравниваем с целью",
+        `${values[mid]} ${moveLeft ? "<" : ">"} ${target}.`
+      );
+      add(
+        moveLeft ? "if (isSmaller)" : "if (!isSmaller)",
+        "Выбираем сторону",
+        moveLeft ? "Цель находится правее mid." : "Цель находится левее mid."
       );
     }
     decision = moveLeft ? `Исключаем индексы ${left}…${mid}` : `Исключаем индексы ${mid}…${right}`;
@@ -127,6 +150,7 @@ export const buildFirstBadTrace = ({
     `Всего версий: ${values.length}. Плохие версии образуют непрерывный суффикс. firstBad задаёт поведение тестового API.`
   );
   while (left < right) {
+    add("while (left < right)", "Проверяем границы версий", `Остаются версии ${left}…${right}.`);
     mid = Math.floor(left + (right - left) / 2);
     add("const mid", "Выбираем версию", `Проверим версию ${mid}; её индекс на сцене ${mid - 1}.`, {
       focus: [mid - 1],
@@ -134,6 +158,11 @@ export const buildFirstBadTrace = ({
     const bad = mid >= firstBad;
     tested.set(mid, bad);
     add("const isBad = isBadVersion(mid)", "Ответ API", `isBadVersion(${mid}) = ${bad}.`);
+    add(
+      bad ? "if (isBad)" : "if (!isBad)",
+      "Выбираем границу",
+      bad ? "Середина плохая; сохраняем её в диапазоне." : "Середина исправна; исключаем её."
+    );
     if (bad) {
       right = mid;
       add(

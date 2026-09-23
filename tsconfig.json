@@ -16,6 +16,7 @@
     "checkJs": false,
     "noFallthroughCasesInSwitch": true,
     "paths": {
+      "emmet": ["./node_modules/emmet/dist/index.d.ts"],
       "@/*": ["./src/*"],
       "@/app/*": ["./src/app/*"],
       "@/pages/*": ["./src/pages/*"],
@@ -37,10 +38,5 @@
     "src/main.tsx",
     "src/vite-env.d.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "src/entities/task/curriculum/**",
-    "src/shared/data/**"
-  ]
+  "exclude": ["node_modules", "dist", "src/entities/task/curriculum/**", "src/shared/data/**"]
 }

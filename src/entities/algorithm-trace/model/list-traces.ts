@@ -67,6 +67,7 @@ export const buildReverseListTrace = ({ values }: AlgorithmInput): readonly Trac
     "prev = null. Значения и идентификаторы узлов не меняются — меняются только next."
   );
   while (current >= 0) {
+    add("while (current !== null)", "Следующий узел", `Разворачиваем связь узла #${current}.`);
     saved = next[current];
     add(
       "const nextTemp = current.next",
@@ -128,6 +129,11 @@ export const buildCycleTrace = ({
     "slow делает один переход next, fast — два. Сравниваем узлы, а не значения."
   );
   while (fast >= 0 && next[fast] >= 0) {
+    add(
+      "while (fast !== null && fast.next !== null)",
+      "Проверяем продолжение",
+      "Быстрый указатель может сделать ещё два перехода."
+    );
     slow = next[slow];
     add("slow = slow.next", "slow · один переход", `slow → #${slow}.`);
     fast = next[next[fast]];
@@ -135,6 +141,13 @@ export const buildCycleTrace = ({
       "fast = fast.next.next",
       "fast · два перехода",
       `fast → ${fast < 0 ? "null" : `#${fast}`}.`
+    );
+    add(
+      "if (slow === fast)",
+      "Сравниваем узлы",
+      slow === fast
+        ? `Указатели встретились на узле #${slow}.`
+        : "Указатели пока находятся на разных узлах."
     );
     if (slow === fast) {
       add("return true", "Встреча внутри цикла", `Оба указателя на одном узле #${slow}.`, {
@@ -187,10 +200,14 @@ export const buildMergeListsTrace = ({
   );
   const append = (id: number): void => {
     if (tail >= 0) next[tail] = id;
-    tail = id;
     merged.push(id);
   };
   while (a >= 0 && b >= 0) {
+    add(
+      "while (list1 !== null && list2 !== null)",
+      "Проверяем головы списков",
+      `Сравниваем ${values[a]} и ${values[b]}.`
+    );
     add(
       "if (list1.val <= list2.val)",
       "Сравниваем головы",
@@ -198,25 +215,35 @@ export const buildMergeListsTrace = ({
     );
     if (values[a] <= values[b]) {
       const id = a;
-      a = next[a];
       append(id);
+      add("current.next = list1", "Присоединяем узел list1", `Добавлен узел #${id} к результату.`);
+      a = next[id];
+      add("list1 = list1.next", "Сдвигаем list1", `Следующая голова: ${a < 0 ? "∅" : `#${a}`}.`);
+      tail = id;
+      add("current = current.next", "Сдвигаем хвост", `Хвост результата теперь #${id}.`);
       add(
-        "current.next = list1",
-        "Присоединяем узел list1",
-        `Добавлен #${id}; list1 передвинут по next.`
+        "continue",
+        "Возвращаемся к сравнению",
+        "Следующую пару голов проверим на новой итерации."
       );
     } else {
       const id = b;
-      b = next[b];
       append(id);
-      add(
-        "current.next = list2",
-        "Присоединяем узел list2",
-        `Добавлен #${id}; list2 передвинут по next.`
-      );
+      add("current.next = list2", "Присоединяем узел list2", `Добавлен узел #${id} к результату.`);
+      b = next[id];
+      add("list2 = list2.next", "Сдвигаем list2", `Следующая голова: ${b < 0 ? "∅" : `#${b}`}.`);
+      tail = id;
+      add("current = current.next", "Сдвигаем хвост", `Хвост результата теперь #${id}.`, {
+        occurrence: 1,
+      });
     }
   }
   const rest = a >= 0 ? a : b;
+  add(
+    a >= 0 ? "if (list1 !== null)" : "if (list2 !== null)",
+    "Проверяем остаток",
+    rest >= 0 ? "Оставшаяся цепочка уже отсортирована." : "Оба списка закончились."
+  );
   if (rest >= 0) {
     for (let id = rest; id >= 0; id = next[id]) append(id);
     add(

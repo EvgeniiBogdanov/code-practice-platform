@@ -32,6 +32,12 @@ export const buildMaxAverageTrace = ({
   }));
   add("let windowSum", "Окно фиксированной длины", `Собираем первые ${k} элементов.`);
   for (right = 0; right < k; right++) {
+    add(
+      "for (let i = 0; i < k; i++)",
+      "Следующий элемент окна",
+      `Добавляем индекс ${right} в первое окно.`,
+      { focus: [right] }
+    );
     sum += values[right];
     add("windowSum += nums[i]", "Заполняем окно", `Добавляем ${values[right]}; сумма ${sum}.`, {
       pointers: [{ label: "i", index: right, tone: "primary" }],
@@ -41,6 +47,12 @@ export const buildMaxAverageTrace = ({
   max = sum;
   add("let maxSum", "Первое полное окно", `Начальный максимум суммы: ${max}.`);
   for (right = k; right < values.length; right++) {
+    add(
+      "for (let right = k; right < nums.length; right++)",
+      "Следующий сдвиг",
+      `Правая граница переходит на индекс ${right}.`,
+      { focus: [right] }
+    );
     left = right - k + 1;
     const previous = sum;
     sum += values[right] - values[right - k];
@@ -91,11 +103,22 @@ export const buildMinWindowTrace = ({
     "Положительные числа позволяют уменьшать сумму сдвигом левой границы."
   );
   for (right = 0; right < values.length; right++) {
+    add(
+      "for (let right = 0; right < nums.length; right++)",
+      "Следующая правая граница",
+      `Расширяем окно до индекса ${right}.`,
+      { focus: [right] }
+    );
     sum += values[right];
     add("sum += nums[right]", "Расширяем вправо", `Добавили ${values[right]}. Сумма ${sum}.`, {
       focus: [right],
     });
     while (sum >= target) {
+      add(
+        "while (sum >= target)",
+        "Проверяем сжатие",
+        `Сумма ${sum} достигает цели ${target}; можно уменьшить окно.`
+      );
       min = Math.min(min, right - left + 1);
       add(
         "minLength = Math.min",
@@ -151,6 +174,12 @@ export const buildLongestSubstringTrace = ({ text }: AlgorithmInput): readonly T
   }));
   add("const set", "Окно без повторов", "Set хранит символы текущего окна.");
   for (right = 0; right < text.length; right++) {
+    add(
+      "for (let right = 0; right < s.length; right++)",
+      "Следующий символ",
+      `Правый край переходит к ${JSON.stringify(text[right])}.`,
+      { focus: [right] }
+    );
     add(
       "while (set.has(s[right]))",
       "Проверяем входящий символ",

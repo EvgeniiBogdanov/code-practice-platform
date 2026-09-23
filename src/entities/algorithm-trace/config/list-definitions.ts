@@ -68,6 +68,11 @@ export const listDefinitions = {
         label: "Первый пуст ([[], [0, 2]])",
         input: "[[],[0,2]]",
       },
+      {
+        id: "second-empty",
+        label: "Второй пуст ([[0, 2], []])",
+        input: "[[0,2],[]]",
+      },
     ],
     build: buildMergeListsTrace,
   },

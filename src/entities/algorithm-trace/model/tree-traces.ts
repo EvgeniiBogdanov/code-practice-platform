@@ -60,6 +60,12 @@ const dfsTrace = ({ tree = [] }: AlgorithmInput, mode: DfsMode): readonly TraceS
         "База рекурсии · null",
         "Пустой потомок: возвращаемся без нового узла; его высота равна 0."
       );
+      if (mode === "diameter" || mode === "preorder")
+        add(
+          mode === "diameter" ? "return 0" : "return;",
+          "Возврат из пустой ветви",
+          "Этот вызов не добавляет узел в обход."
+        );
       return 0;
     }
     calls.push(node);
@@ -101,11 +107,16 @@ const dfsTrace = ({ tree = [] }: AlgorithmInput, mode: DfsMode): readonly TraceS
     active = [node.id];
     const height = Math.max(left, right) + 1;
     if (mode === "invert") {
+      add(
+        "root.left = right",
+        "Меняем левую ссылку",
+        "Левый потомок станет бывшим правым. Обе стрелки переставляются вместе на следующем шаге."
+      );
       [node.left, node.right] = [node.right, node.left];
       add(
         "root.right = left",
-        "Меняем потомков местами",
-        `Узел ${node.value}: стрелки L и R поменяли направления. Значения не меняются.`
+        "Меняем правую ссылку",
+        `Узел ${node.value}: обе стрелки поменяли направления. Значения не меняются.`
       );
     } else if (mode === "diameter") {
       diameter = Math.max(diameter, left + right);
@@ -131,6 +142,18 @@ const dfsTrace = ({ tree = [] }: AlgorithmInput, mode: DfsMode): readonly TraceS
     );
     return height;
   };
+  if (mode === "invert" && !root) {
+    add(
+      "if (root === null)",
+      "Проверяем пустое дерево",
+      "Корня нет; переставлять потомков не нужно."
+    );
+    add("return null", "Пустой результат", "Пустое дерево остаётся пустым.", { result: [] });
+    return steps;
+  }
+  if (mode === "diameter")
+    add("height(root)", "Запускаем обход высот", "Вычисляем высоты всех поддеревьев от корня.");
+  if (mode === "preorder") add("dfs(root)", "Запускаем preorder", "Начинаем обход с корня.");
   const depth = visit(root);
   active = [];
   add(
@@ -195,35 +218,39 @@ export const buildSameTreeTrace = ({
       "Сравниваем пару",
       `${a?.value ?? "null"} / ${b?.value ?? "null"}.`
     );
-    let equal: boolean;
-    if (!a && !b) equal = true;
-    else if (!a || !b) {
-      equal = false;
+    const finish = (equal: boolean, line: string, occurrence = 0): boolean => {
+      active = [a?.id, b?.id].filter((id): id is string => id !== undefined);
+      if (equal) done.push(...active);
+      calls.pop();
+      add(line, "Возврат результата пары", `Результат: ${equal}.`, { occurrence });
+      return equal;
+    };
+    if (!a && !b) return finish(true, "return true");
+    if (!a || !b) {
       add(
         "if (p === null || q === null)",
         "Форма различается",
         "Один потомок отсутствует, другой существует."
       );
-    } else if (a.value !== b.value) {
-      equal = false;
+      return finish(false, "return false");
+    }
+    if (a.value !== b.value) {
       add("if (p.val !== q.val)", "Значения различаются", `${a.value} ≠ ${b.value}.`);
-    } else equal = visit(a.left, b.left) && visit(a.right, b.right);
-    active = [a?.id, b?.id].filter((id): id is string => id !== undefined);
-    if (equal) done.push(...active);
-    calls.pop();
-    add(
-      "return isSameTree(p.left, q.left)",
-      "Возврат результата пары",
-      `Результат: ${equal}. При false следующие ветви не вызываются.`
-    );
-    return equal;
+      return finish(false, "return false", 1);
+    }
+    const equal = visit(a.left, b.left) && visit(a.right, b.right);
+    return finish(equal, "return isSameTree(p.left, q.left)");
   };
   const result = visit(p, q);
-  add(
-    "return isSameTree(p.left, q.left)",
-    result ? "Деревья одинаковы" : "Деревья различаются",
-    "Проверка завершена.",
-    { result }
-  );
+  const finalLine =
+    !p && !q
+      ? "return true"
+      : !p || !q || p.value !== q.value
+        ? "return false"
+        : "return isSameTree(p.left, q.left)";
+  add(finalLine, result ? "Деревья одинаковы" : "Деревья различаются", "Проверка завершена.", {
+    result,
+    occurrence: p && q && p.value !== q.value ? 1 : 0,
+  });
   return steps;
 };

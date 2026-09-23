@@ -18,3 +18,5 @@ export * from "./typeChecker";
 export * from "./codeLinter";
 export * from "./codeFormatter";
 export * from "./typescript-checker";
+
+export * from "./markup-context";

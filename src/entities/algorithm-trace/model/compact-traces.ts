@@ -19,6 +19,12 @@ export const buildRemoveElementTrace = ({
     `read проверяет элементы, write хранит место следующей записи. Удаляем ${val}.`
   );
   for (; read < nums.length; read++) {
+    add(
+      "for (let read = 0; read < nums.length; read++)",
+      "Следующий элемент",
+      `Проверяем индекс ${read}.`,
+      { focus: [read] }
+    );
     const keep = nums[read] !== val;
     add(
       "if (nums[read] !== val)",
@@ -75,6 +81,12 @@ export const buildRemoveDuplicatesTrace = ({ values }: AlgorithmInput): TraceSte
     return steps;
   }
   for (; fast < nums.length; fast++) {
+    add(
+      "for (let fast = 1; fast < nums.length; fast++)",
+      "Следующий кандидат",
+      `Сравниваем индекс ${fast} с последним уникальным.`,
+      { focus: [fast] }
+    );
     const unique = nums[fast] !== nums[slow];
     add(
       "if (nums[fast] !== nums[slow])",
@@ -125,6 +137,12 @@ export const buildMoveZeroesTrace = ({ values }: AlgorithmInput): TraceStep[] =>
     "fast просматривает массив. slow показывает, куда поставить следующее ненулевое число."
   );
   for (; fast < nums.length; fast++) {
+    add(
+      "for (let fast = 0; fast < nums.length; fast++)",
+      "Следующий элемент",
+      `fast = ${fast}; slow = ${slow}.`,
+      { focus: [fast] }
+    );
     add(
       "if (nums[fast] !== 0)",
       nums[fast] === 0 ? "Ноль оставляем позади" : "Нашли ненулевое число",

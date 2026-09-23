@@ -9,6 +9,13 @@ const libraries = new Map(
     .filter((file) => /[/\\]lib[^/\\]*\.d\.ts$/.test(file))
     .map((file) => [`/${file.split(/[/\\]/).pop()}`, ts.sys.readFile(file) ?? ""])
 );
+for (const file of ts.sys.readDirectory("node_modules/@types/react", [".d.ts"])) {
+  libraries.set(`/${file}`, ts.sys.readFile(file) ?? "");
+}
+libraries.set(
+  "/node_modules/csstype/index.d.ts",
+  ts.sys.readFile("node_modules/csstype/index.d.ts") ?? ""
+);
 const diagnose = createTypeScriptDiagnostics(libraries);
 const check = (code: string): ReturnType<typeof diagnose> =>
   diagnose({ code, filepath: "exercise.ts", files: [] });
@@ -61,5 +68,26 @@ describe("TypeScript editor diagnostics", () => {
     ).toBeGreaterThan(0);
     expect(check('const count: number = "wrong";').length).toBeGreaterThan(0);
     expect(check("const count: number = 10;")).toEqual([]);
+  });
+});
+
+describe("TSX compiler mode", () => {
+  it("accepts intrinsic elements, typed components and React hooks", () => {
+    expect(
+      diagnose({
+        code: 'import {useState} from "react"; const Card = ({name}: {name: string}) => <div>{name}</div>; const App = () => {const [name] = useState("Ada"); return <Card name={name} />;};',
+        filepath: "App.tsx",
+        files: [],
+      })
+    ).toEqual([]);
+  });
+  it("checks component props and generic arrow functions", () => {
+    const problems = diagnose({
+      code: "const id = <T,>(value: T): T => value; const Card = ({name}: {name: string}) => <div>{name}</div>; const app = <Card name={id(42)} />;",
+      filepath: "App.tsx",
+      files: [],
+    });
+    expect(problems).toHaveLength(1);
+    expect(problems[0].message).toContain("TS2322");
   });
 });

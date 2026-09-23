@@ -20,6 +20,22 @@ export {
 };
 export type { DiagnosticProblem, HighlightOptions, HighlighterFunction };
 
+function highlightPlainText(code: string, selections: HighlightOptions["multiSelections"]): string {
+  if (!selections?.length) return escapeHtml(code);
+
+  let html = "";
+  let cursor = 0;
+  for (const selection of [...selections].sort((a, b) => a.start - b.start)) {
+    const start = Math.max(cursor, selection.start);
+    const end = Math.min(code.length, selection.end);
+    if (end <= start) continue;
+    html += escapeHtml(code.slice(cursor, start));
+    html += `<span class="hl-multi-selected">${escapeHtml(code.slice(start, end))}</span>`;
+    cursor = end;
+  }
+  return html + escapeHtml(code.slice(cursor));
+}
+
 export function highlightCode(
   code: string,
   languageOrFilepath = "main.jsx",
@@ -41,9 +57,9 @@ export function highlightCode(
         languageOrFilepath === "text" ||
         languageOrFilepath === "txt"
       ) {
-        return escapeHtml(code);
+        return highlightPlainText(code, options.multiSelections);
       }
-      return highlightJS(code, options);
+      return highlightPlainText(code, options.multiSelections);
     case "javascript":
     case "javascriptreact":
     case "typescript":
@@ -51,6 +67,10 @@ export function highlightCode(
     case "json":
     case "sql":
     default:
-      return highlightJS(code, options);
+      return highlightJS(code, {
+        ...options,
+        supportsJsx: lang === "javascriptreact" || lang === "typescriptreact",
+        supportsTypeScript: lang === "typescript" || lang === "typescriptreact",
+      });
   }
 }

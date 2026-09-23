@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import {
   getCompletions,
   expandSnippet,
@@ -67,6 +67,10 @@ export function useIntelliSense(files: TaskFile[] = [], filepath = "main.jsx"): 
     setWord("");
     sessionRef.current = null;
   }, []);
+
+  useEffect(() => {
+    closeCompletions();
+  }, [filepath, closeCompletions]);
 
   const openCompletions = useCallback(
     (code: string, cursorPos: number, textarea: HTMLTextAreaElement, force = false) => {

@@ -16,6 +16,9 @@ export const buildTwoSumTrace = ({ values, parameter: target }: AlgorithmInput):
     { formula: `target = ${target}` }
   );
   while (left < right) {
+    add("while (left < right)", "Проверяем границы", `left = ${left}, right = ${right}.`, {
+      focus: [left, right],
+    });
     const sum = values[left] + values[right];
     add(
       "const sum =",
@@ -25,6 +28,11 @@ export const buildTwoSumTrace = ({ values, parameter: target }: AlgorithmInput):
         focus: [left, right],
         formula: `${values[left]} + ${values[right]} = ${sum} ${sum === target ? "=" : sum < target ? "<" : ">"} ${target}`,
       }
+    );
+    add(
+      "if (sum === target)",
+      "Проверяем совпадение",
+      sum === target ? "Сумма совпала с целью." : `Сумма ${sum} не равна ${target}.`
     );
     if (sum === target) {
       add(
@@ -40,6 +48,7 @@ export const buildTwoSumTrace = ({ values, parameter: target }: AlgorithmInput):
       return steps;
     }
     if (sum < target) {
+      add("if (sum < target)", "Сравниваем с целью", "Сумма слишком мала: двигаем left.");
       left++;
       add(
         "left++",
@@ -47,6 +56,7 @@ export const buildTwoSumTrace = ({ values, parameter: target }: AlgorithmInput):
         "Даже с наибольшим правым числом сумма мала. Старый left не подходит ни для одной оставшейся пары."
       );
     } else {
+      add("if (sum > target)", "Сравниваем с целью", "Сумма слишком велика: двигаем right.");
       right--;
       add(
         "right--",
@@ -83,7 +93,16 @@ export const buildPalindromeTrace = ({ text }: AlgorithmInput): TraceStep[] => {
     "Сравниваем буквы и цифры без учёта регистра. Пробелы и знаки пропускаем без создания новой строки."
   );
   while (left < right) {
+    add("while (left < right)", "Проверяем пару символов", `left = ${left}, right = ${right}.`, {
+      focus: [left, right],
+    });
     while (left < right && !isAlphanumeric(values[left])) {
+      add(
+        "while (left < right && !isAlphanumeric(s[left]))",
+        "Проверяем символ слева",
+        `${JSON.stringify(values[left])} не участвует в сравнении.`,
+        { focus: [left] }
+      );
       dimmed.push(left++);
       add(
         "left++",
@@ -92,6 +111,12 @@ export const buildPalindromeTrace = ({ text }: AlgorithmInput): TraceStep[] => {
       );
     }
     while (left < right && !isAlphanumeric(values[right])) {
+      add(
+        "while (left < right && !isAlphanumeric(s[right]))",
+        "Проверяем символ справа",
+        `${JSON.stringify(values[right])} не участвует в сравнении.`,
+        { focus: [right] }
+      );
       dimmed.push(right--);
       add("right--", "Пропускаем знак справа", "Знаки не влияют на проверку палиндрома.");
     }
@@ -116,13 +141,13 @@ export const buildPalindromeTrace = ({ text }: AlgorithmInput): TraceStep[] => {
     }
     if (isAlphanumeric(values[left])) settled.push(left, right);
     left++;
+    add("left++", "Сдвигаем левую границу", "Левый символ проверенной пары больше не нужен.", {
+      occurrence: 1,
+    });
     right--;
-    add(
-      "left++",
-      "Сужаем непроверенную часть",
-      "Пара проверена. Оба указателя переходят к центру.",
-      { occurrence: 1 }
-    );
+    add("right--", "Сдвигаем правую границу", "Правый символ проверенной пары больше не нужен.", {
+      occurrence: 1,
+    });
   }
   add(
     "return true",
@@ -148,6 +173,9 @@ export const buildParityTrace = ({ values }: AlgorithmInput): TraceStep[] => {
     "Ищем нечётное слева и чётное справа, чтобы обменом поставить оба числа в нужные части."
   );
   while (left < right) {
+    add("while (left < right)", "Проверяем границы", `left = ${left}, right = ${right}.`, {
+      focus: [left, right],
+    });
     while (left < right && nums[left] % 2 === 0) {
       add(
         "while (left < right && nums[left]",
@@ -177,6 +205,11 @@ export const buildParityTrace = ({ values }: AlgorithmInput): TraceStep[] => {
       );
     }
     if (left < right) {
+      add(
+        "if (left < right)",
+        "Проверяем обмен",
+        "Указатели ещё не встретились; меняем неподходящие числа."
+      );
       [nums[left], nums[right]] = [nums[right], nums[left]];
       add(
         "[nums[left], nums[right]] =",
@@ -185,8 +218,11 @@ export const buildParityTrace = ({ values }: AlgorithmInput): TraceStep[] => {
         { focus: [left, right], transfer: { from: left, to: right, kind: "swap" } }
       );
       left++;
+      add("left++", "Сдвигаем левую границу", "Левая обменённая позиция готова.", {
+        occurrence: 1,
+      });
       right--;
-      add("left++", "Продвигаем обе границы", "Обменённые позиции больше проверять не нужно.", {
+      add("right--", "Сдвигаем правую границу", "Правая обменённая позиция готова.", {
         occurrence: 1,
       });
     }

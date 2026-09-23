@@ -17,6 +17,11 @@ const libraries = new Map(
     source,
   ])
 );
+const reactLibraries = import.meta.glob<string>(
+  ["/node_modules/@types/react/*.d.ts", "/node_modules/csstype/index.d.ts"],
+  { query: "?raw", import: "default", eager: true }
+);
+for (const [path, source] of Object.entries(reactLibraries)) libraries.set(path, source);
 const diagnose = createTypeScriptDiagnostics(libraries);
 
 self.onmessage = (event: MessageEvent<TypeScriptDiagnosticRequest>): void => {

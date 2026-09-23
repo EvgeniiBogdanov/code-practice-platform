@@ -123,6 +123,17 @@ export function highlightJS(code: string, options: HighlightOptions = {}): strin
     let matched = false;
 
     for (const rule of JS_RULES) {
+      if (
+        options.supportsJsx === false &&
+        (rule.type.startsWith("jsx-") || rule.type === "react-hook")
+      )
+        continue;
+      if (
+        options.supportsTypeScript === false &&
+        rule.type === "type" &&
+        !/^(null|undefined)\b/.test(rest)
+      )
+        continue;
       if (rule.type === "regex" && !REGEX_PRECEDING_TOKENS.has(lastTokenType)) {
         continue;
       }
@@ -183,7 +194,10 @@ export function highlightJS(code: string, options: HighlightOptions = {}): strin
         if (rule.type === "comment") {
           html += '<span class="hl-cm' + multiSelectClass + '">' + escapeHtml(text) + "</span>";
         } else if (rule.type === "template") {
-          html += highlightTemplateLiteral(text, options);
+          const template = highlightTemplateLiteral(text, options);
+          html += multiSelectClass
+            ? `<span class="hl-multi-selected">${template}</span>`
+            : template;
         } else if (rule.type === "string") {
           html +=
             '<span class="hl-str' +
@@ -198,20 +212,20 @@ export function highlightJS(code: string, options: HighlightOptions = {}): strin
           html += '<span class="hl-num' + extraClasses + '">' + escapeHtml(text) + "</span>";
         } else if (rule.type === "jsx-tag-open") {
           insideJsxTag = true;
-          html += '<span class="hl-tag-punct">&lt;</span>';
+          html += `<span class="hl-tag-punct${multiSelectClass}">&lt;</span>`;
         } else if (rule.type === "jsx-tag-close") {
           insideJsxTag = true;
-          html += '<span class="hl-tag-punct">&lt;/</span>';
+          html += `<span class="hl-tag-punct${multiSelectClass}">&lt;/</span>`;
         } else if (rule.type === "jsx-tag-self-close") {
           insideJsxTag = false;
-          html += '<span class="hl-tag-punct">/&gt;</span>';
+          html += `<span class="hl-tag-punct${multiSelectClass}">/&gt;</span>`;
         } else if (rule.type === "jsx-tag-end") {
           insideJsxTag = false;
-          html += '<span class="hl-tag-punct">&gt;</span>';
+          html += `<span class="hl-tag-punct${multiSelectClass}">&gt;</span>`;
         } else if (rule.type === "arrow") {
-          html += '<span class="hl-arrow">=&gt;</span>';
+          html += `<span class="hl-arrow${multiSelectClass}">=&gt;</span>`;
         } else if (rule.type === "operator") {
-          html += '<span class="hl-op">' + escapeHtml(text) + "</span>";
+          html += '<span class="hl-op' + multiSelectClass + '">' + escapeHtml(text) + "</span>";
         } else if (rule.type === "keyword") {
           html += '<span class="hl-kw' + extraClasses + '">' + escapeHtml(text) + "</span>";
         } else if (rule.type === "boolean") {
@@ -227,12 +241,19 @@ export function highlightJS(code: string, options: HighlightOptions = {}): strin
         } else if (rule.type === "property") {
           const dot = m[1];
           const prop = m[2];
+          const dotClass = isMultiSelected(tokenStart, dot.length) ? " hl-multi-selected" : "";
+          const propClass = isMultiSelected(tokenStart + dot.length, prop.length)
+            ? " hl-multi-selected"
+            : "";
           html +=
-            '<span class="hl-punct">' +
+            '<span class="hl-punct' +
+            dotClass +
+            '">' +
             escapeHtml(dot) +
             "</span>" +
             '<span class="hl-prop' +
             squigglyClass +
+            propClass +
             '">' +
             escapeHtml(prop) +
             "</span>";
@@ -257,16 +278,21 @@ export function highlightJS(code: string, options: HighlightOptions = {}): strin
               '<span class="hl-punct' +
               bracketClass +
               squigglyClass +
+              multiSelectClass +
               '">' +
               escapeHtml(text) +
               "</span>";
           } else if (text === "=" && !insideJsxTag) {
-            html += '<span class="hl-op">' + escapeHtml(text) + "</span>";
+            html += '<span class="hl-op' + multiSelectClass + '">' + escapeHtml(text) + "</span>";
           } else {
-            html += escapeHtml(text);
+            html += multiSelectClass
+              ? `<span class="hl-multi-selected">${escapeHtml(text)}</span>`
+              : escapeHtml(text);
           }
         } else {
-          html += escapeHtml(text);
+          html += multiSelectClass
+            ? `<span class="hl-multi-selected">${escapeHtml(text)}</span>`
+            : escapeHtml(text);
         }
 
         if (rule.type !== "space") {
@@ -279,8 +305,12 @@ export function highlightJS(code: string, options: HighlightOptions = {}): strin
     if (!matched) {
       const charStart = currentIndex;
       const bracketClass = isBracketMatch(charStart) ? ' class="hl-bracket-match"' : "";
-      if (bracketClass) {
-        html += "<span" + bracketClass + ">" + escapeHtml(rest[0]) + "</span>";
+      const selectedClass = isMultiSelected(charStart, 1) ? "hl-multi-selected" : "";
+      if (bracketClass || selectedClass) {
+        const className = [bracketClass ? "hl-bracket-match" : "", selectedClass]
+          .filter(Boolean)
+          .join(" ");
+        html += `<span class="${className}">${escapeHtml(rest[0])}</span>`;
       } else {
         html += escapeHtml(rest[0]);
       }

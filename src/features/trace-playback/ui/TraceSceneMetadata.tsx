@@ -14,6 +14,7 @@ export const TraceSceneMetadata = ({
     : null;
 
   return (
+   
     <div className={styles.sceneMeta}>
       <span className={styles.sceneMetaStart}>ИНДЕКСЫ С 0</span>
       {hintText && <span className={styles.sceneHint}>{hintText}</span>}
