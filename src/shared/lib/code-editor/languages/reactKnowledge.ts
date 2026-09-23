@@ -69,37 +69,7 @@ export const REACT_SNIPPETS: SnippetItem[] = [
   },
 ];
 
-export const JSX_ELEMENTS = [
-  { name: "div", detail: "HTML <div> контейнер" },
-  { name: "span", detail: "HTML <span> строчный элемент" },
-  { name: "button", detail: "HTML <button> кнопка" },
-  { name: "input", detail: "HTML <input> поле ввода" },
-  { name: "p", detail: "HTML <p> параграф текста" },
-  { name: "h1", detail: "HTML <h1> заголовок 1 уровня" },
-  { name: "h2", detail: "HTML <h2> заголовок 2 уровня" },
-  { name: "h3", detail: "HTML <h3> заголовок 3 уровня" },
-  { name: "ul", detail: "HTML <ul> маркированный список" },
-  { name: "ol", detail: "HTML <ol> нумерованный список" },
-  { name: "li", detail: "HTML <li> элемент списка" },
-  { name: "form", detail: "HTML <form> форма" },
-  { name: "label", detail: "HTML <label> подпись к полю" },
-  { name: "select", detail: "HTML <select> выпадающий список" },
-  { name: "option", detail: "HTML <option> вариант выбора" },
-  { name: "textarea", detail: "HTML <textarea> многострочный ввод" },
-  { name: "table", detail: "HTML <table> таблица" },
-  { name: "tr", detail: "HTML <tr> строка таблицы" },
-  { name: "td", detail: "HTML <td> ячейка таблицы" },
-  { name: "th", detail: "HTML <th> заголовок таблицы" },
-  { name: "a", detail: "HTML <a> гиперссылка" },
-  { name: "img", detail: "HTML <img> изображение" },
-  { name: "header", detail: "HTML <header> шапка" },
-  { name: "footer", detail: "HTML <footer> подвал" },
-  { name: "nav", detail: "HTML <nav> навигация" },
-  { name: "main", detail: "HTML <main> основное содержимое" },
-  { name: "section", detail: "HTML <section> секция" },
-  { name: "article", detail: "HTML <article> статья" },
-  { name: "Fragment", detail: "React.Fragment обертка" },
-];
+export { MARKUP_TAGS as JSX_ELEMENTS } from "./markup-tags";
 
 export const REACT_JSX_PROPS: Record<
   string,

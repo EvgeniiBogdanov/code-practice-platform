@@ -14,7 +14,7 @@ import { getSqlCompletions } from "./snippets/sqlCompleter";
 import { getLanguageId, getLanguageCapabilities } from "./languages/languageDetector";
 import { JSON_SNIPPETS } from "./languages/jsonKnowledge";
 import { getMarkupContext } from "./markup-context";
-import { getEmmetCompletion } from "./emmetEngine";
+import { getEmmetCompletions } from "./emmetEngine";
 import { fuzzyMatch } from "./fuzzyMatcher";
 
 export { expandSnippet };
@@ -57,6 +57,7 @@ export function getCompletions(
   if (
     context.mode === "literal" &&
     !/^\s*import\b/.test(currentLineBeforeCursor) &&
+    languageId !== "html" &&
     languageId !== "json" &&
     languageId !== "css" &&
     languageId !== "sql"
@@ -71,15 +72,9 @@ export function getCompletions(
   }
 
   if (languageId === "html") {
-    const emmet = getEmmetCompletion(fullCode, cursorIndex, currentFilepath, false);
-    if (emmet) return { word: emmet.prefix, items: [emmet] };
-    const htmlRes = getHtmlCompletions(
-      cursorIndex,
-      currentLineBeforeCursor,
-      lineAfterCursor,
-      force
-    );
-    return htmlRes || { word: "", items: [] };
+    const emmet = getEmmetCompletions(fullCode, cursorIndex, currentFilepath, false);
+    if (emmet) return emmet;
+    return getHtmlCompletions(fullCode, cursorIndex, currentFilepath);
   }
 
   if (languageId === "sql") {
@@ -127,10 +122,9 @@ export function getCompletions(
     if (importRes) return importRes;
   }
 
-  if (capabilities.supportsEmmet) {
-    const emmet = getEmmetCompletion(fullCode, cursorIndex, currentFilepath, true);
-    if (emmet) return { word: emmet.prefix, items: [emmet] };
-  }
+  const emmet = capabilities.supportsEmmet
+    ? getEmmetCompletions(fullCode, cursorIndex, currentFilepath, true)
+    : null;
 
   // 3. Member & Receiver & CSS in JS Context
   const memberRes = getMemberCompletions(
@@ -139,10 +133,10 @@ export function getCompletions(
     lineAfterCursor,
     capabilities
   );
-  if (memberRes) return memberRes;
+  if (memberRes && !emmet && context.mode !== "tag") return memberRes;
 
   // 4. General Identifiers, Tags, Props, Snippets & Emmet
-  return getGeneralCompletions(
+  const general = getGeneralCompletions(
     fullCode,
     cursorIndex,
     textBeforeCursor,
@@ -153,4 +147,7 @@ export function getCompletions(
     capabilities,
     force
   );
+  return emmet
+    ? { word: emmet.word, items: [...emmet.items, ...general.items].slice(0, 24) }
+    : general;
 }

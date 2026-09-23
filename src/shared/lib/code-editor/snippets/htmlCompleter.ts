@@ -1,109 +1,90 @@
-/**
- * HTML Autocomplete Provider
- */
-
+import {
+  getLanguageService,
+  newHTMLDataProvider,
+  TextDocument,
+  TextEdit,
+  CompletionItemKind,
+} from "vscode-html-languageservice";
+import { getMarkupContext } from "../markup-context";
 import { fuzzyMatch } from "../fuzzyMatcher";
-import { HTML_TAGS, HTML_ATTRIBUTES, HTML_SNIPPETS } from "../languages/htmlKnowledge";
-import { CompletionItem } from "../snippetsData";
+import { MARKUP_TAGS } from "../languages/markup-tags";
+import { HTML_SNIPPETS } from "../languages/htmlKnowledge";
+import type { CompletionItem } from "../snippetsData";
 
-export function getHtmlCompletions(
-  cursorIndex: number,
-  currentLineBeforeCursor: string,
-  lineAfterCursor: string,
-  force = false
-): { word: string; items: CompletionItem[] } | null {
-  // 1. HTML Boilerplate snippets (! or html:5)
-  const snippetMatch = /(?:^|\s)(!|html:5)$/.exec(currentLineBeforeCursor);
-  if (snippetMatch) {
-    const prefix = snippetMatch[1];
-    const snip = HTML_SNIPPETS.find((s) => s.prefix === prefix);
-    if (snip) {
-      return {
-        word: prefix,
-        items: [
-          {
-            prefix: snip.prefix,
-            label: snip.label,
-            detail: snip.detail,
-            kind: "snippet",
-            insertText: snip.prefix,
-            snippet: snip,
-            replaceStart: cursorIndex - prefix.length,
-            replaceEnd: cursorIndex,
-            score: 150,
-          },
-        ],
-      };
-    }
-  }
+const service = getLanguageService({
+  customDataProviders: [
+    newHTMLDataProvider("editor-markup", {
+      version: 1.1,
+      tags: MARKUP_TAGS.map(({ name }) => ({ name, attributes: [] })),
+    }),
+  ],
+});
 
-  // 2. Tag open <tag
-  const tagOpenMatch = currentLineBeforeCursor.match(/<([a-zA-Z0-9_-]*)$/);
-  if (tagOpenMatch) {
-    const query = tagOpenMatch[1];
-    const afterMatch = lineAfterCursor.match(/^[a-zA-Z0-9_-]*/);
-    const afterLen = afterMatch ? afterMatch[0].length : 0;
-    const scored: CompletionItem[] = [];
+export const getHtmlCompletions = (
+  code: string,
+  cursor: number,
+  filepath: string
+): { word: string; items: CompletionItem[] } => {
+  const before = code.slice(0, cursor);
+  const abbreviation = /(?:^|\s)(!|html:5)$/.exec(before)?.[1];
+  const snippet = HTML_SNIPPETS.find((entry) => entry.prefix === abbreviation);
+  if (snippet && getMarkupContext(before, filepath).mode === "text")
+    return {
+      word: snippet.prefix,
+      items: [
+        {
+          prefix: snippet.prefix,
+          label: snippet.label,
+          detail: snippet.detail,
+          kind: "snippet",
+          insertText: snippet.prefix,
+          snippet,
+          replaceStart: cursor - snippet.prefix.length,
+          replaceEnd: cursor,
+          score: 150,
+        },
+      ],
+    };
 
-    for (const tag of HTML_TAGS) {
-      const { match, score } = fuzzyMatch(tag.name, query);
-      if (match || !query || force) {
-        scored.push({
-          prefix: tag.name,
-          label: `<${tag.name}>`,
-          detail: tag.detail,
-          kind: "keyword",
-          insertText: tag.name,
-          replaceStart: cursorIndex - query.length,
-          replaceEnd: cursorIndex + afterLen,
-          score: score + 10,
-        });
-      }
-    }
-
-    if (scored.length > 0) {
-      scored.sort((a, b) => (b.score || 0) - (a.score || 0));
-      return { word: query || "<", items: scored.slice(0, 12) };
-    }
-  }
-
-  // 3. Inside Tag Attributes (<div cl...)
-  const inTagMatch = currentLineBeforeCursor.match(
-    /<([a-zA-Z0-9_-]+)(?:\s+[^>]*?)?\s+([a-zA-Z0-9_-]*)$/
+  const document = TextDocument.create(`file:///${filepath}`, "html", 1, code);
+  const completions = service.doComplete(
+    document,
+    document.positionAt(cursor),
+    service.parseHTMLDocument(document)
   );
-  const isInsideQuote = /=["'][^"']*$/.test(currentLineBeforeCursor);
-
-  if (inTagMatch && !isInsideQuote) {
-    const query = inTagMatch[2] || "";
-    const afterMatch = lineAfterCursor.match(/^[a-zA-Z0-9_-]*/);
-    const afterLen = afterMatch ? afterMatch[0].length : 0;
-    const scored: CompletionItem[] = [];
-
-    for (const attr of HTML_ATTRIBUTES) {
-      const { match, score } = fuzzyMatch(attr.name, query);
-      if (match || !query || force) {
-        const tabStop = attr.insertText.indexOf("$1");
-        const cleanInsert = attr.insertText.replace(/\$1/g, "");
-        const cursorOffset = tabStop >= 0 ? tabStop : undefined;
-        scored.push({
-          prefix: attr.name,
-          label: attr.name,
-          detail: attr.detail,
-          kind: "property",
-          insertText: cleanInsert,
-          cursorOffset,
-          replaceStart: cursorIndex - query.length,
-          replaceEnd: cursorIndex + afterLen,
-          score,
-        });
+  const items: CompletionItem[] = [];
+  let word = "";
+  for (const item of completions.items) {
+    if (!TextEdit.is(item.textEdit)) continue;
+    const start = document.offsetAt(item.textEdit.range.start);
+    const end = document.offsetAt(item.textEdit.range.end);
+    const query = code.slice(start, cursor);
+    const { match, score } = fuzzyMatch(item.filterText ?? item.label, query);
+    if (!match) continue;
+    word = query;
+    const source = item.textEdit.newText;
+    let cursorOffset: number | undefined;
+    const insertText = source.replace(
+      /\$\{\d+:([^}]*)\}|\$\d+/g,
+      (_match: string, placeholder: string | undefined, offset: number): string => {
+        if (cursorOffset === undefined) cursorOffset = offset;
+        return placeholder ?? "";
       }
-    }
-
-    if (scored.length > 0) {
-      scored.sort((a, b) => (b.score || 0) - (a.score || 0));
-      return { word: query || "attr", items: scored.slice(0, 12) };
-    }
+    );
+    const description = item.documentation;
+    const detail = typeof description === "string" ? description : (description?.value ?? "HTML");
+    items.push({
+      prefix: item.label,
+      label: item.kind === CompletionItemKind.Property ? `<${item.label}>` : item.label,
+      detail: detail.split("\n\n")[0],
+      kind: item.kind === CompletionItemKind.Property ? "keyword" : "property",
+      insertText,
+      cursorOffset,
+      replaceStart: start,
+      replaceEnd: end,
+      score: score + (query === "" && item.label === "div" ? 1 : 0),
+    });
   }
-
-  return null;
-}
+  items.sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
+  return { word, items: items.slice(0, 24) };
+};
