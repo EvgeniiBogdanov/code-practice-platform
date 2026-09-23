@@ -22,7 +22,7 @@
   background: var(--bg-card, #252525);
   border: none;
   border-radius: var(--radius-lg);
-  padding: 16px 18px;
+  padding: 18px 24px;
   display: flex;
   flex-direction: column;
   gap: 6px;

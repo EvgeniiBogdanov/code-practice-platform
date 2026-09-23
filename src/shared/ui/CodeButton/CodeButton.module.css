@@ -5,7 +5,7 @@
   gap: var(--space-1, 4px);
   background: transparent;
   border: none;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   color: var(--text-muted, rgba(255, 255, 255, 0.6));
   cursor: pointer;
   transition: all var(--transition-fast, 0.12s ease);

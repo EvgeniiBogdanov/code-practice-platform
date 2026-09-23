@@ -14,7 +14,7 @@ export const HomePracticeSections = memo(
     return (
       <div className={styles.sectionBlock}>
         <div className={styles.blockHeader}>
-          <FolderGit2 size={16} color="var(--accent-blue, #3b82f6)" className={styles.blockIcon} />
+          <FolderGit2 size={18} color="var(--accent-blue, #3b82f6)" className={styles.blockIcon} />
           <h2 className={styles.blockTitle}>Разделы практики</h2>
         </div>
 

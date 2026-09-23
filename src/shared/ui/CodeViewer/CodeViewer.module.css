@@ -165,9 +165,9 @@
     color 0.15s ease;
   width: 26px;
   height: 26px;
-  border-radius: 5px;
+  border-radius: var(--radius-sm);
   border: none;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   color: rgba(255, 255, 255, 0.85);

@@ -10,7 +10,7 @@
   font-size: var(--fs-sm, 13px);
   font-weight: 500;
   line-height: 1;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   border: none;
   outline: none;
   cursor: pointer;

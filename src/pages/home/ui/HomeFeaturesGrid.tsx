@@ -39,7 +39,7 @@ export const HomeFeaturesGrid = memo((): React.JSX.Element => {
   return (
     <div className={styles.sectionBlock}>
       <div className={styles.blockHeader}>
-        <BookOpen size={16} color="var(--accent-blue, #3b82f6)" className={styles.blockIcon} />
+        <BookOpen size={18} color="var(--accent-blue, #3b82f6)" className={styles.blockIcon} />
         <h2 className={styles.blockTitle}>Возможности платформы</h2>
       </div>
 
@@ -58,8 +58,8 @@ export const HomeFeaturesGrid = memo((): React.JSX.Element => {
           description={
             <>
               Мгновенный запуск кода (Ctrl+Enter) с замером времени (
-              <Zap size={12} color="#f59e0b" /> ms) и живой рендеринг компонентов React 19 с
-              Zustand, Redux Toolkit и песочницей.
+              <Zap size={12} /> ms) и живой рендеринг компонентов React 19 с Zustand, Redux Toolkit
+              и песочницей.
             </>
           }
         />

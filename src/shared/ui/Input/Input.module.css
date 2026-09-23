@@ -80,7 +80,7 @@
   height: 28px;
   padding: 4px 8px;
   font-size: var(--fs-caption);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
 }
 
 .input.size-md,
@@ -88,7 +88,7 @@
   height: 34px;
   padding: 6px 10px;
   font-size: var(--fs-sm);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
 }
 
 .input.size-lg,
@@ -96,7 +96,7 @@
   height: 38px;
   padding: 8px 12px;
   font-size: var(--fs-lg);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
 }
 
 .input:disabled {

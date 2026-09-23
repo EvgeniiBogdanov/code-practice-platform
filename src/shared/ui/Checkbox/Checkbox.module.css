@@ -35,7 +35,7 @@
   height: 16px;
   min-width: 16px;
   min-height: 16px;
-  border-radius: var(--radius-sm, 3px);
+  border-radius: var(--radius-xs);
   border: 1.5px solid var(--border-strong);
   background: transparent;
   transition:

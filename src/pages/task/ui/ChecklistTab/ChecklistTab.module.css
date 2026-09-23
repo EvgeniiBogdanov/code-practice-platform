@@ -54,7 +54,7 @@
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
   padding: 14px 16px;
-  border-radius: var(--radius-md, 8px);
+  border-radius: var(--radius-sm);
 }
 
 .empty {

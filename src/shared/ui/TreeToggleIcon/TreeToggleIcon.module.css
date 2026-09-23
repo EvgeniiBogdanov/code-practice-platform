@@ -5,7 +5,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-lg, 6px);
+  border-radius: var(--radius-sm);
   cursor: pointer;
   flex-shrink: 0;
   transition: background var(--transition-fast, 0.15s ease);

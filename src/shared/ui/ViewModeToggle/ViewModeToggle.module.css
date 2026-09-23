@@ -4,9 +4,9 @@
   gap: 2px;
   margin-bottom: 8px;
   padding: 2px;
-  background: var(--bg-subtle, rgba(255, 255, 255, 0.04));
+
   border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
-  border-radius: var(--radius-md, 6px);
+  border-radius: var(--radius-sm);
   align-self: flex-start;
   user-select: none;
 }
@@ -29,7 +29,7 @@
   color: var(--text-muted, rgba(255, 255, 255, 0.6));
   background: transparent;
   border: none;
-  border-radius: var(--radius-sm, 4px);
+  border-radius: var(--radius-xs);
   cursor: pointer;
   transition: all var(--transition-fast, 0.15s ease);
   user-select: none;
@@ -51,7 +51,7 @@
 
 .viewModeBtn.active {
   color: var(--text-main, #ffffff);
-  background: rgba(255, 255, 255, 0.066);
+  background: rgba(145, 145, 145, 0.09);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
