@@ -146,6 +146,31 @@ describe("pattern trace correctness", () => {
       steps.find((step) => step.line === "map.get(key).push(str)")!.panels![0].entries[0].value
     ).toBe('["eat"]');
   });
+
+  it("shows every character and word before changing the hash tables", () => {
+    const anagram = trace("algo5", "aab", "aba");
+    expect(anagram.filter((step) => step.line === "for (const char of s)")).toHaveLength(3);
+    expect(anagram.filter((step) => step.line === "for (const char of t)")).toHaveLength(3);
+    for (const [loop, update] of [
+      ["for (const char of s)", "map.set(char, (map.get(char)"],
+      ["for (const char of t)", "map.set(char, map.get(char) - 1)"],
+    ]) {
+      const indices = anagram.flatMap((step, index) => (step.line === loop ? [index] : []));
+      expect(indices).toHaveLength(3);
+      for (const index of indices) {
+        expect(anagram.slice(index + 1).find((step) => step.line === update)).toBeDefined();
+      }
+    }
+    const firstCount = anagram.find((step) => step.line === "map.set(char, (map.get(char)")!;
+    expect(firstCount.panels![0].entries[0].value).toBe("1");
+    expect(anagram[0].panels![0].entries).toEqual([]);
+
+    const groups = trace("algo7", '["eat","tea","tan","ate"]');
+    expect(groups.filter((step) => step.line === "for (const str of strs)")).toHaveLength(4);
+    expect(groups.filter((step) => step.line === "if (!map.has(key))")).toHaveLength(4);
+    expect(groups.filter((step) => step.line === "map.set(key, [])")).toHaveLength(2);
+    expect(groups.filter((step) => step.line === "map.get(key).push(str)")).toHaveLength(4);
+  });
 });
 
 it.each([

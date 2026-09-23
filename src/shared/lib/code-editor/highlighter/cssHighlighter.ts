@@ -118,7 +118,11 @@ export function highlightCSS(code: string, options: HighlightOptions = {}): stri
         } else if (rule.type === "dimension") {
           const numPart = m[1];
           const unitPart = m[2];
-          html += `<span class="hl-num${extraClasses}">${escapeHtml(numPart)}</span><span class="hl-css-unit">${escapeHtml(unitPart)}</span>`;
+          const numClass = isMultiSelected(tokenStart, numPart.length) ? " hl-multi-selected" : "";
+          const unitClass = isMultiSelected(tokenStart + numPart.length, unitPart.length)
+            ? " hl-multi-selected"
+            : "";
+          html += `<span class="hl-num${squigglyClass}${numClass}">${escapeHtml(numPart)}</span><span class="hl-css-unit${unitClass}">${escapeHtml(unitPart)}</span>`;
         } else if (rule.type === "number") {
           html += `<span class="hl-num${extraClasses}">${escapeHtml(text)}</span>`;
         } else if (rule.type === "css-var") {
@@ -151,7 +155,9 @@ export function highlightCSS(code: string, options: HighlightOptions = {}): stri
           const bracketClass = isBracketMatch(tokenStart) ? " hl-bracket-match" : "";
           html += `<span class="hl-punct${bracketClass}${extraClasses}">${escapeHtml(text)}</span>`;
         } else {
-          html += escapeHtml(text);
+          html += multiSelectClass
+            ? `<span class="hl-multi-selected">${escapeHtml(text)}</span>`
+            : escapeHtml(text);
         }
         break;
       }
@@ -160,8 +166,10 @@ export function highlightCSS(code: string, options: HighlightOptions = {}): stri
     if (!matched) {
       const charStart = currentIndex;
       const bracketClass = isBracketMatch(charStart) ? ' class="hl-bracket-match"' : "";
-      if (bracketClass) {
-        html += "<span" + bracketClass + ">" + escapeHtml(rest[0]) + "</span>";
+      const selectedClass = isMultiSelected(charStart, 1) ? " hl-multi-selected" : "";
+      if (bracketClass || selectedClass) {
+        const className = `${bracketClass ? "hl-bracket-match" : ""}${selectedClass}`.trim();
+        html += `<span class="${className}">${escapeHtml(rest[0])}</span>`;
       } else {
         html += escapeHtml(rest[0]);
       }

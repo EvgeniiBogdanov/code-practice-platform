@@ -18,6 +18,15 @@ export function highlightHTML(code: string, options: HighlightOptions = {}): str
     const end = start + len;
     return multiSelections.some((s) => !(end <= s.start || start >= s.end));
   };
+  const selectionClass = (start: number, len: number): string =>
+    isMultiSelected(start, len) ? " hl-multi-selected" : "";
+  const embeddedOptions = (offset: number): HighlightOptions => ({
+    ...options,
+    multiSelections: multiSelections.map(({ start, end }) => ({
+      start: start - offset,
+      end: end - offset,
+    })),
+  });
 
   let html = "";
   let rest = code;
@@ -65,21 +74,21 @@ export function highlightHTML(code: string, options: HighlightOptions = {}): str
     const styleOpenMatch = /^<style\b([^>]*)>/i.exec(rest);
     if (styleOpenMatch) {
       const openTag = styleOpenMatch[0];
-      html += `<span class="hl-tag-punct">&lt;</span><span class="hl-tag">style</span>`;
+      html += `<span class="hl-tag-punct${selectionClass(currentIndex, 1)}">&lt;</span><span class="hl-tag${selectionClass(currentIndex + 1, 5)}">style</span>`;
       if (styleOpenMatch[1]) {
-        html += highlightHtmlAttributes(styleOpenMatch[1], options);
+        html += highlightHtmlAttributes(styleOpenMatch[1], options, currentIndex + 6);
       }
-      html += `<span class="hl-tag-punct">&gt;</span>`;
+      html += `<span class="hl-tag-punct${selectionClass(currentIndex + openTag.length - 1, 1)}">&gt;</span>`;
       currentIndex += openTag.length;
       rest = rest.slice(openTag.length);
 
       const closeIdx = rest.toLowerCase().indexOf("</style>");
       if (closeIdx !== -1) {
         const cssContent = rest.substring(0, closeIdx);
-        html += highlightCSS(cssContent, options);
+        html += highlightCSS(cssContent, embeddedOptions(currentIndex));
         currentIndex += cssContent.length;
         rest = rest.slice(closeIdx);
-        html += `<span class="hl-tag-punct">&lt;/</span><span class="hl-tag">style</span><span class="hl-tag-punct">&gt;</span>`;
+        html += `<span class="hl-tag-punct${selectionClass(currentIndex, 2)}">&lt;/</span><span class="hl-tag${selectionClass(currentIndex + 2, 5)}">style</span><span class="hl-tag-punct${selectionClass(currentIndex + 7, 1)}">&gt;</span>`;
         currentIndex += 8;
         rest = rest.slice(8);
       }
@@ -90,21 +99,21 @@ export function highlightHTML(code: string, options: HighlightOptions = {}): str
     const scriptOpenMatch = /^<script\b([^>]*)>/i.exec(rest);
     if (scriptOpenMatch) {
       const openTag = scriptOpenMatch[0];
-      html += `<span class="hl-tag-punct">&lt;</span><span class="hl-tag">script</span>`;
+      html += `<span class="hl-tag-punct${selectionClass(currentIndex, 1)}">&lt;</span><span class="hl-tag${selectionClass(currentIndex + 1, 6)}">script</span>`;
       if (scriptOpenMatch[1]) {
-        html += highlightHtmlAttributes(scriptOpenMatch[1], options);
+        html += highlightHtmlAttributes(scriptOpenMatch[1], options, currentIndex + 7);
       }
-      html += `<span class="hl-tag-punct">&gt;</span>`;
+      html += `<span class="hl-tag-punct${selectionClass(currentIndex + openTag.length - 1, 1)}">&gt;</span>`;
       currentIndex += openTag.length;
       rest = rest.slice(openTag.length);
 
       const closeIdx = rest.toLowerCase().indexOf("</script>");
       if (closeIdx !== -1) {
         const jsContent = rest.substring(0, closeIdx);
-        html += highlightJS(jsContent, options);
+        html += highlightJS(jsContent, embeddedOptions(currentIndex));
         currentIndex += jsContent.length;
         rest = rest.slice(closeIdx);
-        html += `<span class="hl-tag-punct">&lt;/</span><span class="hl-tag">script</span><span class="hl-tag-punct">&gt;</span>`;
+        html += `<span class="hl-tag-punct${selectionClass(currentIndex, 2)}">&lt;/</span><span class="hl-tag${selectionClass(currentIndex + 2, 6)}">script</span><span class="hl-tag-punct${selectionClass(currentIndex + 8, 1)}">&gt;</span>`;
         currentIndex += 9;
         rest = rest.slice(9);
       }
@@ -117,7 +126,8 @@ export function highlightHTML(code: string, options: HighlightOptions = {}): str
       const isClosing = rest.startsWith("</");
       const tagName = tagMatch[1];
       const prefix = isClosing ? "&lt;/" : "&lt;";
-      html += `<span class="hl-tag-punct">${prefix}</span><span class="hl-tag">${escapeHtml(tagName)}</span>`;
+      const prefixLength = isClosing ? 2 : 1;
+      html += `<span class="hl-tag-punct${selectionClass(currentIndex, prefixLength)}">${prefix}</span><span class="hl-tag${selectionClass(currentIndex + prefixLength, tagName.length)}">${escapeHtml(tagName)}</span>`;
       currentIndex += tagMatch[0].length;
       rest = rest.slice(tagMatch[0].length);
 
@@ -125,7 +135,10 @@ export function highlightHTML(code: string, options: HighlightOptions = {}): str
       while (rest.length > 0 && !rest.startsWith(">") && !rest.startsWith("/>")) {
         const spaceMatch = /^(\s+)/.exec(rest);
         if (spaceMatch) {
-          html += escapeHtml(spaceMatch[0]);
+          const selectedClass = selectionClass(currentIndex, spaceMatch[0].length);
+          html += selectedClass
+            ? `<span class="hl-multi-selected">${escapeHtml(spaceMatch[0])}</span>`
+            : escapeHtml(spaceMatch[0]);
           currentIndex += spaceMatch[0].length;
           rest = rest.slice(spaceMatch[0].length);
           continue;
@@ -143,7 +156,7 @@ export function highlightHTML(code: string, options: HighlightOptions = {}): str
 
           // Check for '='
           if (rest.startsWith("=")) {
-            html += `<span class="hl-op">=</span>`;
+            html += `<span class="hl-op${selectionClass(currentIndex, 1)}">=</span>`;
             currentIndex += 1;
             rest = rest.slice(1);
 
@@ -163,17 +176,20 @@ export function highlightHTML(code: string, options: HighlightOptions = {}): str
         }
 
         // Catch unhandled character in tag
-        html += escapeHtml(rest[0]);
+        const selectedClass = selectionClass(currentIndex, 1);
+        html += selectedClass
+          ? `<span class="hl-multi-selected">${escapeHtml(rest[0])}</span>`
+          : escapeHtml(rest[0]);
         currentIndex += 1;
         rest = rest.slice(1);
       }
 
       if (rest.startsWith("/>")) {
-        html += `<span class="hl-tag-punct">/&gt;</span>`;
+        html += `<span class="hl-tag-punct${selectionClass(currentIndex, 2)}">/&gt;</span>`;
         currentIndex += 2;
         rest = rest.slice(2);
       } else if (rest.startsWith(">")) {
-        html += `<span class="hl-tag-punct">&gt;</span>`;
+        html += `<span class="hl-tag-punct${selectionClass(currentIndex, 1)}">&gt;</span>`;
         currentIndex += 1;
         rest = rest.slice(1);
       }
@@ -184,7 +200,7 @@ export function highlightHTML(code: string, options: HighlightOptions = {}): str
     const entityMatch = /^&([a-zA-Z0-9]+|#[0-9]+|#x[0-9a-fA-F]+);/.exec(rest);
     if (entityMatch) {
       const entity = entityMatch[0];
-      html += `<span class="hl-entity">${escapeHtml(entity)}</span>`;
+      html += `<span class="hl-entity${selectionClass(currentIndex, entity.length)}">${escapeHtml(entity)}</span>`;
       currentIndex += entity.length;
       rest = rest.slice(entity.length);
       continue;
@@ -192,9 +208,10 @@ export function highlightHTML(code: string, options: HighlightOptions = {}): str
 
     // 7. Regular Text character
     const charStart = currentIndex;
-    const bracketClass = isBracketMatch(charStart) ? ' class="hl-bracket-match"' : "";
-    if (bracketClass) {
-      html += `<span${bracketClass}>${escapeHtml(rest[0])}</span>`;
+    const bracketClass = isBracketMatch(charStart) ? "hl-bracket-match" : "";
+    const selectedClass = selectionClass(charStart, 1);
+    if (bracketClass || selectedClass) {
+      html += `<span class="${bracketClass}${selectedClass}">${escapeHtml(rest[0])}</span>`;
     } else {
       html += escapeHtml(rest[0]);
     }
@@ -211,32 +228,54 @@ export function highlightHTML(code: string, options: HighlightOptions = {}): str
   return html;
 }
 
-function highlightHtmlAttributes(attrString: string, options: HighlightOptions): string {
+function highlightHtmlAttributes(
+  attrString: string,
+  options: HighlightOptions,
+  start: number
+): string {
   let res = "";
   let rest = attrString;
+  let currentIndex = start;
+  const selectionClass = (len: number): string =>
+    options.multiSelections?.some(
+      (selection) => currentIndex < selection.end && currentIndex + len > selection.start
+    )
+      ? " hl-multi-selected"
+      : "";
   while (rest.length > 0) {
     const spaceMatch = /^(\s+)/.exec(rest);
     if (spaceMatch) {
-      res += escapeHtml(spaceMatch[0]);
+      const selectedClass = selectionClass(spaceMatch[0].length);
+      res += selectedClass
+        ? `<span class="hl-multi-selected">${escapeHtml(spaceMatch[0])}</span>`
+        : escapeHtml(spaceMatch[0]);
+      currentIndex += spaceMatch[0].length;
       rest = rest.slice(spaceMatch[0].length);
       continue;
     }
     const attrMatch = /^([a-zA-Z0-9_:@.-]+)/.exec(rest);
     if (attrMatch) {
-      res += `<span class="hl-attr">${escapeHtml(attrMatch[1])}</span>`;
+      res += `<span class="hl-attr${selectionClass(attrMatch[1].length)}">${escapeHtml(attrMatch[1])}</span>`;
+      currentIndex += attrMatch[1].length;
       rest = rest.slice(attrMatch[1].length);
       if (rest.startsWith("=")) {
-        res += `<span class="hl-op">=</span>`;
+        res += `<span class="hl-op${selectionClass(1)}">=</span>`;
+        currentIndex += 1;
         rest = rest.slice(1);
         const strMatch = /^("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/.exec(rest);
         if (strMatch) {
-          res += `<span class="hl-str">${escapeHtml(strMatch[0])}</span>`;
+          res += `<span class="hl-str${selectionClass(strMatch[0].length)}">${escapeHtml(strMatch[0])}</span>`;
+          currentIndex += strMatch[0].length;
           rest = rest.slice(strMatch[0].length);
         }
       }
       continue;
     }
-    res += escapeHtml(rest[0]);
+    const selectedClass = selectionClass(1);
+    res += selectedClass
+      ? `<span class="hl-multi-selected">${escapeHtml(rest[0])}</span>`
+      : escapeHtml(rest[0]);
+    currentIndex += 1;
     rest = rest.slice(1);
   }
   return res;

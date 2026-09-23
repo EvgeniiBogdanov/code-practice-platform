@@ -3,7 +3,6 @@
  */
 
 import { fuzzyMatch } from "../fuzzyMatcher";
-import { isEmmetAbbreviation, expandEmmetAbbreviation } from "../emmetEngine";
 import { HTML_TAGS, HTML_ATTRIBUTES, HTML_SNIPPETS } from "../languages/htmlKnowledge";
 import { CompletionItem } from "../snippetsData";
 
@@ -103,32 +102,6 @@ export function getHtmlCompletions(
     if (scored.length > 0) {
       scored.sort((a, b) => (b.score || 0) - (a.score || 0));
       return { word: query || "attr", items: scored.slice(0, 12) };
-    }
-  }
-
-  // 4. Emmet for HTML
-  const emmetMatch = currentLineBeforeCursor.match(/([a-zA-Z0-9_$.#:>+*^=$/-]+)$/);
-  if (emmetMatch && isEmmetAbbreviation(emmetMatch[1])) {
-    const abbr = emmetMatch[1];
-    const lineIndentMatch = currentLineBeforeCursor.match(/^(\s*)/);
-    const lineIndent = lineIndentMatch ? lineIndentMatch[1] : "";
-    const expanded = expandEmmetAbbreviation(abbr, lineIndent);
-    if (expanded) {
-      return {
-        word: abbr,
-        items: [
-          {
-            prefix: abbr,
-            label: `${abbr} ⚡ (Emmet)`,
-            detail: "Развернуть HTML разметку",
-            kind: "snippet",
-            insertText: expanded,
-            replaceStart: cursorIndex - abbr.length,
-            replaceEnd: cursorIndex,
-            score: 130,
-          },
-        ],
-      };
     }
   }
 

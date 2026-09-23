@@ -179,6 +179,43 @@ describe("useEditorKeyHandlers", () => {
     expect(multiCursor.addNextMatch).toHaveBeenCalledWith(code, 0, 3, textarea);
   });
 
+  it("handles Option+D when macOS reports the composed character", () => {
+    const code = "obj.name + other.name";
+    const multiCursor = createMockMultiCursor();
+    const { result } = renderHook(() =>
+      useEditorKeyHandlers({
+        code,
+        onChange: vi.fn(),
+        intelliSense: createMockIntelliSense(),
+        history: createMockHistory(),
+        multiCursor,
+      })
+    );
+    const textarea = document.createElement("textarea");
+    textarea.value = code;
+    textarea.setSelectionRange(5, 5);
+    const preventDefault = vi.fn();
+    const stopPropagation = vi.fn();
+    const event = {
+      currentTarget: textarea,
+      target: textarea,
+      altKey: true,
+      metaKey: false,
+      ctrlKey: false,
+      shiftKey: false,
+      key: "∂",
+      code: "KeyD",
+      preventDefault,
+      stopPropagation,
+    } as unknown as React.KeyboardEvent<HTMLTextAreaElement>;
+
+    result.current.handleKeyDown(event);
+
+    expect(preventDefault).toHaveBeenCalled();
+    expect(stopPropagation).toHaveBeenCalled();
+    expect(multiCursor.addNextMatch).toHaveBeenCalledWith(code, 5, 5, textarea);
+  });
+
   it("handles Cmd+Shift+L to select all matches", () => {
     const code = "foo + foo";
     const onChange = vi.fn();

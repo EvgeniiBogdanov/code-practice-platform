@@ -27,6 +27,8 @@ export const createTypeScriptDiagnostics = (
     moduleResolution: ts.ModuleResolutionKind.Bundler,
     moduleDetection: ts.ModuleDetectionKind.Force,
     strict: true,
+    jsx: ts.JsxEmit.ReactJSX,
+    allowJs: true,
     noEmit: true,
     skipLibCheck: true,
     types: [],
@@ -60,6 +62,10 @@ export const createTypeScriptDiagnostics = (
     fileExists: (name) => readFile(name) !== undefined,
     readFile,
     readDirectory: () => [],
+    directoryExists: (directory) => {
+      const prefix = normalize(directory).replace(/\/$/, "") + "/";
+      return [...sources.keys(), ...libraries.keys()].some((name) => name.startsWith(prefix));
+    },
     useCaseSensitiveFileNames: () => true,
     getNewLine: () => "\n",
   });
@@ -68,7 +74,7 @@ export const createTypeScriptDiagnostics = (
     const activePath = normalize(filepath);
     sources = new Map(
       files.flatMap((file) =>
-        file.name && /\.tsx?$/.test(file.name)
+        file.name && /\.(?:[cm]?[jt]s|[jt]sx)$/i.test(file.name)
           ? [[normalize(file.name), file.code ?? ""] as const]
           : []
       )

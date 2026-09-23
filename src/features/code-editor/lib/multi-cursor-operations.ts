@@ -14,7 +14,7 @@ export interface MultiEditResult {
 }
 
 export const isWordChar = (char: string): boolean => {
-  return /[a-zA-Z0-9_$]/.test(char);
+  return /[\p{L}\p{N}\p{M}_$]/u.test(char);
 };
 
 export const findWordAtPosition = (code: string, pos: number): WordAtPosition | null => {
@@ -45,7 +45,12 @@ export const findWordAtPosition = (code: string, pos: number): WordAtPosition | 
   return { start, end, word };
 };
 
-export const findAllMatches = (code: string, target: string, matchCase = true): TextRange[] => {
+export const findAllMatches = (
+  code: string,
+  target: string,
+  matchCase = true,
+  wholeWord = false
+): TextRange[] => {
   if (!code || !target) return [];
 
   const matches: TextRange[] = [];
@@ -55,7 +60,10 @@ export const findAllMatches = (code: string, target: string, matchCase = true): 
 
   let idx = searchCode.indexOf(searchTarget, 0);
   while (idx !== -1) {
-    matches.push({ start: idx, end: idx + targetLen });
+    const end = idx + targetLen;
+    if (!wholeWord || (!isWordChar(code.charAt(idx - 1)) && !isWordChar(code.charAt(end)))) {
+      matches.push({ start: idx, end });
+    }
     idx = searchCode.indexOf(searchTarget, idx + targetLen);
   }
 
@@ -66,9 +74,10 @@ export const findNextMatch = (
   code: string,
   target: string,
   existingSelections: TextRange[],
-  matchCase = true
+  matchCase = true,
+  wholeWord = false
 ): TextRange | null => {
-  const allMatches = findAllMatches(code, target, matchCase);
+  const allMatches = findAllMatches(code, target, matchCase, wholeWord);
   if (allMatches.length === 0) return null;
 
   const isSelected = (m: TextRange) =>
@@ -78,8 +87,7 @@ export const findNextMatch = (
     return allMatches[0];
   }
 
-  const sortedSelections = [...existingSelections].sort((a, b) => a.start - b.start);
-  const lastSel = sortedSelections[sortedSelections.length - 1];
+  const lastSel = existingSelections[existingSelections.length - 1];
 
   const nextMatch = allMatches.find((m) => m.start > lastSel.start && !isSelected(m));
   if (nextMatch) {

@@ -58,6 +58,25 @@ const files: Record<string, string> = {
 };
 
 describe("trace to recommended solution mapping", () => {
+  it.each(VISUALIZED_ALGORITHM_IDS)("shows every loop in the recommended solution for %s", (id) => {
+    const code = getSolutionCode(
+      sources[Object.keys(sources).find((path) => path.endsWith(`/${files[id]}`))!]
+    );
+    const definition = getAlgorithmDefinition(id)!;
+    const covered = new Set<number>();
+    for (const example of definition.examples) {
+      const parsed = parseAlgorithmInput(definition, example.input, example.parameter ?? "");
+      if (!parsed.ok) throw new Error(parsed.error);
+      for (const step of definition.build(parsed.input)) covered.add(getActiveCodeLine(code, step));
+    }
+    code.split("\n").forEach((line, index) => {
+      if (/^\s*(for|while)\s*\(/.test(line)) {
+        expect(covered.has(index + 1), `${id}: missing loop at ${index + 1}: ${line.trim()}`).toBe(
+          true
+        );
+      }
+    });
+  });
   it.each(VISUALIZED_ALGORITHM_IDS)(
     "maps every step in every %s preset to a real source line",
     (id) => {

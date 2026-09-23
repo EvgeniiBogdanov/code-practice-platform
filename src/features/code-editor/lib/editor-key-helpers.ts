@@ -1,4 +1,5 @@
 import React from "react";
+import { getMarkupContext, getLanguageCapabilities, getLanguageId } from "@/shared/lib/code-editor";
 import { CodeHistoryState } from "../model/useCodeHistory";
 import { IntelliSenseState } from "../model/useIntelliSense";
 import { moveLines, duplicateLines } from "./line-operations";
@@ -280,5 +281,48 @@ export const handleCommentShortcuts = (
     }, 0);
   }
 
+  return true;
+};
+
+export const handleMarkupKey = (
+  e: React.KeyboardEvent<HTMLTextAreaElement>,
+  textarea: HTMLTextAreaElement,
+  code: string,
+  onChange: (newCode: string) => void,
+  history: CodeHistoryState,
+  filepath: string,
+  tabSize: number
+): boolean => {
+  const cursor = textarea.selectionStart;
+  if (
+    cursor !== textarea.selectionEnd ||
+    e.ctrlKey ||
+    e.metaKey ||
+    e.altKey ||
+    !getLanguageCapabilities(getLanguageId(filepath)).supportsHtmlTags
+  )
+    return false;
+  const before = code.slice(0, cursor);
+  const after = code.slice(cursor);
+  const context = getMarkupContext(before, filepath);
+  let insertion: string;
+  let offset: number;
+  if (e.key === "/" && before.endsWith("<") && context.mode === "tag" && context.openTags.length) {
+    const name = context.openTags.at(-1) ?? "";
+    insertion = `/${name}${after.startsWith(">") ? "" : ">"}`;
+    offset = insertion.length + (after.startsWith(">") ? 1 : 0);
+  } else if (e.key === "Enter" && context.tags.at(-1)?.end === cursor && context.mode === "text") {
+    const indent = /^[ \t]*/.exec(before.slice(before.lastIndexOf("\n") + 1))?.[0] ?? "";
+    const name = context.openTags.at(-1);
+    if (name === undefined) return false;
+    const innerIndent = indent + " ".repeat(tabSize);
+    insertion = `\n${innerIndent}${after.startsWith(`</${name}>`) ? `\n${indent}` : ""}`;
+    offset = 1 + innerIndent.length;
+  } else return false;
+  e.preventDefault();
+  const newCode = before + insertion + after;
+  onChange(newCode);
+  history.pushHistory(newCode, cursor + offset);
+  setTimeout(() => textarea.setSelectionRange(cursor + offset, cursor + offset), 0);
   return true;
 };

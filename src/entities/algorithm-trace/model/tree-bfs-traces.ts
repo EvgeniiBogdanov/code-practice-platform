@@ -40,7 +40,25 @@ const bfsTreeTrace = ({ tree = [] }: AlgorithmInput, minimum: boolean): readonly
     "BFS · очередь уровней",
     "Сначала обрабатываем ближайшие к корню узлы. Потомки входят в конец очереди."
   );
+  add(
+    "if (root === null)",
+    "Проверяем корень",
+    root
+      ? "Корень существует; начинаем обход по уровням."
+      : "Пустое дерево не содержит уровней и листьев."
+  );
+  if (!root) {
+    add(minimum ? "return 0" : "return levels", "Пустое дерево", "Очередь остаётся пустой.", {
+      result: minimum ? 0 : [],
+    });
+    return steps;
+  }
   while (head < queue.length) {
+    add(
+      minimum ? "while (head < queue.length)" : "while (queue.length > 0)",
+      "Проверяем очередь",
+      `Ожидают обработки ${queue.length - head} узлов.`
+    );
     const end = queue.length;
     currentLevel = [];
     if (!minimum)
@@ -50,6 +68,12 @@ const bfsTreeTrace = ({ tree = [] }: AlgorithmInput, minimum: boolean): readonly
         `На текущем уровне ${end - head} узлов. Новые потомки относятся к следующему.`
       );
     while (head < end) {
+      if (!minimum)
+        add(
+          "for (let i = 0; i < levelSize; i += 1)",
+          "Следующий узел уровня",
+          `Узел ${head + 1} из ${end} в очереди.`
+        );
       const { node, depth } = queue[head++];
       active = [node.id];
       add(
@@ -57,6 +81,15 @@ const bfsTreeTrace = ({ tree = [] }: AlgorithmInput, minimum: boolean): readonly
         "Dequeue · берём первый узел",
         `${node.value}, глубина ${depth}.`
       );
+      if (minimum) add("head++", "Сдвигаем голову очереди", `Следующий индекс очереди: ${head}.`);
+      if (minimum)
+        add(
+          "if (node.left === null && node.right === null)",
+          "Проверяем лист",
+          !node.left && !node.right
+            ? `Узел ${node.value} — первый найденный лист.`
+            : `Узел ${node.value} имеет потомков.`
+        );
       if (minimum && !node.left && !node.right) {
         done.push(node.id);
         add(
@@ -77,6 +110,13 @@ const bfsTreeTrace = ({ tree = [] }: AlgorithmInput, minimum: boolean): readonly
       }
       for (const side of ["left", "right"] as const) {
         const child = node[side];
+        add(
+          `if (node.${side} !== null)`,
+          "Проверяем потомка",
+          child
+            ? `${side === "left" ? "Левый" : "Правый"} потомок ${child.value} добавится в очередь.`
+            : `${side === "left" ? "Левого" : "Правого"} потомка нет.`
+        );
         if (child) {
           queue.push({ node: child, depth: depth + 1 });
           add(
@@ -102,7 +142,7 @@ const bfsTreeTrace = ({ tree = [] }: AlgorithmInput, minimum: boolean): readonly
     minimum ? "return 0" : "return levels",
     "Обход завершён",
     root ? "Очередь пуста." : "Пустое дерево.",
-    { result: minimum ? 0 : levels.map((level) => [...level]) }
+    { result: minimum ? 0 : levels.map((level) => [...level]), occurrence: 1 }
   );
   return steps;
 };

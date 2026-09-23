@@ -54,6 +54,38 @@ describe("useMultiCursor", () => {
     expect(result.current.hasMultipleCursors).toBe(true);
   });
 
+  it("selects property names as whole words and skips identifier fragments", () => {
+    const { result } = renderHook(() => useMultiCursor());
+    const code = "obj.name + username + other.name + Name";
+    const textarea = document.createElement("textarea");
+    textarea.value = code;
+
+    act(() => result.current.addNextMatch(code, 5, 5, textarea));
+    expect(result.current.selections).toEqual([{ start: 4, end: 8 }]);
+
+    act(() =>
+      result.current.addNextMatch(code, textarea.selectionStart, textarea.selectionEnd, textarea)
+    );
+    expect(result.current.selections).toEqual([
+      { start: 4, end: 8 },
+      { start: 28, end: 32 },
+    ]);
+  });
+
+  it("uses the exact text for an explicit selection", () => {
+    const { result } = renderHook(() => useMultiCursor());
+    const code = "name + username + other.name";
+    const textarea = document.createElement("textarea");
+    textarea.value = code;
+
+    act(() => result.current.addNextMatch(code, 0, 4, textarea));
+
+    expect(result.current.selections).toEqual([
+      { start: 0, end: 4 },
+      { start: 11, end: 15 },
+    ]);
+  });
+
   it("selectAllMatches selects all occurrences at once", () => {
     const { result } = renderHook(() => useMultiCursor());
     const code = "val + val + val";

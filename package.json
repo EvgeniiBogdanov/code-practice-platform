@@ -1,7 +1,7 @@
 {
   "name": "Code-Practice-Platform",
   "private": true,
-  "version": "2.4.11",
+  "version": "2.4.12",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -30,6 +30,7 @@
     "@xterm/xterm": "^6.0.0",
     "clsx": "^2.1.1",
     "dompurify": "^3.4.13",
+    "emmet": "^2.4.11",
     "lucide-react": "^1.27.0",
     "marked": "^18.0.9",
     "prettier": "^3.9.6",

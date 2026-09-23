@@ -13,6 +13,8 @@ import { getHtmlCompletions } from "./snippets/htmlCompleter";
 import { getSqlCompletions } from "./snippets/sqlCompleter";
 import { getLanguageId, getLanguageCapabilities } from "./languages/languageDetector";
 import { JSON_SNIPPETS } from "./languages/jsonKnowledge";
+import { getMarkupContext } from "./markup-context";
+import { getEmmetCompletion } from "./emmetEngine";
 import { fuzzyMatch } from "./fuzzyMatcher";
 
 export { expandSnippet };
@@ -49,7 +51,16 @@ export function getCompletions(
     lineEnd === -1 ? fullCode.substring(cursorIndex) : fullCode.substring(cursorIndex, lineEnd);
   const fullCurrentLine = currentLineBeforeCursor + lineAfterCursor;
 
-  if (currentLineBeforeCursor.includes("//")) {
+  if (languageId === "plaintext" || languageId === "markdown") return { word: "", items: [] };
+
+  const context = getMarkupContext(textBeforeCursor, currentFilepath);
+  if (
+    context.mode === "literal" &&
+    !/^\s*import\b/.test(currentLineBeforeCursor) &&
+    languageId !== "json" &&
+    languageId !== "css" &&
+    languageId !== "sql"
+  ) {
     return { word: "", items: [] };
   }
 
@@ -60,6 +71,8 @@ export function getCompletions(
   }
 
   if (languageId === "html") {
+    const emmet = getEmmetCompletion(fullCode, cursorIndex, currentFilepath, false);
+    if (emmet) return { word: emmet.prefix, items: [emmet] };
     const htmlRes = getHtmlCompletions(
       cursorIndex,
       currentLineBeforeCursor,
@@ -112,6 +125,11 @@ export function getCompletions(
       capabilities
     );
     if (importRes) return importRes;
+  }
+
+  if (capabilities.supportsEmmet) {
+    const emmet = getEmmetCompletion(fullCode, cursorIndex, currentFilepath, true);
+    if (emmet) return { word: emmet.prefix, items: [emmet] };
   }
 
   // 3. Member & Receiver & CSS in JS Context

@@ -3,6 +3,7 @@ import { IntelliSenseState } from "./useIntelliSense";
 import { CodeHistoryState } from "./useCodeHistory";
 import { MultiCursorState } from "./useMultiCursor";
 import {
+  handleMarkupKey,
   handleLineMovement,
   handleCommentShortcuts,
   handleTabKey,
@@ -65,7 +66,8 @@ const handleMultiSelectionShortcuts = (
   const keyLower = e.key.toLowerCase();
 
   // Cmd+D (Mac) / Ctrl+D (Windows/Linux) / Alt+D: Select next match
-  const isCmdOrCtrlOrAltD = (e.metaKey || e.ctrlKey || e.altKey) && !e.shiftKey && keyLower === "d";
+  const isCmdOrCtrlOrAltD =
+    (e.metaKey || e.ctrlKey || e.altKey) && !e.shiftKey && (e.code === "KeyD" || keyLower === "d");
 
   if (isCmdOrCtrlOrAltD) {
     e.preventDefault();
@@ -154,6 +156,7 @@ export const useEditorKeyHandlers = ({
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
       const textarea = e.currentTarget;
+      if (e.nativeEvent?.isComposing || e.key === "Process") return;
 
       // 1. Run shortcut (Cmd/Ctrl + Enter)
       if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
@@ -164,6 +167,11 @@ export const useEditorKeyHandlers = ({
 
       // 2. Multi-selection commands (Cmd/Ctrl+D, Cmd/Ctrl+Shift+L)
       if (handleMultiSelectionShortcuts(e, textarea, code, multiCursor)) {
+        return;
+      }
+
+      if (readOnly) {
+        if (e.altKey && (e.key === "ArrowUp" || e.key === "ArrowDown")) e.preventDefault();
         return;
       }
 
@@ -197,6 +205,16 @@ export const useEditorKeyHandlers = ({
           readOnly
         )
       ) {
+        return;
+      }
+
+      if (handleMarkupKey(e, textarea, code, onChange, history, filepath, tabSize)) {
+        intelliSense.closeCompletions();
+        return;
+      }
+      if ((e.ctrlKey || e.metaKey) && e.code === "Space") {
+        e.preventDefault();
+        intelliSense.openCompletions(code, textarea.selectionStart, textarea, true);
         return;
       }
 

@@ -81,6 +81,18 @@ const backtrackTrace = (
   const visit = (id: string, start: number, rest: number, open = 0, close = 0): void => {
     active = id;
     remaining = rest;
+    if (mode !== "subsets")
+      add(
+        mode === "permutations"
+          ? "if (path.length === nums.length)"
+          : mode === "combinations"
+            ? "if (remaining === 0)"
+            : mode === "binary"
+              ? "if (current.length === n)"
+              : "if (current.length === n * 2)",
+        "Проверяем завершение ветви",
+        `Длина пути ${path.length}${mode === "combinations" ? `, остаток ${rest}` : ""}.`
+      );
     const accepted =
       mode === "subsets" ||
       (mode === "permutations" && path.length === values.length) ||
@@ -99,7 +111,10 @@ const backtrackTrace = (
         "Сохраняем решение",
         `Найдено: ${JSON.stringify(stringMode ? path.join("") : path)}.`
       );
-      if (mode !== "subsets") return;
+      if (mode !== "subsets") {
+        add("return;", "Возврат после решения", "Текущая ветвь завершена.");
+        return;
+      }
     }
     if (mode === "combinations" && rest < 0) {
       nodes[Number(id)].state = "rejected";
@@ -108,6 +123,9 @@ const backtrackTrace = (
         "Отсекаем ветвь",
         `remaining = ${rest} < 0. Положительные кандидаты уже не исправят сумму.`
       );
+      add("return;", "Возврат после отсечения", "Дальше по этой ветви искать бесполезно.", {
+        occurrence: 1,
+      });
       return;
     }
     const choices: { value: TraceValue; index: number }[] = stringMode
@@ -116,7 +134,7 @@ const backtrackTrace = (
           : [...(open < n ? ["("] : []), ...(close < open ? [")"] : [])]
         ).map((value, index) => ({ value, index }))
       : values.flatMap((value, index) =>
-          (mode === "permutations" ? !used.has(index) : index >= start) ? [{ value, index }] : []
+          mode === "permutations" || index >= start ? [{ value, index }] : []
         );
     if (mode === "parentheses" && close === open && path.length < n * 2)
       add(
@@ -125,9 +143,38 @@ const backtrackTrace = (
         "close = open: закрытие нарушит баланс. Эту ветвь не создаём."
       );
     for (const choice of choices) {
+      if (!stringMode)
+        add(
+          mode === "permutations"
+            ? "for (let i = 0; i < nums.length; i++)"
+            : mode === "combinations"
+              ? "for (let i = start; i < candidates.length; i++)"
+              : "for (let i = start; i < nums.length; i++)",
+          "Следующий выбор",
+          `Проверяем ${choice.value} на индексе ${choice.index}.`
+        );
+      if (mode === "permutations") {
+        add(
+          "if (used[i] === false)",
+          "Проверяем занятость",
+          used.has(choice.index)
+            ? `Индекс ${choice.index} уже есть в пути.`
+            : `Индекс ${choice.index} свободен.`
+        );
+        if (used.has(choice.index)) continue;
+        used.add(choice.index);
+        add("used[i] = true", "Помечаем выбор", `Индекс ${choice.index} занят текущей ветвью.`);
+      }
+      if (mode === "parentheses")
+        add(
+          choice.value === "(" ? "if (open < n)" : "if (close < open)",
+          "Проверяем баланс",
+          choice.value === "("
+            ? "Есть место для открывающей скобки."
+            : "Есть открытая скобка для закрытия."
+        );
       const child = String(nodes.length);
       path.push(choice.value);
-      used.add(choice.index);
       nodes.push({ id: child, parent: id, value: String(choice.value), depth: path.length });
       active = child;
       const line =
@@ -143,6 +190,16 @@ const backtrackTrace = (
               ? "current.push(candidates[i])"
               : "path.push(nums[i])";
       add(line, "Выбор · спуск", `Добавляем ${choice.value}. Путь: ${JSON.stringify(path)}.`);
+      if (!stringMode)
+        add(
+          mode === "combinations"
+            ? "backtrack(i, remaining - candidates[i])"
+            : mode === "permutations"
+              ? "backtrack()"
+              : "backtrack(i + 1)",
+          "Рекурсивный вызов",
+          `Углубляемся с путём ${JSON.stringify(path)}.`
+        );
       visit(
         child,
         mode === "combinations" ? choice.index : choice.index + 1,
@@ -151,7 +208,6 @@ const backtrackTrace = (
         close + (choice.value === ")" ? 1 : 0)
       );
       path.pop();
-      used.delete(choice.index);
       active = id;
       remaining = rest;
       add(
@@ -159,8 +215,29 @@ const backtrackTrace = (
         "Возврат · отменяем выбор",
         `Возвращаемся к родительскому пути ${JSON.stringify(path)}. ${stringMode ? "Строка родительского вызова не менялась." : "Последний элемент удалён."}`
       );
+      if (mode === "permutations") {
+        used.delete(choice.index);
+        add(
+          "used[i] = false",
+          "Освобождаем индекс",
+          `Индекс ${choice.index} доступен для следующей ветви.`
+        );
+      }
     }
   };
+  add(
+    mode === "subsets"
+      ? "backtrack(0)"
+      : mode === "permutations"
+        ? "backtrack()"
+        : mode === "combinations"
+          ? "backtrack(0, target)"
+          : mode === "binary"
+            ? 'backtrack("")'
+            : 'backtrack("", 0, 0)',
+    "Запускаем перебор",
+    "Первый рекурсивный вызов начинается с пустого пути."
+  );
   visit("0", 0, n);
   active = "";
   add(

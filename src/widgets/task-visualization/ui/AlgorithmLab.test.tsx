@@ -36,6 +36,24 @@ describe("algorithm lab interactions", () => {
     fireEvent.keyDown(range, { key: "End" });
     expect(screen.queryByRole("button", { name: "Пауза" })).not.toBeInTheDocument();
   });
+  it("shows every anagram character as a separate playback step", () => {
+    const code = "for (const char of s) {\n  map.set(char, (map.get(char) || 0) + 1);\n}";
+    render(<AlgorithmLab taskId="algo5" solution={code} />);
+    const range = screen.getByRole("slider", { name: "Шаг алгоритма" });
+    fireEvent.change(range, { target: { value: "2" } });
+    expect(screen.getByRole("heading", { name: "Читаем символ s" })).toBeVisible();
+    expect(screen.getByRole("code").querySelector("[aria-current='step']")).toHaveTextContent(
+      "for (const char of s)"
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Следующий шаг" }));
+    expect(screen.getByRole("heading", { name: "Увеличиваем частоту" })).toBeVisible();
+    expect(screen.getByRole("code").querySelector("[aria-current='step']")).toHaveTextContent(
+      "map.set(char"
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Следующий шаг" }));
+    expect(screen.getByRole("heading", { name: "Читаем символ s" })).toBeVisible();
+    expect(range).toHaveValue("4");
+  });
   it("keeps the current trace on invalid input and resets it on successful submission", () => {
     render(<AlgorithmLab taskId="algo35" solution={solution} />);
     fireEvent.click(screen.getByRole("button", { name: "Следующий шаг" }));

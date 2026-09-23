@@ -40,6 +40,20 @@ const characterStack = ({ text }: AlgorithmInput, brackets: boolean): readonly T
     action = undefined;
     add("for (const char of s)", "Читаем символ", `Символ ${char}, индекс ${index}.`);
     if (brackets) {
+      add(
+        "const expectedClose = pairs[char]",
+        "Определяем тип скобки",
+        pairs[char]
+          ? `Открывающая ${char} ожидает ${pairs[char]}.`
+          : `${char} проверяем как закрывающую скобку.`
+      );
+      add(
+        "const isOpen = expectedClose !== undefined",
+        "Проверяем открытие",
+        pairs[char]
+          ? "Открывающая скобка добавляет ожидание в стек."
+          : "Закрывающая скобка должна совпасть с вершиной."
+      );
       if (pairs[char]) {
         action = stackAction(
           "push",
@@ -53,6 +67,7 @@ const characterStack = ({ text }: AlgorithmInput, brackets: boolean): readonly T
           `Добавляем ${pairs[char]} на вершину.`
         );
       } else {
+        add("if (!isOpen)", "Проверяем закрытие", `Сравниваем ${char} с вершиной стека.`);
         action = stackAction(
           "pop",
           [{ label: "Ожидаем закрытие", values: stack }],
@@ -63,6 +78,13 @@ const characterStack = ({ text }: AlgorithmInput, brackets: boolean): readonly T
           "const last = stack.pop()",
           "Pop · проверяем пару",
           `Сняли ${expected ?? "∅"}; прочитали ${char}.`
+        );
+        add(
+          "const isMatch = last === char",
+          "Сверяем пару",
+          expected === char
+            ? `${char} совпадает с ожидаемой скобкой.`
+            : `${char} не совпадает с ${expected ?? "∅"}.`
         );
         if (expected !== char) {
           add(
@@ -75,6 +97,11 @@ const characterStack = ({ text }: AlgorithmInput, brackets: boolean): readonly T
         }
       }
     } else if (stack.at(-1) === char) {
+      add(
+        "if (stack[stack.length - 1] === char)",
+        "Проверяем пару",
+        `Вершина совпадает с ${char}.`
+      );
       action = stackAction(
         "pop",
         [{ label: "Символы без пар", values: stack }],
@@ -87,6 +114,11 @@ const characterStack = ({ text }: AlgorithmInput, brackets: boolean): readonly T
         `Два соседних ${char} сокращаются. Открылась предыдущая вершина.`
       );
     } else {
+      add(
+        "if (stack[stack.length - 1] === char)",
+        "Проверяем пару",
+        `Вершина не совпадает с ${char}.`
+      );
       action = stackAction(
         "push",
         [{ label: "Символы без пар", values: stack }],
@@ -141,6 +173,12 @@ export const buildMinStackTrace = ({ operations = [] }: AlgorithmInput): readonl
       stack.push(value);
       add("stack.push(value)", `Push ${value}`, "Добавляем значение в основной стек.");
       const minimum = Math.min(value, minima.at(-1) ?? value);
+      action = undefined;
+      add(
+        "const currentMin =",
+        "Вычисляем новый минимум",
+        `min(${value}, ${minima.at(-1) ?? value}) = ${minimum}.`
+      );
       action = stackAction("push", lanes(), [{ lane: 1, value: minimum }]);
       minima.push(minimum);
       add(
@@ -149,16 +187,15 @@ export const buildMinStackTrace = ({ operations = [] }: AlgorithmInput): readonl
         `Минимум на этой глубине: ${minima.at(-1)}.`
       );
     } else if (op === "pop") {
-      action = stackAction("pop", lanes(), [
-        { lane: 0, value: stack.at(-1)! },
-        { lane: 1, value: minima.at(-1)! },
-      ]);
+      action = stackAction("pop", lanes(), [{ lane: 0, value: stack.at(-1)! }]);
       const removed = stack.pop();
+      add("stack.pop()", "Pop · снимаем значение", `Удалили ${removed} из основного стека.`);
+      action = stackAction("pop", lanes(), [{ lane: 1, value: minima.at(-1)! }]);
       minima.pop();
       add(
         "minStack.pop()",
-        "Pop · снимаем обе вершины",
-        `Удалили ${removed}; предыдущий минимум восстановлен без поиска.`
+        "Pop · восстанавливаем минимум",
+        "Предыдущий минимум восстановлен без поиска."
       );
     } else {
       const answer = op === "top" ? stack.at(-1)! : minima.at(-1)!;
@@ -203,16 +240,48 @@ export const buildTemperaturesTrace = ({ values }: AlgorithmInput): readonly Tra
   for (index = 0; index < values.length; index++) {
     action = undefined;
     add(
-      "const isWarmer =",
-      "Сравниваем с вершиной",
-      `День ${index}: ${values[index]}°. Снимаем все более холодные дни.`
+      "for (let i = 0; i < temperatures.length; i++)",
+      "Следующий день",
+      `Смотрим день ${index}: ${values[index]}°.`,
+      { focus: [index] }
     );
-    while (stack.length && values[index] > values[stack.at(-1)!]) {
+    while (stack.length) {
+      action = undefined;
+      add(
+        "while (stack.length > 0)",
+        "Проверяем вершину стека",
+        `Сравниваем день ${index} с днём ${stack.at(-1)}.`
+      );
       const previous = stack.at(-1)!;
+      add(
+        "const lastIndex = stack[stack.length - 1]",
+        "Читаем вершину",
+        `Последний ожидающий день: ${previous}.`
+      );
+      const warmer = values[index] > values[previous];
+      add(
+        "const isWarmer =",
+        "Сравниваем температуры",
+        `${values[index]}° ${warmer ? ">" : "≤"} ${values[previous]}°.`
+      );
+      if (!warmer) {
+        add(
+          "if (!isWarmer) break",
+          "Останавливаем снятие",
+          "Текущий день не теплее вершины стека."
+        );
+        break;
+      }
+      add("if (isWarmer)", "Нашли потепление", `День ${index} теплее дня ${previous}.`);
       action = stackAction("pop", lanes(), [
         { lane: 0, value: `${previous}: ${values[previous]}°` },
       ]);
       stack.pop();
+      add(
+        "const prevIndex = stack.pop()",
+        "Pop · освобождаем день",
+        `День ${previous} больше не ждёт ответа.`
+      );
       result[previous] = index - previous;
       add(
         "result[prevIndex] = i - prevIndex",

@@ -12,6 +12,8 @@ export interface DiagnosticProblem {
 }
 
 export interface HighlightOptions {
+  supportsJsx?: boolean;
+  supportsTypeScript?: boolean;
   bracketPair?: [number, number] | null;
   problems?: DiagnosticProblem[];
   unusedImports?: Set<string> | null;

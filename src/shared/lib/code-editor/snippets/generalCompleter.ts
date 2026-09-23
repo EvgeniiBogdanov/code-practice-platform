@@ -2,7 +2,7 @@
  * General Identifiers, Tags, Props, Snippets & Emmet Completer
  */
 
-import { isEmmetAbbreviation, expandEmmetAbbreviation } from "../emmetEngine";
+import { getMarkupContext } from "../markup-context";
 import { fuzzyMatch } from "../fuzzyMatcher";
 import { getTaskFilesExports, TaskFile } from "../importManager";
 import { CompletionItem } from "../snippetsData";
@@ -29,8 +29,10 @@ export function getGeneralCompletions(
   force = false
 ): { word: string; items: CompletionItem[] } {
   // 1. Tag open <Tag (only if JSX is supported)
-  if (capabilities.supportsJsx) {
-    const tagOpenMatch = currentLineBeforeCursor.match(/<([a-zA-Z0-9_$]*)$/);
+  const markup = getMarkupContext(textBeforeCursor, currentFilepath);
+  if (capabilities.supportsJsx && markup.mode === "tag") {
+    const tagPrefix = textBeforeCursor.slice(markup.tagStart);
+    const tagOpenMatch = tagPrefix.match(/<([a-zA-Z0-9_$]*)$/);
     if (tagOpenMatch) {
       const tagQuery = tagOpenMatch[1];
       const afterTagMatch = lineAfterCursor.match(/^[a-zA-Z0-9_$]*/);
@@ -50,9 +52,7 @@ export function getGeneralCompletions(
     }
 
     // 2. JSX Props inside <Tag prop
-    const inTagMatch = currentLineBeforeCursor.match(
-      /<([a-zA-Z0-9_$]+)(?:\s+[^>]*?)?\s+([a-zA-Z0-9_$-]*)$/
-    );
+    const inTagMatch = tagPrefix.match(/<([a-zA-Z0-9_$]+)(?:\s+[^>]*?)?\s+([a-zA-Z0-9_$-]*)$/);
     const isInsideQuoteOrBrace =
       /=["'][^"']*$/.test(currentLineBeforeCursor) || /=\{[^}]*$/.test(currentLineBeforeCursor);
 
@@ -68,34 +68,6 @@ export function getGeneralCompletions(
         const seen = new Set<string>();
         const unique = scoredProps.filter((p) => !seen.has(p.label) && seen.add(p.label));
         return { word: propQuery || "prop", items: unique.slice(0, 12) };
-      }
-    }
-  }
-
-  // 3. Emmet Abbreviation (only if Emmet is supported)
-  if (capabilities.supportsEmmet) {
-    const emmetMatch = currentLineBeforeCursor.match(/([a-zA-Z0-9_$.#:>+*^=$/-]+)$/);
-    if (emmetMatch && isEmmetAbbreviation(emmetMatch[1])) {
-      const abbr = emmetMatch[1];
-      const lineIndentMatch = currentLineBeforeCursor.match(/^(\s*)/);
-      const lineIndent = lineIndentMatch ? lineIndentMatch[1] : "";
-      const expanded = expandEmmetAbbreviation(abbr, lineIndent);
-      if (expanded && /[.#>+*[{]/.test(abbr)) {
-        return {
-          word: abbr,
-          items: [
-            {
-              prefix: abbr,
-              label: `${abbr} ⚡ (Emmet)`,
-              detail: `Развернуть Emmet JSX разметку`,
-              kind: "snippet",
-              insertText: expanded,
-              replaceStart: cursorIndex - abbr.length,
-              replaceEnd: cursorIndex,
-              score: 130,
-            },
-          ],
-        };
       }
     }
   }

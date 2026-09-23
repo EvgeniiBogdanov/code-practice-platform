@@ -30,6 +30,12 @@ export const buildHashTwoSumTrace = ({
   }));
   add("const map", "Пустая таблица", "В Map сохраняем только уже просмотренные числа.");
   for (; i < values.length; i++) {
+    add(
+      "for (let i = 0; i < nums.length; i++)",
+      "Следующее число",
+      `Проверяем элемент ${i}: ${values[i]}.`,
+      { focus: [i] }
+    );
     active = target - values[i];
     add(
       "const complement",
@@ -38,6 +44,11 @@ export const buildHashTwoSumTrace = ({
       { formula: `${target} − ${values[i]} = ${active}`, focus: [i] }
     );
     const previous = map.get(active);
+    add(
+      "if (map.has(complement))",
+      "Проверяем таблицу",
+      `Дополнение ${active} ${previous === undefined ? "ещё не встречалось" : `найдено на индексе ${previous}`}.`
+    );
     if (previous !== undefined) {
       add(
         "return [map.get",
@@ -72,6 +83,9 @@ export const buildDuplicateTrace = ({ values }: AlgorithmInput): readonly TraceS
   }));
   add("const set", "Пустое множество", "Каждое число проверяем перед добавлением в Set.");
   for (; i < values.length; i++) {
+    add("for (const num of nums)", "Следующее число", `Читаем ${values[i]} на индексе ${i}.`, {
+      focus: [i],
+    });
     add("if (set.has(num))", "Проверяем наличие", `Есть ли ${values[i]} в множестве?`, {
       focus: [i],
     });
@@ -132,6 +146,12 @@ export const buildAnagramTrace = ({
   add("const map", "Счётчик частот", "Сначала подсчитаем символы s, затем вычтем символы t.");
   for (i = 0; i < text.length; i++) {
     active = text[i];
+    add(
+      "for (const char of s)",
+      "Читаем символ s",
+      `Символ ${i + 1} из ${text.length}: ${JSON.stringify(active)}.`,
+      { focus: [i] }
+    );
     counts.set(active, (counts.get(active) ?? 0) + 1);
     add(
       "map.set(char, (map.get(char)",
@@ -144,6 +164,12 @@ export const buildAnagramTrace = ({
   values.splice(0, values.length, ...secondText);
   for (i = 0; i < secondText.length; i++) {
     active = secondText[i];
+    add(
+      "for (const char of t)",
+      "Читаем символ t",
+      `Символ ${i + 1} из ${secondText.length}: ${JSON.stringify(active)}.`,
+      { focus: [i] }
+    );
     add(
       "if (!map.has(char)",
       "Проверяем остаток",
@@ -184,11 +210,21 @@ export const buildGroupAnagramsTrace = ({ words = [] }: AlgorithmInput): readonl
     "Слова с одинаковым отсортированным ключом попадают в одну группу."
   );
   for (; i < words.length; i++) {
+    add("for (const str of strs)", "Следующее слово", `Обрабатываем ${JSON.stringify(words[i])}.`, {
+      focus: [i],
+    });
     key = words[i].split("").sort().join("");
     add("const key", "Строим ключ", `${JSON.stringify(words[i])} → ${JSON.stringify(key)}.`, {
       focus: [i],
       formula: `${words[i] || '""'} → ${key || '""'}`,
     });
+    add(
+      "if (!map.has(key))",
+      "Проверяем группу",
+      groups.has(key)
+        ? `Группа для ключа ${JSON.stringify(key)} уже существует.`
+        : `Для ключа ${JSON.stringify(key)} нужна новая группа.`
+    );
     if (!groups.has(key)) {
       groups.set(key, []);
       add("map.set(key, [])", "Новая группа", `Создаём ячейку для ключа ${JSON.stringify(key)}.`);

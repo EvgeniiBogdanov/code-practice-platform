@@ -28,6 +28,9 @@ export const buildRunningSumTrace = ({ values }: AlgorithmInput): readonly Trace
     "Каждая новая ячейка содержит сумму всех чисел до неё включительно."
   );
   for (; i < values.length; i++) {
+    add("for (const num of nums)", "Следующее число", `Считаем префикс до индекса ${i}.`, {
+      focus: [i],
+    });
     const previous = sum;
     sum += values[i];
     add("sum += num", "Накапливаем сумму", `Добавляем ${values[i]}.`, {
@@ -59,6 +62,9 @@ export const buildRangeSumTrace = ({
   }));
   add("const prefix", "Нулевой префикс", "P[0] = 0. В P[i + 1] храним сумму первых i + 1 чисел.");
   for (; i < values.length; i++) {
+    add("for (let i = 0; i < nums.length; i++)", "Следующее число", `Строим P[${i + 1}].`, {
+      focus: [i],
+    });
     prefix[i + 1] = prefix[i] + values[i];
     add(
       "prefix[i + 1] = prefix[i] + nums[i]",
@@ -112,6 +118,12 @@ export const buildPivotTrace = ({ values }: AlgorithmInput): readonly TraceStep[
     `totalSum = ${total}. Начинаем с пустой левой части.`
   );
   for (; i < values.length; i++) {
+    add(
+      "for (let i = 0; i < nums.length; i++)",
+      "Следующий кандидат",
+      `Проверяем опорный индекс ${i}.`,
+      { focus: [i] }
+    );
     right = total - left - values[i];
     add(
       "const rightSum",
@@ -168,6 +180,12 @@ export const buildSubarraySumTrace = ({
     "Это позволяет учитывать подмассивы, начинающиеся с индекса 0."
   );
   for (; i < values.length; i++) {
+    add(
+      "for (const num of nums)",
+      "Следующее число",
+      `Добавляем ${values[i]} к текущему префиксу.`,
+      { focus: [i] }
+    );
     sum += values[i];
     prefix.push(sum);
     active = sum - k;
