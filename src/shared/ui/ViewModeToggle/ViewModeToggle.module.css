@@ -4,7 +4,7 @@
   gap: 2px;
   margin-bottom: 8px;
   padding: 2px;
-  
+
   border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
   border-radius: var(--radius-sm);
   align-self: flex-start;
