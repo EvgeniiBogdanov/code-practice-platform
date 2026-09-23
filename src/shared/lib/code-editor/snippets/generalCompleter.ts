@@ -32,10 +32,29 @@ export function getGeneralCompletions(
   const markup = getMarkupContext(textBeforeCursor, currentFilepath);
   if (capabilities.supportsJsx && markup.mode === "tag") {
     const tagPrefix = textBeforeCursor.slice(markup.tagStart);
-    const tagOpenMatch = tagPrefix.match(/<([a-zA-Z0-9_$]*)$/);
+    const closing = /^<\/([\w$:.-]*)$/.exec(tagPrefix);
+    if (closing) {
+      const query = closing[1];
+      const tailLength = /^[\w$:.-]*/.exec(lineAfterCursor)?.[0].length ?? 0;
+      const end = cursorIndex + tailLength + (lineAfterCursor[tailLength] === ">" ? 1 : 0);
+      const items = [...new Set([...markup.openTags].reverse())]
+        .filter((name) => name.startsWith(query))
+        .map((name): CompletionItem => ({
+          prefix: name,
+          label: `</${name}>`,
+          detail: "Закрыть открытый тег",
+          kind: "keyword",
+          insertText: `${name}>`,
+          replaceStart: cursorIndex - query.length,
+          replaceEnd: end,
+          score: 150,
+        }));
+      return { word: query, items };
+    }
+    const tagOpenMatch = tagPrefix.match(/<([a-zA-Z0-9_$:.-]*)$/);
     if (tagOpenMatch) {
       const tagQuery = tagOpenMatch[1];
-      const afterTagMatch = lineAfterCursor.match(/^[a-zA-Z0-9_$]*/);
+      const afterTagMatch = lineAfterCursor.match(/^[a-zA-Z0-9_$:.-]*/);
       const afterTagLen = afterTagMatch ? afterTagMatch[0].length : 0;
       const scoredTags = collectTagCompletions(
         tagQuery,

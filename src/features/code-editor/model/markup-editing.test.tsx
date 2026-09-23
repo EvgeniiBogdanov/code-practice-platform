@@ -45,16 +45,36 @@ describe("markup editor input", () => {
     useUIStore.setState({ editorLinterEnabled: false });
   });
 
-  it("accepts a bare tag with Tab and places the cursor inside", async () => {
+  describe.each(["App.jsx", "App.tsx", "index.html"])("tag acceptance in %s", (filepath) => {
+    it.each(["button", "dialog", "aside", "h6", "svg", "path", "feGaussianBlur", "my-button"])(
+      "expands %s with Tab and Enter",
+      async (tag) => {
+        for (const key of ["Tab", "Enter"]) {
+          const view = render(<EditorHarness filepath={filepath} />);
+          const textarea = screen.getByRole<HTMLTextAreaElement>("textbox");
+          input(textarea, tag, tag.slice(-1));
+          fireEvent.keyDown(textarea, { key });
+          await act(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 0));
+          });
+          expect(textarea.value).toBe(`<${tag}></${tag}>`);
+          expect(textarea.selectionStart).toBe(tag.length + 2);
+          view.unmount();
+        }
+      }
+    );
+  });
+
+  it("accepts the button suggestion while the name is incomplete", async () => {
     render(<EditorHarness />);
     const textarea = screen.getByRole<HTMLTextAreaElement>("textbox");
-    input(textarea, "div", "v");
+    input(textarea, "but", "t");
     fireEvent.keyDown(textarea, { key: "Tab" });
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 0));
     });
-    expect(textarea.value).toBe("<div></div>");
-    expect(textarea.selectionStart).toBe(5);
+    expect(textarea.value).toBe("<button></button>");
+    expect(textarea.selectionStart).toBe(8);
   });
 
   it("closes a typed tag as one undoable edit", async () => {

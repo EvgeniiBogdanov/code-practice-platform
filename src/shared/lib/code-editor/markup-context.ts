@@ -9,6 +9,7 @@ export const HTML_VOID_TAGS = new Set([
   "hr",
   "img",
   "input",
+  "keygen",
   "link",
   "meta",
   "param",
