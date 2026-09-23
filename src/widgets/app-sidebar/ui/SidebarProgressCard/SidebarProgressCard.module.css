@@ -13,7 +13,7 @@
 
 .progressCard {
   background: color-mix(in srgb, var(--state-active) 90%, var(--bg-sidebar));
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   padding: 8px 10px;
   cursor: default;
   user-select: none;

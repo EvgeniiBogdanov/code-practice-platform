@@ -102,9 +102,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: var(--radius-md, 6px);
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
   background: var(--bg-subtle, rgba(255, 255, 255, 0.035));
   color: var(--text-muted);
   flex-shrink: 0;
@@ -138,9 +138,9 @@
   border: none;
   outline: none;
   color: var(--text-muted);
-  width: 24px;
-  height: 24px;
-  border-radius: var(--radius-md, 6px);
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;

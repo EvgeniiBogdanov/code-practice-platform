@@ -254,7 +254,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 4px 14px;
+  padding: 6px 14px;
   background: var(--bg-editor-status);
   border-top: 1px solid var(--border-editor);
   color: var(--text-muted);

@@ -50,8 +50,8 @@
 }
 
 .workspaceIcon {
-  width: 26px;
-  height: 26px;
+  width: 30px;
+  height: 30px;
   border-radius: var(--radius-sm, 5px);
   background: var(--bg-subtle);
   display: flex;
@@ -124,9 +124,9 @@
   border: none;
   outline: none;
   color: var(--text-muted);
-  width: 24px;
-  height: 24px;
-  border-radius: var(--radius-md, 6px);
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -219,9 +219,9 @@
 }
 
 .kpiCard {
-  background: var(--bg-subtle);
+  background: var(--bg-card);
   border-radius: var(--radius-lg);
-  padding: 12px 14px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -409,7 +409,7 @@
   grid-template-columns: 240px 1fr;
   gap: 24px;
   align-items: center;
-  background: var(--bg-subtle);
+  background: var(--bg-card);
   border-radius: var(--radius-lg);
   padding: 18px 22px;
 }

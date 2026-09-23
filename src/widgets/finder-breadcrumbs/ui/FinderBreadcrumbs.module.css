@@ -18,7 +18,7 @@
   padding: 0;
   border: none;
   outline: none;
-  border-radius: var(--radius-md, 4px);
+  border-radius: var(--radius-sm);
   background: transparent;
   color: var(--text-muted);
   cursor: pointer;
@@ -78,7 +78,7 @@
   min-height: 26px;
   background: transparent;
   border: none;
-  border-radius: var(--radius-lg, 6px);
+  border-radius: var(--radius-md);
   color: var(--text-muted);
   font-size: 14.5px;
   font-weight: var(--fw-medium, 500);

@@ -52,7 +52,7 @@ export const CommandPalette = memo((): React.JSX.Element | null => {
           />
           <Tooltip content="Закрыть (Esc)" side="bottom">
             <SquareButton
-              icon={<X size={18} />}
+              icon={<X size={16} />}
               onClick={() => setIsOpen(false)}
               aria-label="Закрыть поиск"
               size="sm"

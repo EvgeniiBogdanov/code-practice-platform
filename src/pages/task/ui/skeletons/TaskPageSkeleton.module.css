@@ -69,6 +69,7 @@
 
 .tabsHeader {
   display: flex;
+  height: 34px;
   background: var(--bg-sidebar);
   border-bottom: 1px solid var(--border-color);
   padding: 0 10px;
@@ -130,7 +131,8 @@
   font-family: inherit;
   font-size: 14.6px;
   font-weight: 600;
-  padding: 12px 10px;
+  height: 100%;
+  padding: 0 10px;
   border-radius: var(--radius-sm, 4px) var(--radius-sm, 4px) 0 0;
   position: relative;
   border-bottom: 3px solid transparent;

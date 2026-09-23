@@ -23,7 +23,7 @@ export const HomePage = memo((): React.JSX.Element => {
       <hr className={styles.divider} />
       <div className={styles.sectionBlock}>
         <div className={styles.blockHeader}>
-          <BarChart2 size={16} color="var(--accent-blue, #3b82f6)" className={styles.blockIcon} />
+          <BarChart2 size={18} color="var(--accent-blue, #3b82f6)" className={styles.blockIcon} />
           <h2 className={styles.blockTitle}>Общая статистика по разделам</h2>
         </div>
         <HomeKpiSummary stats={stats} />

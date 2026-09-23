@@ -2,7 +2,7 @@
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  padding: 16px 18px;
+  padding: 20px 26px;
   border-radius: var(--radius-md, 8px);
   width: 100%;
   box-sizing: border-box;
@@ -12,7 +12,7 @@
   text-align: left;
   border: 1px solid var(--border-color);
   border-left: 4px solid var(--border-strong);
-  background: var(--bg-subtle);
+ background: var(--bg-card, #252525);
   color: var(--text-main);
   transition:
     background-color var(--transition-fast, 0.15s ease),
@@ -95,8 +95,8 @@
 
 /* Purple (Default for Articles / Resources) */
 .color-purple {
-  background: var(--accent-purple-bg);
-  border-color: var(--accent-purple-border);
+  
+  
   border-left-color: var(--accent-purple);
 }
 
@@ -107,8 +107,8 @@
 
 /* Blue (Info / Explanations) */
 .color-blue {
-  background: var(--accent-blue-bg);
-  border-color: var(--accent-blue-border);
+  
+ 
   border-left-color: var(--accent-blue);
 }
 
@@ -119,8 +119,8 @@
 
 /* Green (Success / Tips) */
 .color-green {
-  background: var(--accent-green-bg);
-  border-color: var(--accent-green-border);
+ 
+ 
   border-left-color: var(--accent-green);
 }
 
@@ -132,8 +132,8 @@
 /* Yellow & Amber (Warm Tips / Highlights / Lifehacks) */
 .color-yellow,
 .color-amber {
-  background: var(--accent-amber-bg, rgba(245, 158, 11, 0.08));
-  border-color: var(--accent-amber-border, rgba(245, 158, 11, 0.2));
+  
+  
   border-left-color: var(--accent-amber, #f59e0b);
 }
 
@@ -160,8 +160,8 @@
 
 /* Orange (Practice / Actions) */
 .color-orange {
-  background: var(--accent-orange-bg);
-  border-color: var(--accent-orange-border);
+
+ 
   border-left-color: var(--accent-orange);
 }
 
@@ -172,8 +172,8 @@
 
 /* Red (Danger / Pitfalls) */
 .color-red {
-  background: var(--accent-red-bg);
-  border-color: var(--accent-red-border);
+ 
+ 
   border-left-color: var(--accent-red);
 }
 
@@ -185,8 +185,8 @@
 /* Gray / Default */
 .color-gray,
 .color-default {
-  background: var(--bg-subtle);
-  border-color: var(--border-color);
+  
+  
   border-left-color: var(--border-strong);
 }
 

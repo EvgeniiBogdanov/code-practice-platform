@@ -23,7 +23,7 @@
   justify-content: space-between;
   padding: 0 6px;
   background: var(--bg-editor-status);
-  height: 30px;
+  height: 34px;
   min-height: 30px;
   user-select: none;
   overflow: hidden;

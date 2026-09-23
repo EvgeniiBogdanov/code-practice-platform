@@ -25,7 +25,6 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 8px;
   flex-wrap: wrap;
 }
 
@@ -49,10 +48,10 @@
   align-items: center;
   justify-content: center;
   font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--text-muted);
-  background: var(--bg-subtle, rgba(255, 255, 255, 0.04));
+  background: var(--bg-card);
   padding: 0 8px;
   height: 22px;
   border-radius: var(--radius-full, 9999px);
@@ -94,10 +93,9 @@
   flex-direction: row;
   align-items: flex-start;
   gap: 14px;
-  padding: 16px 20px;
-  background: var(--bg-subtle, rgba(255, 255, 255, 0.03));
+  padding: 20px 22px;
   border: none;
-  border-radius: var(--radius-xl, 12px);
+  border-radius: var(--radius-xl);
   box-shadow: var(--shadow-sm);
 }
 
@@ -170,7 +168,7 @@
 }
 
 .blockTitle {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
   color: var(--text-main);
   margin: 0;
@@ -193,7 +191,7 @@
 .galleryCard {
   background: var(--bg-card);
   border: none;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -203,10 +201,10 @@
 
 .cardCover {
   height: 40px;
-  border-radius: var(--radius-lg, 8px);
+  border-radius: var(--radius-xl, 8px);
   display: flex;
   align-items: center;
-  padding: 0 20px;
+  padding: 0 10px;
   position: relative;
 }
 
@@ -286,14 +284,13 @@
   align-items: center;
   gap: 6px;
   padding: 5px 12px;
-  border-radius: var(--radius-lg, 8px);
+  border-radius: var(--radius-md);
   font-size: 12.5px;
   font-weight: 600;
   cursor: pointer;
   border: none;
   text-decoration: none;
   transition:
-    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
     background 0.15s ease,
     color 0.15s ease;
 }
@@ -302,9 +299,6 @@
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.actionBtn:hover {
-  transform: scale(1.06) rotate(-2deg) translateY(-2px);
-}
 
 .actionBtn:active {
   transform: scale(0.95) rotate(0deg) !important;
@@ -319,7 +313,6 @@
 .actionBtnAmber:hover {
   background: #f59e0b;
   color: #1c1917;
-  transform: scale(1.06) rotate(-2.5deg) translateY(-2px);
 }
 
 .actionBtnAmber:hover svg {
@@ -334,7 +327,6 @@
 .actionBtnBlue:hover {
   background: var(--accent-blue, #2383e2);
   color: #ffffff;
-  transform: scale(1.06) rotate(2deg) translateX(3px);
 }
 
 .actionBtnBlue:hover svg {
@@ -349,7 +341,6 @@
 .actionBtnPurple:hover {
   background: #a855f7;
   color: #ffffff;
-  transform: scale(1.08) rotate(-1.5deg) translateY(-3px);
 }
 
 .actionBtnPurple:hover svg {

@@ -2,7 +2,7 @@
   background: var(--bg-subtle, rgba(255, 255, 255, 0.03));
   border: 1px solid var(--border-color);
   border-left: 3px solid var(--border-color);
-  border-radius: var(--radius-md, 8px);
+  border-radius: var(--radius-sm);
   color: var(--text-main);
   font-size: 13.5px;
   line-height: 1.55;
@@ -20,7 +20,7 @@
 
 /* Size Modifiers */
 .accordionCard.size-xs {
-  border-radius: var(--radius-md, 6px);
+  border-radius: var(--radius-sm);
   font-size: 12.5px;
   margin-bottom: 8px;
 }

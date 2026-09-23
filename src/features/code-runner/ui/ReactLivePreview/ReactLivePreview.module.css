@@ -49,7 +49,7 @@
 
 /* Header */
 .header {
-  height: 38px;
+  height: 34px;
   background: var(--bg-editor-status);
   border-bottom: 1px solid var(--border-editor);
   display: flex;
@@ -102,7 +102,7 @@
 .addressBar {
   background: var(--bg-app);
   color: var(--text-main);
-  border-radius: 9999px;
+  border-radius: var(--radius-sm);
   height: 26px;
   padding: 0 10px 0 12px;
   font-size: 11.5px;
