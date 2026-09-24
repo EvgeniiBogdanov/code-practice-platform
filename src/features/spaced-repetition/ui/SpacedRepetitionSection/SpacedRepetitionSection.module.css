@@ -112,7 +112,7 @@
 }
 
 :global([data-theme="light"]) .modalMain {
-  background: var(--bg-card);
+  background: var(--bg-surface);
 }
 
 .closeBtn {
@@ -230,6 +230,10 @@
   transition:
     background var(--transition-fast),
     border-color var(--transition-fast);
+}
+
+[data-theme="light"] .kpiCard {
+  box-shadow: var(--shadow-sm);
 }
 
 .kpiHeader {
@@ -414,6 +418,10 @@
   padding: 18px 22px;
 }
 
+:global([data-theme="light"]) .distributionView {
+  box-shadow: var(--shadow-sm);
+}
+
 @media (max-width: 680px) {
   .distributionView {
     grid-template-columns: 1fr;
@@ -543,6 +551,18 @@
   border-color: var(--border-hover);
 }
 
+:global([data-theme="light"]) .dueCard {
+  background: var(--bg-card);
+  border-color: transparent;
+  box-shadow: var(--shadow-sm);
+}
+
+:global([data-theme="light"]) .dueCard:hover {
+  background: var(--state-hover);
+  border-color: transparent;
+  box-shadow: var(--shadow-md);
+}
+
 .dueCardTop {
   display: flex;
   align-items: center;
@@ -563,7 +583,7 @@
 }
 
 .section_javascript .sectionDot {
-  background-color: var(--color-js);
+  background-color: var(--color-js-bar);
 }
 
 .section_algorithms {
@@ -641,6 +661,10 @@
   border: 1px dashed var(--border-color);
   border-radius: var(--radius-lg);
   box-shadow: none;
+}
+
+:global([data-theme="light"]) .emptyDueCard {
+  border-color: var(--border-hover);
 }
 
 .emptyDueIcon {

@@ -194,16 +194,16 @@
 
 /* Light Theme Overrides */
 :global([data-theme="light"]) .variant-secondary {
-  background: rgba(55, 53, 47, 0.06);
+  background: var(--bg-surface);
   color: var(--text-main);
 }
 
 :global([data-theme="light"]) .variant-secondary:hover:not(:disabled) {
-  background: rgba(55, 53, 47, 0.12);
+  background: var(--state-hover);
   color: var(--text-main);
 }
 
 :global([data-theme="light"]) .variant-ghost:hover:not(:disabled) {
-  background: rgba(55, 53, 47, 0.08);
+  background: var(--state-hover);
   color: var(--text-main);
 }

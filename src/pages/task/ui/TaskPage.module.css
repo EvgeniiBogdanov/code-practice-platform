@@ -116,7 +116,7 @@
 }
 
 [data-theme="light"] .tabsHeader {
-  background: var(--bg-sidebar);
+  background: var(--bg-subtle);
   border-bottom-color: var(--border-color);
 }
 
@@ -219,6 +219,38 @@
 }
 .tab_visualization.tabActive {
   border-bottom-color: var(--accent-blue);
+}
+
+[data-theme="light"] .tab_candidate {
+  --task-tab-accent: var(--tab-candidate);
+}
+
+[data-theme="light"] .tab_solution {
+  --task-tab-accent: var(--tab-solution);
+}
+
+[data-theme="light"] .tab_materials {
+  --task-tab-accent: var(--tab-materials);
+}
+
+[data-theme="light"] .tab_questions {
+  --task-tab-accent: var(--tab-questions);
+}
+
+[data-theme="light"] .tab_checklist {
+  --task-tab-accent: var(--tab-checklist);
+}
+
+[data-theme="light"] .tab_visualization {
+  --task-tab-accent: var(--accent-blue);
+}
+
+[data-theme="light"] .tabLink .tabIcon {
+  color: var(--task-tab-accent);
+}
+
+[data-theme="light"] .tabLink.tabActive {
+  border-bottom-color: var(--task-tab-accent);
 }
 
 .tabLabel {

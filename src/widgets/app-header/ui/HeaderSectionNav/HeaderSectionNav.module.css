@@ -36,6 +36,10 @@
   color: #38bdf8;
 }
 
+[data-theme="light"] .iconReact {
+  color: var(--color-react);
+}
+
 .iconJs {
   color: #fbbf24;
 }

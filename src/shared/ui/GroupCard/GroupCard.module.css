@@ -10,7 +10,7 @@
 }
 
 [data-theme="light"] .groupCard {
-  background-color: var(--bg-popover, #ffffff);
+  background-color: var(--bg-card);
   border: none;
   box-shadow: var(--shadow-sm);
 }

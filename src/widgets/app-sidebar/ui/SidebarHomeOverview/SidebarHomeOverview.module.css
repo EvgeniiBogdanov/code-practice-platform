@@ -38,6 +38,10 @@
   flex-shrink: 0;
 }
 
+[data-theme="light"] .icon_home {
+  color: var(--color-home);
+}
+
 .icon_javascript,
 .icon_js {
   color: var(--color-js);

@@ -102,7 +102,7 @@
   --text-secondary: #f1f5f9;
   --text-on-accent: #0d1117;
 
-  --state-hover: rgba(255, 255, 255, 0.055);
+  --state-hover: rgba(255, 255, 255, 0.045);
   --state-active: rgba(255, 255, 255, 0.055);
   --state-selected: rgba(255, 255, 255, 0.16);
 
@@ -136,6 +136,8 @@
   --accent-yellow-hover: #fde047;
   --accent-yellow-bg: rgba(250, 204, 21, 0.14);
   --accent-yellow-border: rgba(250, 204, 21, 0.28);
+  --accent-yellow-icon: var(--accent-yellow);
+  --color-favorite: var(--accent-yellow);
 
   --accent-amber: #f59e0b;
   --accent-amber-hover: #fbbf24;
@@ -165,7 +167,16 @@
   --color-react: var(--accent-blue);
   --color-react-bg: var(--accent-blue-bg);
   --color-react-border: var(--accent-blue-border);
+  --color-react-group-warmup: #f97316;
+  --color-react-group-refactoring: #06b6d4;
+  --color-react-group-middle: #3b82f6;
+  --color-react-group-strong: #a855f7;
+  --color-react-group-lifecycle: #f97316;
+  --color-react-group-ts: #3178c6;
+  --color-react-group-ts-practice: #10b981;
   --color-js: var(--accent-orange);
+  --color-js-logo: var(--color-js);
+  --color-js-bar: var(--color-js);
   --color-js-bg: var(--accent-orange-bg);
   --color-js-border: var(--accent-orange-border);
   --color-algo: var(--accent-purple);
@@ -341,110 +352,121 @@
 }
 
 /* ==========================================
-   LIGHT THEME VARIABLES (Notion Warm Palette)
+   LIGHT THEME VARIABLES
    ========================================== */
 [data-theme="light"] {
-  --bg-app: #fbfbfa;
-  --bg-sidebar: #f7f6f3;
-  --bg-card: #ffffff;
+  --bg-app: #faf9f7;
+  --bg-sidebar: #f6f4f1;
+  --bg-card: #fffefa;
   --bg-popover: #ffffff;
-  --bg-subtle: rgba(55, 53, 47, 0.035);
-  --bg-deep: #ffffff;
+  --bg-subtle: #f7f4ef;
+  --bg-deep: #f3efe9;
   --bg-elevated: #ffffff;
   --bg-editor: #ffffff;
-  --bg-editor-status: #f7f6f3;
+  --bg-editor-status: #f8f6f2;
   --bg-input: #ffffff;
-  --bg-input-hover: #f7f6f3;
+  --bg-input-hover: #fbf8f3;
   --bg-input-focus: #ffffff;
-  --bg-tooltip-code: #f7f6f3;
-  --bg-surface: #f7f6f3;
+  --bg-tooltip-code: #f8f5f0;
+  --bg-surface: #f4f1ed;
   --bg-overlay: rgba(15, 15, 15, 0.45);
 
-  --border-color: rgba(55, 53, 47, 0.12);
-  --border-strong: rgba(55, 53, 47, 0.22);
-  --border-editor: rgba(55, 53, 47, 0.14);
-  --border-hover: rgba(55, 53, 47, 0.35);
+  --border-color: #e6e0d8;
+  --border-strong: #c7bbad;
+  --border-editor: #e5ded4;
+  --border-hover: #b8a998;
 
-  --text-main: #37352f;
-  --text-muted: #5c5b56;
-  --fg-muted: #6f6e69;
-  --text-placeholder: rgba(55, 53, 47, 0.45);
-  --text-dimmed: #6f6e69;
-  --text-secondary: #37352f;
+  --text-main: #292725;
+  --text-muted: #57524d;
+  --fg-muted: #665f58;
+  --text-placeholder: #665f58;
+  --text-dimmed: #665f58;
+  --text-secondary: #292725;
   --text-on-accent: #ffffff;
 
-  --state-hover: rgba(55, 53, 47, 0.06);
-  --state-active: rgba(55, 53, 47, 0.12);
-  --state-selected: rgba(55, 53, 47, 0.16);
+  --state-hover: #e4ded791;
+  --state-active: #e4ded7;
+  --state-selected: #e7d8c8;
 
-  /* Accents (Light Theme: WCAG Contrast >= 6:1 on white / light bg) */
-  --accent-blue: #0860c4;
-  --accent-blue-hover: #054894;
-  --accent-blue-bg: rgba(8, 96, 196, 0.09);
-  --accent-blue-border: rgba(8, 96, 196, 0.24);
+  /* Quiet accents maintain AA text contrast on the light surfaces. */
+  --accent-blue: #3f5f95;
+  --accent-blue-hover: #355182;
+  --accent-blue-bg: rgba(63, 95, 149, 0.1);
+  --accent-blue-border: rgba(63, 95, 149, 0.23);
 
-  --accent-purple: #6e3fc7;
-  --accent-purple-hover: #552d9e;
-  --accent-purple-bg: rgba(110, 63, 199, 0.09);
-  --accent-purple-border: rgba(110, 63, 199, 0.24);
+  --accent-purple: #795082;
+  --accent-purple-hover: #63406c;
+  --accent-purple-bg: rgba(121, 80, 130, 0.1);
+  --accent-purple-border: rgba(121, 80, 130, 0.23);
 
-  --accent-orange: #9e3f00;
-  --accent-orange-hover: #7d3200;
-  --accent-orange-bg: rgba(158, 63, 0, 0.09);
-  --accent-orange-border: rgba(158, 63, 0, 0.24);
+  --accent-orange: #a24c33;
+  --accent-orange-hover: #873c28;
+  --accent-orange-bg: rgba(162, 76, 51, 0.1);
+  --accent-orange-border: rgba(162, 76, 51, 0.23);
 
-  --accent-green: #136c2e;
-  --accent-green-hover: #0e4f22;
-  --accent-green-bg: rgba(19, 108, 46, 0.09);
-  --accent-green-border: rgba(19, 108, 46, 0.24);
+  --accent-green: #3d6b55;
+  --accent-green-hover: #315944;
+  --accent-green-bg: rgba(61, 107, 85, 0.1);
+  --accent-green-border: rgba(61, 107, 85, 0.23);
 
-  --accent-red: #b91c1c;
-  --accent-red-hover: #991b1b;
-  --accent-red-bg: rgba(185, 28, 28, 0.09);
-  --accent-red-border: rgba(185, 28, 28, 0.24);
+  --accent-red: #ab3d42;
+  --accent-red-hover: #913036;
+  --accent-red-bg: rgba(171, 61, 66, 0.1);
+  --accent-red-border: rgba(171, 61, 66, 0.23);
 
-  --accent-yellow: #794a00;
-  --accent-yellow-hover: #5e3900;
-  --accent-yellow-bg: rgba(121, 74, 0, 0.09);
-  --accent-yellow-border: rgba(121, 74, 0, 0.24);
+  --accent-yellow: #7b700d;
+  --accent-yellow-hover: #665c08;
+  --accent-yellow-bg: rgba(214, 190, 100, 0.12);
+  --accent-yellow-border: rgba(214, 190, 100, 0.28);
+  --accent-yellow-icon: #9a8710;
+  --color-favorite: #5a5b8f;
 
-  --accent-amber: #8d4f00;
-  --accent-amber-hover: #713f00;
-  --accent-amber-bg: rgba(141, 79, 0, 0.08);
-  --accent-amber-border: rgba(141, 79, 0, 0.2);
+  --accent-amber: #806000;
+  --accent-amber-hover: #6b5200;
+  --accent-amber-bg: rgba(225, 179, 35, 0.12);
+  --accent-amber-border: rgba(150, 111, 0, 0.24);
 
-  --accent-cyan: #046274;
-  --accent-cyan-hover: #034b59;
-  --accent-cyan-bg: rgba(4, 98, 116, 0.09);
-  --accent-cyan-border: rgba(4, 98, 116, 0.24);
+  --accent-cyan: #2d6b72;
+  --accent-cyan-hover: #23565c;
+  --accent-cyan-bg: rgba(45, 107, 114, 0.1);
+  --accent-cyan-border: rgba(45, 107, 114, 0.23);
 
-  --accent-pink: #9e1c60;
-  --accent-pink-hover: #7c134a;
-  --accent-pink-bg: rgba(158, 28, 96, 0.09);
-  --accent-pink-border: rgba(158, 28, 96, 0.24);
+  --accent-pink: #954b72;
+  --accent-pink-hover: #7c3a5c;
+  --accent-pink-bg: rgba(149, 75, 114, 0.1);
+  --accent-pink-border: rgba(149, 75, 114, 0.23);
 
-  --accent-gray: #57606a;
-  --accent-gray-hover: #424a53;
-  --accent-gray-bg: rgba(87, 96, 106, 0.09);
-  --accent-gray-border: rgba(87, 96, 106, 0.24);
+  --accent-gray: #635e59;
+  --accent-gray-hover: #504b47;
+  --accent-gray-bg: rgba(99, 94, 89, 0.1);
+  --accent-gray-border: rgba(99, 94, 89, 0.23);
 
   /* Section Colors Light */
-  --color-ts: #3178c6;
-  --color-ts-bg: rgba(49, 120, 198, 0.1);
-  --color-ts-border: rgba(49, 120, 198, 0.28);
+  --color-ts: var(--accent-blue);
+  --color-ts-bg: var(--accent-blue-bg);
+  --color-ts-border: var(--accent-blue-border);
   --color-ts-contrast: #ffffff;
-  --color-react: var(--accent-blue);
-  --color-react-bg: var(--accent-blue-bg);
-  --color-react-border: var(--accent-blue-border);
-  --color-js: #f59e0b;
-  --color-js-bg: rgba(245, 158, 11, 0.1);
-  --color-js-border: rgba(245, 158, 11, 0.28);
+  --color-react: var(--accent-cyan);
+  --color-react-bg: var(--accent-cyan-bg);
+  --color-react-border: var(--accent-cyan-border);
+  --color-react-group-warmup: var(--accent-red);
+  --color-react-group-refactoring: var(--accent-blue);
+  --color-react-group-middle: var(--accent-green);
+  --color-react-group-strong: var(--accent-purple);
+  --color-react-group-lifecycle: var(--accent-orange);
+  --color-react-group-ts: var(--color-ts);
+  --color-react-group-ts-practice: var(--color-ts);
+  --color-js: var(--accent-yellow);
+  --color-js-logo: #e8cd3c;
+  --color-js-bar: var(--accent-yellow-icon);
+  --color-js-bg: var(--accent-yellow-bg);
+  --color-js-border: var(--accent-yellow-border);
   --color-algo: var(--accent-purple);
   --color-algo-bg: var(--accent-purple-bg);
   --color-algo-border: var(--accent-purple-border);
-  --color-home: var(--accent-blue);
-  --color-home-bg: var(--accent-blue-bg);
-  --color-home-border: var(--accent-blue-border);
+  --color-home: var(--accent-orange);
+  --color-home-bg: var(--accent-orange-bg);
+  --color-home-border: var(--accent-orange-border);
 
   /* Status Colors Light */
   --color-status-solved: var(--accent-green);
@@ -460,12 +482,12 @@
   --color-rating-hard: var(--accent-orange);
 
   /* Icon Colors Light */
-  --icon-file: #57606a;
-  --icon-file-js: var(--accent-orange);
-  --icon-file-ts: var(--accent-blue);
-  --icon-file-react: var(--accent-blue);
-  --icon-file-css: var(--accent-cyan);
-  --icon-file-html: var(--accent-red);
+  --icon-file: #6b6258;
+  --icon-file-js: var(--color-js);
+  --icon-file-ts: var(--color-ts);
+  --icon-file-react: var(--color-react);
+  --icon-file-css: var(--accent-blue);
+  --icon-file-html: var(--accent-orange);
   --icon-file-json: var(--accent-purple);
 
   /* Spaced Repetition Mastery Levels Light */
@@ -499,9 +521,9 @@
   --color-accent-purple-light: var(--accent-purple-hover);
   --color-accent-purple-muted: #8250df;
 
-  --code-inline-text: #b91c1c;
-  --code-inline-bg: rgba(55, 53, 47, 0.08);
-  --editor-selection-bg: rgba(8, 96, 196, 0.16);
+  --code-inline-text: var(--accent-pink);
+  --code-inline-bg: #f5f0ed;
+  --editor-selection-bg: rgba(63, 95, 149, 0.16);
   --editor-caret: var(--accent-blue);
 
   --gauge-seg-1: var(--accent-gray);
@@ -509,34 +531,34 @@
   --gauge-seg-3: var(--accent-yellow);
   --gauge-seg-4: var(--accent-green);
 
-  --shadow-sm: 0 1px 2px rgba(15, 15, 15, 0.05);
-  --shadow-md: 0 4px 12px rgba(15, 15, 15, 0.08);
-  --shadow-lg: 0 8px 24px rgba(15, 15, 15, 0.12);
-  --shadow-popover: 0 12px 32px -4px rgba(15, 15, 15, 0.15), 0 0 0 1px rgba(15, 15, 15, 0.08);
-  --shadow-glow-blue: 0 0 0 2px rgba(8, 96, 196, 0.25);
-  --shadow-glow-red: 0 0 0 2px rgba(185, 28, 28, 0.25);
-  --shadow-glow-green: 0 0 0 2px rgba(19, 108, 46, 0.25);
+  --shadow-sm: 0 2px 8px rgba(47, 40, 34, 0.07);
+  --shadow-md: 0 8px 24px rgba(47, 40, 34, 0.09);
+  --shadow-lg: 0 14px 36px rgba(47, 40, 34, 0.12);
+  --shadow-popover: 0 14px 36px rgba(47, 40, 34, 0.14);
+  --shadow-glow-blue: 0 0 0 2px rgba(63, 95, 149, 0.25);
+  --shadow-glow-red: 0 0 0 2px rgba(171, 61, 66, 0.25);
+  --shadow-glow-green: 0 0 0 2px rgba(61, 107, 85, 0.25);
 
-  --hl-comment: #57606a;
-  --hl-string: #0a3069;
-  --hl-number: #0550ae;
-  --hl-keyword: #cf222e;
-  --hl-function: #6e3fc7;
-  --hl-tag: #116329;
-  --hl-punctuation: #24292f;
-  --hl-error: #cf222e;
-  --hl-operator: #0550ae;
-  --hl-type: #953800;
-  --hl-variable: #24292f;
-  --hl-regex: #6e3fc7;
-  --hl-css-prop: #0550ae;
-  --hl-css-val: #0a3069;
-  --hl-css-selector: #6e3fc7;
-  --hl-css-unit: #cf222e;
-  --hl-css-atrule: #cf222e;
+  --hl-comment: #756e67;
+  --hl-string: var(--accent-green);
+  --hl-number: var(--accent-blue);
+  --hl-keyword: #6b4d8d;
+  --hl-function: var(--accent-purple);
+  --hl-tag: var(--accent-cyan);
+  --hl-punctuation: var(--text-main);
+  --hl-error: var(--accent-red);
+  --hl-operator: var(--accent-blue);
+  --hl-type: var(--accent-blue);
+  --hl-variable: var(--text-main);
+  --hl-regex: var(--accent-pink);
+  --hl-css-prop: var(--accent-blue);
+  --hl-css-val: var(--accent-green);
+  --hl-css-selector: var(--accent-purple);
+  --hl-css-unit: var(--accent-blue);
+  --hl-css-atrule: #6b4d8d;
   --hl-css-color: var(--accent-yellow);
-  --hl-doctype: #57606a;
-  --hl-entity: #0550ae;
+  --hl-doctype: #756e67;
+  --hl-entity: var(--accent-purple);
 }
 
 :root {

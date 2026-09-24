@@ -51,7 +51,7 @@ export const HomePracticeSections = memo(
 
           <HomeSectionCard
             coverClass={styles.blueCover}
-            coverIcon={<ReactIcon size={24} color="#3b82f6" />}
+            coverIcon={<ReactIcon size={24} />}
             title="React"
             tagText={`${stats.reactTotal} задач`}
             tagVariant="blue"

@@ -13,6 +13,11 @@
   padding: var(--space-3) var(--space-4);
 }
 
+[data-theme="light"] .chartSection {
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+}
+
 .titleWrapper {
   min-height: var(--space-4);
   display: flex;

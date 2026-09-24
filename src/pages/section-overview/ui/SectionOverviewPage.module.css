@@ -178,7 +178,7 @@
 }
 
 .fill_javascript {
-  background: var(--color-js, #f59e0b);
+  background: var(--color-js-bar);
 }
 
 .fill_react {
@@ -233,7 +233,7 @@
 
 [data-theme="light"] .kpiCard,
 [data-theme="light"] .groupCard {
-  background: var(--bg-popover, #ffffff);
+  background: var(--bg-card);
   border: none;
   box-shadow: var(--shadow-sm);
 }

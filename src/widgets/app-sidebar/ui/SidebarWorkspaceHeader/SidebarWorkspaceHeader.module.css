@@ -201,7 +201,7 @@
 }
 
 :global([data-theme="light"]) .sectionDropdownItem:hover {
-  background: rgba(55, 53, 47, 0.055);
+  background: var(--state-hover);
   color: var(--text-main, #37352f);
 }
 

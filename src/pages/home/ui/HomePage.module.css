@@ -449,7 +449,7 @@
 [data-theme="light"] .statCard,
 [data-theme="light"] .galleryCard,
 [data-theme="light"] .featureCard {
-  background: var(--bg-popover, #ffffff);
+  background: var(--bg-card);
   border: none;
   box-shadow: var(--shadow-sm);
 }
@@ -457,4 +457,29 @@
 [data-theme="light"] .subtag {
   background: rgba(55, 53, 47, 0.06);
   color: #555555;
+}
+
+[data-theme="light"] .actionBtnAmber {
+  background: var(--color-js-bg);
+  color: var(--text-main);
+}
+
+[data-theme="light"] .actionBtnAmber:hover {
+  background: var(--color-js-logo);
+  color: var(--text-main);
+}
+
+[data-theme="light"] .actionBtnBlue {
+  background: var(--accent-blue-bg);
+  color: var(--accent-blue);
+}
+
+[data-theme="light"] .actionBtnPurple {
+  background: var(--accent-purple-bg);
+  color: var(--accent-purple);
+}
+
+[data-theme="light"] .actionBtnPurple:hover {
+  background: var(--accent-purple);
+  color: var(--text-on-accent);
 }

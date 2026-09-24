@@ -29,6 +29,10 @@
   color: var(--task-btn-accent, var(--text-main));
 }
 
+[data-theme="light"] .taskButton:hover:not(:disabled) {
+  background: var(--state-hover);
+}
+
 .taskButton:disabled {
   opacity: 0.45;
   cursor: not-allowed;

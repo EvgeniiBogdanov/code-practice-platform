@@ -265,7 +265,7 @@
 }
 
 :global([data-theme="light"]) .dropdownItem:hover {
-  background: rgba(55, 53, 47, 0.055);
+  background: var(--state-hover);
   color: var(--text-main, #37352f);
 }
 
@@ -368,19 +368,19 @@
 }
 
 [data-theme="light"] .ratingHard {
-  color: #ea580c !important;
+  color: var(--color-rating-hard) !important;
 }
 
 [data-theme="light"] .ratingMedium {
-  color: #ca8a04 !important;
+  color: var(--color-rating-medium) !important;
 }
 
 [data-theme="light"] .ratingEasy {
-  color: #16a34a !important;
+  color: var(--color-rating-easy) !important;
 }
 
 [data-theme="light"] .ratingUnsolved {
-  color: #dc2626 !important;
+  color: var(--color-status-unsolved) !important;
 }
 
 /* Section / Icon Colors */
@@ -432,8 +432,24 @@
   flex-shrink: 0;
 }
 
+:global([data-theme="light"]) .iconFlame {
+  color: var(--color-react-group-warmup);
+}
+
+:global([data-theme="light"]) .iconWrench {
+  color: var(--color-react-group-refactoring);
+}
+
+:global([data-theme="light"]) .iconRocket {
+  color: var(--color-react-group-middle);
+}
+
+:global([data-theme="light"]) .iconBrain {
+  color: var(--color-react-group-strong);
+}
+
 .iconFavorites {
-  color: var(--accent-yellow);
+  color: var(--color-favorite);
   flex-shrink: 0;
 }
 

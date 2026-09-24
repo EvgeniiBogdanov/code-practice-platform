@@ -57,22 +57,22 @@
 }
 
 [data-theme="light"] .variantBtn {
-  background: rgba(55, 53, 47, 0.04);
-  color: rgba(55, 53, 47, 0.45);
-  opacity: 0.7;
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  opacity: 1;
 }
 
 [data-theme="light"] .variantBtn:hover {
-  background: rgba(55, 53, 47, 0.08);
-  color: #191919;
-  opacity: 0.95;
+  background: var(--state-hover);
+  color: var(--text-main);
+  opacity: 1;
 }
 
 [data-theme="light"] .variantBtn.activeVariant {
-  background: #ffffff;
-  color: #191919;
+  background: var(--bg-card);
+  color: var(--text-main);
   opacity: 1;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--shadow-sm);
 }
 
 .recommendedCheck {

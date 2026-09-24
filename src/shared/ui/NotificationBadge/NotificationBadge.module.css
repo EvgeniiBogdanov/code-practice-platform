@@ -159,8 +159,8 @@
 }
 
 [data-theme="light"] .variant_yellow {
-  background: rgba(217, 119, 6, 0.12);
-  color: #b45309;
+  background: var(--accent-yellow-bg);
+  color: var(--accent-yellow);
 }
 
 .variant_blue {
@@ -169,8 +169,8 @@
 }
 
 [data-theme="light"] .variant_blue {
-  background: rgba(37, 99, 235, 0.1);
-  color: #1d4ed8;
+  background: var(--accent-blue-bg);
+  color: var(--accent-blue);
 }
 
 .variant_red {
@@ -179,8 +179,8 @@
 }
 
 [data-theme="light"] .variant_red {
-  background: rgba(220, 38, 38, 0.1);
-  color: #b91c1c;
+  background: var(--accent-red-bg);
+  color: var(--accent-red);
 }
 
 .variant_green {
@@ -189,8 +189,8 @@
 }
 
 [data-theme="light"] .variant_green {
-  background: rgba(16, 185, 129, 0.12);
-  color: #047857;
+  background: var(--accent-green-bg);
+  color: var(--accent-green);
 }
 
 .variant_purple {
@@ -199,8 +199,8 @@
 }
 
 [data-theme="light"] .variant_purple {
-  background: rgba(147, 51, 234, 0.1);
-  color: #7e22ce;
+  background: var(--accent-purple-bg);
+  color: var(--accent-purple);
 }
 
 .variant_neutral {
@@ -209,8 +209,8 @@
 }
 
 [data-theme="light"] .variant_neutral {
-  background: rgba(55, 53, 47, 0.08);
-  color: rgba(55, 53, 47, 0.72);
+  background: var(--bg-subtle);
+  color: var(--text-muted);
 }
 
 .variant_gray {
@@ -219,8 +219,8 @@
 }
 
 [data-theme="light"] .variant_gray {
-  background: rgba(55, 53, 47, 0.05);
-  color: rgba(55, 53, 47, 0.65);
+  background: var(--accent-gray-bg);
+  color: var(--accent-gray);
 }
 
 /* Pinned solid badges & indicator dots */
@@ -257,4 +257,34 @@
   background: #a855f7;
   color: #ffffff;
   border: none;
+}
+
+[data-theme="light"] .dot.variant_blue,
+[data-theme="light"] .pinned.variant_blue {
+  background: var(--accent-blue);
+  color: var(--text-on-accent);
+}
+
+[data-theme="light"] .dot.variant_yellow,
+[data-theme="light"] .pinned.variant_yellow {
+  background: var(--color-js-logo);
+  color: var(--text-main);
+}
+
+[data-theme="light"] .dot.variant_red,
+[data-theme="light"] .pinned.variant_red {
+  background: var(--accent-red);
+  color: var(--text-on-accent);
+}
+
+[data-theme="light"] .dot.variant_green,
+[data-theme="light"] .pinned.variant_green {
+  background: var(--accent-green);
+  color: var(--text-on-accent);
+}
+
+[data-theme="light"] .dot.variant_purple,
+[data-theme="light"] .pinned.variant_purple {
+  background: var(--accent-purple);
+  color: var(--text-on-accent);
 }

@@ -11,3 +11,8 @@
 .favoriteIcon {
   display: inline-flex;
 }
+
+[data-theme="light"] .favoritesControl button:hover .favoriteIcon,
+[data-theme="light"] .favoritesControl [aria-current="page"] .favoriteIcon {
+  color: var(--color-favorite);
+}

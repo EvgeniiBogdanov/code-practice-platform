@@ -25,7 +25,7 @@ export const FavoritesPage = ({ section }: Readonly<FavoritesPageProps>): React.
       <article className={styles.pageContent}>
         <header className={styles.hero}>
           <TopicIconBox colorVariant="amber" size="lg">
-            <Star size={26} color="var(--accent-yellow)" fill="currentColor" />
+            <Star size={26} fill="currentColor" className={styles.favoriteHeroIcon} />
           </TopicIconBox>
           <div className={styles.heroContent}>
             <h1 className={styles.title}>Избранное</h1>

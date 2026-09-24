@@ -61,11 +61,11 @@ body {
 }
 
 [data-theme="light"] ::-webkit-scrollbar-thumb {
-  background-color: rgba(55, 53, 47, 0.2);
+  background-color: var(--border-strong);
 }
 
 [data-theme="light"] ::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(55, 53, 47, 0.35);
+  background-color: var(--border-hover);
 }
 
 /* Pointer Events lock during sidebar drag */
