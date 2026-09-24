@@ -36,7 +36,6 @@
 [data-theme="light"] .quickScrollConsoleBtn {
   background: #ffffff;
   color: var(--text-muted, #787774);
- 
 }
 
 .quickScrollConsoleBtn:hover {
@@ -47,7 +46,6 @@
 [data-theme="light"] .quickScrollConsoleBtn:hover {
   background: #f7f6f3;
   color: var(--text-main, #37352f);
-
 }
 
 .quickScrollConsoleBtn:active {
