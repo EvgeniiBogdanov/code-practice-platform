@@ -11,7 +11,7 @@ export const FinderFavoritesHierarchy = (): React.JSX.Element => (
         <Star
           size={14}
           className={styles.iconFavorites}
-          color="var(--accent-yellow)"
+          color="var(--color-favorite)"
           fill="currentColor"
         />
         <span className={styles.itemText}>Избранное</span>

@@ -128,8 +128,8 @@
 [data-theme="light"] .markdownContainer blockquote > code,
 [data-theme="light"] :global(.inline-code-block),
 [data-theme="light"] .markdownContainer code:not(pre code) {
-  background: rgba(135, 131, 120, 0.15);
-  color: #eb5757;
+  background: var(--code-inline-bg);
+  color: var(--code-inline-text);
 }
 
 /* Lists */
@@ -271,7 +271,7 @@
 }
 
 [data-theme="light"] :global(.table-wrapper) {
-  background: #ffffff;
+  background: var(--bg-card);
   border-color: var(--border-color, rgba(55, 53, 47, 0.12));
   box-shadow: var(--shadow-sm, 0 1px 3px rgba(15, 15, 15, 0.06));
 }

@@ -16,7 +16,7 @@
 }
 
 [data-theme="light"] .barTrack {
-  fill: rgba(55, 53, 47, 0.05);
+  fill: var(--bg-surface);
 }
 
 .barCountText {

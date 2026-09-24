@@ -13,6 +13,10 @@
   background: var(--bg-card);
 }
 
+[data-theme="light"] .chartSection {
+  box-shadow: var(--shadow-sm);
+}
+
 .title {
   margin: var(--space-0);
   color: var(--text-main);

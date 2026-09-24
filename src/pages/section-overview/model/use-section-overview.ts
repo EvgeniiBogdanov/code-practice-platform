@@ -160,46 +160,52 @@ export const useSectionOverview = (section: SectionType): UseSectionOverviewRetu
         {
           id: "warmup",
           name: "1. Разминка",
-          icon: React.createElement(Flame, { size: 18, color: "#f97316" }),
+          icon: React.createElement(Flame, { size: 18, color: "var(--color-react-group-warmup)" }),
           tasks: sectionTasks.filter((t) => t.category === "warmup" || t.difficulty === "warm-up"),
           firstTaskId: "warmup-1",
-          color: "#f97316",
+          color: "var(--color-react-group-warmup)",
         },
         {
           id: "refactoring",
           name: "2. Рефакторинг",
-          icon: React.createElement(Wrench, { size: 18, color: "#06b6d4" }),
+          icon: React.createElement(Wrench, {
+            size: 18,
+            color: "var(--color-react-group-refactoring)",
+          }),
           tasks: sectionTasks.filter(
             (t) => t.category === "refactoring" || t.difficulty === "refactoring"
           ),
           firstTaskId: "refactor-1",
-          color: "#06b6d4",
+          color: "var(--color-react-group-refactoring)",
         },
         {
           id: "middle",
           name: "3. UI-компоненты и паттерны",
-          icon: React.createElement(Rocket, { size: 18, color: "#3b82f6" }),
+          icon: React.createElement(Rocket, { size: 18, color: "var(--color-react-group-middle)" }),
           tasks: sectionTasks.filter(
             (t) => t.category === "UI-компоненты и паттерны" || t.difficulty === "middle"
           ),
           firstTaskId: "middle-1",
-          color: "#3b82f6",
+          color: "var(--color-react-group-middle)",
         },
         {
           id: "strong",
           name: "4. Управление состоянием",
-          icon: React.createElement(Brain, { size: 18, color: "#a855f7" }),
+          icon: React.createElement(Brain, { size: 18, color: "var(--color-react-group-strong)" }),
           tasks: sectionTasks.filter((t) => t.category === "Управление состоянием"),
           firstTaskId: "a1",
-          color: "#a855f7",
+          color: "var(--color-react-group-strong)",
         },
         {
           id: "lifecycle",
           name: "5. Жизненный цикл и рантайм",
-          icon: React.createElement(RotateCcw, { size: 18, color: "#f97316" }),
+          icon: React.createElement(RotateCcw, {
+            size: 18,
+            color: "var(--color-react-group-lifecycle)",
+          }),
           tasks: sectionTasks.filter((t) => t.category === "Жизненный цикл и рантайм"),
           firstTaskId: "a4",
-          color: "#f97316",
+          color: "var(--color-react-group-lifecycle)",
         },
         {
           id: "ts",
@@ -207,7 +213,7 @@ export const useSectionOverview = (section: SectionType): UseSectionOverviewRetu
           icon: React.createElement(TypeScriptIcon, { size: 18 }),
           tasks: sectionTasks.filter((t) => t.category === "TypeScript: Паттерны типизации"),
           firstTaskId: "ts-1",
-          color: "#3178c6",
+          color: "var(--color-react-group-ts)",
         },
         {
           id: "ts-practice",
@@ -215,7 +221,7 @@ export const useSectionOverview = (section: SectionType): UseSectionOverviewRetu
           icon: React.createElement(TypeScriptIcon, { size: 18 }),
           tasks: sectionTasks.filter((t) => t.category === "TypeScript: Прикладные сценарии"),
           firstTaskId: "ts-practice-1",
-          color: "#10b981",
+          color: "var(--color-react-group-ts-practice)",
         },
       ];
 

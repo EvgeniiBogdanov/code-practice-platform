@@ -70,9 +70,17 @@
   color: var(--accent-yellow);
 }
 
+[data-theme="light"] .color_amber {
+  color: var(--text-main);
+}
+
 .color_amber:hover:not(:disabled) {
   background-color: var(--accent-yellow-border);
   color: var(--accent-yellow-hover);
+}
+
+[data-theme="light"] .color_amber:hover:not(:disabled) {
+  color: var(--text-main);
 }
 
 .color_blue {

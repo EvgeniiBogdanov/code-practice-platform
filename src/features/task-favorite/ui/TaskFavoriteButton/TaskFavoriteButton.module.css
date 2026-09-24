@@ -4,10 +4,10 @@
 }
 
 .favoriteIconActive {
-  color: var(--accent-yellow);
+  color: var(--color-favorite);
 }
 
 button:hover .favoriteIcon:not(.favoriteIconActive),
 button:focus-visible .favoriteIcon:not(.favoriteIconActive) {
-  color: color-mix(in srgb, var(--accent-yellow), var(--text-muted));
+  color: color-mix(in srgb, var(--color-favorite), var(--text-muted));
 }

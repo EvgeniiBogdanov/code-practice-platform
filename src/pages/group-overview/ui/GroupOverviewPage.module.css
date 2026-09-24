@@ -250,7 +250,7 @@
 
 .taskFavoriteQuickAction[aria-pressed="false"]:hover svg,
 .taskFavoriteQuickAction[aria-pressed="false"]:focus-visible svg {
-  color: color-mix(in srgb, var(--accent-yellow), var(--text-muted));
+  color: color-mix(in srgb, var(--color-favorite), var(--text-muted));
 }
 
 .treeTaskBtn {
@@ -394,24 +394,19 @@
 }
 
 [data-theme="light"] .galleryCard {
-  background: var(--bg-popover, #ffffff);
+  background: var(--bg-card);
   border: none;
-  border-left: 3px solid rgba(55, 53, 47, 0.28);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-sm);
 }
 
 [data-theme="light"] .galleryCard:hover {
-  background-color: #ffffff;
+  background-color: var(--bg-surface);
   box-shadow: var(--shadow-md);
 }
 
 /* Rating / Status Left Borders */
 .galleryCard.ratingGradientUnstarted {
   border-left-color: rgba(255, 255, 255, 0.35);
-}
-
-[data-theme="light"] .galleryCard.ratingGradientUnstarted {
-  border-left-color: rgba(55, 53, 47, 0.28);
 }
 
 .galleryCard.ratingGradientHard {

@@ -14,6 +14,6 @@ describe("FinderFavoritesHierarchy", () => {
     const svg = container.querySelector("svg");
     expect(svg).toBeInTheDocument();
     expect(svg).toHaveAttribute("fill", "currentColor");
-    expect(svg).toHaveAttribute("stroke", "var(--accent-yellow)");
+    expect(svg).toHaveAttribute("stroke", "var(--color-favorite)");
   });
 });

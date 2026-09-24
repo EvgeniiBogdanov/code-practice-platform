@@ -27,6 +27,6 @@
 }
 
 [data-theme="light"] {
-  --trace-tile-surface: #c1c6ce;
+  --trace-tile-surface: #d0cbc4;
   --trace-grid-line: color-mix(in srgb, var(--border-color) 40%, transparent);
 }

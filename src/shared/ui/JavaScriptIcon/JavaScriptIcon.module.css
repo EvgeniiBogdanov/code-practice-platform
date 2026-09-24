@@ -14,7 +14,7 @@
 }
 
 :global([data-theme="light"]) .icon {
-  color: var(--color-js, #f59e0b);
+  color: var(--color-js-logo);
 }
 
 :global([data-theme="light"]) .bg {

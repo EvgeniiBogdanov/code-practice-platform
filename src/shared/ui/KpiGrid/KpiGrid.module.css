@@ -31,7 +31,7 @@
 }
 
 [data-theme="light"] .kpiCard {
-  background: var(--bg-popover, #ffffff);
+  background: var(--bg-card);
   border: none;
   box-shadow: var(--shadow-sm);
 }

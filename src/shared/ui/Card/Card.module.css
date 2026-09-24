@@ -72,3 +72,8 @@
   justify-content: space-between;
   padding: 8px 18px 16px 18px;
 }
+
+[data-theme="light"] .interactive:hover {
+  background-color: var(--state-hover);
+  box-shadow: var(--shadow-md);
+}

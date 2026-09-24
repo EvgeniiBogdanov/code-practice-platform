@@ -82,7 +82,7 @@
 }
 
 [data-theme="light"] .tabsHeader {
-  background: var(--bg-sidebar);
+  background: var(--bg-subtle);
   border-bottom-color: var(--border-color);
 }
 

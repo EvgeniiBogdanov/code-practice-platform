@@ -13,9 +13,9 @@
 }
 
 [data-theme="light"] .accordionCard {
-  background: var(--bg-subtle, #f4f4f2);
-  border-color: var(--border-color, rgba(55, 53, 47, 0.12));
-  color: var(--text-main, #191919);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
 }
 
 /* Size Modifiers */
@@ -39,8 +39,8 @@
   color: #a855f7;
 }
 
-[data-theme="light"] .color-purple {
-  border-left-color: #9333ea;
+[data-theme="light"] .color-purple .icon {
+  color: var(--accent-purple);
 }
 
 .color-orange {
@@ -51,8 +51,8 @@
   color: #f59e0b;
 }
 
-[data-theme="light"] .color-orange {
-  border-left-color: #d97706;
+[data-theme="light"] .color-orange .icon {
+  color: var(--accent-orange);
 }
 
 .color-green {
@@ -63,10 +63,8 @@
   color: #10b981;
 }
 
-[data-theme="light"] .color-green {
-  background: rgba(16, 185, 129, 0.08);
-  border-color: rgba(16, 185, 129, 0.25);
-  border-left-color: #059669;
+[data-theme="light"] .color-green .icon {
+  color: var(--accent-green);
 }
 
 .color-blue {
@@ -77,8 +75,8 @@
   color: #3b82f6;
 }
 
-[data-theme="light"] .color-blue {
-  border-left-color: #2563eb;
+[data-theme="light"] .color-blue .icon {
+  color: var(--accent-blue);
 }
 
 .color-default,
@@ -116,7 +114,15 @@
 }
 
 [data-theme="light"] .toggleBtn:hover {
-  background: rgba(55, 53, 47, 0.06);
+  background: var(--state-hover);
+}
+
+[data-theme="light"] .toggleBtn[aria-expanded="true"] {
+  background: var(--bg-subtle);
+}
+
+[data-theme="light"] .toggleBtn[aria-expanded="true"]:hover {
+  background: var(--state-hover);
 }
 
 .headerLeft {
@@ -141,7 +147,7 @@
 }
 
 [data-theme="light"] .headerLeft {
-  color: var(--text-main, #191919);
+  color: var(--text-main);
 }
 
 .icon {
@@ -185,7 +191,7 @@
 }
 
 [data-theme="light"] .chevron {
-  color: var(--text-muted, rgba(55, 53, 47, 0.68));
+  color: var(--text-muted);
 }
 
 .rotateOpen {
@@ -234,8 +240,8 @@
 }
 
 [data-theme="light"] .contentBody {
-  color: rgba(55, 53, 47, 0.85);
-  border-top-color: rgba(55, 53, 47, 0.12);
+  color: var(--text-main);
+  border-top: none;
 }
 
 .contentCollapse.expanded:not(.noTransition) .contentBody {

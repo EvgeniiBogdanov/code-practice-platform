@@ -72,3 +72,13 @@
   opacity: 1;
   color: var(--text-main);
 }
+
+:global([data-theme="light"]) .toggleWrapper:hover {
+  background: var(--bg-deep);
+  box-shadow: var(--shadow-sm);
+}
+
+:global([data-theme="light"]) :global([class*="treeNodeHeader"]):hover .iconChevron {
+  opacity: 1;
+  color: var(--text-main);
+}

@@ -13,7 +13,7 @@
 
 :global([data-theme="light"]) .bgRect,
 [data-theme="light"] .bgRect {
-  fill: #191919;
+  fill: var(--text-main);
   stroke: transparent;
   stroke-width: 0;
 }
@@ -34,5 +34,5 @@
 :global([data-theme="light"]) .noBackground .logoStroke,
 [data-theme="light"] .noBackground .logoStroke,
 [data-theme="light"].noBackground .logoStroke {
-  stroke: #191919;
+  stroke: var(--text-main);
 }

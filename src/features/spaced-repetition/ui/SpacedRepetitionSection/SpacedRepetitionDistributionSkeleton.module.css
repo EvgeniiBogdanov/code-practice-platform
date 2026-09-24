@@ -8,6 +8,11 @@
   padding: 18px 22px;
 }
 
+[data-theme="light"] .distributionView {
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+}
+
 @media (max-width: 680px) {
   .distributionView {
     grid-template-columns: 1fr;

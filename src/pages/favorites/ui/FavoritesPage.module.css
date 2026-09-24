@@ -29,6 +29,12 @@
   gap: var(--space-1);
 }
 
+[data-theme="light"] .favoriteHeroIcon {
+  color: var(--color-favorite);
+  fill: none;
+  stroke-width: 1.8;
+}
+
 .title {
   margin: 0;
   color: var(--text-main);
@@ -159,7 +165,7 @@
 .taskFavoriteQuickAction[aria-pressed="false"]:focus-visible svg,
 .galleryFavoriteAction[aria-pressed="false"]:hover svg,
 .galleryFavoriteAction[aria-pressed="false"]:focus-visible svg {
-  color: color-mix(in srgb, var(--accent-yellow), var(--text-muted));
+  color: color-mix(in srgb, var(--color-favorite), var(--text-muted));
 }
 
 .status_solved {
@@ -200,17 +206,12 @@
 }
 
 [data-theme="light"] .galleryCard {
-  border-left: 3px solid rgba(55, 53, 47, 0.28);
+  border-left: none;
 }
 
 .galleryCard.tone_default,
 .galleryCard.ratingGradientUnstarted {
   border-left-color: rgba(255, 255, 255, 0.35);
-}
-
-[data-theme="light"] .galleryCard.tone_default,
-[data-theme="light"] .galleryCard.ratingGradientUnstarted {
-  border-left-color: rgba(55, 53, 47, 0.28);
 }
 
 .galleryCard.tone_hard,
@@ -330,7 +331,7 @@
 }
 
 .emptyIcon {
-  color: var(--accent-yellow);
+  color: var(--color-favorite);
 }
 
 .emptyLink {

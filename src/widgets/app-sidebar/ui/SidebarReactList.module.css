@@ -28,3 +28,19 @@
 .iconRotateCcw {
   color: var(--accent-orange, #f97316);
 }
+
+[data-theme="light"] .iconFlame {
+  color: var(--color-react-group-warmup);
+}
+
+[data-theme="light"] .iconWrench {
+  color: var(--color-react-group-refactoring);
+}
+
+[data-theme="light"] .iconRocket {
+  color: var(--color-react-group-middle);
+}
+
+[data-theme="light"] .iconBrain {
+  color: var(--color-react-group-strong);
+}

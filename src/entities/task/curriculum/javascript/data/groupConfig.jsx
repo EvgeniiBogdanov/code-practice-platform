@@ -21,7 +21,7 @@ import {
 export const JS_GROUP_CONFIG = {
   "Типы данных": {
     icon: Binary,
-    color: "var(--accent-yellow)",
+    color: "var(--accent-yellow-icon)",
     bg: "var(--accent-yellow-bg)",
     desc: "Типы данных, неявное приведение типов, сравнения (== vs ===) и ссылочная модель.",
   },

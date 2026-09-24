@@ -12,8 +12,8 @@
 }
 
 [data-theme="light"] .viewModeToggleBar {
-  background: rgba(55, 53, 47, 0.05);
-  border-color: rgba(55, 53, 47, 0.12);
+  background: var(--bg-surface);
+  border-color: var(--border-color);
 }
 
 .viewModeBtn {
@@ -41,12 +41,12 @@
 }
 
 [data-theme="light"] .viewModeBtn {
-  color: rgba(55, 53, 47, 0.68);
+  color: var(--text-muted);
 }
 
 [data-theme="light"] .viewModeBtn:hover {
-  color: #191919;
-  background: rgba(55, 53, 47, 0.08);
+  color: var(--text-main);
+  background: var(--state-hover);
 }
 
 .viewModeBtn.active {
@@ -56,7 +56,7 @@
 }
 
 [data-theme="light"] .viewModeBtn.active {
-  color: #111827;
-  background: #ffffff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  color: var(--text-main);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
 }

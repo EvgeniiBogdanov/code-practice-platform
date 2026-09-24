@@ -49,6 +49,11 @@
   color: var(--accent-yellow);
 }
 
+[data-theme="light"] .color_amber {
+  background-color: var(--bg-subtle);
+  color: var(--accent-yellow-icon);
+}
+
 .color_blue {
   background-color: var(--accent-blue-bg);
   color: var(--accent-blue);
