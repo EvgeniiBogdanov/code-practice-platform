@@ -39,7 +39,7 @@ export const HomeFeaturesGrid = memo((): React.JSX.Element => {
   return (
     <div className={styles.sectionBlock}>
       <div className={styles.blockHeader}>
-        <BookOpen size={18} color="var(--accent-blue, #3b82f6)" className={styles.blockIcon} />
+        <BookOpen size={22} color="var(--accent-blue, #3b82f6)" className={styles.blockIcon} />
         <h2 className={styles.blockTitle}>Возможности платформы</h2>
       </div>
 

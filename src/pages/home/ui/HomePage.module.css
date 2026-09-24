@@ -142,13 +142,6 @@
   text-decoration: underline;
 }
 
-/* Divider */
-.divider {
-  border: none;
-  border-top: 1px solid var(--border-color);
-  margin: 4px 0;
-}
-
 /* Section Blocks */
 .sectionBlock {
   display: flex;
@@ -160,16 +153,19 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-top: 6px;
 }
 
 .blockIcon {
   color: var(--text-muted);
   flex-shrink: 0;
+  display: block;
 }
 
 .blockTitle {
   font-size: 20px;
   font-weight: 600;
+  line-height: 1.2;
   color: var(--text-main);
   margin: 0;
   letter-spacing: -0.01em;
