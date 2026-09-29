@@ -135,4 +135,22 @@ describe("CodeEditor suggestions", () => {
     });
     expect(screen.queryByText(/clg ⚡/)).not.toBeInTheDocument();
   });
+
+  it("keeps keyboard selection after ArrowDown keyup", () => {
+    render(<EditorHarness />);
+    const textarea = screen.getByRole<HTMLTextAreaElement>("textbox");
+    fireEvent.input(textarea, {
+      target: { value: "arr.", selectionStart: 4, selectionEnd: 4 },
+      data: ".",
+      inputType: "insertText",
+    });
+    const suggestions = document.querySelector("[data-placement]");
+    expect(suggestions?.children.length).toBeGreaterThan(1);
+
+    fireEvent.keyDown(textarea, { key: "ArrowDown" });
+    fireEvent.keyUp(textarea, { key: "ArrowDown" });
+
+    expect(suggestions?.children[1]?.className).toContain("selected");
+    expect(suggestions?.children[0]?.className).not.toContain("selected");
+  });
 });

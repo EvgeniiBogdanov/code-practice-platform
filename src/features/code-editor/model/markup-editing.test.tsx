@@ -90,6 +90,47 @@ describe("markup editor input", () => {
     expect(textarea.value).toBe("<div");
   });
 
+  it.each(["App.jsx", "App.tsx", "index.html"])(
+    "keeps an existing closing tag in sync in %s",
+    (filepath) => {
+      render(<EditorHarness initial="<div></div>" filepath={filepath} />);
+      const textarea = screen.getByRole<HTMLTextAreaElement>("textbox");
+
+      fireEvent.input(textarea, {
+        target: { value: "<di></div>", selectionStart: 3, selectionEnd: 3 },
+        inputType: "deleteContentBackward",
+      });
+      expect(textarea.value).toBe("<di></di>");
+
+      fireEvent.input(textarea, {
+        target: { value: "<div></di>", selectionStart: 4, selectionEnd: 4 },
+        data: "v",
+        inputType: "insertText",
+      });
+      expect(textarea.value).toBe("<div></div>");
+      expect(textarea.selectionStart).toBe(4);
+    }
+  );
+
+  it("fills an empty JSX closing tag while typing the opening name", () => {
+    render(<EditorHarness initial="<></>" filepath="App.jsx" />);
+    const textarea = screen.getByRole<HTMLTextAreaElement>("textbox");
+
+    fireEvent.input(textarea, {
+      target: { value: "<d></>", selectionStart: 2, selectionEnd: 2 },
+      data: "d",
+      inputType: "insertText",
+    });
+    expect(textarea.value).toBe("<d></d>");
+
+    fireEvent.input(textarea, {
+      target: { value: "<di></d>", selectionStart: 3, selectionEnd: 3 },
+      data: "i",
+      inputType: "insertText",
+    });
+    expect(textarea.value).toBe("<di></di>");
+  });
+
   it("undoes a typed word together and redoes it with Ctrl+Y", async () => {
     render(<EditorHarness />);
     const textarea = screen.getByRole<HTMLTextAreaElement>("textbox");

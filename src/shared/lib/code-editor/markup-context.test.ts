@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { getAutoCloseTagEdit, getMarkupContext } from "./markup-context";
+import { getLinkedTagEdit } from "./linked-tag-edit";
 import { getCompletions } from "./snippetsEngine";
 import { highlightCode } from "./highlighter/codeHighlighter";
 
@@ -111,6 +112,11 @@ describe("markup editing by file type", () => {
     );
   });
 
+  it("fills an adjacent empty closing tag when an opening tag is completed", () => {
+    expect(getAutoCloseTagEdit("<div></>", 5, "App.jsx")?.newCode).toBe("<div></div>");
+    expect(getAutoCloseTagEdit("<><div></>", 7, "App.jsx")?.newCode).toBe("<><div></div></>");
+  });
+
   it("keeps HTML void elements and raw text separate from JSX", () => {
     expect(getAutoCloseTagEdit("<input>", 7, "index.html")).toBeNull();
     expect(getAutoCloseTagEdit("<IMG>", 5, "index.html")).toBeNull();
@@ -122,6 +128,39 @@ describe("markup editing by file type", () => {
     const code = "<Card render={() => <span />}>";
     expect(getAutoCloseTagEdit(code, code.length, "App.tsx")?.newCode).toBe(code + "</Card>");
     expect(getMarkupContext("<div><span></span>", "App.jsx").openTags).toEqual(["div"]);
+  });
+});
+
+describe("linked tag names", () => {
+  it.each(["App.jsx", "App.tsx", "index.html"])(
+    "updates the matching closer while editing an opener in %s",
+    (filepath) => {
+      expect(getLinkedTagEdit("<div></div>", "<di></div>", 3, filepath)?.newCode).toBe("<di></di>");
+      expect(getLinkedTagEdit("<di></di>", "<div></di>", 4, filepath)?.newCode).toBe("<div></div>");
+      expect(getLinkedTagEdit("<div></>", "<di></>", 3, filepath)?.newCode).toBe("<di></di>");
+    }
+  );
+
+  it("updates only the nested tag's closer", () => {
+    expect(
+      getLinkedTagEdit(
+        "<section><div></div></section>",
+        "<section><di></div></section>",
+        12,
+        "App.tsx"
+      )?.newCode
+    ).toBe("<section><di></di></section>");
+  });
+
+  it("fills a JSX closing placeholder as the opening name is typed", () => {
+    expect(getLinkedTagEdit("<></>", "<d></>", 2, "App.jsx")?.newCode).toBe("<d></d>");
+    expect(getLinkedTagEdit("<d></d>", "<di></d>", 3, "App.jsx")?.newCode).toBe("<di></di>");
+  });
+
+  it("leaves unrelated closing tags and JavaScript comparisons alone", () => {
+    expect(getLinkedTagEdit("<div></span>", "<di></span>", 3, "App.jsx")).toBeNull();
+    expect(getLinkedTagEdit("a < b >", "a < bi >", 6, "App.jsx")).toBeNull();
+    expect(getLinkedTagEdit("<div></div>", "<di></div>", 3, "main.js")).toBeNull();
   });
 });
 

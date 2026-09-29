@@ -240,6 +240,12 @@ export const getAutoCloseTagEdit = (
   const context = getMarkupContext(before, filepath);
   const tag = context.tags.at(-1);
   if (!tag || tag.end !== cursor || tag.closing || tag.selfClosing) return null;
+  if (tag.name && code.startsWith("</>", cursor) && !context.openTags.slice(0, -1).includes("")) {
+    return {
+      newCode: before + `</${tag.name}>` + code.slice(cursor + 3),
+      newCursor: cursor,
+    };
+  }
   // Do not steal a closing tag belonging to an ancestor with the same name.
   const remaining = getMarkupContext(code, filepath);
   const jsx = getLanguageCapabilities(getLanguageId(filepath)).supportsJsx;

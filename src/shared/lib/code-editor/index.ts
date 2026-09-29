@@ -20,3 +20,4 @@ export * from "./codeFormatter";
 export * from "./typescript-checker";
 
 export * from "./markup-context";
+export * from "./linked-tag-edit";

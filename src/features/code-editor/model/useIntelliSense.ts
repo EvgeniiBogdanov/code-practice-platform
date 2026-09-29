@@ -41,6 +41,7 @@ export interface IntelliSenseState {
 }
 
 interface CompletionSession {
+  code: string;
   lineIdx: number;
   startPos: number;
   cursorPos: number;
@@ -65,6 +66,8 @@ export function useIntelliSense(
 
   const sessionRef = useRef<CompletionSession | null>(null);
   const completionRequest = useRef(0);
+  const itemsRef = useRef<CompletionItem[]>([]);
+  const selectedIndexRef = useRef(0);
 
   const closeCompletions = useCallback(() => {
     completionRequest.current++;
@@ -72,6 +75,8 @@ export function useIntelliSense(
     setItems([]);
     setSelectedIndex(0);
     setWord("");
+    itemsRef.current = [];
+    selectedIndexRef.current = 0;
     sessionRef.current = null;
   }, []);
 
@@ -111,8 +116,18 @@ export function useIntelliSense(
 
       setPopupPosition(position);
 
-      const show = (nextItems: CompletionItem[]): void => {
+      const show = (nextItems: CompletionItem[], preserveSelection = false): void => {
+        const selected = preserveSelection ? itemsRef.current[selectedIndexRef.current] : undefined;
+        const nextIndex = selected
+          ? Math.max(
+              0,
+              nextItems.findIndex((item) => item.label === selected.label)
+            )
+          : 0;
+        itemsRef.current = nextItems;
+        selectedIndexRef.current = nextIndex;
         sessionRef.current = {
+          code,
           lineIdx: currentLineIdx,
           startPos: Math.max(0, cursorPos - res.word.length),
           cursorPos,
@@ -120,7 +135,7 @@ export function useIntelliSense(
         };
         setItems(nextItems);
         setWord(res.word);
-        setSelectedIndex(0);
+        setSelectedIndex(nextIndex);
         setIsOpen(nextItems.length > 0);
       };
       show(localItems);
@@ -145,7 +160,8 @@ export function useIntelliSense(
             score: 200,
           }));
           show(
-            [...semanticItems, ...localItems.filter((item) => !known.has(item.label))].slice(0, 24)
+            [...semanticItems, ...localItems.filter((item) => !known.has(item.label))].slice(0, 24),
+            true
           );
         });
       }
@@ -180,6 +196,7 @@ export function useIntelliSense(
   const handleCursorMove = useCallback(
     (code: string, cursorPos: number, textarea?: HTMLTextAreaElement) => {
       if (!sessionRef.current) return;
+      if (cursorPos === sessionRef.current.cursorPos && code === sessionRef.current.code) return;
 
       const lines = code.substring(0, cursorPos).split("\n");
       const currentLineIdx = lines.length - 1;
@@ -203,14 +220,19 @@ export function useIntelliSense(
   );
 
   const selectNext = useCallback(() => {
-    setSelectedIndex((prev) => (prev + 1) % (items.length || 1));
-  }, [items.length]);
+    selectedIndexRef.current = (selectedIndexRef.current + 1) % (itemsRef.current.length || 1);
+    setSelectedIndex(selectedIndexRef.current);
+  }, []);
 
   const selectPrev = useCallback(() => {
-    setSelectedIndex((prev) => (prev - 1 + (items.length || 1)) % (items.length || 1));
-  }, [items.length]);
+    selectedIndexRef.current =
+      (selectedIndexRef.current - 1 + (itemsRef.current.length || 1)) %
+      (itemsRef.current.length || 1);
+    setSelectedIndex(selectedIndexRef.current);
+  }, []);
 
   const selectIndex = useCallback((idx: number) => {
+    selectedIndexRef.current = idx;
     setSelectedIndex(idx);
   }, []);
 

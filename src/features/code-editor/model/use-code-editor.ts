@@ -2,6 +2,7 @@ import React, { useState, useMemo, useRef, useEffect, useCallback, useDeferredVa
 import {
   highlightCode,
   getAutoCloseTagEdit,
+  getLinkedTagEdit,
   getLanguageId,
   lintJavaScriptCode,
   formatJavaScriptCode,
@@ -288,6 +289,15 @@ export const useCodeEditor = ({
     const input = e.nativeEvent;
     const isTyping =
       input instanceof InputEvent && !input.isComposing && input.inputType === "insertText";
+    if (input instanceof InputEvent && !input.isComposing) {
+      const edit = getLinkedTagEdit(code, val, pos, filepath);
+      if (edit) {
+        val = edit.newCode;
+        pos = edit.newCursor;
+        e.target.value = val;
+        e.target.setSelectionRange(pos, pos);
+      }
+    }
     if (isTyping && input.data === ">") {
       const edit = getAutoCloseTagEdit(val, pos, filepath);
       if (edit) {

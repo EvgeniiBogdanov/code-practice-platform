@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { renderHook, act, waitFor } from "@testing-library/react";
 import { useIntelliSense } from "./useIntelliSense";
-import { CompletionItem } from "@/shared/lib/code-editor";
+import { CompletionItem, type TypeScriptCompletion } from "@/shared/lib/code-editor";
 
 describe("useIntelliSense", () => {
   const createTextarea = () => {
@@ -56,6 +56,41 @@ describe("useIntelliSense", () => {
     });
 
     expect(result.current.selectedIndex).toBe(3);
+  });
+
+  it("preserves the selected completion when semantic results arrive", async () => {
+    let resolveCompletions: (items: TypeScriptCompletion[]) => void = () => {};
+    const request = vi.fn(
+      () =>
+        new Promise<TypeScriptCompletion[]>((resolve) => {
+          resolveCompletions = resolve;
+        })
+    );
+    const { result } = renderHook(() => useIntelliSense([], "App.jsx", request));
+    const textarea = createTextarea();
+
+    act(() => result.current.openCompletions("arr.", 4, textarea));
+    act(() => result.current.selectNext());
+    const selectedLabel = result.current.items[result.current.selectedIndex]?.label;
+    expect(selectedLabel).toBeDefined();
+
+    act(() => result.current.handleCursorMove("arr.", 4, textarea));
+    expect(result.current.items[result.current.selectedIndex]?.label).toBe(selectedLabel);
+
+    await act(async () => {
+      resolveCompletions([
+        {
+          label: "customMember",
+          insertText: "customMember",
+          kind: "property",
+          replaceStart: 4,
+          replaceEnd: 4,
+        },
+      ]);
+    });
+
+    expect(request).toHaveBeenCalledTimes(1);
+    expect(result.current.items[result.current.selectedIndex]?.label).toBe(selectedLabel);
   });
 
   it("calculates popup position with placement and maxHeight on open", () => {
