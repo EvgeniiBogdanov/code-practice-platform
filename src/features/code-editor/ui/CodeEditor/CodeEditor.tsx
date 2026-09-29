@@ -299,20 +299,10 @@ export const CodeEditor = ({
               />
             )}
 
-            {hoverSignatures.hoverInfo && !hideTooltips && (
+            {hoverSignatures.hoverInfo && !hideTooltips && !intelliSense.isOpen && (
               <HoverSignatureCard
                 info={hoverSignatures.hoverInfo}
                 position={hoverSignatures.position}
-              />
-            )}
-            {hoverSignatures.signatureHelp && !hideTooltips && !intelliSense.isOpen && (
-              <HoverSignatureCard
-                info={{
-                  symbol: hoverSignatures.signatureHelp.functionName,
-                  signature: hoverSignatures.signatureHelp.signature,
-                  documentation: hoverSignatures.signatureHelp.description,
-                }}
-                position={hoverSignatures.signaturePosition}
               />
             )}
           </div>

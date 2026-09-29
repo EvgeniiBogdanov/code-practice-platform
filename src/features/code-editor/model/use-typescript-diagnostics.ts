@@ -6,7 +6,6 @@ import {
   type TypeScriptSourceInput,
   type TypeScriptCompletion,
   type TypeScriptHover,
-  type TypeScriptSignature,
   type TypeScriptRenameEdit,
   type LintResult,
 } from "@/shared/lib/code-editor";
@@ -16,7 +15,6 @@ interface TypeScriptAnalysis {
   isPending: boolean;
   requestCompletions: (position: number, code?: string) => Promise<TypeScriptCompletion[]>;
   requestHover: (position: number, code?: string) => Promise<TypeScriptHover | null>;
-  requestSignature: (position: number, code?: string) => Promise<TypeScriptSignature | null>;
   requestRename: (position: number) => Promise<TypeScriptRenameEdit[]>;
 }
 
@@ -155,11 +153,6 @@ export const useTypeScriptDiagnostics = (
       (await request("hover", position, code))?.hover ?? null,
     [request]
   );
-  const requestSignature = useCallback(
-    async (position: number, code?: string): Promise<TypeScriptSignature | null> =>
-      (await request("signature", position, code))?.signature ?? null,
-    [request]
-  );
   const requestRename = useCallback(
     async (position: number): Promise<TypeScriptRenameEdit[]> =>
       (await request("rename", position))?.rename ?? [],
@@ -170,7 +163,6 @@ export const useTypeScriptDiagnostics = (
     ...(enabled ? analysis : { result: null, isPending: false }),
     requestCompletions,
     requestHover,
-    requestSignature,
     requestRename,
   };
 };

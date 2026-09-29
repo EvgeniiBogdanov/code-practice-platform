@@ -94,11 +94,7 @@ export const useCodeEditor = ({
     supportsLanguageService
   );
   const intelliSense = useIntelliSense(files, filepath, typeScriptAnalysis.requestCompletions);
-  const hoverSignatures = useHoverSignatures(
-    filepath,
-    typeScriptAnalysis.requestHover,
-    typeScriptAnalysis.requestSignature
-  );
+  const hoverSignatures = useHoverSignatures(filepath, typeScriptAnalysis.requestHover);
   const multiCursor = useMultiCursor(filepath);
 
   const handleFormat = useCallback(async () => {
@@ -324,7 +320,6 @@ export const useCodeEditor = ({
       } else {
         intelliSense.closeCompletions();
       }
-      hoverSignatures.updateSignatureHelp(val, pos, textareaRef.current);
     }
   };
 
@@ -346,18 +341,12 @@ export const useCodeEditor = ({
 
   const handleTextareaBlur = () => {
     intelliSense.closeCompletions();
-    hoverSignatures.closeSignature();
   };
 
   const handleCursorKeyUp = () => {
     updateCursorCoords();
     if (textareaRef.current) {
       intelliSense.handleCursorMove(code, textareaRef.current.selectionStart, textareaRef.current);
-      hoverSignatures.updateSignatureHelp(
-        code,
-        textareaRef.current.selectionStart,
-        textareaRef.current
-      );
     }
   };
 
