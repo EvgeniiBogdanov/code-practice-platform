@@ -19,6 +19,7 @@ export interface HighlightOptions {
   unusedImports?: Set<string> | null;
   multiSelections?: Array<{ start: number; end: number }>;
   showColorSwatches?: boolean;
+  jsxTextRanges?: ReadonlyArray<{ start: number; end: number }>;
 }
 
 export type HighlighterFunction = (code: string, options?: HighlightOptions) => string;

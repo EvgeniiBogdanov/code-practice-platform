@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import ts from "typescript";
-import { createTypeScriptDiagnostics } from "./typescript-diagnostics";
+import { createTypeScriptDiagnostics, createTypeScriptEditorService } from "./typescript-diagnostics";
 
 const libDirectory = ts.getDefaultLibFilePath({}).replace(/[/\\][^/\\]+$/, "");
 const libraries = new Map(
@@ -89,5 +89,93 @@ describe("TSX compiler mode", () => {
     });
     expect(problems).toHaveLength(1);
     expect(problems[0].message).toContain("TS2322");
+  });
+});
+
+describe("JSX and TSX language features", () => {
+  const editor = createTypeScriptEditorService(libraries);
+
+  it("reports mismatched JSX tags in JavaScript files", () => {
+    const problems = editor.diagnose({
+      code: "const view = <div></span>;",
+      filepath: "App.jsx",
+      files: [],
+    });
+    expect(problems.some((problem) => problem.severity === "error")).toBe(true);
+  });
+
+  it("completes typed custom component props", () => {
+    const code = "const Card = ({ name }: { name: string }) => <div>{name}</div>;\nconst view = <Card na";
+    const completions = editor.complete({ code, filepath: "App.tsx", files: [] }, code.length);
+    expect(completions.map((item) => item.label)).toContain("name");
+  });
+
+  it("provides symbol hover and function signature", () => {
+    const code = "function greet(name: string): string { return name; }\ngreet(";
+    const input = { code, filepath: "App.tsx", files: [] };
+    expect(editor.hover(input, code.indexOf("greet("))).not.toBeNull();
+    expect(editor.signature(input, code.length)?.signature).toContain("name: string");
+  });
+
+  it("finds both sides of a JSX tag rename", () => {
+    const code = "const view = <div>text</div>;";
+    const locations = editor.rename(
+      { code, filepath: "App.tsx", files: [] },
+      code.indexOf("div") + 1
+    );
+    expect(locations.filter((location) => location.filepath === "App.tsx")).toHaveLength(2);
+  });
+
+  it("finds symbol references in another editor file", () => {
+    const code = "export const Card = () => null;";
+    const locations = editor.rename(
+      {
+        code,
+        filepath: "Card.tsx",
+        files: [{ name: "App.tsx", code: "import { Card } from './Card'; const view = <Card />;" }],
+      },
+      code.indexOf("Card") + 1
+    );
+    expect(new Set(locations.map((location) => location.filepath))).toEqual(
+      new Set(["Card.tsx", "App.tsx"])
+    );
+  });
+
+  it("renames component references from a JSX tag", () => {
+    const code = "const Card = () => null; const view = <Card />;";
+    const locations = editor.rename(
+      { code, filepath: "App.tsx", files: [] },
+      code.lastIndexOf("Card") + 1
+    );
+    expect(locations).toHaveLength(2);
+    expect(locations.map(({ start, end }) => code.slice(start, end))).toEqual(["Card", "Card"]);
+  });
+
+  it("resolves declarations from an installed component package", () => {
+    const packageLibraries = new Map(libraries);
+    for (const file of ts.sys.readDirectory("node_modules/lucide-react", [".d.ts"])) {
+      packageLibraries.set(`/${file}`, ts.sys.readFile(file) ?? "");
+    }
+    packageLibraries.set(
+      "/node_modules/lucide-react/package.json",
+      ts.sys.readFile("node_modules/lucide-react/package.json") ?? ""
+    );
+    const packageEditor = createTypeScriptEditorService(packageLibraries);
+    expect(
+      packageEditor.diagnose({
+        code: 'import { Heart } from "lucide-react"; const view = <Heart size={24} />;',
+        filepath: "App.tsx",
+        files: [],
+      })
+    ).toEqual([]);
+  });
+
+  it("uses a virtual tsconfig when checking editor files", () => {
+    const code = "const greet = (name) => name;";
+    const files = [{ name: "tsconfig.json", code: '{"compilerOptions":{"strict":false}}' }];
+    expect(editor.diagnose({ code, filepath: "App.tsx", files })).toEqual([]);
+    expect(editor.diagnose({ code, filepath: "App.tsx", files: [] })[0]?.message).toContain(
+      "TS7006"
+    );
   });
 });

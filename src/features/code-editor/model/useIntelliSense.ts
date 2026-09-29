@@ -5,6 +5,7 @@ import {
   addImportToFile,
   CompletionItem,
   TaskFile,
+  type TypeScriptCompletion,
 } from "@/shared/lib/code-editor";
 import {
   getCaretCoordinates,
@@ -46,7 +47,11 @@ interface CompletionSession {
   word: string;
 }
 
-export function useIntelliSense(files: TaskFile[] = [], filepath = "main.jsx"): IntelliSenseState {
+export function useIntelliSense(
+  files: TaskFile[] = [],
+  filepath = "main.jsx",
+  requestSemanticCompletions?: (position: number, code: string) => Promise<TypeScriptCompletion[]>
+): IntelliSenseState {
   const [isOpen, setIsOpen] = useState(false);
   const [items, setItems] = useState<CompletionItem[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -59,8 +64,10 @@ export function useIntelliSense(files: TaskFile[] = [], filepath = "main.jsx"): 
   });
 
   const sessionRef = useRef<CompletionSession | null>(null);
+  const completionRequest = useRef(0);
 
   const closeCompletions = useCallback(() => {
+    completionRequest.current++;
     setIsOpen(false);
     setItems([]);
     setSelectedIndex(0);
@@ -75,10 +82,7 @@ export function useIntelliSense(files: TaskFile[] = [], filepath = "main.jsx"): 
   const openCompletions = useCallback(
     (code: string, cursorPos: number, textarea: HTMLTextAreaElement, force = false) => {
       const res = getCompletions(code, cursorPos, { files, filepath, force });
-      if (res.items.length === 0) {
-        closeCompletions();
-        return;
-      }
+      const requestId = ++completionRequest.current;
 
       const lines = code.substring(0, cursorPos).split("\n");
       const currentLineIdx = lines.length - 1;
@@ -92,19 +96,40 @@ export function useIntelliSense(files: TaskFile[] = [], filepath = "main.jsx"): 
 
       setPopupPosition(position);
 
-      sessionRef.current = {
-        lineIdx: currentLineIdx,
-        startPos: Math.max(0, cursorPos - res.word.length),
-        cursorPos,
-        word: res.word,
+      const show = (nextItems: CompletionItem[]): void => {
+        sessionRef.current = {
+          lineIdx: currentLineIdx,
+          startPos: Math.max(0, cursorPos - res.word.length),
+          cursorPos,
+          word: res.word,
+        };
+        setItems(nextItems);
+        setWord(res.word);
+        setSelectedIndex(0);
+        setIsOpen(nextItems.length > 0);
       };
+      show(res.items);
 
-      setItems(res.items);
-      setWord(res.word);
-      setSelectedIndex(0);
-      setIsOpen(true);
+      if (requestSemanticCompletions) {
+        void requestSemanticCompletions(cursorPos, code).then((semantic) => {
+          if (requestId !== completionRequest.current || semantic.length === 0) return;
+          const known = new Set(semantic.map((item) => item.label));
+          const semanticItems: CompletionItem[] = semantic
+            .map((item) => ({
+              prefix: item.label,
+              label: item.label,
+              detail: "TypeScript",
+              kind: item.kind,
+              insertText: item.insertText,
+              replaceStart: item.replaceStart,
+              replaceEnd: item.replaceEnd,
+              score: 200,
+            }));
+          show([...semanticItems, ...res.items.filter((item) => !known.has(item.label))].slice(0, 24));
+        });
+      }
     },
-    [files, filepath, closeCompletions]
+    [files, filepath, requestSemanticCompletions]
   );
 
   const updatePosition = useCallback(
@@ -151,29 +176,9 @@ export function useIntelliSense(files: TaskFile[] = [], filepath = "main.jsx"): 
       }
 
       // 3. Re-evaluate completions at new position on same line
-      const res = getCompletions(code, cursorPos, { files, filepath, force: false });
-      if (res.items.length === 0) {
-        closeCompletions();
-        return;
-      }
-
-      sessionRef.current.cursorPos = cursorPos;
-      sessionRef.current.word = res.word;
-
-      if (textarea) {
-        const caret = getCaretCoordinates(textarea, cursorPos);
-        const position = calculatePopupPosition({
-          caret,
-          textarea,
-          itemsCount: res.items.length,
-        });
-        setPopupPosition(position);
-      }
-
-      setItems(res.items);
-      setWord(res.word);
+      if (textarea) openCompletions(code, cursorPos, textarea);
     },
-    [files, filepath, closeCompletions]
+    [closeCompletions, openCompletions]
   );
 
   const selectNext = useCallback(() => {

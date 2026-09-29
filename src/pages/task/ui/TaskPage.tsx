@@ -9,6 +9,7 @@ import { useProgressStore, isTaskCompleted } from "@/entities/progress";
 import { useReviewStore } from "@/entities/review";
 import { TaskReviewRatingBar, TaskExcludeButton } from "@/features/spaced-repetition";
 import { TaskFavoriteButton } from "@/features/task-favorite";
+import { activateCodeHistoryTask } from "@/features/code-editor";
 import { preloadTaskVisualization } from "@/widgets/task-visualization";
 import { hasAlgorithmVisualization } from "@/entities/algorithm-trace";
 import {
@@ -53,6 +54,10 @@ export const TaskPage = React.memo<TaskPageProps>(
         setActiveTab(initialTab);
       }
     }, [initialTab, taskId]);
+
+    useEffect(() => {
+      activateCodeHistoryTask(`${section}:${taskId}`);
+    }, [section, taskId]);
 
     if (!isLoading && !task) {
       return (

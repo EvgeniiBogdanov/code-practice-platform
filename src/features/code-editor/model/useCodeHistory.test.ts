@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { useCodeHistory } from "./useCodeHistory";
+import { activateCodeHistoryTask, useCodeHistory } from "./useCodeHistory";
 
 describe("useCodeHistory", () => {
   afterEach(() => vi.useRealTimers());
@@ -67,5 +67,45 @@ describe("useCodeHistory", () => {
       expect(result.current.undo("prefixa")).toEqual({ code: "prefix", cursor: 6 });
     });
     expect(result.current.canUndo).toBe(false);
+  });
+
+  it("keeps independent undo and redo stacks for files in the current task", () => {
+    activateCodeHistoryTask("javascript:1");
+    const firstFile = { taskKey: "javascript:1", documentKey: "candidate:0" };
+    const secondFile = { taskKey: "javascript:1", documentKey: "candidate:1" };
+    const first = renderHook(() => useCodeHistory("first", firstFile));
+    act(() => first.result.current.pushHistory("first!", 6));
+    first.unmount();
+
+    const second = renderHook(() => useCodeHistory("second", secondFile));
+    expect(second.result.current.canUndo).toBe(false);
+    act(() => second.result.current.pushHistory("second!", 7));
+    second.unmount();
+
+    const restored = renderHook(() => useCodeHistory("first!", firstFile));
+    expect(restored.result.current.canUndo).toBe(true);
+    act(() => expect(restored.result.current.undo("first!")?.code).toBe("first"));
+    restored.unmount();
+
+    const reopened = renderHook(() => useCodeHistory("first", firstFile));
+    expect(reopened.result.current.canRedo).toBe(true);
+    act(() => expect(reopened.result.current.redo("first")?.code).toBe("first!"));
+    reopened.unmount();
+    activateCodeHistoryTask(null);
+  });
+
+  it("releases the previous task history when another task opens", () => {
+    const scope = { taskKey: "javascript:1", documentKey: "solution:0:0" };
+    activateCodeHistoryTask(scope.taskKey);
+    const editor = renderHook(() => useCodeHistory("start", scope));
+    act(() => editor.result.current.pushHistory("changed", 7));
+    editor.unmount();
+
+    activateCodeHistoryTask("javascript:2");
+    activateCodeHistoryTask(scope.taskKey);
+    const reopened = renderHook(() => useCodeHistory("changed", scope));
+    expect(reopened.result.current.canUndo).toBe(false);
+    reopened.unmount();
+    activateCodeHistoryTask(null);
   });
 });

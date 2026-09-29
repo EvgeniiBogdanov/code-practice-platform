@@ -3,7 +3,6 @@ import {
   highlightCode,
   getAutoCloseTagEdit,
   getLanguageId,
-  getLanguageCapabilities,
   lintJavaScriptCode,
   formatJavaScriptCode,
   fixTypoInCode,
@@ -37,6 +36,7 @@ export const useCodeEditor = ({
   onRun,
   files = [],
   filepath = "main.jsx",
+  historyScope,
   readOnly = false,
   isFullscreen,
   onToggleFullscreen,
@@ -82,9 +82,25 @@ export const useCodeEditor = ({
     [setEditorLinterEnabled, toggleEditorLinterEnabled]
   );
 
-  const history = useCodeHistory(code);
-  const intelliSense = useIntelliSense(files, filepath);
-  const hoverSignatures = useHoverSignatures(filepath);
+  const history = useCodeHistory(code, historyScope);
+  const languageId = getLanguageId(filepath);
+  const supportsLanguageService = [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+  ].includes(languageId) && typeof Worker !== "undefined";
+  const typeScriptAnalysis = useTypeScriptDiagnostics(
+    { code, filepath, files },
+    isLinterEnabled && supportsLanguageService,
+    supportsLanguageService
+  );
+  const intelliSense = useIntelliSense(files, filepath, typeScriptAnalysis.requestCompletions);
+  const hoverSignatures = useHoverSignatures(
+    filepath,
+    typeScriptAnalysis.requestHover,
+    typeScriptAnalysis.requestSignature
+  );
   const multiCursor = useMultiCursor(filepath);
 
   const handleFormat = useCallback(async () => {
@@ -160,12 +176,7 @@ export const useCodeEditor = ({
     return () => window.removeEventListener("keydown", handleGlobalKey);
   }, [handleFormat, effectiveFullscreen, toggleFullscreen, intelliSense, toggleWordWrap]);
 
-  const useCompiler =
-    isLinterEnabled && getLanguageCapabilities(getLanguageId(filepath)).supportsTypeScript;
-  const typeScriptAnalysis = useTypeScriptDiagnostics(
-    { code: deferredCode, filepath, files: deferredFiles },
-    useCompiler
-  );
+  const useCompiler = isLinterEnabled && supportsLanguageService;
   const lintResult = useMemo(() => {
     if (!isLinterEnabled) {
       return EMPTY_LINT_RESULT;
@@ -302,7 +313,7 @@ export const useCodeEditor = ({
 
     if (textareaRef.current) {
       intelliSense.openCompletions(val, pos, textareaRef.current);
-      hoverSignatures.updateSignatureHelp(val, pos);
+      hoverSignatures.updateSignatureHelp(val, pos, textareaRef.current);
     }
   };
 
@@ -324,16 +335,23 @@ export const useCodeEditor = ({
 
   const handleTextareaBlur = () => {
     intelliSense.closeCompletions();
+    hoverSignatures.closeSignature();
   };
 
   const handleCursorKeyUp = () => {
     updateCursorCoords();
     if (textareaRef.current) {
       intelliSense.handleCursorMove(code, textareaRef.current.selectionStart, textareaRef.current);
+      hoverSignatures.updateSignatureHelp(
+        code,
+        textareaRef.current.selectionStart,
+        textareaRef.current
+      );
     }
   };
 
   const handleFixTypo = (typo: TypoInfo) => {
+    if (readOnly) return;
     const fixed = fixTypoInCode(code, typo.line, typo.typo, typo.correct);
     onChange(fixed);
     history.pushHistory(fixed);
@@ -344,6 +362,7 @@ export const useCodeEditor = ({
   };
 
   const handleFixMissingImport = (imp: MissingImportInfo) => {
+    if (readOnly) return;
     const res = addImportToFile(code, imp.symbol, imp.module, imp.isDefault);
     if (res.insertedLength > 0 && res.newCode) {
       onChange(res.newCode);
@@ -377,6 +396,7 @@ export const useCodeEditor = ({
     hoverSignatures,
     multiCursor,
     lintResult,
+    requestRename: typeScriptAnalysis.requestRename,
     isAnalysisPending,
     activeTypo,
     activeMissingImport,

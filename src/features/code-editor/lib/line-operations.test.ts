@@ -3,6 +3,7 @@ import {
   getLineOffsets,
   getLineIndexFromOffset,
   getSelectedLineRange,
+  changeLineIndentation,
   moveLines,
   duplicateLines,
 } from "./line-operations";
@@ -54,6 +55,37 @@ describe("line-operations", () => {
       expect(getSelectedLineRange(code, 0, 6, offsets)).toEqual({ startLine: 0, endLine: 0 });
       // 0 to 12 is "line0\nline1\n". Line 2 starts at 12.
       expect(getSelectedLineRange(code, 0, 12, offsets)).toEqual({ startLine: 0, endLine: 1 });
+    });
+  });
+
+  describe("changeLineIndentation", () => {
+    it("indents selected lines while excluding a line at the selection end", () => {
+      const result = changeLineIndentation("one\ntwo\nthree", 0, 8, 2, "indent");
+      expect(result).toEqual({
+        newCode: "  one\n  two\nthree",
+        newSelectionStart: 0,
+        newSelectionEnd: 12,
+        changed: true,
+      });
+    });
+
+    it("outdents selected lines and keeps the selection aligned", () => {
+      const result = changeLineIndentation("  one\n\ttwo\nthree", 0, 10, 2, "outdent");
+      expect(result).toEqual({
+        newCode: "one\ntwo\nthree",
+        newSelectionStart: 0,
+        newSelectionEnd: 7,
+        changed: true,
+      });
+    });
+
+    it("outdents the current line without a selection", () => {
+      expect(changeLineIndentation("  value", 4, 4, 2, "outdent")).toEqual({
+        newCode: "value",
+        newSelectionStart: 2,
+        newSelectionEnd: 2,
+        changed: true,
+      });
     });
   });
 

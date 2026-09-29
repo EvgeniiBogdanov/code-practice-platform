@@ -4,23 +4,36 @@ import {
   getSignatureHelp,
   HoverInfo,
   SignatureHelpResult,
+  type TypeScriptHover,
+  type TypeScriptSignature,
 } from "@/shared/lib/code-editor";
+import { getCaretCoordinates } from "../lib/caret-coordinates";
 
 export interface HoverSignaturesState {
   hoverInfo: HoverInfo | null;
   signatureHelp: SignatureHelpResult | null;
+  signaturePosition: { top: number; left: number };
   position: { top: number; left: number };
   handleMouseMove: (e: React.MouseEvent<HTMLTextAreaElement>, code: string) => void;
   handleMouseLeave: () => void;
-  updateSignatureHelp: (code: string, cursorPos: number) => void;
+  updateSignatureHelp: (code: string, cursorPos: number, textarea?: HTMLTextAreaElement) => void;
   closeHover: () => void;
+  closeSignature: () => void;
 }
 
-export function useHoverSignatures(filepath = "main.jsx"): HoverSignaturesState {
+export function useHoverSignatures(
+  filepath = "main.jsx",
+  requestHover?: (position: number, code: string) => Promise<TypeScriptHover | null>,
+  requestSignature?: (position: number, code: string) => Promise<TypeScriptSignature | null>
+): HoverSignaturesState {
   const [hoverInfo, setHoverInfo] = useState<HoverInfo | null>(null);
   const [signatureHelp, setSignatureHelp] = useState<SignatureHelpResult | null>(null);
   const [position, setPosition] = useState({ top: 0, left: 0 });
+  const [signaturePosition, setSignaturePosition] = useState({ top: 0, left: 0 });
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const signatureTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hoverRequestId = useRef(0);
+  const signatureRequestId = useRef(0);
 
   useEffect(() => {
     return () => {
@@ -28,15 +41,23 @@ export function useHoverSignatures(filepath = "main.jsx"): HoverSignaturesState 
         clearTimeout(hoverTimeoutRef.current);
         hoverTimeoutRef.current = null;
       }
+      if (signatureTimeoutRef.current) clearTimeout(signatureTimeoutRef.current);
     };
   }, []);
 
   const closeHover = useCallback(() => {
+    hoverRequestId.current++;
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
       hoverTimeoutRef.current = null;
     }
     setHoverInfo(null);
+  }, []);
+
+  const closeSignature = useCallback(() => {
+    signatureRequestId.current++;
+    if (signatureTimeoutRef.current) clearTimeout(signatureTimeoutRef.current);
+    setSignatureHelp(null);
   }, []);
 
   const handleMouseLeave = useCallback(() => {
@@ -54,7 +75,8 @@ export function useHoverSignatures(filepath = "main.jsx"): HoverSignaturesState 
         clearTimeout(hoverTimeoutRef.current);
       }
 
-      hoverTimeoutRef.current = setTimeout(() => {
+      const requestId = ++hoverRequestId.current;
+      hoverTimeoutRef.current = setTimeout(async () => {
         const lineHeight = 21;
         const charWidth = 8.4;
         const paddingTop = 16;
@@ -73,7 +95,11 @@ export function useHoverSignatures(filepath = "main.jsx"): HoverSignaturesState 
             }
             offset += colIdx;
 
-            const info = getHoverInfo(code, offset, undefined, { filepath });
+            const semantic = await requestHover?.(offset, code);
+            if (requestId !== hoverRequestId.current) return;
+            const info: HoverInfo | null = semantic
+              ? { symbol: "", signature: semantic.signature, documentation: semantic.documentation }
+              : getHoverInfo(code, offset, undefined, { filepath });
             if (info) {
               setHoverInfo(info);
               setPosition({
@@ -88,24 +114,50 @@ export function useHoverSignatures(filepath = "main.jsx"): HoverSignaturesState 
         setHoverInfo(null);
       }, 300);
     },
-    [filepath]
+    [filepath, requestHover]
   );
 
   const updateSignatureHelp = useCallback(
-    (code: string, cursorPos: number) => {
-      const help = getSignatureHelp(code, cursorPos, { filepath });
-      setSignatureHelp(help);
+    (code: string, cursorPos: number, textarea?: HTMLTextAreaElement) => {
+      if (signatureTimeoutRef.current) clearTimeout(signatureTimeoutRef.current);
+      const requestId = ++signatureRequestId.current;
+      if (textarea) {
+        const caret = getCaretCoordinates(textarea, cursorPos);
+        setSignaturePosition({
+          top: caret.lineBottom - textarea.scrollTop + 4,
+          left: Math.max(0, caret.left - textarea.scrollLeft),
+        });
+      }
+      signatureTimeoutRef.current = setTimeout(async () => {
+        const semantic = await requestSignature?.(cursorPos, code);
+        if (requestId !== signatureRequestId.current) return;
+        const fallback = getSignatureHelp(code, cursorPos, { filepath });
+        setSignatureHelp(
+          semantic
+            ? {
+                functionName: "",
+                signature: semantic.signature,
+                description: semantic.documentation,
+                module: "typescript",
+                parameters: [],
+                activeParameter: semantic.activeParameter,
+              }
+            : fallback
+        );
+      }, 120);
     },
-    [filepath]
+    [filepath, requestSignature]
   );
 
   return {
     hoverInfo,
     signatureHelp,
+    signaturePosition,
     position,
     handleMouseMove,
     handleMouseLeave,
     updateSignatureHelp,
     closeHover,
+    closeSignature,
   };
 }

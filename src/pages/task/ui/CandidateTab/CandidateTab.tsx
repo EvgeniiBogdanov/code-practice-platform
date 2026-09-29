@@ -212,12 +212,20 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
     }
   };
 
+  const handleFilesChange = (renamed: Array<{ name: string; code: string }>): void => {
+    setFiles((prev) => prev.map((file, index) => ({ ...file, code: renamed[index]?.code ?? file.code })));
+    if (task) {
+      renamed.forEach((file, index) => {
+        if (file.code !== files[index]?.code) saveUserSolution(task.id, "cand", index, file.code);
+      });
+    }
+  };
+
   const handleResetCode = async (): Promise<void> => {
     if (!task) return;
     await deleteUserSolution(task.id, "cand", activeFileIdx);
     const defaults = getTaskFiles(task, "candidate");
-    const original = defaults[activeFileIdx]?.code || "";
-    handleCodeChange(original);
+    handleCodeChange(defaults[activeFileIdx]?.code || "");
   };
 
   const handleRunCode = async (codeToExecute?: string): Promise<void> => {
@@ -275,15 +283,24 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
         ) : (
           <>
             <CodeEditor
-              key={`cand_${task?.id ?? "none"}_${activeFileIdx}`}
+              key={`cand_${task?.section ?? "none"}_${task?.id ?? "none"}_${activeFileIdx}`}
               code={activeFile?.code || ""}
               onChange={handleCodeChange}
+              onFilesChange={handleFilesChange}
               onRun={() => handleRunCode()}
               onReset={handleResetCode}
               files={files}
               activeFileIdx={activeFileIdx}
               onFileSelect={setActiveFileIdx}
               filepath={activeFile.name}
+              historyScope={
+                task
+                  ? {
+                      taskKey: `${task.section}:${task.id}`,
+                      documentKey: `candidate:${activeFileIdx}`,
+                    }
+                  : undefined
+              }
               readOnly={!task}
               onToggleFullscreen={handleToggleFullscreen}
               onPreloadFullscreen={preloadFullscreen}

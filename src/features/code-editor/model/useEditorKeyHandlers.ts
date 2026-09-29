@@ -6,10 +6,10 @@ import {
   handleMarkupKey,
   handleLineMovement,
   handleCommentShortcuts,
-  handleTabKey,
   handleEnterKey,
   handlePairsAndBackspace,
 } from "../lib/editor-key-helpers";
+import { handleTabKey } from "../lib/tab-key";
 
 export interface EditorKeyHandlersProps {
   code: string;
@@ -28,7 +28,8 @@ const handleUndoRedo = (
   textarea: HTMLTextAreaElement,
   code: string,
   onChange: (newCode: string) => void,
-  history: CodeHistoryState
+  history: CodeHistoryState,
+  multiCursor?: MultiCursorState
 ): boolean => {
   const key = e.key.toLowerCase();
   if (!(e.metaKey || e.ctrlKey) || (key !== "z" && key !== "y")) {
@@ -39,6 +40,7 @@ const handleUndoRedo = (
   if (key === "y" || e.shiftKey) {
     const redoRes = history.redo(code);
     if (redoRes) {
+      multiCursor?.clearSelections();
       onChange(redoRes.code);
       setTimeout(() => {
         textarea.selectionStart = textarea.selectionEnd = redoRes.cursor;
@@ -47,6 +49,7 @@ const handleUndoRedo = (
   } else {
     const undoRes = history.undo(code);
     if (undoRes) {
+      multiCursor?.clearSelections();
       onChange(undoRes.code);
       setTimeout(() => {
         textarea.selectionStart = textarea.selectionEnd = undoRes.cursor;
@@ -109,7 +112,7 @@ const handleIntelliSenseKey = (
     intelliSense.selectPrev();
     return true;
   }
-  if (e.key === "Enter" || e.key === "Tab") {
+  if (e.key === "Enter" || (e.key === "Tab" && !e.shiftKey)) {
     e.preventDefault();
     const applied = intelliSense.applySelected(code, textarea.selectionStart);
     if (applied) {
@@ -185,7 +188,7 @@ export const useEditorKeyHandlers = ({
       }
 
       // 4. Undo / Redo Shortcuts
-      if (handleUndoRedo(e, textarea, code, onChange, history)) {
+      if (handleUndoRedo(e, textarea, code, onChange, history, multiCursor)) {
         return;
       }
 

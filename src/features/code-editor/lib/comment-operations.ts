@@ -1,4 +1,41 @@
 import { LineOperationResult, getLineOffsets, getSelectedLineRange } from "./line-operations";
+import { getLanguageCapabilities, getLanguageId, getMarkupContext } from "@/shared/lib/code-editor";
+
+const toggleJsxTextComment = (
+  code: string,
+  start: number,
+  end: number,
+  filepath: string,
+  wholeLine: boolean
+): LineOperationResult | null => {
+  if (!getLanguageCapabilities(getLanguageId(filepath)).supportsJsx) return null;
+  const commentPattern = /\{\/\*([\s\S]*?)\*\/\}/g;
+  for (const match of code.matchAll(commentPattern)) {
+    const commentStart = match.index;
+    const commentEnd = commentStart + match[0].length;
+    if (start < commentStart || end > commentEnd) continue;
+    if (getMarkupContext(code.slice(0, commentStart), filepath).mode !== "text") continue;
+    const replacement = match[1].replace(/^ /, "").replace(/ $/, "");
+    const newCode = code.slice(0, commentStart) + replacement + code.slice(commentEnd);
+    const cursor = commentStart + Math.min(start - commentStart, replacement.length);
+    return { newCode, newSelectionStart: cursor, newSelectionEnd: cursor, changed: true };
+  }
+
+  const range = getMarkupContext(code, filepath).textRanges.find(
+    (item) => item.start <= start && end <= item.end
+  );
+  if (!range) return null;
+  const lineStart = code.lastIndexOf("\n", start - 1) + 1;
+  const nextLine = code.indexOf("\n", start);
+  const lineEnd = nextLine === -1 ? code.length : nextLine;
+  const regionStart = wholeLine && start === end ? Math.max(lineStart, range.start) : start;
+  const regionEnd = wholeLine && start === end ? Math.min(lineEnd, range.end) : end;
+  const content = code.slice(regionStart, regionEnd);
+  const replacement = content ? `{/* ${content} */}` : "{/*  */}";
+  const newCode = code.slice(0, regionStart) + replacement + code.slice(regionEnd);
+  const cursor = regionStart + (content ? replacement.length : 4);
+  return { newCode, newSelectionStart: cursor, newSelectionEnd: cursor, changed: true };
+};
 
 export interface CommentSyntax {
   line: {
@@ -87,6 +124,8 @@ export const toggleLineComment = (
   selectionEnd: number,
   filepath = "main.jsx"
 ): LineOperationResult => {
+  const jsxEdit = toggleJsxTextComment(code, selectionStart, selectionEnd, filepath, true);
+  if (jsxEdit) return jsxEdit;
   const syntax = getCommentSyntax(filepath);
   const lines = code.split("\n");
   const offsets = getLineOffsets(code);
@@ -217,6 +256,8 @@ export const toggleBlockComment = (
   selectionEnd: number,
   filepath = "main.jsx"
 ): LineOperationResult => {
+  const jsxEdit = toggleJsxTextComment(code, selectionStart, selectionEnd, filepath, false);
+  if (jsxEdit) return jsxEdit;
   const syntax = getCommentSyntax(filepath);
   const bStart = syntax.block.start;
   const bEnd = syntax.block.end;

@@ -106,6 +106,39 @@ describe("markup editor input", () => {
     expect(textarea.selectionStart).toBe(3);
   });
 
+  it("indents and outdents selected lines with Tab and Shift+Tab", async () => {
+    render(<EditorHarness initial={"one\ntwo\nthree"} filepath="main.js" />);
+    const textarea = screen.getByRole<HTMLTextAreaElement>("textbox");
+    textarea.focus();
+    textarea.setSelectionRange(0, 8);
+    expect([textarea.selectionStart, textarea.selectionEnd]).toEqual([0, 8]);
+    fireEvent.keyDown(textarea, { key: "Tab" });
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
+    expect(textarea.value).toBe("  one\n  two\nthree");
+    expect([textarea.selectionStart, textarea.selectionEnd]).toEqual([0, 12]);
+
+    fireEvent.keyDown(textarea, { key: "Tab", shiftKey: true });
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
+    expect(textarea.value).toBe("one\ntwo\nthree");
+    expect([textarea.selectionStart, textarea.selectionEnd]).toEqual([0, 8]);
+  });
+
+  it("outdents the current line with Shift+Tab", async () => {
+    render(<EditorHarness initial="  value" filepath="main.js" />);
+    const textarea = screen.getByRole<HTMLTextAreaElement>("textbox");
+    textarea.setSelectionRange(4, 4);
+    fireEvent.keyDown(textarea, { key: "Tab", shiftKey: true });
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
+    expect(textarea.value).toBe("value");
+    expect(textarea.selectionStart).toBe(2);
+  });
+
   it.each(["insertFromPaste", "insertCompositionText"])("does not rewrite %s", (inputType) => {
     render(<EditorHarness />);
     const textarea = screen.getByRole<HTMLTextAreaElement>("textbox");

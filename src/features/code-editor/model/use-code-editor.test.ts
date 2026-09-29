@@ -92,4 +92,19 @@ console.log(NaN === NaN);
     expect(result.current.isLinterEnabled).toBe(false);
     expect(useUIStore.getState().editorLinterEnabled).toBe(false);
   });
+
+  it("does not apply quick fixes in read-only mode", () => {
+    const onChange = vi.fn();
+    const { result } = renderHook(() =>
+      useCodeEditor({ code: "retrun 1", onChange, filepath: "main.js", readOnly: true })
+    );
+
+    act(() => {
+      result.current.handleFixTypo({ line: 1, typo: "retrun", correct: "return" });
+      result.current.handleFixMissingImport({ line: 1, symbol: "useState", module: "react" });
+    });
+
+    expect(onChange).not.toHaveBeenCalled();
+    expect(result.current.history.canUndo).toBe(false);
+  });
 });
