@@ -30,12 +30,13 @@ const handleUndoRedo = (
   onChange: (newCode: string) => void,
   history: CodeHistoryState
 ): boolean => {
-  if (!(e.metaKey || e.ctrlKey) || e.key.toLowerCase() !== "z") {
+  const key = e.key.toLowerCase();
+  if (!(e.metaKey || e.ctrlKey) || (key !== "z" && key !== "y")) {
     return false;
   }
 
   e.preventDefault();
-  if (e.shiftKey) {
+  if (key === "y" || e.shiftKey) {
     const redoRes = history.redo(code);
     if (redoRes) {
       onChange(redoRes.code);
@@ -157,6 +158,7 @@ export const useEditorKeyHandlers = ({
     (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
       const textarea = e.currentTarget;
       if (e.nativeEvent?.isComposing || e.key === "Process") return;
+      history.captureCursor(textarea.selectionStart);
 
       // 1. Run shortcut (Cmd/Ctrl + Enter)
       if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {

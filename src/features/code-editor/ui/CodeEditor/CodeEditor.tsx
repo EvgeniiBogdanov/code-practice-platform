@@ -40,7 +40,6 @@ export const CodeEditor = ({
     highlightRef,
     gutterRef,
     wordWrap,
-    setWordWrap,
     toggleWordWrap,
     hideTooltips,
     effectiveFullscreen,
@@ -85,6 +84,18 @@ export const CodeEditor = ({
     onToggleFullscreen,
   });
 
+  const applyHistoryEntry = (entry: { code: string; cursor: number } | null): void => {
+    if (!entry) return;
+    onChange(entry.code);
+    setTimeout(() => {
+      const textarea = textareaRef.current;
+      if (!textarea) return;
+      textarea.focus();
+      textarea.setSelectionRange(entry.cursor, entry.cursor);
+      updateCursorCoords();
+    }, 0);
+  };
+
   return (
     <div
       className={clsx(
@@ -104,14 +115,8 @@ export const CodeEditor = ({
           filepath={filepath}
           canUndo={history.canUndo}
           canRedo={history.canRedo}
-          onUndo={() => {
-            const res = history.undo(code);
-            if (res) onChange(res.code);
-          }}
-          onRedo={() => {
-            const res = history.redo(code);
-            if (res) onChange(res.code);
-          }}
+          onUndo={() => applyHistoryEntry(history.undo(code))}
+          onRedo={() => applyHistoryEntry(history.redo(code))}
           isLinterEnabled={isLinterEnabled}
           onToggleLinter={handleToggleLinter}
           onFormat={handleFormat}
@@ -161,6 +166,20 @@ export const CodeEditor = ({
             <textarea
               ref={textareaRef}
               value={code}
+              onBeforeInput={(e) => {
+                const input = e.nativeEvent;
+                if (input instanceof InputEvent && input.inputType === "historyUndo") {
+                  e.preventDefault();
+                  applyHistoryEntry(history.undo(code));
+                  return;
+                }
+                if (input instanceof InputEvent && input.inputType === "historyRedo") {
+                  e.preventDefault();
+                  applyHistoryEntry(history.redo(code));
+                  return;
+                }
+                history.captureCursor(e.currentTarget.selectionStart);
+              }}
               onChange={handleTextChange}
               onPaste={handlePaste}
               onKeyDown={(e) => {

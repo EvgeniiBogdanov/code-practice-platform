@@ -1,78 +1,158 @@
-import { useState, useCallback, useRef } from "react";
-
-export interface CodeHistoryState {
-  canUndo: boolean;
-  canRedo: boolean;
-  pushHistory: (code: string, cursorPosition?: number) => void;
-  undo: (currentCode: string) => { code: string; cursor: number } | null;
-  redo: (currentCode: string) => { code: string; cursor: number } | null;
-  resetHistory: (initialCode: string) => void;
-}
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface HistoryEntry {
   code: string;
   cursor: number;
 }
 
+interface InputEdit {
+  inputType: string;
+  data: string | null;
+}
+
+type InputKind = "insert" | "backspace" | "delete";
+
+interface HistoryState {
+  entries: HistoryEntry[];
+  index: number;
+  lastInput: { type: InputKind; cursor: number; at: number } | null;
+}
+
+export interface CodeHistoryState {
+  canUndo: boolean;
+  canRedo: boolean;
+  captureCursor: (cursor: number) => void;
+  pushHistory: (code: string, cursorPosition?: number, input?: InputEdit) => void;
+  undo: (currentCode: string) => HistoryEntry | null;
+  redo: (currentCode: string) => HistoryEntry | null;
+  resetHistory: (initialCode: string) => void;
+}
+
 const MAX_HISTORY = 100;
+const GROUP_DELAY = 1000;
+const WORD_CHARACTER = /^[\p{L}\p{N}_$]+$/u;
+
+const getInputKind = (
+  previous: HistoryEntry,
+  code: string,
+  cursor: number,
+  input?: InputEdit
+): InputKind | null => {
+  if (!input) return null;
+  if (input.inputType === "insertText" && input.data && WORD_CHARACTER.test(input.data)) {
+    const start = cursor - input.data.length;
+    if (
+      start >= 0 &&
+      code === previous.code.slice(0, start) + input.data + previous.code.slice(start)
+    ) {
+      return "insert";
+    }
+  }
+  if (input.inputType === "deleteContentBackward") {
+    if (code === previous.code.slice(0, cursor) + previous.code.slice(cursor + 1)) {
+      return "backspace";
+    }
+  }
+  if (input.inputType === "deleteContentForward") {
+    if (code === previous.code.slice(0, cursor) + previous.code.slice(cursor + 1)) {
+      return "delete";
+    }
+  }
+  return null;
+};
 
 export function useCodeHistory(initialCode = ""): CodeHistoryState {
-  const [undoStack, setUndoStack] = useState<HistoryEntry[]>([{ code: initialCode, cursor: 0 }]);
-  const [redoStack, setRedoStack] = useState<HistoryEntry[]>([]);
-  const lastPushedCode = useRef(initialCode);
+  const state = useRef<HistoryState>({
+    entries: [{ code: initialCode, cursor: 0 }],
+    index: 0,
+    lastInput: null,
+  });
+  const [, setRevision] = useState(0);
+  const notify = useCallback((): void => setRevision((revision) => revision + 1), []);
 
-  const pushHistory = useCallback((code: string, cursor = 0) => {
-    if (code === lastPushedCode.current) return;
-    lastPushedCode.current = code;
+  const resetHistory = useCallback(
+    (code: string): void => {
+      state.current = { entries: [{ code, cursor: 0 }], index: 0, lastInput: null };
+      notify();
+    },
+    [notify]
+  );
 
-    setUndoStack((prev) => {
-      const next = [...prev, { code, cursor }];
-      if (next.length > MAX_HISTORY) next.shift();
-      return next;
-    });
-    setRedoStack([]);
+  // Parent-controlled replacements (reset, file switch, loaded draft) start a new history.
+  useEffect(() => {
+    if (state.current.entries[state.current.index].code !== initialCode) {
+      resetHistory(initialCode);
+    }
+  }, [initialCode, resetHistory]);
+
+  const pushHistory = useCallback(
+    (code: string, cursor = 0, input?: InputEdit): void => {
+      const current = state.current;
+      const previous = current.entries[current.index];
+      if (code === previous.code) return;
+
+      const kind = getInputKind(previous, code, cursor, input);
+      const now = Date.now();
+      const last = current.lastInput;
+      const joinsPrevious =
+        kind !== null &&
+        last?.type === kind &&
+        now - last.at < GROUP_DELAY &&
+        (kind === "insert"
+          ? last.cursor === cursor - (input?.data?.length ?? 0)
+          : kind === "backspace"
+            ? last.cursor === cursor + 1
+            : last.cursor === cursor);
+
+      const entries = current.entries.slice(0, current.index + 1);
+      if (joinsPrevious) {
+        entries[entries.length - 1] = { code, cursor };
+      } else {
+        entries.push({ code, cursor });
+        if (entries.length > MAX_HISTORY) entries.shift();
+      }
+      state.current = {
+        entries,
+        index: entries.length - 1,
+        lastInput: kind ? { type: kind, cursor, at: now } : null,
+      };
+      notify();
+    },
+    [notify]
+  );
+
+  const captureCursor = useCallback((cursor: number): void => {
+    state.current.entries[state.current.index].cursor = cursor;
   }, []);
 
   const undo = useCallback(
-    (currentCode: string) => {
-      if (undoStack.length <= 1) return null;
-
-      const currentEntry = undoStack[undoStack.length - 1];
-      const prevEntry = undoStack[undoStack.length - 2];
-
-      setRedoStack((prev) => [...prev, currentEntry]);
-      setUndoStack((prev) => prev.slice(0, prev.length - 1));
-      lastPushedCode.current = prevEntry.code;
-
-      return prevEntry;
+    (_currentCode: string): HistoryEntry | null => {
+      const current = state.current;
+      if (current.index === 0) return null;
+      current.index -= 1;
+      current.lastInput = null;
+      notify();
+      return current.entries[current.index];
     },
-    [undoStack]
+    [notify]
   );
 
   const redo = useCallback(
-    (currentCode: string) => {
-      if (redoStack.length === 0) return null;
-
-      const nextEntry = redoStack[redoStack.length - 1];
-
-      setUndoStack((prev) => [...prev, nextEntry]);
-      setRedoStack((prev) => prev.slice(0, prev.length - 1));
-      lastPushedCode.current = nextEntry.code;
-
-      return nextEntry;
+    (_currentCode: string): HistoryEntry | null => {
+      const current = state.current;
+      if (current.index === current.entries.length - 1) return null;
+      current.index += 1;
+      current.lastInput = null;
+      notify();
+      return current.entries[current.index];
     },
-    [redoStack]
+    [notify]
   );
 
-  const resetHistory = useCallback((code: string) => {
-    setUndoStack([{ code, cursor: 0 }]);
-    setRedoStack([]);
-    lastPushedCode.current = code;
-  }, []);
-
   return {
-    canUndo: undoStack.length > 1,
-    canRedo: redoStack.length > 0,
+    canUndo: state.current.index > 0,
+    canRedo: state.current.index < state.current.entries.length - 1,
+    captureCursor,
     pushHistory,
     undo,
     redo,
