@@ -213,7 +213,9 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
   };
 
   const handleFilesChange = (renamed: Array<{ name: string; code: string }>): void => {
-    setFiles((prev) => prev.map((file, index) => ({ ...file, code: renamed[index]?.code ?? file.code })));
+    setFiles((prev) =>
+      prev.map((file, index) => ({ ...file, code: renamed[index]?.code ?? file.code }))
+    );
     if (task) {
       renamed.forEach((file, index) => {
         if (file.code !== files[index]?.code) saveUserSolution(task.id, "cand", index, file.code);

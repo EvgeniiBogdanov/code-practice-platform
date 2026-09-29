@@ -28,7 +28,9 @@ export const useTypeScriptDiagnostics = (
   const workerRef = useRef<Worker | null>(null);
   const requestId = useRef(0);
   const diagnosticId = useRef(0);
-  const pending = useRef(new Map<number, (response: TypeScriptDiagnosticResponse | null) => void>());
+  const pending = useRef(
+    new Map<number, (response: TypeScriptDiagnosticResponse | null) => void>()
+  );
   const [analysis, setAnalysis] = useState({ result: null as LintResult | null, isPending: false });
   // Use content as the dependency: unrelated editor renders must not recheck the file.
   const source = JSON.stringify(input);
@@ -131,7 +133,13 @@ export const useTypeScriptDiagnostics = (
       const id = ++requestId.current;
       return new Promise((resolve) => {
         pending.current.set(id, resolve);
-        worker.postMessage({ ...(JSON.parse(source) as TypeScriptSourceInput), code: code ?? input.code, id, kind, position });
+        worker.postMessage({
+          ...(JSON.parse(source) as TypeScriptSourceInput),
+          code: code ?? input.code,
+          id,
+          kind,
+          position,
+        });
       });
     },
     [source, ensureWorker, input.code]

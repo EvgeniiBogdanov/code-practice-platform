@@ -213,7 +213,9 @@ export const createTypeScriptEditorService = (
     return {
       signature:
         ts.displayPartsToString(item.prefixDisplayParts) +
-        item.parameters.map((parameter) => ts.displayPartsToString(parameter.displayParts)).join(", ") +
+        item.parameters
+          .map((parameter) => ts.displayPartsToString(parameter.displayParts))
+          .join(", ") +
         ts.displayPartsToString(item.suffixDisplayParts),
       activeParameter: info.argumentIndex,
       documentation: ts.displayPartsToString(item.documentation),
@@ -246,11 +248,13 @@ export const createTypeScriptEditorService = (
     }
     const info = service.getRenameInfo(activePath, position, { allowRenameOfImportPath: false });
     if (!info.canRename) return [];
-    return (service.findRenameLocations(activePath, position, false, false) ?? []).map((location) => ({
-      filepath: location.fileName.replace(/^\//, ""),
-      start: location.textSpan.start,
-      end: location.textSpan.start + location.textSpan.length,
-    }));
+    return (service.findRenameLocations(activePath, position, false, false) ?? []).map(
+      (location) => ({
+        filepath: location.fileName.replace(/^\//, ""),
+        start: location.textSpan.start,
+        end: location.textSpan.start + location.textSpan.length,
+      })
+    );
   };
 
   return { diagnose, complete, hover, signature, rename };

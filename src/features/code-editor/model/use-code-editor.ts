@@ -84,12 +84,9 @@ export const useCodeEditor = ({
 
   const history = useCodeHistory(code, historyScope);
   const languageId = getLanguageId(filepath);
-  const supportsLanguageService = [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-  ].includes(languageId) && typeof Worker !== "undefined";
+  const supportsLanguageService =
+    ["javascript", "javascriptreact", "typescript", "typescriptreact"].includes(languageId) &&
+    typeof Worker !== "undefined";
   const typeScriptAnalysis = useTypeScriptDiagnostics(
     { code, filepath, files },
     isLinterEnabled && supportsLanguageService,

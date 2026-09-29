@@ -216,7 +216,13 @@ export const getMarkupContext = (code: string, filepath: string): MarkupContext 
     i++;
   }
   if (mode === "text") closeText(code.length);
-  return { mode: quote || comment || regex ? "literal" : mode, tagStart, tags, openTags, textRanges };
+  return {
+    mode: quote || comment || regex ? "literal" : mode,
+    tagStart,
+    tags,
+    openTags,
+    textRanges,
+  };
 };
 
 export interface MarkupEdit {

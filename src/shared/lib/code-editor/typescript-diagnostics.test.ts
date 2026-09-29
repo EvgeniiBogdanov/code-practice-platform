@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import ts from "typescript";
-import { createTypeScriptDiagnostics, createTypeScriptEditorService } from "./typescript-diagnostics";
+import {
+  createTypeScriptDiagnostics,
+  createTypeScriptEditorService,
+} from "./typescript-diagnostics";
 
 const libDirectory = ts.getDefaultLibFilePath({}).replace(/[/\\][^/\\]+$/, "");
 const libraries = new Map(
@@ -105,7 +108,8 @@ describe("JSX and TSX language features", () => {
   });
 
   it("completes typed custom component props", () => {
-    const code = "const Card = ({ name }: { name: string }) => <div>{name}</div>;\nconst view = <Card na";
+    const code =
+      "const Card = ({ name }: { name: string }) => <div>{name}</div>;\nconst view = <Card na";
     const completions = editor.complete({ code, filepath: "App.tsx", files: [] }, code.length);
     expect(completions.map((item) => item.label)).toContain("name");
   });

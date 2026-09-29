@@ -111,16 +111,16 @@ export const CodeEditor = ({
     );
     if (!currentEdit) return;
     const oldName = code.slice(currentEdit.start, currentEdit.end);
-    const isTag = edits.length === 2 && edits.every((edit) => {
-      if (edit.filepath !== filepath) return false;
-      const before = code.slice(Math.max(0, edit.start - 2), edit.start);
-      return before.endsWith("<") || before.endsWith("</");
-    });
+    const isTag =
+      edits.length === 2 &&
+      edits.every((edit) => {
+        if (edit.filepath !== filepath) return false;
+        const before = code.slice(Math.max(0, edit.start - 2), edit.start);
+        return before.endsWith("<") || before.endsWith("</");
+      });
     const nextName = window.prompt("Новое имя", oldName)?.trim();
     if (!nextName || nextName === oldName) return;
-    const valid = isTag
-      ? /^[A-Za-z][\w.:-]*$/.test(nextName)
-      : /^[A-Za-z_$][\w$]*$/.test(nextName);
+    const valid = isTag ? /^[A-Za-z][\w.:-]*$/.test(nextName) : /^[A-Za-z_$][\w$]*$/.test(nextName);
     if (!valid) return;
     const currentFiles = files.length
       ? files.map((file) => ({
@@ -131,7 +131,13 @@ export const CodeEditor = ({
     const renamed = applyRenameEdits(currentFiles, edits, nextName);
     const active = renamed.find((file) => file.name === filepath);
     if (!active) return;
-    if (renamed.some((file) => file.name !== filepath && file.code !== currentFiles.find((item) => item.name === file.name)?.code)) {
+    if (
+      renamed.some(
+        (file) =>
+          file.name !== filepath &&
+          file.code !== currentFiles.find((item) => item.name === file.name)?.code
+      )
+    ) {
       if (!onFilesChange) return;
       onFilesChange(renamed);
     } else {

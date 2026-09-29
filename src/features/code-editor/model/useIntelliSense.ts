@@ -114,18 +114,19 @@ export function useIntelliSense(
         void requestSemanticCompletions(cursorPos, code).then((semantic) => {
           if (requestId !== completionRequest.current || semantic.length === 0) return;
           const known = new Set(semantic.map((item) => item.label));
-          const semanticItems: CompletionItem[] = semantic
-            .map((item) => ({
-              prefix: item.label,
-              label: item.label,
-              detail: "TypeScript",
-              kind: item.kind,
-              insertText: item.insertText,
-              replaceStart: item.replaceStart,
-              replaceEnd: item.replaceEnd,
-              score: 200,
-            }));
-          show([...semanticItems, ...res.items.filter((item) => !known.has(item.label))].slice(0, 24));
+          const semanticItems: CompletionItem[] = semantic.map((item) => ({
+            prefix: item.label,
+            label: item.label,
+            detail: "TypeScript",
+            kind: item.kind,
+            insertText: item.insertText,
+            replaceStart: item.replaceStart,
+            replaceEnd: item.replaceEnd,
+            score: 200,
+          }));
+          show(
+            [...semanticItems, ...res.items.filter((item) => !known.has(item.label))].slice(0, 24)
+          );
         });
       }
     },
