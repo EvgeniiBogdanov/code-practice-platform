@@ -103,17 +103,16 @@ export const useCodeEditor = ({
   const updateCursorCoords = useCallback(() => {
     if (!textareaRef.current) return;
     const pos = textareaRef.current.selectionStart;
-    const textBefore = code.substring(0, pos);
+    const textBefore = textareaRef.current.value.substring(0, pos);
     const line = textBefore.split("\n").length;
     const col = pos - textBefore.lastIndexOf("\n");
     setCursorPos({ line, col });
-  }, [code]);
+  }, []);
 
   const { handleKeyDown } = useEditorKeyHandlers({
     code,
     onChange: (val) => {
       onChange(val);
-      history.pushHistory(val);
       setSaveStatus("saving");
       if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
       saveTimerRef.current = setTimeout(() => setSaveStatus("saved"), 450);
@@ -291,7 +290,11 @@ export const useCodeEditor = ({
       }
     }
     onChange(val);
-    history.pushHistory(val, pos);
+    history.pushHistory(
+      val,
+      pos,
+      input instanceof InputEvent ? { inputType: input.inputType, data: input.data } : undefined
+    );
     updateCursorCoords();
     setSaveStatus("saving");
     if (saveTimerRef.current) clearTimeout(saveTimerRef.current);

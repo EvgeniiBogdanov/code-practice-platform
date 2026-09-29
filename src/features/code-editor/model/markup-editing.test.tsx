@@ -90,6 +90,22 @@ describe("markup editor input", () => {
     expect(textarea.value).toBe("<div");
   });
 
+  it("undoes a typed word together and redoes it with Ctrl+Y", async () => {
+    render(<EditorHarness />);
+    const textarea = screen.getByRole<HTMLTextAreaElement>("textbox");
+    input(textarea, "a", "a");
+    input(textarea, "ab", "b");
+    input(textarea, "abc", "c");
+    fireEvent.keyDown(textarea, { key: "z", ctrlKey: true });
+    expect(textarea.value).toBe("");
+    fireEvent.keyDown(textarea, { key: "y", ctrlKey: true });
+    expect(textarea.value).toBe("abc");
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
+    expect(textarea.selectionStart).toBe(3);
+  });
+
   it.each(["insertFromPaste", "insertCompositionText"])("does not rewrite %s", (inputType) => {
     render(<EditorHarness />);
     const textarea = screen.getByRole<HTMLTextAreaElement>("textbox");

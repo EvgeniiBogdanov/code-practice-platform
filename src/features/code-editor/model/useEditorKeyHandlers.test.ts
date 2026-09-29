@@ -26,6 +26,7 @@ describe("useEditorKeyHandlers", () => {
   const createMockHistory = (): CodeHistoryState => ({
     canUndo: true,
     canRedo: true,
+    captureCursor: vi.fn(),
     pushHistory: vi.fn(),
     undo: vi.fn(),
     redo: vi.fn(),
