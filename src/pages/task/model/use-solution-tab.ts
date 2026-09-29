@@ -29,6 +29,7 @@ export interface UseSolutionTabReturn {
   isHintExpanded: boolean;
   setIsHintExpanded: React.Dispatch<React.SetStateAction<boolean>>;
   files: TaskSourceFile[];
+  isFilesReady: boolean;
   activeFile: TaskSourceFile;
   consoleLogs: NodeRunnerLogEntry[];
   isRunning: boolean;
@@ -43,6 +44,7 @@ export interface UseSolutionTabReturn {
   preloadFullscreen: () => void;
   handleToggleFullscreen: () => void;
   handleCodeChange: (newCode: string) => void;
+  handleFilesChange: (files: Array<{ name: string; code: string }>) => void;
   handleResetCode: () => Promise<void>;
   handleRunCode: (codeToExecute?: string) => Promise<void>;
   handleStopCode: () => void;
@@ -100,6 +102,8 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
 
   const [activeFileIdx, setActiveFileIdx] = useState(0);
   const [files, setFiles] = useState<TaskSourceFile[]>(initialFiles);
+  const currentFilesScope = `${task.section}:${task.id}:${selectedSolutionIdx}`;
+  const [filesScope, setFilesScope] = useState(currentFilesScope);
   const activeFile = files[activeFileIdx] || files[0] || { name: "index.jsx", code: "" };
 
   const hasVisualComponent = useMemo(() => hasTaskVisualComponent(task, files), [task, files]);
@@ -135,9 +139,10 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
   useEffect(() => {
     setActiveFileIdx(0);
     setFiles(initialFiles);
+    setFilesScope(currentFilesScope);
     setViewMode("code");
     setIsHintExpanded(false);
-  }, [task, initialFiles]);
+  }, [task, initialFiles, currentFilesScope]);
 
   // Load saved solution from storage on file select / variant switch
   useEffect(() => {
@@ -243,6 +248,20 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
     [task.id, activeFileIdx, selectedSolutionIdx]
   );
 
+  const handleFilesChange = useCallback(
+    (renamed: Array<{ name: string; code: string }>): void => {
+      setFiles((prev) =>
+        prev.map((file, index) => ({ ...file, code: renamed[index]?.code ?? file.code }))
+      );
+      renamed.forEach((file, index) => {
+        if (file.code !== files[index]?.code) {
+          saveUserSolution(task.id, "sol", index, file.code, selectedSolutionIdx);
+        }
+      });
+    },
+    [files, task.id, selectedSolutionIdx]
+  );
+
   const handleResetCode = useCallback(async () => {
     await deleteUserSolution(task.id, "sol", activeFileIdx, selectedSolutionIdx);
     const original = defaultFiles[activeFileIdx]?.code || "";
@@ -317,6 +336,7 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
     isHintExpanded,
     setIsHintExpanded,
     files,
+    isFilesReady: filesScope === currentFilesScope,
     activeFile,
     consoleLogs,
     isRunning,
@@ -331,6 +351,7 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
     preloadFullscreen,
     handleToggleFullscreen,
     handleCodeChange,
+    handleFilesChange,
     handleResetCode,
     handleRunCode,
     handleStopCode,

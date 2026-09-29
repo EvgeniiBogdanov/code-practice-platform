@@ -60,33 +60,6 @@ export const handleLineMovement = (
   return true;
 };
 
-export const handleTabKey = (
-  e: React.KeyboardEvent<HTMLTextAreaElement>,
-  textarea: HTMLTextAreaElement,
-  code: string,
-  onChange: (newCode: string) => void,
-  history: CodeHistoryState,
-  tabSize: number
-): boolean => {
-  if (e.key !== "Tab" || e.ctrlKey || e.metaKey) return false;
-
-  e.preventDefault();
-  const start = textarea.selectionStart;
-  const end = textarea.selectionEnd;
-  const indentStr = " ".repeat(tabSize);
-
-  if (start === end) {
-    const newCode = code.substring(0, start) + indentStr + code.substring(end);
-    const nextCursor = start + tabSize;
-    onChange(newCode);
-    history.pushHistory(newCode, nextCursor);
-    setTimeout(() => {
-      textarea.selectionStart = textarea.selectionEnd = nextCursor;
-    }, 0);
-  }
-  return true;
-};
-
 export const handleEnterKey = (
   e: React.KeyboardEvent<HTMLTextAreaElement>,
   textarea: HTMLTextAreaElement,

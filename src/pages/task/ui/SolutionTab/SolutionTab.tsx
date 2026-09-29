@@ -27,6 +27,7 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
     isHintExpanded,
     setIsHintExpanded,
     files,
+    isFilesReady,
     activeFile,
     consoleLogs,
     isRunning,
@@ -41,6 +42,7 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
     preloadFullscreen,
     handleToggleFullscreen,
     handleCodeChange,
+    handleFilesChange,
     handleResetCode,
     handleRunCode,
     handleStopCode,
@@ -82,33 +84,40 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
           />
         ) : (
           <>
-            <CodeEditor
-              key={`sol_${task.id}_${selectedSolutionIdx}_${activeFileIdx}`}
-              code={activeFile?.code || ""}
-              onChange={handleCodeChange}
-              onRun={() => handleRunCode()}
-              onReset={handleResetCode}
-              files={files}
-              activeFileIdx={activeFileIdx}
-              onFileSelect={setActiveFileIdx}
-              filepath={activeFile.name}
-              onToggleFullscreen={handleToggleFullscreen}
-              onPreloadFullscreen={preloadFullscreen}
-              isFullscreenTransitioning={isFullscreenTransitioning}
-              bottomConsole={
-                <div ref={consoleWrapperRef}>
-                  <JsConsole
-                    logs={consoleLogs}
-                    isRunning={isRunning}
-                    lastExecution={lastExecution}
-                    filename={activeFile.name}
-                    onRun={() => handleRunCode()}
-                    onStop={handleStopCode}
-                    onClear={handleClearConsole}
-                  />
-                </div>
-              }
-            />
+            {isFilesReady && (
+              <CodeEditor
+                key={`sol_${task.section}_${task.id}_${selectedSolutionIdx}_${activeFileIdx}`}
+                code={activeFile?.code || ""}
+                onChange={handleCodeChange}
+                onFilesChange={handleFilesChange}
+                onRun={() => handleRunCode()}
+                onReset={handleResetCode}
+                files={files}
+                activeFileIdx={activeFileIdx}
+                onFileSelect={setActiveFileIdx}
+                filepath={activeFile.name}
+                historyScope={{
+                  taskKey: `${task.section}:${task.id}`,
+                  documentKey: `solution:${selectedSolutionIdx}:${activeFileIdx}`,
+                }}
+                onToggleFullscreen={handleToggleFullscreen}
+                onPreloadFullscreen={preloadFullscreen}
+                isFullscreenTransitioning={isFullscreenTransitioning}
+                bottomConsole={
+                  <div ref={consoleWrapperRef}>
+                    <JsConsole
+                      logs={consoleLogs}
+                      isRunning={isRunning}
+                      lastExecution={lastExecution}
+                      filename={activeFile.name}
+                      onRun={() => handleRunCode()}
+                      onStop={handleStopCode}
+                      onClear={handleClearConsole}
+                    />
+                  </div>
+                }
+              />
+            )}
 
             {!isConsoleVisible && (
               <Tooltip content="Перейти к консоли" side="left" sideOffset={10}>

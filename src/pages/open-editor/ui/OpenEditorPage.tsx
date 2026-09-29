@@ -5,7 +5,7 @@ import { Home, FileQuestion, ArrowDown } from "lucide-react";
 import { getTaskFiles, hasTaskVisualComponent } from "@/entities/task";
 import type { SectionType } from "@/entities/task/meta";
 import { useTaskById } from "@/entities/task/catalog";
-import { CodeEditor } from "@/features/code-editor";
+import { CodeEditor, activateCodeHistoryTask } from "@/features/code-editor";
 import { JsConsole, ReactLivePreview } from "@/features/code-runner";
 import {
   runNodeJsCode,
@@ -50,6 +50,9 @@ export const OpenEditorPage = ({
   const [activeFileIdx, setActiveFileIdx] = useState(0);
   const { task: loadedTask, isLoading: isTaskLoading } = useTaskById(taskId ?? "", section);
   const task = taskId ? loadedTask : null;
+  useEffect(() => {
+    activateCodeHistoryTask(taskId ? `${section}:${taskId}` : null);
+  }, [section, taskId]);
   const isReact = task ? task.section === "react" : true;
 
   const defaultCode = isReact
@@ -108,8 +111,9 @@ export const OpenEditorPage = ({
     if (initialViewMode === "split") return "split";
     return hasVisualComponent ? "split" : "code";
   });
-  const editorSessionKey = `${task?.id ?? "sandbox"}:${tab}:${initialViewMode ?? "default"}`;
+  const editorSessionKey = `${section}:${task?.id ?? "sandbox"}:${tab}:${initialViewMode ?? "default"}`;
   const previousEditorSessionKeyRef = useRef(editorSessionKey);
+  const isEditorSessionReady = previousEditorSessionKeyRef.current === editorSessionKey;
 
   const [consoleLogs, setConsoleLogs] = useState<NodeRunnerLogEntry[]>([]);
   const [isRunning, setIsRunning] = useState(false);
@@ -284,6 +288,19 @@ export const OpenEditorPage = ({
     });
     if (task) {
       saveUserSolution(task.id, tab === "solution" ? "sol" : "cand", activeFileIdx, newCode);
+    }
+  };
+
+  const handleFilesChange = (renamed: Array<{ name: string; code: string }>): void => {
+    setFiles((prev) =>
+      prev.map((file, index) => ({ ...file, code: renamed[index]?.code ?? file.code }))
+    );
+    if (task) {
+      renamed.forEach((file, index) => {
+        if (file.code !== files[index]?.code) {
+          saveUserSolution(task.id, tab === "solution" ? "sol" : "cand", index, file.code);
+        }
+      });
     }
   };
 
@@ -476,22 +493,33 @@ export const OpenEditorPage = ({
               onReset={resetSplitRatio}
               className={styles.splitContainer}
               left={
-                <CodeEditor
-                  key={`open_${task?.id}_${tab}_${activeFileIdx}`}
-                  code={activeFile?.code || ""}
-                  onChange={handleCodeChange}
-                  onRun={() => handleRunCode()}
-                  onReset={handleResetCode}
-                  files={files}
-                  activeFileIdx={activeFileIdx}
-                  onFileSelect={setActiveFileIdx}
-                  filepath={activeFile?.name || ""}
-                  fillHeight={true}
-                  isFullscreen={true}
-                  onToggleFullscreen={handleExit}
-                  isFullscreenTransitioning={isFullscreenExiting}
-                  bottomConsole={consoleNode}
-                />
+                isEditorSessionReady ? (
+                  <CodeEditor
+                    key={`open_${section}_${task?.id}_${tab}_${activeFileIdx}`}
+                    code={activeFile?.code || ""}
+                    onChange={handleCodeChange}
+                    onFilesChange={handleFilesChange}
+                    onRun={() => handleRunCode()}
+                    onReset={handleResetCode}
+                    files={files}
+                    activeFileIdx={activeFileIdx}
+                    onFileSelect={setActiveFileIdx}
+                    filepath={activeFile?.name || ""}
+                    historyScope={
+                      task
+                        ? {
+                            taskKey: `${task.section}:${task.id}`,
+                            documentKey: `${tab === "solution" ? "solution:0" : "candidate"}:${activeFileIdx}`,
+                          }
+                        : undefined
+                    }
+                    fillHeight={true}
+                    isFullscreen={true}
+                    onToggleFullscreen={handleExit}
+                    isFullscreenTransitioning={isFullscreenExiting}
+                    bottomConsole={consoleNode}
+                  />
+                ) : null
               }
               right={
                 <ReactLivePreview
@@ -521,22 +549,33 @@ export const OpenEditorPage = ({
             />
           ) : (
             <>
-              <CodeEditor
-                key={`open_${task?.id}_${tab}_${activeFileIdx}`}
-                code={activeFile?.code || ""}
-                onChange={handleCodeChange}
-                onRun={() => handleRunCode()}
-                onReset={handleResetCode}
-                files={files}
-                activeFileIdx={activeFileIdx}
-                onFileSelect={setActiveFileIdx}
-                filepath={activeFile?.name || ""}
-                fillHeight={true}
-                isFullscreen={true}
-                onToggleFullscreen={handleExit}
-                isFullscreenTransitioning={isFullscreenExiting}
-                bottomConsole={consoleNode}
-              />
+              {isEditorSessionReady && (
+                <CodeEditor
+                  key={`open_${section}_${task?.id}_${tab}_${activeFileIdx}`}
+                  code={activeFile?.code || ""}
+                  onChange={handleCodeChange}
+                  onFilesChange={handleFilesChange}
+                  onRun={() => handleRunCode()}
+                  onReset={handleResetCode}
+                  files={files}
+                  activeFileIdx={activeFileIdx}
+                  onFileSelect={setActiveFileIdx}
+                  filepath={activeFile?.name || ""}
+                  historyScope={
+                    task
+                      ? {
+                          taskKey: `${task.section}:${task.id}`,
+                          documentKey: `${tab === "solution" ? "solution:0" : "candidate"}:${activeFileIdx}`,
+                        }
+                      : undefined
+                  }
+                  fillHeight={true}
+                  isFullscreen={true}
+                  onToggleFullscreen={handleExit}
+                  isFullscreenTransitioning={isFullscreenExiting}
+                  bottomConsole={consoleNode}
+                />
+              )}
 
               {!isConsoleVisible && (
                 <Tooltip content="Перейти к консоли" side="left" sideOffset={10}>

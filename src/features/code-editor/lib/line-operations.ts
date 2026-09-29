@@ -50,6 +50,51 @@ export const getSelectedLineRange = (
   return { startLine, endLine };
 };
 
+export const changeLineIndentation = (
+  code: string,
+  selectionStart: number,
+  selectionEnd: number,
+  tabSize: number,
+  direction: "indent" | "outdent"
+): LineOperationResult => {
+  const offsets = getLineOffsets(code);
+  const { startLine, endLine } = getSelectedLineRange(code, selectionStart, selectionEnd, offsets);
+  const lines = code.split("\n");
+  let newSelectionStart = selectionStart;
+  let newSelectionEnd = selectionEnd;
+
+  for (let line = startLine; line <= endLine; line++) {
+    const original = lines[line];
+    const removed =
+      direction === "outdent"
+        ? original.startsWith("\t")
+          ? 1
+          : Math.min(original.match(/^ */)?.[0].length ?? 0, tabSize)
+        : 0;
+    const delta = direction === "indent" ? tabSize : -removed;
+    if (delta === 0) continue;
+
+    lines[line] = direction === "indent" ? " ".repeat(tabSize) + original : original.slice(removed);
+    const lineStart = offsets[line];
+    if (selectionStart > lineStart) {
+      newSelectionStart +=
+        direction === "indent" ? delta : -Math.min(selectionStart - lineStart, removed);
+    }
+    if (selectionEnd > lineStart) {
+      newSelectionEnd +=
+        direction === "indent" ? delta : -Math.min(selectionEnd - lineStart, removed);
+    }
+  }
+
+  const newCode = lines.join("\n");
+  return {
+    newCode,
+    newSelectionStart,
+    newSelectionEnd,
+    changed: newCode !== code,
+  };
+};
+
 export const moveLines = (
   code: string,
   selectionStart: number,

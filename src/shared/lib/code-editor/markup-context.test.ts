@@ -148,3 +148,17 @@ it("completes props across line breaks without leaking them into expressions", (
   expect(complete("<button\n  on").map((item) => item.label)).toContain("onClick");
   expect(complete("<button disabled={value >").map((item) => item.label)).not.toContain("onClick");
 });
+
+it("recognizes JSX inside a template interpolation", () => {
+  const code = "const view = `value: ${<div>";
+  expect(getAutoCloseTagEdit(code, code.length, "App.tsx")?.newCode).toBe(
+    "const view = `value: ${<div></div>"
+  );
+});
+
+it("keeps JSX text separate from JavaScript highlighting", () => {
+  const highlighted = highlightCode("const view = <div>return true</div>", "App.tsx");
+  expect(highlighted).toContain("return true");
+  expect(highlighted).not.toContain('class="hl-kw">return');
+  expect(highlighted).not.toContain('class="hl-bool">true');
+});

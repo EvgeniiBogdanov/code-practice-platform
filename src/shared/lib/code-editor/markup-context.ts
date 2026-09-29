@@ -31,6 +31,7 @@ export interface MarkupContext {
   tagStart: number;
   tags: MarkupTag[];
   openTags: string[];
+  textRanges: Array<{ start: number; end: number }>;
 }
 
 // Track lexical context, including JS expressions inside markup. A '>' in an
@@ -41,7 +42,14 @@ export const getMarkupContext = (code: string, filepath: string): MarkupContext 
   let mode: "code" | "text" | "tag" = jsx || !capabilities.supportsHtmlTags ? "code" : "text";
   const tags: MarkupTag[] = [];
   const openTags: string[] = [];
+  const textRanges: Array<{ start: number; end: number }> = [];
+  let textStart = mode === "text" ? 0 : -1;
+  const closeText = (end: number): void => {
+    if (jsx && textStart >= 0 && end > textStart) textRanges.push({ start: textStart, end });
+    textStart = -1;
+  };
   const expressions: Array<{ mode: "text" | "tag"; depth: number; tagStart: number }> = [];
+  const templateExpressions: Array<{ depth: number }> = [];
   const roots: number[] = [];
   let tagStart = -1;
   let typeDepth = 0;
@@ -63,6 +71,13 @@ export const getMarkupContext = (code: string, filepath: string): MarkupContext 
       continue;
     }
     if (quote) {
+      if (quote === "`" && ch === "$" && next === "{") {
+        templateExpressions.push({ depth: 1 });
+        quote = "";
+        previous = "";
+        i += 2;
+        continue;
+      }
       if (ch === "\\" && mode === "code") i += 2;
       else {
         if (ch === quote) quote = "";
@@ -85,7 +100,7 @@ export const getMarkupContext = (code: string, filepath: string): MarkupContext 
       const name = openTags.at(-1);
       const rest = code.slice(i);
       const closing = new RegExp(`</${name}\\s*>`, "i").exec(rest);
-      if (!closing) return { mode: "literal", tagStart, tags, openTags };
+      if (!closing) return { mode: "literal", tagStart, tags, openTags, textRanges };
       if (closing.index > 0) {
         i += closing.index;
         continue;
@@ -118,6 +133,15 @@ export const getMarkupContext = (code: string, filepath: string): MarkupContext 
         mode = expression.mode;
         tagStart = expression.tagStart;
         expressions.pop();
+        if (mode === "text") textStart = i + 1;
+        i++;
+        continue;
+      }
+      const templateExpression = expression ? undefined : templateExpressions.at(-1);
+      if (templateExpression && ch === "{") templateExpression.depth++;
+      if (templateExpression && ch === "}" && --templateExpression.depth === 0) {
+        templateExpressions.pop();
+        quote = "`";
         i++;
         continue;
       }
@@ -129,6 +153,7 @@ export const getMarkupContext = (code: string, filepath: string): MarkupContext 
       }
     }
     if ((mode === "tag" || mode === "text") && jsx && ch === "{") {
+      if (mode === "text") closeText(i);
       expressions.push({ mode, depth: 1, tagStart });
       mode = "code";
       previous = "";
@@ -164,6 +189,8 @@ export const getMarkupContext = (code: string, filepath: string): MarkupContext 
           roots.pop();
           mode = "code";
           previous = ")";
+        } else if (jsx) {
+          textStart = i + 1;
         }
       }
       i++;
@@ -176,6 +203,7 @@ export const getMarkupContext = (code: string, filepath: string): MarkupContext 
       startsTag &&
       (mode === "text" || (jsx && expressionStart))
     ) {
+      if (mode === "text") closeText(i);
       // TSX generic arrow parameters are not markup.
       if (mode === "code" && /^<[\w$]+\s*(?:,|extends\b)/.test(code.slice(i))) {
         i++;
@@ -187,7 +215,14 @@ export const getMarkupContext = (code: string, filepath: string): MarkupContext 
     } else if (mode === "code" && !/\s/.test(ch)) previous = ch;
     i++;
   }
-  return { mode: quote || comment || regex ? "literal" : mode, tagStart, tags, openTags };
+  if (mode === "text") closeText(code.length);
+  return {
+    mode: quote || comment || regex ? "literal" : mode,
+    tagStart,
+    tags,
+    openTags,
+    textRanges,
+  };
 };
 
 export interface MarkupEdit {

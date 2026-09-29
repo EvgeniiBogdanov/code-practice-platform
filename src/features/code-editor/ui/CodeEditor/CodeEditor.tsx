@@ -10,18 +10,21 @@ import { QuickFixBanner } from "../QuickFixBanner";
 import { SuggestionsDropdown } from "../SuggestionsDropdown";
 import { HoverSignatureCard } from "../HoverSignatureCard";
 import styles from "./CodeEditor.module.css";
+import { applyRenameEdits } from "../../lib/rename-symbol";
 
 export type { CodeEditorProps };
 
 export const CodeEditor = ({
   code,
   onChange,
+  onFilesChange,
   onRun,
   onReset,
   files = [],
   activeFileIdx = 0,
   onFileSelect,
   filepath = "main.jsx",
+  historyScope,
   isModified,
   readOnly = false,
   bottomConsole,
@@ -51,6 +54,7 @@ export const CodeEditor = ({
     hoverSignatures,
     multiCursor,
     lintResult,
+    requestRename,
     isAnalysisPending,
     activeTypo,
     activeMissingImport,
@@ -79,13 +83,15 @@ export const CodeEditor = ({
     onRun,
     files,
     filepath,
+    historyScope,
     readOnly,
     isFullscreen,
     onToggleFullscreen,
   });
 
   const applyHistoryEntry = (entry: { code: string; cursor: number } | null): void => {
-    if (!entry) return;
+    if (!entry || readOnly) return;
+    multiCursor.clearSelections();
     onChange(entry.code);
     setTimeout(() => {
       const textarea = textareaRef.current;
@@ -93,6 +99,57 @@ export const CodeEditor = ({
       textarea.focus();
       textarea.setSelectionRange(entry.cursor, entry.cursor);
       updateCursorCoords();
+    }, 0);
+  };
+
+  const handleRename = async (): Promise<void> => {
+    const cursor = textareaRef.current?.selectionStart;
+    if (readOnly || cursor === undefined) return;
+    const edits = await requestRename(cursor);
+    const currentEdit = edits.find(
+      (edit) => edit.filepath === filepath && edit.start <= cursor && cursor <= edit.end
+    );
+    if (!currentEdit) return;
+    const oldName = code.slice(currentEdit.start, currentEdit.end);
+    const isTag =
+      edits.length === 2 &&
+      edits.every((edit) => {
+        if (edit.filepath !== filepath) return false;
+        const before = code.slice(Math.max(0, edit.start - 2), edit.start);
+        return before.endsWith("<") || before.endsWith("</");
+      });
+    const nextName = window.prompt("Новое имя", oldName)?.trim();
+    if (!nextName || nextName === oldName) return;
+    const valid = isTag ? /^[A-Za-z][\w.:-]*$/.test(nextName) : /^[A-Za-z_$][\w$]*$/.test(nextName);
+    if (!valid) return;
+    const currentFiles = files.length
+      ? files.map((file) => ({
+          name: file.name ?? file.filepath ?? "",
+          code: (file.name ?? file.filepath) === filepath ? code : (file.code ?? ""),
+        }))
+      : [{ name: filepath, code }];
+    const renamed = applyRenameEdits(currentFiles, edits, nextName);
+    const active = renamed.find((file) => file.name === filepath);
+    if (!active) return;
+    if (
+      renamed.some(
+        (file) =>
+          file.name !== filepath &&
+          file.code !== currentFiles.find((item) => item.name === file.name)?.code
+      )
+    ) {
+      if (!onFilesChange) return;
+      onFilesChange(renamed);
+    } else {
+      onChange(active.code);
+    }
+    history.pushHistory(active.code, currentEdit.start + nextName.length);
+    setTimeout(() => {
+      textareaRef.current?.focus();
+      textareaRef.current?.setSelectionRange(
+        currentEdit.start,
+        currentEdit.start + nextName.length
+      );
     }, 0);
   };
 
@@ -166,6 +223,7 @@ export const CodeEditor = ({
             <textarea
               ref={textareaRef}
               value={code}
+              readOnly={readOnly}
               onBeforeInput={(e) => {
                 const input = e.nativeEvent;
                 if (input instanceof InputEvent && input.inputType === "historyUndo") {
@@ -183,6 +241,11 @@ export const CodeEditor = ({
               onChange={handleTextChange}
               onPaste={handlePaste}
               onKeyDown={(e) => {
+                if (e.key === "F2" && !readOnly) {
+                  e.preventDefault();
+                  void handleRename();
+                  return;
+                }
                 handleKeyDown(e);
                 setTimeout(updateCursorCoords, 0);
               }}
@@ -242,15 +305,18 @@ export const CodeEditor = ({
                 position={hoverSignatures.position}
               />
             )}
+            {hoverSignatures.signatureHelp && !hideTooltips && !intelliSense.isOpen && (
+              <HoverSignatureCard
+                info={{
+                  symbol: hoverSignatures.signatureHelp.functionName,
+                  signature: hoverSignatures.signatureHelp.signature,
+                  documentation: hoverSignatures.signatureHelp.description,
+                }}
+                position={hoverSignatures.signaturePosition}
+              />
+            )}
           </div>
         </div>
-
-        <QuickFixBanner
-          activeTypo={activeTypo}
-          activeMissingImport={activeMissingImport}
-          onFixTypo={handleFixTypo}
-          onFixMissingImport={handleFixMissingImport}
-        />
 
         {bottomConsole && <div className={styles.bottomConsoleWrapper}>{bottomConsole}</div>}
 

@@ -141,3 +141,35 @@ describe("comment-operations", () => {
     });
   });
 });
+
+describe("JSX text comments", () => {
+  it("comments and uncomments text without changing the rendered content", () => {
+    const code = "const view = <div>hello</div>;";
+    const cursor = code.indexOf("hello") + 2;
+    const commented = toggleLineComment(code, cursor, cursor, "App.tsx");
+    expect(commented.newCode).toBe("const view = <div>{/* hello */}</div>;");
+    const uncommented = toggleLineComment(
+      commented.newCode,
+      commented.newCode.indexOf("hello") + 2,
+      commented.newCode.indexOf("hello") + 2,
+      "App.tsx"
+    );
+    expect(uncommented.newCode).toBe(code);
+  });
+
+  it("uses JSX comment syntax for a text selection", () => {
+    const code = "const view = <div>hello</div>;";
+    const start = code.indexOf("hello");
+    expect(toggleBlockComment(code, start, start + 5, "App.jsx").newCode).toBe(
+      "const view = <div>{/* hello */}</div>;"
+    );
+  });
+
+  it("does not unwrap JSX-looking text inside a JavaScript string", () => {
+    const code = 'const marker = "{/* hello */}";';
+    const cursor = code.indexOf("hello");
+    expect(toggleLineComment(code, cursor, cursor, "App.jsx").newCode).toBe(
+      '// const marker = "{/* hello */}";'
+    );
+  });
+});

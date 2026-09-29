@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { renderHook, act } from "@testing-library/react";
+import { describe, it, expect, vi } from "vitest";
+import { renderHook, act, waitFor } from "@testing-library/react";
 import { useIntelliSense } from "./useIntelliSense";
 import { CompletionItem } from "@/shared/lib/code-editor";
 
@@ -110,5 +110,29 @@ describe("useIntelliSense", () => {
     });
 
     expect(result.current.isOpen).toBe(false);
+  });
+
+  it("requests semantic JSX props using the latest text and applies their spans", async () => {
+    const code = "const view = <Card na";
+    const request = vi.fn().mockResolvedValue([
+      {
+        label: "name",
+        insertText: "name",
+        kind: "property",
+        replaceStart: code.length - 2,
+        replaceEnd: code.length,
+      },
+    ]);
+    const { result } = renderHook(() => useIntelliSense([], "App.tsx", request));
+
+    act(() => result.current.openCompletions(code, code.length, createTextarea()));
+    await waitFor(() =>
+      expect(result.current.items.some((item) => item.label === "name")).toBe(true)
+    );
+    expect(request).toHaveBeenCalledWith(code.length, code);
+    const completion = result.current.items.find((item) => item.label === "name");
+    expect(
+      result.current.applySelected(code, code.length, [], "App.tsx", completion)?.newCode
+    ).toBe("const view = <Card name");
   });
 });

@@ -118,8 +118,29 @@ export function highlightJS(code: string, options: HighlightOptions = {}): strin
   let currentIndex = 0;
   let currentLine = 1;
   let currentCol = 1;
+  let textRangeIndex = 0;
 
   while (rest.length > 0) {
+    const textRange = options.jsxTextRanges?.[textRangeIndex];
+    if (textRange && currentIndex === textRange.start) {
+      const text = code.slice(textRange.start, textRange.end);
+      for (let index = 0; index < text.length; index++) {
+        const character = text[index];
+        const escaped = escapeHtml(character);
+        html += isMultiSelected(currentIndex, 1)
+          ? `<span class="hl-multi-selected">${escaped}</span>`
+          : escaped;
+        currentIndex++;
+        if (character === "\n") {
+          currentLine++;
+          currentCol = 1;
+        } else currentCol++;
+      }
+      rest = code.slice(currentIndex);
+      textRangeIndex++;
+      lastTokenType = "jsx-text";
+      continue;
+    }
     let matched = false;
 
     for (const rule of JS_RULES) {
@@ -138,7 +159,7 @@ export function highlightJS(code: string, options: HighlightOptions = {}): strin
         continue;
       }
       const m = rule.regex.exec(rest);
-      if (m) {
+      if (m && (!textRange || currentIndex + m[0].length <= textRange.start)) {
         matched = true;
         const text = m[0];
         const tokenStart = currentIndex;

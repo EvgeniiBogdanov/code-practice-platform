@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createStore } from "zustand/vanilla";
 
 interface HistoryEntry {
   code: string;
@@ -17,6 +18,37 @@ interface HistoryState {
   index: number;
   lastInput: { type: InputKind; cursor: number; at: number } | null;
 }
+
+export interface CodeHistoryScope {
+  taskKey: string;
+  documentKey: string;
+}
+
+interface TaskHistoryStore {
+  taskKey: string | null;
+  documents: Record<string, HistoryState>;
+  activateTask: (taskKey: string | null) => void;
+  getDocument: (scope: CodeHistoryScope) => HistoryState | undefined;
+  saveDocument: (scope: CodeHistoryScope, history: HistoryState) => void;
+}
+
+const taskHistoryStore = createStore<TaskHistoryStore>()((set, get) => ({
+  taskKey: null,
+  documents: {},
+  activateTask: (taskKey) => {
+    if (get().taskKey !== taskKey) set({ taskKey, documents: {} });
+  },
+  getDocument: ({ taskKey, documentKey }) =>
+    get().taskKey === taskKey ? get().documents[documentKey] : undefined,
+  saveDocument: ({ taskKey, documentKey }, history) => {
+    if (get().taskKey !== taskKey) return;
+    set((current) => ({ documents: { ...current.documents, [documentKey]: history } }));
+  },
+}));
+
+export const activateCodeHistoryTask = (taskKey: string | null): void => {
+  taskHistoryStore.getState().activateTask(taskKey);
+};
 
 export interface CodeHistoryState {
   canUndo: boolean;
@@ -61,24 +93,37 @@ const getInputKind = (
   return null;
 };
 
-export function useCodeHistory(initialCode = ""): CodeHistoryState {
-  const state = useRef<HistoryState>({
-    entries: [{ code: initialCode, cursor: 0 }],
-    index: 0,
-    lastInput: null,
-  });
+export function useCodeHistory(initialCode = "", scope?: CodeHistoryScope): CodeHistoryState {
+  const taskKey = scope?.taskKey;
+  const documentKey = scope?.documentKey;
+  const stored = scope && taskHistoryStore.getState().getDocument(scope);
+  const state = useRef<HistoryState>(
+    stored
+      ? { ...stored, lastInput: null }
+      : {
+          entries: [{ code: initialCode, cursor: 0 }],
+          index: 0,
+          lastInput: null,
+        }
+  );
   const [, setRevision] = useState(0);
   const notify = useCallback((): void => setRevision((revision) => revision + 1), []);
+  const save = useCallback((): void => {
+    if (taskKey !== undefined && documentKey !== undefined) {
+      taskHistoryStore.getState().saveDocument({ taskKey, documentKey }, state.current);
+    }
+  }, [taskKey, documentKey]);
 
   const resetHistory = useCallback(
     (code: string): void => {
       state.current = { entries: [{ code, cursor: 0 }], index: 0, lastInput: null };
+      save();
       notify();
     },
-    [notify]
+    [notify, save]
   );
 
-  // Parent-controlled replacements (reset, file switch, loaded draft) start a new history.
+  // Parent-controlled replacements (reset, loaded draft) start a new history.
   useEffect(() => {
     if (state.current.entries[state.current.index].code !== initialCode) {
       resetHistory(initialCode);
@@ -116,37 +161,46 @@ export function useCodeHistory(initialCode = ""): CodeHistoryState {
         index: entries.length - 1,
         lastInput: kind ? { type: kind, cursor, at: now } : null,
       };
+      save();
       notify();
     },
-    [notify]
+    [notify, save]
   );
 
-  const captureCursor = useCallback((cursor: number): void => {
-    state.current.entries[state.current.index].cursor = cursor;
-  }, []);
+  const captureCursor = useCallback(
+    (cursor: number): void => {
+      const current = state.current;
+      if (current.entries[current.index].cursor === cursor) return;
+      const entries = [...current.entries];
+      entries[current.index] = { ...entries[current.index], cursor };
+      state.current = { ...current, entries };
+      save();
+    },
+    [save]
+  );
 
   const undo = useCallback(
     (_currentCode: string): HistoryEntry | null => {
       const current = state.current;
       if (current.index === 0) return null;
-      current.index -= 1;
-      current.lastInput = null;
+      state.current = { ...current, index: current.index - 1, lastInput: null };
+      save();
       notify();
-      return current.entries[current.index];
+      return state.current.entries[state.current.index];
     },
-    [notify]
+    [notify, save]
   );
 
   const redo = useCallback(
     (_currentCode: string): HistoryEntry | null => {
       const current = state.current;
       if (current.index === current.entries.length - 1) return null;
-      current.index += 1;
-      current.lastInput = null;
+      state.current = { ...current, index: current.index + 1, lastInput: null };
+      save();
       notify();
-      return current.entries[current.index];
+      return state.current.entries[state.current.index];
     },
-    [notify]
+    [notify, save]
   );
 
   return {

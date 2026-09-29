@@ -9,6 +9,7 @@ import { highlightCSS } from "./cssHighlighter";
 import { highlightHTML } from "./htmlHighlighter";
 import { findMatchingBracketPair } from "../bracketMatcher";
 import { getLanguageId } from "../languages/languageDetector";
+import { getMarkupContext } from "../markup-context";
 
 export {
   highlightJS,
@@ -71,6 +72,10 @@ export function highlightCode(
         ...options,
         supportsJsx: lang === "javascriptreact" || lang === "typescriptreact",
         supportsTypeScript: lang === "typescript" || lang === "typescriptreact",
+        jsxTextRanges:
+          lang === "javascriptreact" || lang === "typescriptreact"
+            ? getMarkupContext(code, languageOrFilepath).textRanges
+            : [],
       });
   }
 }
