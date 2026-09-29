@@ -309,7 +309,11 @@ export const useCodeEditor = ({
     saveTimerRef.current = setTimeout(() => setSaveStatus("saved"), 450);
 
     if (textareaRef.current) {
-      intelliSense.openCompletions(val, pos, textareaRef.current);
+      if (isTyping) {
+        intelliSense.openCompletions(val, pos, textareaRef.current);
+      } else {
+        intelliSense.closeCompletions();
+      }
       hoverSignatures.updateSignatureHelp(val, pos, textareaRef.current);
     }
   };

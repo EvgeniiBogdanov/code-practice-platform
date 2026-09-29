@@ -112,3 +112,27 @@ describe("CodeEditor history buttons", () => {
     expect(screen.getByRole<HTMLTextAreaElement>("textbox")).toHaveProperty("readOnly", true);
   });
 });
+
+describe("CodeEditor suggestions", () => {
+  beforeEach(() => {
+    useUIStore.setState({ editorLinterEnabled: false });
+  });
+
+  it("closes suggestions after clearing the text and opens them for a snippet prefix", () => {
+    render(<EditorHarness />);
+    const textarea = screen.getByRole<HTMLTextAreaElement>("textbox");
+
+    fireEvent.input(textarea, {
+      target: { value: "clg", selectionStart: 3, selectionEnd: 3 },
+      data: "g",
+      inputType: "insertText",
+    });
+    expect(screen.getByText(/clg ⚡/)).toBeInTheDocument();
+
+    fireEvent.input(textarea, {
+      target: { value: "", selectionStart: 0, selectionEnd: 0 },
+      inputType: "deleteContentBackward",
+    });
+    expect(screen.queryByText(/clg ⚡/)).not.toBeInTheDocument();
+  });
+});

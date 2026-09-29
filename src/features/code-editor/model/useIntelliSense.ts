@@ -83,6 +83,21 @@ export function useIntelliSense(
     (code: string, cursorPos: number, textarea: HTMLTextAreaElement, force = false) => {
       const res = getCompletions(code, cursorPos, { files, filepath, force });
       const requestId = ++completionRequest.current;
+      const query = res.word.toLowerCase();
+      const isIdentifier =
+        /^[a-z_$][\w$]*$/i.test(query) &&
+        code.slice(cursorPos - res.word.length, cursorPos).toLowerCase() === query;
+      const localItems =
+        !force && isIdentifier
+          ? res.items.filter(
+              (item) => item.prefix.toLowerCase().startsWith(query) || (item.score ?? 0) >= 50
+            )
+          : res.items;
+
+      if (!force && localItems.length === 0 && !query) {
+        closeCompletions();
+        return;
+      }
 
       const lines = code.substring(0, cursorPos).split("\n");
       const currentLineIdx = lines.length - 1;
@@ -91,7 +106,7 @@ export function useIntelliSense(
       const position = calculatePopupPosition({
         caret,
         textarea,
-        itemsCount: res.items.length,
+        itemsCount: localItems.length,
       });
 
       setPopupPosition(position);
@@ -108,13 +123,18 @@ export function useIntelliSense(
         setSelectedIndex(0);
         setIsOpen(nextItems.length > 0);
       };
-      show(res.items);
+      show(localItems);
 
       if (requestSemanticCompletions) {
         void requestSemanticCompletions(cursorPos, code).then((semantic) => {
           if (requestId !== completionRequest.current || semantic.length === 0) return;
-          const known = new Set(semantic.map((item) => item.label));
-          const semanticItems: CompletionItem[] = semantic.map((item) => ({
+          const relevant =
+            !force && isIdentifier
+              ? semantic.filter((item) => item.label.toLowerCase().startsWith(query))
+              : semantic;
+          if (!force && !query && localItems.length === 0) return;
+          const known = new Set(relevant.map((item) => item.label));
+          const semanticItems: CompletionItem[] = relevant.map((item) => ({
             prefix: item.label,
             label: item.label,
             detail: "TypeScript",
@@ -125,12 +145,12 @@ export function useIntelliSense(
             score: 200,
           }));
           show(
-            [...semanticItems, ...res.items.filter((item) => !known.has(item.label))].slice(0, 24)
+            [...semanticItems, ...localItems.filter((item) => !known.has(item.label))].slice(0, 24)
           );
         });
       }
     },
-    [files, filepath, requestSemanticCompletions]
+    [files, filepath, requestSemanticCompletions, closeCompletions]
   );
 
   const updatePosition = useCallback(

@@ -135,4 +135,54 @@ describe("useIntelliSense", () => {
       result.current.applySelected(code, code.length, [], "App.tsx", completion)?.newCode
     ).toBe("const view = <Card name");
   });
+
+  it("ignores unrelated TypeScript symbols for an arbitrary word but keeps matching symbols", async () => {
+    const request = vi.fn().mockResolvedValue([
+      {
+        label: "Subscription",
+        insertText: "Subscription",
+        kind: "class",
+        replaceStart: 0,
+        replaceEnd: 6,
+      },
+    ]);
+    const { result } = renderHook(() => useIntelliSense([], "App.jsx", request));
+    const textarea = createTextarea();
+
+    act(() => result.current.openCompletions("dsfdsf", 6, textarea));
+    await waitFor(() => expect(request).toHaveBeenCalledTimes(1));
+    await act(async () => {});
+    expect(result.current.isOpen).toBe(false);
+
+    act(() => result.current.openCompletions("Sub", 3, textarea));
+    await waitFor(() =>
+      expect(result.current.items.map((item) => item.label)).toContain("Subscription")
+    );
+  });
+
+  it("keeps snippet completions while typing their prefix", () => {
+    const { result } = renderHook(() => useIntelliSense([], "solution.js"));
+
+    act(() => result.current.openCompletions("clg", 3, createTextarea()));
+
+    expect(result.current.items.some((item) => item.prefix === "clg" && item.snippet)).toBe(true);
+  });
+
+  it("shows semantic JSX props before the first attribute letter", async () => {
+    const code = "const view = <Card ";
+    const request = vi.fn().mockResolvedValue([
+      {
+        label: "name",
+        insertText: "name",
+        kind: "property",
+        replaceStart: code.length,
+        replaceEnd: code.length,
+      },
+    ]);
+    const { result } = renderHook(() => useIntelliSense([], "App.tsx", request));
+
+    act(() => result.current.openCompletions(code, code.length, createTextarea()));
+
+    await waitFor(() => expect(result.current.items.map((item) => item.label)).toContain("name"));
+  });
 });
