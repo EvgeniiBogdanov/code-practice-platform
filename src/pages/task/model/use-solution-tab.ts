@@ -14,7 +14,6 @@ import {
   TaskSourceFile,
 } from "@/shared/lib/code-runners";
 import { ViewMode } from "@/shared/ui";
-import { useFullscreenNavigation } from "./use-fullscreen-navigation";
 
 export interface UseSolutionTabReturn {
   isReact: boolean;
@@ -40,9 +39,6 @@ export interface UseSolutionTabReturn {
   isRecommended?: boolean;
   hasWarning?: boolean;
   badgeText: string;
-  isFullscreenTransitioning: boolean;
-  preloadFullscreen: () => void;
-  handleToggleFullscreen: () => void;
   handleCodeChange: (newCode: string) => void;
   handleFilesChange: (files: Array<{ name: string; code: string }>) => void;
   handleResetCode: () => Promise<void>;
@@ -109,8 +105,6 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
   const hasVisualComponent = useMemo(() => hasTaskVisualComponent(task, files), [task, files]);
 
   const [viewMode, setViewMode] = useState<ViewMode>("code");
-  const { isFullscreenTransitioning, handleToggleFullscreen, preloadFullscreen } =
-    useFullscreenNavigation({ task, tab: "solution", hasVisualComponent });
   const [isHintExpanded, setIsHintExpanded] = useState(false);
 
   const [consoleLogs, setConsoleLogs] = useState<NodeRunnerLogEntry[]>([]);
@@ -347,9 +341,6 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
     isRecommended,
     hasWarning,
     badgeText,
-    isFullscreenTransitioning,
-    preloadFullscreen,
-    handleToggleFullscreen,
     handleCodeChange,
     handleFilesChange,
     handleResetCode,

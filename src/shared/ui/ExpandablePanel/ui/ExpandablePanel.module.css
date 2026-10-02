@@ -16,7 +16,7 @@
   height: 100dvh;
   overflow: hidden;
   overscroll-behavior: contain;
-  padding: 8px;
+  padding: var(--space-2);
   box-sizing: border-box;
   background: var(--bg-app);
 }

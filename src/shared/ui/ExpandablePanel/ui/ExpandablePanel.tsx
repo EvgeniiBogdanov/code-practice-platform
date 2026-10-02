@@ -10,15 +10,16 @@ export const ExpandablePanel = ({
   onCollapse,
   label,
   className,
+  panelRef,
 }: ExpandablePanelProps): JSX.Element => {
-  const panel = useRef<HTMLDialogElement>(null);
+  const internalPanel = useRef<HTMLDialogElement>(null);
+  const panel = panelRef ?? internalPanel;
   useLayoutEffect(() => {
     const dialog = panel.current;
     if (!dialog) return;
     if (expanded) {
       dialog.close();
       dialog.showModal();
-      dialog.scrollTop = 0;
     } else {
       // Inline display must not run show()'s autofocus steps.
       dialog.setAttribute("open", "");
@@ -26,7 +27,7 @@ export const ExpandablePanel = ({
     return (): void => {
       if (expanded) dialog.close();
     };
-  }, [expanded]);
+  }, [expanded, panel]);
   return (
     <dialog
       ref={panel}

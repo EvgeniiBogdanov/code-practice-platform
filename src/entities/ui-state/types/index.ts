@@ -1,7 +1,9 @@
 export type ThemeMode = "light" | "dark";
+export type ThemePreference = "system" | ThemeMode;
 
 export interface UIState {
   theme: ThemeMode;
+  themePreference: ThemePreference;
   sidebarOpen: boolean;
   sidebarWidth: number;
   editorFontSize: number;
@@ -50,6 +52,7 @@ export interface UIState {
   hideInteractiveAssistant: boolean;
 
   setTheme: (themeOrFn: ThemeMode | ((prev: ThemeMode) => ThemeMode)) => void;
+  setThemePreference: (preference: ThemePreference) => void;
   toggleTheme: () => void;
   setSidebarOpen: (sidebarOpen: boolean | ((prev: boolean) => boolean)) => void;
   toggleSidebar: () => void;

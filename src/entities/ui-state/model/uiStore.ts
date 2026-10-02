@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { UIState, ThemeMode } from "../types";
+import type { UIState } from "../types";
+import { applyTheme, getThemeSettings, resolveTheme, SYSTEM_THEME_QUERY } from "./theme-settings";
 
 export const MIN_FONT_SIZE = 14;
 export const MAX_FONT_SIZE = 24;
@@ -10,7 +11,7 @@ export const MAX_CODE_FONT_SIZE = 24;
 const getInitialUISettings = () => {
   if (typeof window === "undefined") {
     return {
-      theme: "dark" as ThemeMode,
+      ...getThemeSettings(),
       sidebarOpen: true,
       sidebarWidth: 280,
       consoleCollapsed: true,
@@ -30,9 +31,7 @@ const getInitialUISettings = () => {
       const parsed = JSON.parse(raw);
       if (parsed?.state) {
         return {
-          theme: (parsed.state.theme === "light" || parsed.state.theme === "dark"
-            ? parsed.state.theme
-            : "dark") as ThemeMode,
+          ...getThemeSettings(parsed.state.themePreference, parsed.state.theme),
           sidebarOpen:
             typeof parsed.state.sidebarOpen === "boolean" ? parsed.state.sidebarOpen : true,
           sidebarWidth:
@@ -114,7 +113,7 @@ const getInitialUISettings = () => {
         : 14;
     const legacyLinter = localStorage.getItem("playground_editor_linter_enabled");
     return {
-      theme: (legacy === "light" || legacy === "dark" ? legacy : "dark") as ThemeMode,
+      ...getThemeSettings(undefined, legacy),
       sidebarOpen: true,
       sidebarWidth: 280,
       consoleCollapsed: legacyConsole !== null ? legacyConsole === "true" : true,
@@ -131,7 +130,7 @@ const getInitialUISettings = () => {
     // ignore
   }
   return {
-    theme: "dark" as ThemeMode,
+    ...getThemeSettings(),
     sidebarOpen: true,
     sidebarWidth: 280,
     consoleCollapsed: true,
@@ -148,7 +147,7 @@ const getInitialUISettings = () => {
 
 const initialUI = getInitialUISettings();
 if (typeof document !== "undefined") {
-  document.documentElement.setAttribute("data-theme", initialUI.theme);
+  applyTheme(initialUI.theme);
   document.documentElement.style.setProperty("--sidebar-width", `${initialUI.sidebarWidth}px`);
 }
 
@@ -156,6 +155,7 @@ export const useUIStore = create<UIState>()(
   persist(
     (set, get) => ({
       theme: initialUI.theme,
+      themePreference: initialUI.themePreference,
       sidebarOpen: initialUI.sidebarOpen,
       sidebarWidth: initialUI.sidebarWidth,
       editorFontSize: 14,
@@ -204,21 +204,16 @@ export const useUIStore = create<UIState>()(
       hideInteractiveAssistant: initialUI.hideInteractiveAssistant,
 
       setTheme: (themeOrFn) => {
-        const current = get().theme || "dark";
-        const nextTheme = typeof themeOrFn === "function" ? themeOrFn(current) : themeOrFn;
-        const validTheme: ThemeMode = nextTheme === "light" ? "light" : "dark";
-        if (typeof document !== "undefined") {
-          document.documentElement.setAttribute("data-theme", validTheme);
-        }
-        set({ theme: validTheme });
+        const nextTheme = typeof themeOrFn === "function" ? themeOrFn(get().theme) : themeOrFn;
+        get().setThemePreference(nextTheme);
+      },
+      setThemePreference: (themePreference) => {
+        const theme = resolveTheme(themePreference);
+        applyTheme(theme);
+        set({ themePreference, theme });
       },
       toggleTheme: () => {
-        const current = get().theme || "dark";
-        const nextTheme: ThemeMode = current === "dark" ? "light" : "dark";
-        if (typeof document !== "undefined") {
-          document.documentElement.setAttribute("data-theme", nextTheme);
-        }
-        set({ theme: nextTheme });
+        get().setThemePreference(get().theme === "dark" ? "light" : "dark");
       },
 
       setSidebarOpen: (sidebarOpen) =>
@@ -714,7 +709,7 @@ export const useUIStore = create<UIState>()(
 
       resetUISettings: () => {
         if (typeof document !== "undefined") {
-          document.documentElement.setAttribute("data-theme", "dark");
+          applyTheme(resolveTheme("system"));
           document.documentElement.style.setProperty("--sidebar-width", "280px");
         }
         if (typeof localStorage !== "undefined") {
@@ -747,7 +742,7 @@ export const useUIStore = create<UIState>()(
           }
         }
         set({
-          theme: "dark",
+          ...getThemeSettings(),
           sidebarOpen: true,
           sidebarWidth: 280,
           editorFontSize: 14,
@@ -782,6 +777,7 @@ export const useUIStore = create<UIState>()(
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         theme: state.theme,
+        themePreference: state.themePreference,
         sidebarOpen: state.sidebarOpen,
         sidebarWidth: state.sidebarWidth,
         editorFontSize: state.editorFontSize,
@@ -809,12 +805,15 @@ export const useUIStore = create<UIState>()(
         hideTooltips: state.hideTooltips,
         hideInteractiveAssistant: state.hideInteractiveAssistant,
       }),
+      merge: (persistedState, currentState) => {
+        const stored =
+          persistedState !== null && typeof persistedState === "object" ? persistedState : {};
+        const preference = "themePreference" in stored ? stored.themePreference : undefined;
+        const legacyTheme = "theme" in stored ? stored.theme : undefined;
+        return { ...currentState, ...stored, ...getThemeSettings(preference, legacyTheme) };
+      },
       onRehydrateStorage: () => (state) => {
-        const activeTheme =
-          state?.theme === "light" || state?.theme === "dark" ? state.theme : "dark";
-        if (typeof document !== "undefined") {
-          document.documentElement.setAttribute("data-theme", activeTheme);
-        }
+        applyTheme(state?.theme ?? resolveTheme("system"));
         if (state) {
           if (typeof state.editorFontSize === "number" && state.editorFontSize < MIN_FONT_SIZE) {
             state.editorFontSize = MIN_FONT_SIZE;
@@ -827,3 +826,19 @@ export const useUIStore = create<UIState>()(
     }
   )
 );
+
+export const subscribeToSystemTheme = (): (() => void) => {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+    return () => {};
+  }
+  const media = window.matchMedia(SYSTEM_THEME_QUERY);
+  const syncTheme = (): void => {
+    if (useUIStore.getState().themePreference !== "system") return;
+    const theme = media.matches ? "dark" : "light";
+    applyTheme(theme);
+    useUIStore.setState({ theme });
+  };
+  syncTheme();
+  media.addEventListener("change", syncTheme);
+  return () => media.removeEventListener("change", syncTheme);
+};

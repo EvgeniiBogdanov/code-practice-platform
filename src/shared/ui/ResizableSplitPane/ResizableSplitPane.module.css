@@ -41,6 +41,14 @@
   flex: 1 1 0%;
 }
 
+.single > .leftPane {
+  flex: 1;
+}
+
+.single > .rightPane {
+  display: none;
+}
+
 .resizer {
   position: relative;
   width: 10px;

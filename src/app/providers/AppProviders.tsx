@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { subscribeToSystemTheme } from "@/entities/ui-state";
 import { ErrorBoundary } from "@/shared/ui";
 
 export interface AppProvidersProps {
@@ -6,5 +7,7 @@ export interface AppProvidersProps {
 }
 
 export const AppProviders = ({ children }: AppProvidersProps): React.JSX.Element => {
+  useEffect(subscribeToSystemTheme, []);
+
   return <ErrorBoundary>{children}</ErrorBoundary>;
 };

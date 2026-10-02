@@ -1,11 +1,12 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, within } from "@testing-library/react";
 import { SettingsCustomizationSection } from "./SettingsCustomizationSection";
 import { useReviewStore } from "@/entities/review";
 import { useUIStore } from "@/entities/ui-state";
 
 describe("SettingsCustomizationSection", () => {
   beforeEach(() => {
+    useUIStore.getState().setThemePreference("system");
     useUIStore.setState({ hideTooltips: false, hideInteractiveAssistant: false });
     useReviewStore.setState({
       assistantName: "Интервальный помощник",
@@ -16,6 +17,30 @@ describe("SettingsCustomizationSection", () => {
         useReviewStore.setState({ assistantName: "Интервальный помощник" });
       }),
     });
+  });
+
+  it("switches between system, light and dark themes immediately", () => {
+    render(<SettingsCustomizationSection />);
+    const group = screen.getByRole("group", { name: "Тема оформления" });
+    const buttons = within(group).getAllByRole("button");
+    expect(buttons.map((button) => button.textContent)).toEqual(["Системная", "Светлая", "Тёмная"]);
+    expect(buttons[0]).toHaveAttribute("aria-pressed", "true");
+    expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
+
+    for (const [preference, label] of [
+      ["light", "Светлая"],
+      ["dark", "Тёмная"],
+      ["system", "Системная"],
+    ] as const) {
+      const button = within(group).getByRole("button", { name: label });
+      fireEvent.click(button);
+      expect(useUIStore.getState().themePreference).toBe(preference);
+      expect(button).toHaveAttribute("aria-pressed", "true");
+      expect(buttons.filter((item) => item.getAttribute("aria-pressed") === "true")).toHaveLength(
+        1
+      );
+      expect(document.documentElement).toHaveAttribute("data-theme", useUIStore.getState().theme);
+    }
   });
 
   it("renders with placeholder 'Имя' and empty input when name is default", () => {

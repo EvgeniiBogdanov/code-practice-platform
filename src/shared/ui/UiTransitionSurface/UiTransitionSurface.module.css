@@ -1,0 +1,98 @@
+.surface {
+  view-transition-name: workspace;
+}
+
+.surface :global([data-transition-part="primary"]) {
+  view-transition-name: workspace-primary;
+}
+
+.surface :global([data-transition-part="secondary"]) {
+  view-transition-name: workspace-secondary;
+}
+
+:global(::view-transition-group(workspace)),
+:global(::view-transition-group(workspace-primary)),
+:global(::view-transition-group(workspace-secondary)) {
+  animation-duration: var(--duration-workspace-active);
+  animation-timing-function: var(--ease-workspace);
+  overflow: clip;
+  border-radius: var(--radius-md);
+  background: var(--bg-app);
+}
+
+/* Keep text at its actual size while the container reveals its new bounds. */
+:global(::view-transition-old(workspace)),
+:global(::view-transition-new(workspace)),
+:global(::view-transition-old(workspace-primary)),
+:global(::view-transition-new(workspace-primary)),
+:global(::view-transition-old(workspace-secondary)),
+:global(::view-transition-new(workspace-secondary)) {
+  height: 100%;
+  object-fit: none;
+  object-position: left top;
+  mix-blend-mode: normal;
+  animation-duration: var(--duration-workspace-content);
+  animation-timing-function: ease-out;
+  animation-fill-mode: both;
+}
+
+:global(::view-transition-old(workspace)),
+:global(::view-transition-old(workspace-primary)),
+:global(::view-transition-old(workspace-secondary)) {
+  animation-name: surface-out;
+}
+
+:global(::view-transition-new(workspace)),
+:global(::view-transition-new(workspace-primary)),
+:global(::view-transition-new(workspace-secondary)) {
+  animation-name: surface-in;
+}
+
+/* The surroundings recede without moving the rest of the page. */
+:global(::view-transition-old(root)),
+:global(::view-transition-new(root)) {
+  animation-duration: var(--duration-workspace-active);
+  animation-timing-function: ease-out;
+}
+
+:global(::view-transition-old(root)) {
+  animation-name: surroundings-out;
+}
+
+:global(::view-transition-new(root)) {
+  animation-name: surface-in;
+}
+
+:global(html:active-view-transition-type(workspace-collapse)) {
+  --duration-workspace-active: var(--duration-workspace-collapse);
+}
+
+@keyframes surroundings-out {
+  0%,
+  35% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes surface-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes surface-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(::view-transition-group(*)),
+  :global(::view-transition-old(*)),
+  :global(::view-transition-new(*)) {
+    animation: none;
+  }
+}

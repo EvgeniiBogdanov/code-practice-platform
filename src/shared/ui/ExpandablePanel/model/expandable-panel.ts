@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode, RefObject } from "react";
 
 export interface ExpandablePanelProps {
   readonly children: ReactNode;
@@ -6,4 +6,5 @@ export interface ExpandablePanelProps {
   readonly onCollapse: () => void;
   readonly label: string;
   readonly className?: string;
+  readonly panelRef?: RefObject<HTMLDialogElement | null>;
 }

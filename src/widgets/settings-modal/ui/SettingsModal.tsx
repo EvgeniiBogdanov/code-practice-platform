@@ -11,7 +11,7 @@ import styles from "./SettingsModal.module.css";
 export type SettingsTabType = "data" | "customization";
 
 export const SettingsModal = memo(() => {
-  const [activeTab, setActiveTab] = useState<SettingsTabType>("data");
+  const [activeTab, setActiveTab] = useState<SettingsTabType>("customization");
 
   const {
     isOpen,
@@ -57,19 +57,19 @@ export const SettingsModal = memo(() => {
               <nav className={styles.settingsNav} aria-label="Вкладки настроек">
                 <button
                   type="button"
-                  className={clsx(styles.navBtn, activeTab === "data" && styles.active)}
-                  onClick={() => setActiveTab("data")}
-                >
-                  <Database size={15} className={styles.navBtnIcon} />
-                  <span className={styles.navBtnLabel}>Данные приложения</span>
-                </button>
-                <button
-                  type="button"
                   className={clsx(styles.navBtn, activeTab === "customization" && styles.active)}
                   onClick={() => setActiveTab("customization")}
                 >
                   <Palette size={15} className={styles.navBtnIcon} />
                   <span className={styles.navBtnLabel}>Кастомизация</span>
+                </button>
+                <button
+                  type="button"
+                  className={clsx(styles.navBtn, activeTab === "data" && styles.active)}
+                  onClick={() => setActiveTab("data")}
+                >
+                  <Database size={15} className={styles.navBtnIcon} />
+                  <span className={styles.navBtnLabel}>Данные приложения</span>
                 </button>
               </nav>
             </div>
@@ -93,7 +93,7 @@ export const SettingsModal = memo(() => {
               </h2>
               <p className={styles.pageSubtitle}>
                 {activeTab === "customization"
-                  ? "Настройка вспомогательных элементов интерфейса и персонализация помощника"
+                  ? "Тема оформления, элементы интерфейса и персонализация помощника"
                   : "Управление локальным хранилищем, графиком повторения и сбросом данных"}
               </p>
             </div>

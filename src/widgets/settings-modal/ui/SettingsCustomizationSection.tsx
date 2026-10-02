@@ -4,6 +4,7 @@ import { useReviewStore, DEFAULT_ASSISTANT_NAME } from "@/entities/review";
 import { useUIStore } from "@/entities/ui-state";
 import { sanitizeAssistantName, ASSISTANT_NAME_INPUT_PATTERN } from "../lib";
 import styles from "./SettingsCustomizationSection.module.css";
+import { SettingsAppearanceSection } from "./SettingsAppearanceSection";
 
 const MAX_ASSISTANT_NAME_LENGTH = 30;
 
@@ -88,6 +89,7 @@ export const SettingsCustomizationSection = memo((): React.JSX.Element => {
 
   return (
     <div className={styles.settingsSectionWrapper}>
+      <SettingsAppearanceSection />
       <TooltipSettingsSection />
 
       <section className={styles.settingsSection}>
