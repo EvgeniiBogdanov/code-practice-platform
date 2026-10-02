@@ -35,7 +35,8 @@ describe("useUIStore - resetUISettings", () => {
     useUIStore.getState().resetUISettings();
 
     const state = useUIStore.getState();
-    expect(state.theme).toBe("dark");
+    expect(state.themePreference).toBe("system");
+    expect(state.theme).toBe("light");
     expect(state.sidebarOpen).toBe(true);
     expect(state.sidebarWidth).toBe(280);
     expect(state.editorFontSize).toBe(14);

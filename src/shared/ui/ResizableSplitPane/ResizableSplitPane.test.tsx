@@ -5,6 +5,26 @@ import "@testing-library/jest-dom/vitest";
 import { ResizableSplitPane } from "./ResizableSplitPane";
 
 describe("ResizableSplitPane", () => {
+  it("preserves the editor when switching between stacked, single and split layouts", () => {
+    const left = <textarea aria-label="Editor" defaultValue="const result = 42;" />;
+    const { rerender } = render(<ResizableSplitPane layout="stack" left={left} right={null} />);
+    const editor = screen.getByRole<HTMLTextAreaElement>("textbox", { name: "Editor" });
+    editor.setSelectionRange(6, 12);
+
+    rerender(<ResizableSplitPane layout="single" left={left} right={null} />);
+
+    expect(screen.getByRole("textbox", { name: "Editor" })).toBe(editor);
+    expect(screen.queryByRole("separator")).not.toBeInTheDocument();
+    expect(editor.selectionStart).toBe(6);
+    expect(editor.selectionEnd).toBe(12);
+    expect(editor.parentElement).not.toHaveStyle({ width: "70%" });
+
+    rerender(<ResizableSplitPane layout="split" left={left} right={<div>Preview</div>} />);
+
+    expect(screen.getByRole("textbox", { name: "Editor" })).toBe(editor);
+    expect(screen.getByRole("separator")).toBeInTheDocument();
+  });
+
   it("renders left and right pane contents", () => {
     render(
       <ResizableSplitPane

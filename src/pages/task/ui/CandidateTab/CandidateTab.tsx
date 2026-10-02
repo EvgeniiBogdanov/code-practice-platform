@@ -15,10 +15,16 @@ import {
   NodeRunnerLogEntry,
   TaskSourceFile,
 } from "@/shared/lib/code-runners";
-import { Tooltip, ErrorBoundary, ViewModeToggle, ViewMode } from "@/shared/ui";
+import {
+  Tooltip,
+  ErrorBoundary,
+  ViewModeToggle,
+  ViewMode,
+  UiFullscreenPanel,
+  ResizableSplitPane,
+} from "@/shared/ui";
 import { CodeEditor } from "@/features/code-editor";
 import { JsConsole, ReactLivePreview } from "@/features/code-runner";
-import { useFullscreenNavigation } from "../../model/use-fullscreen-navigation";
 import styles from "./CandidateTab.module.css";
 
 const MAX_CONSOLE_LOGS = 500;
@@ -51,12 +57,6 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
   );
 
   const [viewMode, setViewMode] = useState<ViewMode>("code");
-  const { isFullscreenTransitioning, handleToggleFullscreen, preloadFullscreen } =
-    useFullscreenNavigation({
-      task: task ? { id: task.id, section: task.section } : undefined,
-      tab: "candidate",
-      hasVisualComponent,
-    });
 
   // JS Runner state
   const [consoleLogs, setConsoleLogs] = useState<NodeRunnerLogEntry[]>([]);
@@ -284,43 +284,69 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
           />
         ) : (
           <>
-            <CodeEditor
-              key={`cand_${task?.section ?? "none"}_${task?.id ?? "none"}_${activeFileIdx}`}
-              code={activeFile?.code || ""}
-              onChange={handleCodeChange}
-              onFilesChange={handleFilesChange}
-              onRun={() => handleRunCode()}
-              onReset={handleResetCode}
-              files={files}
-              activeFileIdx={activeFileIdx}
-              onFileSelect={setActiveFileIdx}
-              filepath={activeFile.name}
-              historyScope={
-                task
-                  ? {
-                      taskKey: `${task.section}:${task.id}`,
-                      documentKey: `candidate:${activeFileIdx}`,
-                    }
-                  : undefined
-              }
-              readOnly={!task}
-              onToggleFullscreen={handleToggleFullscreen}
-              onPreloadFullscreen={preloadFullscreen}
-              isFullscreenTransitioning={isFullscreenTransitioning}
-              bottomConsole={
-                <div ref={consoleWrapperRef}>
-                  <JsConsole
-                    logs={consoleLogs}
-                    isRunning={isRunning}
-                    lastExecution={lastExecution}
-                    filename={activeFile.name}
-                    onRun={() => handleRunCode()}
-                    onStop={handleStopCode}
-                    onClear={handleClearConsole}
-                  />
-                </div>
-              }
-            />
+            <UiFullscreenPanel label="Редактор кода">
+              {({ isFullscreen, isTransitioning, toggleFullscreen }) => (
+                <ResizableSplitPane
+                  layout={isFullscreen ? (hasVisualComponent ? "split" : "single") : "stack"}
+                  className={clsx(
+                    styles.editorWorkspace,
+                    isFullscreen && styles.fullscreenWorkspace
+                  )}
+                  left={
+                    <CodeEditor
+                      key={`cand_${task?.section ?? "none"}_${task?.id ?? "none"}_${activeFileIdx}`}
+                      code={activeFile?.code || ""}
+                      onChange={handleCodeChange}
+                      onFilesChange={handleFilesChange}
+                      onRun={() => handleRunCode()}
+                      onReset={handleResetCode}
+                      files={files}
+                      activeFileIdx={activeFileIdx}
+                      onFileSelect={setActiveFileIdx}
+                      filepath={activeFile.name}
+                      historyScope={
+                        task
+                          ? {
+                              taskKey: `${task.section}:${task.id}`,
+                              documentKey: `candidate:${activeFileIdx}`,
+                            }
+                          : undefined
+                      }
+                      readOnly={!task}
+                      isFullscreen={isFullscreen}
+                      fillHeight={isFullscreen}
+                      onToggleFullscreen={toggleFullscreen}
+                      isFullscreenTransitioning={isTransitioning}
+                      bottomConsole={
+                        <div ref={consoleWrapperRef}>
+                          <JsConsole
+                            logs={consoleLogs}
+                            isRunning={isRunning}
+                            lastExecution={lastExecution}
+                            filename={activeFile.name}
+                            onRun={() => handleRunCode()}
+                            onStop={handleStopCode}
+                            onClear={handleClearConsole}
+                          />
+                        </div>
+                      }
+                    />
+                  }
+                  right={
+                    isFullscreen && hasVisualComponent ? (
+                      <ReactLivePreview
+                        task={task}
+                        files={files}
+                        activeFileIdx={activeFileIdx}
+                        currentCode={activeFile.code}
+                        storagePrefix="cand"
+                        fullHeight
+                      />
+                    ) : null
+                  }
+                />
+              )}
+            </UiFullscreenPanel>
 
             {/* Quick-scroll to console button */}
             {!isConsoleVisible && (

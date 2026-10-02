@@ -11,15 +11,18 @@
     <link rel="stylesheet" href="/src/app/styles/fonts.css" />
     <script>
       (function() {
+        var preference = 'system';
+        var sidebarWidth = 280;
         try {
           var raw = localStorage.getItem('playground_ui_settings');
-          var theme = 'dark';
-          var sidebarWidth = 280;
           if (raw) {
             var parsed = JSON.parse(raw);
             if (parsed && parsed.state) {
-              if (parsed.state.theme === 'light' || parsed.state.theme === 'dark') {
-                theme = parsed.state.theme;
+              var storedPreference = parsed.state.themePreference === undefined
+                ? parsed.state.theme
+                : parsed.state.themePreference;
+              if (storedPreference === 'system' || storedPreference === 'light' || storedPreference === 'dark') {
+                preference = storedPreference;
               }
               if (typeof parsed.state.sidebarWidth === 'number' && parsed.state.sidebarWidth >= 200 && parsed.state.sidebarWidth <= 480) {
                 sidebarWidth = parsed.state.sidebarWidth;
@@ -27,22 +30,27 @@
             }
           } else {
             var legacy = localStorage.getItem('playground_theme');
-            if (legacy === 'light' || legacy === 'dark') theme = legacy;
+            if (legacy === 'light' || legacy === 'dark') preference = legacy;
           }
-          document.documentElement.setAttribute('data-theme', theme);
-          document.documentElement.style.setProperty('--sidebar-width', sidebarWidth + 'px');
         } catch (e) {}
+        var theme = preference === 'system'
+          ? (typeof window.matchMedia === 'function' && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+          : preference;
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.style.setProperty('--sidebar-width', sidebarWidth + 'px');
 
       })();
     </script>
     <style>
       html, body {
+        color-scheme: dark;
         background-color: #191919;
         margin: 0;
         padding: 0;
         height: 100%;
       }
       html[data-theme="light"], html[data-theme="light"] body {
+        color-scheme: light;
         background-color: #fbfbfa;
       }
       @keyframes appInitialSpin {

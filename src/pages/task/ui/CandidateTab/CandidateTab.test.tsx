@@ -13,14 +13,6 @@ vi.mock("@/features/code-runner", () => ({
   ReactLivePreview: () => <div data-testid="live-preview" />,
 }));
 
-vi.mock("../../model/use-fullscreen-navigation", () => ({
-  useFullscreenNavigation: () => ({
-    isFullscreenTransitioning: false,
-    handleToggleFullscreen: vi.fn(),
-    preloadFullscreen: vi.fn(),
-  }),
-}));
-
 const mockTask: Task = {
   id: "test-task-1",
   section: "javascript",

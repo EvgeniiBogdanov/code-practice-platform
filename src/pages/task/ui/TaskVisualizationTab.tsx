@@ -1,7 +1,7 @@
 import { getTaskSolutionSource } from "@/entities/task";
 import { useEffect, useState, type JSX } from "react";
 import { TaskVisualization } from "@/widgets/task-visualization";
-import { useFullscreenNavigation } from "../model/use-fullscreen-navigation";
+import { UiFullscreenPanel } from "@/shared/ui";
 import type { TaskVisualizationTabProps } from "../model/task-visualization-tab";
 
 export const TaskVisualizationTab = ({ task, active }: TaskVisualizationTabProps): JSX.Element => {
@@ -10,22 +10,20 @@ export const TaskVisualizationTab = ({ task, active }: TaskVisualizationTabProps
     if (active) setVisited(true);
   }, [active]);
 
-  const { handleToggleFullscreen } = useFullscreenNavigation({
-    task: { id: task.id, section: task.section },
-    tab: "visualization",
-    hasVisualComponent: false,
-  });
-
   return (
     <div hidden={!active}>
       {(active || visited) && (
-        <TaskVisualization
-          taskId={String(task.id)}
-          isActive={active}
-          isFullscreen={false}
-          onToggleFullscreen={handleToggleFullscreen}
-          solution={getTaskSolutionSource(task)}
-        />
+        <UiFullscreenPanel active={active} label="Визуализация алгоритма">
+          {({ isFullscreen, toggleFullscreen }) => (
+            <TaskVisualization
+              taskId={String(task.id)}
+              isActive={active}
+              isFullscreen={isFullscreen}
+              onToggleFullscreen={toggleFullscreen}
+              solution={getTaskSolutionSource(task)}
+            />
+          )}
+        </UiFullscreenPanel>
       )}
     </div>
   );

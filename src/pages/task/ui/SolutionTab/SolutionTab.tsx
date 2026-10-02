@@ -2,7 +2,14 @@ import React, { memo } from "react";
 import { ArrowDown } from "lucide-react";
 import { clsx } from "clsx";
 import { Task } from "@/entities/task";
-import { Tooltip, Accordion, ErrorBoundary, ViewModeToggle } from "@/shared/ui";
+import {
+  Tooltip,
+  Accordion,
+  ErrorBoundary,
+  ViewModeToggle,
+  UiFullscreenPanel,
+  ResizableSplitPane,
+} from "@/shared/ui";
 import { CodeEditor } from "@/features/code-editor";
 import { JsConsole, ReactLivePreview } from "@/features/code-runner";
 import { useSolutionTab } from "../../model/use-solution-tab";
@@ -38,9 +45,6 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
     isRecommended,
     hasWarning,
     badgeText,
-    isFullscreenTransitioning,
-    preloadFullscreen,
-    handleToggleFullscreen,
     handleCodeChange,
     handleFilesChange,
     handleResetCode,
@@ -85,38 +89,65 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
         ) : (
           <>
             {isFilesReady && (
-              <CodeEditor
-                key={`sol_${task.section}_${task.id}_${selectedSolutionIdx}_${activeFileIdx}`}
-                code={activeFile?.code || ""}
-                onChange={handleCodeChange}
-                onFilesChange={handleFilesChange}
-                onRun={() => handleRunCode()}
-                onReset={handleResetCode}
-                files={files}
-                activeFileIdx={activeFileIdx}
-                onFileSelect={setActiveFileIdx}
-                filepath={activeFile.name}
-                historyScope={{
-                  taskKey: `${task.section}:${task.id}`,
-                  documentKey: `solution:${selectedSolutionIdx}:${activeFileIdx}`,
-                }}
-                onToggleFullscreen={handleToggleFullscreen}
-                onPreloadFullscreen={preloadFullscreen}
-                isFullscreenTransitioning={isFullscreenTransitioning}
-                bottomConsole={
-                  <div ref={consoleWrapperRef}>
-                    <JsConsole
-                      logs={consoleLogs}
-                      isRunning={isRunning}
-                      lastExecution={lastExecution}
-                      filename={activeFile.name}
-                      onRun={() => handleRunCode()}
-                      onStop={handleStopCode}
-                      onClear={handleClearConsole}
-                    />
-                  </div>
-                }
-              />
+              <UiFullscreenPanel label="Редактор решения">
+                {({ isFullscreen, isTransitioning, toggleFullscreen }) => (
+                  <ResizableSplitPane
+                    layout={isFullscreen ? (hasVisualComponent ? "split" : "single") : "stack"}
+                    className={clsx(
+                      styles.editorWorkspace,
+                      isFullscreen && styles.fullscreenWorkspace
+                    )}
+                    left={
+                      <CodeEditor
+                        key={`sol_${task.section}_${task.id}_${selectedSolutionIdx}_${activeFileIdx}`}
+                        code={activeFile?.code || ""}
+                        onChange={handleCodeChange}
+                        onFilesChange={handleFilesChange}
+                        onRun={() => handleRunCode()}
+                        onReset={handleResetCode}
+                        files={files}
+                        activeFileIdx={activeFileIdx}
+                        onFileSelect={setActiveFileIdx}
+                        filepath={activeFile.name}
+                        historyScope={{
+                          taskKey: `${task.section}:${task.id}`,
+                          documentKey: `solution:${selectedSolutionIdx}:${activeFileIdx}`,
+                        }}
+                        isFullscreen={isFullscreen}
+                        fillHeight={isFullscreen}
+                        onToggleFullscreen={toggleFullscreen}
+                        isFullscreenTransitioning={isTransitioning}
+                        bottomConsole={
+                          <div ref={consoleWrapperRef}>
+                            <JsConsole
+                              logs={consoleLogs}
+                              isRunning={isRunning}
+                              lastExecution={lastExecution}
+                              filename={activeFile.name}
+                              onRun={() => handleRunCode()}
+                              onStop={handleStopCode}
+                              onClear={handleClearConsole}
+                            />
+                          </div>
+                        }
+                      />
+                    }
+                    right={
+                      isFullscreen && hasVisualComponent ? (
+                        <ReactLivePreview
+                          task={task}
+                          files={files}
+                          activeFileIdx={activeFileIdx}
+                          currentCode={activeFile.code}
+                          storagePrefix="sol"
+                          variantIdx={selectedSolutionIdx}
+                          fullHeight
+                        />
+                      ) : null
+                    }
+                  />
+                )}
+              </UiFullscreenPanel>
             )}
 
             {!isConsoleVisible && (

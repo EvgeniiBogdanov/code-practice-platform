@@ -15,7 +15,7 @@ export interface ResizableSplitPaneProps {
   className?: string;
   disabled?: boolean;
   ariaLabel?: string;
-  layout?: "split" | "stack";
+  layout?: "split" | "stack" | "single";
 }
 
 const DEFAULT_MIN = 20;
@@ -217,6 +217,7 @@ export const ResizableSplitPane = memo(
     );
 
     const isStacked = layout === "stack";
+    const isSplit = layout === "split";
 
     return (
       <div
@@ -224,18 +225,20 @@ export const ResizableSplitPane = memo(
         className={clsx(
           styles.splitContainer,
           isStacked && styles.stacked,
+          layout === "single" && styles.single,
           isDragging && styles.isDragging,
           className
         )}
       >
         <div
+          data-transition-part="primary"
           className={clsx(styles.pane, styles.leftPane, isStacked && styles.stackedPane)}
-          style={isStacked ? undefined : { width: `${localRatio}%` }}
+          style={isSplit ? { width: `${localRatio}%` } : undefined}
         >
           {left}
         </div>
 
-        {!isStacked && (
+        {isSplit && (
           <Tooltip
             content="Потяните для изменения пропорции (двойной клик — сброс 70/30)"
             side="top"
@@ -264,11 +267,14 @@ export const ResizableSplitPane = memo(
           </Tooltip>
         )}
 
-        <div className={clsx(styles.pane, styles.rightPane, isStacked && styles.stackedPane)}>
+        <div
+          data-transition-part="secondary"
+          className={clsx(styles.pane, styles.rightPane, isStacked && styles.stackedPane)}
+        >
           {right}
         </div>
 
-        {isDragging && !isStacked && <div className={styles.dragOverlay} aria-hidden="true" />}
+        {isDragging && isSplit && <div className={styles.dragOverlay} aria-hidden="true" />}
       </div>
     );
   }
