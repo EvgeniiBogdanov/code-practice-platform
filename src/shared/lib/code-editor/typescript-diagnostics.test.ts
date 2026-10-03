@@ -1,9 +1,12 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import ts from "typescript";
 import {
   createTypeScriptDiagnostics,
   createTypeScriptEditorService,
 } from "./typescript-diagnostics";
+
+// Real TypeScript programs are built here; under CI coverage the cold ones exceed the 5s default.
+vi.setConfig({ testTimeout: 30_000 });
 
 const libDirectory = ts.getDefaultLibFilePath({}).replace(/[/\\][^/\\]+$/, "");
 const libraries = new Map(
