@@ -16,13 +16,8 @@ export interface UiLoaderProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
 }
 
-const STROKE_WIDTH_MAP: Record<UiLoaderSize, number> = {
-  xs: 2.8,
-  sm: 2.6,
-  md: 2.4,
-  lg: 2.2,
-  xl: 2.0,
-};
+/** Overall height of the loader; one bar unit is 1/48 of it. */
+const BOX_UNITS = 48;
 
 export const UiLoader = memo(
   ({
@@ -36,40 +31,20 @@ export const UiLoader = memo(
     ...props
   }: UiLoaderProps): React.JSX.Element => {
     const isNamedSize = typeof size === "string";
-    const strokeWidth = isNamedSize ? STROKE_WIDTH_MAP[size] : 2.4;
-    const customStyle: React.CSSProperties | undefined = !isNamedSize
-      ? { width: size, height: size }
-      : undefined;
+    const customStyle: React.CSSProperties | undefined = isNamedSize
+      ? undefined
+      : ({ "--size": `${size / BOX_UNITS}px` } as React.CSSProperties);
 
     const accessibleLabel = label ?? "Загрузка...";
 
     const spinner = (
-      <svg
+      <span
         className={clsx(styles.spinner, isNamedSize && styles[`size_${size}`])}
         style={customStyle}
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
         aria-hidden="true"
       >
-        <circle
-          className={styles.track}
-          cx="12"
-          cy="12"
-          r="9.5"
-          stroke="currentColor"
-          strokeWidth={strokeWidth}
-        />
-        <circle
-          className={styles.indicator}
-          cx="12"
-          cy="12"
-          r="9.5"
-          stroke="currentColor"
-          strokeWidth={strokeWidth}
-          strokeDasharray="45 15"
-        />
-      </svg>
+        <span className={styles.bars} />
+      </span>
     );
 
     return (

@@ -3,8 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Интерактивная платформа для практики JavaScript, React и алгоритмов с онлайн-редактором, тестами и системой интервального повторения." />
-    <title>Code Practice Platform</title>
+    <meta name="description" content="Тренажёр frontend-собеседований: задачи по JavaScript, TypeScript, React и алгоритмам в редакторе уровня VS Code, эталонные решения, индекс вероятности на интервью и интервальные повторения." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Code Practice Platform — тренажёр frontend-собеседований" />
+    <meta property="og:description" content="Задачи с реальных интервью, живой запуск React 19, эталонные решения и интервальные повторения. Локальный аккаунт — только имя." />
+    <title>Code Practice Platform — тренажёр frontend-собеседований</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preload" href="/src/app/fonts/inter-cyrillic.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/src/app/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
@@ -36,6 +39,13 @@
         var theme = preference === 'system'
           ? (typeof window.matchMedia === 'function' && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
           : preference;
+        // The landing is light-only: first paint must not flash the saved dark theme.
+        try {
+          var base = '%BASE_URL%'.replace(/\/+$/, '');
+          var path = location.pathname;
+          var isLandingPath = path === base || path === base + '/' || path === base + '/index.html';
+          if (isLandingPath && !localStorage.getItem('code_practice_local_account')) theme = 'light';
+        } catch (e) {}
         document.documentElement.setAttribute('data-theme', theme);
         document.documentElement.style.setProperty('--sidebar-width', sidebarWidth + 'px');
 
@@ -51,11 +61,7 @@
       }
       html[data-theme="light"], html[data-theme="light"] body {
         color-scheme: light;
-        background-color: #fbfbfa;
-      }
-      @keyframes appInitialSpin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+        background-color: #ffffff;
       }
       .app-initial-loader {
         display: flex;
@@ -64,24 +70,48 @@
         min-height: 100vh;
         width: 100%;
       }
-      .app-initial-spinner {
-        width: 36px;
-        height: 36px;
-        animation: appInitialSpin 0.75s linear infinite;
-        color: #94a3b8;
+      /* Three equaliser bars, 36px tall (--size = height / 48) */
+      .app-initial-bars {
+        --size: 0.75px;
+        position: relative;
+        display: block;
+        color: #e6e6e6;
+        width: calc(8 * var(--size));
+        height: calc(40 * var(--size));
+        border-radius: calc(4 * var(--size));
+        background: currentColor;
+        animation: appInitialBars 0.3s 0.3s linear infinite alternate;
       }
-      html[data-theme="light"] .app-initial-spinner {
-        color: #787774;
+      .app-initial-bars::before,
+      .app-initial-bars::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: calc(20 * var(--size));
+        width: calc(8 * var(--size));
+        height: calc(40 * var(--size));
+        border-radius: calc(4 * var(--size));
+        background: currentColor;
+        transform: translateY(-50%);
+        animation: appInitialBars 0.3s 0.45s linear infinite alternate;
+      }
+      .app-initial-bars::before {
+        left: calc(-20 * var(--size));
+        animation-delay: 0s;
+      }
+      html[data-theme="light"] .app-initial-bars {
+        color: #0a0a0a;
+      }
+      @keyframes appInitialBars {
+        0% { height: calc(48 * var(--size)); }
+        100% { height: calc(4 * var(--size)); }
       }
     </style>
   </head>
   <body>
     <div id="root">
       <div class="app-initial-loader" role="status" aria-label="Загрузка приложения...">
-        <svg class="app-initial-spinner" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <circle cx="12" cy="12" r="9.5" stroke="currentColor" stroke-width="2.2" style="opacity: 0.15;" />
-          <circle cx="12" cy="12" r="9.5" stroke="currentColor" stroke-width="2.2" stroke-dasharray="45 15" stroke-linecap="round" />
-        </svg>
+        <span class="app-initial-bars" aria-hidden="true"></span>
       </div>
     </div>
     <script type="module" src="/src/main.tsx"></script>

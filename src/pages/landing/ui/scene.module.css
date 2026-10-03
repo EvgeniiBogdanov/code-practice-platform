@@ -1,0 +1,100 @@
+/*
+ * Scroll scenes. Each landing section fills a viewport, snaps softly, and its layers move at
+ * different speeds through scroll-driven animations (progressive enhancement: browsers without
+ * `animation-timeline` keep the static layout and the IntersectionObserver reveals).
+ * Parallax uses the individual `translate` property so it never fights a layer's own `transform`.
+ */
+:global(html):has(.scene) {
+  scroll-snap-type: y proximity;
+}
+
+/*
+ * Large screens: mandatory snapping plus `scroll-snap-stop: always` on every scene, so a light
+ * scroll settles on the next scene and a hard fling still stops at each one instead of skipping.
+ * Small screens keep `proximity`: tall scenes must stay freely readable.
+ */
+@media (min-width: 768px) and (min-height: 600px) and (prefers-reduced-motion: no-preference) {
+  :global(html):has(.scene) {
+    scroll-snap-type: y mandatory;
+  }
+}
+
+.scene {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100svh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+/* Doubled class beats each section's own padding; the top clears the fixed header */
+.scene.scene {
+  padding-top: calc(var(--landing-nav-height) + var(--space-4));
+  padding-bottom: var(--space-6);
+
+  /* Tighter rhythm so a scene fits one screen */
+  --landing-stack-space: clamp(20px, 3svh, 36px);
+  --fs-landing-h1: clamp(2rem, min(3.6vw, 6svh), 3.25rem);
+}
+
+/* Content of the scene, vertically centred above the cue */
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .depthSlow,
+    .depthFast {
+      animation: sceneDrift linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+
+    .depthSlow {
+      --drift: 5vh;
+    }
+
+    .depthFast {
+      --drift: 12vh;
+    }
+
+    /* The whole scene settles in and fades while it leaves */
+    .body {
+      animation: sceneExit linear both;
+      animation-timeline: view();
+      animation-range: exit 20% exit 100%;
+    }
+  }
+}
+
+@keyframes sceneDrift {
+  from {
+    translate: 0 var(--drift);
+  }
+  to {
+    translate: 0 calc(var(--drift) * -1);
+  }
+}
+
+@keyframes sceneExit {
+  to {
+    opacity: 0.25;
+  }
+}
+
+/* While the scripted glide runs, native snapping would fight it */
+:global(html[data-scene-scrolling]) {
+  scroll-snap-type: none !important;
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html):has(.scene) {
+    scroll-snap-type: none;
+  }
+}

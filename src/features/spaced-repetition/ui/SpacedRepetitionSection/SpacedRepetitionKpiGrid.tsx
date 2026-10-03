@@ -30,7 +30,7 @@ export const SpacedRepetitionKpiGrid = memo(
         <div className={styles.kpiCard}>
           <div className={styles.kpiHeader}>
             <Zap size={13} className={styles.kpiIconAmber} />
-            <span>В цикле SM-2</span>
+            <span>В цикле повторения</span>
           </div>
           <div className={styles.kpiValRow}>
             <span className={styles.kpiVal}>{totalReviewed}</span>

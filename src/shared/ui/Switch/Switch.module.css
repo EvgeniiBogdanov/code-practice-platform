@@ -56,7 +56,7 @@
 
 /* Checked state */
 .nativeInput:checked + .track {
-  background-color: var(--accent-blue, #2383e2);
+  background-color: var(--accent-primary, #2383e2);
 }
 
 .nativeInput:checked + .track .thumb {
@@ -66,7 +66,7 @@
 
 /* Focus visible state */
 .nativeInput:focus-visible + .track {
-  outline: 2px solid var(--accent-blue, #58a6ff);
+  outline: 2px solid var(--accent-primary, #58a6ff);
   outline-offset: 2px;
 }
 

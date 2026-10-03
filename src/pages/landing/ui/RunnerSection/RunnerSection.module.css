@@ -1,0 +1,112 @@
+.section {
+  padding: var(--landing-section-space) var(--landing-gutter);
+  background: var(--bg-sidebar);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  align-items: center;
+  gap: var(--space-16);
+  max-width: var(--landing-container);
+  margin: 0 auto;
+}
+
+/* The preview window brings its own border; no outer frame or shadow */
+.visual {
+  --shadow-lg: none;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+}
+
+.points {
+  display: flex;
+  flex-direction: column;
+  margin: var(--space-8) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.point {
+  position: relative;
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--border-color);
+}
+
+.point::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 100%;
+  height: var(--space-px);
+  background: var(--text-main);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 700ms var(--ease-out-expo);
+}
+
+.point:hover::before {
+  transform: scaleX(1);
+}
+
+.pointTitle {
+  margin: 0;
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-h3);
+  color: var(--text-main);
+}
+
+.pointText {
+  max-width: 26rem;
+  margin: var(--space-1-5) 0 0;
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-body);
+  color: var(--text-muted);
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: auto;
+  margin-top: var(--space-4);
+  padding: 0;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semibold);
+  color: var(--text-main);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.link:hover {
+  color: var(--text-main);
+  background: transparent;
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+}
+
+.link:active {
+  transform: none;
+  background: transparent;
+}
+
+.link svg {
+  transition: transform 300ms var(--ease-out-expo);
+}
+
+.link:hover svg {
+  transform: translateX(var(--space-1));
+}
+
+@media (max-width: 960px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-10);
+  }
+}

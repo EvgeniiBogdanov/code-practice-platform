@@ -98,3 +98,33 @@
 .typescript .barFill {
   background: var(--color-ts);
 }
+
+.home .countBadge {
+  color: var(--text-main);
+}
+
+.stackedBar {
+  display: block;
+  width: 100%;
+  height: 4px;
+}
+
+.stackedTrack {
+  fill: var(--border-editor);
+}
+
+.segment_javascript {
+  fill: var(--color-js-bar);
+}
+
+.segment_typescript {
+  fill: var(--color-ts);
+}
+
+.segment_react {
+  fill: var(--color-react);
+}
+
+.segment_algorithms {
+  fill: var(--color-algo);
+}

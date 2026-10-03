@@ -1,0 +1,181 @@
+.section {
+  padding: var(--landing-section-space) var(--landing-gutter);
+  background: var(--bg-sidebar);
+}
+
+.gallery {
+  --card-gap: var(--space-5);
+
+  overflow: hidden;
+  margin: var(--landing-stack-space) calc(var(--landing-gutter) * -1) 0;
+  padding-block: var(--space-2);
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  animation: scrollLoop 60s linear infinite;
+}
+
+.gallery:hover .track,
+.gallery:focus-within .track {
+  animation-play-state: paused;
+}
+
+.group {
+  display: flex;
+  gap: var(--card-gap);
+  padding-right: var(--card-gap);
+}
+
+.card {
+  --section-color: var(--accent-blue);
+  --section-tint: var(--accent-blue-bg);
+
+  position: relative;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 36rem;
+  overflow: hidden;
+  padding: var(--space-6);
+  background: var(--bg-card);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.card_javascript {
+  --section-color: var(--color-js);
+  --section-tint: var(--color-js-bg);
+}
+
+.card_typescript {
+  --section-color: var(--color-ts);
+  --section-tint: var(--color-ts-bg);
+}
+
+.card_react {
+  --section-color: var(--color-react);
+  --section-tint: var(--color-react-bg);
+}
+
+.card_algorithms {
+  --section-color: var(--color-algo);
+  --section-tint: var(--color-algo-bg);
+}
+
+.cardHeader {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.iconBox {
+  display: grid;
+  place-items: center;
+  width: var(--space-10);
+  height: var(--space-10);
+  background: color-mix(in srgb, var(--section-color) 14%, transparent);
+  border-radius: var(--radius-md);
+}
+
+.cardTitle {
+  flex: 1;
+  margin: 0;
+  font-size: var(--fs-landing-h3);
+  font-weight: var(--fw-medium);
+  letter-spacing: -0.028em;
+  color: var(--text-main);
+}
+
+.description {
+  position: relative;
+  flex: 1;
+  margin: 0;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-muted);
+}
+
+.topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.topic {
+  padding: var(--space-0-5) var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  color: var(--text-muted);
+  background: var(--state-hover);
+  border-radius: var(--radius-xs);
+}
+
+.open {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  height: auto;
+  margin-top: var(--space-1);
+  padding: var(--space-1-5) var(--space-3);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--section-color);
+  background: var(--section-tint);
+  border: 0;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: filter var(--transition-standard);
+}
+
+.open:hover {
+  color: var(--section-color);
+  background: var(--section-tint);
+  filter: brightness(1.15);
+}
+
+.open:active {
+  transform: none;
+}
+
+.open svg {
+  transition: transform 300ms var(--ease-out-expo);
+}
+
+.open:hover svg {
+  transform: translateX(var(--space-1));
+}
+
+@media (max-width: 640px) {
+  .card {
+    width: min(86vw, 28rem);
+  }
+}
+
+@keyframes scrollLoop {
+  to {
+    transform: translateX(calc(-100% / 3));
+  }
+}
+
+/* Without motion the gallery becomes a plain swipeable row */
+@media (prefers-reduced-motion: reduce) {
+  .gallery {
+    overflow-x: auto;
+  }
+
+  .track {
+    animation: none;
+  }
+
+  .group:not(:first-child) {
+    display: none;
+  }
+}

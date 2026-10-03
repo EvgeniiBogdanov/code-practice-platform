@@ -36,7 +36,7 @@
 
 .tab.active {
   color: var(--text-main);
-  border-bottom-color: var(--accent-blue);
+  border-bottom-color: var(--accent-primary);
   background: transparent;
 }
 

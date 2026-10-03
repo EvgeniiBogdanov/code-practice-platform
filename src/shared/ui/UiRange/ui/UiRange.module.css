@@ -26,7 +26,7 @@
   width: var(--space-2-5);
   height: var(--space-2-5);
   border-radius: var(--radius-full);
-  background: var(--accent-blue);
+  background: var(--accent-primary);
   border: none;
   margin-top: calc(var(--space-px) - var(--space-1));
   transition:
@@ -34,7 +34,7 @@
     background var(--transition-fast);
 }
 .range:hover::-webkit-slider-thumb {
-  background: var(--accent-blue-hover);
+  background: var(--accent-primary-hover);
   transform: scale(1.15);
 }
 .range:active::-webkit-slider-thumb {
@@ -43,7 +43,7 @@
 .range:focus-visible::-webkit-slider-thumb {
   box-shadow:
     0 0 0 var(--space-0-5) var(--bg-editor-status),
-    0 0 0 var(--space-1) var(--accent-blue);
+    0 0 0 var(--space-1) var(--accent-primary);
 }
 .range::-moz-range-track {
   width: 100%;
@@ -60,14 +60,14 @@
   width: var(--space-2-5);
   height: var(--space-2-5);
   border-radius: var(--radius-full);
-  background: var(--accent-blue);
+  background: var(--accent-primary);
   border: none;
   transition:
     transform var(--transition-fast),
     background var(--transition-fast);
 }
 .range:hover::-moz-range-thumb {
-  background: var(--accent-blue-hover);
+  background: var(--accent-primary-hover);
   transform: scale(1.15);
 }
 .range:active::-moz-range-thumb {
@@ -76,10 +76,10 @@
 .range:focus-visible::-moz-range-thumb {
   box-shadow:
     0 0 0 var(--space-0-5) var(--bg-editor-status),
-    0 0 0 var(--space-1) var(--accent-blue);
+    0 0 0 var(--space-1) var(--accent-primary);
 }
 .range::-moz-range-progress {
-  background: var(--accent-blue);
+  background: var(--accent-primary);
   height: var(--space-1);
   border-radius: var(--radius-full);
 }

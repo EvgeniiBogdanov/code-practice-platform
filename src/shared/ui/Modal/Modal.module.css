@@ -174,7 +174,7 @@
   outline: none;
   box-shadow:
     0 0 0 2px var(--bg-card),
-    0 0 0 4px var(--accent-blue);
+    0 0 0 4px var(--accent-primary);
 }
 
 .content {

@@ -130,7 +130,7 @@ export const TaskPageSkeleton = memo(
             )}
           </div>
 
-          {/* SM-2 Rating Bar */}
+          {/* Spaced-repetition rating bar */}
           {resolvedTask ? (
             <TaskReviewRatingBar taskId={resolvedTask.id} task={resolvedTask} />
           ) : (

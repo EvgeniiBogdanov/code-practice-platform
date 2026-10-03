@@ -113,6 +113,12 @@
   --accent-blue-bg: rgba(88, 166, 255, 0.14);
   --accent-blue-border: rgba(88, 166, 255, 0.28);
 
+  /* Brand accent: buttons, controls, focus. Blue in dark, black in light. */
+  --accent-primary: var(--accent-blue);
+  --accent-primary-hover: var(--accent-blue-hover);
+  --accent-primary-bg: var(--accent-blue-bg);
+  --accent-primary-border: var(--accent-blue-border);
+
   --accent-purple: #c084fc;
   --accent-purple-hover: #d8b4fe;
   --accent-purple-bg: rgba(192, 132, 252, 0.14);
@@ -362,44 +368,49 @@
    ========================================== */
 [data-theme="light"] {
   color-scheme: light;
-  --bg-app: #faf9f7;
-  --bg-sidebar: #f6f4f1;
-  --bg-card: #fffefa;
+  --bg-app: #ffffff;
+  --bg-sidebar: #f4f4f5;
+  --bg-card: #ffffff;
   --bg-popover: #ffffff;
-  --bg-subtle: #f7f4ef;
-  --bg-deep: #f3efe9;
+  --bg-subtle: #f4f4f5;
+  --bg-deep: #ececee;
   --bg-elevated: #ffffff;
   --bg-editor: #ffffff;
-  --bg-editor-status: #f8f6f2;
+  --bg-editor-status: #f7f7f8;
   --bg-input: #ffffff;
-  --bg-input-hover: #fbf8f3;
+  --bg-input-hover: #fafafa;
   --bg-input-focus: #ffffff;
-  --bg-tooltip-code: #f8f5f0;
-  --bg-surface: #f4f1ed;
+  --bg-tooltip-code: #f7f7f8;
+  --bg-surface: #f4f4f5;
   --bg-overlay: rgba(15, 15, 15, 0.45);
 
-  --border-color: #e6e0d8;
-  --border-strong: #c7bbad;
-  --border-editor: #e5ded4;
-  --border-hover: #b8a998;
+  --border-color: #e4e4e7;
+  --border-strong: #c4c4c8;
+  --border-editor: #e4e4e7;
+  --border-hover: #a1a1a6;
 
-  --text-main: #292725;
-  --text-muted: #57524d;
-  --fg-muted: #665f58;
-  --text-placeholder: #665f58;
-  --text-dimmed: #665f58;
-  --text-secondary: #292725;
+  --text-main: #0a0a0a;
+  --text-muted: #52525b;
+  --fg-muted: #5f5f66;
+  --text-placeholder: #5f5f66;
+  --text-dimmed: #5f5f66;
+  --text-secondary: #0a0a0a;
   --text-on-accent: #ffffff;
 
-  --state-hover: #e4ded791;
-  --state-active: #e4ded7;
-  --state-selected: #e7d8c8;
+  --state-hover: #e4e4e791;
+  --state-active: #e4e4e7;
+  --state-selected: #e4e4e7;
 
   /* Quiet accents maintain AA text contrast on the light surfaces. */
   --accent-blue: #3f5f95;
   --accent-blue-hover: #355182;
   --accent-blue-bg: rgba(63, 95, 149, 0.1);
   --accent-blue-border: rgba(63, 95, 149, 0.23);
+
+  --accent-primary: #0a0a0a;
+  --accent-primary-hover: #2b2b2e;
+  --accent-primary-bg: rgba(10, 10, 10, 0.06);
+  --accent-primary-border: rgba(10, 10, 10, 0.18);
 
   --accent-purple: #795082;
   --accent-purple-hover: #63406c;
@@ -471,9 +482,9 @@
   --color-algo: var(--accent-purple);
   --color-algo-bg: var(--accent-purple-bg);
   --color-algo-border: var(--accent-purple-border);
-  --color-home: var(--accent-orange);
-  --color-home-bg: var(--accent-orange-bg);
-  --color-home-border: var(--accent-orange-border);
+  --color-home: var(--accent-primary);
+  --color-home-bg: var(--accent-primary-bg);
+  --color-home-border: var(--accent-primary-border);
 
   /* Status Colors Light */
   --color-status-solved: var(--accent-green);
@@ -582,4 +593,47 @@
   --code-step-font-22: 22px;
   --code-step-font-23: 23px;
   --code-step-font-24: 24px;
+}
+
+/* ==========================================
+   8. EXTENDED SCALE, MOTION & LANDING TOKENS
+   ========================================== */
+:root {
+  --space-14: 56px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+
+  --radius-3xl: 24px;
+
+  /* Shared card surface: dashboards, KPI tiles, practice cards */
+  --card-radius: var(--radius-2xl);
+  --card-padding: var(--space-5) var(--space-6);
+  --card-gap: var(--space-4);
+  --card-title-size: 16px;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.22, 0.7, 0.2, 1);
+  --duration-reveal: 900ms;
+  --reveal-step: 90ms;
+  --reveal-distance: 32px;
+  --reveal-blur: 6px;
+
+  --landing-container: 1200px;
+  --landing-container-wide: 1440px;
+  --landing-gutter: clamp(20px, 4vw, 32px);
+  --landing-nav-height: 64px;
+  --landing-section-space: clamp(72px, 10vw, 128px);
+  --landing-stack-space: clamp(40px, 6vw, 80px);
+
+  --font-landing-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --fs-display: clamp(2.75rem, 4.4vw, 3.75rem);
+  --fs-landing-h1: clamp(2.25rem, 4.2vw, 3.75rem);
+  --fs-landing-h2: clamp(1.75rem, 3vw, 2.5rem);
+  --fs-landing-h3: clamp(1.2rem, 1.6vw, 1.45rem);
+  --fs-landing-lead: 1.0625rem;
+  --ls-display: -0.0375em;
+  --ls-landing-heading: -0.025em;
+  --lh-display: 1.1;
 }

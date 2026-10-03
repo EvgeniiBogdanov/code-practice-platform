@@ -62,9 +62,12 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       treeshake: {
         // These public APIs only re-export modules. Unused exports must not pull
-        // their component CSS and feature implementations into the app shell.
+        // their component CSS and feature implementations into the app shell, and
+        // the landing entry must not evaluate workspace stores it never reads.
         moduleSideEffects: (id) =>
-          /\/src\/(shared\/ui|entities\/task|features\/spaced-repetition)\/index\.ts$/.test(id)
+          /\/src\/(shared\/(ui|auth)|entities\/(task|review|ui-state)|features\/spaced-repetition)\/index\.ts$/.test(
+            id
+          )
             ? false
             : null,
       },
@@ -90,7 +93,9 @@ export default defineConfig(({ mode }) => ({
             if (id.includes("@xterm")) {
               return "vendor-xterm";
             }
-            if (id.includes("marked") || id.includes("dompurify")) {
+            // Exact package match: a substring check also caught lucide's `book-marked`
+            // icon and dragged the whole icon runtime (and every icon user) into this chunk.
+            if (/\/node_modules\/(marked|dompurify)\//.test(id)) {
               return "vendor-markdown";
             }
             if (id.includes("@tanstack")) {

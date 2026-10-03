@@ -1,0 +1,93 @@
+.profileCard {
+  inset: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--bg-sidebar);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: var(--space-10);
+  height: var(--space-10);
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  color: var(--text-on-accent);
+  background: var(--color-home);
+  border-radius: var(--radius-md);
+}
+
+.identity {
+  flex: 1;
+  min-width: 0;
+}
+
+.name {
+  margin: 0;
+  overflow: hidden;
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-semibold);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--text-main);
+}
+
+.type {
+  margin: 0;
+  font-size: var(--fs-caption);
+  color: var(--fg-muted);
+}
+
+.greeting {
+  margin: 0;
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-h1);
+  line-height: var(--lh-tight);
+  color: var(--text-main);
+}
+
+/* Two columns regardless of the viewport-based breakpoints of KpiGrid */
+.profileCard .kpi {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2-5);
+}
+
+.nextTask {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding: var(--space-3);
+  font-size: var(--fs-body-sm);
+  color: var(--text-muted);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+}
+
+.nextTitle {
+  flex: 1;
+}
+
+.nextTitle b {
+  font-family: var(--font-mono);
+  font-weight: var(--fw-semibold);
+  color: var(--text-main);
+}
+
+.nextProbability {
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-success);
+}

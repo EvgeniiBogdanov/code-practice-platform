@@ -58,7 +58,7 @@ export const SpacedRepetitionDistributionTab = memo(
         </div>
 
         <div className={styles.legendCol}>
-          <div className={styles.legendHeader}>Уровни закрепления SM-2:</div>
+          <div className={styles.legendHeader}>Уровни закрепления:</div>
 
           <div className={styles.stageList}>
             {STAGES.map((stage) => (

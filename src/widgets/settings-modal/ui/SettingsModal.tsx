@@ -1,17 +1,33 @@
 import { memo, useState } from "react";
-import { Settings, Database, Palette, X } from "lucide-react";
+import { Settings, Database, Palette, X, UserRound, LogOut } from "lucide-react";
 import { clsx } from "clsx";
+import { useLocalAccountStore } from "@/shared/auth";
 import { Modal } from "@/shared/ui";
 import { useSettingsModal } from "../model/useSettingsModal";
+import { SettingsAccountSection } from "./SettingsAccountSection";
 import { SettingsResetSection } from "./SettingsResetSection";
 import { SettingsCustomizationSection } from "./SettingsCustomizationSection";
 import { SettingsConfirmModals } from "./SettingsConfirmModals";
 import styles from "./SettingsModal.module.css";
 
-export type SettingsTabType = "data" | "customization";
+export type SettingsTabType = "account" | "data" | "customization";
+
+const TAB_COPY: Record<SettingsTabType, { title: string; subtitle: string }> = {
+  account: { title: "Аккаунт", subtitle: "Имя локального профиля" },
+  customization: {
+    title: "Кастомизация",
+    subtitle: "Тема оформления, элементы интерфейса и персонализация помощника",
+  },
+  data: {
+    title: "Данные приложения",
+    subtitle: "Управление локальным хранилищем, графиком повторения и сбросом данных",
+  },
+};
 
 export const SettingsModal = memo(() => {
-  const [activeTab, setActiveTab] = useState<SettingsTabType>("customization");
+  const [selectedTab, setSelectedTab] = useState<SettingsTabType | null>(null);
+  const accountName = useLocalAccountStore((state) => state.account?.name);
+  const signOut = useLocalAccountStore((state) => state.signOut);
 
   const {
     isOpen,
@@ -30,6 +46,14 @@ export const SettingsModal = memo(() => {
     handleResetAllData,
   } = useSettingsModal();
 
+  // Every opening starts on the first tab of the sidebar.
+  const [wasOpen, setWasOpen] = useState(isOpen);
+  if (wasOpen !== isOpen) {
+    setWasOpen(isOpen);
+    if (isOpen) setSelectedTab(null);
+  }
+  const activeTab = selectedTab ?? (accountName ? "account" : "customization");
+
   return (
     <>
       <Modal
@@ -43,11 +67,11 @@ export const SettingsModal = memo(() => {
         <aside className={styles.settingsSidebar}>
           <div className={styles.sidebarTop}>
             <div className={styles.workspaceHeader}>
-              <div className={styles.workspaceIcon}>
-                <Settings size={15} />
+              <div className={clsx(styles.workspaceIcon, accountName && styles.profileAvatar)}>
+                {accountName ? accountName.charAt(0).toUpperCase() : <Settings size={15} />}
               </div>
               <div className={styles.workspaceInfo}>
-                <span className={styles.workspaceName}>Настройки</span>
+                <span className={styles.workspaceName}>{accountName ?? "Настройки"}</span>
                 <span className={styles.workspaceType}>Локальный профиль</span>
               </div>
             </div>
@@ -55,10 +79,20 @@ export const SettingsModal = memo(() => {
             <div className={styles.sidebarNavGroup}>
               <div className={styles.sidebarSectionTitle}>Управление</div>
               <nav className={styles.settingsNav} aria-label="Вкладки настроек">
+                {accountName && (
+                  <button
+                    type="button"
+                    className={clsx(styles.navBtn, activeTab === "account" && styles.active)}
+                    onClick={() => setSelectedTab("account")}
+                  >
+                    <UserRound size={15} className={styles.navBtnIcon} />
+                    <span className={styles.navBtnLabel}>Аккаунт</span>
+                  </button>
+                )}
                 <button
                   type="button"
                   className={clsx(styles.navBtn, activeTab === "customization" && styles.active)}
-                  onClick={() => setActiveTab("customization")}
+                  onClick={() => setSelectedTab("customization")}
                 >
                   <Palette size={15} className={styles.navBtnIcon} />
                   <span className={styles.navBtnLabel}>Кастомизация</span>
@@ -66,7 +100,7 @@ export const SettingsModal = memo(() => {
                 <button
                   type="button"
                   className={clsx(styles.navBtn, activeTab === "data" && styles.active)}
-                  onClick={() => setActiveTab("data")}
+                  onClick={() => setSelectedTab("data")}
                 >
                   <Database size={15} className={styles.navBtnIcon} />
                   <span className={styles.navBtnLabel}>Данные приложения</span>
@@ -74,6 +108,19 @@ export const SettingsModal = memo(() => {
               </nav>
             </div>
           </div>
+          {accountName && (
+            <div className={styles.sidebarBottom}>
+              <button
+                type="button"
+                className={clsx(styles.navBtn, styles.signOutBtn)}
+                onClick={signOut}
+              >
+                <LogOut size={15} className={styles.navBtnIcon} />
+                <span className={styles.navBtnLabel}>Выйти из профиля</span>
+              </button>
+              <p className={styles.signOutHint}>Прогресс и решения останутся в этом браузере</p>
+            </div>
+          )}
         </aside>
 
         <main className={styles.settingsMain}>
@@ -88,16 +135,13 @@ export const SettingsModal = memo(() => {
 
           <div className={styles.mainScrollable}>
             <div className={styles.pageHeader}>
-              <h2 className={styles.pageTitle}>
-                {activeTab === "customization" ? "Кастомизация" : "Данные приложения"}
-              </h2>
-              <p className={styles.pageSubtitle}>
-                {activeTab === "customization"
-                  ? "Тема оформления, элементы интерфейса и персонализация помощника"
-                  : "Управление локальным хранилищем, графиком повторения и сбросом данных"}
-              </p>
+              <h2 className={styles.pageTitle}>{TAB_COPY[activeTab].title}</h2>
+              <p className={styles.pageSubtitle}>{TAB_COPY[activeTab].subtitle}</p>
             </div>
 
+            {activeTab === "account" && accountName && (
+              <SettingsAccountSection accountName={accountName} />
+            )}
             {activeTab === "data" && (
               <SettingsResetSection
                 onOpenResetReviews={() => setResetReviewsConfirmOpen(true)}

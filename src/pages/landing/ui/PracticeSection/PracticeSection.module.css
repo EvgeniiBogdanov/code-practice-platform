@@ -1,0 +1,169 @@
+.section {
+  padding: var(--landing-section-space) var(--landing-gutter);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  align-items: center;
+  gap: var(--space-16);
+  max-width: var(--landing-container);
+  margin: var(--landing-stack-space) auto 0;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.step {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: var(--space-4);
+  width: 100%;
+  height: auto;
+  padding: var(--space-5) var(--space-4) var(--space-5) var(--space-7);
+  font: inherit;
+  text-align: left;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: background-color var(--transition-medium);
+}
+
+.step:hover {
+  background: var(--state-hover);
+  border-color: transparent;
+}
+
+.step:active {
+  transform: none;
+  background: var(--state-hover);
+}
+
+.track {
+  position: absolute;
+  top: var(--space-5);
+  bottom: var(--space-5);
+  left: var(--space-2);
+  width: var(--space-0-5);
+  overflow: hidden;
+  border-radius: var(--radius-full);
+  background: var(--border-color);
+}
+
+.progress {
+  position: absolute;
+  inset: 0;
+  background: var(--color-home);
+  transform-origin: top;
+  animation: stepProgress 7s linear forwards;
+}
+
+.progressPaused {
+  animation-play-state: paused;
+}
+
+.stepIndex {
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  color: var(--fg-muted);
+}
+
+.stepTitle {
+  font-size: var(--fs-landing-h3);
+  font-weight: var(--fw-medium);
+  letter-spacing: -0.028em;
+  letter-spacing: var(--ls-h2);
+  line-height: var(--lh-tight);
+  color: var(--fg-muted);
+  transition: color 400ms ease;
+}
+
+.step:hover .stepTitle,
+.stepActive .stepTitle {
+  color: var(--text-main);
+}
+
+.stepActive .stepIndex {
+  color: var(--color-home);
+}
+
+.stepBody {
+  grid-column: 2;
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 600ms var(--ease-out-expo),
+    opacity 500ms ease;
+}
+
+.stepActive .stepBody {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.stepClip {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.stepText {
+  display: block;
+  margin-top: var(--space-3);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-muted);
+}
+
+/* ---------- Visual ---------- */
+/* The preview window brings its own border; no outer frame or shadow */
+.visual {
+  position: relative;
+  --shadow-lg: none;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 500ms ease;
+}
+
+.layerActive {
+  opacity: 1;
+}
+
+@media (max-width: 960px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+  }
+
+  .visual {
+    order: -1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No auto-rotation: the global reset would otherwise finish this animation instantly. */
+  .progress {
+    animation: none;
+    transform: none;
+  }
+}
+
+@keyframes stepProgress {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}

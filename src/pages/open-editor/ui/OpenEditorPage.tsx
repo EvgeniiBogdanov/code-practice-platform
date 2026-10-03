@@ -384,7 +384,7 @@ export const OpenEditorPage = ({
     }
 
     return navigate({
-      to: "/",
+      to: "/home",
       resetScroll: false,
     });
   }, [navigate, task, tab]);
@@ -420,7 +420,11 @@ export const OpenEditorPage = ({
       <div className={styles.notFound}>
         <FileQuestion size={40} />
         <h2>Задача #{taskId} не найдена</h2>
-        <button type="button" className={styles.actionBtn} onClick={() => navigate({ to: "/" })}>
+        <button
+          type="button"
+          className={styles.actionBtn}
+          onClick={() => navigate({ to: "/home" })}
+        >
           <Home size={14} />
           <span>На главную</span>
         </button>

@@ -22,7 +22,7 @@ describe("SpacedRepetitionDistributionTab", () => {
   it("renders all 4 stages with correct titles and descriptions", () => {
     render(<SpacedRepetitionDistributionTab masteryStats={mockStats} scopeLabel="JavaScript" />);
 
-    expect(screen.getByText("Уровни закрепления SM-2:")).toBeInTheDocument();
+    expect(screen.getByText("Уровни закрепления:")).toBeInTheDocument();
     expect(screen.getByText("Мастер (30-60+ дней)")).toBeInTheDocument();
     expect(screen.getByText("Закрепление (7-14 дней)")).toBeInTheDocument();
     expect(screen.getByText("Изучение (1-3 дня)")).toBeInTheDocument();

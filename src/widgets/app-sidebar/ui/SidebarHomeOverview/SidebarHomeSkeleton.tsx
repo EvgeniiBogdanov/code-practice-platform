@@ -19,6 +19,8 @@ export const SidebarHomeSkeleton = memo(
   ({ className }: SidebarHomeSkeletonProps): React.JSX.Element => {
     return (
       <div className={clsx(styles.homeOverviewList, className)} aria-label="Загрузка навигации...">
+        {/* Placeholder for the overall progress card */}
+        <UiSkeleton width="100%" height={46} radius={6} />
         {HOME_ITEMS.map((item, idx) => (
           <div key={idx} className={styles.homeOverviewItem} style={{ pointerEvents: "none" }}>
             <UiSkeleton width={17} height={17} radius={4} />

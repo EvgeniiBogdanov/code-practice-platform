@@ -5,7 +5,7 @@ import styles from "./HomePage.module.css";
 
 describe("HomeHeroHeader", () => {
   it("renders app icon, title heading and version badge", () => {
-    const { container } = render(<HomeHeroHeader grandTotal={345} />);
+    const { container } = render(<HomeHeroHeader />);
 
     // App icon
     const icon = container.querySelector(`.${styles.titleIcon}`);
@@ -22,8 +22,5 @@ describe("HomeHeroHeader", () => {
     const badge = container.querySelector(`.${styles.versionTag}`);
     expect(badge).toBeInTheDocument();
     expect(badge?.textContent).toMatch(/^v\d+\.\d+\.\d+/);
-
-    // Subtitle
-    expect(screen.getByText(/345 задач/)).toBeInTheDocument();
   });
 });

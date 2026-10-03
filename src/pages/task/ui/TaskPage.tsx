@@ -64,7 +64,7 @@ export const TaskPage = React.memo<TaskPageProps>(
         <div className={styles.notFound}>
           <h2>Задача #{taskId} не найдена</h2>
           <p>Возможно, задача была переименована или перемещена.</p>
-          <Link to="/" className={styles.notFoundLink}>
+          <Link to="/home" className={styles.notFoundLink}>
             Вернуться на главную
           </Link>
         </div>
@@ -246,7 +246,7 @@ export const TaskPage = React.memo<TaskPageProps>(
             </div>
           </div>
 
-          {/* Шкала интервального повторения SM-2 */}
+          {/* Шкала интервального повторения */}
           {task ? (
             <TaskReviewRatingBar taskId={task.id} task={task} />
           ) : (

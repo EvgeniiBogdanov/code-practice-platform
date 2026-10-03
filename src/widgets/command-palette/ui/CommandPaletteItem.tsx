@@ -2,8 +2,21 @@ import React, { memo } from "react";
 import { FileText, Brain } from "lucide-react";
 import { clsx } from "clsx";
 import type { Task } from "@/entities/task/meta";
-import { getScriptGroupMeta, getAlgoGroupMeta, REACT_GROUPS_CONFIG } from "@/entities/task";
-import { Badge, type BadgeVariant, JavaScriptIcon, TypeScriptIcon, ReactIcon } from "@/shared/ui";
+import {
+  getScriptGroupMeta,
+  getAlgoGroupMeta,
+  getAlgoTaskProbabilityInfo,
+  getJsTaskProbabilityInfo,
+  REACT_GROUPS_CONFIG,
+} from "@/entities/task";
+import {
+  Badge,
+  GaugeIndicator,
+  type BadgeVariant,
+  JavaScriptIcon,
+  TypeScriptIcon,
+  ReactIcon,
+} from "@/shared/ui";
 import styles from "./CommandPalette.module.css";
 
 const SECTION_CONFIG: Record<
@@ -94,6 +107,11 @@ export const CommandPaletteItem = memo(
   ({ task, isSelected, showSectionBadge, onSelect, onMouseEnter }: CommandPaletteItemProps) => {
     const sec = SECTION_CONFIG[task.section] || SECTION_CONFIG.react;
     const diff = task.difficulty ? getDifficultyMeta(task.difficulty) : null;
+    const probability =
+      (task.section === "algorithms"
+        ? getAlgoTaskProbabilityInfo(task)
+        : getJsTaskProbabilityInfo(task)
+      )?.probability ?? null;
 
     return (
       <button
@@ -132,6 +150,16 @@ export const CommandPaletteItem = memo(
           >
             {task.group}
           </Badge>
+        )}
+
+        {probability !== null && (
+          <span
+            className={styles.probability}
+            title={`Вероятность на интервью: ${Math.round(probability)}%`}
+          >
+            <GaugeIndicator value={probability} size={13} />
+            {Math.round(probability)}%
+          </span>
         )}
       </button>
     );

@@ -127,7 +127,9 @@
   color: var(--text-muted);
   font-size: 13px;
   font-weight: 500;
-  padding: 6px 10px;
+  height: 32px;
+  padding: 0 10px;
+  line-height: 1;
   border-radius: var(--radius-md, 6px);
   cursor: pointer;
   display: flex;
@@ -173,6 +175,7 @@
 }
 
 .navBtnIcon {
+  display: block;
   flex-shrink: 0;
   opacity: 0.8;
 }
@@ -183,6 +186,9 @@
 
 .navBtnLabel {
   flex: 1;
+  line-height: 16px;
+  /* Inter sits low in its line box next to a centred icon */
+  padding-bottom: 2px;
   min-width: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -451,4 +457,86 @@
     width: 100%;
     justify-content: flex-start;
   }
+}
+
+/* Local profile (account from the landing) */
+.profileAvatar {
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-bold);
+  color: var(--text-on-accent);
+  background: var(--color-home);
+}
+
+.sidebarBottom {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-color);
+}
+
+.navBtn.signOutBtn:hover {
+  color: var(--color-error);
+  background: var(--accent-red-bg);
+}
+
+.signOutHint {
+  margin: 0;
+  padding: 0 var(--space-2-5);
+  font-size: var(--fs-xs);
+  line-height: var(--lh-snug);
+  color: var(--fg-muted);
+}
+
+/* Account tab */
+.accountForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.accountControls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.accountField {
+  flex: 1;
+  max-width: 22rem;
+}
+
+.accountControls label {
+  flex-shrink: 0;
+}
+
+.accountError {
+  margin: 0;
+  font-size: var(--fs-caption);
+  color: var(--color-error);
+}
+
+.accountSaved {
+  margin: 0;
+  font-size: var(--fs-caption);
+  color: var(--color-success);
+}
+
+/* Title/badge and description/usage share rows so the two columns stay line-aligned */
+.storageRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 20px;
+  row-gap: 2px;
+  padding: 2px 0;
+}
+
+.storageUsage {
+  justify-self: end;
+  padding: 0 10px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--fg-muted);
 }

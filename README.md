@@ -1,217 +1,143 @@
 <div align="center">
 
-# <img src="public/favicon.svg" width="22" height="22" alt="" /> Code Practice Platform
+<img src="public/favicon.svg" width="56" height="56" alt="Code Practice Platform" />
 
-<sub><span style="color:gray">version: 2.4.18</span></sub>
+# Code Practice Platform
 
-<br />
-
-<img width="1536" height="1024" alt="Code Practice Platform Preview" src="https://github.com/user-attachments/assets/4f39e3d7-39f5-4053-8f5d-16c8d3189df2" />
-
-<br />
-
-[![Онлайн-версия](https://img.shields.io/badge/Ссылка_1-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://code-practice-platform-omega.vercel.app/home)
-
-[![Онлайн-версия](https://img.shields.io/badge/Ссылка_2-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://evgeniibogdanov.github.io/code-practice-platform/)
+**Практика, которая держит тебя в форме.**<br />
+Тренажёр для подготовки к frontend-собеседованиям и ежедневной поддержки навыков: 369 задач с реальных интервью, редактор уровня VS Code, эталонные решения и интервальные повторения.
 
 <br />
 
-[![GitHub Stars](https://img.shields.io/github/stars/EvgeniiBogdanov/code-practice-platform?style=flat-square&label=Stars&color=yellow&logo=github)](https://github.com/EvgeniiBogdanov/code-practice-platform/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/EvgeniiBogdanov/code-practice-platform?style=flat-square&label=Forks&color=blue&logo=github)](https://github.com/EvgeniiBogdanov/code-practice-platform/network/members)
-[![License](https://img.shields.io/github/license/EvgeniiBogdanov/code-practice-platform?style=flat-square&color=green)](LICENSE.md)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Strict_7.0-3178C6?style=flat-square&logo=typescript&logoColor=white)](tsconfig.json)
-[![FSD](https://img.shields.io/badge/Architecture-FSD_v2.1-blue?style=flat-square)](https://feature-sliced.design)
+[**Зеркало на Vercel**](https://code-practice-platform-omega.vercel.app/) &nbsp;·&nbsp; [**Зеркало на GitHub Pages**](https://evgeniibogdanov.github.io/code-practice-platform/)
 
 <br />
 
-**[🚀 Демо](https://code-practice-platform-omega.vercel.app/home)** ·
-**[✨ Возможности](#-ключевые-возможности)** ·
-**[🛠️ Стек](#️-технологический-стек)** ·
-**[⚙️ Установка](#️-установка-и-запуск)** ·
-**[⌨️ Горячие клавиши](#️-горячие-клавиши)** ·
-**[📜 Changelog](#-история-версий)**
+[![CI](https://img.shields.io/github/actions/workflow/status/EvgeniiBogdanov/code-practice-platform/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/EvgeniiBogdanov/code-practice-platform/actions/workflows/ci.yml)
+[![Version](https://img.shields.io/badge/version-2.4.20-black?style=flat-square)](CHANGELOG.md)
+[![License](https://img.shields.io/badge/license-source--available-black?style=flat-square)](LICENSE.md)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=white)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?style=flat-square&logo=typescript&logoColor=white)](tsconfig.json)
+[![Architecture](https://img.shields.io/badge/architecture-FSD_2.1-black?style=flat-square)](https://feature-sliced.design)
+[![Stars](https://img.shields.io/github/stars/EvgeniiBogdanov/code-practice-platform?style=flat-square&logo=github&color=black)](https://github.com/EvgeniiBogdanov/code-practice-platform/stargazers)
+
+<br />
+
+<img width="1536" height="1024" alt="Code Practice Platform — превью" src="https://github.com/user-attachments/assets/4f39e3d7-39f5-4053-8f5d-16c8d3189df2" />
 
 </div>
 
----
+<br />
 
-## ✨ Ключевые возможности
+## О проекте
 
-<table>
-  <tr>
-    <td width="50%" valign="top">
-      <h3>🎯 330+ задач с реальных интервью</h3>
-      <p>Специализированный каталог задач по <b>JavaScript</b> (объекты, замыкания, Event Loop, асинхронность, полифилы), <b>TypeScript</b> (24 задачи от аннотаций до generics, событий и брендированных типов), <b>React 19 + TypeScript</b> и <b>алгоритмам</b>. Эталонные решения O(N) / O(1), вариативность подходов и чеклисты самопроверки.</p>
-    </td>
-    <td width="50%" valign="top">
-      <h3>📈 Индекс вероятности & мета-бейджи</h3>
-      <p>Оценка вероятности встретить задачу на live coding для Middle/Senior (BigTech, FinTech, E-commerce) с круговым <b>Gauge-индикатором</b> и системой смысловых тегов (алгоритм, паттерн, полифил, утилита).</p>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <h3>🤖 Интервальный помощник & SM-2</h3>
-      <p>Адаптированный алгоритм интервального закрепления (<code>1д → 3д → 7д → 14д → 30д</code>), интерактивный мотивационный помощник с отслеживанием просрочек, кастомизацией имени и возможностью исключения задач из цикла.</p>
-    </td>
-    <td width="50%" valign="top">
-      <h3>⚛️ React Live Runner & Сплит-режим</h3>
-      <p>Полноэкранный двухпанельный сплит (<b>70% код / 30% интерфейс</b>) с drag-and-drop ресайзом. Изолированная <code>iframe</code>-песочница с поддержкой React 19, TSX, CSS, Zustand/RTK и стримингом логов в консоль.</p>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <h3>🔍 Песочница кандидата & Code Review</h3>
-      <p>Запускаемый live-код с типичными багами и антипаттернами из реальных собеседований для тренировки навыка проведения технического Code Review.</p>
-    </td>
-    <td width="50%" valign="top">
-      <h3>⭐ Избранное & Быстрый поиск</h3>
-      <p>Полноценный раздел «Избранное» со структурированным деревом задач и фильтрами по статусу. Мгновенная палитра быстрого поиска <b>Command Palette</b> (<kbd>Cmd+K</kbd>) и таймер собеседования.</p>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <h3>💻 Продвинутый редактор кода</h3>
-      <p>VS Code-подобный редактор: мультикурсоры (<kbd>Cmd+D</kbd>), перемещение строк (<kbd>Alt+↑/↓</kbd>), подсветка синтаксиса JS/TSX/CSS/HTML, Emmet, автоформатирование <b>Prettier 3</b> и контекстный IntelliSense.</p>
-    </td>
-    <td width="50%" valign="top">
-      <h3>💾 Local-First & Zero-Lag Sync</h3>
-      <p>Двухуровневое хранилище (L1 In-Memory кэш + L2 <b>IndexedDB</b> с самовосстановлением схемы). Мгновенный отклик без задержек и межвкладочная синхронизация прогресса через <code>BroadcastChannel API</code>.</p>
-    </td>
-  </tr>
-</table>
+Собеседование решается практикой, а форма — регулярностью. Платформа собирает всё для этого в одном месте и работает без бэкенда: аккаунт — это только имя, а задачи, решения и прогресс хранятся в браузере.
 
----
+| Раздел         | Задач | Что внутри                                                              |
+| :------------- | ----: | :---------------------------------------------------------------------- |
+| **JavaScript** |   226 | Замыкания, Event Loop, Promise и полифилы, объекты, паттерны            |
+| **TypeScript** |    24 | От аннотаций до generics, утилитарных и брендированных типов            |
+| **React**      |    83 | Хуки React 19, рефакторинг, перерендеры, Zustand и Redux Toolkit        |
+| **Алгоритмы**  |    36 | Two Pointers, Sliding Window, графы и деревья с визуализацией O(N)/O(1) |
 
-## 🛠️ Технологический стек
+## Возможности
 
-<p align="center">
-  <img src="https://img.shields.io/badge/React_19.2-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React 19" />
-  <img src="https://img.shields.io/badge/TypeScript_7.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript 7.0" />
-  <img src="https://img.shields.io/badge/Vite_8_(Rolldown)-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite 8" />
-  <img src="https://img.shields.io/badge/FSD_v2.1-FF6B6B?style=for-the-badge&logo=codewars&logoColor=white" alt="FSD v2.1" />
-  <img src="https://img.shields.io/badge/TanStack_Router-FF4154?style=for-the-badge&logo=react&logoColor=white" alt="TanStack Router" />
-  <img src="https://img.shields.io/badge/Zustand_5-443e38?style=for-the-badge&logo=react&logoColor=white" alt="Zustand 5" />
-  <img src="https://img.shields.io/badge/Redux_Toolkit_2-764ABC?style=for-the-badge&logo=redux&logoColor=white" alt="Redux Toolkit 2" />
-  <img src="https://img.shields.io/badge/Nivo_Charts-FF4757?style=for-the-badge&logo=d3.js&logoColor=white" alt="Nivo Charts" />
-  <img src="https://img.shields.io/badge/xterm.js_6-000000?style=for-the-badge&logo=gnometerminal&logoColor=white" alt="xterm.js 6" />
-  <img src="https://img.shields.io/badge/Prettier_3-F7B93E?style=for-the-badge&logo=prettier&logoColor=black" alt="Prettier 3" />
-</p>
+- **Цикл практики.** Решение в редакторе, сверка с эталоном (O(N) / O(1), подводные камни, вопросы интервьюера) и закрепление повторениями.
+- **Индекс вероятности.** Оценка шанса встретить задачу на live coding уровня Middle и Senior и мета-бейджи: алгоритм, паттерн, полифил, утилита.
+- **Интервальные повторения.** Помощник планирует повторы через 1 → 3 → 7 → 14 → 30 дней, напоминает о просрочках и показывает прогресс освоения.
+- **Редактор уровня VS Code.** Мультикурсоры, перемещение строк, Emmet, автозакрытие тегов, форматирование Prettier 3, IntelliSense и проверка типов TypeScript.
+- **Живой запуск.** Сплит-режим 70/30 с изолированной `iframe`-песочницей: React 19, TSX, CSS, Zustand и Redux Toolkit, логи в консоль.
+- **Песочница кандидата.** Код с типичными багами и антипаттернами для тренировки Code Review.
+- **Визуализатор алгоритмов.** Пошаговые 2D/3D-сцены на Three.js.
+- **Быстрый поиск и избранное.** Command Palette (<kbd>⌘</kbd> <kbd>K</kbd>), дерево избранных задач и таймер собеседования.
+- **Local-first.** IndexedDB с кэшем в памяти и синхронизацией между вкладками через `BroadcastChannel`. Без почты, пароля и серверов.
 
-| Категория                     | Технологии                                                                                |
-| :---------------------------- | :---------------------------------------------------------------------------------------- |
-| **Frontend Core**             | React 19.2, TypeScript 7.0 (Strict), Vite 8 (Rolldown)                                    |
-| **Архитектура и роутинг**     | Feature-Sliced Design (FSD v2.1), TanStack Router (типизированная файловая маршрутизация) |
-| **Управление состоянием**     | Zustand 5 (UI и данные приложения), Redux Toolkit 2 (песочница Redux-задач)               |
-| **Исполнение кода & Sandbox** | Sucrase (транспиляция JSX/TSX/CommonJS), xterm.js 6, Web Workers, изолированный `iframe`  |
-| **Аналитика & графики**       | Nivo Charts (`@nivo/core`, `@nivo/pie`, `@nivo/bar`)                                      |
-| **Хранилище & синхронизация** | LocalStorage (L1-кэш), IndexedDB (L2 хранилище), `BroadcastChannel API`                   |
-| **Инструменты редактора**     | Prettier 3 Standalone, Emmet, лексеры JS/TSX/CSS/HTML, встроенный линтинг и IntelliSense  |
+## Быстрый старт
 
----
-
-## ⚙️ Установка и запуск
-
-Требуется установленный **Node.js** (LTS-версия) и npm.
+Нужны **Node.js** (LTS) и **npm**.
 
 ```bash
-# 1. Клонируйте репозиторий
 git clone https://github.com/EvgeniiBogdanov/code-practice-platform.git
 cd code-practice-platform
-
-# 2. Установите зависимости
 npm install
-
-# 3. Запустите dev-сервер
 npm run dev
 ```
 
-Приложение будет доступно по адресу, указанному в терминале (`http://localhost:4000`).
+Приложение откроется на <http://localhost:4000/code-practice-platform/>.
 
-Для сборки production-версии:
+| Команда                 | Назначение                       |
+| :---------------------- | :------------------------------- |
+| `npm run dev`           | Dev-сервер                       |
+| `npm run build`         | Production-сборка                |
+| `npm run preview`       | Локальный просмотр сборки        |
+| `npm run typecheck`     | Проверка типов                   |
+| `npm run lint`          | ESLint                           |
+| `npm run format:check`  | Проверка форматирования Prettier |
+| `npm run test:unit`     | Все тесты (Vitest)               |
+| `npm run test:coverage` | Тесты с отчётом о покрытии       |
 
-```bash
-npm run build
+## Технологии
+
+| Область           | Стек                                                                   |
+| :---------------- | :--------------------------------------------------------------------- |
+| Ядро              | React 19, TypeScript 7 (strict), Vite 8                                |
+| Архитектура       | Feature-Sliced Design 2.1, TanStack Router                             |
+| Состояние         | Zustand 5 (клиент), Redux Toolkit 2 (песочница Redux-задач)            |
+| Редактор и запуск | Sucrase, Prettier 3 Standalone, Emmet, xterm.js 6, Web Workers, iframe |
+| Визуализация      | Three.js, Nivo                                                         |
+| Хранилище         | IndexedDB, `BroadcastChannel`                                          |
+| Качество          | Vitest, Testing Library, ESLint, Prettier, GitHub Actions              |
+
+## Архитектура
+
+Код организован по [Feature-Sliced Design](https://feature-sliced.design): зависимости идут строго сверху вниз, слайсы открывают публичный API только через `index.ts`.
+
+```
+src/
+├── app/        инициализация, провайдеры, точки входа (лендинг и рабочее пространство)
+├── pages/      страницы: landing, home, task, favorites, open-editor …
+├── widgets/    крупные блоки интерфейса: сайдбар, шапка, модалки
+├── features/   пользовательские сценарии: редактор, запуск кода, повторения
+├── entities/   предметные сущности: задачи, прогресс, повторения
+└── shared/     UI-кит, библиотеки, конфиг
 ```
 
----
+Лендинг и рабочее пространство собираются отдельными бандлами: гость скачивает только лендинг, а приложение подгружается после создания локального аккаунта.
 
-## ⌨️ Горячие клавиши
+## Горячие клавиши
 
-### Редактор кода (VS Code Style)
+| macOS                                                 | Windows / Linux                                             | Действие                            |
+| :---------------------------------------------------- | :---------------------------------------------------------- | :---------------------------------- |
+| <kbd>⌘</kbd> <kbd>K</kbd>                             | <kbd>Ctrl</kbd> <kbd>K</kbd>                                | Быстрый поиск задач                 |
+| <kbd>⌘</kbd> <kbd>Enter</kbd>                         | <kbd>Ctrl</kbd> <kbd>Enter</kbd>                            | Запустить код                       |
+| <kbd>⌘</kbd> <kbd>D</kbd>                             | <kbd>Ctrl</kbd> <kbd>D</kbd>                                | Следующее совпадение (мультикурсор) |
+| <kbd>⌘</kbd> <kbd>⇧</kbd> <kbd>L</kbd>                | <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>L</kbd>               | Все совпадения выделенного слова    |
+| <kbd>⌥</kbd> <kbd>↑</kbd> / <kbd>↓</kbd>              | <kbd>Alt</kbd> <kbd>↑</kbd> / <kbd>↓</kbd>                  | Переместить строку или блок         |
+| <kbd>⇧</kbd> <kbd>⌥</kbd> <kbd>↑</kbd> / <kbd>↓</kbd> | <kbd>Shift</kbd> <kbd>Alt</kbd> <kbd>↑</kbd> / <kbd>↓</kbd> | Дублировать строку или блок         |
+| <kbd>⇧</kbd> <kbd>⌥</kbd> <kbd>F</kbd>                | <kbd>Ctrl</kbd> <kbd>Alt</kbd> <kbd>L</kbd>                 | Форматировать через Prettier        |
+| <kbd>⌃</kbd> <kbd>Space</kbd>                         | <kbd>Ctrl</kbd> <kbd>Space</kbd>                            | Подсказки IntelliSense              |
+| <kbd>⌘</kbd> <kbd>/</kbd>                             | <kbd>Ctrl</kbd> <kbd>/</kbd>                                | Строчный комментарий                |
+| <kbd>F11</kbd>                                        | <kbd>F11</kbd>                                              | Полноэкранный редактор              |
+| <kbd>Esc</kbd>                                        | <kbd>Esc</kbd>                                              | Закрыть окно, подсказку или поиск   |
 
-| macOS                                                              | Windows / Linux                                                 | Действие                                                      |
-| :----------------------------------------------------------------- | :-------------------------------------------------------------- | :------------------------------------------------------------ |
-| <kbd>⌘</kbd> + <kbd>D</kbd>                                        | <kbd>Ctrl</kbd> + <kbd>D</kbd>                                  | Выделить слово / добавить следующее совпадение (мультикурсор) |
-| <kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>L</kbd>                     | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>L</kbd>               | Выделить все совпадения выделенного слова                     |
-| <kbd>Option</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd>                    | <kbd>Alt</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd>                    | Переместить текущую строку или блок строк вверх / вниз        |
-| <kbd>Shift</kbd> + <kbd>Option</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd> | <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd> | Продублировать текущую строку или блок строк                  |
-| <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>F</kbd>                   | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>L</kbd>                 | Форматирование кода через Prettier 3                          |
-| <kbd>Ctrl</kbd> + <kbd>Space</kbd>                                 | <kbd>Ctrl</kbd> + <kbd>Space</kbd>                              | Вызов меню контекстных подсказок IntelliSense                 |
-| <kbd>⌘</kbd> + <kbd>/</kbd>                                        | <kbd>Ctrl</kbd> + <kbd>/</kbd>                                  | Строчный комментарий (Toggle Line Comment)                    |
-| <kbd>Shift</kbd> + <kbd>Option</kbd> + <kbd>A</kbd>                | <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>A</kbd>                | Блочный комментарий (Toggle Block Comment)                    |
+## Участие в разработке
 
-### Навигация и глобальные действия
+Issues и pull request'ы приветствуются. Перед отправкой изменений прогоните проверки:
 
-| Сочетание / Клавиша                                                  | Область   | Действие                                             |
-| :------------------------------------------------------------------- | :-------- | :--------------------------------------------------- |
-| <kbd>⌘</kbd> + <kbd>K</kbd> / <kbd>Ctrl</kbd> + <kbd>K</kbd>         | Глобально | Палитра быстрого поиска задач (Command Palette)      |
-| <kbd>⌘</kbd> + <kbd>Enter</kbd> / <kbd>Ctrl</kbd> + <kbd>Enter</kbd> | Редактор  | Быстрый запуск кода / тестов в песочнице             |
-| <kbd>F11</kbd>                                                       | Редактор  | Переключение полноэкранного режима редактора         |
-| <kbd>↓</kbd> / <kbd>↑</kbd>, <kbd>→</kbd> / <kbd>←</kbd>             | Сайдбар   | Навигация по дереву задач (WAI-ARIA Treeview)        |
-| <kbd>Alt</kbd> + Клик                                                | Сайдбар   | Свернуть / развернуть все папки текущего раздела     |
-| <kbd>Esc</kbd>                                                       | Глобально | Закрыть модальное окно, подсказку или палитру поиска |
+```bash
+npm run typecheck && npm run lint && npm run format:check && npm run test:unit
+```
 
----
+Шаблон описания PR лежит в [`.github/PULL_REQUEST_TEMPLATE.md`](.github/PULL_REQUEST_TEMPLATE.md). История изменений — в [CHANGELOG.md](CHANGELOG.md).
 
-## 📜 История версий
+## Лицензия
 
-Полная история изменений доступна в файле **[CHANGELOG.md](CHANGELOG.md)**.
-
-- **[v2.4.12](CHANGELOG.md#v2-4-12)** — Поддержка синтаксиса Emmet, автозакрытие тегов и компонентов (HTML/JSX/TSX) в CodeEditor, строгая изоляция языковых контекстов, исправление сочетания клавиш Option+D на macOS и мультикурсора, коррекция шагов визуализации алгоритмов.
-- **[v2.4.1](CHANGELOG.md#v2-4-1)** — Новый раздел TypeScript с каталогом из 24 практических задач, полная интеграция с экосистемой платформы (статистика, шпаргалки, SM-2, поиск, избранное, прогресс), запуск и проверка типов в редакторе, переключатель фоновой проверки ошибок в CodeEditor.
-- **[v2.4.0](CHANGELOG.md#v2-4-0)** — Крупный релиз платформы (цикл v2.3.0 – v2.4.0): интерактивный 3D/2D визуализатор алгоритмов на Three.js (10 категорий алгоритмов), интервальные повторения SM-2 с интеграцией нерешённых задач и умным помощником, полноэкранный сплит-режим «Код + Интерфейс» (70/30) с живой React-песочницей, индекс вероятности на собеседованиях с Gauge-индикатором, расширение каталогов JS/React/Algo, оптимизация производительности (Lighthouse 99, FCP 570 мс) и CI/CD-конвейер в GitHub Actions, Визуализация 3D - работы алгоритмов.
-- **[v2.3.89](CHANGELOG.md#v2-3-89)** — CI/CD-конвейер по практикам продуктовых репозиториев: обязательные проверки (lint, typecheck, format, 974 теста, build) перед деплоем GitHub Pages, авто-теги и GitHub Releases, отчёт о размере бандла в PR, покрытие тестами, Dependabot и еженедельная очистка смерженных веток.
-- **[v2.3.88](CHANGELOG.md#v2-3-88)** — Комплексная оптимизация загрузки приложения (локальные WOFF2-шрифты Inter, оптимизация чанков и tree-shaking публичных API, ускорение FCP/LCP), унификация фоновой сетки в 2D и 3D-сценах TaskVisualization.
-- **[v2.3.85](CHANGELOG.md#v2-3-85)** — Визуализатор алгоритмов TaskVisualization на Three.js (Two Pointers), интеграция нерешённых задач в цикл интервальных повторений SM-2 с наивысшим приоритетом.
-- **[v2.3.8](CHANGELOG.md#v2-3-8)** — Быстрые комментарии (строчные/блочные) и автогенерация JSDoc в редакторе кода, Новый график активности на `@nivo/calendar`, суточные KPI повторений, скрытие статусов исключенных задач. Минорные фиксы задач.
-- **[v2.3.7](CHANGELOG.md#v2-3-7)** — Связанный сброс прогресса и кода решений с повторениями SM-2, синхронизация редактора при сбросе, опция отключения интерактивного помощника.
-- **[v2.3.6](CHANGELOG.md#v2-3-6)** — Профилирование и устранение утечек памяти: безопасный LRU-кэш решений с гарантированным сбросом в IndexedDB, остановка фоновых воркеров и таймеров, защита от переполнения консоли (скользящий буфер), ленивая подписка на DOM-события.
-- **[v2.3.5](CHANGELOG.md#v2-3-5)** — Расширение и реструктуризация каталога React (13 новых задач), интерактивная адресная строка браузера в песочнице, режим отключения подсказок, унификация модальных окон и компонент Switch.
-- **[v2.3.4](CHANGELOG.md#v2-3-4)** — Реструктуризация JavaScript-каталога под собеседования, 15 новых задач по объектам, умный интервальный помощник с мотивацией, Gauge-индикатор вероятности на интервью (BigTech, FinTech, E-commerce), исключение задач из повторения.
-- **[v2.3.3](CHANGELOG.md#v2-3-3)** — Асинхронный кэш реестра задач по разделам, мгновенный переход в полноэкранный редактор без промежуточных лоадеров, скелетоны страниц и сайдбара.
-- **[v2.3.2](CHANGELOG.md#v2-3-2)** — Раздел «Избранное» со структурированным деревом и фильтрами, оптимизация сборки (route-level code splitting в Vite), сброс настроек UI.
-- **[v2.3.1](CHANGELOG.md#v2-3-1)** — Полноэкранный двухпанельный сплит-режим «Код + Интерфейс» (70/30), JsConsole, автотранспиляция и виртуальный React-рантайм в Web Worker.
-- **[v2.3.0](CHANGELOG.md#v2-3-0)** — Архитектура Feature-Sliced Design v2.1, React 19, TypeScript 7 Strict, Vite 8 Rolldown, TanStack Router, изолированная песочница и алгоритм SM-2.
-
----
-
-## 🤝 Вклад в проект
-
-Мы приветствуем любые идеи, улучшения и исправления!
-
-1. Сделайте **Fork** репозитория.
-2. Создайте ветку: `git checkout -b feature/amazing-feature`.
-3. Зафиксируйте изменения: `git commit -m "feat: add amazing feature"`.
-4. Отправьте ветку в ваш форк: `git push origin feature/amazing-feature`.
-5. Откройте **Pull Request**.
-
----
-
-## 📄 Лицензия
-
-Проект распространяется под лицензией [Source-Available Non-Commercial License](LICENSE.md). Свободно для личного обучения и подготовки к интервью.
-
----
+Исходно-доступная некоммерческая лицензия, подробности в [LICENSE.md](LICENSE.md).
 
 <div align="center">
 
-## 👤 Контакты:
-
-[GitHub профиль](https://github.com/EvgeniiBogdanov)
-[Telegram](https://t.me/johnbeelow)
-
 <br />
 
-Если платформа помогла вам в подготовке — поддержите проект ⭐ **звёздочкой на GitHub**!
+Если проект полезен, поставь ⭐ — это помогает другим его найти.
 
 </div>

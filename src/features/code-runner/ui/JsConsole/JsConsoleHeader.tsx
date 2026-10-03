@@ -10,9 +10,8 @@ import {
   ChevronUp,
   ZoomIn,
   ZoomOut,
-  Loader2,
 } from "lucide-react";
-import { Tooltip, CodeButton } from "@/shared/ui";
+import { Tooltip, CodeButton, UiLoader } from "@/shared/ui";
 import { useCopy } from "@/shared/lib/hooks";
 import styles from "./JsConsole.module.css";
 
@@ -98,7 +97,7 @@ export const JsConsoleHeader = memo(
         <div className={styles.headerRight}>
           {showLongRunning && (
             <span className={styles.badgeRunning}>
-              <Loader2 size={12} className={styles.spinIcon} />
+              <UiLoader size={12} />
               <span>Выполнение...</span>
             </span>
           )}

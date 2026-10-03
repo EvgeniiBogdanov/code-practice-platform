@@ -47,7 +47,7 @@
   outline: none;
   box-shadow:
     0 0 0 2px var(--bg-surface),
-    0 0 0 4px var(--accent-blue, #3b82f6);
+    0 0 0 4px var(--accent-primary, #3b82f6);
 }
 
 /* Sizes */
@@ -67,6 +67,14 @@
   padding: 0 18px;
   height: 40px;
   font-size: var(--fs-base, 14px);
+}
+
+.size-xl {
+  padding: 0 var(--space-6);
+  height: var(--space-12);
+  gap: var(--space-2);
+  font-size: var(--fs-lg);
+  border-radius: var(--radius-lg);
 }
 
 .size-icon {
@@ -97,13 +105,13 @@
 
 /* Variants */
 .variant-primary {
-  background: var(--accent-blue);
+  background: var(--accent-primary);
   color: var(--text-on-accent);
   border: none;
 }
 
 .variant-primary:hover:not(:disabled) {
-  background: var(--accent-blue-hover);
+  background: var(--accent-primary-hover);
   color: var(--text-on-accent);
   border: none;
   outline: none;

@@ -1,0 +1,64 @@
+/* The landing scrolls the document natively (the workspace locks it in global.css). */
+:global(html):has(.page) {
+  scroll-behavior: smooth;
+  /* Scenes snap flush to the top edge; the fixed header overlays them instead of reserving space */
+  scroll-padding-top: 0;
+}
+
+:global(html[data-landing]) {
+  /* Surfaces and the black accent come from the shared light theme; the landing goes fully monochrome */
+  --accent-blue: var(--accent-primary);
+  --accent-blue-hover: var(--accent-primary-hover);
+  --accent-blue-bg: var(--accent-primary-bg);
+  --accent-blue-border: var(--accent-primary-border);
+  --artifact-shadow:
+    0 0 0 1px rgba(4, 23, 43, 0.05), 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  /* TypeScript keeps its own blue */
+  --color-ts: #3f5f95;
+  --color-ts-bg: rgba(63, 95, 149, 0.1);
+  --color-ts-border: rgba(63, 95, 149, 0.23);
+  --icon-file-ts: var(--color-ts);
+}
+
+.page {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: clip;
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  background: var(--bg-app);
+}
+
+.page ::selection {
+  background: var(--editor-selection-bg);
+}
+
+.skipLink {
+  position: fixed;
+  top: var(--space-3);
+  left: var(--space-3);
+  z-index: calc(var(--z-fixed) + 1);
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--text-on-accent);
+  background: var(--accent-blue);
+  border-radius: var(--radius-md);
+  transform: translateY(calc(-100% - var(--space-6)));
+  transition: transform var(--transition-medium);
+}
+
+.skipLink:focus-visible {
+  transform: none;
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html):has(.page) {
+    scroll-behavior: auto;
+  }
+}
