@@ -1,4 +1,5 @@
 import React from "react";
+import { flushSync } from "react-dom";
 import ReactDOM from "react-dom/client";
 import { readLocalAccount } from "@/shared/auth";
 import { resolveEntryTarget, toBrowserPath, WORKSPACE_HOME_PATH } from "./app/entrypoint";
@@ -17,13 +18,30 @@ const replaceUrl = (url: string): void => {
   }
 };
 
-const renderWorkspace = async (root: ReactDOM.Root): Promise<void> => {
+const prefersReducedMotion = (): boolean =>
+  typeof window.matchMedia === "function" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/** Swaps the root's content with a cross-fade (View Transitions API) where the browser supports it. */
+const swapWithTransition = (swap: () => void): void => {
+  if (typeof document.startViewTransition !== "function" || prefersReducedMotion()) {
+    swap();
+    return;
+  }
+  document.startViewTransition(() => flushSync(swap));
+};
+
+const renderWorkspace = async (root: ReactDOM.Root, isSwap = false): Promise<void> => {
+  // The chunk is loaded before the transition starts, so the cross-fade never waits on the network.
   const { App } = await import("./app/App");
-  root.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  );
+  const render = (): void =>
+    root.render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    );
+  if (isSwap) swapWithTransition(render);
+  else render();
 };
 
 const bootstrap = (): void => {
@@ -50,7 +68,7 @@ const bootstrap = (): void => {
     const url = toBrowserPath(targetPath ?? entry.redirectTo ?? WORKSPACE_HOME_PATH, BASE_URL);
     replaceUrl(url);
     window.scrollTo(0, 0);
-    renderWorkspace(root).catch(() => window.location.assign(url));
+    renderWorkspace(root, true).catch(() => window.location.assign(url));
   };
 
   void import("./app/LandingApp").then(({ LandingApp }) => {

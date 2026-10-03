@@ -23,6 +23,7 @@
 
 .page {
   position: relative;
+  animation: pageIn 600ms var(--ease-soft) backwards;
   min-height: 100vh;
   min-height: 100dvh;
   overflow-x: clip;
@@ -60,5 +61,18 @@
 @media (prefers-reduced-motion: reduce) {
   :global(html):has(.page) {
     scroll-behavior: auto;
+  }
+}
+
+/* The landing eases in after a full navigation (e.g. signing out of the workspace) */
+@keyframes pageIn {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page {
+    animation: none;
   }
 }

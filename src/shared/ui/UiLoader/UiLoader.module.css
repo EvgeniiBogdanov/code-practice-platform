@@ -1,9 +1,16 @@
 .container {
+  /* Softer grey on the dark theme, pure ink on the light one */
+  --loader-color: var(--text-muted);
+
   display: inline-flex;
   align-items: center;
   gap: var(--space-2, 8px);
-  color: var(--text-main);
+  color: var(--loader-color);
   line-height: 1;
+}
+
+:global([data-theme="light"]) .container {
+  --loader-color: var(--text-main);
 }
 
 .center {
@@ -93,19 +100,19 @@
 
 /* Color Variants */
 .variant_primary {
-  color: var(--text-main);
+  color: var(--loader-color);
 }
 
 .variant_secondary {
-  color: var(--text-main);
+  color: var(--loader-color);
 }
 
 .variant_muted {
-  color: var(--text-main);
+  color: var(--loader-color);
 }
 
 .variant_gray {
-  color: var(--text-main);
+  color: var(--loader-color);
 }
 
 .variant_blue {

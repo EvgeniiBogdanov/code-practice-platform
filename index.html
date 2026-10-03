@@ -63,6 +63,22 @@
         color-scheme: light;
         background-color: #ffffff;
       }
+      /* Smooth hand-over between the landing and the workspace: same-document swaps and full navigations */
+      @view-transition {
+        navigation: auto;
+      }
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        animation-duration: 450ms;
+        animation-timing-function: cubic-bezier(0.22, 0.7, 0.2, 1);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        ::view-transition-group(*),
+        ::view-transition-old(*),
+        ::view-transition-new(*) {
+          animation: none !important;
+        }
+      }
       .app-initial-loader {
         display: flex;
         align-items: center;
@@ -75,7 +91,7 @@
         --size: 0.75px;
         position: relative;
         display: block;
-        color: #e6e6e6;
+        color: #a3a3a3;
         width: calc(8 * var(--size));
         height: calc(40 * var(--size));
         border-radius: calc(4 * var(--size));
