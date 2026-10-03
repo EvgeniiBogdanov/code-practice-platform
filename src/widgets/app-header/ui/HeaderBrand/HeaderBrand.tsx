@@ -26,7 +26,7 @@ export const HeaderBrand = memo(({ className }: HeaderBrandProps): React.JSX.Ele
         />
       </Tooltip>
 
-      <Link to="/" className={styles.logoLink}>
+      <Link to="/home" className={styles.logoLink}>
         <PlatformLogo size={26} className={styles.logoIcon} />
         <span>CodePractice</span>
       </Link>

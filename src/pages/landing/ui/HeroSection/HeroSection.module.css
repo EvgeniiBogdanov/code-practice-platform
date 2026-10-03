@@ -1,0 +1,396 @@
+.hero {
+  --artifact-width: clamp(13.5rem, 17vw, 18.25rem);
+
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  padding: calc(var(--landing-nav-height) + var(--space-4)) var(--landing-gutter) var(--space-4);
+}
+
+/* Centres the stage between the header and the cue on tall screens */
+.inner {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  width: 100%;
+  max-width: var(--landing-container-wide);
+  margin: 0 auto;
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+  min-height: 46rem;
+}
+
+.copy {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 64rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* ---------- Eyebrow ---------- */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2-5);
+  padding: var(--space-1) var(--space-3) var(--space-1) var(--space-1);
+  font-size: var(--fs-body-sm);
+  color: var(--text-muted);
+  background: color-mix(in srgb, var(--bg-card) 70%, transparent);
+
+  border-radius: var(--radius-full);
+  backdrop-filter: blur(var(--space-2));
+  transition:
+    color var(--transition-standard),
+    border-color var(--transition-standard);
+  animation: fadeUp 1s var(--ease-out-expo) 0.1s both;
+}
+
+.eyebrow:hover {
+  color: var(--text-main);
+  border-color: var(--border-hover);
+}
+
+.eyebrowVersion {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  padding: var(--space-0-5) var(--space-2-5);
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-semibold);
+  color: var(--color-home);
+  background: var(--color-home-bg);
+  border-radius: var(--radius-full);
+}
+
+.pulseDot {
+  width: var(--space-1-5);
+  height: var(--space-1-5);
+  border-radius: var(--radius-full);
+  background: var(--color-success);
+  animation: pulse 2.4s ease-out infinite;
+}
+
+/* ---------- Headline ---------- */
+.headline {
+  align-self: stretch;
+  margin: var(--space-4) 0 0;
+  font-family: var(--font-landing-serif);
+  font-size: var(--fs-display);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  color: var(--text-main);
+  text-wrap: balance;
+}
+
+.line {
+  display: block;
+}
+
+.chunk {
+  display: inline-block;
+  animation: chunkRise 1.2s var(--ease-out-expo) both;
+}
+
+.chunk1 {
+  animation-delay: 160ms;
+}
+
+.chunk2 {
+  animation-delay: 260ms;
+}
+
+.chunk3 {
+  animation-delay: 380ms;
+}
+
+.chunk4 {
+  animation-delay: 440ms;
+}
+
+.lead {
+  max-width: 44rem;
+  margin: var(--space-4) 0 0;
+  font-size: var(--fs-landing-lead);
+  line-height: var(--lh-body);
+  color: var(--text-muted);
+  text-wrap: pretty;
+  animation: fadeUp 1.1s var(--ease-out-expo) 0.75s both;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+  animation: fadeUp 1.1s var(--ease-out-expo) 0.9s both;
+}
+
+.note {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  margin: var(--space-3) 0 0;
+  font-size: var(--fs-caption);
+  color: var(--fg-muted);
+  animation: fadeUp 1.1s var(--ease-out-expo) 1s both;
+}
+
+/* ---------- Floating artifacts ---------- */
+.artifacts {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.slot {
+  --tilt: 0deg;
+  --depth: 1;
+
+  position: absolute;
+  width: var(--artifact-width);
+  pointer-events: auto;
+}
+
+/* Resting tilt; each card straightens and lifts on its own hover only */
+.tilt {
+  transform: rotate(var(--tilt));
+  transition: transform 0.6s var(--ease-out-expo);
+}
+
+.tilt:hover {
+  transform: translateY(calc(var(--space-1) * -1)) rotate(calc(var(--tilt) * 0.25));
+}
+
+/* `--drift-y` is written by useFloatDrift; no CSS animation here, so the card is re-rasterised crisp */
+.float {
+  transform: translateY(var(--drift-y, 0px));
+}
+
+.pop {
+  --shadow-lg: var(--artifact-shadow);
+
+  animation: cardPop 1.4s var(--ease-out-expo) 0.9s backwards;
+}
+
+.slotTask {
+  top: 1.5rem;
+  left: 0;
+  --tilt: -8deg;
+}
+
+.slotReview {
+  top: 6.5rem;
+  right: 0;
+  width: calc(var(--artifact-width) + 2.5rem);
+  --tilt: 6deg;
+}
+
+.slotReview .pop {
+  animation-delay: 1.05s;
+}
+
+.slotConsole {
+  top: 24rem;
+  left: 2.5rem;
+  --tilt: -7deg;
+}
+
+.slotConsole .pop {
+  animation-delay: 1.2s;
+}
+
+.slotSections {
+  top: 25.5rem;
+  right: 2.5rem;
+  --tilt: 7deg;
+}
+
+.slotSections .pop {
+  animation-delay: 1.35s;
+}
+
+.slotPalette {
+  top: auto;
+  bottom: var(--space-3);
+  left: 50%;
+  width: 29rem;
+  margin-left: -14.5rem;
+}
+
+.slotPalette .pop {
+  animation-delay: 1.5s;
+}
+
+/* Below the wide desktop the previews line up in a grid under the copy */
+@media (max-width: 1279px) {
+  .stage {
+    min-height: 0;
+  }
+
+  .artifacts {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-5);
+    max-width: 48rem;
+    margin: var(--space-16) auto 0;
+  }
+
+  .slot {
+    position: relative;
+    inset: auto;
+    width: auto;
+    margin: 0;
+  }
+
+  .tilt,
+  .tilt:hover {
+    transform: none;
+  }
+
+  .slotPalette {
+    grid-column: 1 / -1;
+    order: -1;
+    width: auto;
+    margin: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .artifacts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .slotConsole,
+  .slotSections {
+    display: none;
+  }
+}
+
+/* ---------- Keyframes ---------- */
+@keyframes chunkRise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.6em, 0) rotate(1.5deg);
+    filter: blur(var(--space-2-5));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, var(--space-5), 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes cardPop {
+  from {
+    opacity: 0;
+    transform: translate3d(0, var(--space-14), 0) scale(0.92);
+    filter: blur(var(--space-2));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 var(--accent-green-border);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 var(--space-1-5) transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tilt {
+    transition: none;
+  }
+}
+
+/* Scroll parallax: copy lags behind, each preview drifts at its own depth */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    .copy {
+      animation: heroCopy linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 90vh;
+    }
+
+    .slot {
+      animation: heroDepth linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 90vh;
+    }
+  }
+}
+
+@media (min-width: 1280px) {
+  .slotTask {
+    --depth: 0.5;
+  }
+
+  .slotReview {
+    --depth: 1.2;
+  }
+
+  .slotConsole {
+    --depth: 0.8;
+  }
+
+  .slotSections {
+    --depth: 1.6;
+  }
+
+  .slotPalette {
+    --depth: 0.3;
+  }
+}
+
+@keyframes heroCopy {
+  to {
+    translate: 0 8vh;
+    opacity: 0.2;
+  }
+}
+
+@keyframes heroDepth {
+  to {
+    translate: 0 calc(var(--depth) * -14vh);
+  }
+}
+
+/* Keeps the cue inside the first screen on a ~900px viewport */
+.hero > a {
+  margin-top: 0;
+}

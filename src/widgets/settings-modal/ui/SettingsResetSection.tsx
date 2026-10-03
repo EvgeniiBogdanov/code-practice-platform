@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { Button } from "@/shared/ui";
+import { useStorageUsage } from "../model/useStorageUsage";
 import styles from "./SettingsModal.module.css";
 
 export interface SettingsResetSectionProps {
@@ -14,6 +15,8 @@ export const SettingsResetSection = memo(
     onOpenResetUI,
     onOpenResetAll,
   }: SettingsResetSectionProps): React.JSX.Element => {
+    const storageUsage = useStorageUsage();
+
     return (
       <div className={styles.settingsSectionWrapper}>
         <section className={styles.settingsSection}>
@@ -22,20 +25,17 @@ export const SettingsResetSection = memo(
           </div>
 
           <div className={styles.settingsRowList}>
-            <div className={styles.settingsRow}>
-              <div className={styles.settingsRowInfo}>
-                <div className={styles.settingsRowTitle}>Локальное хранилище</div>
-                <div className={styles.settingsRowDesc}>
-                  Все решения и отметки чек-листов сохраняются в IndexedDB браузера.
-                </div>
+            <div className={styles.storageRow}>
+              <div className={styles.settingsRowTitle}>Локальное хранилище</div>
+              <span className={styles.statusBadge}>
+                <span>IndexedDB</span>
+                <span className={styles.statusDot}>•</span>
+                <span className={styles.statusActive}>Активно</span>
+              </span>
+              <div className={styles.settingsRowDesc}>
+                Все решения и отметки чек-листов сохраняются в IndexedDB браузера.
               </div>
-              <div className={styles.settingsRowAction}>
-                <span className={styles.statusBadge}>
-                  <span>IndexedDB</span>
-                  <span className={styles.statusDot}>•</span>
-                  <span className={styles.statusActive}>Активно</span>
-                </span>
-              </div>
+              {storageUsage && <span className={styles.storageUsage}>Занято: {storageUsage}</span>}
             </div>
           </div>
         </section>
@@ -48,7 +48,7 @@ export const SettingsResetSection = memo(
           <div className={styles.settingsRowList}>
             <div className={styles.settingsRow}>
               <div className={styles.settingsRowInfo}>
-                <div className={styles.settingsRowTitle}>Интервальное повторение (SM-2)</div>
+                <div className={styles.settingsRowTitle}>Интервальное повторение</div>
                 <div className={styles.settingsRowDesc}>
                   Сброс коэффициентов легкости, стадий, расписания повторений и написанного кода
                   решений (задачи возвращаются в изначальное состояние).

@@ -141,7 +141,7 @@ export const AppSidebar = ({ className }: AppSidebarProps): React.JSX.Element =>
               <Suspense fallback={<SidebarHomeSkeleton />}>
                 <SidebarHomeOverview
                   activeSectionKey={activeSectionKey}
-                  isHomeActive={pathname === "/" || pathname === "/home"}
+                  isHomeActive={pathname === "/home"}
                 />
               </Suspense>
             ) : (

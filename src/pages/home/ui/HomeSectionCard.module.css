@@ -1,0 +1,121 @@
+/* Same card language as the landing catalog: flat white card, icon box, topic chips, tinted action */
+.card {
+  --section-color: var(--accent-primary);
+  --section-tint: var(--accent-primary-bg);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--card-gap);
+  padding: var(--card-padding);
+  background: var(--bg-card);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.card_javascript {
+  --section-color: var(--color-js);
+  --section-tint: var(--color-js-bg);
+}
+
+.card_typescript {
+  --section-color: var(--color-ts);
+  --section-tint: var(--color-ts-bg);
+}
+
+.card_react {
+  --section-color: var(--color-react);
+  --section-tint: var(--color-react-bg);
+}
+
+.card_algorithms {
+  --section-color: var(--color-algo);
+  --section-tint: var(--color-algo-bg);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.iconBox {
+  display: grid;
+  place-items: center;
+  width: var(--space-10);
+  height: var(--space-10);
+  background: color-mix(in srgb, var(--section-color) 14%, transparent);
+  border-radius: var(--radius-md);
+}
+
+.title {
+  flex: 1;
+  margin: 0;
+  font-size: var(--card-title-size);
+  font-weight: var(--fw-semibold);
+  letter-spacing: -0.01em;
+  color: var(--text-main);
+}
+
+.description {
+  flex: 1;
+  margin: 0;
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-body);
+  color: var(--text-muted);
+}
+
+.topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.topic {
+  padding: var(--space-0-5) var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  color: var(--text-muted);
+  background: var(--state-hover);
+  border-radius: var(--radius-xs);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.progress {
+  font-size: var(--fs-body-sm);
+  color: var(--text-muted);
+}
+
+.open {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  padding: var(--space-1-5) var(--space-3);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--section-color);
+  text-decoration: none;
+  background: var(--section-tint);
+  border-radius: var(--radius-md);
+  transition: filter var(--transition-standard);
+}
+
+.open:hover {
+  filter: brightness(1.15);
+}
+
+.open svg {
+  transition: transform 300ms var(--ease-out-expo);
+}
+
+.open:hover svg {
+  transform: translateX(var(--space-1));
+}

@@ -1,0 +1,81 @@
+.cue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  align-self: center;
+  margin-top: var(--space-2);
+  color: var(--color-home);
+  text-decoration: none;
+  outline-offset: var(--space-2);
+  border-radius: var(--radius-lg);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-section);
+  text-transform: uppercase;
+  color: var(--color-home);
+  background: var(--color-home-bg);
+  border-radius: var(--radius-full);
+  transition:
+    color var(--transition-standard),
+    background var(--transition-standard);
+}
+
+.cue:hover .badge,
+.cue:focus-visible .badge {
+  color: var(--text-on-accent);
+  background: var(--color-home);
+}
+
+.arrow {
+  display: block;
+  width: var(--space-4);
+  height: var(--space-8);
+  stroke-dasharray: 1 2;
+  animation: cueDraw 2.4s var(--ease-soft) infinite;
+}
+
+/* Draw the shaft and head in one motion, hold, then wipe it out in the same direction */
+@keyframes cueDraw {
+  0% {
+    stroke-dashoffset: 1.1;
+  }
+  45%,
+  70% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -1.1;
+  }
+}
+
+/* The cue slides toward the next scene while this one leaves the viewport */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .cue {
+      animation: cueFlow linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 70%;
+    }
+  }
+}
+
+@keyframes cueFlow {
+  to {
+    translate: 0 var(--space-10);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arrow {
+    animation: none;
+    stroke-dasharray: none;
+  }
+}

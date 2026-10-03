@@ -46,7 +46,7 @@ export const SettingsConfirmModals = memo(
         <SettingsResetConfirmDialog
           isOpen={resetReviewsConfirmOpen}
           title="Сброс повторений и решений задач"
-          description="Вы действительно хотите сбросить интервалы, стадии повторения задач (SM-2) и написанный код решений? Задачи вернутся в изначальное состояние. Это действие необратимо."
+          description="Вы действительно хотите сбросить интервалы, стадии повторения задач и написанный код решений? Задачи вернутся в изначальное состояние. Это действие необратимо."
           actions={reviewActions}
           onClose={onCloseReviewsConfirm}
         />

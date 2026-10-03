@@ -1,0 +1,279 @@
+/* ---------- Workspace ---------- */
+.workspaceWindow {
+  inset: var(--space-5);
+}
+
+.workspaceCode {
+  flex: 1;
+}
+
+.timer {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-0-5) var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--color-status-due);
+  background: var(--color-status-due-bg);
+  border-radius: var(--radius-full);
+}
+
+.runGroup {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* ---------- Solution ---------- */
+.solutionWindow {
+  top: var(--space-5);
+  left: var(--space-5);
+  width: 29.5rem;
+}
+
+.recommendation {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2-5) var(--space-4);
+  font-size: var(--fs-caption);
+  color: var(--text-main);
+  background: var(--accent-yellow-bg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.recommendation b {
+  font-weight: var(--fw-semibold);
+}
+
+.recommendationIcon {
+  color: var(--accent-yellow-icon);
+}
+
+.questionCard {
+  top: 9.5rem;
+  right: var(--space-5);
+  width: 14rem;
+}
+
+.questionIcon {
+  color: var(--tab-questions);
+}
+
+.question {
+  margin: 0 0 var(--space-2);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+}
+
+.checklistCard {
+  bottom: var(--space-5);
+  left: var(--space-16);
+  width: 21rem;
+}
+
+.checklistIcon {
+  color: var(--tab-checklist);
+}
+
+.checklist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.checkItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-caption);
+  color: var(--text-muted);
+}
+
+.complexity {
+  right: var(--space-5);
+  bottom: var(--space-8);
+  padding: var(--space-1-5) var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  color: var(--text-main);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-md);
+}
+
+/* ---------- Review stats ---------- */
+.tone_due {
+  --tone: var(--color-status-due);
+}
+
+.tone_learning {
+  --tone: var(--color-mastery-learning);
+}
+
+.tone_reviewing {
+  --tone: var(--color-mastery-reviewing);
+}
+
+.tone_mastered {
+  --tone: var(--color-mastery-mastered);
+}
+
+.kpiRow {
+  top: var(--space-5);
+  left: var(--space-5);
+  right: var(--space-5);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-2-5);
+}
+
+.kpiCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3);
+}
+
+.kpiLabel,
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  white-space: nowrap;
+}
+
+.kpiLabel {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-section);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.kpiLabel::before,
+.legendItem::before {
+  content: "";
+  flex-shrink: 0;
+  width: var(--space-1-5);
+  height: var(--space-1-5);
+  border-radius: var(--radius-full);
+  background: var(--tone);
+}
+
+.kpiValue {
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-main);
+}
+
+.heatmapCard {
+  top: 7.5rem;
+  left: var(--space-5);
+  width: 21.5rem;
+}
+
+.heatmap {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.heat_0 {
+  fill: var(--state-active);
+}
+
+.heat_1 {
+  fill: color-mix(in srgb, var(--accent-green) 28%, transparent);
+}
+
+.heat_2 {
+  fill: color-mix(in srgb, var(--accent-green) 50%, transparent);
+}
+
+.heat_3 {
+  fill: color-mix(in srgb, var(--accent-green) 75%, transparent);
+}
+
+.heat_4 {
+  fill: var(--accent-green);
+}
+
+.queueCard {
+  top: 7.5rem;
+  right: var(--space-5);
+  width: 13rem;
+}
+
+.queue {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.queueItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: var(--fs-caption);
+}
+
+.queueTitle {
+  font-family: var(--font-mono);
+  color: var(--text-main);
+}
+
+.masteryCard {
+  left: var(--space-5);
+  right: var(--space-5);
+  bottom: var(--space-5);
+}
+
+.masteryBar {
+  display: block;
+  width: 100%;
+  height: var(--space-2);
+  overflow: hidden;
+  border-radius: var(--radius-full);
+}
+
+.fill_due {
+  fill: var(--color-status-due);
+}
+
+.fill_learning {
+  fill: var(--color-mastery-learning);
+}
+
+.fill_reviewing {
+  fill: var(--color-mastery-reviewing);
+}
+
+.fill_mastered {
+  fill: var(--color-mastery-mastered);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.legendItem {
+  font-size: var(--fs-caption);
+  color: var(--text-muted);
+}

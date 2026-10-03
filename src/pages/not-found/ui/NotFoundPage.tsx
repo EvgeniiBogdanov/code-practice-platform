@@ -12,7 +12,7 @@ export function NotFoundPage() {
       <p className={styles.desc}>
         Запрашиваемая страница или задача не существует либо была перемещена.
       </p>
-      <Link to="/" className={styles.link}>
+      <Link to="/home" className={styles.link}>
         <Button variant="primary">
           <Home size={16} />
           <span>На главную страницу</span>

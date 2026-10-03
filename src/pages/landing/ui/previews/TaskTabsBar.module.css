@@ -1,0 +1,11 @@
+/* Compact spacing so all five task tabs fit the preview window without scrolling. */
+.tabs {
+  gap: var(--space-0-5);
+  padding: 0 var(--space-2);
+  overflow: hidden;
+}
+
+.tabs > button {
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-2);
+}

@@ -90,19 +90,6 @@
   animation: fadeIn 0.15s ease;
 }
 
-.spinIcon {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .headerRight {
   display: flex;
   align-items: center;

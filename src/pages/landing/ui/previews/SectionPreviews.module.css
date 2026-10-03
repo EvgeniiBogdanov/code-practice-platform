@@ -1,0 +1,237 @@
+/* A fixed-size composition rendered inside UiScaledCanvas */
+.stage {
+  position: absolute;
+  inset: 0;
+}
+
+/* Staggered entrance, triggered by the `.active` scope */
+.stg {
+  opacity: 0;
+  transform: translate3d(0, var(--space-4), 0) scale(0.98);
+  transition:
+    opacity 300ms ease,
+    transform 300ms ease;
+}
+
+.active .stg {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 800ms var(--ease-out-expo) calc(var(--i, 0) * 100ms + 150ms),
+    transform 900ms var(--ease-out-expo) calc(var(--i, 0) * 100ms + 150ms);
+}
+
+.i1 {
+  --i: 1;
+}
+
+.i2 {
+  --i: 2;
+}
+
+.i3 {
+  --i: 3;
+}
+
+.i4 {
+  --i: 4;
+}
+
+.i5 {
+  --i: 5;
+}
+
+.i6 {
+  --i: 6;
+}
+
+.i7 {
+  --i: 7;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.miniCard {
+  padding: var(--space-4);
+  color: var(--text-main);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.miniTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--text-main);
+}
+
+.miniTitle svg {
+  flex-shrink: 0;
+}
+
+.mutedText {
+  margin: 0;
+  font-size: var(--fs-caption);
+  line-height: var(--lh-body);
+  color: var(--text-muted);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-0-5) var(--space-2);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  white-space: nowrap;
+  border-radius: var(--radius-full);
+}
+
+.chipGreen {
+  color: var(--color-success);
+  background: var(--accent-green-bg);
+}
+
+.chipYellow {
+  color: var(--color-status-due);
+  background: var(--color-status-due-bg);
+}
+
+.chipBlue {
+  color: var(--accent-blue);
+  background: var(--accent-blue-bg);
+}
+
+.chipGray {
+  color: var(--fg-muted);
+  background: var(--state-hover);
+}
+
+/* ---------- Editor chrome ---------- */
+.tabsBar {
+  padding: 0 var(--space-3);
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-editor);
+}
+
+.fileBar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  padding: var(--space-2) var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.fileBar svg {
+  color: var(--icon-file-js);
+}
+
+.statusBar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: auto;
+  padding: var(--space-1-5) var(--space-4);
+  font-size: var(--fs-xs);
+  color: var(--fg-muted);
+  background: var(--bg-editor-status);
+  border-top: 1px solid var(--border-color);
+  white-space: nowrap;
+}
+
+.statusOk {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--color-success);
+}
+
+.statusSpacer {
+  margin-left: auto;
+}
+
+.consolePanel {
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-editor);
+}
+
+.consoleHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-semibold);
+  color: var(--text-muted);
+}
+
+.consoleHeader > :last-child {
+  margin-left: auto;
+}
+
+.consoleOutput {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: 0 var(--space-4) var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+}
+
+.consoleString {
+  color: var(--hl-string);
+}
+
+.consoleOk {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  color: var(--color-success);
+}
+
+.runButton {
+  display: grid;
+  place-items: center;
+  width: var(--space-6);
+  height: var(--space-6);
+  color: var(--color-success);
+  background: var(--accent-green-bg);
+  border-radius: var(--radius-sm);
+}
+
+/* Draw-on check marks */
+.check {
+  flex-shrink: 0;
+  color: var(--color-success);
+}
+
+.check path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 200ms ease;
+}
+
+.active .check path {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 900ms var(--ease-soft) calc(var(--i, 0) * 120ms + 500ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stg,
+  .check path {
+    opacity: 1;
+    transform: none;
+    stroke-dashoffset: 0;
+    transition: none;
+  }
+}

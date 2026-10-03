@@ -154,6 +154,19 @@
   flex-shrink: 0;
 }
 
+/* Gauge and percentage close the row, after the badges (same order as on the landing) */
+.probability {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 4px;
+  min-width: 44px;
+  justify-content: flex-end;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-muted);
+}
+
 .emptyState {
   padding: 32px 16px;
   text-align: center;

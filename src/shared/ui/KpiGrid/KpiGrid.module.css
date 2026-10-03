@@ -1,7 +1,7 @@
 .kpiGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
+  gap: var(--card-gap);
   width: 100%;
   box-sizing: border-box;
 }
@@ -21,11 +21,11 @@
 .kpiCard {
   background: var(--bg-card, #252525);
   border: none;
-  border-radius: var(--radius-lg);
-  padding: 18px 24px;
+  border-radius: var(--card-radius);
+  padding: var(--card-padding);
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--space-1-5);
   box-shadow: var(--shadow-sm);
   box-sizing: border-box;
 }

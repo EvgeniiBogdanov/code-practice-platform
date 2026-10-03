@@ -16,6 +16,8 @@ export interface UseSidebarHomeStatsReturn {
   jsCompletionClass: string;
   reactCompletionClass: string;
   algoCompletionClass: string;
+  completedAllTotal: number;
+  totalAll: number;
 }
 
 export const useSidebarHomeStats = (): UseSidebarHomeStatsReturn => {
@@ -71,5 +73,7 @@ export const useSidebarHomeStats = (): UseSidebarHomeStatsReturn => {
     jsCompletionClass: getCompletionClass("javascript"),
     reactCompletionClass: getCompletionClass("react"),
     algoCompletionClass: getCompletionClass("algorithms"),
+    completedAllTotal: Object.values(completedTotals).reduce((sum, count) => sum + count, 0),
+    totalAll: Object.values(activeTotals).reduce((sum, count) => sum + count, 0),
   };
 };

@@ -15,7 +15,7 @@ export interface HeaderActionsProps {
 
 export const HeaderActions = memo(({ className }: HeaderActionsProps) => {
   const location = useLocation();
-  const isHome = location.pathname === "/" || location.pathname === "/home";
+  const isHome = location.pathname === "/home";
 
   const setSettingsModalOpen = useUIStore((state) => state.setSettingsModalOpen);
   const settingsModalOpen = useUIStore((state) => state.settingsModalOpen);

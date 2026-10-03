@@ -1,0 +1,15 @@
+.frame {
+  position: relative;
+  width: 100%;
+  height: calc(var(--canvas-height) * var(--canvas-scale, 1));
+}
+
+.canvas {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: var(--canvas-width);
+  height: var(--canvas-height);
+  transform: translateX(-50%) scale(var(--canvas-scale, 1));
+  transform-origin: top center;
+}

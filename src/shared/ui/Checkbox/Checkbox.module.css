@@ -49,7 +49,7 @@
 
 .checkboxRow:hover:not(.disabled) .customBox {
   background: var(--state-hover);
-  border-color: var(--accent-blue);
+  border-color: var(--accent-primary);
 }
 
 .checkboxRow:active:not(.disabled) .customBox {
@@ -58,8 +58,8 @@
 
 /* Checked States */
 .color-blue.checked .customBox {
-  background: var(--accent-blue) !important;
-  border-color: var(--accent-blue) !important;
+  background: var(--accent-primary) !important;
+  border-color: var(--accent-primary) !important;
   color: var(--text-on-accent);
 }
 
@@ -77,7 +77,7 @@
 
 /* Keyboard Focus Ring */
 .nativeInput:focus-visible + .customBox {
-  outline: 2px solid var(--accent-blue);
+  outline: 2px solid var(--accent-primary);
   outline-offset: 2px;
 }
 

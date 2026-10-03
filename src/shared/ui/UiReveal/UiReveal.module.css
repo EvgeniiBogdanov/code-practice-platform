@@ -1,0 +1,57 @@
+.reveal {
+  --reveal-delay: 0ms;
+  transition:
+    opacity var(--duration-reveal) var(--ease-out-expo) var(--reveal-delay),
+    transform var(--duration-reveal) var(--ease-out-expo) var(--reveal-delay),
+    filter var(--duration-reveal) var(--ease-out-expo) var(--reveal-delay);
+}
+
+.rise {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-distance), 0);
+  filter: blur(var(--reveal-blur));
+}
+
+.scale {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-distance), 0) scale(0.97);
+}
+
+.visible {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+.order1 {
+  --reveal-delay: var(--reveal-step);
+}
+
+.order2 {
+  --reveal-delay: calc(var(--reveal-step) * 2);
+}
+
+.order3 {
+  --reveal-delay: calc(var(--reveal-step) * 3);
+}
+
+.order4 {
+  --reveal-delay: calc(var(--reveal-step) * 4);
+}
+
+.order5 {
+  --reveal-delay: calc(var(--reveal-step) * 5);
+}
+
+.order6 {
+  --reveal-delay: calc(var(--reveal-step) * 6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+}

@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { clsx } from "clsx";
 import { SECTIONS_CONFIG, SectionType } from "@/entities/task/meta";
 import { NodeCount, PlatformLogo } from "@/shared/ui";
+import { SidebarProgressCard } from "../SidebarProgressCard/SidebarProgressCard";
 import { useSidebarHomeStats } from "../../model/use-sidebar-home-stats";
 import styles from "./SidebarHomeOverview.module.css";
 
@@ -28,10 +29,24 @@ export const SidebarHomeOverview = ({
     jsCompletionClass,
     reactCompletionClass,
     algoCompletionClass,
+    completedAllTotal,
+    totalAll,
   } = useSidebarHomeStats();
 
   return (
     <div className={styles.homeOverviewList}>
+      <SidebarProgressCard
+        completedCount={completedAllTotal}
+        totalCount={totalAll}
+        sectionType="home"
+        segments={[
+          { sectionType: "javascript", count: completedJsTotal },
+          { sectionType: "typescript", count: completedTsTotal },
+          { sectionType: "react", count: completedReactTotal },
+          { sectionType: "algorithms", count: completedAlgoTotal },
+        ]}
+      />
+
       <Link
         to="/home"
         className={clsx(styles.homeOverviewItem, isHomeActive && styles.homeItemActive)}

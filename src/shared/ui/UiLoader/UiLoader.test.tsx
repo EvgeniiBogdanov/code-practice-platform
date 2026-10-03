@@ -25,7 +25,7 @@ describe("UiLoader", () => {
 
     const loader = screen.getByTestId("centered-loader");
     expect(loader.className).toContain("center");
-    expect(container.querySelector("svg")).toBeInTheDocument();
+    expect(container.querySelector("[aria-hidden=true]")).toBeInTheDocument();
   });
 
   it("renders as a fullscreen loader when fullscreen is enabled", () => {
@@ -37,7 +37,7 @@ describe("UiLoader", () => {
   it("supports numeric custom sizes", () => {
     const { container } = render(<UiLoader size={40} />);
 
-    const svg = container.querySelector("svg");
-    expect(svg).toHaveStyle({ width: "40px", height: "40px" });
+    const spinner = container.querySelector<HTMLElement>("[aria-hidden=true]");
+    expect(spinner?.style.getPropertyValue("--size")).toBe(`${40 / 48}px`);
   });
 });

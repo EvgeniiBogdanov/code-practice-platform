@@ -3,7 +3,7 @@ import { FolderGit2, Brain } from "lucide-react";
 import { JavaScriptIcon, TypeScriptIcon, ReactIcon } from "@/shared/ui";
 import { HomeStats } from "../model/use-home-stats";
 import { HomeSectionCard } from "./HomeSectionCard";
-import styles from "./HomePage.module.css";
+import styles from "./HomePracticeSections.module.css";
 
 interface HomePracticeSectionsProps {
   stats: HomeStats;
@@ -18,65 +18,61 @@ export const HomePracticeSections = memo(
           <h2 className={styles.blockTitle}>Разделы практики</h2>
         </div>
 
-        <div className={styles.galleryGrid}>
+        <div className={styles.grid}>
           <HomeSectionCard
-            coverClass={styles.amberCover}
-            coverIcon={<JavaScriptIcon size={24} color="#f59e0b" />}
+            icon={<JavaScriptIcon size={22} color="var(--color-js)" />}
+            tone="javascript"
             title="JavaScript"
             tagText={`${stats.jsTotal} задач`}
             tagVariant="yellow"
             description="Синтаксис и циклы, объекты и глубокие манипуляции, замыкания, функции высшего порядка, Event Loop, Promise, таймеры, контроль частоты и паттерны."
-            tags={["#objects", "#async", "#closures", "#event-loop", "#promises"]}
+            topics={["#objects", "#async", "#closures", "#event-loop", "#promises"]}
             solved={stats.jsSolved}
             total={stats.jsTotal}
             pct={stats.jsPct}
             to="/javascript"
-            actionBtnClass={styles.actionBtnAmber}
           />
 
           <HomeSectionCard
-            coverClass={styles.blueCover}
-            coverIcon={<TypeScriptIcon size={24} />}
+            icon={<TypeScriptIcon size={22} />}
+            tone="typescript"
             title="TypeScript"
             tagText={`${stats.tsTotal} задач`}
-            tagVariant="blue"
+            tagVariant="ts"
             description="От первых аннотаций до типизированного EventEmitter: интерфейсы, обобщённые и служебные типы, преобразования типов, классы и прикладные паттерны."
-            tags={["#typescript", "#generics", "#utility-types", "#type-safety"]}
+            topics={["#typescript", "#generics", "#utility-types", "#type-safety"]}
             solved={stats.tsSolved}
             total={stats.tsTotal}
             pct={stats.tsPct}
             to="/typescript"
-            actionBtnClass={styles.actionBtnBlue}
           />
 
           <HomeSectionCard
-            coverClass={styles.blueCover}
-            coverIcon={<ReactIcon size={24} />}
+            icon={<ReactIcon size={22} />}
+            tone="react"
             title="React"
             tagText={`${stats.reactTotal} задач`}
             tagVariant="blue"
             description="Паттерны хуков React 19, рефакторинг компонентов, оптимизация перерендеров, состояние с Zustand и Redux Toolkit, живой запуск и TypeScript."
-            tags={["#react19", "#hooks", "#refactoring", "#typescript"]}
+            topics={["#react19", "#hooks", "#refactoring", "#typescript"]}
             solved={stats.reactSolved}
             total={stats.reactTotal}
             pct={stats.reactPct}
             to="/react"
-            actionBtnClass={styles.actionBtnBlue}
           />
 
           <HomeSectionCard
-            coverClass={styles.purpleCover}
-            coverIcon={<Brain size={24} color="#a855f7" />}
+            icon={<Brain size={22} color="var(--color-algo)" />}
+            tone="algorithms"
             title="Алгоритмы"
             tagText={`${stats.algoTotal} задач`}
             tagVariant="purple"
             description="Классические алгоритмические задачи с собеседований: два указателя, скользящее окно, бинарный поиск, графы и деревья с анализом O(N) / O(1)."
-            tags={["#two-pointers", "#sliding-window", "#binary-search"]}
+            topics={["#two-pointers", "#sliding-window", "#binary-search"]}
             solved={stats.algoSolved}
             total={stats.algoTotal}
             pct={stats.algoPct}
             to="/algorithms"
-            actionBtnClass={styles.actionBtnPurple}
           />
         </div>
       </div>

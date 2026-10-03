@@ -94,11 +94,6 @@ describe("HomePage", () => {
 
     // Practice Sections
     expect(screen.getByRole("heading", { level: 2, name: "Разделы практики" })).toBeInTheDocument();
-
-    // Features Grid
-    expect(
-      screen.getByRole("heading", { level: 2, name: "Возможности платформы" })
-    ).toBeInTheDocument();
   });
 
   it("renders activity chart skeleton while data is loading asynchronously", () => {

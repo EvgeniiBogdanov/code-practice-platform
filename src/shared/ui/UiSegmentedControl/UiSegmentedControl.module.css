@@ -16,10 +16,10 @@
 }
 
 .group .option.active {
-  background: var(--accent-blue);
+  background: var(--accent-primary);
   color: var(--text-on-accent);
 }
 
 .group .option.active:hover:not(:disabled) {
-  background: var(--accent-blue-hover);
+  background: var(--accent-primary-hover);
 }

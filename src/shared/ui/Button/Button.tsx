@@ -1,9 +1,6 @@
 import React, { forwardRef, ButtonHTMLAttributes } from "react";
-import { clsx } from "clsx";
+import { buttonClassName, type ButtonSize, type ButtonVariant } from "./button-class-name";
 import styles from "./Button.module.css";
-
-export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "danger" | "success";
-export type ButtonSize = "sm" | "md" | "lg" | "icon" | "icon-sm";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
@@ -29,19 +26,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    const classNames = clsx(
-      styles.button,
-      styles[`variant-${variant}`],
-      styles[`size-${size}`],
-      isActive && styles.active,
-      className
-    );
-
     return (
       <button
         ref={ref}
         type={type}
-        className={classNames}
+        className={buttonClassName({ variant, size, isActive, className })}
         disabled={disabled}
         aria-pressed={isActive ? true : undefined}
         {...props}

@@ -229,7 +229,7 @@ textarea:not(.vscode-input-textarea)::placeholder {
   input:not([type="checkbox"]):not([type="radio"]):focus,
   textarea:not(.vscode-input-textarea):focus
 ) {
-  border-color: var(--accent-blue);
+  border-color: var(--accent-primary);
   background-color: var(--bg-input-focus);
   box-shadow: var(--shadow-glow-blue);
 }
@@ -293,7 +293,7 @@ select:hover {
 }
 
 select:focus {
-  border-color: var(--accent-blue);
+  border-color: var(--accent-primary);
   box-shadow: var(--shadow-glow-blue);
 }
 
@@ -334,8 +334,8 @@ input[type="checkbox"]:hover {
 }
 
 input[type="checkbox"]:checked {
-  background-color: var(--accent-blue);
-  border-color: var(--accent-blue);
+  background-color: var(--accent-primary);
+  border-color: var(--accent-primary);
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>');
   background-position: center;
   background-repeat: no-repeat;
@@ -370,8 +370,8 @@ input[type="radio"]:hover {
 }
 
 input[type="radio"]:checked {
-  background-color: var(--accent-blue);
-  border-color: var(--accent-blue);
+  background-color: var(--accent-primary);
+  border-color: var(--accent-primary);
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="12"/></svg>');
   background-position: center;
   background-repeat: no-repeat;

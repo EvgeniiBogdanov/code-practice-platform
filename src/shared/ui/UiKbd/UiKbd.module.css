@@ -1,0 +1,32 @@
+.combo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.7em;
+  height: 1.7em;
+  padding: 0 0.45em;
+  font-family: var(--font-sans);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-none);
+  color: var(--text-muted);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  border-bottom-width: 2px;
+  border-radius: var(--radius-xs);
+}
+
+.size_sm .key {
+  font-size: var(--fs-xs);
+}
+
+.size_md .key {
+  font-size: var(--fs-caption);
+}

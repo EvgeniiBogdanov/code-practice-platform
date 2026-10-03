@@ -53,3 +53,6 @@ export * from "./UiRange";
 export * from "./TypeScriptIcon";
 export * from "./UiTransitionSurface";
 export * from "./UiFullscreenPanel";
+export * from "./UiReveal";
+export * from "./UiScaledCanvas";
+export * from "./UiKbd";
