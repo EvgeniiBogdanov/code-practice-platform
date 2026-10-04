@@ -72,7 +72,7 @@ export const useSectionOverview = (section: SectionType): UseSectionOverviewRetu
         id: "typescript",
         title: "TypeScript: от основ к практике",
         subtitle:
-          "24 задачи по возрастанию сложности: аннотации, интерфейсы, обобщённые и служебные типы, преобразования типов и прикладные паттерны.",
+          "Путь от junior до senior по возрастанию сложности: основы и сужение типов, дженерики, служебные типы и их реализация, условные и рекурсивные типы, вариантность и прикладные паттерны.",
         icon: React.createElement(TypeScriptIcon, { size: 24, className: styles.iconTs }),
         tasks: sectionTasks,
         badge: `${activeSectionTasks.length} задач`,

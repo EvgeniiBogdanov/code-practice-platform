@@ -1,5 +1,15 @@
 import { createElement, type ReactElement } from "react";
-import { Binary, Braces, Wrench, Workflow, Layers, Folder, type LucideIcon } from "lucide-react";
+import {
+  Binary,
+  Brain,
+  Braces,
+  Folder,
+  Layers,
+  Split,
+  Workflow,
+  Wrench,
+  type LucideIcon,
+} from "lucide-react";
 
 interface TypeScriptGroupConfig {
   icon: LucideIcon;
@@ -13,35 +23,47 @@ export interface TypeScriptGroupMeta extends TypeScriptGroupConfig {
 }
 
 export const TYPESCRIPT_GROUP_CONFIG: Record<string, TypeScriptGroupConfig> = {
-  "Основы типизации": {
+  "Основы TypeScript": {
     icon: Binary,
     color: "var(--accent-blue)",
     bg: "var(--accent-blue-bg)",
-    desc: "Аннотации, кортежи, интерфейсы, литеральные объединения, сужение типов и перечисления.",
+    desc: "Аннотации, функции, кортежи, any/unknown/never, null, type и interface, структурная типизация, литералы и as const.",
   },
-  "Обобщённые и составные типы": {
+  "Type Narrowing": {
+    icon: Split,
+    color: "var(--accent-pink)",
+    bg: "var(--accent-pink-bg)",
+    desc: "typeof, in, instanceof, дискриминируемые объединения, проверка полноты через never, предикаты и функции-утверждения.",
+  },
+  "Generics": {
     icon: Braces,
     color: "var(--accent-purple)",
     bg: "var(--accent-purple-bg)",
-    desc: "Связь аргументов и результата через generics, keyof, индексный доступ и пересечения типов.",
+    desc: "Дженерики, ограничения и значения по умолчанию, keyof и индексный доступ, пересечения, satisfies, const-параметры и NoInfer.",
   },
-  "Служебные типы": {
+  "Utility Types": {
     icon: Wrench,
     color: "var(--accent-orange)",
     bg: "var(--accent-orange-bg)",
-    desc: "Преобразование готовых моделей с помощью Pick, Omit, Record, Partial, Exclude, Extract, ReturnType и Parameters.",
+    desc: "Pick, Omit, Record, Exclude, Extract, Partial, Required, Readonly, NonNullable, ReturnType, Parameters и Awaited.",
   },
-  "Преобразования типов": {
+  "Mapped и Conditional Types": {
     icon: Workflow,
     color: "var(--accent-cyan)",
     bg: "var(--accent-cyan-bg)",
-    desc: "Mapped types, условные типы, infer, шаблонные строки и дискриминируемые объединения.",
+    desc: "Собственные утилиты на mapped types, условные типы, infer, распределение по объединению, шаблонные строки и переименование ключей.",
   },
-  "Прикладные паттерны": {
+  "Практические паттерны": {
     icon: Layers,
     color: "var(--accent-green)",
     bg: "var(--accent-green-bg)",
-    desc: "Типизация запросов, классов, перегрузок, событий, вложенных обновлений и идентификаторов.",
+    desc: "Проверка ответов API, классы и репозитории, расширение глобальных типов, перегрузки, события, бренды и builder.",
+  },
+  "Advanced Types": {
+    icon: Brain,
+    color: "var(--accent-red)",
+    bg: "var(--accent-red-bg)",
+    desc: "Рекурсивные типы, разбор строк, операции с кортежами, каррирование, вариантность и UnionToIntersection.",
   },
 };
 

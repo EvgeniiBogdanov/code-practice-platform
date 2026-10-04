@@ -89,9 +89,9 @@ describe("useHomeStats - excluded tasks deduction", () => {
     });
     useReviewStore.setState({ excludedTaskIds: ["typescript-2"] });
     const { result } = renderHook(() => useHomeStats());
-    expect(result.current.tsTotal).toBe(23);
+    expect(result.current.tsTotal).toBe(CURRICULUM_COUNTS.typescript - 1);
     expect(result.current.tsSolved).toBe(1);
-    expect(result.current.tsPct).toBe(4);
+    expect(result.current.tsPct).toBe(Math.round(100 / (CURRICULUM_COUNTS.typescript - 1)));
     expect(result.current.reactSolved).toBe(1);
     expect(result.current.grandSolved).toBe(2);
     expect(result.current.grandExcluded).toBe(1);
