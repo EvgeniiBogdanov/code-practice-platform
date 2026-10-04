@@ -53,13 +53,13 @@ export const SHOWCASE_TASKS: readonly ShowcaseTask[] = [
     id: "typescript-22",
     section: "typescript",
     title: "Типизированный EventEmitter",
-    group: "Прикладные паттерны",
+    group: "Практические паттерны",
   },
   {
     id: "typescript-17",
     section: "typescript",
     title: "Шаблонные строки для имён событий",
-    group: "Преобразования типов",
+    group: "Mapped и Conditional Types",
   },
   {
     id: "a1",

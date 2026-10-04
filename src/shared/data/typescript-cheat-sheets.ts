@@ -15,17 +15,40 @@ export const TYPESCRIPT_CHEAT_SHEETS = {
       "language": "typescript"
     },
     {
-      "title": "Литералы и сужение типов",
-      "desc": "Проверка typeof отделяет варианты объединения.",
-      "code": "type Role = \"admin\" | \"user\";\nfunction formatId(id: string | number): string {\n  return typeof id === \"string\"\n    ? id.toUpperCase()\n    : id.toFixed(2);\n}",
-      "tip": "После проверки TypeScript знает, какие операции допустимы в каждой ветке.",
+      "title": "any, unknown и never",
+      "desc": "unknown — безопасная замена any: сначала проверка, потом использование.",
+      "code": "const data: unknown = JSON.parse(text);\nif (typeof data === \"object\" && data !== null && \"name\" in data) {\n  console.log(data.name);\n}\nfunction fail(message: string): never {\n  throw new Error(message);\n}",
+      "tip": "Функция с never прерывает поток управления, только если объявлена с явным типом: function или const с аннотацией.",
       "language": "typescript"
     },
     {
-      "title": "Перечисления",
-      "desc": "Обычный enum создаёт и тип, и объект со значениями.",
-      "code": "enum OrderStatus {\n  Pending = \"pending\",\n  Shipped = \"shipped\",\n  Delivered = \"delivered\",\n  Cancelled = \"cancelled\",\n}\nconst status: OrderStatus = OrderStatus.Pending;",
-      "tip": "Объединение строковых литералов существует только при проверке типов, enum доступен и в рантайме.",
+      "title": "Литералы и as const",
+      "desc": "as const отключает расширение литералов и делает данные readonly.",
+      "code": "const routes = [\"/home\", \"/about\"] as const;\ntype Route = (typeof routes)[number]; // \"/home\" | \"/about\"\n\nconst OrderStatus = { Pending: \"pending\", Shipped: \"shipped\" } as const;\ntype OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus];",
+      "tip": "Объект as const вместо enum: принимает литералы из API и не генерирует лишний JavaScript.",
+      "language": "typescript"
+    }
+  ],
+  "ts_narrowing": [
+    {
+      "title": "typeof, in, instanceof",
+      "desc": "Выбор проверки зависит от того, что существует во время выполнения.",
+      "code": "function format(value: string | number): string {\n  return typeof value === \"string\" ? value.toUpperCase() : value.toFixed(2);\n}\nfunction move(animal: Fish | Bird): void {\n  if (\"swim\" in animal) animal.swim();\n  else animal.fly();\n}\nconst date = value instanceof Date ? value : new Date(value);",
+      "tip": "Интерфейсы стираются при компиляции, поэтому instanceof работает только с классами.",
+      "language": "typescript"
+    },
+    {
+      "title": "Проверка полноты через never",
+      "desc": "Пропущенный вариант объединения становится ошибкой компиляции.",
+      "code": "const assertNever = (value: never): never => {\n  throw new Error(`Необработанный вариант: ${JSON.stringify(value)}`);\n};\nswitch (shape.kind) {\n  case \"circle\": return Math.PI * shape.radius ** 2;\n  case \"square\": return shape.side ** 2;\n  default: return assertNever(shape);\n}",
+      "tip": "default: return 0 отключает проверку: новые варианты молча получат неверный результат.",
+      "language": "typescript"
+    },
+    {
+      "title": "Предикаты и функции-утверждения",
+      "desc": "value is T сужает в if, asserts — во всём последующем коде.",
+      "code": "const isUser = (value: unknown): value is User =>\n  typeof value === \"object\" && value !== null &&\n  \"name\" in value && typeof value.name === \"string\";\n\nfunction assert(condition: unknown, message: string): asserts condition {\n  if (!condition) throw new Error(message);\n}",
+      "tip": "TypeScript не проверяет тело предиката: если он «врёт», ошибка появится во время выполнения.",
       "language": "typescript"
     }
   ],
@@ -42,6 +65,20 @@ export const TYPESCRIPT_CHEAT_SHEETS = {
       "desc": "extends расширяет модель, пересечение объединяет возможности.",
       "code": "interface User { name: string; age: number }\ninterface Admin extends User { role: \"admin\" }\ninterface Serializable { serialize: () => string }\ninterface Loggable { log: () => void }\ntype Entity = Serializable & Loggable;",
       "tip": "Пересечение требует соблюсти оба контракта. Несовместимые поля могут получить тип never.",
+      "language": "typescript"
+    },
+    {
+      "title": "satisfies",
+      "desc": "Проверяет значение по типу, но сохраняет точный выведенный тип.",
+      "code": "const routes = {\n  home: { path: \"/\" },\n  profile: { path: \"/profile\", auth: true },\n} satisfies Record<string, { path: string; auth?: boolean }>;\n\nroutes.profile.path; // ок\n// routes.profle;     // ошибка",
+      "tip": "Аннотация расширяет тип до объявленного, as не проверяет, satisfies — проверяет и не расширяет.",
+      "language": "typescript"
+    },
+    {
+      "title": "const-параметры и NoInfer",
+      "desc": "Управляйте тем, как и откуда выводится параметр типа.",
+      "code": "const createMachine = <S extends string>(\n  states: readonly S[],\n  initial: NoInfer<S>\n) => ({ states, initial });\ncreateMachine([\"idle\", \"loading\"], \"idle\");\n\nconst defineConfig = <const T extends object>(config: T): T => config;",
+      "tip": "Ограничение-примитив сохраняет литералы, NoInfer исключает позицию из вывода, const даёт эффект as const.",
       "language": "typescript"
     }
   ],
@@ -103,6 +140,20 @@ export const TYPESCRIPT_CHEAT_SHEETS = {
       "code": "type AppEvent =\n  | { type: \"click\"; x: number; y: number }\n  | { type: \"keypress\"; key: string };\nfunction handle(event: AppEvent): void {\n  if (event.type === \"click\") console.log(event.x, event.y);\n  else console.log(event.key);\n}",
       "tip": "Раздельные варианты не допускают бессмысленных сочетаний необязательных полей.",
       "language": "typescript"
+    },
+    {
+      "title": "Модификаторы и переименование ключей",
+      "desc": "-? и -readonly снимают модификаторы, as переименовывает и фильтрует ключи.",
+      "code": "type Mutable<T> = { -readonly [K in keyof T]: T[K] };\ntype Getters<T> = {\n  [K in keyof T as `get${Capitalize<string & K>}`]: () => T[K];\n};\ntype PickByValue<T, V> = {\n  [K in keyof T as T[K] extends V ? K : never]: T[K];\n};",
+      "tip": "Ключ, для которого выражение после as даёт never, исчезает из результата.",
+      "language": "typescript"
+    },
+    {
+      "title": "Распределение по объединению",
+      "desc": "Голый параметр типа распределяет условие, обёртка [T] — отключает.",
+      "code": "type ToArray<T> = T extends unknown ? T[] : never;\ntype A = ToArray<string | number>; // string[] | number[]\n\ntype IsNever<T> = [T] extends [never] ? true : false;",
+      "tip": "never — пустое объединение: распределение по нему всегда даёт never.",
+      "language": "typescript"
     }
   ],
   "ts_patterns": [
@@ -146,6 +197,36 @@ export const TYPESCRIPT_CHEAT_SHEETS = {
       "desc": "Различайте значения с одинаковым базовым типом.",
       "code": "type Brand<T, B extends string> = T & { readonly __brand: B };\ntype UserId = Brand<string, \"UserId\">;\ntype OrderId = Brand<string, \"OrderId\">;\nconst toUserId = (id: string): UserId => id as UserId;\nfunction getUser(id: UserId): void { console.log(id); }\ngetUser(toUserId(\"user-1\"));",
       "tip": "Бренд не проверяет формат строки. Проверку недоверенных данных добавляют в фабрику.",
+      "language": "typescript"
+    }
+  ],
+  "ts_advanced": [
+    {
+      "title": "Разбор строк через infer",
+      "desc": "Шаблонные строки с infer извлекают данные из строковых литералов.",
+      "code": "type ParamNames<P extends string> =\n  P extends `${string}:${infer Param}/${infer Rest}`\n    ? Param | ParamNames<Rest>\n    : P extends `${string}:${infer Param}` ? Param : never;\n\ntype Params = ParamNames<\"/users/:id/posts/:postId\">; // \"id\" | \"postId\"",
+      "tip": "Каждая позиция перед следующим литералом захватывает минимальную подстроку.",
+      "language": "typescript"
+    },
+    {
+      "title": "Кортежи и рекурсия",
+      "desc": "[infer F, ...infer Rest] разбирает кортеж, [...A, ...B] собирает.",
+      "code": "type Reverse<T extends readonly unknown[]> =\n  T extends readonly [infer F, ...infer Rest] ? [...Reverse<Rest>, F] : [];\n\ntype Curried<A extends unknown[], R> = A extends [infer F, ...infer Rest]\n  ? (arg: F) => Rest extends [] ? R : Curried<Rest, R>\n  : R;",
+      "tip": "Глубина рекурсии условных типов ограничена; при ошибке «excessively deep» нужен счётчик.",
+      "language": "typescript"
+    },
+    {
+      "title": "Вариантность",
+      "desc": "Результаты ковариантны, параметры контравариантны.",
+      "code": "interface Handler {\n  onEvent: (animal: Animal) => void; // строгая проверка\n  // onEvent(animal: Animal): void;   // метод — бивариантно\n}\ninterface Box<out T> {\n  readonly value: T;\n}",
+      "tip": "Колбэки в интерфейсах описывайте свойствами: методы проверяются бивариантно даже в strict.",
+      "language": "typescript"
+    },
+    {
+      "title": "UnionToIntersection",
+      "desc": "Вывод из позиции параметра объединяет кандидатов пересечением.",
+      "code": "type UnionToIntersection<U> =\n  (U extends unknown ? (arg: U) => void : never) extends (arg: infer I) => void\n    ? I\n    : never;\n\ntype All = UnionToIntersection<{ a: 1 } | { b: 2 }>; // { a: 1 } & { b: 2 }",
+      "tip": "Для примитивов результат — never: string & number пуст.",
       "language": "typescript"
     }
   ]

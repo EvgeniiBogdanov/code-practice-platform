@@ -44,7 +44,7 @@ describe("useSidebarHomeStats", () => {
     });
     useReviewStore.setState({ excludedTaskIds: ["typescript-2"] });
     const { result } = renderHook(() => useSidebarHomeStats());
-    expect(result.current.totalTs).toBe(23);
+    expect(result.current.totalTs).toBe(CURRICULUM_COUNTS.typescript - 1);
     expect(result.current.completedTsTotal).toBe(1);
     expect(result.current.completedReactTotal).toBe(1);
   });
