@@ -8,11 +8,13 @@ import {
   ErrorBoundary,
   ViewModeToggle,
   UiFullscreenPanel,
+  UiSkeleton,
   ResizableSplitPane,
 } from "@/shared/ui";
 import { CodeEditor } from "@/features/code-editor";
 import { JsConsole, ReactLivePreview } from "@/features/code-runner";
 import { useSolutionTab } from "../../model/use-solution-tab";
+import { EDITOR_PLACEHOLDER_HEIGHT } from "../../model/editor-placeholder";
 import { SolutionVariantsRow } from "./SolutionVariantsRow";
 import styles from "./SolutionTab.module.css";
 
@@ -89,7 +91,7 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
           />
         ) : (
           <>
-            {isFilesReady && (
+            {isFilesReady ? (
               <UiFullscreenPanel label="Редактор решения">
                 {({ isFullscreen, isTransitioning, toggleFullscreen }) => (
                   <ResizableSplitPane
@@ -149,6 +151,8 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
                   />
                 )}
               </UiFullscreenPanel>
+            ) : (
+              <UiSkeleton height={EDITOR_PLACEHOLDER_HEIGHT} />
             )}
 
             {!isConsoleVisible && (

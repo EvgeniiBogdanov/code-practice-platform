@@ -22,10 +22,12 @@ import {
   ViewModeToggle,
   ViewMode,
   UiFullscreenPanel,
+  UiSkeleton,
   ResizableSplitPane,
 } from "@/shared/ui";
 import { CodeEditor } from "@/features/code-editor";
 import { JsConsole, ReactLivePreview } from "@/features/code-runner";
+import { EDITOR_PLACEHOLDER_HEIGHT } from "../../model/editor-placeholder";
 import styles from "./CandidateTab.module.css";
 
 const MAX_CONSOLE_LOGS = 500;
@@ -272,7 +274,7 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
           />
         ) : (
           <>
-            {isSavedReady && (
+            {isSavedReady ? (
               <UiFullscreenPanel label="Редактор кода">
                 {({ isFullscreen, isTransitioning, toggleFullscreen }) => (
                   <ResizableSplitPane
@@ -336,6 +338,8 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
                   />
                 )}
               </UiFullscreenPanel>
+            ) : (
+              <UiSkeleton height={EDITOR_PLACEHOLDER_HEIGHT} />
             )}
 
             {/* Quick-scroll to console button */}
