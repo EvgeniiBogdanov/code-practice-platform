@@ -8,10 +8,17 @@ import styles from "./MarkdownView.module.css";
 export interface MarkdownViewProps {
   content?: string;
   blocks?: MarkdownBlock[];
+  /** Inherits the host's font size and colour, for tooltips and editor hovers. */
+  compact?: boolean;
   className?: string;
 }
 
-export const MarkdownView = ({ content, blocks: initialBlocks, className }: MarkdownViewProps) => {
+export const MarkdownView = ({
+  content,
+  blocks: initialBlocks,
+  compact = false,
+  className,
+}: MarkdownViewProps) => {
   const blocks = useMemo(() => {
     if (initialBlocks && initialBlocks.length > 0) {
       return initialBlocks;
@@ -69,7 +76,10 @@ export const MarkdownView = ({ content, blocks: initialBlocks, className }: Mark
   if (blocks.length === 0) return null;
 
   return (
-    <div className={clsx(styles.markdownContainer, className)} onClick={handleContainerClick}>
+    <div
+      className={clsx(styles.markdownContainer, compact && styles.compact, className)}
+      onClick={handleContainerClick}
+    >
       {blocks.map((block, idx) => {
         if (block.type === "code") {
           return (

@@ -20,40 +20,6 @@
   flex-shrink: 0;
 }
 
-.progressCard {
-  background: color-mix(in srgb, var(--state-active) 40%, var(--bg-sidebar));
-  border-radius: var(--radius-lg, 8px);
-  padding: 8px 10px;
-  cursor: default;
-  user-select: none;
-  box-sizing: border-box;
-}
-
-[data-theme="light"] .progressCard {
-  background: #ffffff;
-  border: 1px solid rgba(55, 53, 47, 0.09);
-}
-
-.headerRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 6px;
-}
-
-.sectionTitle {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.barTrack {
-  height: 4px;
-  background: var(--border-color);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
 /* Quick Actions - identical to SidebarQuickActions */
 .quickActions {
   display: grid;

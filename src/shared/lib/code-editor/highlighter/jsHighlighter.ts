@@ -2,347 +2,309 @@
  * JavaScript, JSX, TypeScript, TSX Syntax Highlighter
  */
 
-import { DiagnosticProblem, HighlightOptions, escapeHtml } from "./types";
+import { HighlightOptions, escapeHtml, getProblemClass } from "./types";
+import { scanExpression, scanTemplate } from "./jsScanning";
+import {
+  ACCESSOR_KEYWORDS,
+  CONTEXTUAL_KEYWORDS,
+  DECLARATION_KEYWORDS,
+  FOLLOWED_BY_MEMBER_NAME,
+  GENERIC_PARAMS_START,
+  REGEX_PRECEDING_TOKENS,
+  RULES,
+  TOKEN_CLASSES,
+  USED_AS_IDENTIFIER,
+  VALUE_TOKENS,
+} from "./jsHighlightRules";
 
-export function highlightTemplateLiteral(text: string, options: HighlightOptions = {}): string {
-  let result = '<span class="hl-str">`</span>';
+/** Options for code embedded at `offset`: absolute ranges are rebased. */
+const embedOptions = (options: HighlightOptions, offset: number): HighlightOptions => ({
+  ...options,
+  jsxTextRanges: [],
+  multiSelections: options.multiSelections?.map(({ start, end }) => ({
+    start: start - offset,
+    end: end - offset,
+  })),
+  problems: options.problems?.map((problem) => ({
+    ...problem,
+    start: problem.start - offset,
+    end: problem.end - offset,
+  })),
+});
+
+export function highlightTemplateLiteral(
+  text: string,
+  options: HighlightOptions = {},
+  offset = 0
+): string {
+  const closed = text.length > 1 && text.endsWith("`");
+  const bodyEnd = closed ? text.length - 1 : text.length;
+  const isSelected = (index: number): boolean =>
+    Boolean(
+      options.multiSelections?.some(
+        (selection) => offset + index >= selection.start && offset + index < selection.end
+      )
+    );
+  // Consecutive characters with the same selection state share one span: a long template
+  // would otherwise emit a span per character.
+  let result = "";
+  let run = "";
+  let runSelected = false;
+  const flush = (): void => {
+    if (run) {
+      result += `<span class="hl-str${runSelected ? " hl-multi-selected" : ""}">${escapeHtml(run)}</span>`;
+    }
+    run = "";
+  };
+  const str = (index: number, value: string): void => {
+    const selected = isSelected(index);
+    if (run && selected !== runSelected) flush();
+    runSelected = selected;
+    run += value;
+  };
+
+  str(0, "`");
   let i = 1;
-
-  while (i < text.length - 1) {
-    if (text[i] === "\\" && i + 1 < text.length - 1) {
-      result += `<span class="hl-str">${escapeHtml(text[i] + text[i + 1])}</span>`;
+  while (i < bodyEnd) {
+    if (text[i] === "\\" && i + 1 < bodyEnd) {
+      str(i, text[i] + text[i + 1]);
       i += 2;
     } else if (text[i] === "$" && text[i + 1] === "{") {
-      let depth = 1;
-      let j = i + 2;
-      while (j < text.length - 1 && depth > 0) {
-        if (text[j] === "{") depth++;
-        if (text[j] === "}") depth--;
-        j++;
-      }
-      const inner = text.slice(i + 2, j - 1);
-      result += `<span class="hl-op">\${</span>${highlightJS(inner, options)}<span class="hl-op">}</span>`;
-      i = j;
+      flush();
+      const end = Math.min(scanExpression(text, i + 2), bodyEnd);
+      const closedExpression = text[end - 1] === "}";
+      const inner = text.slice(i + 2, closedExpression ? end - 1 : end);
+      const innerOffset = offset + i + 2;
+      result += `<span class="hl-op">\${</span>${highlightJS(inner, embedOptions(options, innerOffset))}`;
+      if (closedExpression) result += '<span class="hl-op">}</span>';
+      i = end;
     } else {
-      result += `<span class="hl-str">${escapeHtml(text[i])}</span>`;
+      str(i, text[i]);
       i++;
     }
   }
-
-  result += '<span class="hl-str">`</span>';
+  if (closed) str(text.length - 1, "`");
+  flush();
   return result;
 }
-
-const JS_RULES = [
-  { type: "comment", regex: /^(\/\*[\s\S]*?\*\/|\/\/.*)/ },
-  { type: "template", regex: /^`(?:[^`\\]|\\.|\$\{[^}]*\})*`/ },
-  { type: "string", regex: /^("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/ },
-  { type: "regex", regex: /^\/(?![*/])(?:\\.|\[(?:\\.|[^\]\\])*\]|[^/\\\n])+\/[gimsuy]*/ },
-  { type: "number", regex: /^\b\d+(?:\.\d+)?\b/ },
-  { type: "jsx-tag-close", regex: /^<\// },
-  { type: "jsx-tag-self-close", regex: /^\/>/ },
-  { type: "jsx-tag-open", regex: /^<(?=[a-zA-Z])/ },
-  { type: "jsx-tag-end", regex: /^>/ },
-  { type: "arrow", regex: /^=>/ },
-  { type: "operator", regex: /^\.{3}/ },
-  { type: "operator", regex: /^(===|!==|==|!=|<=|>=|&&|\|\||[+\-*/%]=?|!)/ },
-  { type: "operator", regex: /^\?\.\B/ },
-  {
-    type: "keyword",
-    regex:
-      /^\b(const|let|var|function|return|import|export|default|try|catch|finally|async|await|if|else|for|while|do|switch|case|break|continue|throw|new|typeof|instanceof|void|delete|in|of|from|as|type|interface|extends|implements|readonly|public|private|protected|class|static|super|yield|enum|namespace|declare|abstract|satisfies|is|keyof|infer|asserts)(?![a-zA-Z0-9_$])/,
-  },
-  { type: "boolean", regex: /^\b(true|false|this|self)(?![a-zA-Z0-9_$])/ },
-  {
-    type: "type",
-    regex:
-      /^\b(string|number|boolean|null|undefined|any|unknown|never|object|symbol|bigint|void|ReactNode|ReactElement|ReactPortal|FC|FunctionComponent|PropsWithChildren|ChangeEvent|MouseEvent|KeyboardEvent|FormEvent|FocusEvent|PointerEvent|TouchEvent|SyntheticEvent|ComponentPropsWithoutRef|ComponentPropsWithRef|ComponentProps|ElementRef|ElementType|MutableRefObject|RefObject|ForwardedRef|Ref|Dispatch|SetStateAction|Reducer|ReducerState|ReducerAction|Context|Key|CSSProperties|HTMLInputElement|HTMLButtonElement|HTMLSelectElement|HTMLTextAreaElement|HTMLFormElement|HTMLAnchorElement|HTMLDivElement|HTMLSpanElement|HTMLImageElement|HTMLElement|Element|Event|Node|Partial|Required|Readonly|Record|Pick|Omit|Exclude|Extract|NonNullable|ReturnType|Parameters|InstanceType|Awaited|Promise)(?![a-zA-Z0-9_$])/,
-  },
-  {
-    type: "react-hook",
-    regex:
-      /^\b(useState|useEffect|useCallback|useMemo|useRef|useReducer|useContext|useImperativeHandle|useLayoutEffect|useDebugValue|useDeferredValue|useTransition|useId|useSyncExternalStore|useInsertionEffect|memo|forwardRef|createPortal|useNavigate|useParams|useLocation|createContext|createSelector|createSlice|createAsyncThunk|configureStore|useSelector|useDispatch)(?![a-zA-Z0-9_$])/,
-  },
-  {
-    type: "global",
-    regex:
-      /^\b(fetch|console|window|document|URL|setTimeout|clearTimeout|setInterval|clearInterval|Math|Date|Array|Object|String|Number|Boolean|Promise|Error|JSON|Map|Set|WeakMap|WeakSet|Symbol|Proxy|Reflect|RegExp|parseInt|parseFloat|isNaN|isFinite|encodeURIComponent|decodeURIComponent|alert|confirm|prompt|localStorage|sessionStorage|navigator|location|history|performance|AbortController|FormData|Headers|Request|Response|ReadableStream|WritableStream|TextEncoder|TextDecoder|Blob|File|FileReader|XMLHttpRequest|WebSocket|Worker|SharedWorker|IntersectionObserver|MutationObserver|ResizeObserver|requestAnimationFrame|cancelAnimationFrame|queueMicrotask|structuredClone)(?![a-zA-Z0-9_$])/,
-  },
-  { type: "function-call", regex: /^([a-zA-Z_$][a-zA-Z0-9_$]*)(?=\s*\()/ },
-  { type: "property", regex: /^(\.)([a-zA-Z_$][a-zA-Z0-9_$]*)/ },
-  { type: "ident", regex: /^[a-zA-Z_$][a-zA-Z0-9_$]*/ },
-  { type: "punct", regex: /^[^\s\w]/ },
-  { type: "space", regex: /^(\s+)/ },
-];
-
-const REGEX_PRECEDING_TOKENS = new Set([
-  "",
-  "keyword",
-  "operator",
-  "arrow",
-  "comment",
-  "punct",
-  "jsx-tag-open",
-  "jsx-tag-close",
-  "jsx-tag-end",
-  "jsx-tag-self-close",
-]);
 
 export function highlightJS(code: string, options: HighlightOptions = {}): string {
   if (!code) return "";
 
-  const { bracketPair = null, problems = [], unusedImports = null, multiSelections = [] } = options;
+  const { bracketPair = null, problems = [], multiSelections = [] } = options;
+  const rules = options.supportsTypeScript ? RULES.ts : RULES.js;
 
   const isBracketMatch = (idx: number): boolean =>
     Boolean(bracketPair && (idx === bracketPair[0] || idx === bracketPair[1]));
   const isMultiSelected = (start: number, len: number): boolean => {
-    if (!multiSelections || multiSelections.length === 0) return false;
+    if (multiSelections.length === 0) return false;
     const end = start + len;
     return multiSelections.some((s) => !(end <= s.start || start >= s.end));
   };
-  const problemsByLine = new Map<number, DiagnosticProblem[]>();
-  for (const problem of problems) {
-    const lineProblems = problemsByLine.get(problem.line);
-    if (lineProblems) {
-      lineProblems.push(problem);
-    } else {
-      problemsByLine.set(problem.line, [problem]);
-    }
-  }
-
   let html = "";
-  let rest = code;
   let insideJsxTag = false;
-  let insideImport = false;
+  let jsxBraceDepth = 0;
+  // `<` nesting of type arguments in a tag head: `<Foo<string> a={1} />`.
+  let jsxTypeDepth = 0;
+  // Brace depths of enclosing tags while markup is nested in an attribute expression.
+  const outerTags: number[] = [];
+  const openTag = (): void => {
+    if (insideJsxTag) outerTags.push(jsxBraceDepth);
+    insideJsxTag = true;
+    jsxBraceDepth = 0;
+    jsxTypeDepth = 0;
+  };
+  const closeTag = (): void => {
+    const outer = outerTags.pop();
+    insideJsxTag = outer !== undefined;
+    jsxBraceDepth = outer ?? 0;
+    jsxTypeDepth = 0;
+  };
   let lastTokenType = "";
-  let currentIndex = 0;
-  let currentLine = 1;
-  let currentCol = 1;
+  let lastTokenText = "";
+  let index = 0;
   let textRangeIndex = 0;
 
-  while (rest.length > 0) {
+  // `<` starts markup only where an expression may begin: not after a value or `)`.
+  const canStartMarkup = (): boolean =>
+    options.supportsJsx !== false &&
+    !VALUE_TOKENS.has(lastTokenType) &&
+    !(lastTokenType === "punct" && (lastTokenText === ")" || lastTokenText === "]")) &&
+    // TSX generic arrow parameters are not markup.
+    !GENERIC_PARAMS_START.test(code.slice(index, index + 64));
+
+  while (index < code.length) {
     const textRange = options.jsxTextRanges?.[textRangeIndex];
-    if (textRange && currentIndex === textRange.start) {
+    if (textRange && index === textRange.start) {
       const text = code.slice(textRange.start, textRange.end);
-      for (let index = 0; index < text.length; index++) {
-        const character = text[index];
-        const escaped = escapeHtml(character);
-        html += isMultiSelected(currentIndex, 1)
+      for (let offset = 0; offset < text.length; offset++) {
+        const escaped = escapeHtml(text[offset]);
+        html += isMultiSelected(index + offset, 1)
           ? `<span class="hl-multi-selected">${escaped}</span>`
           : escaped;
-        currentIndex++;
-        if (character === "\n") {
-          currentLine++;
-          currentCol = 1;
-        } else currentCol++;
       }
-      rest = code.slice(currentIndex);
+      index = textRange.end;
       textRangeIndex++;
       lastTokenType = "jsx-text";
+      lastTokenText = "";
       continue;
     }
-    let matched = false;
 
-    for (const rule of JS_RULES) {
-      if (
-        options.supportsJsx === false &&
-        (rule.type.startsWith("jsx-") || rule.type === "react-hook")
-      )
-        continue;
-      if (
-        options.supportsTypeScript === false &&
-        rule.type === "type" &&
-        !/^(null|undefined)\b/.test(rest)
-      )
-        continue;
-      if (rule.type === "regex" && !REGEX_PRECEDING_TOKENS.has(lastTokenType)) {
-        continue;
-      }
-      const m = rule.regex.exec(rest);
-      if (m && (!textRange || currentIndex + m[0].length <= textRange.start)) {
-        matched = true;
-        const text = m[0];
-        const tokenStart = currentIndex;
-        const tokenLine = currentLine;
-        const tokenCol = currentCol;
-        const tokenLen = text.length;
+    const tokenStart = index;
+    let type = "";
+    let text = "";
+    let match: RegExpExecArray | null = null;
 
-        rest = rest.slice(text.length);
-        currentIndex += text.length;
-
-        const newlines = text.split("\n").length - 1;
-        if (newlines > 0) {
-          currentLine += newlines;
-          const lastNl = text.lastIndexOf("\n");
-          currentCol = text.length - lastNl;
-        } else {
-          currentCol += text.length;
-        }
-
-        let squigglyClass = "";
-        if (problems && problems.length > 0 && rule.type !== "space" && rule.type !== "comment") {
-          const prob = problemsByLine.get(tokenLine)?.find((p) => {
-            if (p.line !== tokenLine) return false;
-            if (p.typo && p.typo === text) return true;
-            if (p.symbol && p.symbol === text) return true;
-            if (tokenCol >= p.col && tokenCol < p.col + (p.symbol?.length || p.typo?.length || 5))
-              return true;
-            if (p.col >= tokenCol && p.col < tokenCol + tokenLen) return true;
-            return false;
-          });
-          if (prob) {
-            squigglyClass =
-              prob.severity === "warning" ? " hl-squiggly-warning" : " hl-squiggly-error";
-          }
-        }
-
-        if (rule.type === "keyword" && text === "import") {
-          insideImport = true;
-        } else if (insideImport && (text === ";" || rule.type === "string" || newlines > 0)) {
-          if (text === ";" || rule.type === "string") {
-            insideImport = false;
-          }
-        }
-
-        let unusedClass = "";
-        if (insideImport && unusedImports && unusedImports.size > 0 && unusedImports.has(text)) {
-          unusedClass = " hl-unused-dimmed";
-        }
-
-        const multiSelectClass = isMultiSelected(tokenStart, tokenLen) ? " hl-multi-selected" : "";
-        const extraClasses = squigglyClass + unusedClass + multiSelectClass;
-
-        if (rule.type === "comment") {
-          html += '<span class="hl-cm' + multiSelectClass + '">' + escapeHtml(text) + "</span>";
-        } else if (rule.type === "template") {
-          const template = highlightTemplateLiteral(text, options);
-          html += multiSelectClass
-            ? `<span class="hl-multi-selected">${template}</span>`
-            : template;
-        } else if (rule.type === "string") {
-          html +=
-            '<span class="hl-str' +
-            squigglyClass +
-            multiSelectClass +
-            '">' +
-            escapeHtml(text) +
-            "</span>";
-        } else if (rule.type === "regex") {
-          html += '<span class="hl-regex' + multiSelectClass + '">' + escapeHtml(text) + "</span>";
-        } else if (rule.type === "number") {
-          html += '<span class="hl-num' + extraClasses + '">' + escapeHtml(text) + "</span>";
-        } else if (rule.type === "jsx-tag-open") {
-          insideJsxTag = true;
-          html += `<span class="hl-tag-punct${multiSelectClass}">&lt;</span>`;
-        } else if (rule.type === "jsx-tag-close") {
-          insideJsxTag = true;
-          html += `<span class="hl-tag-punct${multiSelectClass}">&lt;/</span>`;
-        } else if (rule.type === "jsx-tag-self-close") {
-          insideJsxTag = false;
-          html += `<span class="hl-tag-punct${multiSelectClass}">/&gt;</span>`;
-        } else if (rule.type === "jsx-tag-end") {
-          insideJsxTag = false;
-          html += `<span class="hl-tag-punct${multiSelectClass}">&gt;</span>`;
-        } else if (rule.type === "arrow") {
-          html += `<span class="hl-arrow${multiSelectClass}">=&gt;</span>`;
-        } else if (rule.type === "operator") {
-          html += '<span class="hl-op' + multiSelectClass + '">' + escapeHtml(text) + "</span>";
-        } else if (rule.type === "keyword") {
-          html += '<span class="hl-kw' + extraClasses + '">' + escapeHtml(text) + "</span>";
-        } else if (rule.type === "boolean") {
-          html += '<span class="hl-bool' + extraClasses + '">' + escapeHtml(text) + "</span>";
-        } else if (rule.type === "type") {
-          html += '<span class="hl-type' + extraClasses + '">' + escapeHtml(text) + "</span>";
-        } else if (rule.type === "react-hook") {
-          html += '<span class="hl-hook' + extraClasses + '">' + escapeHtml(text) + "</span>";
-        } else if (rule.type === "global") {
-          html += '<span class="hl-global' + extraClasses + '">' + escapeHtml(text) + "</span>";
-        } else if (rule.type === "function-call") {
-          html += '<span class="hl-fn' + extraClasses + '">' + escapeHtml(text) + "</span>";
-        } else if (rule.type === "property") {
-          const dot = m[1];
-          const prop = m[2];
-          const dotClass = isMultiSelected(tokenStart, dot.length) ? " hl-multi-selected" : "";
-          const propClass = isMultiSelected(tokenStart + dot.length, prop.length)
-            ? " hl-multi-selected"
-            : "";
-          html +=
-            '<span class="hl-punct' +
-            dotClass +
-            '">' +
-            escapeHtml(dot) +
-            "</span>" +
-            '<span class="hl-prop' +
-            squigglyClass +
-            propClass +
-            '">' +
-            escapeHtml(prop) +
-            "</span>";
-        } else if (rule.type === "ident") {
-          if (insideJsxTag && lastTokenType !== "punct") {
-            if (lastTokenType === "jsx-tag-open" || lastTokenType === "jsx-tag-close") {
-              html += '<span class="hl-tag' + extraClasses + '">' + escapeHtml(text) + "</span>";
-            } else {
-              html += '<span class="hl-attr' + extraClasses + '">' + escapeHtml(text) + "</span>";
-            }
-          } else {
-            if (extraClasses) {
-              html += '<span class="' + extraClasses.trim() + '">' + escapeHtml(text) + "</span>";
-            } else {
-              html += escapeHtml(text);
-            }
-          }
-        } else if (rule.type === "punct") {
-          const bracketClass = isBracketMatch(tokenStart) ? " hl-bracket-match" : "";
-          if ("{}()[]".includes(text)) {
-            html +=
-              '<span class="hl-punct' +
-              bracketClass +
-              squigglyClass +
-              multiSelectClass +
-              '">' +
-              escapeHtml(text) +
-              "</span>";
-          } else if (text === "=" && !insideJsxTag) {
-            html += '<span class="hl-op' + multiSelectClass + '">' + escapeHtml(text) + "</span>";
-          } else {
-            html += multiSelectClass
-              ? `<span class="hl-multi-selected">${escapeHtml(text)}</span>`
-              : escapeHtml(text);
-          }
-        } else {
-          html += multiSelectClass
-            ? `<span class="hl-multi-selected">${escapeHtml(text)}</span>`
-            : escapeHtml(text);
-        }
-
-        if (rule.type !== "space") {
-          lastTokenType = rule.type;
-        }
+    if (code[index] === "`") {
+      type = "template";
+      text = code.slice(index, scanTemplate(code, index));
+    } else {
+      for (const rule of rules) {
+        if (rule.type === "disabled") continue;
+        if (
+          rule.type === "regex" &&
+          (!REGEX_PRECEDING_TOKENS.has(lastTokenType) ||
+            lastTokenText === ")" ||
+            lastTokenText === "]" ||
+            // In a tag head a slash can only start `/>`.
+            (insideJsxTag && jsxBraceDepth === 0))
+        )
+          continue;
+        if (
+          (rule.type === "jsx-tag-open" || rule.type === "jsx-tag-close") &&
+          ((insideJsxTag && jsxBraceDepth === 0) || !canStartMarkup())
+        )
+          continue;
+        if (
+          (rule.type === "jsx-tag-end" || rule.type === "jsx-tag-self-close") &&
+          (!insideJsxTag || jsxBraceDepth > 0 || jsxTypeDepth > 0)
+        )
+          continue;
+        rule.regex.lastIndex = index;
+        match = rule.regex.exec(code);
+        if (!match || match[0].length === 0) continue;
+        if (textRange && index + match[0].length > textRange.start) continue;
+        type = rule.type;
+        text = match[0];
         break;
       }
     }
 
-    if (!matched) {
-      const charStart = currentIndex;
-      const bracketClass = isBracketMatch(charStart) ? ' class="hl-bracket-match"' : "";
-      const selectedClass = isMultiSelected(charStart, 1) ? "hl-multi-selected" : "";
-      if (bracketClass || selectedClass) {
-        const className = [bracketClass ? "hl-bracket-match" : "", selectedClass]
-          .filter(Boolean)
-          .join(" ");
-        html += `<span class="${className}">${escapeHtml(rest[0])}</span>`;
+    if (!type) {
+      const charClasses = [
+        isBracketMatch(index) ? "hl-bracket-match" : "",
+        isMultiSelected(index, 1) ? "hl-multi-selected" : "",
+      ].filter(Boolean);
+      const escaped = escapeHtml(code[index]);
+      html += charClasses.length
+        ? `<span class="${charClasses.join(" ")}">${escaped}</span>`
+        : escaped;
+      index++;
+      continue;
+    }
+
+    index += text.length;
+
+    const following = code.slice(index, index + 32);
+    if (
+      type === "keyword" &&
+      ((CONTEXTUAL_KEYWORDS.has(text) && USED_AS_IDENTIFIER.test(following)) ||
+        (ACCESSOR_KEYWORDS.has(text) && !FOLLOWED_BY_MEMBER_NAME.test(following)))
+    ) {
+      type = /^\s*\(/.test(following) ? "function-call" : "ident";
+    } else if (
+      type === "type" &&
+      ((lastTokenType === "keyword" && DECLARATION_KEYWORDS.has(lastTokenText)) ||
+        /^\s*(?:\(|\.(?!\.))/.test(following))
+    ) {
+      type = "ident";
+    }
+
+    const squigglyClass =
+      type === "space" || type === "comment"
+        ? ""
+        : getProblemClass(problems, tokenStart, text.length);
+
+    const multiSelectClass = isMultiSelected(tokenStart, text.length) ? " hl-multi-selected" : "";
+    const extraClasses = squigglyClass + multiSelectClass;
+
+    if (type === "comment") {
+      html += `<span class="hl-cm${multiSelectClass}">${escapeHtml(text)}</span>`;
+    } else if (type === "template") {
+      html += highlightTemplateLiteral(text, options, tokenStart);
+    } else if (type === "string") {
+      html += `<span class="hl-str${squigglyClass}${multiSelectClass}">${escapeHtml(text)}</span>`;
+    } else if (type === "regex") {
+      html += `<span class="hl-regex${multiSelectClass}">${escapeHtml(text)}</span>`;
+    } else if (type === "jsx-tag-open") {
+      openTag();
+      html += `<span class="hl-tag-punct${multiSelectClass}">&lt;</span>`;
+    } else if (type === "jsx-tag-close") {
+      openTag();
+      html += `<span class="hl-tag-punct${multiSelectClass}">&lt;/</span>`;
+    } else if (type === "jsx-tag-self-close") {
+      closeTag();
+      html += `<span class="hl-tag-punct${multiSelectClass}">/&gt;</span>`;
+    } else if (type === "jsx-tag-end") {
+      closeTag();
+      html += `<span class="hl-tag-punct${multiSelectClass}">&gt;</span>`;
+    } else if (type === "arrow") {
+      html += `<span class="hl-arrow${multiSelectClass}">=&gt;</span>`;
+    } else if (type === "operator" || type === "update") {
+      html += `<span class="hl-op${multiSelectClass}">${escapeHtml(text)}</span>`;
+    } else if (TOKEN_CLASSES[type]) {
+      html += `<span class="${TOKEN_CLASSES[type]}${extraClasses}">${escapeHtml(text)}</span>`;
+    } else if (type === "property" && match) {
+      const [, dot, prop] = match;
+      const dotClass = isMultiSelected(tokenStart, dot.length) ? " hl-multi-selected" : "";
+      const propClass = isMultiSelected(tokenStart + dot.length, prop.length)
+        ? " hl-multi-selected"
+        : "";
+      html +=
+        `<span class="hl-punct${dotClass}">${escapeHtml(dot)}</span>` +
+        `<span class="hl-prop${squigglyClass}${propClass}">${escapeHtml(prop)}</span>`;
+    } else if (type === "ident") {
+      if (
+        insideJsxTag &&
+        jsxBraceDepth === 0 &&
+        (lastTokenType !== "punct" || lastTokenText === "}" || lastTokenText === ">")
+      ) {
+        const tagClass =
+          lastTokenType === "jsx-tag-open" || lastTokenType === "jsx-tag-close"
+            ? "hl-tag"
+            : "hl-attr";
+        html += `<span class="${tagClass}${extraClasses}">${escapeHtml(text)}</span>`;
+      } else if (extraClasses) {
+        html += `<span class="${extraClasses.trim()}">${escapeHtml(text)}</span>`;
       } else {
-        html += escapeHtml(rest[0]);
+        html += escapeHtml(text);
       }
-      currentIndex += 1;
-      if (rest[0] === "\n") {
-        currentLine += 1;
-        currentCol = 1;
+    } else if (type === "punct") {
+      if (insideJsxTag && text === "{") jsxBraceDepth++;
+      if (insideJsxTag && text === "}" && jsxBraceDepth > 0) jsxBraceDepth--;
+      if (insideJsxTag && jsxBraceDepth === 0) {
+        if (text === "<") jsxTypeDepth++;
+        if (text === ">" && jsxTypeDepth > 0) jsxTypeDepth--;
+      }
+      if ("{}()[]".includes(text)) {
+        const bracketClass = isBracketMatch(tokenStart) ? " hl-bracket-match" : "";
+        html += `<span class="hl-punct${bracketClass}${squigglyClass}${multiSelectClass}">${escapeHtml(text)}</span>`;
+      } else if (text === "=" && !insideJsxTag) {
+        html += `<span class="hl-op${multiSelectClass}">${escapeHtml(text)}</span>`;
       } else {
-        currentCol += 1;
+        html += multiSelectClass
+          ? `<span class="hl-multi-selected">${escapeHtml(text)}</span>`
+          : escapeHtml(text);
       }
-      rest = rest.slice(1);
+    } else {
+      html += multiSelectClass
+        ? `<span class="hl-multi-selected">${escapeHtml(text)}</span>`
+        : escapeHtml(text);
+    }
+
+    if (type !== "space") {
+      lastTokenType = type;
+      lastTokenText = text;
     }
   }
 

@@ -64,11 +64,12 @@ export const getEmmetCompletions = (
   if (context.mode === "literal" || context.mode === "tag") return null;
   const lineStart = code.lastIndexOf("\n", extracted.start - 1) + 1;
   const prefix = code.slice(lineStart, extracted.start);
+  // In JavaScript, markup can only start an expression: after `return`, `=>`,
+  // an operator or `(`. A bare statement such as `b` inside a function body is code.
   if (
     jsx &&
     context.mode === "code" &&
-    !/^\s*$/.test(prefix) &&
-    !/(?:\breturn\s*\(?|=>\s*\(?|[=(])\s*$/.test(prefix)
+    !/(?:^|\breturn|=>|[=(?:,]|&&|\|\|)\s*$/.test(code.slice(0, extracted.start))
   )
     return null;
 
@@ -131,10 +132,3 @@ export const getEmmetCompletions = (
   }
   return items.length ? { word: query, items } : null;
 };
-
-export const getEmmetCompletion = (
-  code: string,
-  cursor: number,
-  filepath: string,
-  jsx: boolean
-): CompletionItem | null => getEmmetCompletions(code, cursor, filepath, jsx)?.items[0] ?? null;

@@ -28,26 +28,26 @@ export const REACT_SNIPPETS: SnippetItem[] = [
     label: "rfce ⚡ (React Function Component)",
     detail: "Функциональный компонент React с экспортом по умолчанию",
     body: (compName: string) =>
-      `export default function ${compName}() {\n  return (\n    <div>\n      \n    </div>\n  );\n}`,
+      `export default function ${compName}() {\n  return (\n    <div>\n      $0\n    </div>\n  );\n}`,
   },
   {
     prefix: "rfc",
     label: "rfc ⚡ (Named React Component)",
     detail: "Именованный функциональный компонент React",
     body: (compName: string) =>
-      `export function ${compName}() {\n  return (\n    <div>\n      \n    </div>\n  );\n}`,
+      `export function ${compName}() {\n  return (\n    <div>\n      $0\n    </div>\n  );\n}`,
   },
   {
     prefix: "usestate",
     label: "useState ⚡ (State Hook)",
     detail: "Хук состояния React useState",
-    body: "const [state, setState] = useState(initialState);",
+    body: "const [${1:state}, ${2:setState}] = useState(${3:initialState});",
   },
   {
     prefix: "useeffect",
     label: "useEffect ⚡ (Effect Hook)",
     detail: "Хук эффекта React useEffect",
-    body: "useEffect(() => {\n  $1\n}, []);",
+    body: "useEffect(() => {\n  $1\n}, [$2]);",
   },
   {
     prefix: "usecallback",
@@ -65,7 +65,7 @@ export const REACT_SNIPPETS: SnippetItem[] = [
     prefix: "useref",
     label: "useRef ⚡ (Ref Hook)",
     detail: "Хук ссылки React useRef",
-    body: "const ref = useRef(null);",
+    body: "const ${1:ref} = useRef(${2:null});",
   },
 ];
 

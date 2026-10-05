@@ -1,8 +1,8 @@
 import React, { lazy, Suspense, useState, useEffect, useCallback } from "react";
+import { LoaderCircle } from "lucide-react";
 import { clsx } from "clsx";
 import { NodeRunnerLogEntry } from "@/shared/lib/code-runners";
 import { useUIStore } from "@/entities/ui-state";
-import { UiLoader } from "@/shared/ui";
 import { JsConsoleHeader } from "./JsConsoleHeader";
 import styles from "./JsConsole.module.css";
 
@@ -122,7 +122,13 @@ export function JsConsole({
       />
 
       {!isCollapsed && (
-        <Suspense fallback={<UiLoader center size="sm" />}>
+        <Suspense
+          fallback={
+            <div className={styles.fallback} role="status" aria-label="Загрузка консоли">
+              <LoaderCircle size={18} className={styles.spinner} aria-hidden="true" />
+            </div>
+          }
+        >
           <XtermTerminal
             logs={logs}
             theme={theme}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, memo } from "react";
 import {
+  LoaderCircle,
   Terminal as TerminalIcon,
   Play,
   Square,
@@ -11,7 +12,7 @@ import {
   ZoomIn,
   ZoomOut,
 } from "lucide-react";
-import { Tooltip, CodeButton, UiLoader } from "@/shared/ui";
+import { Tooltip, CodeButton } from "@/shared/ui";
 import { useCopy } from "@/shared/lib/hooks";
 import styles from "./JsConsole.module.css";
 
@@ -97,7 +98,7 @@ export const JsConsoleHeader = memo(
         <div className={styles.headerRight}>
           {showLongRunning && (
             <span className={styles.badgeRunning}>
-              <UiLoader size={12} />
+              <LoaderCircle size={12} className={styles.spinner} aria-hidden="true" />
               <span>Выполнение...</span>
             </span>
           )}

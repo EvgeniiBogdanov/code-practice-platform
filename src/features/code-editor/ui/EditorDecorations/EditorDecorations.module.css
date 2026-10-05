@@ -1,0 +1,33 @@
+.mark {
+  position: absolute;
+  top: var(--mark-top);
+  left: var(--mark-left);
+  height: var(--mark-height);
+  pointer-events: none;
+}
+
+.caret {
+  width: var(--space-0-5);
+  background: var(--editor-caret);
+  animation: blink 1.06s steps(1) infinite;
+}
+
+/* One monospace cell around the bracket, like VS Code's bracket match box. */
+.bracket {
+  width: 1ch;
+  background-color: var(--accent-blue-bg);
+  box-shadow: 0 0 0 var(--space-px) var(--accent-blue);
+  border-radius: var(--radius-xs);
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caret {
+    animation: none;
+  }
+}

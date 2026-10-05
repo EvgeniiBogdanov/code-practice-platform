@@ -1,5 +1,11 @@
 import { describe, it, expect } from "vitest";
-import { getCaretCoordinates, calculatePopupPosition, CaretCoordinates } from "./caret-coordinates";
+import {
+  getCaretCoordinates,
+  calculatePopupPosition,
+  resolveWidgetPlacement,
+  clampWidgetLeft,
+  CaretCoordinates,
+} from "./caret-coordinates";
 
 describe("caret-coordinates", () => {
   const createMockTextarea = (value: string, overrides: Partial<HTMLTextAreaElement> = {}) => {
@@ -100,7 +106,7 @@ describe("caret-coordinates", () => {
         itemsCount: 3,
       });
 
-      // Max allowed left = clientWidth (320) - DROPDOWN_WIDTH (280) - MARGIN (8) = 32
+      // Max allowed left = clientWidth (320) - DROPDOWN_WIDTH (320) - MARGIN (8) < MARGIN, so the left margin wins
       expect(result.left).toBeLessThanOrEqual(32);
       expect(result.left).toBeGreaterThanOrEqual(8);
     });
@@ -130,6 +136,38 @@ describe("caret-coordinates", () => {
       // viewportCaretLeft = 80 - 20 = 60
       expect(result.left).toBe(60);
       expect(result.placement).toBe("bottom");
+    });
+  });
+
+  describe("calculatePopupPosition lock", () => {
+    it("keeps the locked side even when the other one has more room", () => {
+      const textarea = createMockTextarea("x");
+      const caret: CaretCoordinates = { top: 300, left: 10, lineHeight: 20, lineBottom: 320 };
+      expect(calculatePopupPosition({ caret, textarea, itemsCount: 10 }).placement).toBe("top");
+      expect(
+        calculatePopupPosition({ caret, textarea, itemsCount: 10, lockedPlacement: "bottom" })
+          .placement
+      ).toBe("bottom");
+    });
+  });
+
+  describe("clampWidgetLeft", () => {
+    it("shifts a widget back inside the right edge", () => {
+      expect(clampWidgetLeft(700, 300, 800)).toBe(492);
+      expect(clampWidgetLeft(40, 300, 800)).toBe(40);
+      expect(clampWidgetLeft(40, 900, 800)).toBe(0);
+    });
+  });
+
+  describe("resolveWidgetPlacement", () => {
+    const base = { height: 40, lineTop: 200, lineBottom: 220, viewportHeight: 400 };
+
+    it("prefers the space above the caret line", () => {
+      expect(resolveWidgetPlacement(base)).toBe("top");
+    });
+
+    it("flips below when there is no room above", () => {
+      expect(resolveWidgetPlacement({ ...base, lineTop: 10, lineBottom: 30 })).toBe("bottom");
     });
   });
 });

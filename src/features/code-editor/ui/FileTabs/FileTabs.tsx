@@ -2,6 +2,7 @@ import React from "react";
 import { FileCode, FileText } from "lucide-react";
 import { clsx } from "clsx";
 import { TaskFile } from "@/shared/lib/code-editor";
+import { getFileIconKind, type FileIconKind } from "../../lib/file-icon";
 import styles from "./FileTabs.module.css";
 
 export interface FileTabsProps {
@@ -12,15 +13,15 @@ export interface FileTabsProps {
   className?: string;
 }
 
-const getTabIconClass = (filename: string): string => {
-  const ext = filename.split(".").pop()?.toLowerCase();
-  if (ext === "jsx") return styles.fileIconJsx;
-  if (ext === "tsx") return styles.fileIconTsx;
-  if (ext === "ts" || ext === "mts" || ext === "cts") return styles.fileIconTs;
-  if (ext === "css" || ext === "scss" || ext === "less") return styles.fileIconCss;
-  if (ext === "html" || ext === "htm") return styles.fileIconHtml;
-  if (ext === "json") return styles.fileIconJson;
-  return styles.fileIconJs;
+const ICON_CLASSES: Record<FileIconKind, string> = {
+  js: styles.fileIconJs,
+  jsx: styles.fileIconJsx,
+  ts: styles.fileIconTs,
+  tsx: styles.fileIconTsx,
+  css: styles.fileIconCss,
+  html: styles.fileIconHtml,
+  json: styles.fileIconJson,
+  other: styles.fileIcon,
 };
 
 export function FileTabs({
@@ -38,7 +39,7 @@ export function FileTabs({
         const isActive = idx === activeIndex;
         const isDirty = Boolean(isDirtyMap[idx]);
         const fileName = file.name || `File ${idx + 1}`;
-        const iconClass = getTabIconClass(fileName);
+        const iconClass = ICON_CLASSES[getFileIconKind(fileName)];
         const isTextFile = fileName.endsWith(".css") || fileName.endsWith(".html");
 
         return (

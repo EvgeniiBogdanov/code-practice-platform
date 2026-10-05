@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { applyRenameEdits } from "./rename-symbol";
+import { applyRenameEdits, getRenamedSelection } from "./rename-symbol";
 
 describe("applyRenameEdits", () => {
   it("renames matching JSX tags without shifting later offsets", () => {
@@ -33,5 +33,30 @@ describe("applyRenameEdits", () => {
     );
     expect(result[0].code).toContain("const Panel");
     expect(result[1].code).toContain("{ Panel }");
+  });
+
+  it("keeps object shorthand valid with prefix and suffix text", () => {
+    const code = "const a = 1; const o = { a }; use(a);";
+    const shorthand = code.indexOf("{ a") + 2;
+    const edits = [
+      { filepath: "x.ts", start: 6, end: 7 },
+      { filepath: "x.ts", start: shorthand, end: shorthand + 1, prefixText: "a: " },
+      { filepath: "x.ts", start: code.lastIndexOf("a"), end: code.lastIndexOf("a") + 1 },
+    ];
+    expect(applyRenameEdits([{ name: "x.ts", code }], edits, "count")[0].code).toBe(
+      "const count = 1; const o = { a: count }; use(count);"
+    );
+  });
+
+  it("selects the renamed symbol after earlier occurrences grew", () => {
+    const code = "const a = 1; use(a);";
+    const edits = [
+      { filepath: "x.ts", start: 6, end: 7 },
+      { filepath: "x.ts", start: 17, end: 18 },
+    ];
+    const renamed = applyRenameEdits([{ name: "x.ts", code }], edits, "count")[0].code;
+    const { start, end } = getRenamedSelection(edits, edits[1], "count");
+    expect(renamed.slice(start, end)).toBe("count");
+    expect(start).toBe(renamed.lastIndexOf("count"));
   });
 });

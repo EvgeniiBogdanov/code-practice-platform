@@ -214,18 +214,18 @@ export const TS_SNIPPETS: SnippetItem[] = [
     prefix: "interface",
     label: "interface ⚡ (TypeScript Interface)",
     detail: "Объявление интерфейса TypeScript",
-    body: "interface $1 {\n  $2\n}",
+    body: "interface ${1:Name} {\n  $2\n}",
   },
   {
     prefix: "type",
     label: "type ⚡ (TypeScript Type Alias)",
     detail: "Объявление псевдонима типа TypeScript",
-    body: "type $1 = $2;",
+    body: "type ${1:Name} = $2;",
   },
   {
     prefix: "enum",
     label: "enum ⚡ (TypeScript Enum)",
     detail: "Объявление перечисления TypeScript",
-    body: "enum $1 {\n  $2\n}",
+    body: "enum ${1:Name} {\n  $2\n}",
   },
 ];

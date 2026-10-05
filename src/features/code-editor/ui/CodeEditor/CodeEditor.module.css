@@ -1,4 +1,11 @@
 .editorWrapper {
+  /* One surface for every popup (suggestions, hover, parameter hints, search). */
+  --popup-bg: color-mix(in srgb, var(--bg-popover) 94%, transparent);
+  --popup-border: color-mix(in srgb, var(--text-main) 12%, var(--border-color));
+  --popup-radius: var(--radius-lg);
+  --popup-shadow:
+    var(--shadow-lg), inset 0 1px 0 color-mix(in srgb, var(--text-main) 7%, transparent);
+  --popup-blur: blur(14px) saturate(1.3);
   width: 100%;
   max-width: 100%;
   background: var(--bg-editor);
@@ -125,6 +132,9 @@
   pointer-events: none;
   box-sizing: border-box;
   color: var(--text-main);
+  /* Must match the textarea, or a pasted tab misaligns the caret. */
+  -moz-tab-size: 2;
+  tab-size: 2;
   white-space: pre;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -322,6 +332,11 @@
   color: var(--color-success);
 }
 
+/* Keeps the live region out of the status bar layout. */
+.liveRegion {
+  display: contents;
+}
+
 .diagErr {
   color: var(--color-error);
 }
@@ -364,4 +379,22 @@
 
 .langIconOther {
   color: var(--text-main);
+}
+
+.statusButton {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.statusButton:hover {
+  text-decoration: underline;
+}
+
+.statusTooltip {
+  max-width: 60ch;
+  white-space: pre-line;
 }

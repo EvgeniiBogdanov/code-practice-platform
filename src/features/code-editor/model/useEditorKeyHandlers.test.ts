@@ -6,6 +6,13 @@ import { IntelliSenseState } from "./useIntelliSense";
 import { CodeHistoryState } from "./useCodeHistory";
 import { MultiCursorState } from "./useMultiCursor";
 
+// Mirrors use-code-editor: an edit updates the document and records history.
+const createApplyEdit = (onChange: (code: string) => void, history: CodeHistoryState) =>
+  vi.fn((code: string, cursor: number) => {
+    onChange(code);
+    history.pushHistory(code, cursor);
+  });
+
 describe("useEditorKeyHandlers", () => {
   const createMockIntelliSense = (isOpen = false): IntelliSenseState => ({
     isOpen,
@@ -16,7 +23,6 @@ describe("useEditorKeyHandlers", () => {
     openCompletions: vi.fn(),
     selectNext: vi.fn(),
     selectPrev: vi.fn(),
-    selectIndex: vi.fn(),
     applySelected: vi.fn(),
     closeCompletions: vi.fn(),
     handleCursorMove: vi.fn(),
@@ -43,7 +49,6 @@ describe("useEditorKeyHandlers", () => {
     hasMultipleCursors: hasMultiple,
     addNextMatch: vi.fn(),
     selectAllMatches: vi.fn(),
-    undoLastSelection: vi.fn(),
     clearSelections: vi.fn(),
     setSelections: vi.fn(),
     handleMultiKeyDown: vi.fn().mockReturnValue(true),
@@ -59,7 +64,8 @@ describe("useEditorKeyHandlers", () => {
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
         code,
-        onChange,
+        applyEdit: createApplyEdit(onChange, history),
+        restoreEntry: vi.fn(),
         intelliSense,
         history,
       })
@@ -102,7 +108,8 @@ describe("useEditorKeyHandlers", () => {
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
         code,
-        onChange,
+        applyEdit: createApplyEdit(onChange, history),
+        restoreEntry: vi.fn(),
         intelliSense,
         history,
       })
@@ -146,7 +153,8 @@ describe("useEditorKeyHandlers", () => {
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
         code,
-        onChange,
+        applyEdit: createApplyEdit(onChange, history),
+        restoreEntry: vi.fn(),
         intelliSense,
         history,
         multiCursor,
@@ -186,7 +194,8 @@ describe("useEditorKeyHandlers", () => {
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
         code,
-        onChange: vi.fn(),
+        applyEdit: vi.fn(),
+        restoreEntry: vi.fn(),
         intelliSense: createMockIntelliSense(),
         history: createMockHistory(),
         multiCursor,
@@ -227,7 +236,8 @@ describe("useEditorKeyHandlers", () => {
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
         code,
-        onChange,
+        applyEdit: createApplyEdit(onChange, history),
+        restoreEntry: vi.fn(),
         intelliSense,
         history,
         multiCursor,
@@ -271,7 +281,8 @@ describe("useEditorKeyHandlers", () => {
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
         code,
-        onChange,
+        applyEdit: createApplyEdit(onChange, history),
+        restoreEntry: vi.fn(),
         intelliSense,
         history,
         multiCursor,
@@ -294,7 +305,7 @@ describe("useEditorKeyHandlers", () => {
 
     result.current.handleKeyDown(event);
 
-    expect(multiCursor.handleMultiKeyDown).toHaveBeenCalledWith(event, code, onChange, history);
+    expect(multiCursor.handleMultiKeyDown).toHaveBeenCalledWith(event, code, expect.any(Function));
   });
 
   it("closes open IntelliSense when moving lines with Alt+Arrow", () => {
@@ -306,7 +317,8 @@ describe("useEditorKeyHandlers", () => {
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
         code,
-        onChange,
+        applyEdit: createApplyEdit(onChange, history),
+        restoreEntry: vi.fn(),
         intelliSense,
         history,
       })
@@ -343,7 +355,8 @@ describe("useEditorKeyHandlers", () => {
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
         code,
-        onChange,
+        applyEdit: createApplyEdit(onChange, history),
+        restoreEntry: vi.fn(),
         intelliSense,
         history,
         readOnly: true,
@@ -381,7 +394,8 @@ describe("useEditorKeyHandlers", () => {
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
         code,
-        onChange,
+        applyEdit: createApplyEdit(onChange, history),
+        restoreEntry: vi.fn(),
         intelliSense,
         history,
       })
@@ -424,7 +438,8 @@ describe("useEditorKeyHandlers", () => {
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
         code,
-        onChange,
+        applyEdit: createApplyEdit(onChange, history),
+        restoreEntry: vi.fn(),
         intelliSense,
         history,
       })
@@ -462,7 +477,8 @@ describe("useEditorKeyHandlers", () => {
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
         code,
-        onChange,
+        applyEdit: createApplyEdit(onChange, history),
+        restoreEntry: vi.fn(),
         intelliSense,
         history,
       })
@@ -500,7 +516,8 @@ describe("useEditorKeyHandlers", () => {
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
         code,
-        onChange,
+        applyEdit: createApplyEdit(onChange, history),
+        restoreEntry: vi.fn(),
         intelliSense,
         history,
       })
@@ -538,7 +555,8 @@ describe("useEditorKeyHandlers", () => {
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
         code,
-        onChange,
+        applyEdit: createApplyEdit(onChange, history),
+        restoreEntry: vi.fn(),
         intelliSense,
         history,
       })

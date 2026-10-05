@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useMemo, useRef } from "react";
 import { getAutoCloseTagEdit } from "@/shared/lib/code-editor";
 import {
   TextRange,
@@ -6,10 +6,12 @@ import {
   findAllMatches,
   findNextMatch,
   applyMultiTextInsert,
+  type MultiEditResult,
   applyMultiBackspace,
   applyMultiDelete,
 } from "../lib/multi-cursor-operations";
-import { CodeHistoryState } from "./useCodeHistory";
+import type { ApplyEdit } from "./types";
+import { producesText } from "../lib/editor-key-helpers";
 
 export interface MultiCursorState {
   selections: TextRange[];
@@ -26,27 +28,29 @@ export interface MultiCursorState {
     currentEnd: number,
     textarea?: HTMLTextAreaElement | null
   ) => void;
-  undoLastSelection: () => void;
   clearSelections: () => void;
   setSelections: React.Dispatch<React.SetStateAction<TextRange[]>>;
   handleMultiKeyDown: (
     e: React.KeyboardEvent<HTMLTextAreaElement>,
     code: string,
-    onChange: (newCode: string) => void,
-    history: CodeHistoryState
+    applyEdit: ApplyEdit
   ) => boolean;
-  handleMultiPaste: (
-    pastedText: string,
-    code: string,
-    onChange: (newCode: string) => void,
-    history: CodeHistoryState,
-    textarea?: HTMLTextAreaElement | null
-  ) => boolean;
+  handleMultiPaste: (pastedText: string, code: string, applyEdit: ApplyEdit) => boolean;
 }
+
+const NON_EDITING_KEYS = new Set(["Shift", "Control", "Alt", "AltGraph", "Meta", "CapsLock"]);
+const isCopyShortcut = (e: React.KeyboardEvent): boolean =>
+  (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "c";
 
 export function useMultiCursor(filepath = "main.jsx"): MultiCursorState {
   const [selections, setSelections] = useState<TextRange[]>([]);
   const wholeWordRef = useRef(false);
+
+  const commit = useCallback((res: MultiEditResult, applyEdit: ApplyEdit): void => {
+    const cursor = res.newSelections.at(-1)?.start ?? 0;
+    applyEdit(res.newCode, cursor);
+    setSelections(res.newSelections);
+  }, []);
 
   const addNextMatch = useCallback(
     (
@@ -129,22 +133,13 @@ export function useMultiCursor(filepath = "main.jsx"): MultiCursorState {
     [selections]
   );
 
-  const undoLastSelection = useCallback((): void => {
-    setSelections((prev) => (prev.length > 1 ? prev.slice(0, prev.length - 1) : []));
-  }, []);
-
   const clearSelections = useCallback((): void => {
     wholeWordRef.current = false;
     setSelections([]);
   }, []);
 
   const handleMultiKeyDown = useCallback(
-    (
-      e: React.KeyboardEvent<HTMLTextAreaElement>,
-      code: string,
-      onChange: (newCode: string) => void,
-      history: CodeHistoryState
-    ): boolean => {
+    (e: React.KeyboardEvent<HTMLTextAreaElement>, code: string, applyEdit: ApplyEdit): boolean => {
       if (selections.length <= 1) return false;
 
       const textarea = e.currentTarget;
@@ -155,48 +150,30 @@ export function useMultiCursor(filepath = "main.jsx"): MultiCursorState {
         return true;
       }
 
+      const wordOrLineEdit = e.ctrlKey || e.metaKey || e.altKey;
+      if (wordOrLineEdit && (e.key === "Backspace" || e.key === "Delete")) {
+        clearSelections();
+        return false;
+      }
+
       if (e.key === "Backspace") {
         e.preventDefault();
         const res = applyMultiBackspace(code, selections);
-        if (res.changed) {
-          onChange(res.newCode);
-          const cursor = res.newSelections[res.newSelections.length - 1]?.start || 0;
-          history.pushHistory(res.newCode, cursor);
-          setSelections(res.newSelections);
-          setTimeout(() => {
-            textarea.setSelectionRange(cursor, cursor);
-          }, 0);
-        }
+        if (res.changed) commit(res, applyEdit);
         return true;
       }
 
       if (e.key === "Delete") {
         e.preventDefault();
         const res = applyMultiDelete(code, selections);
-        if (res.changed) {
-          onChange(res.newCode);
-          const cursor = res.newSelections[res.newSelections.length - 1]?.start || 0;
-          history.pushHistory(res.newCode, cursor);
-          setSelections(res.newSelections);
-          setTimeout(() => {
-            textarea.setSelectionRange(cursor, cursor);
-          }, 0);
-        }
+        if (res.changed) commit(res, applyEdit);
         return true;
       }
 
       if (e.key === "Enter") {
         e.preventDefault();
         const res = applyMultiTextInsert(code, selections, "\n");
-        if (res.changed) {
-          onChange(res.newCode);
-          const cursor = res.newSelections[res.newSelections.length - 1]?.start || 0;
-          history.pushHistory(res.newCode, cursor);
-          setSelections(res.newSelections);
-          setTimeout(() => {
-            textarea.setSelectionRange(cursor, cursor);
-          }, 0);
-        }
+        if (res.changed) commit(res, applyEdit);
         return true;
       }
 
@@ -222,7 +199,7 @@ export function useMultiCursor(filepath = "main.jsx"): MultiCursorState {
         return true;
       }
 
-      if (!e.ctrlKey && !e.metaKey && !e.altKey && e.key.length === 1) {
+      if (producesText(e)) {
         e.preventDefault();
         const res = applyMultiTextInsert(code, selections, e.key);
         if (e.key === ">") {
@@ -238,59 +215,47 @@ export function useMultiCursor(filepath = "main.jsx"): MultiCursorState {
             );
           }
         }
-        if (res.changed) {
-          onChange(res.newCode);
-          const cursor = res.newSelections[res.newSelections.length - 1]?.start || 0;
-          history.pushHistory(res.newCode, cursor);
-          setSelections(res.newSelections);
-          setTimeout(() => {
-            textarea.setSelectionRange(cursor, cursor);
-          }, 0);
-        }
+        if (res.changed) commit(res, applyEdit);
         return true;
       }
 
+      // Anything else (Home/End/↑/↓, Tab, Ctrl+X, Ctrl+Backspace, …) acts on the main
+      // caret only, so the extra cursors would be stale offsets: drop them, let it run.
+      if (!NON_EDITING_KEYS.has(e.key) && !isCopyShortcut(e)) clearSelections();
       return false;
     },
-    [selections, filepath]
+    [selections, filepath, commit, clearSelections]
   );
 
   const handleMultiPaste = useCallback(
-    (
-      pastedText: string,
-      code: string,
-      onChange: (newCode: string) => void,
-      history: CodeHistoryState,
-      textarea?: HTMLTextAreaElement | null
-    ): boolean => {
+    (pastedText: string, code: string, applyEdit: ApplyEdit): boolean => {
       if (selections.length <= 1 || !pastedText) return false;
 
       const res = applyMultiTextInsert(code, selections, pastedText);
-      if (res.changed) {
-        onChange(res.newCode);
-        const cursor = res.newSelections[res.newSelections.length - 1]?.start || 0;
-        history.pushHistory(res.newCode, cursor);
-        setSelections(res.newSelections);
-        if (textarea) {
-          setTimeout(() => {
-            textarea.setSelectionRange(cursor, cursor);
-          }, 0);
-        }
-      }
+      if (res.changed) commit(res, applyEdit);
       return true;
     },
-    [selections]
+    [selections, commit]
   );
 
-  return {
-    selections,
-    hasMultipleCursors: selections.length > 1,
-    addNextMatch,
-    selectAllMatches,
-    undoLastSelection,
-    clearSelections,
-    setSelections,
-    handleMultiKeyDown,
-    handleMultiPaste,
-  };
+  return useMemo(
+    () => ({
+      selections,
+      hasMultipleCursors: selections.length > 1,
+      addNextMatch,
+      selectAllMatches,
+      clearSelections,
+      setSelections,
+      handleMultiKeyDown,
+      handleMultiPaste,
+    }),
+    [
+      selections,
+      addNextMatch,
+      selectAllMatches,
+      clearSelections,
+      handleMultiKeyDown,
+      handleMultiPaste,
+    ]
+  );
 }

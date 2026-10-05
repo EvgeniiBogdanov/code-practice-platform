@@ -4,9 +4,11 @@
  */
 
 import type { Options, Plugin } from "prettier";
+import { LANGUAGES } from "./languages/language-registry";
+import { getLanguageId } from "./languages/languageDetector";
 
 export interface PrettierModules {
-  format: (source: string, options?: Options) => Promise<string>;
+  formatWithCursor: typeof import("prettier/standalone").formatWithCursor;
   plugins: Plugin[];
 }
 
@@ -34,10 +36,7 @@ const loadPrettierModules = async (): Promise<PrettierModules> => {
       import("prettier/plugins/html"),
       import("prettier/plugins/markdown"),
     ]).then(([prettierMod, babelMod, estreeMod, tsMod, postcssMod, htmlMod, mdMod]) => {
-      const format =
-        prettierMod.format ||
-        (prettierMod as unknown as { default: { format: typeof prettierMod.format } }).default
-          ?.format;
+      const formatWithCursor = prettierMod.formatWithCursor;
       const plugins: Plugin[] = [
         babelMod.default || babelMod,
         estreeMod.default || estreeMod,
@@ -47,69 +46,54 @@ const loadPrettierModules = async (): Promise<PrettierModules> => {
         mdMod.default || mdMod,
       ] as Plugin[];
 
-      return { format, plugins };
+      return { formatWithCursor, plugins };
     });
   }
   return prettierModulesPromise;
 };
 
-const resolveParser = (filepath?: string): string => {
-  if (!filepath) return "babel-ts";
-  const ext = filepath.toLowerCase().split(".").pop();
-  switch (ext) {
-    case "css":
-    case "scss":
-    case "less":
-      return "css";
-    case "json":
-      return "json";
-    case "html":
-    case "htm":
-      return "html";
-    case "md":
-    case "markdown":
-      return "markdown";
-    case "ts":
-    case "tsx":
-    case "js":
-    case "jsx":
-    default:
-      return "babel-ts";
-  }
-};
+const resolveParser = (filepath?: string): string | undefined =>
+  LANGUAGES[getLanguageId(filepath)].prettierParser;
 
-export const formatJavaScriptCode = async (rawCode: string, filepath?: string): Promise<string> => {
-  if (!rawCode || typeof rawCode !== "string") return "";
+export type FormatStatus = "formatted" | "unsupported" | "syntax-error";
 
-  try {
-    const { format, plugins } = await loadPrettierModules();
-    const parser = resolveParser(filepath);
+export interface FormatResult {
+  code: string;
+  cursorOffset: number;
+  status: FormatStatus;
+}
 
-    const formatted = await format(rawCode, {
-      ...PRETTIER_CONFIG,
-      parser,
-      plugins,
-    });
+/** Whether the file's language has a formatter at all. */
+export const canFormat = (filepath?: string): boolean => Boolean(resolveParser(filepath));
 
-    return formatted.trimEnd();
-  } catch (err: unknown) {
-    // If babel-ts fails on special edge-case TS, attempt with typescript parser
+/** Formats with Prettier, keeping the caret on the same token like VS Code. */
+export const formatCode = async (
+  rawCode: string,
+  filepath?: string,
+  cursorOffset = 0
+): Promise<FormatResult> => {
+  const parser = resolveParser(filepath);
+  if (!parser) return { code: rawCode, cursorOffset, status: "unsupported" };
+  if (!rawCode) return { code: rawCode, cursorOffset, status: "formatted" };
+  const { formatWithCursor, plugins } = await loadPrettierModules();
+  // babel-ts rejects a few TypeScript-only constructs that the typescript parser accepts.
+  for (const candidate of parser === "babel-ts" ? [parser, "typescript"] : [parser]) {
     try {
-      const { format, plugins } = await loadPrettierModules();
-      const formatted = await format(rawCode, {
+      const result = await formatWithCursor(rawCode, {
         ...PRETTIER_CONFIG,
-        parser: "typescript",
+        parser: candidate,
         plugins,
+        cursorOffset: Math.min(cursorOffset, rawCode.length),
       });
-      return formatted.trimEnd();
+      const code = result.formatted.trimEnd();
+      return {
+        code,
+        cursorOffset: Math.min(result.cursorOffset, code.length),
+        status: "formatted",
+      };
     } catch {
-      // In case of syntax errors, preserve existing rawCode safely
-      return rawCode;
+      // Try the next parser; syntax errors keep the source untouched.
     }
   }
-};
-
-export const formatJavaScriptCodeSync = (rawCode: string): string => {
-  if (!rawCode || typeof rawCode !== "string") return "";
-  return rawCode;
+  return { code: rawCode, cursorOffset, status: "syntax-error" };
 };

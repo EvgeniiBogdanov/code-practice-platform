@@ -3,11 +3,8 @@ import { renderHook, act } from "@testing-library/react";
 import { useCodeEditor } from "./use-code-editor";
 import { useUIStore } from "@/entities/ui-state";
 
-describe("useCodeEditor linter integration", () => {
-  const codeWithVarAndNan = `
-var x = 1;
-console.log(NaN === NaN);
-`;
+describe("useCodeEditor diagnostics integration", () => {
+  const code = "const value = missing;";
 
   beforeEach(() => {
     localStorage.clear();
@@ -15,94 +12,36 @@ console.log(NaN === NaN);
     useUIStore.setState({ editorLinterEnabled: false });
   });
 
-  it("defaults to linter disabled (false) with zero lint errors", () => {
+  it("defaults to linter disabled with no problems", () => {
     const { result } = renderHook(() =>
-      useCodeEditor({
-        code: codeWithVarAndNan,
-        onChange: vi.fn(),
-        filepath: "main.js",
-      })
+      useCodeEditor({ code, onChange: vi.fn(), filepath: "main.js" })
     );
 
     expect(result.current.isLinterEnabled).toBe(false);
-    expect(result.current.lintResult.problems).toEqual([]);
-    expect(result.current.lintResult.errorCount).toBe(0);
-    expect(result.current.lintResult.warningCount).toBe(0);
-    expect(result.current.lintResult.isValid).toBe(true);
-    expect(result.current.errorLines.size).toBe(0);
-    expect(result.current.warningLines.size).toBe(0);
-    expect(result.current.activeTypo).toBeNull();
-    expect(result.current.activeMissingImport).toBeNull();
+    expect(result.current.diagnostics.problems).toEqual([]);
+    expect(result.current.diagnostics.errorCount).toBe(0);
+    expect(result.current.diagnostics.activeDiagnostic).toBeNull();
     expect(result.current.isAnalysisPending).toBe(false);
   });
 
-  it("allows toggling linter on and off, updating store and computing problems when enabled", () => {
+  it("toggles the linter in the UI store", () => {
     const { result } = renderHook(() =>
-      useCodeEditor({
-        code: codeWithVarAndNan,
-        onChange: vi.fn(),
-        filepath: "main.js",
-      })
+      useCodeEditor({ code, onChange: vi.fn(), filepath: "main.js" })
     );
 
-    expect(result.current.isLinterEnabled).toBe(false);
-    expect(result.current.lintResult.problems).toEqual([]);
-
-    act(() => {
-      result.current.handleToggleLinter(true);
-    });
-
-    expect(result.current.isLinterEnabled).toBe(true);
+    act(() => result.current.handleToggleLinter(true));
     expect(useUIStore.getState().editorLinterEnabled).toBe(true);
-    expect(result.current.lintResult.problems.length).toBeGreaterThan(0);
-    expect(result.current.warningLines.size).toBeGreaterThan(0);
-    expect(result.current.errorLines.size).toBeGreaterThan(0);
-
-    act(() => {
-      result.current.handleToggleLinter(false);
-    });
-
-    expect(result.current.isLinterEnabled).toBe(false);
-    expect(useUIStore.getState().editorLinterEnabled).toBe(false);
-    expect(result.current.lintResult.problems).toEqual([]);
-  });
-
-  it("toggles linter when handleToggleLinter is called without arguments", () => {
-    const { result } = renderHook(() =>
-      useCodeEditor({
-        code: codeWithVarAndNan,
-        onChange: vi.fn(),
-        filepath: "main.js",
-      })
-    );
-
-    expect(result.current.isLinterEnabled).toBe(false);
-
-    act(() => {
-      result.current.handleToggleLinter();
-    });
-
-    expect(result.current.isLinterEnabled).toBe(true);
-    expect(useUIStore.getState().editorLinterEnabled).toBe(true);
-
-    act(() => {
-      result.current.handleToggleLinter();
-    });
-
-    expect(result.current.isLinterEnabled).toBe(false);
+    act(() => result.current.handleToggleLinter());
     expect(useUIStore.getState().editorLinterEnabled).toBe(false);
   });
 
   it("does not apply quick fixes in read-only mode", () => {
     const onChange = vi.fn();
     const { result } = renderHook(() =>
-      useCodeEditor({ code: "retrun 1", onChange, filepath: "main.js", readOnly: true })
+      useCodeEditor({ code, onChange, filepath: "main.js", readOnly: true })
     );
 
-    act(() => {
-      result.current.handleFixTypo({ line: 1, typo: "retrun", correct: "return" });
-      result.current.handleFixMissingImport({ line: 1, symbol: "useState", module: "react" });
-    });
+    act(() => result.current.applyQuickFix(0));
 
     expect(onChange).not.toHaveBeenCalled();
     expect(result.current.history.canUndo).toBe(false);

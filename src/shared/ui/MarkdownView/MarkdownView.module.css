@@ -417,3 +417,23 @@
 [data-theme="light"] :global(.body-hr) {
   background: rgba(55, 53, 47, 0.12);
 }
+
+/* Compact: inherits the host's typography, for tooltips and editor hovers */
+.markdownContainer.compact {
+  gap: var(--space-1);
+  color: inherit;
+  font-size: inherit;
+  line-height: var(--lh-tight);
+}
+
+.markdownContainer.compact p,
+.markdownContainer.compact li {
+  margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.markdownContainer.compact code:not(pre code) {
+  font-size: inherit;
+  padding: 0 var(--space-1);
+}

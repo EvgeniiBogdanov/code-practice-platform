@@ -180,4 +180,15 @@ describe("useUIStore - resetUISettings", () => {
     expect(useUIStore.getState().editorLinterEnabled).toBe(true);
     expect(localStorage.getItem("playground_editor_linter_enabled")).toBe("true");
   });
+
+  it("keeps parameter hints on typing off by default and persists the choice", () => {
+    expect(useUIStore.getState().editorParameterHintsOnType).toBe(false);
+
+    useUIStore.getState().setEditorParameterHintsOnType(true);
+    const saved = JSON.parse(localStorage.getItem("playground_ui_settings") ?? "{}");
+    expect(saved.state.editorParameterHintsOnType).toBe(true);
+
+    useUIStore.getState().resetUISettings();
+    expect(useUIStore.getState().editorParameterHintsOnType).toBe(false);
+  });
 });

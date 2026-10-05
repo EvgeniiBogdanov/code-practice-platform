@@ -13,11 +13,12 @@ import { getHtmlCompletions } from "./snippets/htmlCompleter";
 import { getSqlCompletions } from "./snippets/sqlCompleter";
 import { getLanguageId, getLanguageCapabilities } from "./languages/languageDetector";
 import { JSON_SNIPPETS } from "./languages/jsonKnowledge";
-import { getMarkupContext } from "./markup-context";
+import { getEmbeddedRegion, getMarkupContext } from "./markup-context";
 import { getEmmetCompletions } from "./emmetEngine";
 import { fuzzyMatch } from "./fuzzyMatcher";
 
 export { expandSnippet };
+export type { TabStop, SnippetExpansion } from "./snippets/snippetExpander";
 
 export interface CompletionOptions {
   files?: TaskFile[];
@@ -41,6 +42,7 @@ export function getCompletions(
   const { files = [], filepath = "main.jsx", title = "", force = false } = options;
   const currentFilepath = title || filepath;
   const languageId = getLanguageId(currentFilepath);
+  const isStyleLanguage = languageId === "css" || languageId === "scss" || languageId === "less";
   const capabilities = getLanguageCapabilities(languageId);
 
   const textBeforeCursor = fullCode.substring(0, cursorIndex);
@@ -53,21 +55,51 @@ export function getCompletions(
 
   if (languageId === "plaintext" || languageId === "markdown") return { word: "", items: [] };
 
+  // Inside <script>/<style> the embedded language answers; offsets are rebased on the way back.
+  const embedded = getEmbeddedRegion(fullCode, cursorIndex, currentFilepath);
+  if (embedded) {
+    const result = getCompletions(
+      fullCode.slice(embedded.start, embedded.end),
+      cursorIndex - embedded.start,
+      {
+        ...options,
+        filepath: embedded.language === "css" ? "embedded.css" : "embedded.js",
+        title: "",
+      }
+    );
+    const shift = (offset?: number): number | undefined =>
+      offset === undefined ? undefined : offset + embedded.start;
+    return {
+      word: result.word,
+      items: result.items.map((item) => ({
+        ...item,
+        replaceStart: shift(item.replaceStart),
+        replaceEnd: shift(item.replaceEnd),
+      })),
+    };
+  }
+
   const context = getMarkupContext(textBeforeCursor, currentFilepath);
   if (
     context.mode === "literal" &&
     !/^\s*import\b/.test(currentLineBeforeCursor) &&
     languageId !== "html" &&
     languageId !== "json" &&
-    languageId !== "css" &&
+    !isStyleLanguage &&
     languageId !== "sql"
   ) {
     return { word: "", items: [] };
   }
 
   // 1. Language-Specific Handlers
-  if (languageId === "css") {
-    const cssRes = getCssCompletions(cursorIndex, currentLineBeforeCursor, lineAfterCursor, force);
+  if (isStyleLanguage) {
+    const cssRes = getCssCompletions(
+      cursorIndex,
+      currentLineBeforeCursor,
+      lineAfterCursor,
+      force,
+      textBeforeCursor
+    );
     return cssRes || { word: "", items: [] };
   }
 

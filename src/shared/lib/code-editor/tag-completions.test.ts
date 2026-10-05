@@ -120,3 +120,19 @@ it("supports large Emmet repetitions with the engine's expansion limit", () => {
   const bounded = complete("ul>li*10000000", "App.tsx").items[0]?.insertText;
   expect(bounded?.match(/<li>/g)).toHaveLength(1000);
 });
+
+it.each(["function A() {\n  b", "useEffect(() => {\n  in", "const a = 1;\ndi"])(
+  "keeps Emmet out of JavaScript statements: %s",
+  (code) => {
+    expect(complete(code, "App.tsx").items.some((item) => item.label.includes("Emmet"))).toBe(
+      false
+    );
+  }
+);
+
+it.each(["const view = (\n  di", "return di", "cond && di", "const a = di"])(
+  "offers Emmet where markup can start an expression: %s",
+  (code) => {
+    expect(complete(code, "App.jsx").items.some((item) => item.label.includes("Emmet"))).toBe(true);
+  }
+);

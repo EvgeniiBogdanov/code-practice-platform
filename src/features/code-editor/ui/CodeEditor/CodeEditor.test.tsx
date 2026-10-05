@@ -1,6 +1,6 @@
 import { useState, type ReactElement } from "react";
 import { act, fireEvent, render, screen } from "@testing-library/react";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { useUIStore } from "@/entities/ui-state";
 import { activateCodeHistoryTask } from "../../model/useCodeHistory";
 import { CodeEditor } from "./CodeEditor";
@@ -99,18 +99,6 @@ describe("CodeEditor history buttons", () => {
       expect(screen.queryByText("2 выделений")).not.toBeInTheDocument();
     }
   );
-
-  it("shows a single quick fix and hides it in read-only mode", () => {
-    useUIStore.setState({ editorLinterEnabled: true });
-    const { rerender } = render(
-      <CodeEditor code="retrun 1" onChange={() => {}} filepath="main.js" />
-    );
-    expect(screen.getAllByText(/Опечатка/)).toHaveLength(1);
-
-    rerender(<CodeEditor code="retrun 1" onChange={() => {}} filepath="main.js" readOnly />);
-    expect(screen.queryByText(/Опечатка/)).not.toBeInTheDocument();
-    expect(screen.getByRole<HTMLTextAreaElement>("textbox")).toHaveProperty("readOnly", true);
-  });
 });
 
 describe("CodeEditor suggestions", () => {
@@ -119,6 +107,9 @@ describe("CodeEditor suggestions", () => {
   });
 
   it("closes suggestions after clearing the text and opens them for a snippet prefix", () => {
+    // Matched letters are wrapped in <mark>, so the label is matched by its whole text.
+    const snippetLabel = (_: string, element: Element | null): boolean =>
+      element?.tagName === "SPAN" && /clg ⚡/.test(element.textContent ?? "");
     render(<EditorHarness />);
     const textarea = screen.getByRole<HTMLTextAreaElement>("textbox");
 
@@ -127,24 +118,24 @@ describe("CodeEditor suggestions", () => {
       data: "g",
       inputType: "insertText",
     });
-    expect(screen.getByText(/clg ⚡/)).toBeInTheDocument();
+    expect(screen.getByText(snippetLabel)).toBeInTheDocument();
 
     fireEvent.input(textarea, {
       target: { value: "", selectionStart: 0, selectionEnd: 0 },
       inputType: "deleteContentBackward",
     });
-    expect(screen.queryByText(/clg ⚡/)).not.toBeInTheDocument();
+    expect(screen.queryByText(snippetLabel)).not.toBeInTheDocument();
   });
 
   it("keeps keyboard selection after ArrowDown keyup", () => {
     render(<EditorHarness />);
     const textarea = screen.getByRole<HTMLTextAreaElement>("textbox");
     fireEvent.input(textarea, {
-      target: { value: "arr.", selectionStart: 4, selectionEnd: 4 },
+      target: { value: "console.", selectionStart: 8, selectionEnd: 8 },
       data: ".",
       inputType: "insertText",
     });
-    const suggestions = document.querySelector("[data-placement]");
+    const suggestions = screen.getByRole("listbox");
     expect(suggestions?.children.length).toBeGreaterThan(1);
 
     fireEvent.keyDown(textarea, { key: "ArrowDown" });
@@ -152,5 +143,67 @@ describe("CodeEditor suggestions", () => {
 
     expect(suggestions?.children[1]?.className).toContain("selected");
     expect(suggestions?.children[0]?.className).not.toContain("selected");
+  });
+
+  it("toggles fullscreen only in the editor that has focus when F11 is pressed", () => {
+    const first = vi.fn();
+    const second = vi.fn();
+    render(
+      <>
+        <CodeEditor code="a" onChange={vi.fn()} filepath="a.js" onToggleFullscreen={first} />
+        <CodeEditor code="b" onChange={vi.fn()} filepath="b.js" onToggleFullscreen={second} />
+      </>
+    );
+    screen.getAllByRole<HTMLTextAreaElement>("textbox")[1].focus();
+
+    fireEvent.keyDown(window, { key: "F11" });
+
+    expect(first).not.toHaveBeenCalled();
+    expect(second).toHaveBeenCalledTimes(1);
+  });
+
+  it("ignores F11 when no editor is focused or hovered", () => {
+    const toggle = vi.fn();
+    render(<CodeEditor code="a" onChange={vi.fn()} filepath="a.js" onToggleFullscreen={toggle} />);
+
+    fireEvent.keyDown(window, { key: "F11" });
+
+    expect(toggle).not.toHaveBeenCalled();
+  });
+
+  it("exposes the open suggestion list to assistive technology", () => {
+    render(<EditorHarness />);
+    const textarea = screen.getByRole<HTMLTextAreaElement>("textbox", { name: "Редактор кода" });
+    expect(textarea).toHaveAttribute("aria-multiline", "true");
+    expect(textarea).not.toHaveAttribute("aria-controls");
+
+    fireEvent.input(textarea, {
+      target: { value: "console.", selectionStart: 8, selectionEnd: 8 },
+      data: ".",
+      inputType: "insertText",
+    });
+    const listbox = screen.getByRole("listbox");
+    expect(textarea).toHaveAttribute("aria-controls", listbox.id);
+    const selected = screen
+      .getAllByRole("option")
+      .find((option) => option.getAttribute("aria-selected") === "true");
+    expect(textarea).toHaveAttribute("aria-activedescendant", selected?.id);
+
+    fireEvent.keyDown(textarea, { key: "ArrowDown" });
+    expect(textarea.getAttribute("aria-activedescendant")).not.toBe(selected?.id);
+  });
+
+  it("marks only the selected letters of each Ctrl+D match, not the whole identifiers", () => {
+    render(<EditorHarness initial={"userName = userAge;\nuserName = 1;"} />);
+    const textarea = screen.getByRole<HTMLTextAreaElement>("textbox");
+    textarea.setSelectionRange(0, 4);
+
+    fireEvent.keyDown(textarea, { key: "d", code: "KeyD", ctrlKey: true });
+    fireEvent.keyDown(textarea, { key: "d", code: "KeyD", ctrlKey: true });
+
+    const marks = [...document.querySelectorAll("pre mark")].map((mark) => mark.textContent);
+    expect(marks).toEqual(["user", "user", "user"]);
+    // The syntax highlighter no longer wraps the whole token in a selection.
+    expect(document.querySelector("pre .hl-multi-selected")).toBeNull();
   });
 });

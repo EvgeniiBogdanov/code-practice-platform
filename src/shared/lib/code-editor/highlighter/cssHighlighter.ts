@@ -2,14 +2,15 @@
  * CSS / SCSS / LESS Syntax Highlighter
  */
 
-import { HighlightOptions, escapeHtml } from "./types";
+import { HighlightOptions, escapeHtml, getProblemClass } from "./types";
 
 const CSS_RULES = [
-  { type: "comment", regex: /^(\/\*[\s\S]*?\*\/|\/\/.*)/ },
+  // An unterminated block comment runs to the end of the file, as in VS Code.
+  { type: "comment", regex: /^(\/\*[\s\S]*?(?:\*\/|$)|\/\/.*)/ },
   { type: "string", regex: /^("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/ },
   {
     type: "at-rule",
-    regex: /^@(?:keyframes|media|import|font-face|supports|container|layer|charset)\b[^\s{;]*/,
+    regex: /^@[a-zA-Z-]+\b[^\s{;]*/,
   },
   { type: "important", regex: /^!important\b/ },
   {
@@ -18,9 +19,9 @@ const CSS_RULES = [
   },
   {
     type: "dimension",
-    regex: /^(-?\d+(?:\.\d+)?)(px|rem|em|%|vh|vw|dvh|dvw|s|ms|deg|rad|turn|fr|ch|ex)\b/i,
+    regex: /^(-?(?:\d+(?:\.\d+)?|\.\d+))(px|rem|em|%|vh|vw|dvh|dvw|s|ms|deg|rad|turn|fr|ch|ex)\b/i,
   },
-  { type: "number", regex: /^-?\b\d+(?:\.\d+)?\b/ },
+  { type: "number", regex: /^-?(?:\b\d+(?:\.\d+)?|\.\d+)\b/ },
   { type: "css-var", regex: /^--[a-zA-Z0-9_-]+/ },
   {
     type: "fn-call",
@@ -43,6 +44,11 @@ const CSS_RULES = [
   { type: "space", regex: /^(\s+)/ },
 ];
 
+/** `name: value;`, also a last declaration without `;`. Nested selectors like `a:hover {` fail it. */
+const DECLARATION = /^[\w-]+\s*:[^;{}]*(?:[;}]|$)/;
+/** Rules that make no sense inside a declaration value, where `:`/`.` are plain punctuation. */
+const SELECTOR_RULES = new Set(["pseudo", "class-selector", "id-selector", "attribute-selector"]);
+
 export function highlightCSS(code: string, options: HighlightOptions = {}): string {
   if (!code) return "";
 
@@ -59,48 +65,43 @@ export function highlightCSS(code: string, options: HighlightOptions = {}): stri
   let html = "";
   let rest = code;
   let insideBlock = 0;
+  let parenDepth = 0;
+  // Between a property name and the end of its declaration.
+  let inValue = false;
   let currentIndex = 0;
-  let currentLine = 1;
-  let currentCol = 1;
 
   while (rest.length > 0) {
     let matched = false;
 
     for (const rule of CSS_RULES) {
+      if (inValue && SELECTOR_RULES.has(rule.type)) continue;
+      if (rule.type === "property") {
+        if (inValue) continue;
+        // Outside a block only media-query features `(min-width: 1px)` are properties.
+        if (parenDepth === 0 && !(insideBlock > 0 && DECLARATION.test(rest))) continue;
+      }
       const m = rule.regex.exec(rest);
+      // `url(http://a.com)`: a double slash after `:` or `(` is not a comment.
+      if (
+        m &&
+        rule.type === "comment" &&
+        m[0].startsWith("//") &&
+        /[:(]/.test(code[currentIndex - 1] ?? "")
+      )
+        continue;
       if (m) {
         matched = true;
         const text = m[0];
         const tokenStart = currentIndex;
-        const tokenLine = currentLine;
-        const tokenCol = currentCol;
         const tokenLen = text.length;
 
         rest = rest.slice(text.length);
         currentIndex += text.length;
 
-        const newlines = text.split("\n").length - 1;
-        if (newlines > 0) {
-          currentLine += newlines;
-          const lastNl = text.lastIndexOf("\n");
-          currentCol = text.length - lastNl;
-        } else {
-          currentCol += text.length;
-        }
-
-        let squigglyClass = "";
-        if (problems && problems.length > 0 && rule.type !== "space" && rule.type !== "comment") {
-          const prob = problems.find((p) => {
-            if (p.line !== tokenLine) return false;
-            if (tokenCol >= p.col && tokenCol < p.col + (p.symbol?.length || 5)) return true;
-            if (p.col >= tokenCol && p.col < tokenCol + tokenLen) return true;
-            return false;
-          });
-          if (prob) {
-            squigglyClass =
-              prob.severity === "warning" ? " hl-squiggly-warning" : " hl-squiggly-error";
-          }
-        }
+        const squigglyClass =
+          rule.type === "space" || rule.type === "comment"
+            ? ""
+            : getProblemClass(problems, tokenStart, tokenLen);
 
         const multiSelectClass = isMultiSelected(tokenStart, tokenLen) ? " hl-multi-selected" : "";
         const extraClasses = squigglyClass + multiSelectClass;
@@ -126,6 +127,7 @@ export function highlightCSS(code: string, options: HighlightOptions = {}): stri
         } else if (rule.type === "number") {
           html += `<span class="hl-num${extraClasses}">${escapeHtml(text)}</span>`;
         } else if (rule.type === "css-var") {
+          if (insideBlock > 0 && !inValue && parenDepth === 0) inValue = true;
           html += `<span class="hl-css-prop${extraClasses}">${escapeHtml(text)}</span>`;
         } else if (rule.type === "fn-call") {
           html += `<span class="hl-fn${extraClasses}">${escapeHtml(text)}</span>`;
@@ -140,6 +142,7 @@ export function highlightCSS(code: string, options: HighlightOptions = {}): stri
         } else if (rule.type === "attribute-selector") {
           html += `<span class="hl-css-selector${extraClasses}">${escapeHtml(text)}</span>`;
         } else if (rule.type === "property") {
+          if (parenDepth === 0) inValue = true;
           html += `<span class="hl-css-prop${extraClasses}">${escapeHtml(text)}</span>`;
         } else if (rule.type === "operator") {
           html += `<span class="hl-op${extraClasses}">${escapeHtml(text)}</span>`;
@@ -152,6 +155,9 @@ export function highlightCSS(code: string, options: HighlightOptions = {}): stri
         } else if (rule.type === "punct") {
           if (text === "{") insideBlock++;
           if (text === "}") insideBlock = Math.max(0, insideBlock - 1);
+          if (text === "(") parenDepth++;
+          if (text === ")") parenDepth = Math.max(0, parenDepth - 1);
+          if (text === ";" || text === "{" || text === "}") inValue = false;
           const bracketClass = isBracketMatch(tokenStart) ? " hl-bracket-match" : "";
           html += `<span class="hl-punct${bracketClass}${extraClasses}">${escapeHtml(text)}</span>`;
         } else {
@@ -174,12 +180,6 @@ export function highlightCSS(code: string, options: HighlightOptions = {}): stri
         html += escapeHtml(rest[0]);
       }
       currentIndex += 1;
-      if (rest[0] === "\n") {
-        currentLine += 1;
-        currentCol = 1;
-      } else {
-        currentCol += 1;
-      }
       rest = rest.slice(1);
     }
   }

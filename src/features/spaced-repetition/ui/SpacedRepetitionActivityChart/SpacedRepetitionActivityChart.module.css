@@ -1,4 +1,7 @@
 .section {
+  --day-gap: calc(var(--space-1) - var(--space-px));
+  --day-min-size: var(--space-2);
+
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
@@ -11,6 +14,13 @@
   box-shadow: var(--shadow-sm);
 }
 
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
 .title {
   margin: var(--space-0);
   color: var(--text-main);
@@ -21,6 +31,13 @@
   line-height: var(--lh-heading);
 }
 
+.total {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-regular);
+  letter-spacing: 0;
+}
+
 .titleWrapper {
   height: calc(var(--card-title-size) * var(--lh-heading));
   display: flex;
@@ -29,37 +46,93 @@
 
 .chartPlaceholder {
   width: 100%;
+  height: auto;
+  aspect-ratio: 53 / 9;
 }
 
-.chart {
-  width: 100%;
-  min-height: calc(var(--space-7) * 4);
-  display: flex;
-  flex-direction: column;
+.scroller {
+  overflow-x: auto;
+  padding-bottom: var(--space-1);
 }
 
-.chart svg {
-  display: block;
-  overflow: visible;
-}
-
-.tooltip {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  padding: var(--space-2) var(--space-3);
-  border: var(--space-px) solid var(--border-color);
-  border-radius: var(--radius-md);
-  background: var(--bg-popover);
-  color: var(--text-main);
+.grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: auto repeat(53, minmax(var(--day-min-size), 1fr));
+  grid-template-rows: auto repeat(7, auto);
+  gap: var(--day-gap);
   font-family: var(--font-sans);
-  font-size: var(--fs-sm);
+  font-size: var(--fs-xs);
+  line-height: 1;
 }
 
-.tooltipDate {
+.weekday {
+  display: flex;
+  align-items: center;
+  padding-right: var(--space-1);
   color: var(--text-muted);
 }
 
-.tooltipValue {
-  font-weight: var(--fw-semibold);
+.month {
+  height: var(--space-3);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.day,
+.dayEmpty {
+  aspect-ratio: 1;
+  border-radius: var(--space-0-5);
+}
+
+.day {
+  box-sizing: border-box;
+  outline: var(--space-px) solid var(--border-color);
+  outline-offset: calc(var(--space-px) * -1);
+}
+
+.day:hover {
+  outline-color: var(--text-muted);
+}
+
+.level0 {
+  background: var(--state-hover);
+}
+
+.level1 {
+  background: color-mix(in srgb, var(--accent-green) 30%, transparent);
+}
+
+.level2 {
+  background: color-mix(in srgb, var(--accent-green) 55%, transparent);
+}
+
+.level3 {
+  background: color-mix(in srgb, var(--accent-green) 80%, transparent);
+}
+
+.level4 {
+  background: var(--accent-green);
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--day-gap);
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+}
+
+.legend span:first-child {
+  margin-right: var(--space-1);
+}
+
+.legend span:last-child {
+  margin-left: var(--space-1);
+}
+
+.legend .day {
+  width: var(--day-min-size);
 }

@@ -173,3 +173,79 @@ describe("JSX text comments", () => {
     );
   });
 });
+
+describe("JSX element line comments", () => {
+  const code = "const App = () => (\n  <div>\n    <h1>Title</h1>\n  </div>\n);";
+
+  it("wraps an element line in a JSX comment instead of //", () => {
+    const cursor = code.indexOf("h1>") + 1;
+    const result = toggleLineComment(code, cursor, cursor, "App.jsx");
+    expect(result.newCode).toBe(
+      "const App = () => (\n  <div>\n    {/* <h1>Title</h1> */}\n  </div>\n);"
+    );
+    expect(result.newSelectionStart).toBe(cursor + 4);
+  });
+
+  it("restores the element line", () => {
+    const commented = "const App = () => (\n  <div>\n    {/* <h1>Title</h1> */}\n  </div>\n);";
+    const cursor = commented.indexOf("h1>") + 1;
+    const result = toggleLineComment(commented, cursor, cursor, "App.tsx");
+    expect(result.newCode).toBe(code);
+    expect(result.newSelectionStart).toBe(cursor - 4);
+  });
+
+  it("comments several child lines and keeps indentation outside", () => {
+    const source = "const A = () => (\n  <ul>\n    <li>a</li>\n    text\n  </ul>\n);";
+    const start = source.indexOf("<li>");
+    const end = source.indexOf("text") + 4;
+    expect(toggleLineComment(source, start, end, "A.jsx").newCode).toBe(
+      "const A = () => (\n  <ul>\n    {/* <li>a</li> */}\n    {/* text */}\n  </ul>\n);"
+    );
+  });
+
+  it("keeps // for the JSX root line that starts in JavaScript", () => {
+    const cursor = code.indexOf("<div>");
+    expect(toggleLineComment(code, cursor, cursor, "App.jsx").newCode).toContain("  // <div>");
+  });
+});
+
+describe("comment regressions", () => {
+  it("uses JS comments inside <script> and CSS comments inside <style> of an HTML file", () => {
+    const html = "<script>\nconst a = 1;\n</script>\n<style>\na { color: red }\n</style>";
+    const jsAt = html.indexOf("const");
+    expect(toggleLineComment(html, jsAt, jsAt, "index.html").newCode).toContain("// const a = 1;");
+    const cssAt = html.indexOf("a {");
+    expect(toggleLineComment(html, cssAt, cssAt, "index.html").newCode).toContain(
+      "/* a { color: red } */"
+    );
+    const bodyAt = html.indexOf("</script>");
+    expect(toggleLineComment(html, bodyAt, bodyAt, "index.html").newCode).toContain(
+      "<!-- </script> -->"
+    );
+  });
+
+  it("does not corrupt a JSX line that already holds comments", () => {
+    const code = "const a = (\n  <p>\n    {/* a */} b {/* c */}\n  </p>\n);";
+    const cursor = code.indexOf("{/* a");
+    const result = toggleLineComment(code, cursor, cursor, "App.jsx");
+    expect(result.changed).toBe(false);
+    expect(result.newCode).toBe(code);
+  });
+
+  it("still uncomments a single JSX comment line", () => {
+    const code = "const a = (\n  <p>\n    {/* text */}\n  </p>\n);";
+    const cursor = code.indexOf("{/* text");
+    expect(toggleLineComment(code, cursor, cursor, "App.jsx").newCode).toContain("    text\n");
+  });
+});
+
+describe("SCSS and LESS comments", () => {
+  it("toggles // line comments and recognises them again", () => {
+    const code = ".a {\n  color: red;\n}";
+    const at = code.indexOf("color");
+    const commented = toggleLineComment(code, at, at, "a.scss").newCode;
+    expect(commented).toBe(".a {\n  // color: red;\n}");
+    const at2 = commented.indexOf("//");
+    expect(toggleLineComment(commented, at2, at2, "a.less").newCode).toBe(code);
+  });
+});

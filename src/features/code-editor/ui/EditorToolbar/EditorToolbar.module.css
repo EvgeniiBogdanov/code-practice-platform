@@ -101,6 +101,11 @@
   display: block;
 }
 
+.fileIcon {
+  color: var(--icon-file);
+  flex-shrink: 0;
+}
+
 .fileIconJsx {
   color: var(--icon-file-js);
   flex-shrink: 0;

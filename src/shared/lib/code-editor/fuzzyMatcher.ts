@@ -109,3 +109,74 @@ export function fuzzyMatch(target: string, query: string): FuzzyMatchResult {
 
   return { match: false, score: 0 };
 }
+
+export interface FuzzyScore {
+  score: number;
+  /** Indices of the matched characters in the target, for highlighting. */
+  matches: number[];
+}
+
+const WORD_SEPARATOR = /[\s_$.\-/]/;
+
+const isWordStart = (target: string, index: number): boolean => {
+  if (index === 0) return true;
+  const prev = target[index - 1];
+  const char = target[index];
+  if (WORD_SEPARATOR.test(prev)) return true;
+  return char !== char.toLowerCase() && prev === prev.toLowerCase();
+};
+
+/**
+ * The suggest widget's matcher from VS Code (`fuzzyScore`): the query is a case-insensitive
+ * subsequence whose first letter starts a word (`gfd` → `getNameOfDeclaration`, but `log`
+ * does not match `dialog`). Word starts, consecutive runs and exact case score higher.
+ */
+export function fuzzyScore(target: string, query: string): FuzzyScore | null {
+  if (!query) return { score: 0, matches: [] };
+  const n = target.length;
+  const m = query.length;
+  if (m > n) return null;
+  const lowerTarget = target.toLowerCase();
+  const lowerQuery = query.toLowerCase();
+  // score[j][i]: best score with query[0..j] matched and query[j] on target[i].
+  const score: number[][] = [];
+  const parent: number[][] = [];
+  for (let j = 0; j < m; j++) {
+    score.push(new Array<number>(n).fill(-Infinity));
+    parent.push(new Array<number>(n).fill(-1));
+    let bestBefore = -Infinity;
+    let bestBeforeIndex = -1;
+    for (let i = j; i < n; i++) {
+      // Candidates that end at least two characters back: a gap before target[i].
+      if (j > 0 && i >= 2 && score[j - 1][i - 2] > bestBefore) {
+        bestBefore = score[j - 1][i - 2];
+        bestBeforeIndex = i - 2;
+      }
+      if (lowerTarget[i] !== lowerQuery[j]) continue;
+      const wordStart = isWordStart(target, i);
+      const charScore =
+        1 + (wordStart ? 6 : 0) + (target[i] === query[j] ? 1 : 0) + (i === 0 ? 2 : 0);
+      if (j === 0) {
+        if (wordStart) score[0][i] = charScore;
+        continue;
+      }
+      const consecutive = score[j - 1][i - 1] + 6;
+      if (consecutive >= bestBefore && consecutive > -Infinity) {
+        score[j][i] = charScore + consecutive;
+        parent[j][i] = i - 1;
+      } else if (bestBefore > -Infinity) {
+        score[j][i] = charScore + bestBefore;
+        parent[j][i] = bestBeforeIndex;
+      }
+    }
+  }
+  let end = -1;
+  for (let i = 0; i < n; i++) {
+    if (score[m - 1][i] > (end === -1 ? -Infinity : score[m - 1][end])) end = i;
+  }
+  if (end === -1) return null;
+  const matches: number[] = [];
+  for (let j = m - 1, i = end; j >= 0; i = parent[j][i], j--) matches.unshift(i);
+  // The whole word typed (a snippet prefix like `clg`) beats any longer name.
+  return { score: score[m - 1][end] + (n === m ? 10 : 0), matches };
+}

@@ -1,61 +1,54 @@
 import React, { useCallback } from "react";
-import { IntelliSenseState } from "./useIntelliSense";
-import { CodeHistoryState } from "./useCodeHistory";
+import { IntelliSenseState, type AppliedCompletion } from "./useIntelliSense";
+import { CodeHistoryState, type HistoryEntry } from "./useCodeHistory";
 import { MultiCursorState } from "./useMultiCursor";
+import type { ApplyEdit } from "./types";
 import {
   handleMarkupKey,
   handleLineMovement,
   handleCommentShortcuts,
   handleEnterKey,
   handlePairsAndBackspace,
+  matchesKey,
 } from "../lib/editor-key-helpers";
 import { handleTabKey } from "../lib/tab-key";
+import { handleLineCommands } from "../lib/line-key-handlers";
+import { TAB_SIZE } from "../lib/editor-utils";
 
 export interface EditorKeyHandlersProps {
   code: string;
-  onChange: (newCode: string) => void;
+  applyEdit: ApplyEdit;
+  /** Applies an undo/redo entry without recording a new history step. */
+  restoreEntry: (entry: HistoryEntry | null) => void;
+  /** Applies an accepted completion; defaults to a plain edit. */
+  applyCompletion?: (applied: AppliedCompletion) => void;
+  /** Moves between snippet fields; returns false when no snippet is active. */
+  jumpToTabStop?: (direction: 1 | -1) => boolean;
   intelliSense: IntelliSenseState;
   history: CodeHistoryState;
   multiCursor?: MultiCursorState;
   onRun?: () => void;
   tabSize?: number;
+  /** Wrapped lines have visual rows: Home then keeps its native, per-row behaviour. */
+  wordWrap?: boolean;
   readOnly?: boolean;
   filepath?: string;
 }
 
+const isModKey = (e: React.KeyboardEvent, code: string): boolean =>
+  (e.metaKey || e.ctrlKey) && matchesKey(e, code);
+
 const handleUndoRedo = (
   e: React.KeyboardEvent<HTMLTextAreaElement>,
-  textarea: HTMLTextAreaElement,
   code: string,
-  onChange: (newCode: string) => void,
   history: CodeHistoryState,
-  multiCursor?: MultiCursorState
+  restoreEntry: (entry: HistoryEntry | null) => void
 ): boolean => {
-  const key = e.key.toLowerCase();
-  if (!(e.metaKey || e.ctrlKey) || (key !== "z" && key !== "y")) {
-    return false;
-  }
+  const isRedo = isModKey(e, "KeyY") || (isModKey(e, "KeyZ") && e.shiftKey);
+  if (!isRedo && !isModKey(e, "KeyZ")) return false;
 
   e.preventDefault();
-  if (key === "y" || e.shiftKey) {
-    const redoRes = history.redo(code);
-    if (redoRes) {
-      multiCursor?.clearSelections();
-      onChange(redoRes.code);
-      setTimeout(() => {
-        textarea.selectionStart = textarea.selectionEnd = redoRes.cursor;
-      }, 0);
-    }
-  } else {
-    const undoRes = history.undo(code);
-    if (undoRes) {
-      multiCursor?.clearSelections();
-      onChange(undoRes.code);
-      setTimeout(() => {
-        textarea.selectionStart = textarea.selectionEnd = undoRes.cursor;
-      }, 0);
-    }
-  }
+  restoreEntry(isRedo ? history.redo(code) : history.undo(code));
   return true;
 };
 
@@ -67,13 +60,8 @@ const handleMultiSelectionShortcuts = (
 ): boolean => {
   if (!multiCursor) return false;
 
-  const keyLower = e.key.toLowerCase();
-
   // Cmd+D (Mac) / Ctrl+D (Windows/Linux) / Alt+D: Select next match
-  const isCmdOrCtrlOrAltD =
-    (e.metaKey || e.ctrlKey || e.altKey) && !e.shiftKey && (e.code === "KeyD" || keyLower === "d");
-
-  if (isCmdOrCtrlOrAltD) {
+  if ((e.metaKey || e.ctrlKey || e.altKey) && !e.shiftKey && matchesKey(e, "KeyD")) {
     e.preventDefault();
     e.stopPropagation();
     multiCursor.addNextMatch(code, textarea.selectionStart, textarea.selectionEnd, textarea);
@@ -81,8 +69,7 @@ const handleMultiSelectionShortcuts = (
   }
 
   // Cmd+Shift+L / Ctrl+Shift+L: Select all matches
-  const isSelectAllMatches = (e.metaKey || e.ctrlKey) && e.shiftKey && keyLower === "l";
-  if (isSelectAllMatches) {
+  if (isModKey(e, "KeyL") && e.shiftKey) {
     e.preventDefault();
     e.stopPropagation();
     multiCursor.selectAllMatches(code, textarea.selectionStart, textarea.selectionEnd, textarea);
@@ -96,8 +83,7 @@ const handleIntelliSenseKey = (
   e: React.KeyboardEvent<HTMLTextAreaElement>,
   textarea: HTMLTextAreaElement,
   code: string,
-  onChange: (newCode: string) => void,
-  history: CodeHistoryState,
+  applyCompletion: (applied: AppliedCompletion) => void,
   intelliSense: IntelliSenseState
 ): boolean => {
   if (!intelliSense.isOpen) return false;
@@ -115,13 +101,7 @@ const handleIntelliSenseKey = (
   if (e.key === "Enter" || (e.key === "Tab" && !e.shiftKey)) {
     e.preventDefault();
     const applied = intelliSense.applySelected(code, textarea.selectionStart);
-    if (applied) {
-      onChange(applied.newCode);
-      history.pushHistory(applied.newCode, applied.newCursor);
-      setTimeout(() => {
-        textarea.selectionStart = textarea.selectionEnd = applied.newCursor;
-      }, 0);
-    }
+    if (applied) applyCompletion(applied);
     return true;
   }
   if (e.key === "Escape") {
@@ -146,12 +126,16 @@ const handleIntelliSenseKey = (
 
 export const useEditorKeyHandlers = ({
   code,
-  onChange,
+  applyEdit,
+  restoreEntry,
+  applyCompletion,
+  jumpToTabStop,
   intelliSense,
   history,
   multiCursor,
   onRun,
-  tabSize = 2,
+  tabSize = TAB_SIZE,
+  wordWrap = false,
   readOnly = false,
   filepath = "main.jsx",
 }: EditorKeyHandlersProps): {
@@ -160,11 +144,13 @@ export const useEditorKeyHandlers = ({
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
       const textarea = e.currentTarget;
-      if (e.nativeEvent?.isComposing || e.key === "Process") return;
+      // Safari reports the Enter that commits an IME composition with `isComposing` already
+      // false but keyCode 229.
+      if (e.nativeEvent?.isComposing || e.key === "Process" || e.keyCode === 229) return;
       history.captureCursor(textarea.selectionStart);
 
-      // 1. Run shortcut (Cmd/Ctrl + Enter)
-      if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+      // 1. Run shortcut (Cmd/Ctrl + Enter; with Shift it opens a line above)
+      if ((e.metaKey || e.ctrlKey) && !e.shiftKey && e.key === "Enter") {
         e.preventDefault();
         onRun?.();
         return;
@@ -181,71 +167,90 @@ export const useEditorKeyHandlers = ({
       }
 
       // 3. Multi-cursor active typing / backspace / delete / navigation
-      if (multiCursor && multiCursor.hasMultipleCursors) {
-        if (multiCursor.handleMultiKeyDown(e, code, onChange, history)) {
-          return;
-        }
-      }
-
-      // 4. Undo / Redo Shortcuts
-      if (handleUndoRedo(e, textarea, code, onChange, history, multiCursor)) {
-        return;
-      }
-
-      // 5. Move / Duplicate Lines (VS Code: Alt/Option + ArrowUp/ArrowDown)
-      if (handleLineMovement(e, textarea, code, onChange, history, intelliSense, readOnly)) {
-        return;
-      }
-
-      // 6. Comment Shortcuts (VS Code: Cmd/Ctrl + /, Shift + Alt/Option + A)
+      // An open completion list owns Escape before the extra cursors do.
+      const completionOwnsKey = e.key === "Escape" && intelliSense.isOpen;
       if (
-        handleCommentShortcuts(
-          e,
-          textarea,
-          code,
-          onChange,
-          history,
-          intelliSense,
-          filepath,
-          readOnly
-        )
+        multiCursor?.hasMultipleCursors &&
+        !completionOwnsKey &&
+        multiCursor.handleMultiKeyDown(e, code, applyEdit)
       ) {
         return;
       }
 
-      if (handleMarkupKey(e, textarea, code, onChange, history, filepath, tabSize)) {
+      // 4. Undo / Redo Shortcuts
+      if (handleUndoRedo(e, code, history, restoreEntry)) {
+        return;
+      }
+
+      // Delete / insert line, indent, Smart Home
+      if (handleLineCommands(e, textarea, code, applyEdit, tabSize, { smartHome: !wordWrap })) {
+        return;
+      }
+
+      // 5. Move / Duplicate Lines (VS Code: Alt/Option + ArrowUp/ArrowDown)
+      if (handleLineMovement(e, textarea, code, applyEdit, intelliSense, readOnly)) {
+        return;
+      }
+
+      // 6. Comment Shortcuts (VS Code: Cmd/Ctrl + /, Shift + Alt/Option + A)
+      if (handleCommentShortcuts(e, textarea, code, applyEdit, intelliSense, filepath, readOnly)) {
+        return;
+      }
+
+      if (handleMarkupKey(e, textarea, code, applyEdit, filepath, tabSize)) {
         intelliSense.closeCompletions();
         return;
       }
-      if ((e.ctrlKey || e.metaKey) && e.code === "Space") {
+      // Ctrl/Cmd+Shift+Space belongs to parameter hints.
+      if ((e.ctrlKey || e.metaKey) && !e.shiftKey && e.code === "Space") {
         e.preventDefault();
         intelliSense.openCompletions(code, textarea.selectionStart, textarea, true);
         return;
       }
 
       // 7. IntelliSense navigation and dismissal
-      if (handleIntelliSenseKey(e, textarea, code, onChange, history, intelliSense)) {
+      const acceptCompletion =
+        applyCompletion ??
+        ((applied: AppliedCompletion) =>
+          applyEdit(applied.newCode, applied.newCursor, applied.newSelectionEnd));
+      if (handleIntelliSenseKey(e, textarea, code, acceptCompletion, intelliSense)) {
         return;
       }
 
-      if (readOnly) {
+      // 8. Snippet fields (Tab / Shift+Tab)
+      if (e.key === "Tab" && jumpToTabStop?.(e.shiftKey ? -1 : 1)) {
+        e.preventDefault();
         return;
       }
 
-      // 8. Tab key indentation
-      if (handleTabKey(e, textarea, code, onChange, history, tabSize)) {
+      // 9. Tab key indentation
+      if (handleTabKey(e, textarea, code, applyEdit, tabSize)) {
         return;
       }
 
-      // 9. Enter key auto-indentation
-      if (handleEnterKey(e, textarea, code, onChange, history)) {
+      // 10. Enter key auto-indentation
+      if (handleEnterKey(e, textarea, code, applyEdit, tabSize)) {
         return;
       }
 
-      // 10. Matching Pair Insertion & Deletion
-      handlePairsAndBackspace(e, textarea, code, onChange, history);
+      // 11. Matching Pair Insertion & Deletion
+      handlePairsAndBackspace(e, textarea, code, applyEdit, filepath);
     },
-    [code, onChange, intelliSense, history, multiCursor, onRun, tabSize, readOnly, filepath]
+    [
+      code,
+      applyEdit,
+      restoreEntry,
+      applyCompletion,
+      jumpToTabStop,
+      intelliSense,
+      history,
+      multiCursor,
+      onRun,
+      tabSize,
+      wordWrap,
+      readOnly,
+      filepath,
+    ]
   );
 
   return { handleKeyDown };

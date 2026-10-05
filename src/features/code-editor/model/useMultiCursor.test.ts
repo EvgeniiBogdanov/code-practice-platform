@@ -133,7 +133,10 @@ describe("useMultiCursor", () => {
 
     let handled = false;
     act(() => {
-      handled = result.current.handleMultiKeyDown(event, code, onChange, history);
+      handled = result.current.handleMultiKeyDown(event, code, (next, cursor) => {
+        onChange(next);
+        history.pushHistory(next, cursor);
+      });
     });
 
     expect(handled).toBe(true);
@@ -173,7 +176,10 @@ describe("useMultiCursor", () => {
 
     let handled = false;
     act(() => {
-      handled = result.current.handleMultiKeyDown(event, code, onChange, history);
+      handled = result.current.handleMultiKeyDown(event, code, (next, cursor) => {
+        onChange(next);
+        history.pushHistory(next, cursor);
+      });
     });
 
     expect(handled).toBe(true);
@@ -208,10 +214,102 @@ describe("useMultiCursor", () => {
     } as unknown as React.KeyboardEvent<HTMLTextAreaElement>;
 
     act(() => {
-      result.current.handleMultiKeyDown(event, code, onChange, history);
+      result.current.handleMultiKeyDown(event, code, (next, cursor) => {
+        onChange(next);
+        history.pushHistory(next, cursor);
+      });
     });
 
     expect(result.current.selections).toEqual([]);
     expect(result.current.hasMultipleCursors).toBe(false);
+  });
+
+  describe("keys that are not multi-cursor edits", () => {
+    const code = "aa bb aa";
+    const setup = () => {
+      const hook = renderHook(() => useMultiCursor());
+      act(() =>
+        hook.result.current.setSelections([
+          { start: 0, end: 2 },
+          { start: 6, end: 8 },
+        ])
+      );
+      return hook;
+    };
+    const press = (
+      hook: ReturnType<typeof setup>,
+      init: Partial<React.KeyboardEvent<HTMLTextAreaElement>>
+    ): boolean => {
+      let handled = false;
+      act(() => {
+        handled = hook.result.current.handleMultiKeyDown(
+          {
+            key: "",
+            ctrlKey: false,
+            metaKey: false,
+            altKey: false,
+            preventDefault: vi.fn(),
+            currentTarget: document.createElement("textarea"),
+            getModifierState: () => false,
+            ...init,
+          } as unknown as React.KeyboardEvent<HTMLTextAreaElement>,
+          code,
+          vi.fn()
+        );
+      });
+      return handled;
+    };
+
+    it.each(["Home", "End", "ArrowUp", "ArrowDown", "Tab", "PageDown"])(
+      "drops the extra cursors and lets %s through",
+      (key) => {
+        const hook = setup();
+        expect(press(hook, { key })).toBe(false);
+        expect(hook.result.current.hasMultipleCursors).toBe(false);
+      }
+    );
+
+    it("lets Ctrl+Backspace through and drops the cursors", () => {
+      const hook = setup();
+      expect(press(hook, { key: "Backspace", ctrlKey: true })).toBe(false);
+      expect(hook.result.current.hasMultipleCursors).toBe(false);
+    });
+
+    it("keeps the cursors on a bare modifier and on copy", () => {
+      const hook = setup();
+      press(hook, { key: "Shift" });
+      press(hook, { key: "c", ctrlKey: true });
+      expect(hook.result.current.hasMultipleCursors).toBe(true);
+    });
+
+    it("types AltGr characters into every cursor", () => {
+      const hook = setup();
+      const applyEdit = vi.fn();
+      act(() => {
+        hook.result.current.handleMultiKeyDown(
+          {
+            key: "{",
+            ctrlKey: true,
+            metaKey: false,
+            altKey: true,
+            preventDefault: vi.fn(),
+            currentTarget: document.createElement("textarea"),
+            getModifierState: (name: string) => name === "AltGraph",
+          } as unknown as React.KeyboardEvent<HTMLTextAreaElement>,
+          code,
+          applyEdit
+        );
+      });
+      expect(applyEdit).toHaveBeenCalledWith("{ bb {", expect.any(Number));
+    });
+  });
+});
+
+describe("useMultiCursor identity", () => {
+  it("returns the same object across unrelated renders", () => {
+    const { result, rerender } = renderHook(() => useMultiCursor("a.js"));
+    const first = result.current;
+    rerender();
+    expect(result.current).toBe(first);
   });
 });

@@ -20,16 +20,6 @@ vi.mock("@tanstack/react-router", () => ({
   ),
 }));
 
-vi.mock("@/shared/lib/hooks", () => ({
-  useParentSize: () => [{ current: null }, { width: 700, height: 112 }],
-}));
-
-vi.mock("@nivo/calendar", () => ({
-  TimeRange: ({ data, from, to }: { data: unknown[]; from: string; to: string }) => (
-    <div data-testid="nivo-time-range" data-from={from} data-to={to} data-count={data.length} />
-  ),
-}));
-
 vi.mock("../model/use-home-stats", () => ({
   useHomeStats: () => ({
     grandTotal: 100,
@@ -88,9 +78,9 @@ describe("HomePage", () => {
     expect(
       screen.getByRole("heading", { level: 3, name: "Активность решений" })
     ).toBeInTheDocument();
-    const chart = screen.getByTestId("nivo-time-range");
-    expect(chart).toBeInTheDocument();
-    expect(chart).toHaveAttribute("data-count", "2");
+    expect(
+      screen.getByRole("img", { name: /^Активность решений за последний год/ })
+    ).toBeInTheDocument();
 
     // Practice Sections
     expect(screen.getByRole("heading", { level: 2, name: "Разделы практики" })).toBeInTheDocument();
@@ -105,6 +95,6 @@ describe("HomePage", () => {
     render(<HomePage />);
 
     expect(screen.getByRole("status", { name: "Загрузка активности решений" })).toBeInTheDocument();
-    expect(screen.queryByTestId("nivo-time-range")).not.toBeInTheDocument();
+    expect(screen.queryByRole("img", { name: /^Активность решений/ })).not.toBeInTheDocument();
   });
 });

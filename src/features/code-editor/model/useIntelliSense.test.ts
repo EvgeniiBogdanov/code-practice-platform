@@ -42,22 +42,6 @@ describe("useIntelliSense", () => {
     expect(result.current.isOpen).toBe(false);
   });
 
-  it("updates selectedIndex when selectIndex is called on hover", () => {
-    const { result } = renderHook(() => useIntelliSense([], "solution.js"));
-
-    act(() => {
-      result.current.openCompletions("arr.", 4, createTextarea(), true);
-    });
-
-    expect(result.current.selectedIndex).toBe(0);
-
-    act(() => {
-      result.current.selectIndex(3);
-    });
-
-    expect(result.current.selectedIndex).toBe(3);
-  });
-
   it("preserves the selected completion when semantic results arrive", async () => {
     let resolveCompletions: (items: TypeScriptCompletion[]) => void = () => {};
     const request = vi.fn(
@@ -69,12 +53,12 @@ describe("useIntelliSense", () => {
     const { result } = renderHook(() => useIntelliSense([], "App.jsx", request));
     const textarea = createTextarea();
 
-    act(() => result.current.openCompletions("arr.", 4, textarea));
+    act(() => result.current.openCompletions("console.", 8, textarea));
     act(() => result.current.selectNext());
     const selectedLabel = result.current.items[result.current.selectedIndex]?.label;
     expect(selectedLabel).toBeDefined();
 
-    act(() => result.current.handleCursorMove("arr.", 4, textarea));
+    act(() => result.current.handleCursorMove("console.", 8, textarea));
     expect(result.current.items[result.current.selectedIndex]?.label).toBe(selectedLabel);
 
     await act(async () => {
@@ -83,14 +67,35 @@ describe("useIntelliSense", () => {
           label: "customMember",
           insertText: "customMember",
           kind: "property",
-          replaceStart: 4,
-          replaceEnd: 4,
+          replaceStart: 8,
+          replaceEnd: 8,
         },
       ]);
     });
 
     expect(request).toHaveBeenCalledTimes(1);
     expect(result.current.items[result.current.selectedIndex]?.label).toBe(selectedLabel);
+  });
+
+  it("selects the best match when semantic results arrive without navigation", async () => {
+    let resolveCompletions: (items: TypeScriptCompletion[]) => void = () => {};
+    const request = vi.fn(
+      () =>
+        new Promise<TypeScriptCompletion[]>((resolve) => {
+          resolveCompletions = resolve;
+        })
+    );
+    const { result } = renderHook(() => useIntelliSense([], "App.jsx", request));
+
+    act(() => result.current.openCompletions("console.", 8, createTextarea()));
+    await act(async () => {
+      resolveCompletions([
+        { label: "log", insertText: "log", kind: "method", replaceStart: 8, replaceEnd: 8 },
+      ]);
+    });
+
+    expect(result.current.selectedIndex).toBe(0);
+    expect(result.current.items[0]?.label).toBe("log");
   });
 
   it("calculates popup position with placement and maxHeight on open", () => {
@@ -219,5 +224,69 @@ describe("useIntelliSense", () => {
     act(() => result.current.openCompletions(code, code.length, createTextarea()));
 
     await waitFor(() => expect(result.current.items.map((item) => item.label)).toContain("name"));
+  });
+
+  it("drops words scraped from the document once TypeScript answers with scoped symbols", async () => {
+    const code = "// consolidate later\ncons";
+    const request = vi
+      .fn()
+      .mockResolvedValue([
+        { label: "console", insertText: "console", kind: "var", replaceStart: 21, replaceEnd: 25 },
+      ]);
+    const { result } = renderHook(() => useIntelliSense([], "App.tsx", request));
+
+    act(() => result.current.openCompletions(code, code.length, createTextarea()));
+    expect(result.current.items.map((item) => item.label)).toContain("consolidate");
+
+    await waitFor(() => expect(result.current.items[0]?.label).toBe("console"));
+    expect(result.current.items.map((item) => item.label)).not.toContain("consolidate");
+  });
+
+  describe("semantic completions without local ones", () => {
+    const completion = (label: string, kind: string, at: number): TypeScriptCompletion => ({
+      label,
+      insertText: label,
+      kind,
+      replaceStart: at,
+      replaceEnd: at,
+    });
+
+    it("offers literal union members right after the opening quote", async () => {
+      const code = 'const a: "x" | "y" = "';
+      const request = vi.fn().mockResolvedValue([completion("x", "string", code.length)]);
+      const { result } = renderHook(() => useIntelliSense([], "App.tsx", request));
+
+      act(() => result.current.openCompletions(code, code.length, createTextarea()));
+
+      await waitFor(() => expect(result.current.items.map((item) => item.label)).toContain("x"));
+    });
+
+    it("does not pop up globals after a closing quote", async () => {
+      const code = 'const a = "x"';
+      const request = vi.fn().mockResolvedValue([completion("Array", "var", code.length)]);
+      const { result } = renderHook(() => useIntelliSense([], "App.tsx", request));
+
+      act(() => result.current.openCompletions(code, code.length, createTextarea()));
+      await act(async () => {});
+
+      expect(result.current.isOpen).toBe(false);
+    });
+
+    it("matches camelCase initials of semantic symbols but not stray substrings", async () => {
+      const request = vi
+        .fn()
+        .mockResolvedValue([
+          completion("getElementById", "method", 0),
+          completion("Subscription", "class", 0),
+        ]);
+      const { result } = renderHook(() => useIntelliSense([], "App.tsx", request));
+
+      act(() => result.current.openCompletions("gEBI", 4, createTextarea()));
+
+      await waitFor(() =>
+        expect(result.current.items.map((item) => item.label)).toContain("getElementById")
+      );
+      expect(result.current.items.map((item) => item.label)).not.toContain("Subscription");
+    });
   });
 });

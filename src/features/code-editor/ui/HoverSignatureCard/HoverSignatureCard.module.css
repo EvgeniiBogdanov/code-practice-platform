@@ -3,29 +3,93 @@
   top: var(--popup-top, 0px);
   left: var(--popup-left, 0px);
   z-index: var(--z-modal, 9000);
-  max-width: 380px;
-  background-color: var(--bg-popover);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
-  padding: 8px 12px;
-  font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  color: var(--text-main);
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  width: max-content;
+  min-width: 180px;
+  max-width: 420px;
+  max-height: 40vh;
+  overflow-y: auto;
+  /* Flush with the hovered line, so the pointer can move onto the card without a gap. */
+  transform: translateY(-100%);
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  color: var(--text-main);
+  background: var(--popup-bg, var(--bg-popover));
+  border: 1px solid var(--popup-border, var(--border-color));
+  border-radius: var(--popup-radius, var(--radius-lg));
+  box-shadow: var(--popup-shadow, var(--shadow-lg));
+  -webkit-backdrop-filter: var(--popup-blur, none);
+  backdrop-filter: var(--popup-blur, none);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+  animation: cardIn 130ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
+/* `translate` is separate from `transform`, so the entrance does not fight the placement. */
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    translate: 0 4px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    animation: none;
+  }
+}
+
+.below {
+  top: var(--popup-bottom, 0px);
+  transform: none;
+}
+
+/* The type or signature: the same colours as the code it describes. */
 .signature {
-  font-weight: 600;
-  color: var(--accent-blue);
-  word-break: break-all;
+  margin: 0;
+  padding: 9px 12px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  line-height: 1.55;
+  color: var(--text-main);
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: var(--bg-tooltip-code);
 }
 
 .description {
-  font-family: inherit;
-  font-size: 11px;
-  color: var(--text-muted);
+  padding: 8px 12px 10px;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--popup-border, var(--border-color));
+}
+
+.problem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: 8px 12px;
   line-height: var(--lh-tight);
+  color: var(--color-error);
+  white-space: pre-line;
+  background: color-mix(in srgb, var(--color-error) 9%, transparent);
+}
+
+.problem + .problem,
+.problem + .signature {
+  border-top: 1px solid var(--popup-border, var(--border-color));
+}
+
+.warning {
+  color: var(--color-warning);
+  background: color-mix(in srgb, var(--color-warning) 9%, transparent);
+}
+
+.problemIcon {
+  flex-shrink: 0;
+  margin-top: 2px;
 }

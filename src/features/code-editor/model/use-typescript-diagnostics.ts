@@ -1,168 +1,140 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
-  createTypeScriptChecker,
-  type TypeScriptDiagnosticRequest,
+  acquireTypeScriptClient,
+  type EditorDiagnostic,
+  type TypeScriptClient,
   type TypeScriptDiagnosticResponse,
+  type TypeScriptRequest,
   type TypeScriptSourceInput,
   type TypeScriptCompletion,
   type TypeScriptHover,
+  type TypeScriptSignature,
   type TypeScriptRenameEdit,
-  type LintResult,
+  type TypeScriptCodeFix,
+  type TypeScriptLocation,
 } from "@/shared/lib/code-editor";
 
-interface TypeScriptAnalysis {
-  result: LintResult | null;
+export interface TypeScriptAnalysis {
+  problems: EditorDiagnostic[] | null;
   isPending: boolean;
   requestCompletions: (position: number, code?: string) => Promise<TypeScriptCompletion[]>;
   requestHover: (position: number, code?: string) => Promise<TypeScriptHover | null>;
+  requestSignature: (position: number, code?: string) => Promise<TypeScriptSignature | null>;
   requestRename: (position: number) => Promise<TypeScriptRenameEdit[]>;
+  requestCodeFixes: (diagnostic: EditorDiagnostic) => Promise<TypeScriptCodeFix[]>;
+  requestDefinition: (position: number) => Promise<TypeScriptLocation | null>;
 }
+
+const LOAD_FAILED: EditorDiagnostic = {
+  id: "typescript-load",
+  line: 1,
+  col: 1,
+  start: 0,
+  end: 0,
+  code: 0,
+  severity: "warning",
+  synthetic: true,
+  message: "Не удалось загрузить проверку TypeScript. Перезагрузите страницу.",
+};
 
 export const useTypeScriptDiagnostics = (
   input: TypeScriptSourceInput,
   enabled: boolean,
   languageEnabled = enabled
 ): TypeScriptAnalysis => {
-  const workerRef = useRef<Worker | null>(null);
-  const requestId = useRef(0);
-  const diagnosticId = useRef(0);
-  const pending = useRef(
-    new Map<number, (response: TypeScriptDiagnosticResponse | null) => void>()
-  );
-  const [analysis, setAnalysis] = useState({ result: null as LintResult | null, isPending: false });
-  // Use content as the dependency: unrelated editor renders must not recheck the file.
-  const source = JSON.stringify(input);
-
-  const ensureWorker = useCallback((): Worker | null => {
-    if (!languageEnabled || typeof Worker === "undefined") return null;
-    if (workerRef.current) return workerRef.current;
-    const worker = createTypeScriptChecker();
-    workerRef.current = worker;
-    worker.onmessage = ({ data }: MessageEvent<TypeScriptDiagnosticResponse>): void => {
-      const callback = pending.current.get(data.id);
-      if (callback) {
-        pending.current.delete(data.id);
-        callback(data);
-        return;
-      }
-      if (data.kind !== "diagnostics" || data.id !== diagnosticId.current) return;
-      const problems = data.problems ?? [];
-      const errorCount = problems.filter((problem) => problem.severity === "error").length;
-      setAnalysis({
-        isPending: false,
-        result: {
-          problems,
-          errorCount,
-          warningCount: problems.length - errorCount,
-          isValid: errorCount === 0,
-          typoMap: {},
-          missingImportMap: {},
-          allMissingImports: [],
-          unusedImports: new Set(),
-        },
-      });
-    };
-    worker.onerror = (): void => {
-      for (const resolve of pending.current.values()) resolve(null);
-      pending.current.clear();
-      worker.terminate();
-      workerRef.current = null;
-      setAnalysis({
-        isPending: false,
-        result: {
-          problems: [
-            {
-              id: "typescript-load",
-              line: 1,
-              col: 1,
-              rule: "typescript",
-              severity: "warning",
-              message: "Не удалось загрузить проверку TypeScript. Перезагрузите страницу.",
-            },
-          ],
-          errorCount: 0,
-          warningCount: 1,
-          isValid: false,
-          typoMap: {},
-          missingImportMap: {},
-          allMissingImports: [],
-          unusedImports: new Set(),
-        },
-      });
-    };
-    return worker;
-  }, [languageEnabled]);
+  const clientRef = useRef<TypeScriptClient | null>(null);
+  const inputRef = useRef(input);
+  inputRef.current = input;
+  const latestDiagnostics = useRef(0);
+  const [analysis, setAnalysis] = useState<{
+    problems: EditorDiagnostic[] | null;
+    isPending: boolean;
+  }>({ problems: null, isPending: false });
+  // Content is the dependency: unrelated editor renders must not recheck the file. The other
+  // files are serialised once per array, not on every keystroke's several renders.
+  const { code, filepath, files } = input;
+  const filesKey = useMemo(() => JSON.stringify(files), [files]);
 
   useEffect(() => {
-    const pendingRequests = pending.current;
+    if (!languageEnabled || typeof Worker === "undefined") return;
+    const client = acquireTypeScriptClient();
+    clientRef.current = client;
     return (): void => {
-      workerRef.current?.terminate();
-      workerRef.current = null;
-      requestId.current += 1;
-      for (const resolve of pendingRequests.values()) resolve(null);
-      pendingRequests.clear();
+      client.release();
+      clientRef.current = null;
     };
   }, [languageEnabled]);
 
   useEffect(() => {
     if (!enabled) return;
-    const id = ++requestId.current;
-    diagnosticId.current = id;
-    setAnalysis({ result: null, isPending: true });
-    const timer = setTimeout(() => {
-      const request: TypeScriptDiagnosticRequest = {
-        ...(JSON.parse(source) as TypeScriptSourceInput),
-        id,
-        kind: "diagnostics",
-      };
-      ensureWorker()?.postMessage(request);
+    const id = ++latestDiagnostics.current;
+    // Keep the previous problems while typing, as VS Code does, instead of flickering.
+    setAnalysis((current) => ({ ...current, isPending: true }));
+    const timer = setTimeout(async () => {
+      const client = clientRef.current;
+      if (!client) return;
+      const response = await client.request({ ...inputRef.current, kind: "diagnostics" });
+      if (id !== latestDiagnostics.current) return;
+      setAnalysis({ isPending: false, problems: response?.problems ?? [LOAD_FAILED] });
     }, 250);
     return (): void => clearTimeout(timer);
-  }, [enabled, source, ensureWorker]);
+  }, [enabled, code, filepath, filesKey]);
 
   const request = useCallback(
-    (
-      kind: TypeScriptDiagnosticRequest["kind"],
-      position: number,
-      code?: string
-    ): Promise<TypeScriptDiagnosticResponse | null> => {
-      const worker = ensureWorker();
-      if (!worker) return Promise.resolve(null);
-      const id = ++requestId.current;
-      return new Promise((resolve) => {
-        pending.current.set(id, resolve);
-        worker.postMessage({
-          ...(JSON.parse(source) as TypeScriptSourceInput),
-          code: code ?? input.code,
-          id,
-          kind,
-          position,
-        });
-      });
-    },
-    [source, ensureWorker, input.code]
+    (message: Omit<TypeScriptRequest, keyof TypeScriptSourceInput> & { code?: string }) =>
+      clientRef.current?.request({
+        ...inputRef.current,
+        ...message,
+        code: message.code ?? inputRef.current.code,
+      }) ?? Promise.resolve<TypeScriptDiagnosticResponse | null>(null),
+    []
   );
 
   const requestCompletions = useCallback(
     async (position: number, code?: string): Promise<TypeScriptCompletion[]> =>
-      (await request("completions", position, code))?.completions ?? [],
+      (await request({ kind: "completions", position, code }))?.completions ?? [],
     [request]
   );
   const requestHover = useCallback(
     async (position: number, code?: string): Promise<TypeScriptHover | null> =>
-      (await request("hover", position, code))?.hover ?? null,
+      (await request({ kind: "hover", position, code }))?.hover ?? null,
+    [request]
+  );
+  const requestSignature = useCallback(
+    async (position: number, code?: string): Promise<TypeScriptSignature | null> =>
+      (await request({ kind: "signature", position, code }))?.signature ?? null,
     [request]
   );
   const requestRename = useCallback(
     async (position: number): Promise<TypeScriptRenameEdit[]> =>
-      (await request("rename", position))?.rename ?? [],
+      (await request({ kind: "rename", position }))?.rename ?? [],
+    [request]
+  );
+  const requestCodeFixes = useCallback(
+    async (diagnostic: EditorDiagnostic): Promise<TypeScriptCodeFix[]> =>
+      (
+        await request({
+          kind: "codefix",
+          position: diagnostic.start,
+          end: diagnostic.end,
+          errorCode: diagnostic.code,
+        })
+      )?.codefixes ?? [],
+    [request]
+  );
+  const requestDefinition = useCallback(
+    async (position: number): Promise<TypeScriptLocation | null> =>
+      (await request({ kind: "definition", position }))?.definition ?? null,
     [request]
   );
 
   return {
-    ...(enabled ? analysis : { result: null, isPending: false }),
+    ...(enabled ? analysis : { problems: null, isPending: false }),
     requestCompletions,
     requestHover,
+    requestSignature,
     requestRename,
+    requestCodeFixes,
+    requestDefinition,
   };
 };

@@ -6,13 +6,26 @@ import { fuzzyMatch } from "../fuzzyMatcher";
 import { CSS_PROPERTIES, CSS_VALUES, CSS_PSEUDO_CLASSES } from "../languages/cssKnowledge";
 import { CompletionItem } from "../snippetsData";
 
+/** Open `{` minus `}` before the caret, ignoring comments and strings. */
+const getBlockDepth = (textBeforeCursor: string): number => {
+  const code = textBeforeCursor
+    .replace(/\/\*[\s\S]*?(?:\*\/|$)/g, "")
+    .replace(/"(?:\\.|[^"\\\n])*"?|'(?:\\.|[^'\\\n])*'?/g, "");
+  return (code.match(/\{/g)?.length ?? 0) - (code.match(/\}/g)?.length ?? 0);
+};
+
 export function getCssCompletions(
   cursorIndex: number,
   currentLineBeforeCursor: string,
   lineAfterCursor: string,
-  force = false
+  force = false,
+  textBeforeCursor = currentLineBeforeCursor
 ): { word: string; items: CompletionItem[] } | null {
-  const isValueContext = /:\s*([a-zA-Z0-9_-]*)$/.exec(currentLineBeforeCursor);
+  // `color:red` inside a block is a value; outside one, `a:hov` is a selector with a pseudo-class.
+  const isValueContext =
+    getBlockDepth(textBeforeCursor) > 0
+      ? /:\s*([a-zA-Z0-9_-]*)$/.exec(currentLineBeforeCursor)
+      : /:\s+([a-zA-Z0-9_-]*)$/.exec(currentLineBeforeCursor);
   if (isValueContext) {
     const propMatch = /([a-zA-Z0-9_-]+)\s*:\s*([a-zA-Z0-9_-]*)$/.exec(currentLineBeforeCursor);
     const propName = propMatch ? propMatch[1].toLowerCase() : "";
@@ -20,6 +33,7 @@ export function getCssCompletions(
 
     const afterMatch = lineAfterCursor.match(/^[a-zA-Z0-9_-]*/);
     const afterLen = afterMatch ? afterMatch[0].length : 0;
+    const hasSemicolonAfter = lineAfterCursor.slice(afterLen).startsWith(";");
 
     const candidateValues = CSS_VALUES[propName] || [
       "inherit",
@@ -39,7 +53,7 @@ export function getCssCompletions(
           label: val,
           detail: `CSS значение для '${propName}'`,
           kind: "value",
-          insertText: val.endsWith(";") ? val : `${val};`,
+          insertText: val.endsWith(";") || hasSemicolonAfter ? val : `${val};`,
           replaceStart: cursorIndex - query.length,
           replaceEnd: cursorIndex + afterLen,
           score,

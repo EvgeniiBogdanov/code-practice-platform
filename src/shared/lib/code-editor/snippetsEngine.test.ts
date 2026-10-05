@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
 import { getCompletions } from "./snippetsEngine";
-import { lintJavaScriptCode } from "./codeLinter";
 import { expandSnippet } from "./snippets/snippetExpander";
 import { JS_SNIPPETS } from "./languages/javascriptKnowledge";
 import { REACT_SNIPPETS } from "./languages/reactKnowledge";
@@ -11,7 +10,8 @@ describe("Language Detector & Capabilities", () => {
     expect(getLanguageId("solution.js")).toBe("javascript");
     expect(getLanguageId("src/algorithms/tasks/1_TwoSum.js")).toBe("javascript");
     const caps = getLanguageCapabilities("javascript");
-    expect(caps.supportsJsx).toBe(false);
+    expect(caps.supportsJsx).toBe(true);
+    expect(caps.supportsEmmet).toBe(false);
     expect(caps.supportsReactHooks).toBe(false);
     expect(caps.supportsTypeScript).toBe(false);
   });
@@ -54,12 +54,7 @@ describe("Pure JavaScript Completions (VS Code 1-to-1)", () => {
     expect(labels).not.toContain("useRef");
   });
 
-  it("does NOT suggest JSX tags or snippets in .js files", () => {
-    const res = getCompletions("<", 1, { filepath: "solution.js" });
-    const labels = res.items.map((i) => i.label);
-    expect(labels).not.toContain("<div>");
-    expect(labels).not.toContain("<button>");
-
+  it("does NOT suggest React snippets in .js files", () => {
     const snipRes = getCompletions("rfce", 4, { filepath: "solution.js" });
     expect(snipRes.items.map((i) => i.prefix)).not.toContain("rfce");
   });
@@ -79,23 +74,12 @@ describe("Pure JavaScript Completions (VS Code 1-to-1)", () => {
     expect(mathLabels).toContain("min");
     expect(mathLabels).toContain("floor");
 
-    const arrRes = getCompletions("arr.", 4, { filepath: "solution.js" });
-    const arrLabels = arrRes.items.map((i) => i.label);
-    expect(arrLabels).toContain("map");
-    expect(arrLabels).toContain("filter");
-    expect(arrLabels).toContain("reduce");
-
-    const reduceItem = arrRes.items.find((i) => i.label === "reduce");
-    expect(reduceItem?.insertText).toBe("reduce()");
-    expect(reduceItem?.cursorOffset).toBe(7);
-
-    const mapItem = arrRes.items.find((i) => i.label === "map");
-    expect(mapItem?.insertText).toBe("map()");
-    expect(mapItem?.cursorOffset).toBe(4);
-
-    const filterItem = arrRes.items.find((i) => i.label === "filter");
-    expect(filterItem?.insertText).toBe("filter()");
-    expect(filterItem?.cursorOffset).toBe(7);
+    // Members of other receivers come from the TypeScript service, not from the name.
+    for (const receiver of ["arr", "data", "value", "e", "target", "user"]) {
+      expect(
+        getCompletions(`${receiver}.`, receiver.length + 1, { filepath: "solution.js" }).items
+      ).toEqual([]);
+    }
   });
 });
 
@@ -200,79 +184,32 @@ describe("CSS, HTML, and SQL Completions", () => {
   });
 });
 
-describe("Linter Scoping by Environment", () => {
-  it("does NOT trigger React missing import in pure JS files", () => {
-    const jsLint = lintJavaScriptCode("function test() { const val = useState; }", {
-      filepath: "1_TwoSum.js",
-    });
-    expect(jsLint.problems.some((p) => p.rule === "missing-import")).toBe(false);
+describe("Snippet tab stops", () => {
+  const snippet = (prefix: string) => {
+    const found = [...JS_SNIPPETS, ...REACT_SNIPPETS].find((item) => item.prefix === prefix);
+    if (!found) throw new Error(`missing snippet ${prefix}`);
+    return found;
+  };
+
+  it("selects the first placeholder and visits fields in order, ending on $0", () => {
+    const code = "fn";
+    const res = expandSnippet(code, 2, snippet("fn"), "fn");
+    expect(res.newCode).toBe("function name(params) {\n  \n}");
+    expect(res.newCode.slice(res.newCursorPos, res.newSelectionEnd)).toBe("name");
+    expect(res.tabStops.map(({ start, end }) => res.newCode.slice(start, end))).toEqual([
+      "name",
+      "params",
+      "",
+    ]);
+    expect(res.tabStops[2].start).toBe(res.newCode.indexOf("\n  \n") + 3);
   });
 
-  it("triggers missing import in React JSX files", () => {
-    const jsxLint = lintJavaScriptCode(
-      "export default function App() { useState(0); return <div />; }",
-      {
-        filepath: "App.jsx",
-      }
+  it("indents continuation lines like the line the snippet starts on", () => {
+    const code = "function a() {\n    trycatch";
+    const res = expandSnippet(code, code.length, snippet("trycatch"), "trycatch");
+    expect(res.newCode).toBe(
+      "function a() {\n    try {\n      \n    } catch (error) {\n      console.error(error);\n    }"
     );
-    expect(jsxLint.problems.some((p) => p.symbol === "useState")).toBe(true);
-  });
-
-  it("does NOT trigger TypeScript type missing import in pure JSX files", () => {
-    const jsxLint = lintJavaScriptCode(
-      "export default function App() { return <p>Работает через Context</p>; }",
-      {
-        filepath: "App.jsx",
-      }
-    );
-    expect(jsxLint.problems.some((p) => p.symbol === "Context")).toBe(false);
-  });
-
-  it("does NOT trigger duplicate identifier for sequential for loops with let i", () => {
-    const code = `
-function hashJoin(users, orders) {
-  for (let i = 0; i < orders.length; i++) {}
-  for (let i = 0; i < users.length; i++) {}
-}
-`;
-    const lint = lintJavaScriptCode(code, { filepath: "solution.js" });
-    const dups = lint.problems.filter((p) => p.rule === "duplicate-identifier");
-    expect(dups).toEqual([]);
-  });
-
-  it("allows var redeclaration but still reports let/const redeclaration", () => {
-    const varLint = lintJavaScriptCode("var x = 10;\nvar x = 20;\nfunction x() {}", {
-      filepath: "solution.js",
-    });
-    expect(varLint.problems.filter((p) => p.rule === "duplicate-identifier")).toEqual([]);
-
-    const letLint = lintJavaScriptCode("let y = 1;\nvar y = 2;\nconst z = 1;\nconst z = 2;", {
-      filepath: "solution.js",
-    });
-    const dupNames = letLint.problems
-      .filter((p) => p.rule === "duplicate-identifier")
-      .map((p) => p.message.match(/'([^']+)'/)?.[1]);
-    expect(dupNames).toEqual(["y", "z"]);
-  });
-
-  it("does NOT trigger any errors for js242 HashMapJoinApiResponses solution", () => {
-    const code = `
-const hashJoin = (users, orders, options = {}) => {
-  const ordersMap = new Map();
-  for (let i = 0; i < orders.length; i++) {
-    const order = orders[i];
-  }
-  const result = new Array(users.length);
-  for (let i = 0; i < users.length; i++) {
-    const user = users[i];
-  }
-  return result;
-};
-`;
-    const lint = lintJavaScriptCode(code, {
-      filepath: "src/javascript/solutions/12_collections_map/level3/24_HashMapJoinApiResponses.js",
-    });
-    const errors = lint.problems.filter((p) => p.severity === "error");
-    expect(errors).toEqual([]);
+    expect(res.newCursorPos).toBe(res.newCode.indexOf("{\n      \n") + 8);
   });
 });

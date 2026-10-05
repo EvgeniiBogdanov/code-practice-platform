@@ -97,9 +97,11 @@
 .open {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-1-5);
-  padding: var(--space-1-5) var(--space-3);
+  padding: var(--space-2) var(--space-3);
   font-size: var(--fs-body-sm);
+  line-height: 1;
   font-weight: var(--fw-semibold);
   color: var(--section-color);
   text-decoration: none;

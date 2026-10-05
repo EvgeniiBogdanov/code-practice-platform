@@ -74,185 +74,125 @@ export function getTaskFilesExports(
   return exportsMap;
 }
 
+const escapeRegExp = (value: string): string => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+/** `import a, { b } from "m";` and side-effect `import "m";`, also across lines. */
+const IMPORT_STATEMENT = /^import\s+(type\s+)?(?:([^'";]*?)\s*from\s*)?(['"])([^'"\n]+)\3(;?)/gm;
+
+interface ImportStatement {
+  start: number;
+  end: number;
+  typeOnly: boolean;
+  defaultName: string;
+  named: string[];
+  namespace: boolean;
+  quote: string;
+  module: string;
+  semicolon: string;
+}
+
+const parseImports = (code: string): ImportStatement[] =>
+  [...code.matchAll(IMPORT_STATEMENT)].map((match) => {
+    const clause = match[2] ?? "";
+    const braces = /\{([^}]*)\}/.exec(clause)?.[1] ?? "";
+    const rest = clause
+      .replace(/\{[^}]*\}/, "")
+      .replace(/,/g, " ")
+      .trim();
+    return {
+      start: match.index,
+      end: match.index + match[0].length,
+      typeOnly: Boolean(match[1]),
+      defaultName: rest.startsWith("*") ? "" : rest,
+      named: braces
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean),
+      namespace: rest.startsWith("*"),
+      quote: match[3],
+      module: match[4],
+      semicolon: match[5],
+    };
+  });
+
+const isImported = (statement: ImportStatement, symbol: string): boolean =>
+  statement.defaultName === symbol ||
+  new RegExp(`\\*\\s+as\\s+${escapeRegExp(symbol)}$`).test(statement.defaultName) ||
+  statement.named.some((item) => (item.split(/\s+as\s+/).pop() ?? item) === symbol);
+
+const formatImport = (
+  statement: Pick<ImportStatement, "defaultName" | "named" | "quote" | "module" | "semicolon">
+): string => {
+  const clause = [
+    statement.defaultName,
+    statement.named.length ? `{ ${statement.named.join(", ")} }` : "",
+  ]
+    .filter(Boolean)
+    .join(", ");
+  return `import ${clause} from ${statement.quote}${statement.module}${statement.quote}${statement.semicolon}`;
+};
+
 export function addImportToFile(
   code: string,
   symbolName: string,
   moduleSpecifier = "react",
   isDefault = false
 ): { newCode: string; insertedLength: number; insertIndex: number } {
-  if (!code && code !== "") return { newCode: code, insertedLength: 0, insertIndex: 0 };
-  const cleanSym = symbolName.trim();
-  if (!cleanSym) return { newCode: code, insertedLength: 0, insertIndex: 0 };
+  const unchanged = { newCode: code, insertedLength: 0, insertIndex: 0 };
+  const symbol = symbolName.trim();
+  if (!symbol) return unchanged;
 
-  const alreadyImportedRegex = new RegExp(`\\bimport\\s+[^;]*?\\b${cleanSym}\\b[^;]*?;?`, "m");
-  if (alreadyImportedRegex.test(code)) {
-    return { newCode: code, insertedLength: 0, insertIndex: 0 };
-  }
+  const imports = parseImports(code);
+  if (imports.some((statement) => isImported(statement, symbol))) return unchanged;
 
-  const escapedMod = moduleSpecifier.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const moduleImportRegex = new RegExp(
-    `^(import\\s+(?:type\\s+)?(?:([a-zA-Z0-9_$]+)\\s*,?\\s*)?(?:\\{\\s*([^}]*?)\\s*\\})?\\s+from\\s+['"]${escapedMod}['"];?)`,
-    "m"
+  // A value cannot join a type-only import, and `* as ns` cannot be combined with braces.
+  const target = imports.find(
+    (statement) =>
+      statement.module === moduleSpecifier && !statement.typeOnly && !statement.namespace
   );
-  const match = code.match(moduleImportRegex);
-
-  if (match) {
-    const fullImportLine = match[1];
-    const existingDefault = match[2];
-    const existingNamed = match[3];
-    let newImportLine = fullImportLine;
-
-    if (isDefault) {
-      if (!existingDefault) {
-        if (existingNamed) {
-          newImportLine = `import ${cleanSym}, { ${existingNamed} } from '${moduleSpecifier}';`;
-        } else {
-          newImportLine = `import ${cleanSym} from '${moduleSpecifier}';`;
-        }
-      }
-    } else {
-      if (existingNamed) {
-        const namedList = existingNamed
-          .split(",")
-          .map((s) => s.trim())
-          .filter(Boolean);
-        if (!namedList.includes(cleanSym)) {
-          namedList.push(cleanSym);
-          const formatted = namedList.join(", ");
-          if (existingDefault) {
-            newImportLine = `import ${existingDefault}, { ${formatted} } from '${moduleSpecifier}';`;
-          } else {
-            newImportLine = `import { ${formatted} } from '${moduleSpecifier}';`;
-          }
-        }
-      } else if (existingDefault) {
-        newImportLine = `import ${existingDefault}, { ${cleanSym} } from '${moduleSpecifier}';`;
-      }
-    }
-
-    if (newImportLine !== fullImportLine) {
-      const newCode = code.replace(fullImportLine, newImportLine);
-      const diff = newImportLine.length - fullImportLine.length;
-      return { newCode, insertedLength: diff, insertIndex: match.index || 0 };
-    }
-
-    return { newCode: code, insertedLength: 0, insertIndex: 0 };
+  if (target && (isDefault ? !target.defaultName : true)) {
+    const updated = formatImport({
+      ...target,
+      defaultName: isDefault ? symbol : target.defaultName,
+      named: isDefault ? target.named : [...target.named, symbol],
+    });
+    return {
+      newCode: code.slice(0, target.start) + updated + code.slice(target.end),
+      insertedLength: updated.length - (target.end - target.start),
+      insertIndex: target.start,
+    };
   }
 
-  const statement = isDefault
-    ? `import ${cleanSym} from '${moduleSpecifier}';\n`
-    : `import { ${cleanSym} } from '${moduleSpecifier}';\n`;
+  // PREFERENCES.quotePreference is "double"; an existing import sets the file's style.
+  const style = imports.at(-1) ?? { quote: '"', semicolon: ";" };
+  const statement = formatImport({
+    defaultName: isDefault ? symbol : "",
+    named: isDefault ? [] : [symbol],
+    module: moduleSpecifier,
+    quote: style.quote,
+    semicolon: style.semicolon,
+  });
+
+  const lastImport = imports.at(-1);
+  if (lastImport) {
+    return {
+      newCode: `${code.slice(0, lastImport.end)}\n${statement}${code.slice(lastImport.end)}`,
+      insertedLength: statement.length + 1,
+      insertIndex: lastImport.end,
+    };
+  }
 
   const lines = code.split("\n");
-  let lastImportLineIdx = -1;
-
-  for (let i = 0; i < lines.length; i++) {
-    if (/^\s*import\b/.test(lines[i])) {
-      lastImportLineIdx = i;
-    }
+  let insertLine = 0;
+  while (insertLine < lines.length && /^\s*(?:\/\/|\/\*|\*)/.test(lines[insertLine])) {
+    insertLine++;
   }
-
-  if (lastImportLineIdx !== -1) {
-    lines.splice(lastImportLineIdx + 1, 0, statement.trim());
-    const newCode = lines.join("\n");
-    return { newCode, insertedLength: statement.length, insertIndex: 0 };
-  }
-
-  let insertLineIdx = 0;
-  while (
-    insertLineIdx < lines.length &&
-    (lines[insertLineIdx].trim().startsWith("//") ||
-      lines[insertLineIdx].trim().startsWith("/*") ||
-      lines[insertLineIdx].trim().startsWith("*"))
-  ) {
-    insertLineIdx++;
-  }
-
-  lines.splice(insertLineIdx, 0, statement.trim());
-  const newCode = lines.join("\n");
-  return { newCode, insertedLength: statement.length, insertIndex: 0 };
-}
-
-export function getWordAtPosition(text: string, position: number): string {
-  if (!text || typeof text !== "string" || position < 0 || position > text.length) return "";
-  let start = position;
-  let end = position;
-
-  if (start > 0 && !/[a-zA-Z0-9_$]/.test(text[start]) && /[a-zA-Z0-9_$]/.test(text[start - 1])) {
-    start--;
-    end--;
-  }
-
-  while (start > 0 && /[a-zA-Z0-9_$]/.test(text[start - 1])) {
-    start--;
-  }
-  while (end < text.length && /[a-zA-Z0-9_$]/.test(text[end])) {
-    end++;
-  }
-  return text.substring(start, end);
-}
-
-export function findDefinition(
-  symbol: string,
-  currentCode = "",
-  taskFiles: TaskFile[] = [],
-  currentFilepath = ""
-):
-  | { type: "file"; fileIndex: number; filename: string }
-  | { type: "local"; line: number; col: number }
-  | null {
-  if (!symbol || typeof symbol !== "string") return null;
-  const cleanSym = symbol.trim();
-  if (!cleanSym) return null;
-
-  if (Array.isArray(taskFiles) && taskFiles.length > 0) {
-    for (let i = 0; i < taskFiles.length; i++) {
-      const file = taskFiles[i];
-      if (!file || file.name === currentFilepath || file.filepath === currentFilepath) continue;
-
-      const baseFilename = (file.name || file.filepath || "").replace(/\.[^/.]+$/, "");
-      if (baseFilename.toLowerCase() === cleanSym.toLowerCase()) {
-        return { type: "file", fileIndex: i, filename: file.name || file.filepath || "" };
-      }
-
-      if (file.code) {
-        const hasExport =
-          new RegExp(
-            `export\\s+default\\s+(?:function\\s+|class\\s+|const\\s+)?\\b${cleanSym}\\b`
-          ).test(file.code) ||
-          new RegExp(
-            `export\\s+(?:const|let|var|function|class|type|interface|enum)\\s+\\b${cleanSym}\\b`
-          ).test(file.code) ||
-          new RegExp(`export\\s*\\{[^}]*\\b${cleanSym}\\b[^}]*\\}`).test(file.code);
-
-        if (hasExport) {
-          return { type: "file", fileIndex: i, filename: file.name || file.filepath || "" };
-        }
-      }
-    }
-  }
-
-  if (currentCode) {
-    const lines = currentCode.split("\n");
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
-      const patterns = [
-        new RegExp(
-          `\\b(?:const|let|var)\\s+(?:\\{[^}]*\\b${cleanSym}\\b[^}]*\\}|\\[[^\\]]*\\b${cleanSym}\\b[^\\]]*\\}|\\b${cleanSym}\\b)`
-        ),
-        new RegExp(`\\bfunction\\s*\\*?\\s*\\b${cleanSym}\\b`),
-        new RegExp(`\\bclass\\s+\\b${cleanSym}\\b`),
-        new RegExp(`\\b(?:type|interface|enum)\\s+\\b${cleanSym}\\b`),
-      ];
-
-      for (const pat of patterns) {
-        const m = line.match(pat);
-        if (m) {
-          return { type: "local", line: i + 1, col: (m.index || 0) + 1 };
-        }
-      }
-    }
-  }
-
-  return null;
+  const insertIndex = lines
+    .slice(0, insertLine)
+    .reduce((total, line) => total + line.length + 1, 0);
+  return {
+    newCode: `${code.slice(0, insertIndex)}${statement}\n${code.slice(insertIndex)}`,
+    insertedLength: statement.length + 1,
+    insertIndex,
+  };
 }

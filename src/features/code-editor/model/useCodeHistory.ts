@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createStore } from "zustand/vanilla";
 
-interface HistoryEntry {
+export interface HistoryEntry {
   code: string;
   cursor: number;
 }
@@ -11,7 +11,7 @@ interface InputEdit {
   data: string | null;
 }
 
-type InputKind = "insert" | "backspace" | "delete";
+type InputKind = "insert" | "backspace" | "delete" | "composition";
 
 interface HistoryState {
   entries: HistoryEntry[];
@@ -71,6 +71,10 @@ const getInputKind = (
   input?: InputEdit
 ): InputKind | null => {
   if (!input) return null;
+  // Every keystroke of an IME composition rewrites the same preview text: one undo step.
+  if (input.inputType === "insertCompositionText" || input.inputType === "insertFromComposition") {
+    return "composition";
+  }
   if (input.inputType === "insertText" && input.data && WORD_CHARACTER.test(input.data)) {
     const start = cursor - input.data.length;
     if (
@@ -143,11 +147,12 @@ export function useCodeHistory(initialCode = "", scope?: CodeHistoryScope): Code
         kind !== null &&
         last?.type === kind &&
         now - last.at < GROUP_DELAY &&
-        (kind === "insert"
-          ? last.cursor === cursor - (input?.data?.length ?? 0)
-          : kind === "backspace"
-            ? last.cursor === cursor + 1
-            : last.cursor === cursor);
+        (kind === "composition" ||
+          (kind === "insert"
+            ? last.cursor === cursor - (input?.data?.length ?? 0)
+            : kind === "backspace"
+              ? last.cursor === cursor + 1
+              : last.cursor === cursor));
 
       const entries = current.entries.slice(0, current.index + 1);
       if (joinsPrevious) {
@@ -203,13 +208,11 @@ export function useCodeHistory(initialCode = "", scope?: CodeHistoryScope): Code
     [notify, save]
   );
 
-  return {
-    canUndo: state.current.index > 0,
-    canRedo: state.current.index < state.current.entries.length - 1,
-    captureCursor,
-    pushHistory,
-    undo,
-    redo,
-    resetHistory,
-  };
+  const canUndo = state.current.index > 0;
+  const canRedo = state.current.index < state.current.entries.length - 1;
+  // A stable object: it is a dependency of most editor callbacks.
+  return useMemo(
+    () => ({ canUndo, canRedo, captureCursor, pushHistory, undo, redo, resetHistory }),
+    [canUndo, canRedo, captureCursor, pushHistory, undo, redo, resetHistory]
+  );
 }

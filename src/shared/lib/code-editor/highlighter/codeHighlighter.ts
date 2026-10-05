@@ -7,14 +7,16 @@ import { HighlightOptions, DiagnosticProblem, HighlighterFunction, escapeHtml } 
 import { highlightJS, highlightTemplateLiteral } from "./jsHighlighter";
 import { highlightCSS } from "./cssHighlighter";
 import { highlightHTML } from "./htmlHighlighter";
+import { highlightSQL } from "./sqlHighlighter";
 import { findMatchingBracketPair } from "../bracketMatcher";
-import { getLanguageId } from "../languages/languageDetector";
+import { getLanguageCapabilities, getLanguageId } from "../languages/languageDetector";
 import { getMarkupContext } from "../markup-context";
 
 export {
   highlightJS,
   highlightCSS,
   highlightHTML,
+  highlightSQL,
   highlightTemplateLiteral,
   findMatchingBracketPair,
   escapeHtml,
@@ -48,34 +50,29 @@ export function highlightCode(
 
   switch (lang) {
     case "css":
+    case "scss":
+    case "less":
       return highlightCSS(code, options);
     case "html":
       return highlightHTML(code, options);
     case "markdown":
     case "plaintext":
-      if (
-        languageOrFilepath === "notepad" ||
-        languageOrFilepath === "text" ||
-        languageOrFilepath === "txt"
-      ) {
-        return highlightPlainText(code, options.multiSelections);
-      }
       return highlightPlainText(code, options.multiSelections);
+    case "sql":
+      return highlightSQL(code, options);
     case "javascript":
     case "javascriptreact":
     case "typescript":
     case "typescriptreact":
     case "json":
-    case "sql":
-    default:
+    default: {
+      const { supportsJsx, supportsTypeScript } = getLanguageCapabilities(lang);
       return highlightJS(code, {
         ...options,
-        supportsJsx: lang === "javascriptreact" || lang === "typescriptreact",
-        supportsTypeScript: lang === "typescript" || lang === "typescriptreact",
-        jsxTextRanges:
-          lang === "javascriptreact" || lang === "typescriptreact"
-            ? getMarkupContext(code, languageOrFilepath).textRanges
-            : [],
+        supportsJsx,
+        supportsTypeScript,
+        jsxTextRanges: supportsJsx ? getMarkupContext(code, languageOrFilepath).textRanges : [],
       });
+    }
   }
 }

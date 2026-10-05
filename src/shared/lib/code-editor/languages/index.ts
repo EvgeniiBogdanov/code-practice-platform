@@ -4,6 +4,7 @@
 
 export * from "./languageTypes";
 export * from "./languageDetector";
+export * from "./language-registry";
 export * from "./javascriptKnowledge";
 export * from "./reactKnowledge";
 export * from "./typescriptKnowledge";

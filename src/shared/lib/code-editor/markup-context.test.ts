@@ -31,22 +31,27 @@ describe("markup editing by file type", () => {
     expect(complete("input")[0]?.insertText).toContain("/>");
   });
 
-  it.each([
-    "main.js",
-    "main.mjs",
-    "main.cjs",
-    "main.ts",
-    "main.mts",
-    "main.cts",
-    "main.json",
-    "main.css",
-    "main.txt",
-    "main.md",
-  ])("does not inject JSX in %s", (filepath) => {
-    expect(complete("div", filepath).some((item) => item.insertText.includes("<div"))).toBe(false);
-    expect(getAutoCloseTagEdit("<div>", 5, filepath)).toBeNull();
-    expect(highlightCode("<div>", filepath)).not.toContain('class="hl-tag-punct');
-  });
+  it.each(["main.ts", "main.mts", "main.cts", "main.json", "main.css", "main.txt", "main.md"])(
+    "does not inject JSX in %s",
+    (filepath) => {
+      expect(complete("div", filepath).some((item) => item.insertText.includes("<div"))).toBe(
+        false
+      );
+      expect(getAutoCloseTagEdit("<div>", 5, filepath)).toBeNull();
+      expect(highlightCode("<div>", filepath)).not.toContain('class="hl-tag-punct');
+    }
+  );
+
+  it.each(["main.js", "main.mjs", "main.cjs"])(
+    "parses JSX in %s like VS Code but keeps Emmet out",
+    (filepath) => {
+      expect(complete("div", filepath).some((item) => item.insertText.includes("<div"))).toBe(
+        false
+      );
+      expect(getAutoCloseTagEdit("<div>", 5, filepath)?.newCode).toBe("<div></div>");
+      expect(highlightCode("<div>", filepath)).toContain('class="hl-tag-punct');
+    }
+  );
 
   it.each([
     'const text = "div',
@@ -160,7 +165,7 @@ describe("linked tag names", () => {
   it("leaves unrelated closing tags and JavaScript comparisons alone", () => {
     expect(getLinkedTagEdit("<div></span>", "<di></span>", 3, "App.jsx")).toBeNull();
     expect(getLinkedTagEdit("a < b >", "a < bi >", 6, "App.jsx")).toBeNull();
-    expect(getLinkedTagEdit("<div></div>", "<di></div>", 3, "main.js")).toBeNull();
+    expect(getLinkedTagEdit("<div></div>", "<di></div>", 3, "main.ts")).toBeNull();
   });
 });
 

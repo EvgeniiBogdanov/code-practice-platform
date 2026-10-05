@@ -1,9 +1,5 @@
-import {
-  createTypeScriptEditorService,
-  type TypeScriptDiagnosticRequest,
-  type TypeScriptDiagnosticResponse,
-} from "./typescript-diagnostics";
-import projectConfig from "../../../../tsconfig.json?raw";
+import { createTypeScriptEditorService } from "./typescript-diagnostics";
+import type { TypeScriptDiagnosticRequest, TypeScriptDiagnosticResponse } from "./typescript-types";
 
 // The installed `typescript` package delegates to @typescript/old, which owns
 // the standard declarations. They are bundled only into this worker.
@@ -43,7 +39,7 @@ const packageMetadata = import.meta.glob<string>(
   { query: "?raw", import: "default", eager: true }
 );
 for (const [path, source] of Object.entries(packageMetadata)) libraries.set(path, source);
-const editorService = createTypeScriptEditorService(libraries, projectConfig);
+const editorService = createTypeScriptEditorService(libraries);
 
 self.onmessage = (event: MessageEvent<TypeScriptDiagnosticRequest>): void => {
   const { id, ...input } = event.data;
@@ -66,6 +62,17 @@ self.onmessage = (event: MessageEvent<TypeScriptDiagnosticRequest>): void => {
       case "diagnostics":
         response.problems = editorService.diagnose(input);
         break;
+      case "codefix":
+        response.codefixes = editorService.codefix(
+          input,
+          position,
+          input.end ?? position,
+          input.errorCode ?? 0
+        );
+        break;
+      case "definition":
+        response.definition = editorService.definition(input, position);
+        break;
     }
     self.postMessage(response);
   } catch (error: unknown) {
@@ -77,9 +84,12 @@ self.onmessage = (event: MessageEvent<TypeScriptDiagnosticRequest>): void => {
           id: "typescript-unavailable",
           line: 1,
           col: 1,
+          start: 0,
+          end: 0,
+          code: 0,
           message: `Не удалось проверить типы: ${error instanceof Error ? error.message : String(error)}`,
-          rule: "typescript",
           severity: "warning",
+          synthetic: true,
         },
       ],
     };

@@ -6,11 +6,18 @@ import {
   CompletionItem,
   TaskFile,
   type TypeScriptCompletion,
+  type TabStop,
 } from "@/shared/lib/code-editor";
+import {
+  filterLocalCompletions,
+  mergeCompletions,
+  rankSemanticCompletions,
+} from "../lib/semantic-completions";
 import {
   getCaretCoordinates,
   calculatePopupPosition,
   PopupPositionResult,
+  type PopupPlacement,
 } from "../lib/caret-coordinates";
 
 export interface IntelliSenseState {
@@ -30,14 +37,22 @@ export interface IntelliSenseState {
   updatePosition: (textarea: HTMLTextAreaElement) => void;
   selectNext: () => void;
   selectPrev: () => void;
-  selectIndex: (index: number) => void;
   applySelected: (
     code: string,
     cursorPos: number,
     files?: TaskFile[],
     filepath?: string,
     explicitItem?: CompletionItem
-  ) => { newCode: string; newCursor: number } | null;
+  ) => AppliedCompletion | null;
+}
+
+export interface AppliedCompletion {
+  newCode: string;
+  newCursor: number;
+  /** Set when the inserted placeholder should stay selected. */
+  newSelectionEnd?: number;
+  /** Snippet fields to visit with Tab, in order. */
+  tabStops?: TabStop[];
 }
 
 interface CompletionSession {
@@ -65,9 +80,14 @@ export function useIntelliSense(
   });
 
   const sessionRef = useRef<CompletionSession | null>(null);
+  // Side picked on first show and kept until close, so the list never jumps; height follows.
+  const placementRef = useRef<PopupPlacement | undefined>(undefined);
   const completionRequest = useRef(0);
   const itemsRef = useRef<CompletionItem[]>([]);
   const selectedIndexRef = useRef(0);
+  // Only a choice made with the arrows survives the list refresh; otherwise the
+  // best match (first item) stays selected, as in VS Code.
+  const userSelectedRef = useRef(false);
 
   const closeCompletions = useCallback(() => {
     completionRequest.current++;
@@ -77,7 +97,9 @@ export function useIntelliSense(
     setWord("");
     itemsRef.current = [];
     selectedIndexRef.current = 0;
+    userSelectedRef.current = false;
     sessionRef.current = null;
+    placementRef.current = undefined;
   }, []);
 
   useEffect(() => {
@@ -93,43 +115,42 @@ export function useIntelliSense(
         /^[a-z_$][\w$]*$/i.test(query) &&
         code.slice(cursorPos - res.word.length, cursorPos).toLowerCase() === query;
       const localItems =
-        !force && isIdentifier
-          ? res.items.filter(
-              (item) => item.prefix.toLowerCase().startsWith(query) || (item.score ?? 0) >= 50
-            )
-          : res.items;
+        !force && isIdentifier ? filterLocalCompletions(res.items, res.word) : res.items;
 
-      if (!force && localItems.length === 0 && !query) {
+      // Nothing typed yet: only a trigger character (`.`, a quote, `/`) asks for suggestions.
+      const trigger = /[.'"/]$/.exec(code.slice(0, cursorPos))?.[0];
+      if (!force && localItems.length === 0 && !query && !(trigger && requestSemanticCompletions)) {
         closeCompletions();
         return;
       }
 
-      const lines = code.substring(0, cursorPos).split("\n");
-      const currentLineIdx = lines.length - 1;
-
-      const caret = getCaretCoordinates(textarea, cursorPos);
-      const position = calculatePopupPosition({
-        caret,
-        textarea,
-        itemsCount: localItems.length,
-      });
-
-      setPopupPosition(position);
+      const currentLineIdx = code.substring(0, cursorPos).split("\n").length - 1;
+      const startPos = Math.max(0, cursorPos - res.word.length);
+      // Anchored to the start of the word, like VS Code: the list stays put while typing.
+      const caret = getCaretCoordinates(textarea, startPos);
 
       const show = (nextItems: CompletionItem[], preserveSelection = false): void => {
-        const selected = preserveSelection ? itemsRef.current[selectedIndexRef.current] : undefined;
-        const nextIndex = selected
-          ? Math.max(
-              0,
-              nextItems.findIndex((item) => item.label === selected.label)
-            )
-          : 0;
+        const position = calculatePopupPosition({
+          caret,
+          textarea,
+          itemsCount: nextItems.length,
+          lockedPlacement: placementRef.current,
+        });
+        if (nextItems.length > 0) placementRef.current = position.placement;
+        setPopupPosition(position);
+        if (!preserveSelection) userSelectedRef.current = false;
+        const selectedLabel =
+          userSelectedRef.current && itemsRef.current[selectedIndexRef.current]?.label;
+        const nextIndex = Math.max(
+          0,
+          nextItems.findIndex((item) => item.label === selectedLabel)
+        );
         itemsRef.current = nextItems;
         selectedIndexRef.current = nextIndex;
         sessionRef.current = {
           code,
           lineIdx: currentLineIdx,
-          startPos: Math.max(0, cursorPos - res.word.length),
+          startPos,
           cursorPos,
           word: res.word,
         };
@@ -143,26 +164,31 @@ export function useIntelliSense(
       if (requestSemanticCompletions) {
         void requestSemanticCompletions(cursorPos, code).then((semantic) => {
           if (requestId !== completionRequest.current || semantic.length === 0) return;
-          const relevant =
-            !force && isIdentifier
-              ? semantic.filter((item) => item.label.toLowerCase().startsWith(query))
-              : semantic;
-          if (!force && !query && localItems.length === 0) return;
-          const known = new Set(relevant.map((item) => item.label));
-          const semanticItems: CompletionItem[] = relevant.map((item) => ({
-            prefix: item.label,
-            label: item.label,
-            detail: "TypeScript",
-            kind: item.kind,
-            insertText: item.insertText,
-            replaceStart: item.replaceStart,
-            replaceEnd: item.replaceEnd,
-            score: 200,
-          }));
-          show(
-            [...semanticItems, ...localItems.filter((item) => !known.has(item.label))].slice(0, 24),
-            true
-          );
+          const relevant = rankSemanticCompletions(semantic, {
+            query: res.word,
+            filterByQuery: !force && isIdentifier,
+            trigger,
+            onlyTriggered: !force && !query && localItems.length === 0,
+          });
+          if (relevant.length === 0) return;
+          const localByLabel = new Map(localItems.map((item) => [item.label, item]));
+          const semanticItems: CompletionItem[] = relevant.map((item) => {
+            const autoImport = item.autoImport ?? localByLabel.get(item.label)?.autoImport;
+            return {
+              prefix: item.label,
+              label: item.label,
+              // Without a description the list's footer names the kind instead.
+              detail: autoImport ? `Auto-import from '${autoImport.module}'` : "",
+              kind: item.kind,
+              insertText: item.insertText,
+              replaceStart: item.replaceStart,
+              replaceEnd: item.replaceEnd,
+              // A local item with the same label must not lose its import action.
+              autoImport,
+              score: 200,
+            };
+          });
+          show(mergeCompletions(semanticItems, localItems, res.word), true);
         });
       }
     },
@@ -172,23 +198,20 @@ export function useIntelliSense(
   const updatePosition = useCallback(
     (textarea: HTMLTextAreaElement) => {
       if (!sessionRef.current) return;
-      const caret = getCaretCoordinates(textarea, sessionRef.current.cursorPos);
-
+      const caret = getCaretCoordinates(textarea, sessionRef.current.startPos);
       const clientHeight = textarea.clientHeight || 400;
-      const viewportLineTop = caret.top - textarea.scrollTop;
-      const viewportLineBottom = caret.lineBottom - textarea.scrollTop;
-
-      if (viewportLineBottom < 0 || viewportLineTop > clientHeight) {
+      if (caret.lineBottom < textarea.scrollTop || caret.top - textarea.scrollTop > clientHeight) {
         closeCompletions();
         return;
       }
-
-      const next = calculatePopupPosition({
-        caret,
-        textarea,
-        itemsCount: items.length,
-      });
-      setPopupPosition(next);
+      setPopupPosition(
+        calculatePopupPosition({
+          caret,
+          textarea,
+          itemsCount: items.length,
+          lockedPlacement: placementRef.current,
+        })
+      );
     },
     [items.length, closeCompletions]
   );
@@ -198,42 +221,33 @@ export function useIntelliSense(
       if (!sessionRef.current) return;
       if (cursorPos === sessionRef.current.cursorPos && code === sessionRef.current.code) return;
 
-      const lines = code.substring(0, cursorPos).split("\n");
-      const currentLineIdx = lines.length - 1;
-
-      // 1. If cursor moved to a different line, close immediately
-      if (currentLineIdx !== sessionRef.current.lineIdx) {
+      // Moving to another line or before the completed word closes the list.
+      const currentLineIdx = code.substring(0, cursorPos).split("\n").length - 1;
+      if (
+        currentLineIdx !== sessionRef.current.lineIdx ||
+        cursorPos < sessionRef.current.startPos
+      ) {
         closeCompletions();
         return;
       }
-
-      // 2. If cursor moved before the start of the completion word, close
-      if (cursorPos < sessionRef.current.startPos) {
-        closeCompletions();
-        return;
-      }
-
-      // 3. Re-evaluate completions at new position on same line
+      // Otherwise re-evaluate completions at the new position on the same line
       if (textarea) openCompletions(code, cursorPos, textarea);
     },
     [closeCompletions, openCompletions]
   );
 
   const selectNext = useCallback(() => {
+    userSelectedRef.current = true;
     selectedIndexRef.current = (selectedIndexRef.current + 1) % (itemsRef.current.length || 1);
     setSelectedIndex(selectedIndexRef.current);
   }, []);
 
   const selectPrev = useCallback(() => {
+    userSelectedRef.current = true;
     selectedIndexRef.current =
       (selectedIndexRef.current - 1 + (itemsRef.current.length || 1)) %
       (itemsRef.current.length || 1);
     setSelectedIndex(selectedIndexRef.current);
-  }, []);
-
-  const selectIndex = useCallback((idx: number) => {
-    selectedIndexRef.current = idx;
-    setSelectedIndex(idx);
   }, []);
 
   const applySelected = useCallback(
@@ -249,6 +263,8 @@ export function useIntelliSense(
 
       let newCode = code;
       let newCursor = cursorPos;
+      let newSelectionEnd: number | undefined;
+      let tabStops: TabStop[] = [];
 
       if (selected.snippet) {
         const expanded = expandSnippet(code, cursorPos, selected.snippet, word, {
@@ -256,6 +272,8 @@ export function useIntelliSense(
         });
         newCode = expanded.newCode;
         newCursor = expanded.newCursorPos;
+        newSelectionEnd = expanded.newSelectionEnd;
+        tabStops = expanded.tabStops;
       } else {
         const replaceStart =
           selected.replaceStart !== undefined ? selected.replaceStart : cursorPos - word.length;
@@ -279,14 +297,16 @@ export function useIntelliSense(
         );
         if (importRes.insertedLength > 0) {
           newCode = importRes.newCode;
-          if (newCursor >= importRes.insertIndex) {
-            newCursor += importRes.insertedLength;
-          }
+          const shift = (offset: number): number =>
+            offset >= importRes.insertIndex ? offset + importRes.insertedLength : offset;
+          newCursor = shift(newCursor);
+          newSelectionEnd = newSelectionEnd === undefined ? undefined : shift(newSelectionEnd);
+          tabStops = tabStops.map(({ start, end }) => ({ start: shift(start), end: shift(end) }));
         }
       }
 
       closeCompletions();
-      return { newCode, newCursor };
+      return { newCode, newCursor, newSelectionEnd, tabStops };
     },
     [items, selectedIndex, word, files, filepath, closeCompletions]
   );
@@ -303,7 +323,6 @@ export function useIntelliSense(
     updatePosition,
     selectNext,
     selectPrev,
-    selectIndex,
     applySelected,
   };
 }

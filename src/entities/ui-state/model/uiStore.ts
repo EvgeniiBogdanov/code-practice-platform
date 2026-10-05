@@ -161,6 +161,7 @@ export const useUIStore = create<UIState>()(
       editorFontSize: 14,
       editorWordWrap: initialUI.editorWordWrap,
       editorLinterEnabled: initialUI.editorLinterEnabled,
+      editorParameterHintsOnType: false,
       editorSplitRatio: initialUI.editorSplitRatio,
       visualizerSplitRatio: initialUI.visualizerSplitRatio,
       visualizerZoom: initialUI.visualizerZoom,
@@ -285,6 +286,8 @@ export const useUIStore = create<UIState>()(
           }
           return { editorLinterEnabled: next };
         }),
+      setEditorParameterHintsOnType: (editorParameterHintsOnType) =>
+        set({ editorParameterHintsOnType }),
 
       setEditorSplitRatio: (ratio) => set({ editorSplitRatio: Math.min(80, Math.max(20, ratio)) }),
       resetEditorSplitRatio: () => set({ editorSplitRatio: 70 }),
@@ -748,6 +751,7 @@ export const useUIStore = create<UIState>()(
           editorFontSize: 14,
           editorWordWrap: false,
           editorLinterEnabled: false,
+          editorParameterHintsOnType: false,
           editorSplitRatio: 70,
           visualizerSplitRatio: 70,
           visualizerZoom: 1,
@@ -783,6 +787,7 @@ export const useUIStore = create<UIState>()(
         editorFontSize: state.editorFontSize,
         editorWordWrap: state.editorWordWrap,
         editorLinterEnabled: state.editorLinterEnabled,
+        editorParameterHintsOnType: state.editorParameterHintsOnType,
         editorSplitRatio: state.editorSplitRatio,
         visualizerSplitRatio: state.visualizerSplitRatio,
         visualizerZoom: state.visualizerZoom,

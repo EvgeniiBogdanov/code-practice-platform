@@ -1,9 +1,15 @@
 import React from "react";
-import { getMarkupContext, getLanguageCapabilities, getLanguageId } from "@/shared/lib/code-editor";
-import { CodeHistoryState } from "../model/useCodeHistory";
+import {
+  getEmbeddedRegion,
+  getMarkupContext,
+  getLanguageCapabilities,
+  getLanguageId,
+} from "@/shared/lib/code-editor";
+import type { ApplyEdit } from "../model/types";
 import { IntelliSenseState } from "../model/useIntelliSense";
 import { moveLines, duplicateLines } from "./line-operations";
 import { toggleLineComment, toggleBlockComment } from "./comment-operations";
+import { TAB_SIZE } from "./editor-utils";
 
 export const MATCHING_PAIRS: Record<string, string> = {
   "(": ")",
@@ -16,12 +22,37 @@ export const MATCHING_PAIRS: Record<string, string> = {
 
 export const CLOSING_PAIRS = new Set([")", "]", "}", '"', "'", "`"]);
 
+const QUOTES = new Set(['"', "'", "`"]);
+// VS Code `autoCloseBefore`: pairs are closed only before whitespace or punctuation.
+const AUTO_CLOSE_BEFORE = /^(?:$|[\s;:.,=}\])>])/;
+const WORD_CHARACTER = /[\p{L}\p{N}_$]/u;
+
+/**
+ * Matches a physical key (`KeyZ`, `Slash`), so shortcuts survive Option on macOS
+ * and non-Latin layouts. Virtual keyboards report an empty code: fall back to the key.
+ */
+export const matchesKey = (e: { code: string; key: string }, code: string): boolean =>
+  e.code ? e.code === code : e.key.toLowerCase() === code.replace(/^Key/, "").toLowerCase();
+
+/**
+ * Whether the key press types a character. AltGr (reported as Ctrl+Alt on Windows) and
+ * macOS Option produce text — `{`, `[`, `|` on many layouts — unlike real shortcuts.
+ */
+export const producesText = (
+  e: Pick<React.KeyboardEvent, "key" | "ctrlKey" | "metaKey" | "altKey"> &
+    Partial<Pick<React.KeyboardEvent, "getModifierState">>
+): boolean => {
+  if (e.key.length !== 1 || e.metaKey) return false;
+  if (e.getModifierState?.("AltGraph")) return true;
+  // Option+letter types a symbol whose key differs from the letter; Alt+letter does not.
+  return !e.ctrlKey && (!e.altKey || !/^[a-z\d]$/i.test(e.key));
+};
+
 export const handleLineMovement = (
   e: React.KeyboardEvent<HTMLTextAreaElement>,
   textarea: HTMLTextAreaElement,
   code: string,
-  onChange: (newCode: string) => void,
-  history: CodeHistoryState,
+  applyEdit: ApplyEdit,
   intelliSense: IntelliSenseState,
   readOnly?: boolean
 ): boolean => {
@@ -48,13 +79,7 @@ export const handleLineMovement = (
     : moveLines(code, start, end, direction);
 
   if (result.changed) {
-    onChange(result.newCode);
-    history.pushHistory(result.newCode, result.newSelectionStart);
-    const selDirection = textarea.selectionDirection;
-    textarea.setSelectionRange(result.newSelectionStart, result.newSelectionEnd, selDirection);
-    setTimeout(() => {
-      textarea.setSelectionRange(result.newSelectionStart, result.newSelectionEnd, selDirection);
-    }, 0);
+    applyEdit(result.newCode, result.newSelectionStart, result.newSelectionEnd);
   }
 
   return true;
@@ -64,8 +89,8 @@ export const handleEnterKey = (
   e: React.KeyboardEvent<HTMLTextAreaElement>,
   textarea: HTMLTextAreaElement,
   code: string,
-  onChange: (newCode: string) => void,
-  history: CodeHistoryState
+  applyEdit: ApplyEdit,
+  tabSize = TAB_SIZE
 ): boolean => {
   if (e.key !== "Enter") return false;
 
@@ -74,79 +99,54 @@ export const handleEnterKey = (
   const textBefore = code.substring(0, start);
   const lastLineStart = textBefore.lastIndexOf("\n") + 1;
   const currentLine = textBefore.substring(lastLineStart);
-  const indentMatch = currentLine.match(/^(\s*)/);
-  const indent = indentMatch ? indentMatch[1] : "";
+  const indent = /^\s*/.exec(currentLine)?.[0] ?? "";
+  const insert = (insertion: string, cursorOffset = insertion.length): true => {
+    e.preventDefault();
+    applyEdit(code.substring(0, start) + insertion + code.substring(end), start + cursorOffset);
+    return true;
+  };
 
   if (currentLine.trimEnd() === `${indent}/**`) {
-    e.preventDefault();
-    const insertion = `\n${indent} * \n${indent} */`;
-    const newCode = code.substring(0, start) + insertion + code.substring(end);
-    const nextCursor = start + 1 + indent.length + 3;
-    onChange(newCode);
-    history.pushHistory(newCode, nextCursor);
-    setTimeout(() => {
-      textarea.selectionStart = textarea.selectionEnd = nextCursor;
-    }, 0);
-    return true;
+    return insert(`\n${indent} * \n${indent} */`, 1 + indent.length + 3);
   }
 
-  const prevChar = textBefore.trimEnd().slice(-1);
+  // The line's own last character decides: Enter on a blank line after `{` keeps its indent.
+  const prevChar = currentLine.trimEnd().slice(-1);
   const nextChar = code.charAt(end);
 
   if (prevChar === "{" || prevChar === "(" || prevChar === "[") {
-    e.preventDefault();
-    const extraIndent = indent + "  ";
-
-    if ((prevChar === "{" && nextChar === "}") || (prevChar === "(" && nextChar === ")")) {
-      const insertion = `\n${extraIndent}\n${indent}`;
-      const newCode = code.substring(0, start) + insertion + code.substring(end);
-      const nextCursor = start + 1 + extraIndent.length;
-      onChange(newCode);
-      history.pushHistory(newCode, nextCursor);
-      setTimeout(() => {
-        textarea.selectionStart = textarea.selectionEnd = nextCursor;
-      }, 0);
-      return true;
+    const extraIndent = indent + " ".repeat(tabSize);
+    if (MATCHING_PAIRS[prevChar] === nextChar) {
+      return insert(`\n${extraIndent}\n${indent}`, 1 + extraIndent.length);
     }
-
-    const insertion = `\n${extraIndent}`;
-    const newCode = code.substring(0, start) + insertion + code.substring(end);
-    const nextCursor = start + insertion.length;
-    onChange(newCode);
-    history.pushHistory(newCode, nextCursor);
-    setTimeout(() => {
-      textarea.selectionStart = textarea.selectionEnd = nextCursor;
-    }, 0);
-    return true;
+    return insert(`\n${extraIndent}`);
   }
 
-  if (indent.length > 0) {
-    e.preventDefault();
-    const insertion = `\n${indent}`;
-    const newCode = code.substring(0, start) + insertion + code.substring(end);
-    const nextCursor = start + insertion.length;
-    onChange(newCode);
-    history.pushHistory(newCode, nextCursor);
-    setTimeout(() => {
-      textarea.selectionStart = textarea.selectionEnd = nextCursor;
-    }, 0);
-    return true;
-  }
+  if (indent.length > 0) return insert(`\n${indent}`);
 
   return false;
+};
+
+/** Quotes are not paired after a word, inside literals/comments or in markup text. */
+const shouldPairQuote = (code: string, start: number, filepath: string): boolean => {
+  if (WORD_CHARACTER.test(code.charAt(start - 1))) return false;
+  // Script and style bodies in HTML are code, not markup text.
+  if (getEmbeddedRegion(code, start, filepath)) return true;
+  const mode = getMarkupContext(code.slice(0, start), filepath).mode;
+  return mode !== "literal" && mode !== "text";
 };
 
 export const handlePairsAndBackspace = (
   e: React.KeyboardEvent<HTMLTextAreaElement>,
   textarea: HTMLTextAreaElement,
   code: string,
-  onChange: (newCode: string) => void,
-  history: CodeHistoryState
+  applyEdit: ApplyEdit,
+  filepath = "main.jsx"
 ): boolean => {
   const start = textarea.selectionStart;
   const end = textarea.selectionEnd;
 
-  if (MATCHING_PAIRS[e.key] && !e.ctrlKey && !e.metaKey) {
+  if (MATCHING_PAIRS[e.key] && producesText(e)) {
     const closing = MATCHING_PAIRS[e.key];
     const nextChar = code.charAt(end);
 
@@ -156,16 +156,15 @@ export const handlePairsAndBackspace = (
       return true;
     }
 
+    if (start === end) {
+      if (!AUTO_CLOSE_BEFORE.test(code.slice(end))) return false;
+      if (QUOTES.has(e.key) && !shouldPairQuote(code, start, filepath)) return false;
+    }
+
     e.preventDefault();
     const selectedText = code.substring(start, end);
-    const insertion = `${e.key}${selectedText}${closing}`;
-    const newCode = code.substring(0, start) + insertion + code.substring(end);
-    const nextCursor = start + 1;
-    onChange(newCode);
-    history.pushHistory(newCode, nextCursor);
-    setTimeout(() => {
-      textarea.selectionStart = textarea.selectionEnd = nextCursor;
-    }, 0);
+    const newCode = code.substring(0, start) + e.key + selectedText + closing + code.substring(end);
+    applyEdit(newCode, start + 1, start + 1 + selectedText.length);
     return true;
   }
 
@@ -175,13 +174,7 @@ export const handlePairsAndBackspace = (
 
     if (MATCHING_PAIRS[prevChar] === nextChar) {
       e.preventDefault();
-      const newCode = code.substring(0, start - 1) + code.substring(start + 1);
-      const nextCursor = start - 1;
-      onChange(newCode);
-      history.pushHistory(newCode, nextCursor);
-      setTimeout(() => {
-        textarea.selectionStart = textarea.selectionEnd = nextCursor;
-      }, 0);
+      applyEdit(code.substring(0, start - 1) + code.substring(start + 1), start - 1);
       return true;
     }
   }
@@ -197,12 +190,7 @@ export const isLineCommentShortcut = (e: React.KeyboardEvent<HTMLTextAreaElement
 };
 
 export const isBlockCommentShortcut = (e: React.KeyboardEvent<HTMLTextAreaElement>): boolean => {
-  const isShiftAltA =
-    e.shiftKey &&
-    e.altKey &&
-    !e.ctrlKey &&
-    !e.metaKey &&
-    (e.code === "KeyA" || e.key.toLowerCase() === "a" || e.key.toLowerCase() === "ф");
+  const isShiftAltA = e.shiftKey && e.altKey && !e.ctrlKey && !e.metaKey && matchesKey(e, "KeyA");
 
   if (isShiftAltA) return true;
 
@@ -218,8 +206,7 @@ export const handleCommentShortcuts = (
   e: React.KeyboardEvent<HTMLTextAreaElement>,
   textarea: HTMLTextAreaElement,
   code: string,
-  onChange: (newCode: string) => void,
-  history: CodeHistoryState,
+  applyEdit: ApplyEdit,
   intelliSense: IntelliSenseState,
   filepath = "main.jsx",
   readOnly?: boolean
@@ -245,13 +232,7 @@ export const handleCommentShortcuts = (
     : toggleBlockComment(code, start, end, filepath);
 
   if (result.changed) {
-    onChange(result.newCode);
-    history.pushHistory(result.newCode, result.newSelectionStart);
-    const selDirection = textarea.selectionDirection;
-    textarea.setSelectionRange(result.newSelectionStart, result.newSelectionEnd, selDirection);
-    setTimeout(() => {
-      textarea.setSelectionRange(result.newSelectionStart, result.newSelectionEnd, selDirection);
-    }, 0);
+    applyEdit(result.newCode, result.newSelectionStart, result.newSelectionEnd);
   }
 
   return true;
@@ -261,8 +242,7 @@ export const handleMarkupKey = (
   e: React.KeyboardEvent<HTMLTextAreaElement>,
   textarea: HTMLTextAreaElement,
   code: string,
-  onChange: (newCode: string) => void,
-  history: CodeHistoryState,
+  applyEdit: ApplyEdit,
   filepath: string,
   tabSize: number
 ): boolean => {
@@ -293,9 +273,6 @@ export const handleMarkupKey = (
     offset = 1 + innerIndent.length;
   } else return false;
   e.preventDefault();
-  const newCode = before + insertion + after;
-  onChange(newCode);
-  history.pushHistory(newCode, cursor + offset);
-  setTimeout(() => textarea.setSelectionRange(cursor + offset, cursor + offset), 0);
+  applyEdit(before + insertion + after, cursor + offset);
   return true;
 };
