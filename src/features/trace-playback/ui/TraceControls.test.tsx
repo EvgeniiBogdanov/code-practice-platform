@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import type { TracePlayback } from "../model/use-trace-playback";
+import type { TracePlayback } from "../model/useTracePlayback";
 import { TraceControls } from "./TraceControls";
 
 const createMockPlayback = (overrides?: Partial<TracePlayback>): TracePlayback => ({

@@ -17,7 +17,7 @@ import { clsx } from "clsx";
 import { Tooltip, CodeButton, Switch } from "@/shared/ui";
 import { TaskFile } from "@/shared/lib/code-editor";
 import { useCopy } from "@/shared/lib/hooks";
-import { getFileIconKind, type FileIconKind } from "../../lib/file-icon";
+import { getFileIconKind, type FileIconKind } from "../../lib/fileIcon";
 import styles from "./EditorToolbar.module.css";
 
 export interface EditorToolbarProps {

@@ -1,8 +1,8 @@
 import { memo, useEffect, useRef, useState, type JSX } from "react";
 import { clsx } from "clsx";
 import { Button } from "../Button";
-import type { UiStackSceneProps } from "./stack-scene";
-import type { StackController } from "./lib/create-stack-scene";
+import type { UiStackSceneProps } from "./stackScene";
+import type { StackController } from "./lib/createStackScene";
 import { StackFallback } from "./StackFallback";
 import styles from "./UiStackScene.module.css";
 
@@ -26,7 +26,7 @@ export const UiStackScene = memo((props: UiStackSceneProps): JSX.Element => {
     if (failed) return;
     let cancelled = false;
     const frame = requestAnimationFrame(() => {
-      void import("./lib/create-stack-scene")
+      void import("./lib/createStackScene")
         .then(({ createStackScene }) => {
           if (cancelled || !host.current) return;
           controller.current = createStackScene(host.current, latest.current, () => {

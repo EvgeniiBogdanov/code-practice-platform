@@ -1,10 +1,10 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
-import { createStackScene } from "./lib/create-stack-scene";
+import { createStackScene } from "./lib/createStackScene";
 import { UiStackScene } from "./UiStackScene";
-import type { UiStackSceneProps } from "./stack-scene";
+import type { UiStackSceneProps } from "./stackScene";
 
-vi.mock("./lib/create-stack-scene", () => ({ createStackScene: vi.fn() }));
+vi.mock("./lib/createStackScene", () => ({ createStackScene: vi.fn() }));
 const controller = { update: vi.fn(), reset: vi.fn(), dispose: vi.fn() };
 const frames = new Map<number, FrameRequestCallback>();
 const props: UiStackSceneProps = {

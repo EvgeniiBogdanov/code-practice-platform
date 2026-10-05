@@ -2,7 +2,7 @@ import React from "react";
 import { clsx } from "clsx";
 import { Copy, Check } from "lucide-react";
 import { Tooltip } from "../../Tooltip";
-import { useCopyCode } from "../model/use-copy-code";
+import { useCopyCode } from "../model/useCopyCode";
 import { CodeCopyButtonProps } from "../types";
 import styles from "../CodeViewer.module.css";
 

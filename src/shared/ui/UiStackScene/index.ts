@@ -1,2 +1,2 @@
 export { UiStackScene } from "./UiStackScene";
-export type { StackSceneLane, StackSceneAction, UiStackSceneProps } from "./stack-scene";
+export type { StackSceneLane, StackSceneAction, UiStackSceneProps } from "./stackScene";

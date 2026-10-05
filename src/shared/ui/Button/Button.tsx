@@ -1,5 +1,5 @@
 import React, { forwardRef, ButtonHTMLAttributes } from "react";
-import { buttonClassName, type ButtonSize, type ButtonVariant } from "./button-class-name";
+import { buttonClassName, type ButtonSize, type ButtonVariant } from "./buttonClassName";
 import styles from "./Button.module.css";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

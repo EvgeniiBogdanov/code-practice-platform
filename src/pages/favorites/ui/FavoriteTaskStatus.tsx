@@ -1,7 +1,7 @@
 import React from "react";
 import { Check, Minus, RotateCcw, X } from "lucide-react";
 import { clsx, Tooltip } from "@/shared/ui";
-import { FavoriteTaskStatus as TaskStatus } from "../model/use-favorites-page";
+import { FavoriteTaskStatus as TaskStatus } from "../model/useFavoritesPage";
 import styles from "./FavoritesPage.module.css";
 
 export interface FavoriteTaskStatusProps {

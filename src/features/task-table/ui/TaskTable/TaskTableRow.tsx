@@ -4,8 +4,8 @@ import { clsx } from "clsx";
 import type { ReviewItem } from "@/entities/review";
 import type { Task } from "@/entities/task";
 import { TreeNodeHeader } from "@/shared/ui";
-import { getTaskRowTone } from "../../model/task-row-tone";
-import type { TaskRowStatus } from "../../model/task-row-tone";
+import { getTaskRowTone } from "../../model/taskRowTone";
+import type { TaskRowStatus } from "../../model/taskRowTone";
 import { TaskTableCells } from "./TaskTableCells";
 import styles from "./TaskTable.module.css";
 

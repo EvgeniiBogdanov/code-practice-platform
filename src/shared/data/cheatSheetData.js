@@ -1,4 +1,4 @@
-import { TYPESCRIPT_CHEAT_SHEETS } from "./typescript-cheat-sheets";
+import { TYPESCRIPT_CHEAT_SHEETS } from "./typescriptCheatSheets";
 
 export const CHEAT_SHEET_DATA = {
   ...TYPESCRIPT_CHEAT_SHEETS,

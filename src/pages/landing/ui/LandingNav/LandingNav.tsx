@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { clsx } from "clsx";
 import { Button, PlatformLogo } from "@/shared/ui";
-import { FEATURE_LINKS, LANDING_SECTION, REPOSITORY_URL } from "../../config/landing-links";
-import { useScrollDirection } from "../../lib/use-scroll-direction";
-import { useCreateAccountDialog } from "../../model/create-account-dialog";
+import { FEATURE_LINKS, LANDING_SECTION, REPOSITORY_URL } from "../../config/landingLinks";
+import { useScrollDirection } from "../../lib/useScrollDirection";
+import { useCreateAccountDialog } from "../../model/createAccountDialog";
 import { LandingMobileMenu } from "./LandingMobileMenu";
 import styles from "./LandingNav.module.css";
 

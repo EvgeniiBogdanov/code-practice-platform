@@ -4,7 +4,7 @@
 
 import { SnippetItem } from "../snippetsData";
 
-export { MARKUP_TAGS as HTML_TAGS } from "./markup-tags";
+export { MARKUP_TAGS as HTML_TAGS } from "./markupTags";
 
 export const HTML_ATTRIBUTES = [
   { name: "class", detail: "CSS класс элемента", insertText: 'class="$1"' },

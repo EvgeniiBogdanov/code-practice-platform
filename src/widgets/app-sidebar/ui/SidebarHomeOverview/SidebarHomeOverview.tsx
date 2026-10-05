@@ -4,7 +4,7 @@ import { clsx } from "clsx";
 import { SECTIONS_CONFIG, SectionType } from "@/entities/task/meta";
 import { NodeCount, PlatformLogo } from "@/shared/ui";
 import { SidebarProgressCard } from "../SidebarProgressCard/SidebarProgressCard";
-import { useSidebarHomeStats } from "../../model/use-sidebar-home-stats";
+import { useSidebarHomeStats } from "../../model/useSidebarHomeStats";
 import styles from "./SidebarHomeOverview.module.css";
 
 export interface SidebarHomeOverviewProps {

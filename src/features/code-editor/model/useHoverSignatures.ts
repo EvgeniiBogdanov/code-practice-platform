@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { type EditorDiagnostic, type TypeScriptHover } from "@/shared/lib/code-editor";
-import { getCaretCoordinates, getOffsetFromPoint } from "../lib/caret-coordinates";
-import type { ContentWidgetAnchor } from "./use-content-widget-layout";
+import { getCaretCoordinates, getOffsetFromPoint } from "../lib/caretCoordinates";
+import type { ContentWidgetAnchor } from "./useContentWidgetLayout";
 
 export interface HoverSignaturesState {
   hoverInfo: TypeScriptHover | null;

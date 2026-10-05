@@ -6,7 +6,7 @@ import { Task } from "@/entities/task";
 import { ReviewItem } from "@/entities/review";
 import { useProgressStore } from "@/entities/progress";
 import { Card, NotificationBadge } from "@/shared/ui";
-import { isDueTaskUnsolved } from "../../lib/sort-due-tasks";
+import { isDueTaskUnsolved } from "../../lib/sortDueTasks";
 import styles from "./SpacedRepetitionSection.module.css";
 
 interface SpacedRepetitionDueTabProps {

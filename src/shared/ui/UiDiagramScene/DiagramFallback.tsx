@@ -1,6 +1,6 @@
 import { memo, useEffect, useId, useRef, useState, type JSX } from "react";
 import { clsx } from "clsx";
-import { diagramPoint, diagramEdgePath, type UiDiagramSceneProps } from "./diagram-scene";
+import { diagramPoint, diagramEdgePath, type UiDiagramSceneProps } from "./diagramScene";
 import styles from "./UiDiagramScene.module.css";
 
 export const DiagramFallback = memo(

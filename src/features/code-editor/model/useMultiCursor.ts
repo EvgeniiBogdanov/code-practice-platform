@@ -9,9 +9,9 @@ import {
   type MultiEditResult,
   applyMultiBackspace,
   applyMultiDelete,
-} from "../lib/multi-cursor-operations";
+} from "../lib/multiCursorOperations";
 import type { ApplyEdit } from "./types";
-import { producesText } from "../lib/editor-key-helpers";
+import { producesText } from "../lib/editorKeyHelpers";
 
 export interface MultiCursorState {
   selections: TextRange[];

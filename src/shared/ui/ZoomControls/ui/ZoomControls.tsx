@@ -2,7 +2,7 @@ import type { JSX } from "react";
 import { RotateCcw, ZoomIn, ZoomOut } from "lucide-react";
 import { CodeButton } from "../../CodeButton";
 import { Tooltip } from "../../Tooltip";
-import type { ZoomControlsProps } from "../model/zoom-controls";
+import type { ZoomControlsProps } from "../model/zoomControls";
 import styles from "./ZoomControls.module.css";
 
 export const ZoomControls = (props: ZoomControlsProps): JSX.Element => {

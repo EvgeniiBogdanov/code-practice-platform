@@ -1,6 +1,6 @@
 import type { SectionType, Task } from "../types";
-import { getTaskSectionById } from "./curriculum-manifest";
-import { loadAllTaskSections, loadTaskSection } from "./task-catalog";
+import { getTaskSectionById } from "./curriculumManifest";
+import { loadAllTaskSections, loadTaskSection } from "./taskCatalog";
 
 export const getTaskById = async (
   taskId: string | number | undefined | null

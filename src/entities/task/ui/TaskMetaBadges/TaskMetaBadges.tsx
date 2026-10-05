@@ -1,8 +1,8 @@
 import React from "react";
 import { clsx } from "clsx";
 import { MetaRow, MetaBadge, Tooltip } from "@/shared/ui";
-import { getJsTaskBadges } from "../../lib/get-js-task-badges";
-import { getAlgoTaskBadges } from "../../lib/get-algo-task-badges";
+import { getJsTaskBadges } from "../../lib/getJsTaskBadges";
+import { getAlgoTaskBadges } from "../../lib/getAlgoTaskBadges";
 import type { Task } from "../../types";
 import styles from "./TaskMetaBadges.module.css";
 

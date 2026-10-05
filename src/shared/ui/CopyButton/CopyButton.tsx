@@ -4,7 +4,7 @@ import { Copy, Check } from "lucide-react";
 import { useCopy } from "../../lib/hooks";
 import styles from "./CopyButton.module.css";
 
-import type { CopyButtonProps } from "./model/copy-button";
+import type { CopyButtonProps } from "./model/copyButton";
 import { CodeButton } from "../CodeButton";
 
 export const CopyButton = memo(

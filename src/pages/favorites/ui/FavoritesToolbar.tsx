@@ -5,7 +5,7 @@ import type {
   FavoriteListDisplayMode,
   FavoriteStatusFilter,
   FavoritesViewMode,
-} from "../model/use-favorites-page";
+} from "../model/useFavoritesPage";
 import styles from "./FavoritesPage.module.css";
 
 export interface FavoritesToolbarProps {

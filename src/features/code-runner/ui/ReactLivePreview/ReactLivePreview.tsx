@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import { clsx } from "clsx";
 import { Task } from "@/entities/task";
 import { TaskSourceFile } from "@/shared/lib/code-runners";
-import { useReactLiveSandbox } from "../../model/use-react-live-sandbox";
+import { useReactLiveSandbox } from "../../model/useReactLiveSandbox";
 import { BrowserMockupHeader } from "./BrowserMockupHeader";
 import { BrowserMockupBody } from "./BrowserMockupBody";
 import styles from "./ReactLivePreview.module.css";

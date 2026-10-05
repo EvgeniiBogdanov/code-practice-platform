@@ -2,7 +2,7 @@ import React from "react";
 import { FileCode, FileText } from "lucide-react";
 import { clsx } from "clsx";
 import { TaskFile } from "@/shared/lib/code-editor";
-import { getFileIconKind, type FileIconKind } from "../../lib/file-icon";
+import { getFileIconKind, type FileIconKind } from "../../lib/fileIcon";
 import styles from "./FileTabs.module.css";
 
 export interface FileTabsProps {

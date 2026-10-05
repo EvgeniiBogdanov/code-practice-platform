@@ -1,5 +1,5 @@
 import { getTaskSolutionSource } from "@/entities/task";
-import React, { useCallback, useState, useEffect, useMemo, useRef } from "react";
+import React, { useCallback, useState, useEffect, useMemo } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Home, FileQuestion } from "lucide-react";
 import { getTaskFiles, hasTaskVisualComponent } from "@/entities/task";
@@ -23,7 +23,7 @@ import {
 import { ErrorBoundary, ResizableSplitPane, UiLoader, ViewMode } from "@/shared/ui";
 import { useUIStore } from "@/entities/ui-state";
 import { TaskVisualization } from "@/widgets/task-visualization";
-import { useFullscreenExitTransition } from "../model/use-fullscreen-exit-transition";
+import { useFullscreenExitTransition } from "../model/useFullscreenExitTransition";
 import styles from "./OpenEditorPage.module.css";
 
 const MAX_CONSOLE_LOGS = 500;
@@ -112,8 +112,7 @@ export const OpenEditorPage = ({
     return hasVisualComponent ? "split" : "code";
   });
   const editorSessionKey = `${section}:${task?.id ?? "sandbox"}:${tab}:${initialViewMode ?? "default"}`;
-  const previousEditorSessionKeyRef = useRef(editorSessionKey);
-  const isEditorSessionReady = previousEditorSessionKeyRef.current === editorSessionKey;
+  const [currentSessionKey, setCurrentSessionKey] = useState(editorSessionKey);
 
   const [consoleLogs, setConsoleLogs] = useState<NodeRunnerLogEntry[]>([]);
   const [isRunning, setIsRunning] = useState(false);
@@ -122,11 +121,10 @@ export const OpenEditorPage = ({
     exitCode?: number;
   } | null>(null);
 
-  // Keep the initial state intact to prevent a post-paint layout update on fullscreen entry.
-  useEffect(() => {
-    if (previousEditorSessionKeyRef.current === editorSessionKey) return;
-
-    previousEditorSessionKeyRef.current = editorSessionKey;
+  // A new session starts from the initial state. Adjusting during render discards the stale pass,
+  // so the editor never mounts with the previous session's files.
+  if (currentSessionKey !== editorSessionKey) {
+    setCurrentSessionKey(editorSessionKey);
     setActiveFileIdx(0);
     setFiles(initialFiles);
     setPreviewTarget(tab === "solution" ? "solution" : "candidate");
@@ -143,15 +141,14 @@ export const OpenEditorPage = ({
     setConsoleLogs([]);
     setIsRunning(false);
     setLastExecution(null);
-    clearRunningTimers();
-  }, [editorSessionKey, initialFiles, task, tab, initialViewMode, isReact]);
+  }
 
-  // Cleanup timers and workers on unmount
+  // Stop timers and workers of the previous session, and on unmount
   useEffect(() => {
     return () => {
       clearRunningTimers();
     };
-  }, []);
+  }, [editorSessionKey]);
 
   // Load saved solution
   useEffect(() => {
@@ -466,33 +463,31 @@ export const OpenEditorPage = ({
               onReset={resetSplitRatio}
               className={styles.splitContainer}
               left={
-                isEditorSessionReady ? (
-                  <CodeEditor
-                    key={`open_${section}_${task?.id}_${tab}_${activeFileIdx}`}
-                    code={activeFile?.code || ""}
-                    onChange={handleCodeChange}
-                    onFilesChange={handleFilesChange}
-                    onRun={() => handleRunCode()}
-                    onReset={handleResetCode}
-                    files={files}
-                    activeFileIdx={activeFileIdx}
-                    onFileSelect={setActiveFileIdx}
-                    filepath={activeFile?.name || ""}
-                    historyScope={
-                      task
-                        ? {
-                            taskKey: `${task.section}:${task.id}`,
-                            documentKey: `${tab === "solution" ? "solution:0" : "candidate"}:${activeFileIdx}`,
-                          }
-                        : undefined
-                    }
-                    fillHeight={true}
-                    isFullscreen={true}
-                    onToggleFullscreen={handleExit}
-                    isFullscreenTransitioning={isFullscreenExiting}
-                    bottomConsole={consoleNode}
-                  />
-                ) : null
+                <CodeEditor
+                  key={`open_${section}_${task?.id}_${tab}_${activeFileIdx}`}
+                  code={activeFile?.code || ""}
+                  onChange={handleCodeChange}
+                  onFilesChange={handleFilesChange}
+                  onRun={() => handleRunCode()}
+                  onReset={handleResetCode}
+                  files={files}
+                  activeFileIdx={activeFileIdx}
+                  onFileSelect={setActiveFileIdx}
+                  filepath={activeFile?.name || ""}
+                  historyScope={
+                    task
+                      ? {
+                          taskKey: `${task.section}:${task.id}`,
+                          documentKey: `${tab === "solution" ? "solution:0" : "candidate"}:${activeFileIdx}`,
+                        }
+                      : undefined
+                  }
+                  fillHeight={true}
+                  isFullscreen={true}
+                  onToggleFullscreen={handleExit}
+                  isFullscreenTransitioning={isFullscreenExiting}
+                  bottomConsole={consoleNode}
+                />
               }
               right={
                 <ReactLivePreview
@@ -522,33 +517,31 @@ export const OpenEditorPage = ({
             />
           ) : (
             <>
-              {isEditorSessionReady && (
-                <CodeEditor
-                  key={`open_${section}_${task?.id}_${tab}_${activeFileIdx}`}
-                  code={activeFile?.code || ""}
-                  onChange={handleCodeChange}
-                  onFilesChange={handleFilesChange}
-                  onRun={() => handleRunCode()}
-                  onReset={handleResetCode}
-                  files={files}
-                  activeFileIdx={activeFileIdx}
-                  onFileSelect={setActiveFileIdx}
-                  filepath={activeFile?.name || ""}
-                  historyScope={
-                    task
-                      ? {
-                          taskKey: `${task.section}:${task.id}`,
-                          documentKey: `${tab === "solution" ? "solution:0" : "candidate"}:${activeFileIdx}`,
-                        }
-                      : undefined
-                  }
-                  fillHeight={true}
-                  isFullscreen={true}
-                  onToggleFullscreen={handleExit}
-                  isFullscreenTransitioning={isFullscreenExiting}
-                  bottomConsole={consoleNode}
-                />
-              )}
+              <CodeEditor
+                key={`open_${section}_${task?.id}_${tab}_${activeFileIdx}`}
+                code={activeFile?.code || ""}
+                onChange={handleCodeChange}
+                onFilesChange={handleFilesChange}
+                onRun={() => handleRunCode()}
+                onReset={handleResetCode}
+                files={files}
+                activeFileIdx={activeFileIdx}
+                onFileSelect={setActiveFileIdx}
+                filepath={activeFile?.name || ""}
+                historyScope={
+                  task
+                    ? {
+                        taskKey: `${task.section}:${task.id}`,
+                        documentKey: `${tab === "solution" ? "solution:0" : "candidate"}:${activeFileIdx}`,
+                      }
+                    : undefined
+                }
+                fillHeight={true}
+                isFullscreen={true}
+                onToggleFullscreen={handleExit}
+                isFullscreenTransitioning={isFullscreenExiting}
+                bottomConsole={consoleNode}
+              />
             </>
           )}
         </ErrorBoundary>

@@ -8,7 +8,7 @@ import {
   type KeyboardEvent,
 } from "react";
 import { clsx } from "clsx";
-import type { NumberSceneController, NumberSceneProps } from "../model/number-scene";
+import type { NumberSceneController, NumberSceneProps } from "../model/numberScene";
 import styles from "./NumberScene.module.css";
 
 const MIN_ZOOM = 0.5;
@@ -32,7 +32,7 @@ export const NumberScene = memo((props: NumberSceneProps): JSX.Element => {
     let cancelled = false;
     let frame = requestAnimationFrame(() => {
       frame = requestAnimationFrame(() => {
-        void import("../lib/create-number-scene")
+        void import("../lib/createNumberScene")
           .then(({ createNumberScene }) => {
             if (cancelled || !host.current) return;
             const inst = createNumberScene(host.current, latest.current, handleInteraction);

@@ -5,8 +5,8 @@ import { clsx } from "clsx";
 import { Task } from "@/entities/task";
 import { useProgressStore } from "@/entities/progress";
 import { Card, NotificationBadge, Tooltip } from "@/shared/ui";
-import { isDueTaskUnsolved } from "../../lib/sort-due-tasks";
-import { UpcomingTaskItem } from "../../lib/upcoming-helpers";
+import { isDueTaskUnsolved } from "../../lib/sortDueTasks";
+import { UpcomingTaskItem } from "../../lib/upcomingHelpers";
 import styles from "./SpacedRepetitionSection.module.css";
 
 interface SpacedRepetitionUpcomingTabProps {

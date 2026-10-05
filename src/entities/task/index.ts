@@ -1,21 +1,21 @@
 export * from "./types";
-export * from "./model/curriculum-manifest";
+export * from "./model/curriculumManifest";
 export * from "./model/sectionsConfig";
 export * from "./model/taskTree";
 export * from "./model/taskFiles";
-export * from "./model/task-route";
-export * from "./model/task-catalog";
+export * from "./model/taskRoute";
+export * from "./model/taskCatalog";
 export * from "./model/taskRegistry";
-export * from "./curriculum/typescript/data/group-config";
-export * from "./model/script-group-meta";
-export * from "./model/task-syntax-check";
+export * from "./curriculum/typescript/data/groupConfig";
+export * from "./model/scriptGroupMeta";
+export * from "./model/taskSyntaxCheck";
 export * from "./ui/TaskDifficultyBadge";
 export * from "./ui/TaskCard";
 export * from "./ui/TaskMetaBadges";
-export * from "./lib/get-js-task-badges";
-export * from "./lib/get-js-task-probability";
-export * from "./lib/get-algo-task-badges";
-export * from "./lib/get-algo-task-probability";
+export * from "./lib/getJsTaskBadges";
+export * from "./lib/getJsTaskProbability";
+export * from "./lib/getAlgoTaskBadges";
+export * from "./lib/getAlgoTaskProbability";
 
 export { REACT_GROUPS_CONFIG } from "./curriculum/react/data/groupConfig";
 export { JS_GROUP_CONFIG, getGroupMeta } from "./curriculum/javascript/data/groupConfig";
@@ -24,6 +24,6 @@ export {
   getAlgoGroupMeta,
   getAlgoGroupMetaByInfoId,
 } from "./curriculum/algorithms/data/groupConfig";
-export { loadTaskExplanations, getCachedTaskExplanation } from "./model/task-explanations";
+export { loadTaskExplanations, getCachedTaskExplanation } from "./model/taskExplanations";
 
-export { getTaskSolutionSource } from "./lib/get-task-solution-source";
+export { getTaskSolutionSource } from "./lib/getTaskSolutionSource";

@@ -1,6 +1,6 @@
 import { clsx } from "clsx";
 import type { JSX } from "react";
-import type { StackFrameProps } from "./stack-scene";
+import type { StackFrameProps } from "./stackScene";
 import styles from "./UiStackScene.module.css";
 
 export const StackFrame = ({

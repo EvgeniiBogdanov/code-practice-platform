@@ -39,11 +39,14 @@ export const useCommandPalette = (): UseCommandPaletteReturn => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const { tasks, isLoading } = useAllTaskSections(isOpen);
 
+  const [currentPathname, setCurrentPathname] = useState(location.pathname);
+  if (currentPathname !== location.pathname) {
+    setCurrentPathname(location.pathname);
+    setActiveSection(getSectionFromPathname(location.pathname));
+  }
+
   useEffect(() => {
-    if (isOpen) {
-      setActiveSection(getSectionFromPathname(location.pathname));
-      setQuery("");
-    }
+    if (isOpen) setQuery("");
   }, [isOpen, location.pathname, setQuery]);
 
   const filteredTasks = useMemo(() => {
@@ -88,9 +91,12 @@ export const useCommandPalette = (): UseCommandPaletteReturn => {
     }
   };
 
-  useEffect(() => {
+  const selectionKey = `${activeSection}:${debouncedQuery}`;
+  const [currentSelectionKey, setCurrentSelectionKey] = useState(selectionKey);
+  if (currentSelectionKey !== selectionKey) {
+    setCurrentSelectionKey(selectionKey);
     setSelectedIndex(0);
-  }, [debouncedQuery, activeSection]);
+  }
 
   return {
     isOpen,

@@ -3,5 +3,5 @@ export * from "./useLatest";
 export * from "./useOnClickOutside";
 export * from "./useGlobalShortcuts";
 export * from "./useCopy";
-export * from "./use-parent-size";
-export * from "./use-in-view";
+export * from "./useParentSize";
+export * from "./useInView";

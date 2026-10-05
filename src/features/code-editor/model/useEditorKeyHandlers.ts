@@ -10,10 +10,10 @@ import {
   handleEnterKey,
   handlePairsAndBackspace,
   matchesKey,
-} from "../lib/editor-key-helpers";
-import { handleTabKey } from "../lib/tab-key";
-import { handleLineCommands } from "../lib/line-key-handlers";
-import { TAB_SIZE } from "../lib/editor-utils";
+} from "../lib/editorKeyHelpers";
+import { handleTabKey } from "../lib/tabKey";
+import { handleLineCommands } from "../lib/lineKeyHandlers";
+import { TAB_SIZE } from "../lib/editorUtils";
 
 export interface EditorKeyHandlersProps {
   code: string;

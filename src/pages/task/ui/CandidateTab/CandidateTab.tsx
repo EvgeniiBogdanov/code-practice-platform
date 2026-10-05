@@ -26,7 +26,7 @@ import {
 } from "@/shared/ui";
 import { CodeEditor } from "@/features/code-editor";
 import { JsConsole, ReactLivePreview } from "@/features/code-runner";
-import { EDITOR_PLACEHOLDER_HEIGHT } from "../../model/editor-placeholder";
+import { EDITOR_PLACEHOLDER_HEIGHT } from "../../model/editorPlaceholder";
 import styles from "./CandidateTab.module.css";
 
 const MAX_CONSOLE_LOGS = 500;

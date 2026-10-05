@@ -2,7 +2,7 @@ import React from "react";
 import { clsx } from "clsx";
 import { CURRICULUM_COUNTS, SECTIONS_CONFIG, type SectionType } from "@/entities/task/meta";
 import { NodeCount } from "@/shared/ui";
-import { TOTAL_TASK_COUNT } from "../../lib/format-task-count";
+import { TOTAL_TASK_COUNT } from "../../lib/formatTaskCount";
 import { PreviewCard } from "./PreviewCard";
 import styles from "./HeroPreviews.module.css";
 

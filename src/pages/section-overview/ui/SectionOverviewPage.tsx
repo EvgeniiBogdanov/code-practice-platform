@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import type { SectionType } from "@/entities/task";
-import { useSectionOverview } from "../model/use-section-overview";
+import { useSectionOverview } from "../model/useSectionOverview";
 import { SectionHeroHeader } from "./SectionHeroHeader";
 import { SectionKpiGrid } from "./SectionKpiGrid";
 import { SectionGroupsGrid } from "./SectionGroupsGrid";

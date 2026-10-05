@@ -4,7 +4,7 @@ import { useSidebarReactList, useSidebarSync } from "../model";
 import { SidebarProgressCard } from "./SidebarProgressCard/SidebarProgressCard";
 import { SidebarQuickActions } from "./SidebarQuickActions";
 import { SidebarReactCategoryItem } from "./SidebarReactCategoryItem";
-import { getReactCategories } from "../lib/get-react-categories";
+import { getReactCategories } from "../lib/getReactCategories";
 import styles from "./SidebarReactList.module.css";
 
 export interface SidebarReactListProps {

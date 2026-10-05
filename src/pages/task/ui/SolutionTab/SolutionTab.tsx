@@ -11,8 +11,8 @@ import {
 } from "@/shared/ui";
 import { CodeEditor } from "@/features/code-editor";
 import { JsConsole, ReactLivePreview } from "@/features/code-runner";
-import { useSolutionTab } from "../../model/use-solution-tab";
-import { EDITOR_PLACEHOLDER_HEIGHT } from "../../model/editor-placeholder";
+import { useSolutionTab } from "../../model/useSolutionTab";
+import { EDITOR_PLACEHOLDER_HEIGHT } from "../../model/editorPlaceholder";
 import { SolutionVariantsRow } from "./SolutionVariantsRow";
 import styles from "./SolutionTab.module.css";
 

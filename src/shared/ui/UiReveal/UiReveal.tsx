@@ -31,7 +31,7 @@ export const UiReveal = ({
 
   return cloneElement(child, {
     ref: (node: HTMLElement | null) => {
-      ref.current = node;
+      ref(node);
       if (typeof childRef === "function") childRef(node);
       else if (childRef) childRef.current = node;
     },

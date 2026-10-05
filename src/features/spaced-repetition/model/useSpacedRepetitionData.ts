@@ -5,10 +5,10 @@ import type { MasteryStats, ReviewItem } from "@/entities/review";
 import type { DailyTaskStats } from "@/entities/progress";
 import type { Task } from "@/entities/task/meta";
 import { useAllTaskSections } from "@/entities/task/catalog";
-import { getUpcomingTasks } from "../lib/upcoming-helpers";
-import type { UpcomingTaskItem } from "../lib/upcoming-helpers";
-import { getReviewActivityByDate } from "../lib/get-review-activity";
-import { sortDueTasks } from "../lib/sort-due-tasks";
+import { getUpcomingTasks } from "../lib/upcomingHelpers";
+import type { UpcomingTaskItem } from "../lib/upcomingHelpers";
+import { getReviewActivityByDate } from "../lib/getReviewActivity";
+import { sortDueTasks } from "../lib/sortDueTasks";
 
 export interface UseSpacedRepetitionDataProps {
   taskList?: Task[];

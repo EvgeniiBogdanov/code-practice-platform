@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 import { Maximize2, Minimize2 } from "lucide-react";
 import { CodeButton, Tooltip, ZoomControls } from "@/shared/ui";
-import type { AlgorithmLabToolbarProps } from "../model/visualization-toolbar";
+import type { AlgorithmLabToolbarProps } from "../model/visualizationToolbar";
 import styles from "./AlgorithmLabToolbar.module.css";
 
 export const VisualizationToolbarActions = ({

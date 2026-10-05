@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { KpiGrid } from "@/shared/ui";
-import { HomeStats } from "../model/use-home-stats";
+import { HomeStats } from "../model/useHomeStats";
 
 interface HomeKpiSummaryProps {
   stats: HomeStats;

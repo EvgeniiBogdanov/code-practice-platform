@@ -1,5 +1,5 @@
 import type { JSX } from "react";
-import type { TraceSceneProps } from "../model/trace-view";
+import type { TraceSceneProps } from "../model/traceView";
 import styles from "./TraceScene.module.css";
 
 export const TraceSceneMetadata = ({

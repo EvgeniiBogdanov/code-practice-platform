@@ -1,7 +1,7 @@
 import React from "react";
 import { Home, Brain } from "lucide-react";
 import { JavaScriptIcon, TypeScriptIcon, ReactIcon } from "@/shared/ui";
-import { CURRICULUM_COUNTS } from "./curriculum-manifest";
+import { CURRICULUM_COUNTS } from "./curriculumManifest";
 import { SectionType } from "../types";
 
 export interface SectionMeta {

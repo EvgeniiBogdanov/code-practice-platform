@@ -11,7 +11,7 @@ export * from "./languages";
 export * from "./snippetsData";
 export * from "./snippetsEngine";
 export * from "./codeFormatter";
-export * from "./typescript-client";
+export * from "./typescriptClient";
 
-export * from "./markup-context";
-export * from "./linked-tag-edit";
+export * from "./markupContext";
+export * from "./linkedTagEdit";

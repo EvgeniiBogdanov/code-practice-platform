@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 import { Box } from "lucide-react";
 import { PanelToolbar } from "@/shared/ui";
-import type { AlgorithmLabToolbarProps } from "../model/visualization-toolbar";
+import type { AlgorithmLabToolbarProps } from "../model/visualizationToolbar";
 import { VisualizationToolbarActions } from "./VisualizationToolbarActions";
 import styles from "./AlgorithmLabToolbar.module.css";
 

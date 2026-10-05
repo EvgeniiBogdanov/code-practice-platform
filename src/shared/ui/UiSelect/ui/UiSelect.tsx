@@ -1,6 +1,6 @@
 import { useId, type JSX } from "react";
 import { clsx } from "clsx";
-import type { UiSelectProps } from "../model/ui-select";
+import type { UiSelectProps } from "../model/uiSelect";
 import styles from "./UiSelect.module.css";
 
 export const UiSelect = ({

@@ -1,2 +1,2 @@
 export { UiDiagramScene } from "./UiDiagramScene";
-export type { DiagramNode, DiagramEdge, UiDiagramSceneProps } from "./diagram-scene";
+export type { DiagramNode, DiagramEdge, UiDiagramSceneProps } from "./diagramScene";

@@ -7,8 +7,8 @@ import {
   AlgorithmTraceScene,
   TraceExplanation,
 } from "@/features/trace-playback";
-import type { TracePlayerProps } from "../model/visualizer-props";
-import { getActiveCodeLine } from "../lib/active-code-line";
+import type { TracePlayerProps } from "../model/visualizerProps";
+import { getActiveCodeLine } from "../lib/activeCodeLine";
 import { TraceCodeViewer } from "./TraceCodeViewer";
 import { TraceLayout } from "./TraceLayout";
 import styles from "./AlgorithmLab.module.css";

@@ -3,21 +3,21 @@ import { Check, CheckCircle2, AlertCircle, Code2 } from "lucide-react";
 import { clsx } from "clsx";
 import { Tooltip } from "@/shared/ui";
 import { canFormat, type LanguageId } from "@/shared/lib/code-editor";
-import { useCodeEditor } from "../../model/use-code-editor";
+import { useCodeEditor } from "../../model/useCodeEditor";
 import { CodeEditorProps } from "../../model/types";
 import { LineNumbers } from "../LineNumbers";
 import { EditorToolbar } from "../EditorToolbar";
 import { QuickFixBanner } from "../QuickFixBanner";
 import { SuggestionsDropdown } from "../SuggestionsDropdown";
-import { getSuggestionOptionId } from "../../lib/suggestion-option-id";
+import { getSuggestionOptionId } from "../../lib/suggestionOptionId";
 import { HoverSignatureCard } from "../HoverSignatureCard";
 import { EditorDecorations } from "../EditorDecorations";
 import { FindReplaceBar } from "../FindReplaceBar";
 import { TextMarkLayer } from "../TextMarkLayer";
 import { SignatureHelpCard } from "../SignatureHelpCard";
 import styles from "./CodeEditor.module.css";
-import { applyRenameEdits, getRenamedSelection } from "../../lib/rename-symbol";
-import { TAB_SIZE, pluralize, type PluralForms } from "../../lib/editor-utils";
+import { applyRenameEdits, getRenamedSelection } from "../../lib/renameSymbol";
+import { TAB_SIZE, pluralize, type PluralForms } from "../../lib/editorUtils";
 
 export type { CodeEditorProps };
 

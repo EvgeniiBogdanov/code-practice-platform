@@ -6,13 +6,10 @@ import type { SectionType, Task } from "@/entities/task";
 import { TaskFavoriteButton } from "@/features/task-favorite";
 import { TaskTableHeader, TaskTableRow } from "@/features/task-table";
 import { NodeCount, TaskListWrapper, TreeNodeHeader, TreeToggleIcon } from "@/shared/ui";
-import { getFavoriteFolderVisual } from "../lib/get-favorite-folder-visual";
-import type {
-  FavoriteTaskFolderNode,
-  FavoriteTaskSubfolderNode,
-} from "../model/favorite-task-tree";
-import { useFavoriteTreeExpansion } from "../model/use-favorite-tree-expansion";
-import type { FavoriteTaskStatus } from "../model/use-favorites-page";
+import { getFavoriteFolderVisual } from "../lib/getFavoriteFolderVisual";
+import type { FavoriteTaskFolderNode, FavoriteTaskSubfolderNode } from "../model/favoriteTaskTree";
+import { useFavoriteTreeExpansion } from "../model/useFavoriteTreeExpansion";
+import type { FavoriteTaskStatus } from "../model/useFavoritesPage";
 import styles from "./FavoritesPage.module.css";
 
 interface NodeDataProps {

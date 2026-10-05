@@ -3,7 +3,7 @@ import { clsx } from "clsx";
 import { ArrowUpRight } from "lucide-react";
 import { useInView } from "@/shared/lib/hooks";
 import { UiKbd, UiReveal, UiScaledCanvas, type UiRevealOrder } from "@/shared/ui";
-import { HOTKEYS_URL, LANDING_SECTION } from "../../config/landing-links";
+import { HOTKEYS_URL, LANDING_SECTION } from "../../config/landingLinks";
 import { MultiCursorPreview } from "../previews/MultiCursorPreview";
 import { SectionHeading } from "../SectionHeading/SectionHeading";
 import { TextHighlight } from "../TextHighlight/TextHighlight";

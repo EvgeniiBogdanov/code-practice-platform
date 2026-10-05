@@ -39,9 +39,11 @@ export const useFinderDropdown = () => {
   }, [activeDropdown, closeAllDropdowns]);
 
   // Close on route navigation
-  useEffect(() => {
+  const [dropdownPathname, setDropdownPathname] = useState(location.pathname);
+  if (dropdownPathname !== location.pathname) {
+    setDropdownPathname(location.pathname);
     closeAllDropdowns();
-  }, [location.pathname, closeAllDropdowns]);
+  }
 
   return {
     activeDropdown,

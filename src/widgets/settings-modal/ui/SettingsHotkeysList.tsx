@@ -1,7 +1,7 @@
 import React, { memo, useState } from "react";
 import { UiKbd } from "@/shared/ui";
 import { isApplePlatform } from "@/shared/lib/platform";
-import { EDITOR_HOTKEY_GROUPS, resolveHotkeyKeys } from "../lib/editor-hotkeys";
+import { EDITOR_HOTKEY_GROUPS, resolveHotkeyKeys } from "../lib/editorHotkeys";
 import styles from "./SettingsHotkeysList.module.css";
 
 /** Every shortcut of the app with what it does, written for the user's platform. */

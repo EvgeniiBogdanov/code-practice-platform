@@ -1,6 +1,6 @@
 import type { JSX } from "react";
 import { Check, ArrowRight, X } from "lucide-react";
-import type { TraceExplanationProps } from "../model/trace-view";
+import type { TraceExplanationProps } from "../model/traceView";
 import styles from "./TraceExplanation.module.css";
 
 export const TraceExplanation = ({ step, playing }: TraceExplanationProps): JSX.Element => (

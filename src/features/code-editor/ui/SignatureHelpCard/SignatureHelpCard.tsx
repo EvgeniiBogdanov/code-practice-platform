@@ -5,7 +5,7 @@ import type { TypeScriptSignature } from "@/shared/lib/code-editor";
 import {
   useContentWidgetLayout,
   type ContentWidgetAnchor,
-} from "../../model/use-content-widget-layout";
+} from "../../model/useContentWidgetLayout";
 import { CodeText } from "../CodeText";
 import styles from "./SignatureHelpCard.module.css";
 

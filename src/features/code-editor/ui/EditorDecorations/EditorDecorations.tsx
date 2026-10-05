@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useState } from "react";
 import { clsx } from "clsx";
-import { getCaretCoordinates, type CaretCoordinates } from "../../lib/caret-coordinates";
+import { getCaretCoordinates, type CaretCoordinates } from "../../lib/caretCoordinates";
 import styles from "./EditorDecorations.module.css";
 
 export interface EditorDecorationsProps {

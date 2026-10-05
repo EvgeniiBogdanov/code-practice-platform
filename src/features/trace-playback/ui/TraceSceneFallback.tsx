@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 import { clsx } from "clsx";
 import { Button } from "@/shared/ui";
-import type { TraceFallbackProps } from "../model/trace-view";
+import type { TraceFallbackProps } from "../model/traceView";
 import styles from "./TraceScene.module.css";
 
 export const TraceSceneFallback = ({ step, onRetry }: TraceFallbackProps): JSX.Element => (

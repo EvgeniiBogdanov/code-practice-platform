@@ -4,7 +4,7 @@ import {
   SpacedRepetitionActivityChart,
   useSpacedRepetitionData,
 } from "@/features/spaced-repetition";
-import { useHomeStats } from "../model/use-home-stats";
+import { useHomeStats } from "../model/useHomeStats";
 import { HomeHeroHeader } from "./HomeHeroHeader";
 import { HomeKpiSummary } from "./HomeKpiSummary";
 import { HomePracticeSections } from "./HomePracticeSections";

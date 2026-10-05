@@ -3,15 +3,11 @@ import { CornerDownLeft, Search } from "lucide-react";
 import { clsx } from "clsx";
 import { SECTIONS_CONFIG } from "@/entities/task/meta";
 import { GaugeIndicator, UiKbd } from "@/shared/ui";
-import {
-  SHOWCASE_TASKS,
-  getShowcaseTaskPath,
-  type ShowcaseTask,
-} from "../../config/showcase-tasks";
-import { TOTAL_TASK_COUNT } from "../../lib/format-task-count";
-import { getShowcaseProbability } from "../../lib/showcase-probability";
-import { useTypewriter } from "../../lib/use-typewriter";
-import { useCreateAccountDialog } from "../../model/create-account-dialog";
+import { SHOWCASE_TASKS, getShowcaseTaskPath, type ShowcaseTask } from "../../config/showcaseTasks";
+import { TOTAL_TASK_COUNT } from "../../lib/formatTaskCount";
+import { getShowcaseProbability } from "../../lib/showcaseProbability";
+import { useTypewriter } from "../../lib/useTypewriter";
+import { useCreateAccountDialog } from "../../model/createAccountDialog";
 import { PreviewCard } from "./PreviewCard";
 import styles from "./HeroPreviews.module.css";
 

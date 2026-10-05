@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Star } from "lucide-react";
 import { SECTIONS_CONFIG, SectionType } from "@/entities/task";
 import { TopicIconBox } from "@/shared/ui";
-import { useFavoritesPage } from "../model/use-favorites-page";
+import { useFavoritesPage } from "../model/useFavoritesPage";
 import { FavoriteTaskGallery } from "./FavoriteTaskGallery";
 import { FavoriteTaskList } from "./FavoriteTaskList";
 import { FavoriteTaskTree } from "./FavoriteTaskTree";

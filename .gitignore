@@ -75,4 +75,7 @@ codegraph.json
 
 # Other
 _plan/
+
+# LLM
 .claude/
+CLAUDE.md

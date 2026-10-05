@@ -3,7 +3,7 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import { CURRICULUM_COUNTS } from "@/entities/task/meta";
 import { useLocalAccountStore } from "@/shared/auth";
-import { useCreateAccountDialog } from "../model/create-account-dialog";
+import { useCreateAccountDialog } from "../model/createAccountDialog";
 import { LandingPage } from "./LandingPage";
 
 const TOTAL = Object.values(CURRICULUM_COUNTS).reduce((sum, count) => sum + count, 0);

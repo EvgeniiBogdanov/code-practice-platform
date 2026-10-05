@@ -1,6 +1,6 @@
 import type { JSX } from "react";
 import { clsx } from "clsx";
-import type { TraceExplanationProps } from "../model/trace-view";
+import type { TraceExplanationProps } from "../model/traceView";
 import styles from "./TraceScene.module.css";
 
 export const TracePointerLegend = ({ step }: Pick<TraceExplanationProps, "step">): JSX.Element => {

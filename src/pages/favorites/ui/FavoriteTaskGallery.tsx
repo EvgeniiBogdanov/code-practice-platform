@@ -7,8 +7,8 @@ import { Task, getTaskRoute } from "@/entities/task";
 import { TaskFavoriteButton } from "@/features/task-favorite";
 import { getTaskRowTone } from "@/features/task-table";
 import { Card } from "@/shared/ui";
-import { getFavoriteFolderVisual } from "../lib/get-favorite-folder-visual";
-import { FavoriteTaskStatus as TaskStatus } from "../model/use-favorites-page";
+import { getFavoriteFolderVisual } from "../lib/getFavoriteFolderVisual";
+import { FavoriteTaskStatus as TaskStatus } from "../model/useFavoritesPage";
 import { FavoriteTaskStatus } from "./FavoriteTaskStatus";
 import styles from "./FavoritesPage.module.css";
 

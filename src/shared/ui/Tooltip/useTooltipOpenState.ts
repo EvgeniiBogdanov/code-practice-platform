@@ -22,7 +22,9 @@ export const useTooltipOpenState = ({
 
   const disabled = localDisabled || Boolean(provider.disabled);
   const isControlled = controlledOpen !== undefined;
-  const isOpen = isControlled ? controlledOpen : uncontrolledOpen;
+  const isOpen = (isControlled ? controlledOpen : uncontrolledOpen) && !disabled;
+  // A disabled tooltip must not reopen on its own once it is enabled again
+  if (disabled && uncontrolledOpen) setUncontrolledOpen(false);
   const delay =
     customDelay !== undefined ? customDelay : provider.isWarm ? 0 : provider.delayDuration;
 
@@ -45,19 +47,23 @@ export const useTooltipOpenState = ({
     }
   }, [disabled, delay, isControlled, onOpenChange, provider]);
 
-  const handleClose = useCallback(() => {
+  const notifyClosed = useCallback(() => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    if (!isControlled) setUncontrolledOpen(false);
     onOpenChange?.(false);
     provider.setWarm(false);
-  }, [isControlled, onOpenChange, provider]);
+  }, [onOpenChange, provider]);
 
-  // Close immediately if disabled becomes true while open
+  const handleClose = useCallback(() => {
+    if (!isControlled) setUncontrolledOpen(false);
+    notifyClosed();
+  }, [isControlled, notifyClosed]);
+
+  // Tell the owner and the provider when the tooltip is closed by becoming disabled
+  const wasOpenRef = useRef(false);
   useEffect(() => {
-    if (disabled && isOpen) {
-      handleClose();
-    }
-  }, [disabled, isOpen, handleClose]);
+    if (wasOpenRef.current && !isOpen && disabled) notifyClosed();
+    wasOpenRef.current = isOpen;
+  }, [isOpen, disabled, notifyClosed]);
 
   // Close tooltip on window blur or tab visibility change (tab switch)
   useEffect(() => {

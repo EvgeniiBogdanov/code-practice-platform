@@ -10,7 +10,7 @@ import { highlightHTML } from "./htmlHighlighter";
 import { highlightSQL } from "./sqlHighlighter";
 import { findMatchingBracketPair } from "../bracketMatcher";
 import { getLanguageCapabilities, getLanguageId } from "../languages/languageDetector";
-import { getMarkupContext } from "../markup-context";
+import { getMarkupContext } from "../markupContext";
 
 export {
   highlightJS,

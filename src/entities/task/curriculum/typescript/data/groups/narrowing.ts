@@ -1,4 +1,4 @@
-import { NO_SUPPRESSION_CHECK, type TypeScriptTaskGroup } from "../task-meta";
+import { NO_SUPPRESSION_CHECK, type TypeScriptTaskGroup } from "../taskMeta";
 
 export const NARROWING_GROUP: TypeScriptTaskGroup = {
   name: "Type Narrowing",

@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import type { Task } from "@/entities/task";
 import type { ReviewItem } from "@/entities/review";
 import { useProgressStore } from "@/entities/progress";
-import { UpcomingTaskItem } from "../../lib/upcoming-helpers";
+import { UpcomingTaskItem } from "../../lib/upcomingHelpers";
 import { SpacedRepetitionUpcomingTab } from "./SpacedRepetitionUpcomingTab";
 import styles from "./SpacedRepetitionSection.module.css";
 

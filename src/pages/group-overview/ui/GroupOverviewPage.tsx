@@ -1,5 +1,5 @@
 import React from "react";
-import { useGroupOverview } from "../model/use-group-overview";
+import { useGroupOverview } from "../model/useGroupOverview";
 import { GroupHeroHeader } from "./GroupHeroHeader";
 import { GroupMetaBadges } from "./GroupMetaBadges";
 import { GroupToolbar } from "./GroupToolbar";

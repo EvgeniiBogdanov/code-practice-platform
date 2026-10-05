@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { clsx } from "clsx";
 import { useInView } from "@/shared/lib/hooks";
 import { UiReveal, UiScaledCanvas } from "@/shared/ui";
-import { LANDING_SECTION } from "../../config/landing-links";
+import { LANDING_SECTION } from "../../config/landingLinks";
 import { ReviewStatsPreview } from "../previews/ReviewStatsPreview";
 import { SolutionPreview } from "../previews/SolutionPreview";
 import { WorkspacePreview, type PracticePreviewProps } from "../previews/WorkspacePreview";
