@@ -15,6 +15,9 @@
   flex-shrink: 0;
   overflow: hidden;
   box-sizing: border-box;
+  /* Height follows the text layers: wrapped rows are re-measured a frame after a width
+     change, and stale row heights must not stretch the editor in the meantime. */
+  contain: size;
 }
 
 .lineNumber {
