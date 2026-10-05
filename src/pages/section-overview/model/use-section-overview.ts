@@ -61,7 +61,7 @@ export const useSectionOverview = (section: SectionType): UseSectionOverviewRetu
         id: "javascript" as SectionType,
         title: "JavaScript Core & Async",
         subtitle:
-          "Комплексная практика JavaScript: замыкания, прототипы, Event Loop, промисы, асинхронные генераторы, структуры данных, манипуляции с DOM и чистые алгоритмические функции.",
+          "Комплексная практика JavaScript от основ до senior-уровня: область видимости, замыкания, this и классы, прототипы, Event Loop, промисы, генераторы, структуры данных и полифилы.",
         icon: React.createElement(JavaScriptIcon, { size: 24, className: styles.iconJs }),
         tasks: sectionTasks,
         badge: `${activeSectionTasks.length} задач`,

@@ -1,31 +1,36 @@
-/** Реализуйте функцию memoize(fn, ms), которая оборачивает переданную функцию fn
- * и кэширует результаты её вызовов на основе аргументов.
- *
- * Требования:
- * - Аргументы функции всегда примитивы (числа, строки и т.д.)
- * - Если функция уже вызывалась с такими же аргументами и с момента вызова
- *   прошло меньше ms миллисекунд — вернуть закэшированный результат,
- *   не вызывая fn повторно
- * - Если кэша нет или он "протух" (прошло больше ms миллисекунд) —
- *   вызвать fn заново, сохранить новый результат и время его истечения
- */
-const memoize = (fn, ms) => {
-  // Ваш код здесь
-};
+// LRU Cache на основе Map
+// Реализуйте класс LRUCache(capacity) — кэш ограниченного размера, который при переполнении
+// удаляет элемент, к которому дольше всего не обращались (Least Recently Used).
+// - get(key) — вернуть значение или -1, если ключа нет. Обращение делает ключ самым «свежим».
+// - put(key, value) — добавить или обновить значение. Если размер превысил capacity,
+//   удалить самый «старый» ключ.
+// Обе операции должны работать за O(1).
 
-let callCount = 0;
-const slowSquare = (x) => {
-  callCount++;
-  return x * x;
-};
+class LRUCache {
+  constructor(capacity) {
+    // Решение тут
+  }
 
-const memoSquare = memoize(slowSquare, 1000);
+  get(key) {
+    // Решение тут
+  }
 
-console.log(memoSquare(5)); // 25, callCount = 1
-console.log(memoSquare(5)); // 25, callCount = 1 (взято из кэша)
-console.log(callCount);     // 1
+  put(key, value) {
+    // Решение тут
+  }
+}
 
-setTimeout(() => {
-  console.log(memoSquare(5)); // 25, callCount = 2 (кэш устарел)
-  console.log(callCount);     // 2
-}, 1500);
+// Пример вызова:
+const cache = new LRUCache(2);
+cache.put(1, "один");
+cache.put(2, "два");
+console.log(cache.get(1)); // "один" — теперь ключ 1 самый свежий
+cache.put(3, "три"); // вытесняет ключ 2
+console.log(cache.get(2)); // -1
+cache.put(4, "четыре"); // вытесняет ключ 1
+console.log(cache.get(1)); // -1
+console.log(cache.get(3)); // "три"
+console.log(cache.get(4)); // "четыре"
+cache.put(3, "три!"); // обновление существующего ключа не вытесняет другие
+console.log(cache.get(3)); // "три!"
+console.log(cache.get(4)); // "четыре"

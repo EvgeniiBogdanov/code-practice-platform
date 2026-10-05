@@ -163,6 +163,9 @@ export function extractDeclaredSymbols(code: string): Set<string> {
   return declared;
 }
 
+// var и function declaration можно объявлять повторно; let, const и class — нельзя
+const REDECLARABLE_KINDS = new Set(["var", "function"]);
+
 export function findDuplicateDeclarations(code: string): DuplicateDeclarationProblem[] {
   if (!code || typeof code !== "string") return [];
 
@@ -248,6 +251,7 @@ export function findDuplicateDeclarations(code: string): DuplicateDeclarationPro
       if (currentScope.has(name)) {
         const prev = currentScope.get(name)!;
         if (prev.line === lineNum && prev.col === col) return;
+        if (REDECLARABLE_KINDS.has(prev.kind) && REDECLARABLE_KINDS.has(kind)) return;
         const typeNoun =
           kind === "type"
             ? "типа"
@@ -273,9 +277,10 @@ export function findDuplicateDeclarations(code: string): DuplicateDeclarationPro
       if (tm[1]) checkAndAdd(tm[1], "type", (tm.index || 0) + 1);
     }
 
-    const varMatches = cleanLine.matchAll(/\b(?:const|let|var)\s+([^;=\n]+)/g);
+    const varMatches = cleanLine.matchAll(/\b(const|let|var)\s+([^;=\n]+)/g);
     for (const vm of varMatches) {
-      const declPart = vm[1];
+      const declKind = vm[1] === "var" ? "var" : "variable";
+      const declPart = vm[2];
       const isForHeader = /\bfor\s*\([^)]*$/.test(cleanLine.slice(0, vm.index || 0));
       const objMatches = declPart.matchAll(/\{([^}]+)\}/g);
       for (const om of objMatches) {
@@ -285,7 +290,7 @@ export function findDuplicateDeclarations(code: string): DuplicateDeclarationPro
           const parts = item.split(":");
           const name = (parts[1] || parts[0]).trim();
           if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(name)) {
-            checkAndAdd(name, "variable", (vm.index || 0) + 1, isForHeader);
+            checkAndAdd(name, declKind, (vm.index || 0) + 1, isForHeader);
           }
         }
       }
@@ -298,7 +303,7 @@ export function findDuplicateDeclarations(code: string): DuplicateDeclarationPro
             .replace(/\.\.\./, "")
             .trim();
           if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(name)) {
-            checkAndAdd(name, "variable", (vm.index || 0) + 1, isForHeader);
+            checkAndAdd(name, declKind, (vm.index || 0) + 1, isForHeader);
           }
         }
       }
@@ -307,7 +312,7 @@ export function findDuplicateDeclarations(code: string): DuplicateDeclarationPro
       for (const n of names) {
         const name = n.split("=")[0].trim();
         if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(name)) {
-          checkAndAdd(name, "variable", (vm.index || 0) + 1, isForHeader);
+          checkAndAdd(name, declKind, (vm.index || 0) + 1, isForHeader);
         }
       }
     }

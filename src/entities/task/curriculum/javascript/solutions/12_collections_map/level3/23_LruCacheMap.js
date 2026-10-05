@@ -1,36 +1,46 @@
-const memoize = (fn, ms) => {
-  const cache = new Map();
-  return (...args) => {
-    const key = JSON.stringify(args);
-    const now = Date.now();
-    if (cache.has(key)) {
-      const { value, expiry } = cache.get(key);
-      if (now < expiry) {
-        return value;
-      }
+class LRUCache {
+  constructor(capacity) {
+    this.capacity = capacity;
+    // Map помнит порядок вставки: первый ключ — самый старый, последний — самый свежий
+    this.cache = new Map();
+  }
+
+  get(key) {
+    if (!this.cache.has(key)) {
+      return -1;
     }
-    const result = fn(...args);
-    cache.set(key, {
-      value: result,
-      expiry: now + ms,
-    });
-    return result;
-  };
-};
 
-let callCount = 0;
-const slowSquare = (x) => {
-  callCount++;
-  return x * x;
-};
+    // «Освежаем» ключ: удаляем и вставляем заново в конец
+    const value = this.cache.get(key);
+    this.cache.delete(key);
+    this.cache.set(key, value);
+    return value;
+  }
 
-const memoSquare = memoize(slowSquare, 1000);
+  put(key, value) {
+    // При обновлении тоже переносим ключ в конец
+    this.cache.delete(key);
+    this.cache.set(key, value);
 
-console.log(memoSquare(5)); // 25, callCount = 1
-console.log(memoSquare(5)); // 25, callCount = 1 (взято из кэша)
-console.log(callCount);     // 1
+    if (this.cache.size > this.capacity) {
+      // keys() возвращает итератор в порядке вставки — первый ключ самый старый
+      const oldestKey = this.cache.keys().next().value;
+      this.cache.delete(oldestKey);
+    }
+  }
+}
 
-setTimeout(() => {
-  console.log(memoSquare(5)); // 25, callCount = 2 (кэш устарел)
-  console.log(callCount);     // 2
-}, 1500);
+// Пример вызова:
+const cache = new LRUCache(2);
+cache.put(1, "один");
+cache.put(2, "два");
+console.log(cache.get(1)); // "один"
+cache.put(3, "три"); // вытесняет ключ 2
+console.log(cache.get(2)); // -1
+cache.put(4, "четыре"); // вытесняет ключ 1
+console.log(cache.get(1)); // -1
+console.log(cache.get(3)); // "три"
+console.log(cache.get(4)); // "четыре"
+cache.put(3, "три!");
+console.log(cache.get(3)); // "три!"
+console.log(cache.get(4)); // "четыре"

@@ -35,7 +35,6 @@ import DeepSumObjectExplanation from "../explanations/15_recursion/8_DeepSumObje
 import TreeSumBinaryExplanation from "../explanations/15_recursion/9_TreeSumBinary.md?raw";
 import TreeDepthMaxExplanation from "../explanations/15_recursion/10_TreeDepthMax.md?raw";
 import FindFileFileSystemExplanation from "../explanations/15_recursion/11_FindFileFileSystem.md?raw";
-import SumNumbersNestedObjExplanation from "../explanations/15_recursion/12_SumNumbersNestedObj.md?raw";
 import GetAllPrimitivesExplanation from "../explanations/15_recursion/13_GetAllPrimitives.md?raw";
 import CollectTreeValuesExplanation from "../explanations/15_recursion/14_CollectTreeValues.md?raw";
 import SumTreeValuesExplanation from "../explanations/15_recursion/15_SumTreeValues.md?raw";
@@ -91,8 +90,6 @@ import JsObjects_ExistenceCheckExplanation from "../explanations/25_objects/2_Pr
 import JsObjects_KeysValuesEntriesExplanation from "../explanations/25_objects/3_ObjectKeysValuesEntries.md?raw";
 import JsObjects_DestructuringExplanation from "../explanations/25_objects/4_ObjectDestructuring.md?raw";
 import JsObjects_ShallowCopySpreadExplanation from "../explanations/25_objects/5_ShallowCopyAssignSpread.md?raw";
-import JsObjects_IsEmptyExplanation from "../explanations/25_objects/6_IsEmptyObject.md?raw";
-import JsObjects_InvertExplanation from "../explanations/25_objects/7_InvertObject.md?raw";
 import JsObjects_PickExplanation from "../explanations/25_objects/8_PickObject.md?raw";
 import JsObjects_OmitExplanation from "../explanations/25_objects/9_OmitObject.md?raw";
 import JsObjects_DeepEqualExplanation from "../explanations/25_objects/10_DeepEqual.md?raw";
@@ -123,8 +120,6 @@ import PolyfillArrayReduceExplanation from "../explanations/8_arrays_reduce/19_P
 import ChunkArrayExplanation from "../explanations/8_arrays_reduce/20_ChunkArray.md?raw";
 
 
-import LruCacheMapExplanation from "../explanations/12_collections_map/23_LruCacheMap.md?raw";
-import HashMapJoinApiResponsesExplanation from "../explanations/12_collections_map/24_HashMapJoinApiResponses.md?raw";
 
 import UnicodeStringReverseExplanation from "../explanations/23_string_dom_utils/4_UnicodeStringReverse.md?raw";
 import RegexTokenizerExplanation from "../explanations/23_string_dom_utils/5_RegexTokenizer.md?raw";
@@ -132,6 +127,52 @@ import RegexTokenizerExplanation from "../explanations/23_string_dom_utils/5_Reg
 import ObjectDiffPatchExplanation from "../explanations/25_objects/24_ObjectDiffPatch.md?raw";
 import SafeGetSetByPathExplanation from "../explanations/25_objects/25_SafeGetSetByPath.md?raw";
 import CamelCaseSnakeCaseKeysExplanation from "../explanations/25_objects/26_CamelCaseSnakeCaseKeys.md?raw";
+import VarLetConstScopeExplanation from "../explanations/26_scope/1_VarLetConstScope.md?raw";
+import ScopeChainShadowingExplanation from "../explanations/26_scope/2_ScopeChainShadowing.md?raw";
+import HoistingBasicsExplanation from "../explanations/26_scope/3_HoistingBasics.md?raw";
+import TemporalDeadZoneExplanation from "../explanations/26_scope/4_TemporalDeadZone.md?raw";
+import FunctionDeclarationVsExpressionExplanation from "../explanations/26_scope/5_FunctionDeclarationVsExpression.md?raw";
+import FunctionParametersExplanation from "../explanations/26_scope/6_FunctionParameters.md?raw";
+import IifeModulePatternExplanation from "../explanations/26_scope/7_IifeModulePattern.md?raw";
+import PrimitivesVsReferencesExplanation from "../explanations/24_types_coercion/4_PrimitivesVsReferences.md?raw";
+import SomeEveryFindIndexExplanation from "../explanations/28_arrays_methods/1_SomeEveryFindIndex.md?raw";
+import SliceVsSpliceExplanation from "../explanations/28_arrays_methods/2_SliceVsSplice.md?raw";
+import ImmutableArrayMethodsExplanation from "../explanations/28_arrays_methods/3_ImmutableArrayMethods.md?raw";
+import FlatAndFlatMapExplanation from "../explanations/28_arrays_methods/4_FlatAndFlatMap.md?raw";
+import UniqueValuesExplanation from "../explanations/8_arrays_reduce/11_UniqueValues.md?raw";
+import FisherYatesShuffleExplanation from "../explanations/28_arrays_methods/5_FisherYatesShuffle.md?raw";
+import PolyfillArrayFlatExplanation from "../explanations/28_arrays_methods/6_PolyfillArrayFlat.md?raw";
+import ReverseStringExplanation from "../explanations/27_strings/1_ReverseString.md?raw";
+import CapitalizeWordsExplanation from "../explanations/27_strings/2_CapitalizeWords.md?raw";
+import TruncateStringExplanation from "../explanations/27_strings/3_TruncateString.md?raw";
+import CountVowelsExplanation from "../explanations/27_strings/4_CountVowels.md?raw";
+import IsAnagramExplanation from "../explanations/27_strings/5_IsAnagram.md?raw";
+import FirstUniqueCharExplanation from "../explanations/27_strings/6_FirstUniqueChar.md?raw";
+import CompressStringExplanation from "../explanations/27_strings/7_CompressString.md?raw";
+import SetOperationsExplanation from "../explanations/11_collections_set/11_SetOperations.md?raw";
+import ObjectKeysVsMapKeysExplanation from "../explanations/12_collections_map/6_ObjectKeysVsMapKeys.md?raw";
+import TwoSumMapExplanation from "../explanations/12_collections_map/12_TwoSumMap.md?raw";
+import LruCacheMapExplanation from "../explanations/12_collections_map/23_LruCacheMap.md?raw";
+import CurryUniversalExplanation from "../explanations/17_currying/4_CurryUniversal.md?raw";
+import PartialApplicationExplanation from "../explanations/14_closures/10_PartialApplication.md?raw";
+import ThisBindingRulesExplanation from "../explanations/16_prototypes_this/8_ThisBindingRules.md?raw";
+import CallApplyPolyfillExplanation from "../explanations/16_prototypes_this/9_CallApplyPolyfill.md?raw";
+import BindPolyfillExplanation from "../explanations/16_prototypes_this/10_BindPolyfill.md?raw";
+import PrototypeInheritanceExplanation from "../explanations/16_prototypes_this/11_PrototypeInheritance.md?raw";
+import NewOperatorPolyfillExplanation from "../explanations/16_prototypes_this/12_NewOperatorPolyfill.md?raw";
+import InstanceofPolyfillExplanation from "../explanations/16_prototypes_this/13_InstanceofPolyfill.md?raw";
+import ClassPrivateStaticExplanation from "../explanations/16_prototypes_this/14_ClassPrivateStatic.md?raw";
+import ClassInheritanceSuperExplanation from "../explanations/16_prototypes_this/15_ClassInheritanceSuper.md?raw";
+import IterableRangeExplanation from "../explanations/29_iterators_generators/1_IterableRange.md?raw";
+import GeneratorsBasicsExplanation from "../explanations/29_iterators_generators/2_GeneratorsBasics.md?raw";
+import AsyncGeneratorPaginationExplanation from "../explanations/29_iterators_generators/3_AsyncGeneratorPagination.md?raw";
+import SimulatedIntervalTimeoutExplanation from "../explanations/10_timers_setinterval/6_SimulatedIntervalTimeout.md?raw";
+import SleepExplanation from "../explanations/13_promises/8_Sleep.md?raw";
+import PromiseErrorPropagationExplanation from "../explanations/30_error_handling/1_PromiseErrorPropagation.md?raw";
+import CustomErrorsExplanation from "../explanations/30_error_handling/2_CustomErrors.md?raw";
+import EventLoopAsyncAwaitOrderExplanation from "../explanations/22_event_loop/2_EventLoopAsyncAwaitOrder.md?raw";
+import MyPromiseImplementationExplanation from "../explanations/13_promises/28_MyPromiseImplementation.md?raw";
+import SingletonExplanation from "../explanations/21_design_patterns/4_Singleton.md?raw";
 
 export const DETAILED_JAVASCRIPT_EXPLANATIONS = Object.freeze({
   js_while_1: WhileLoopExplanation,
@@ -171,7 +212,6 @@ export const DETAILED_JAVASCRIPT_EXPLANATIONS = Object.freeze({
   js140: TreeSumBinaryExplanation,
   js141: TreeDepthMaxExplanation,
   js142: FindFileFileSystemExplanation,
-  js143: SumNumbersNestedObjExplanation,
   js144: GetAllPrimitivesExplanation,
   js145: CollectTreeValuesExplanation,
   js146: SumTreeValuesExplanation,
@@ -226,8 +266,6 @@ export const DETAILED_JAVASCRIPT_EXPLANATIONS = Object.freeze({
   js199: JsObjects_KeysValuesEntriesExplanation,
   js200: JsObjects_DestructuringExplanation,
   js201: JsObjects_ShallowCopySpreadExplanation,
-  js202: JsObjects_IsEmptyExplanation,
-  js203: JsObjects_InvertExplanation,
   js204: JsObjects_PickExplanation,
   js205: JsObjects_OmitExplanation,
   js206: JsObjects_DeepEqualExplanation,
@@ -251,11 +289,55 @@ export const DETAILED_JAVASCRIPT_EXPLANATIONS = Object.freeze({
   js233: PolyfillArrayFilterExplanation,
   js234: PolyfillArrayReduceExplanation,
   js235: ChunkArrayExplanation,
-  js241: LruCacheMapExplanation,
-  js242: HashMapJoinApiResponsesExplanation,
   js243: UnicodeStringReverseExplanation,
   js244: RegexTokenizerExplanation,
   js246: ObjectDiffPatchExplanation,
   js247: SafeGetSetByPathExplanation,
   js248: CamelCaseSnakeCaseKeysExplanation,
+  js249: VarLetConstScopeExplanation,
+  js255: ScopeChainShadowingExplanation,
+  js250: HoistingBasicsExplanation,
+  js251: TemporalDeadZoneExplanation,
+  js252: FunctionDeclarationVsExpressionExplanation,
+  js254: FunctionParametersExplanation,
+  js253: IifeModulePatternExplanation,
+  js256: PrimitivesVsReferencesExplanation,
+  js264: SomeEveryFindIndexExplanation,
+  js265: SliceVsSpliceExplanation,
+  js266: ImmutableArrayMethodsExplanation,
+  js267: FlatAndFlatMapExplanation,
+  js268: UniqueValuesExplanation,
+  js269: FisherYatesShuffleExplanation,
+  js270: PolyfillArrayFlatExplanation,
+  js257: ReverseStringExplanation,
+  js258: CapitalizeWordsExplanation,
+  js263: TruncateStringExplanation,
+  js259: CountVowelsExplanation,
+  js260: IsAnagramExplanation,
+  js261: FirstUniqueCharExplanation,
+  js262: CompressStringExplanation,
+  js271: SetOperationsExplanation,
+  js272: ObjectKeysVsMapKeysExplanation,
+  js273: TwoSumMapExplanation,
+  js274: LruCacheMapExplanation,
+  js275: CurryUniversalExplanation,
+  js276: PartialApplicationExplanation,
+  js277: ThisBindingRulesExplanation,
+  js278: CallApplyPolyfillExplanation,
+  js279: BindPolyfillExplanation,
+  js282: PrototypeInheritanceExplanation,
+  js280: NewOperatorPolyfillExplanation,
+  js281: InstanceofPolyfillExplanation,
+  js283: ClassPrivateStaticExplanation,
+  js284: ClassInheritanceSuperExplanation,
+  js285: IterableRangeExplanation,
+  js286: GeneratorsBasicsExplanation,
+  js287: AsyncGeneratorPaginationExplanation,
+  js292: SimulatedIntervalTimeoutExplanation,
+  js288: SleepExplanation,
+  js289: PromiseErrorPropagationExplanation,
+  js290: CustomErrorsExplanation,
+  js293: EventLoopAsyncAwaitOrderExplanation,
+  js291: MyPromiseImplementationExplanation,
+  js294: SingletonExplanation,
 });

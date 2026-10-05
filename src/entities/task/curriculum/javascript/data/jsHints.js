@@ -615,20 +615,6 @@ export const JS_HINTS = {
           "content": "```javascript\nreturn arr.reduce((sum, item) => {\n  const val = typeof iteratee === 'function' ? iteratee(item) : item[iteratee];\n  return sum + (Number(val) || 0);\n}, 0);\n```"
       }
   },
-  "js37": {
-      "level1": {
-          "title": "Идея и ментальная модель",
-          "content": "Пройдитесь по массиву за один проход O(N). Инициализируйте min = arr[0] и max = arr[0] и на каждом шаге обновляйте оба значения."
-      },
-      "level2": {
-          "title": "Граничные случаи и ловушки",
-          "content": "• Для пустого массива верните { min: undefined, max: undefined }.\n• Один проход эффективнее раздельных Math.min(...arr) и Math.max(...arr), которые к тому же могут вызвать переполнение стека аргументов на больших массивах."
-      },
-      "level3": {
-          "title": "Псевдокод и сигнатура",
-          "content": "```javascript\nif (!arr.length) return { min: undefined, max: undefined };\nlet min = arr[0], max = arr[0];\nfor (let i = 1; i < arr.length; i++) {\n  if (arr[i] < min) min = arr[i];\n  if (arr[i] > max) max = arr[i];\n}\nreturn { min, max };\n```"
-      }
-  },
   "js38": {
       "level1": {
           "title": "Идея и ментальная модель",
@@ -655,20 +641,6 @@ export const JS_HINTS = {
       "level3": {
           "title": "Псевдокод и сигнатура",
           "content": "```javascript\nconst pass = [], fail = [];\nfor (const item of arr) {\n  if (predicate(item)) pass.push(item);\n  else fail.push(item);\n}\nreturn [pass, fail];\n```"
-      }
-  },
-  "js41": {
-      "level1": {
-          "title": "Идея и ментальная модель",
-          "content": "Среднее арифметическое = (сумма всех элементов) / (количество элементов). Найдите сумму через reduce и разделите на arr.length."
-      },
-      "level2": {
-          "title": "Граничные случаи и ловушки",
-          "content": "• Защититесь от деления на 0 при пустом массиве: верните 0 или NaN.\n• Убедитесь, что все элементы приведены к числам."
-      },
-      "level3": {
-          "title": "Псевдокод и сигнатура",
-          "content": "```javascript\nif (!arr.length) return 0;\nconst sum = arr.reduce((acc, n) => acc + Number(n), 0);\nreturn sum / arr.length;\n```"
       }
   },
   "js42": {
@@ -1890,20 +1862,6 @@ export const JS_HINTS = {
       }
   },
   "js142": {
-      "level1": {
-          "title": "Идея и ментальная модель",
-          "content": "Идея: рекурсивная функция вызывает сама себя. Всегда начинайте с определения базового случая (base case) — условия выхода из рекурсии, без которого произойдет RangeError: Maximum call stack size exceeded."
-      },
-      "level2": {
-          "title": "Граничные случаи и ловушки",
-          "content": "• Убедитесь, что каждый шаг уменьшает сложность задачи и гарантированно приближает к базовому случаю.\n• Для глубокой рекурсии помните о лимите стека вызовов в JS (~10 000 фреймов)."
-      },
-      "level3": {
-          "title": "Псевдокод и сигнатура",
-          "content": "```javascript\nfunction recursive(node) {\n  if (!node) return 0; // Базовый случай\n  return 1 + recursive(node.next); // Рекурсивный шаг\n}\n```"
-      }
-  },
-  "js143": {
       "level1": {
           "title": "Идея и ментальная модель",
           "content": "Идея: рекурсивная функция вызывает сама себя. Всегда начинайте с определения базового случая (base case) — условия выхода из рекурсии, без которого произойдет RangeError: Maximum call stack size exceeded."

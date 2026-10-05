@@ -240,6 +240,21 @@ function hashJoin(users, orders) {
     expect(dups).toEqual([]);
   });
 
+  it("allows var redeclaration but still reports let/const redeclaration", () => {
+    const varLint = lintJavaScriptCode("var x = 10;\nvar x = 20;\nfunction x() {}", {
+      filepath: "solution.js",
+    });
+    expect(varLint.problems.filter((p) => p.rule === "duplicate-identifier")).toEqual([]);
+
+    const letLint = lintJavaScriptCode("let y = 1;\nvar y = 2;\nconst z = 1;\nconst z = 2;", {
+      filepath: "solution.js",
+    });
+    const dupNames = letLint.problems
+      .filter((p) => p.rule === "duplicate-identifier")
+      .map((p) => p.message.match(/'([^']+)'/)?.[1]);
+    expect(dupNames).toEqual(["y", "z"]);
+  });
+
   it("does NOT trigger any errors for js242 HashMapJoinApiResponses solution", () => {
     const code = `
 const hashJoin = (users, orders, options = {}) => {
