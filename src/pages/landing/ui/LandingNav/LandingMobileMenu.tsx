@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { clsx } from "clsx";
 import { Button } from "@/shared/ui";
-import { FEATURE_LINKS, LANDING_SECTION, REPOSITORY_URL } from "../../config/landing-links";
+import { FEATURE_LINKS, LANDING_SECTION, REPOSITORY_URL } from "../../config/landingLinks";
 import styles from "./LandingNav.module.css";
 
 export interface LandingMobileMenuProps {

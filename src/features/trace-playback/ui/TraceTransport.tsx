@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 import { Pause, Play, RotateCcw, SkipBack, SkipForward } from "lucide-react";
 import { CodeButton } from "@/shared/ui";
-import type { TraceControlsProps } from "../model/trace-controls";
+import type { TraceControlsProps } from "../model/traceControls";
 import styles from "./TraceControls.module.css";
 
 export const TraceTransport = ({ playback, length }: TraceControlsProps): JSX.Element => {

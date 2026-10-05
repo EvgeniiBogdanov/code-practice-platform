@@ -1,9 +1,9 @@
 import { act, render } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { getCaretCoordinates } from "../../lib/caret-coordinates";
+import { getCaretCoordinates } from "../../lib/caretCoordinates";
 import { EditorDecorations } from "./EditorDecorations";
 
-vi.mock("../../lib/caret-coordinates", () => ({ getCaretCoordinates: vi.fn() }));
+vi.mock("../../lib/caretCoordinates", () => ({ getCaretCoordinates: vi.fn() }));
 
 describe("EditorDecorations", () => {
   let resize: () => void = () => undefined;

@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { useLocalAccountStore } from "@/shared/auth";
-import { APP_VERSION } from "@/shared/config/ui-constants";
+import { APP_VERSION } from "@/shared/config/uiConstants";
 import { PlatformLogo } from "@/shared/ui";
 import styles from "./HomePage.module.css";
 

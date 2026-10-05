@@ -20,7 +20,7 @@ vi.mock("@tanstack/react-router", () => ({
   ),
 }));
 
-vi.mock("../model/use-home-stats", () => ({
+vi.mock("../model/useHomeStats", () => ({
   useHomeStats: () => ({
     grandTotal: 100,
     grandSolved: 25,

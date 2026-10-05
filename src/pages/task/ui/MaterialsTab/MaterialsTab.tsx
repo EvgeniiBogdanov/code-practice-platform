@@ -19,39 +19,25 @@ export interface MaterialsTabProps {
 }
 
 export const MaterialsTab = ({ task, className }: MaterialsTabProps): React.JSX.Element => {
-  const [asyncExplanation, setAsyncExplanation] = useState<string | null>(() => {
-    return getCachedTaskExplanation(task.id) ?? task.explanation ?? null;
-  });
-  const [isLoading, setIsLoading] = useState<boolean>(() => {
-    return !getCachedTaskExplanation(task.id) && !task.explanation;
-  });
+  const syncExplanation = getCachedTaskExplanation(task.id) ?? task.explanation ?? null;
+  const [loaded, setLoaded] = useState<{ taskId: Task["id"]; text: string | null } | null>(null);
 
   useEffect(() => {
-    const cached = getCachedTaskExplanation(task.id);
-    if (cached) {
-      setAsyncExplanation(cached);
-      setIsLoading(false);
-      return;
-    }
-    if (task.explanation) {
-      setAsyncExplanation(task.explanation);
-      setIsLoading(false);
-      return;
-    }
+    if (syncExplanation) return;
 
     let isMounted = true;
-    setIsLoading(true);
     loadTaskExplanations().then((dict) => {
-      if (isMounted) {
-        setAsyncExplanation(dict[String(task.id)] || null);
-        setIsLoading(false);
-      }
+      if (isMounted) setLoaded({ taskId: task.id, text: dict[String(task.id)] || null });
     });
 
     return () => {
       isMounted = false;
     };
-  }, [task.id, task.explanation]);
+  }, [task.id, syncExplanation]);
+
+  const isLoaded = loaded?.taskId === task.id;
+  const asyncExplanation = syncExplanation ?? (isLoaded ? loaded.text : null);
+  const isLoading = !syncExplanation && !isLoaded;
 
   let explanationText = asyncExplanation;
 

@@ -13,7 +13,7 @@ import { getHtmlCompletions } from "./snippets/htmlCompleter";
 import { getSqlCompletions } from "./snippets/sqlCompleter";
 import { getLanguageId, getLanguageCapabilities } from "./languages/languageDetector";
 import { JSON_SNIPPETS } from "./languages/jsonKnowledge";
-import { getEmbeddedRegion, getMarkupContext } from "./markup-context";
+import { getEmbeddedRegion, getMarkupContext } from "./markupContext";
 import { getEmmetCompletions } from "./emmetEngine";
 import { fuzzyMatch } from "./fuzzyMatcher";
 

@@ -1,14 +1,12 @@
 import { getTaskSolutionSource } from "@/entities/task";
-import { useEffect, useState, type JSX } from "react";
+import { useState, type JSX } from "react";
 import { TaskVisualization } from "@/widgets/task-visualization";
 import { UiFullscreenPanel } from "@/shared/ui";
-import type { TaskVisualizationTabProps } from "../model/task-visualization-tab";
+import type { TaskVisualizationTabProps } from "../model/taskVisualizationTab";
 
 export const TaskVisualizationTab = ({ task, active }: TaskVisualizationTabProps): JSX.Element => {
   const [visited, setVisited] = useState(active);
-  useEffect(() => {
-    if (active) setVisited(true);
-  }, [active]);
+  if (active && !visited) setVisited(true);
 
   return (
     <div hidden={!active}>

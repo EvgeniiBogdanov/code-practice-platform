@@ -1,7 +1,7 @@
 import { clsx } from "clsx";
 import type { JSX } from "react";
 import { Input } from "@/shared/ui";
-import type { TraceParameterInputProps } from "../model/algorithm-input";
+import type { TraceParameterInputProps } from "../model/algorithmInput";
 import styles from "./TraceInputs.module.css";
 
 export const TraceParameterInput = ({

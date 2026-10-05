@@ -1,7 +1,7 @@
 import React from "react";
 import { HardDrive, RefreshCw, ShieldCheck } from "lucide-react";
 import { Modal, PlatformLogo } from "@/shared/ui";
-import { useCreateAccountDialog } from "../../model/create-account-dialog";
+import { useCreateAccountDialog } from "../../model/createAccountDialog";
 import { CreateAccountForm } from "./CreateAccountForm";
 import styles from "./CreateAccount.module.css";
 

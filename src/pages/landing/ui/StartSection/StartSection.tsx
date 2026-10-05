@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { clsx } from "clsx";
 import { GitHubIcon, UiReveal, UiScaledCanvas } from "@/shared/ui";
-import { LANDING_SECTION, REPOSITORY_URL } from "../../config/landing-links";
+import { LANDING_SECTION, REPOSITORY_URL } from "../../config/landingLinks";
 import { CreateAccountForm } from "../CreateAccount/CreateAccountForm";
 import { ProfilePreview } from "../previews/ProfilePreview";
 import { TextHighlight } from "../TextHighlight/TextHighlight";

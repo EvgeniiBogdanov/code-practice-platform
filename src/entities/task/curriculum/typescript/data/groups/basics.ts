@@ -1,4 +1,4 @@
-import { NO_SUPPRESSION_CHECK, type TypeScriptTaskGroup } from "../task-meta";
+import { NO_SUPPRESSION_CHECK, type TypeScriptTaskGroup } from "../taskMeta";
 
 export const BASICS_GROUP: TypeScriptTaskGroup = {
   name: "Основы TypeScript",

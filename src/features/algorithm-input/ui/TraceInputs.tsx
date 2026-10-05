@@ -1,6 +1,6 @@
 import { useId, type JSX } from "react";
 import { Button, Input } from "@/shared/ui";
-import type { TraceInputProps } from "../model/algorithm-input";
+import type { TraceInputProps } from "../model/algorithmInput";
 import { TraceParameterInput } from "./TraceParameterInput";
 import { TraceExampleSelect } from "./TraceExampleSelect";
 import styles from "./TraceInputs.module.css";

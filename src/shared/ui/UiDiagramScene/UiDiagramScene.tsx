@@ -1,8 +1,8 @@
 import { memo, useEffect, useRef, useState, type JSX } from "react";
 import { clsx } from "clsx";
 import { Button } from "../Button";
-import type { UiDiagramSceneProps } from "./diagram-scene";
-import type { DiagramController } from "./lib/create-diagram-scene";
+import type { UiDiagramSceneProps } from "./diagramScene";
+import type { DiagramController } from "./lib/createDiagramScene";
 import { DiagramFallback } from "./DiagramFallback";
 import styles from "./UiDiagramScene.module.css";
 
@@ -19,7 +19,7 @@ export const UiDiagramScene = memo((props: UiDiagramSceneProps): JSX.Element => 
     if (empty || failed) return;
     let cancelled = false;
     const frame = requestAnimationFrame(() => {
-      void import("./lib/create-diagram-scene")
+      void import("./lib/createDiagramScene")
         .then(({ createDiagramScene }) => {
           if (cancelled || !host.current) return;
           controller.current = createDiagramScene(host.current, latest.current, () => {

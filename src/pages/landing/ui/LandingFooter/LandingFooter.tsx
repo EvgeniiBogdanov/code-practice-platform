@@ -3,8 +3,8 @@ import { ArrowUpRight } from "lucide-react";
 import { CURRICULUM_COUNTS, SECTIONS_CONFIG, type SectionType } from "@/entities/task/meta";
 import { APP_VERSION } from "@/shared/config";
 import { PlatformLogo } from "@/shared/ui";
-import { FEATURE_LINKS, LANDING_SECTION, PROJECT_LINKS } from "../../config/landing-links";
-import { TOTAL_TASK_COUNT, formatTaskCount } from "../../lib/format-task-count";
+import { FEATURE_LINKS, LANDING_SECTION, PROJECT_LINKS } from "../../config/landingLinks";
+import { TOTAL_TASK_COUNT, formatTaskCount } from "../../lib/formatTaskCount";
 import styles from "./LandingFooter.module.css";
 
 const SECTION_ORDER: readonly SectionType[] = ["javascript", "typescript", "react", "algorithms"];

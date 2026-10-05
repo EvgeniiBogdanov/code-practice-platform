@@ -6,4 +6,4 @@ export {
   useAllTaskSections,
   useTaskById,
   useTaskSection,
-} from "./model/task-catalog";
+} from "./model/taskCatalog";

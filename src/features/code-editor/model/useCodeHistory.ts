@@ -101,17 +101,22 @@ export function useCodeHistory(initialCode = "", scope?: CodeHistoryScope): Code
   const taskKey = scope?.taskKey;
   const documentKey = scope?.documentKey;
   const stored = scope && taskHistoryStore.getState().getDocument(scope);
-  const state = useRef<HistoryState>(
-    stored
-      ? { ...stored, lastInput: null }
-      : {
-          entries: [{ code: initialCode, cursor: 0 }],
-          index: 0,
-          lastInput: null,
-        }
-  );
-  const [, setRevision] = useState(0);
-  const notify = useCallback((): void => setRevision((revision) => revision + 1), []);
+  const initial: HistoryState = stored
+    ? { ...stored, lastInput: null }
+    : {
+        entries: [{ code: initialCode, cursor: 0 }],
+        index: 0,
+        lastInput: null,
+      };
+  const state = useRef<HistoryState>(initial);
+  // The ref is the source of truth for the handlers; the flags mirror it for rendering.
+  const [canUndo, setCanUndo] = useState(initial.index > 0);
+  const [canRedo, setCanRedo] = useState(initial.index < initial.entries.length - 1);
+  const notify = useCallback((): void => {
+    const { index, entries } = state.current;
+    setCanUndo(index > 0);
+    setCanRedo(index < entries.length - 1);
+  }, []);
   const save = useCallback((): void => {
     if (taskKey !== undefined && documentKey !== undefined) {
       taskHistoryStore.getState().saveDocument({ taskKey, documentKey }, state.current);
@@ -208,8 +213,6 @@ export function useCodeHistory(initialCode = "", scope?: CodeHistoryScope): Code
     [notify, save]
   );
 
-  const canUndo = state.current.index > 0;
-  const canRedo = state.current.index < state.current.entries.length - 1;
   // A stable object: it is a dependency of most editor callbacks.
   return useMemo(
     () => ({ canUndo, canRedo, captureCursor, pushHistory, undo, redo, resetHistory }),

@@ -1,9 +1,9 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { createNumberScene } from "../lib/create-number-scene";
+import { createNumberScene } from "../lib/createNumberScene";
 import { NumberScene } from "./NumberScene";
 
-vi.mock("../lib/create-number-scene", () => ({ createNumberScene: vi.fn() }));
+vi.mock("../lib/createNumberScene", () => ({ createNumberScene: vi.fn() }));
 
 describe("number scene initialization", () => {
   const frames = new Map<number, FrameRequestCallback>();

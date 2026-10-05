@@ -1,6 +1,6 @@
 import React from "react";
 import { clsx } from "clsx";
-import type { TextRange } from "../../lib/multi-cursor-operations";
+import type { TextRange } from "../../lib/multiCursorOperations";
 import styles from "./TextMarkLayer.module.css";
 
 export interface TextMarkLayerProps {

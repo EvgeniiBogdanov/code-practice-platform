@@ -1,6 +1,6 @@
 import type { JSX } from "react";
 import { UiSelect } from "@/shared/ui";
-import type { TraceInputProps } from "../model/algorithm-input";
+import type { TraceInputProps } from "../model/algorithmInput";
 import styles from "./TraceInputs.module.css";
 
 export const TraceExampleSelect = (

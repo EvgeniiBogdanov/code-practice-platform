@@ -4,7 +4,7 @@
  */
 
 import type { Options, Plugin } from "prettier";
-import { LANGUAGES } from "./languages/language-registry";
+import { LANGUAGES } from "./languages/languageRegistry";
 import { getLanguageId } from "./languages/languageDetector";
 
 export interface PrettierModules {

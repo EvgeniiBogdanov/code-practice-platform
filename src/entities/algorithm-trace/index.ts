@@ -1,9 +1,9 @@
 export {
   hasAlgorithmVisualization,
   VISUALIZED_ALGORITHM_IDS,
-} from "./config/available-visualizations";
-export { getAlgorithmDefinition } from "./config/algorithm-definitions";
-export { parseAlgorithmInput } from "./lib/parse-algorithm-input";
+} from "./config/availableVisualizations";
+export { getAlgorithmDefinition } from "./config/algorithmDefinitions";
+export { parseAlgorithmInput } from "./lib/parseAlgorithmInput";
 export type {
   AlgorithmDefinition,
   AlgorithmExample,
@@ -14,4 +14,4 @@ export type {
   TraceStructure,
   TraceStep,
   TraceValue,
-} from "./model/algorithm-trace";
+} from "./model/algorithmTrace";

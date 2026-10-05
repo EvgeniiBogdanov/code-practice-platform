@@ -69,7 +69,7 @@ export const REACT_SNIPPETS: SnippetItem[] = [
   },
 ];
 
-export { MARKUP_TAGS as JSX_ELEMENTS } from "./markup-tags";
+export { MARKUP_TAGS as JSX_ELEMENTS } from "./markupTags";
 
 export const REACT_JSX_PROPS: Record<
   string,

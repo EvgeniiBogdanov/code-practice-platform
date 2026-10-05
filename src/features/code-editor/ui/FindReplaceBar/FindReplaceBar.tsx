@@ -11,8 +11,8 @@ import {
   X,
 } from "lucide-react";
 import { CodeButton, Tooltip } from "@/shared/ui";
-import type { FindReplaceState } from "../../model/use-find-replace";
-import { matchesKey } from "../../lib/editor-key-helpers";
+import type { FindReplaceState } from "../../model/useFindReplace";
+import { matchesKey } from "../../lib/editorKeyHelpers";
 import styles from "./FindReplaceBar.module.css";
 
 export interface FindReplaceBarProps {

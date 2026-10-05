@@ -1,0 +1,122 @@
+import { useMemo, useCallback } from "react";
+import { useRouterState } from "@tanstack/react-router";
+import { getScriptGroupMeta } from "@/entities/task";
+import type { Task } from "@/entities/task/meta";
+import { useTaskSection } from "@/entities/task/catalog";
+import { useProgressStore, isTaskCompleted, ProgressState } from "@/entities/progress";
+import { useReviewStore, ReviewItem } from "@/entities/review";
+import { useUIStore } from "@/entities/ui-state";
+import { safeDecodeURI } from "@/shared/lib/url";
+import { groupJsTasks } from "../lib/groupJsTasks";
+
+export interface UseSidebarJsListReturn {
+  currentTaskId: string;
+  decodedCurrentId: string;
+  completedTasks: ProgressState["completedTasks"];
+  reviews: Record<string, ReviewItem>;
+  expandedGroups: Record<string, boolean>;
+  expandedSubgroups: Record<string, boolean>;
+  toggleGroup: (groupName: string, e?: React.MouseEvent) => void;
+  toggleSubgroup: (groupName: string, subName: string, e?: React.MouseEvent) => void;
+  groupedTasks: Record<string, Record<string, Task[]>>;
+  groupMetaMap: Record<string, ReturnType<typeof getScriptGroupMeta>>;
+  completedTotal: number;
+  totalCount: number;
+}
+
+export const useSidebarJsList = (
+  section: "javascript" | "typescript" = "javascript"
+): UseSidebarJsListReturn => {
+  const routerState = useRouterState();
+  const currentTaskId = routerState.location.pathname.split("/").pop() || "";
+  const decodedCurrentId = safeDecodeURI(currentTaskId);
+  const { tasks } = useTaskSection(section);
+
+  const completedTasks = useProgressStore((state) => state.completedTasks);
+  const reviews = useReviewStore((state) => state.reviews);
+  const expandedGroups =
+    useUIStore((state) =>
+      section === "typescript" ? state.expandedTsGroups : state.expandedJsGroups
+    ) || {};
+  const setExpandedGroups = useUIStore((state) =>
+    section === "typescript" ? state.setExpandedTsGroups : state.setExpandedJsGroups
+  );
+  const expandedSubgroups =
+    useUIStore((state) =>
+      section === "typescript" ? state.expandedTsSubgroups : state.expandedJsSubgroups
+    ) || {};
+  const setExpandedSubgroups = useUIStore((state) =>
+    section === "typescript" ? state.setExpandedTsSubgroups : state.setExpandedJsSubgroups
+  );
+
+  const { groupedTasks, groupMetaMap } = useMemo(
+    () => groupJsTasks(tasks, section),
+    [tasks, section]
+  );
+
+  const toggleGroup = useCallback(
+    (groupName: string, e?: React.MouseEvent) => {
+      setExpandedGroups?.((prev) => {
+        const current = prev || {};
+        if (e?.altKey) {
+          const willExpand = !current[groupName];
+          const allGroupNames = Object.keys(groupMetaMap || {});
+          const next: Record<string, boolean> = {};
+          for (const g of allGroupNames) {
+            next[g] = willExpand;
+          }
+          return next;
+        }
+        return { ...current, [groupName]: !current[groupName] };
+      });
+    },
+    [groupMetaMap, setExpandedGroups]
+  );
+
+  const toggleSubgroup = useCallback(
+    (groupName: string, subName: string, e?: React.MouseEvent) => {
+      const key = `${groupName}/${subName}`;
+      setExpandedSubgroups?.((prev) => {
+        const current = prev || {};
+        if (e?.altKey) {
+          const willExpand = !current[key];
+          const currentGroupSubgroups = Object.keys(groupedTasks[groupName] || {});
+          const next = { ...current };
+          for (const sub of currentGroupSubgroups) {
+            next[`${groupName}/${sub}`] = willExpand;
+          }
+          return next;
+        }
+        return { ...current, [key]: !current[key] };
+      });
+    },
+    [groupedTasks, setExpandedSubgroups]
+  );
+
+  const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
+
+  const activeTasks = useMemo(
+    () => tasks.filter((task) => !excludedTaskIds.includes(String(task.id))),
+    [tasks, excludedTaskIds]
+  );
+
+  const completedTotal = useMemo(
+    () => activeTasks.filter((task) => isTaskCompleted(completedTasks[String(task.id)])).length,
+    [completedTasks, activeTasks]
+  );
+
+  return {
+    currentTaskId,
+    decodedCurrentId,
+    completedTasks,
+    reviews,
+    expandedGroups,
+    expandedSubgroups,
+    toggleGroup,
+    toggleSubgroup,
+    groupedTasks,
+    groupMetaMap,
+    completedTotal,
+    totalCount: activeTasks.length,
+  };
+};

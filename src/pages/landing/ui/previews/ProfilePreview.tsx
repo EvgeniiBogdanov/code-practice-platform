@@ -3,9 +3,9 @@ import { HardDrive } from "lucide-react";
 import { clsx } from "clsx";
 import { normalizeAccountName } from "@/shared/auth";
 import { GaugeIndicator, JavaScriptIcon, KpiGrid } from "@/shared/ui";
-import { DEBOUNCE_TASK } from "../../config/showcase-tasks";
-import { TOTAL_TASK_COUNT } from "../../lib/format-task-count";
-import { getShowcaseProbability } from "../../lib/showcase-probability";
+import { DEBOUNCE_TASK } from "../../config/showcaseTasks";
+import { TOTAL_TASK_COUNT } from "../../lib/formatTaskCount";
+import { getShowcaseProbability } from "../../lib/showcaseProbability";
 import styles from "./SectionPreviews.module.css";
 import local from "./ProfilePreview.module.css";
 

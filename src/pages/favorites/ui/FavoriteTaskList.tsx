@@ -3,7 +3,7 @@ import type { ReviewItem } from "@/entities/review";
 import type { SectionType, Task } from "@/entities/task";
 import { TaskFavoriteButton } from "@/features/task-favorite";
 import { TaskTableHeader, TaskTableRow } from "@/features/task-table";
-import type { FavoriteTaskStatus } from "../model/use-favorites-page";
+import type { FavoriteTaskStatus } from "../model/useFavoritesPage";
 import styles from "./FavoritesPage.module.css";
 
 export interface FavoriteTaskListProps {

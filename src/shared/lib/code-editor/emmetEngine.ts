@@ -1,7 +1,7 @@
 import expandAbbreviation, { extract, markupAbbreviation, resolveConfig } from "emmet";
 import { JS_GLOBALS } from "./languages/javascriptKnowledge";
-import { MARKUP_TAG_NAMES } from "./languages/markup-tags";
-import { getMarkupContext } from "./markup-context";
+import { MARKUP_TAG_NAMES } from "./languages/markupTags";
+import { getMarkupContext } from "./markupContext";
 import type { CompletionItem } from "./snippetsData";
 
 export const parseEmmet: typeof markupAbbreviation = markupAbbreviation;

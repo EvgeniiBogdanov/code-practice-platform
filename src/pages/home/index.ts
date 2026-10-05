@@ -1,2 +1,2 @@
-export * from "./model/use-home-stats";
+export * from "./model/useHomeStats";
 export * from "./ui";

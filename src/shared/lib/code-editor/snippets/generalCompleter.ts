@@ -2,7 +2,7 @@
  * General Identifiers, Tags, Props, Snippets & Emmet Completer
  */
 
-import { getMarkupContext } from "../markup-context";
+import { getMarkupContext } from "../markupContext";
 import { fuzzyMatch } from "../fuzzyMatcher";
 import { getTaskFilesExports, TaskFile } from "../importManager";
 import { CompletionItem } from "../snippetsData";

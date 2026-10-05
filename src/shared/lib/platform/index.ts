@@ -1,1 +1,1 @@
-export * from "./is-apple-platform";
+export * from "./isApplePlatform";

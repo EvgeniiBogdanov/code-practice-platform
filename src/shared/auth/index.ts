@@ -1,2 +1,2 @@
-export * from "./local-account";
-export * from "./local-account-store";
+export * from "./localAccount";
+export * from "./localAccountStore";

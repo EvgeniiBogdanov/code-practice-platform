@@ -1,10 +1,10 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
-import { createDiagramScene } from "./lib/create-diagram-scene";
+import { createDiagramScene } from "./lib/createDiagramScene";
 import { UiDiagramScene } from "./UiDiagramScene";
-import type { UiDiagramSceneProps } from "./diagram-scene";
+import type { UiDiagramSceneProps } from "./diagramScene";
 
-vi.mock("./lib/create-diagram-scene", () => ({ createDiagramScene: vi.fn() }));
+vi.mock("./lib/createDiagramScene", () => ({ createDiagramScene: vi.fn() }));
 const controller = { update: vi.fn(), reset: vi.fn(), dispose: vi.fn() };
 const frames = new Map<number, FrameRequestCallback>();
 const props: UiDiagramSceneProps = {

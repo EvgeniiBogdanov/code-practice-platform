@@ -3,7 +3,7 @@
  */
 
 import { LanguageId, LanguageCapabilities } from "./languageTypes";
-import { LANGUAGES, LANGUAGE_BY_EXTENSION } from "./language-registry";
+import { LANGUAGES, LANGUAGE_BY_EXTENSION } from "./languageRegistry";
 
 export function getLanguageId(filepath = "main.jsx"): LanguageId {
   // An editor without a file yet keeps JavaScript features.

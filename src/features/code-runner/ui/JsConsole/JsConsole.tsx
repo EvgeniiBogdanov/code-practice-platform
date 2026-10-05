@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useState, useEffect, useCallback } from "react";
+import React, { lazy, Suspense, useState, useCallback } from "react";
 import { LoaderCircle } from "lucide-react";
 import { clsx } from "clsx";
 import { NodeRunnerLogEntry } from "@/shared/lib/code-runners";
@@ -46,20 +46,16 @@ export function JsConsole({
   const storeConsoleCollapsed = useUIStore((state) => state.consoleCollapsed);
   const setConsoleCollapsed = useUIStore((state) => state.setConsoleCollapsed);
 
-  // Local temporary reveal state when user runs code while console is collapsed
-  const [temporarilyRevealed, setTemporarilyRevealed] = useState(false);
-
-  // Reset temporary reveal when switching tasks or files
-  useEffect(() => {
-    setTemporarilyRevealed(false);
-  }, [filename]);
+  // Temporary reveal when user runs code while console is collapsed; bound to a file, so switching files resets it
+  const [revealedFor, setRevealedFor] = useState<string | null>(null);
+  const temporarilyRevealed = revealedFor === filename;
 
   // When execution starts, temporarily reveal the console without altering the global persistent setting
-  useEffect(() => {
-    if (isRunning) {
-      setTemporarilyRevealed(true);
-    }
-  }, [isRunning]);
+  const [wasRunning, setWasRunning] = useState(false);
+  if (isRunning !== wasRunning) {
+    setWasRunning(isRunning);
+    if (isRunning) setRevealedFor(filename);
+  }
 
   // If propIsCollapsed is controlled, respect it; otherwise respect global setting adjusted by temporary reveal
   const isCollapsed =
@@ -69,15 +65,15 @@ export function JsConsole({
   const handleToggle = useCallback(() => {
     if (propOnToggleCollapse) {
       propOnToggleCollapse();
-      setTemporarilyRevealed(false);
+      setRevealedFor(null);
       return;
     }
 
     if (!isCollapsed) {
-      setTemporarilyRevealed(false);
+      setRevealedFor(null);
       setConsoleCollapsed(true);
     } else {
-      setTemporarilyRevealed(false);
+      setRevealedFor(null);
       setConsoleCollapsed(false);
     }
   }, [isCollapsed, propOnToggleCollapse, setConsoleCollapsed]);

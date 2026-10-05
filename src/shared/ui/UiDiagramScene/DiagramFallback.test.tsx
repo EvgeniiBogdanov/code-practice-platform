@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { expect, it, vi } from "vitest";
 import { DiagramFallback as UiDiagramScene } from "./DiagramFallback";
-import type { DiagramNode } from "./diagram-scene";
+import type { DiagramNode } from "./diagramScene";
 const nodes: readonly DiagramNode[] = [
   { id: "a", value: 1, column: 0, row: 0, state: "active" },
   { id: "b", value: 2, column: 1, row: 0 },

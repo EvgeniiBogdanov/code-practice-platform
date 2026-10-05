@@ -1,6 +1,6 @@
 import { useId, type JSX } from "react";
 import { clsx } from "clsx";
-import type { UiRangeProps } from "../model/ui-range";
+import type { UiRangeProps } from "../model/uiRange";
 import styles from "./UiRange.module.css";
 
 export const UiRange = ({ className, id, ...props }: UiRangeProps): JSX.Element => {

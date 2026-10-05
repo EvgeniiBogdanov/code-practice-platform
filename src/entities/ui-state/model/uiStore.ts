@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import type { UIState } from "../types";
-import { applyTheme, getThemeSettings, resolveTheme, SYSTEM_THEME_QUERY } from "./theme-settings";
+import { applyTheme, getThemeSettings, resolveTheme, SYSTEM_THEME_QUERY } from "./themeSettings";
 
 export const MIN_FONT_SIZE = 14;
 export const MAX_FONT_SIZE = 24;

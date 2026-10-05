@@ -2,7 +2,7 @@ import { render } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { SignatureHelpCard } from "./SignatureHelpCard";
 
-vi.mock("../../model/use-content-widget-layout", () => ({
+vi.mock("../../model/useContentWidgetLayout", () => ({
   useContentWidgetLayout: () => ({ ref: { current: null }, placement: "top", left: 10 }),
 }));
 

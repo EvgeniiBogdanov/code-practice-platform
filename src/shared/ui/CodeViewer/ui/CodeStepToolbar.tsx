@@ -3,7 +3,7 @@ import { FileCode } from "lucide-react";
 import { CopyButton } from "../../CopyButton";
 import { PanelToolbar } from "../../PanelToolbar";
 import { ZoomControls } from "../../ZoomControls";
-import type { CodeStepViewerProps } from "../model/code-step-viewer";
+import type { CodeStepViewerProps } from "../model/codeStepViewer";
 import styles from "./CodeStepViewer.module.css";
 
 export const CodeStepToolbar = ({

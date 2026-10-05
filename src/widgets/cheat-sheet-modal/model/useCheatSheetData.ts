@@ -1,4 +1,4 @@
-import { useState, useMemo, useDeferredValue, useEffect } from "react";
+import { useState, useMemo, useDeferredValue } from "react";
 import { useLocation } from "@tanstack/react-router";
 import { useUIStore } from "@/entities/ui-state";
 import { CHEAT_SHEET_DATA, SECTION_CHEAT_SHEETS } from "@/shared/data/cheatSheetData";
@@ -30,17 +30,6 @@ export function useCheatSheetData(cheatSearch: string): UseCheatSheetDataReturn 
   const deferredSearch = useDeferredValue(cheatSearch);
   const currentSectionConfig = sectionConfigMap[activeSection] || sectionConfigMap.react;
 
-  useEffect(() => {
-    if (isOpen) {
-      const targetSection = getCheatSheetSectionFromPath(location.pathname);
-      setActiveSection(targetSection);
-      const cfg = sectionConfigMap[targetSection];
-      if (cfg?.defaultCategory) {
-        setActiveCategory(cfg.defaultCategory);
-      }
-    }
-  }, [isOpen, location.pathname]);
-
   const handleSelectSection = (sec: SectionType): void => {
     setActiveSection(sec);
     const cfg = sectionConfigMap[sec];
@@ -48,6 +37,15 @@ export function useCheatSheetData(cheatSearch: string): UseCheatSheetDataReturn 
       setActiveCategory(cfg.defaultCategory);
     }
   };
+
+  // Opening the modal, or navigating while it is open, follows the current route
+  const followedPathname = isOpen ? location.pathname : null;
+  const [syncedPathname, setSyncedPathname] = useState(followedPathname);
+  if (followedPathname !== syncedPathname) {
+    setSyncedPathname(followedPathname);
+    if (followedPathname !== null)
+      handleSelectSection(getCheatSheetSectionFromPath(followedPathname));
+  }
 
   const filteredData = useMemo((): CheatItem[] => {
     const rawData = cheatDataMap[activeCategory] || [];

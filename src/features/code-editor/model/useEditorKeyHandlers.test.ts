@@ -6,7 +6,7 @@ import { IntelliSenseState } from "./useIntelliSense";
 import { CodeHistoryState } from "./useCodeHistory";
 import { MultiCursorState } from "./useMultiCursor";
 
-// Mirrors use-code-editor: an edit updates the document and records history.
+// Mirrors useCodeEditor: an edit updates the document and records history.
 const createApplyEdit = (onChange: (code: string) => void, history: CodeHistoryState) =>
   vi.fn((code: string, cursor: number) => {
     onChange(code);

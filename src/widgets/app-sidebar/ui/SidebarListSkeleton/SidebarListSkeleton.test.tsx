@@ -2,9 +2,9 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { loadTaskSection } from "@/entities/task/catalog";
 import { useUIStore } from "@/entities/ui-state";
-import { groupAlgoTasks } from "../../lib/group-algo-tasks";
-import { groupJsTasks } from "../../lib/group-js-tasks";
-import { getReactCategories } from "../../lib/get-react-categories";
+import { groupAlgoTasks } from "../../lib/groupAlgoTasks";
+import { groupJsTasks } from "../../lib/groupJsTasks";
+import { getReactCategories } from "../../lib/getReactCategories";
 import { SidebarListSkeleton } from "./SidebarListSkeleton";
 
 describe("SidebarListSkeleton", () => {

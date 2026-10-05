@@ -1,5 +1,5 @@
 export * from "./model/types";
-export * from "./model/use-code-editor";
+export * from "./model/useCodeEditor";
 export * from "./model/useCodeHistory";
 export * from "./model/useIntelliSense";
 export * from "./model/useHoverSignatures";
@@ -12,6 +12,6 @@ export * from "./ui/HoverSignatureCard";
 export * from "./ui/FileTabs";
 export * from "./ui/CodeEditor";
 export * from "./model/useMultiCursor";
-export * from "./lib/line-operations";
-export * from "./lib/multi-cursor-operations";
-export * from "./lib/comment-operations";
+export * from "./lib/lineOperations";
+export * from "./lib/multiCursorOperations";
+export * from "./lib/commentOperations";

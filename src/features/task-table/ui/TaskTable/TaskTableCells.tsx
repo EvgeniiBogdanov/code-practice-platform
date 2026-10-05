@@ -3,7 +3,7 @@ import { Calendar, Check, Minus, RotateCcw, X } from "lucide-react";
 import { formatLastSolved, formatNextReviewDate, isTaskDue } from "@/entities/review";
 import type { ReviewItem } from "@/entities/review";
 import { Badge, Tooltip } from "@/shared/ui";
-import type { TaskRowStatus } from "../../model/task-row-tone";
+import type { TaskRowStatus } from "../../model/taskRowTone";
 import styles from "./TaskTable.module.css";
 
 interface TaskTableCellProps {

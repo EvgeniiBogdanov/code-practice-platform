@@ -12,13 +12,13 @@ import {
   filterLocalCompletions,
   mergeCompletions,
   rankSemanticCompletions,
-} from "../lib/semantic-completions";
+} from "../lib/semanticCompletions";
 import {
   getCaretCoordinates,
   calculatePopupPosition,
   PopupPositionResult,
   type PopupPlacement,
-} from "../lib/caret-coordinates";
+} from "../lib/caretCoordinates";
 
 export interface IntelliSenseState {
   isOpen: boolean;
@@ -89,12 +89,8 @@ export function useIntelliSense(
   // best match (first item) stays selected, as in VS Code.
   const userSelectedRef = useRef(false);
 
-  const closeCompletions = useCallback(() => {
+  const resetSession = useCallback(() => {
     completionRequest.current++;
-    setIsOpen(false);
-    setItems([]);
-    setSelectedIndex(0);
-    setWord("");
     itemsRef.current = [];
     selectedIndexRef.current = 0;
     userSelectedRef.current = false;
@@ -102,9 +98,25 @@ export function useIntelliSense(
     placementRef.current = undefined;
   }, []);
 
-  useEffect(() => {
-    closeCompletions();
-  }, [filepath, closeCompletions]);
+  const resetList = useCallback(() => {
+    setIsOpen(false);
+    setItems([]);
+    setSelectedIndex(0);
+    setWord("");
+  }, []);
+
+  const closeCompletions = useCallback(() => {
+    resetSession();
+    resetList();
+  }, [resetSession, resetList]);
+
+  // Switching files closes the list: the state is dropped during render, the session refs in an effect.
+  const [listFilepath, setListFilepath] = useState(filepath);
+  if (listFilepath !== filepath) {
+    setListFilepath(filepath);
+    resetList();
+  }
+  useEffect(resetSession, [filepath, resetSession]);
 
   const openCompletions = useCallback(
     (code: string, cursorPos: number, textarea: HTMLTextAreaElement, force = false) => {

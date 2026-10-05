@@ -2,8 +2,8 @@ import React from "react";
 import { clsx } from "clsx";
 import { SECTIONS_CONFIG } from "@/entities/task/meta";
 import { GaugeIndicator, MetaBadge, UiNumberScramble } from "@/shared/ui";
-import { SHOWCASE_TASKS } from "../../config/showcase-tasks";
-import { getShowcaseProbability } from "../../lib/showcase-probability";
+import { SHOWCASE_TASKS } from "../../config/showcaseTasks";
+import { getShowcaseProbability } from "../../lib/showcaseProbability";
 import styles from "./SectionPreviews.module.css";
 import local from "./ProbabilityBoard.module.css";
 

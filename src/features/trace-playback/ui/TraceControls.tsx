@@ -1,7 +1,7 @@
-import { PLAYBACK_SPEEDS } from "../config/playback-speeds";
+import { PLAYBACK_SPEEDS } from "../config/playbackSpeeds";
 import type { JSX } from "react";
 import { UiRange, UiSelect } from "@/shared/ui";
-import type { TraceControlsProps } from "../model/trace-controls";
+import type { TraceControlsProps } from "../model/traceControls";
 import { TraceTransport } from "./TraceTransport";
 import styles from "./TraceControls.module.css";
 

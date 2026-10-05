@@ -2,7 +2,7 @@ import { clsx } from "clsx";
 import type { JSX } from "react";
 import { Card, ResizableSplitPane } from "@/shared/ui";
 import { useUIStore } from "@/entities/ui-state";
-import type { TraceLayoutProps } from "../model/trace-layout";
+import type { TraceLayoutProps } from "../model/traceLayout";
 import styles from "./AlgorithmLab.module.css";
 
 export const TraceLayout = ({ fullscreen, visual, code }: TraceLayoutProps): JSX.Element => {

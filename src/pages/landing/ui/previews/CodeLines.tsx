@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { clsx } from "clsx";
-import { tokenizeSnippet, type CodeToken } from "../../lib/code-tokens";
+import { tokenizeSnippet, type CodeToken } from "../../lib/codeTokens";
 import styles from "./CodeLines.module.css";
 
 export interface CodeLinesProps {

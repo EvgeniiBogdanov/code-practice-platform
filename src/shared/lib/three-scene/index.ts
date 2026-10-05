@@ -5,6 +5,6 @@ export {
   makeFaceLabel,
   disposeLabel,
   disposeSceneObject,
-} from "./scene-assets";
-export type { ScenePalette } from "./scene-assets";
-export { ensureBackdropGrid, syncBackdropGrid } from "./backdrop-grid";
+} from "./sceneAssets";
+export type { ScenePalette } from "./sceneAssets";
+export { ensureBackdropGrid, syncBackdropGrid } from "./backdropGrid";

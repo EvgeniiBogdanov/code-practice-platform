@@ -3,7 +3,7 @@ import { ArrowRight, LoaderCircle } from "lucide-react";
 import { clsx } from "clsx";
 import { ACCOUNT_NAME_MAX_LENGTH, getAccountNameError, useLocalAccountStore } from "@/shared/auth";
 import { Button, Input } from "@/shared/ui";
-import type { WorkspaceTarget } from "../../model/create-account-dialog";
+import type { WorkspaceTarget } from "../../model/createAccountDialog";
 import styles from "./CreateAccount.module.css";
 
 const STORAGE_ERROR =

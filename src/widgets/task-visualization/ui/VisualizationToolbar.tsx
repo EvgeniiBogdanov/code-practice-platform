@@ -1,6 +1,6 @@
 import type { JSX } from "react";
 import { useUIStore } from "@/entities/ui-state";
-import type { AlgorithmLabToolbarProps } from "../model/visualization-toolbar";
+import type { AlgorithmLabToolbarProps } from "../model/visualizationToolbar";
 import { AlgorithmLabToolbar } from "./AlgorithmLabToolbar";
 
 export const VisualizationToolbar = (props: AlgorithmLabToolbarProps): JSX.Element => {

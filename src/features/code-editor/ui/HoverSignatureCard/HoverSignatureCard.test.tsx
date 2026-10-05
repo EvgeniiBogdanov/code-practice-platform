@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import "@testing-library/jest-dom/vitest";
 import { HoverSignatureCard } from "./HoverSignatureCard";
 
-vi.mock("../../model/use-content-widget-layout", () => ({
+vi.mock("../../model/useContentWidgetLayout", () => ({
   useContentWidgetLayout: () => ({ ref: { current: null }, placement: "top", left: 10 }),
 }));
 

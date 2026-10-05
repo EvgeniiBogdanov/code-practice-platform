@@ -1,2 +1,2 @@
-export * from "./sanitize-assistant-name";
-export * from "./editor-hotkeys";
+export * from "./sanitizeAssistantName";
+export * from "./editorHotkeys";

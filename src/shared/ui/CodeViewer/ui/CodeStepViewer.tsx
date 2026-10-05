@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 import { clsx } from "clsx";
-import type { CodeStepViewerProps } from "../model/code-step-viewer";
-import { useCodeStepViewer } from "../model/use-code-step-viewer";
+import type { CodeStepViewerProps } from "../model/codeStepViewer";
+import { useCodeStepViewer } from "../model/useCodeStepViewer";
 import { CodeStepToolbar } from "./CodeStepToolbar";
 import styles from "./CodeStepViewer.module.css";
 

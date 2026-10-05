@@ -9,4 +9,4 @@ export * from "./lib";
 export * from "./const/languages";
 
 export { CodeStepViewer } from "./ui/CodeStepViewer";
-export type { CodeStepViewerProps } from "./model/code-step-viewer";
+export type { CodeStepViewerProps } from "./model/codeStepViewer";

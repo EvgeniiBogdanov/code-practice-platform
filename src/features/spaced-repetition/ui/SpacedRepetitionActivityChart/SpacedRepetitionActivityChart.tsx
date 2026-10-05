@@ -6,7 +6,7 @@ import {
   MAX_ACTIVITY_LEVEL,
   type ActivityCell,
   type ActivityLevel,
-} from "../../lib/activity-grid";
+} from "../../lib/activityGrid";
 import styles from "./SpacedRepetitionActivityChart.module.css";
 
 export interface SpacedRepetitionActivityChartProps {

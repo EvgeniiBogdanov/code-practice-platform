@@ -7,7 +7,7 @@ import { Tooltip } from "@/shared/ui";
 import { SidebarWorkspaceHeader } from "./SidebarWorkspaceHeader";
 import { SidebarHomeSkeleton } from "./SidebarHomeOverview/SidebarHomeSkeleton";
 import { SidebarListSkeleton } from "./SidebarListSkeleton";
-import { useSidebarKeyboardNav } from "../model/use-sidebar-keyboard-nav";
+import { useSidebarKeyboardNav } from "../model/useSidebarKeyboardNav";
 import styles from "./AppSidebar.module.css";
 
 const SidebarHomeOverview = lazy(() =>
@@ -105,13 +105,6 @@ export const AppSidebar = ({ className }: AppSidebarProps): React.JSX.Element =>
       document.documentElement.style.setProperty("--sidebar-width", `${displayedSidebarWidth}px`);
     }
   }, [displayedSidebarWidth]);
-
-  useEffect(() => {
-    if (!isResizing) {
-      draftWidthRef.current = sidebarWidth;
-      setDraftSidebarWidth(sidebarWidth);
-    }
-  }, [isResizing, sidebarWidth]);
 
   return (
     <aside

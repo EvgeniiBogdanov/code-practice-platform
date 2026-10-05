@@ -1,7 +1,7 @@
 import { memo, useId, type JSX } from "react";
 import { clsx } from "clsx";
 import { StackFrame } from "./StackFrame";
-import type { UiStackSceneProps } from "./stack-scene";
+import type { UiStackSceneProps } from "./stackScene";
 import styles from "./UiStackScene.module.css";
 
 /** SVG scheme of the same frame, shown when WebGL is unavailable. */

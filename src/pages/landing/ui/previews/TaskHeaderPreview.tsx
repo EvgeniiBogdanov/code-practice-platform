@@ -2,7 +2,7 @@ import React from "react";
 import { CheckCircle2, ChevronRight } from "lucide-react";
 import { TaskMetaBadges } from "@/entities/task";
 import { JavaScriptIcon, UiKbd } from "@/shared/ui";
-import { DEBOUNCE_TASK } from "../../config/showcase-tasks";
+import { DEBOUNCE_TASK } from "../../config/showcaseTasks";
 import { PreviewCard } from "./PreviewCard";
 import styles from "./HeroPreviews.module.css";
 

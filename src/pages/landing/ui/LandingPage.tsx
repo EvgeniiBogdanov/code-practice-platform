@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { safeDecodeURI } from "@/shared/lib/url";
-import { useSceneScroll } from "../lib/use-scene-scroll";
+import { useSceneScroll } from "../lib/useSceneScroll";
 import { CatalogSection } from "./CatalogSection/CatalogSection";
 import { CreateAccountDialog } from "./CreateAccount/CreateAccountDialog";
 import { EditorSection } from "./EditorSection/EditorSection";

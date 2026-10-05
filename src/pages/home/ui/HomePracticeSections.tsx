@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import { FolderGit2, Brain } from "lucide-react";
 import { JavaScriptIcon, TypeScriptIcon, ReactIcon } from "@/shared/ui";
-import { HomeStats } from "../model/use-home-stats";
+import { HomeStats } from "../model/useHomeStats";
 import { HomeSectionCard } from "./HomeSectionCard";
 import styles from "./HomePracticeSections.module.css";
 

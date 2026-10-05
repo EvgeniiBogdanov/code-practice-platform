@@ -1,8 +1,8 @@
 import { lazy, Suspense, useState, type JSX } from "react";
 import { Button, ErrorBoundary, ExpandablePanel } from "@/shared/ui";
-import type { TaskVisualizationProps } from "../model/visualizer-props";
+import type { TaskVisualizationProps } from "../model/visualizerProps";
 import { VisualizationSkeleton } from "./VisualizationSkeleton";
-import { loadAlgorithmLab } from "../lib/load-algorithm-lab";
+import { loadAlgorithmLab } from "../lib/loadAlgorithmLab";
 import styles from "./AlgorithmLab.module.css";
 
 const LazyLab = lazy(() => loadAlgorithmLab().then((module) => ({ default: module.AlgorithmLab })));

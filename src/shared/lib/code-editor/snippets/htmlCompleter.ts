@@ -5,9 +5,9 @@ import {
   TextEdit,
   CompletionItemKind,
 } from "vscode-html-languageservice";
-import { getMarkupContext } from "../markup-context";
+import { getMarkupContext } from "../markupContext";
 import { fuzzyMatch } from "../fuzzyMatcher";
-import { MARKUP_TAGS } from "../languages/markup-tags";
+import { MARKUP_TAGS } from "../languages/markupTags";
 import { HTML_SNIPPETS } from "../languages/htmlKnowledge";
 import type { CompletionItem } from "../snippetsData";
 

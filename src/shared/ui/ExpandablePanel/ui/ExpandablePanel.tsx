@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, type JSX } from "react";
 import { clsx } from "clsx";
-import type { ExpandablePanelProps } from "../model/expandable-panel";
+import type { ExpandablePanelProps } from "../model/expandablePanel";
 import styles from "./ExpandablePanel.module.css";
 
 // A single DOM tree preserves expensive children when entering the browser's top layer.

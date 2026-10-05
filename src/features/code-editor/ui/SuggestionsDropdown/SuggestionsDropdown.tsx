@@ -14,8 +14,8 @@ import {
 } from "lucide-react";
 import { UiKbd } from "@/shared/ui";
 import { CompletionItem, fuzzyScore } from "@/shared/lib/code-editor";
-import { getSuggestionOptionId } from "../../lib/suggestion-option-id";
-import { describeCompletionKind, type CompletionIcon } from "../../lib/completion-kind";
+import { getSuggestionOptionId } from "../../lib/suggestionOptionId";
+import { describeCompletionKind, type CompletionIcon } from "../../lib/completionKind";
 import styles from "./SuggestionsDropdown.module.css";
 
 export interface SuggestionsDropdownProps {

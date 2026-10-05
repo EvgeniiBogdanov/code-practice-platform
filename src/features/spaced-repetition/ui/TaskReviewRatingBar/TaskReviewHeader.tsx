@@ -9,7 +9,7 @@ import {
   DEFAULT_ASSISTANT_NAME,
 } from "@/entities/review";
 import { Task } from "@/entities/task";
-import { getRobotMessage } from "../../lib/get-robot-message";
+import { getRobotMessage } from "../../lib/getRobotMessage";
 import { getOverdueDays } from "../../lib/robot-messages";
 import styles from "./TaskReviewRatingBar.module.css";
 
