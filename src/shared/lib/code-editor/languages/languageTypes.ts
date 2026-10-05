@@ -8,6 +8,8 @@ export type LanguageId =
   | "typescript"
   | "typescriptreact"
   | "css"
+  | "scss"
+  | "less"
   | "html"
   | "json"
   | "sql"

@@ -9,52 +9,30 @@ import { TS_GENERIC_TYPE_SUGGESTIONS } from "../languages/typescriptKnowledge";
 import { isTypeScriptGenericContext, CompletionItem } from "../snippetsData";
 import { LanguageCapabilities } from "../languages/languageTypes";
 
+/**
+ * Instant members of well-known globals. Any other receiver is typed by the TypeScript
+ * service: guessing from its name (`data`, `e`, `value`) offered members it does not have.
+ */
 function resolveCandidateMembers(
   rawReceiver: string,
   capabilities: LanguageCapabilities
 ): Array<{ label: string; insertText: string; detail: string; kind: string }> {
-  const receiverLower = rawReceiver.toLowerCase();
-
-  if (receiverLower === "console") return JS_MEMBER_COMPLETIONS.console;
-  if (receiverLower === "math") return JS_MEMBER_COMPLETIONS.math;
-  if (receiverLower === "json") return JS_MEMBER_COMPLETIONS.json;
-  if (receiverLower === "promise") return JS_MEMBER_COMPLETIONS.promise;
-  if (["e", "event", "evt"].includes(receiverLower)) return JS_MEMBER_COMPLETIONS.event;
-  if (receiverLower === "target") return JS_MEMBER_COMPLETIONS.target;
-
-  if (capabilities.supportsReactHooks) {
-    if (receiverLower === "react") return REACT_MEMBER_COMPLETIONS.react;
-    if (receiverLower === "reactdom") return REACT_MEMBER_COMPLETIONS.reactdom;
+  switch (rawReceiver) {
+    case "console":
+      return JS_MEMBER_COMPLETIONS.console;
+    case "Math":
+      return JS_MEMBER_COMPLETIONS.math;
+    case "JSON":
+      return JS_MEMBER_COMPLETIONS.json;
+    case "Promise":
+      return JS_MEMBER_COMPLETIONS.promise;
+    case "React":
+      return capabilities.supportsReactHooks ? REACT_MEMBER_COMPLETIONS.react : [];
+    case "ReactDOM":
+      return capabilities.supportsReactHooks ? REACT_MEMBER_COMPLETIONS.reactdom : [];
+    default:
+      return [];
   }
-
-  if (
-    rawReceiver === "]" ||
-    /list|items|arr|array|users|todos|tasks|data|rows|elements/i.test(rawReceiver)
-  ) {
-    return [
-      ...JS_MEMBER_COMPLETIONS.array,
-      ...JS_MEMBER_COMPLETIONS.object.filter(
-        (o) => o.label === "hasOwnProperty" || o.label === "toString"
-      ),
-    ];
-  }
-
-  if (/str|string|text|name|title|msg|val|value|url/i.test(rawReceiver)) {
-    return [
-      ...JS_MEMBER_COMPLETIONS.string,
-      ...JS_MEMBER_COMPLETIONS.object.filter(
-        (o) => o.label === "hasOwnProperty" || o.label === "toString"
-      ),
-    ];
-  }
-
-  return [
-    ...JS_MEMBER_COMPLETIONS.array,
-    ...JS_MEMBER_COMPLETIONS.string.filter(
-      (s) => !["length", "slice", "includes"].includes(s.label)
-    ),
-    ...JS_MEMBER_COMPLETIONS.object,
-  ];
 }
 
 export function getMemberCompletions(

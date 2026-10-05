@@ -63,24 +63,6 @@ describe("SuggestionsDropdown", () => {
     expect(onSelect).toHaveBeenCalledWith(mockItems[2]);
   });
 
-  it("calls onHover with index on mouse enter", () => {
-    const onHover = vi.fn();
-    render(
-      <SuggestionsDropdown
-        items={mockItems}
-        selectedIndex={0}
-        position={{ top: 50, left: 100 }}
-        onSelect={vi.fn()}
-        onHover={onHover}
-      />
-    );
-
-    const filterItem = screen.getByText("filter");
-    fireEvent.mouseEnter(filterItem);
-
-    expect(onHover).toHaveBeenCalledWith(1);
-  });
-
   it("applies placement='top' styles and transform to position above text", () => {
     const { container } = render(
       <SuggestionsDropdown
@@ -115,5 +97,93 @@ describe("SuggestionsDropdown", () => {
     expect(dropdown.style.left).toBe("30px");
     expect(dropdown.style.transform).toBe("none");
     expect(dropdown.style.maxHeight).toBe("220px");
+  });
+});
+
+describe("SuggestionsDropdown accessibility", () => {
+  const items: CompletionItem[] = ["map", "filter"].map((label) => ({
+    prefix: label,
+    label,
+    detail: "",
+    insertText: label,
+    kind: "method",
+  }));
+
+  it("is a listbox of options with the selected one marked", () => {
+    render(
+      <SuggestionsDropdown
+        id="list"
+        items={items}
+        selectedIndex={1}
+        position={{ top: 0, left: 0 }}
+        onSelect={vi.fn()}
+      />
+    );
+    expect(screen.getByRole("listbox", { name: "Подсказки" })).toHaveAttribute("id", "list");
+    const options = screen.getAllByRole("option");
+    expect(options.map((option) => option.id)).toEqual(["list-option-0", "list-option-1"]);
+    expect(options.map((option) => option.getAttribute("aria-selected"))).toEqual([
+      "false",
+      "true",
+    ]);
+  });
+});
+
+describe("SuggestionsDropdown presentation", () => {
+  const items: CompletionItem[] = [
+    {
+      prefix: "map",
+      label: "map",
+      detail: "Array.prototype.map()",
+      insertText: "map",
+      kind: "method",
+    },
+    { prefix: "name", label: "name", detail: "", insertText: "name", kind: "property" },
+    {
+      prefix: "useState",
+      label: "useState",
+      detail: "Auto-import from 'react'",
+      insertText: "useState",
+      kind: "function",
+      autoImport: { symbol: "useState", module: "react", isDefault: false },
+    },
+  ];
+  const renderList = (selectedIndex: number): ReturnType<typeof render> =>
+    render(
+      <SuggestionsDropdown
+        items={items}
+        selectedIndex={selectedIndex}
+        position={{ top: 0, left: 0 }}
+        onSelect={vi.fn()}
+      />
+    );
+
+  it("names the kind of each item and the module of an auto-import", () => {
+    renderList(0);
+    expect(screen.getByText("Метод")).toBeInTheDocument();
+    expect(screen.getByText("Свойство")).toBeInTheDocument();
+    expect(screen.getByText("react")).toBeInTheDocument();
+  });
+
+  it("describes the selected item in the footer and falls back to its kind", () => {
+    const { container, rerender } = renderList(0);
+    const footer = (): string => container.querySelector("[class*='footer']")?.textContent ?? "";
+    expect(footer()).toContain("Array.prototype.map()");
+
+    rerender(
+      <SuggestionsDropdown
+        items={items}
+        selectedIndex={1}
+        position={{ top: 0, left: 0 }}
+        onSelect={vi.fn()}
+      />
+    );
+    expect(footer()).toContain("Свойство");
+  });
+
+  it("reminds of the navigation keys without adding them to the options", () => {
+    renderList(0);
+    expect(screen.getAllByRole("option")).toHaveLength(3);
+    expect(screen.getByText("Tab")).toBeInTheDocument();
   });
 });

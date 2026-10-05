@@ -14,7 +14,7 @@
 <br />
 
 [![CI](https://img.shields.io/github/actions/workflow/status/EvgeniiBogdanov/code-practice-platform/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/EvgeniiBogdanov/code-practice-platform/actions/workflows/ci.yml)
-[![Version](https://img.shields.io/badge/version-2.4.22-black?style=flat-square)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.4.23-black?style=flat-square)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-source--available-black?style=flat-square)](LICENSE.md)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=white)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?style=flat-square&logo=typescript&logoColor=white)](tsconfig.json)
@@ -114,6 +114,7 @@ src/
 | <kbd>⇧</kbd> <kbd>⌥</kbd> <kbd>↑</kbd> / <kbd>↓</kbd> | <kbd>Shift</kbd> <kbd>Alt</kbd> <kbd>↑</kbd> / <kbd>↓</kbd> | Дублировать строку или блок         |
 | <kbd>⇧</kbd> <kbd>⌥</kbd> <kbd>F</kbd>                | <kbd>Ctrl</kbd> <kbd>Alt</kbd> <kbd>L</kbd>                 | Форматировать через Prettier        |
 | <kbd>⌃</kbd> <kbd>Space</kbd>                         | <kbd>Ctrl</kbd> <kbd>Space</kbd>                            | Подсказки IntelliSense              |
+| <kbd>⌘</kbd> <kbd>⇧</kbd> <kbd>Space</kbd>            | <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>Space</kbd>           | Подсказка параметров функции        |
 | <kbd>⌘</kbd> <kbd>/</kbd>                             | <kbd>Ctrl</kbd> <kbd>/</kbd>                                | Строчный комментарий                |
 | <kbd>F11</kbd>                                        | <kbd>F11</kbd>                                              | Полноэкранный редактор              |
 | <kbd>Esc</kbd>                                        | <kbd>Esc</kbd>                                              | Закрыть окно, подсказку или поиск   |

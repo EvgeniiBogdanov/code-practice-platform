@@ -1,0 +1,41 @@
+/*
+ * Mirrors the document text inside the highlight layer: it inherits its font, padding, tab
+ * size and wrapping, so a mark covers exactly the characters of a range, not the whole token
+ * that the syntax highlighter wraps around them.
+ */
+.layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  white-space: inherit;
+  word-break: inherit;
+  overflow-wrap: inherit;
+  color: transparent;
+  pointer-events: none;
+}
+
+.mark {
+  color: transparent;
+  border-radius: var(--radius-xs);
+}
+
+.find {
+  background: color-mix(in srgb, var(--accent-amber) 28%, transparent);
+}
+
+/* The selected match stays visible while focus is in the search field. */
+.active {
+  background: color-mix(in srgb, var(--accent-amber) 55%, transparent);
+  box-shadow: 0 0 0 1px var(--accent-amber);
+}
+
+/* Extra selections of a multi-cursor edit (Cmd/Ctrl+D). */
+.selection {
+  background: var(--editor-selection-bg, color-mix(in srgb, var(--accent-blue) 28%, transparent));
+  box-shadow: 0 0 0 1px var(--accent-blue);
+}

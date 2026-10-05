@@ -1,5 +1,5 @@
 import { memo, useState } from "react";
-import { Settings, Database, Palette, X, UserRound, LogOut } from "lucide-react";
+import { Settings, Database, Palette, X, UserRound, LogOut, Code2 } from "lucide-react";
 import { clsx } from "clsx";
 import { useLocalAccountStore } from "@/shared/auth";
 import { Modal } from "@/shared/ui";
@@ -7,16 +7,23 @@ import { useSettingsModal } from "../model/useSettingsModal";
 import { SettingsAccountSection } from "./SettingsAccountSection";
 import { SettingsResetSection } from "./SettingsResetSection";
 import { SettingsCustomizationSection } from "./SettingsCustomizationSection";
+import { SettingsEditorSection } from "./SettingsEditorSection";
 import { SettingsConfirmModals } from "./SettingsConfirmModals";
+import { SettingsSignOutConfirm } from "./SettingsSignOutConfirm";
 import styles from "./SettingsModal.module.css";
 
-export type SettingsTabType = "account" | "data" | "customization";
+export type SettingsTabType = "account" | "data" | "customization" | "editor";
 
 const TAB_COPY: Record<SettingsTabType, { title: string; subtitle: string }> = {
   account: { title: "Аккаунт", subtitle: "Имя локального профиля" },
   customization: {
     title: "Кастомизация",
     subtitle: "Тема оформления, элементы интерфейса и персонализация помощника",
+  },
+  editor: {
+    title: "Редактор кода",
+    subtitle:
+      "Общие настройки редактора для всех задач: шрифт, перенос строк, подсказки и горячие клавиши",
   },
   data: {
     title: "Данные приложения",
@@ -40,6 +47,8 @@ export const SettingsModal = memo(() => {
     setResetUIConfirmOpen,
     resetAllConfirmOpen,
     setResetAllConfirmOpen,
+    signOutConfirmOpen,
+    setSignOutConfirmOpen,
     handleResetSectionReviews,
     handleResetAllReviews,
     handleResetUISettings,
@@ -60,6 +69,15 @@ export const SettingsModal = memo(() => {
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         size="xl"
+        // One Escape closes one window: while a confirmation is open it belongs to that dialog.
+        closeOnEscape={
+          !(
+            resetReviewsConfirmOpen ||
+            resetUIConfirmOpen ||
+            resetAllConfirmOpen ||
+            signOutConfirmOpen
+          )
+        }
         customHeader={<></>}
         className={styles.settingsModalCard}
         contentClassName={styles.settingsModalBody}
@@ -99,6 +117,14 @@ export const SettingsModal = memo(() => {
                 </button>
                 <button
                   type="button"
+                  className={clsx(styles.navBtn, activeTab === "editor" && styles.active)}
+                  onClick={() => setSelectedTab("editor")}
+                >
+                  <Code2 size={15} className={styles.navBtnIcon} />
+                  <span className={styles.navBtnLabel}>Редактор кода</span>
+                </button>
+                <button
+                  type="button"
                   className={clsx(styles.navBtn, activeTab === "data" && styles.active)}
                   onClick={() => setSelectedTab("data")}
                 >
@@ -113,7 +139,7 @@ export const SettingsModal = memo(() => {
               <button
                 type="button"
                 className={clsx(styles.navBtn, styles.signOutBtn)}
-                onClick={signOut}
+                onClick={() => setSignOutConfirmOpen(true)}
               >
                 <LogOut size={15} className={styles.navBtnIcon} />
                 <span className={styles.navBtnLabel}>Выйти из профиля</span>
@@ -150,9 +176,22 @@ export const SettingsModal = memo(() => {
               />
             )}
             {activeTab === "customization" && <SettingsCustomizationSection />}
+            {activeTab === "editor" && <SettingsEditorSection />}
           </div>
         </main>
       </Modal>
+
+      {accountName && (
+        <SettingsSignOutConfirm
+          isOpen={signOutConfirmOpen}
+          accountName={accountName}
+          onConfirm={() => {
+            setSignOutConfirmOpen(false);
+            signOut();
+          }}
+          onClose={() => setSignOutConfirmOpen(false)}
+        />
+      )}
 
       <SettingsConfirmModals
         activeSection={activeSection}

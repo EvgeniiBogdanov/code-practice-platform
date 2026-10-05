@@ -6,6 +6,13 @@ import { HighlightOptions, escapeHtml } from "./types";
 import { highlightCSS } from "./cssHighlighter";
 import { highlightJS } from "./jsHighlighter";
 
+/** Quoted or unquoted (`id=x`) attribute value. */
+const ATTRIBUTE_VALUE = /^(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|[^\s"'=<>`]+)/;
+const SCRIPT_TYPE = /\btype\s*=\s*["']?([^"'\s>]*)/i;
+/** `<script>` types that hold code; others (`text/template`, `speculationrules`) are data. */
+const JS_SCRIPT_TYPE =
+  /^(?:module|(?:text|application)\/(?:javascript|ecmascript|jsx|babel|typescript))$/i;
+
 export function highlightHTML(code: string, options: HighlightOptions = {}): string {
   if (!code) return "";
 
@@ -110,7 +117,11 @@ export function highlightHTML(code: string, options: HighlightOptions = {}): str
       const closeIdx = rest.toLowerCase().indexOf("</script>");
       if (closeIdx !== -1) {
         const jsContent = rest.substring(0, closeIdx);
-        html += highlightJS(jsContent, embeddedOptions(currentIndex));
+        const scriptType = SCRIPT_TYPE.exec(scriptOpenMatch[1])?.[1];
+        html +=
+          !scriptType || JS_SCRIPT_TYPE.test(scriptType) || /json/i.test(scriptType)
+            ? highlightJS(jsContent, embeddedOptions(currentIndex))
+            : escapeHtml(jsContent);
         currentIndex += jsContent.length;
         rest = rest.slice(closeIdx);
         html += `<span class="hl-tag-punct${selectionClass(currentIndex, 2)}">&lt;/</span><span class="hl-tag${selectionClass(currentIndex + 2, 6)}">script</span><span class="hl-tag-punct${selectionClass(currentIndex + 8, 1)}">&gt;</span>`;
@@ -161,7 +172,7 @@ export function highlightHTML(code: string, options: HighlightOptions = {}): str
             rest = rest.slice(1);
 
             // Check for attribute value string
-            const strMatch = /^("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/.exec(rest);
+            const strMatch = ATTRIBUTE_VALUE.exec(rest);
             if (strMatch) {
               const strVal = strMatch[0];
               const strMultiClass = isMultiSelected(currentIndex, strVal.length)
@@ -262,7 +273,7 @@ function highlightHtmlAttributes(
         res += `<span class="hl-op${selectionClass(1)}">=</span>`;
         currentIndex += 1;
         rest = rest.slice(1);
-        const strMatch = /^("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/.exec(rest);
+        const strMatch = ATTRIBUTE_VALUE.exec(rest);
         if (strMatch) {
           res += `<span class="hl-str${selectionClass(strMatch[0].length)}">${escapeHtml(strMatch[0])}</span>`;
           currentIndex += strMatch[0].length;

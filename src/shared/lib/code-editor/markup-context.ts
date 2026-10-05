@@ -1,4 +1,5 @@
 import { getLanguageCapabilities, getLanguageId } from "./languages/languageDetector";
+import { GENERIC_PARAMS_START } from "./highlighter/jsHighlightRules";
 
 export const HTML_VOID_TAGS = new Set([
   "area",
@@ -49,7 +50,8 @@ export const getMarkupContext = (code: string, filepath: string): MarkupContext 
     textStart = -1;
   };
   const expressions: Array<{ mode: "text" | "tag"; depth: number; tagStart: number }> = [];
-  const templateExpressions: Array<{ depth: number }> = [];
+  // `level` is the number of open JSX expressions when the `${` was entered.
+  const templateExpressions: Array<{ depth: number; level: number }> = [];
   const roots: number[] = [];
   let tagStart = -1;
   let typeDepth = 0;
@@ -72,7 +74,7 @@ export const getMarkupContext = (code: string, filepath: string): MarkupContext 
     }
     if (quote) {
       if (quote === "`" && ch === "$" && next === "{") {
-        templateExpressions.push({ depth: 1 });
+        templateExpressions.push({ depth: 1, level: expressions.length });
         quote = "";
         previous = "";
         i += 2;
@@ -127,7 +129,10 @@ export const getMarkupContext = (code: string, filepath: string): MarkupContext 
         i++;
         continue;
       }
-      const expression = expressions.at(-1);
+      // The innermost of `{…}` in markup and `${…}` in a template owns the braces.
+      const template = templateExpressions.at(-1);
+      const templateActive = template !== undefined && template.level === expressions.length;
+      const expression = templateActive ? undefined : expressions.at(-1);
       if (expression && ch === "{") expression.depth++;
       if (expression && ch === "}" && --expression.depth === 0) {
         mode = expression.mode;
@@ -137,7 +142,7 @@ export const getMarkupContext = (code: string, filepath: string): MarkupContext 
         i++;
         continue;
       }
-      const templateExpression = expression ? undefined : templateExpressions.at(-1);
+      const templateExpression = templateActive ? template : undefined;
       if (templateExpression && ch === "{") templateExpression.depth++;
       if (templateExpression && ch === "}" && --templateExpression.depth === 0) {
         templateExpressions.pop();
@@ -205,7 +210,7 @@ export const getMarkupContext = (code: string, filepath: string): MarkupContext 
     ) {
       if (mode === "text") closeText(i);
       // TSX generic arrow parameters are not markup.
-      if (mode === "code" && /^<[\w$]+\s*(?:,|extends\b)/.test(code.slice(i))) {
+      if (mode === "code" && GENERIC_PARAMS_START.test(code.slice(i, i + 64))) {
         i++;
         continue;
       }
@@ -223,6 +228,31 @@ export const getMarkupContext = (code: string, filepath: string): MarkupContext 
     openTags,
     textRanges,
   };
+};
+
+export interface EmbeddedRegion {
+  language: "javascript" | "css";
+  /** Offsets of the code between `<script>`/`<style>` and its closing tag. */
+  start: number;
+  end: number;
+}
+
+/** The `<script>` or `<style>` body containing `pos` in an HTML file, if any. */
+export const getEmbeddedRegion = (
+  code: string,
+  pos: number,
+  filepath: string
+): EmbeddedRegion | null => {
+  if (getLanguageId(filepath) !== "html") return null;
+  for (const match of code.matchAll(/<(script|style)\b[^>]*>([\s\S]*?)(<\/\1\s*>|$)/gi)) {
+    const start = match.index + match[0].length - match[2].length - match[3].length;
+    const end = start + match[2].length;
+    // The caret before a closing tag belongs to the markup, unless the tag is missing.
+    if (pos >= start && (pos < end || !match[3])) {
+      return { language: match[1].toLowerCase() === "script" ? "javascript" : "css", start, end };
+    }
+  }
+  return null;
 };
 
 export interface MarkupEdit {

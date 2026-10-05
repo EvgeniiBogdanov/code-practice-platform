@@ -6,6 +6,9 @@ import {
   changeLineIndentation,
   moveLines,
   duplicateLines,
+  deleteLines,
+  insertLineAbove,
+  getSmartHomeOffset,
 } from "./line-operations";
 
 describe("line-operations", () => {
@@ -190,5 +193,65 @@ describe("line-operations", () => {
       expect(res.newSelectionStart).toBe(14);
       expect(res.newSelectionEnd).toBe(20);
     });
+  });
+});
+
+describe("deleteLines", () => {
+  it("removes the caret's line and keeps the column on the line that moves up", () => {
+    const code = "aaa\nbbbb\ncc";
+    const result = deleteLines(code, 6, 6);
+    expect(result.newCode).toBe("aaa\ncc");
+    // Column 2 of "bbbb" is clamped to the end of "cc".
+    expect(result.newSelectionStart).toBe(6);
+  });
+
+  it("removes every selected line and ignores a selection that ends at a line start", () => {
+    const code = "a\nb\nc\nd";
+    expect(deleteLines(code, 2, 5).newCode).toBe("a\nd");
+    expect(deleteLines(code, 0, 4).newCode).toBe("c\nd");
+  });
+
+  it("deletes the last line and puts the caret on the new last one", () => {
+    const result = deleteLines("one\ntwo", 6, 6);
+    expect(result.newCode).toBe("one");
+    expect(result.newSelectionStart).toBe(2);
+  });
+
+  it("empties a single-line document", () => {
+    expect(deleteLines("only", 2, 2)).toMatchObject({ newCode: "", newSelectionStart: 0 });
+    expect(deleteLines("", 0, 0).changed).toBe(false);
+  });
+});
+
+describe("insertLineAbove", () => {
+  it("opens an indented line above and puts the caret in it", () => {
+    const result = insertLineAbove("if (a) {\n  b();\n}", 12, 12);
+    expect(result.newCode).toBe("if (a) {\n  \n  b();\n}");
+    expect(result.newSelectionStart).toBe(11);
+  });
+
+  it("works on the first line", () => {
+    expect(insertLineAbove("x", 1, 1)).toMatchObject({ newCode: "\nx", newSelectionStart: 0 });
+  });
+});
+
+describe("getSmartHomeOffset", () => {
+  const code = "  const a = 1;\n\n    \nlast";
+
+  it("goes to the first character, then to column 0, then back", () => {
+    expect(getSmartHomeOffset(code, 10)).toBe(2);
+    expect(getSmartHomeOffset(code, 2)).toBe(0);
+    expect(getSmartHomeOffset(code, 0)).toBe(2);
+    expect(getSmartHomeOffset(code, 1)).toBe(2);
+  });
+
+  it("goes to column 0 on empty and whitespace-only lines", () => {
+    expect(getSmartHomeOffset(code, 15)).toBe(15);
+    expect(getSmartHomeOffset(code, 20)).toBe(16);
+  });
+
+  it("works on an unindented line and the last line", () => {
+    expect(getSmartHomeOffset(code, 24)).toBe(21);
+    expect(getSmartHomeOffset(code, 21)).toBe(21);
   });
 });

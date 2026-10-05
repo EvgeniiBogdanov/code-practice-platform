@@ -9,6 +9,8 @@ export interface UIState {
   editorFontSize: number;
   editorWordWrap: boolean;
   editorLinterEnabled: boolean;
+  /** VS Code's `editor.parameterHints` on typing `(` and `,`; off: only Ctrl/Cmd+Shift+Space. */
+  editorParameterHintsOnType: boolean;
   editorSplitRatio: number;
   visualizerSplitRatio: number;
   visualizerZoom: number;
@@ -66,6 +68,7 @@ export interface UIState {
   toggleEditorWordWrap: () => void;
   setEditorLinterEnabled: (enabled: boolean | ((prev: boolean) => boolean)) => void;
   toggleEditorLinterEnabled: () => void;
+  setEditorParameterHintsOnType: (enabled: boolean) => void;
   setEditorSplitRatio: (ratio: number) => void;
   resetEditorSplitRatio: () => void;
   setVisualizerSplitRatio: (ratio: number) => void;

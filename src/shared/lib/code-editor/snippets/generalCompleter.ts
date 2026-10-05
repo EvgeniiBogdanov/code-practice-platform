@@ -76,8 +76,11 @@ export function getGeneralCompletions(
       /=["'][^"']*$/.test(currentLineBeforeCursor) || /=\{[^}]*$/.test(currentLineBeforeCursor);
 
     if (inTagMatch && !isInsideQuoteOrBrace) {
-      const tagName = inTagMatch[1].toLowerCase();
       const propQuery = inTagMatch[2] || "";
+      // A component's props are its own types: DOM props would be guesses, so only
+      // intrinsic tags get the local list and TypeScript answers for the rest.
+      if (/^[A-Z]/.test(inTagMatch[1])) return { word: propQuery || "prop", items: [] };
+      const tagName = inTagMatch[1].toLowerCase();
       const afterPropMatch = lineAfterCursor.match(/^[a-zA-Z0-9_$-]*/);
       const afterPropLen = afterPropMatch ? afterPropMatch[0].length : 0;
       const scoredProps = collectPropsCompletions(tagName, propQuery, cursorIndex, afterPropLen);

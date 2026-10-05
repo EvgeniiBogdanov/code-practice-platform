@@ -1,35 +1,38 @@
-import React, { useState, useMemo, useRef, useEffect, useCallback, useDeferredValue } from "react";
+import React, { useState, useMemo, useRef, useEffect, useLayoutEffect, useCallback } from "react";
 import {
   highlightCode,
   getAutoCloseTagEdit,
   getLinkedTagEdit,
   getLanguageId,
-  lintJavaScriptCode,
-  formatJavaScriptCode,
-  fixTypoInCode,
-  addImportToFile,
-  LintResult,
+  formatCode,
+  findMatchingBracketPair,
 } from "@/shared/lib/code-editor";
 import { useUIStore } from "@/entities/ui-state";
-import { useCodeHistory } from "./useCodeHistory";
-import { useIntelliSense } from "./useIntelliSense";
+import { useCodeHistory, type HistoryEntry } from "./useCodeHistory";
+import { useIntelliSense, type AppliedCompletion } from "./useIntelliSense";
 import { useHoverSignatures } from "./useHoverSignatures";
 import { useEditorKeyHandlers } from "./useEditorKeyHandlers";
 import { useMultiCursor } from "./useMultiCursor";
-import { CodeEditorProps, CursorPosition, TypoInfo, MissingImportInfo } from "./types";
-import { getLanguageInfo } from "../lib/editor-utils";
+import { useFindReplace } from "./use-find-replace";
+import { ApplyEdit, CodeEditorProps, CursorPosition } from "./types";
+import { TAB_SIZE, getLanguageInfo } from "../lib/editor-utils";
+import { matchesKey } from "../lib/editor-key-helpers";
+import { applyTextChanges } from "../lib/text-changes";
 import { useTypeScriptDiagnostics } from "./use-typescript-diagnostics";
+import { useEditorDiagnostics } from "./use-editor-diagnostics";
+import { useSignatureHelp } from "./use-signature-help";
+import { useSnippetSession } from "./use-snippet-session";
+import { useDefinitionNavigation } from "./use-definition-navigation";
+import { useWrappedLineHeights } from "./use-wrapped-line-heights";
+import { getCaretCoordinates } from "../lib/caret-coordinates";
 
-const EMPTY_LINT_RESULT: LintResult = {
-  problems: [],
-  errorCount: 0,
-  warningCount: 0,
-  isValid: true,
-  typoMap: {},
-  missingImportMap: {},
-  allMissingImports: [],
-  unusedImports: new Set<string>(),
-};
+const MODIFIER_KEYS = new Set(["Shift", "Control", "Alt", "Meta"]);
+
+interface PendingSelection {
+  start: number;
+  end: number;
+  direction: "forward" | "backward" | "none";
+}
 
 export const useCodeEditor = ({
   code,
@@ -41,6 +44,7 @@ export const useCodeEditor = ({
   readOnly = false,
   isFullscreen,
   onToggleFullscreen,
+  onFileSelect,
 }: CodeEditorProps) => {
   const fontSize = useUIStore((state) => state.editorFontSize);
   const increaseFontSize = useUIStore((state) => state.increaseEditorFontSize);
@@ -49,15 +53,17 @@ export const useCodeEditor = ({
   const setWordWrap = useUIStore((state) => state.setEditorWordWrap);
   const toggleWordWrap = useUIStore((state) => state.toggleEditorWordWrap);
   const hideTooltips = useUIStore((state) => state.hideTooltips);
+  const parameterHintsOnType = useUIStore((state) => state.editorParameterHintsOnType);
   const isLinterEnabled = useUIStore((state) => state.editorLinterEnabled);
   const setEditorLinterEnabled = useUIStore((state) => state.setEditorLinterEnabled);
   const toggleEditorLinterEnabled = useUIStore((state) => state.toggleEditorLinterEnabled);
-  const deferredCode = useDeferredValue(code);
-  const deferredFiles = useDeferredValue(files);
 
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const highlightRef = useRef<HTMLPreElement>(null);
   const gutterRef = useRef<HTMLDivElement>(null);
+  const pendingSelectionRef = useRef<PendingSelection | null>(null);
+  const firstQuickFixRef = useRef<HTMLButtonElement>(null);
 
   const [internalFullscreen, setInternalFullscreen] = useState(false);
   const effectiveFullscreen = isFullscreen !== undefined ? isFullscreen : internalFullscreen;
@@ -68,7 +74,7 @@ export const useCodeEditor = ({
       setInternalFullscreen((prev) => !prev);
     }
   }, [onToggleFullscreen]);
-  const [cursorPos, setCursorPos] = useState<CursorPosition>({ line: 1, col: 1 });
+  const [cursorPos, setCursorPos] = useState<CursorPosition>({ line: 1, col: 1, offset: 0 });
   const [saveStatus, setSaveStatus] = useState<"saved" | "saving">("saved");
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -93,158 +99,330 @@ export const useCodeEditor = ({
     isLinterEnabled && supportsLanguageService,
     supportsLanguageService
   );
+  const diagnostics = useEditorDiagnostics({
+    problems: isLinterEnabled ? typeScriptAnalysis.problems : null,
+    isPending: typeScriptAnalysis.isPending,
+    cursorOffset: cursorPos.offset,
+    cursorLine: cursorPos.line,
+    filepath,
+    readOnly,
+    requestCodeFixes: typeScriptAnalysis.requestCodeFixes,
+  });
   const intelliSense = useIntelliSense(files, filepath, typeScriptAnalysis.requestCompletions);
-  const hoverSignatures = useHoverSignatures(filepath, typeScriptAnalysis.requestHover);
+  const hoverSignatures = useHoverSignatures(
+    typeScriptAnalysis.requestHover,
+    highlightRef,
+    diagnostics.getProblemsAt
+  );
   const multiCursor = useMultiCursor(filepath);
-
-  const handleFormat = useCallback(async () => {
-    if (!code || readOnly) return;
-    try {
-      const formatted = await formatJavaScriptCode(code, filepath);
-      if (formatted && formatted !== code) {
-        onChange(formatted);
-        history.pushHistory(formatted);
-      }
-    } catch {
-      // ignore
-    }
-  }, [code, filepath, history, onChange, readOnly]);
+  const snippetSession = useSnippetSession();
+  const signatureHelp = useSignatureHelp({
+    code,
+    cursorOffset: cursorPos.offset,
+    enabled: supportsLanguageService && !readOnly,
+    triggerOnType: parameterHintsOnType,
+    textareaRef,
+    requestSignature: typeScriptAnalysis.requestSignature,
+  });
 
   const updateCursorCoords = useCallback(() => {
-    if (!textareaRef.current) return;
-    const pos = textareaRef.current.selectionStart;
-    const textBefore = textareaRef.current.value.substring(0, pos);
-    const line = textBefore.split("\n").length;
-    const col = pos - textBefore.lastIndexOf("\n");
-    setCursorPos({ line, col });
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+    const offset = textarea.selectionStart;
+    const text = textarea.value;
+    let line = 1;
+    let lineStart = 0;
+    for (let newline = text.indexOf("\n"); newline !== -1 && newline < offset;) {
+      line++;
+      lineStart = newline + 1;
+      newline = text.indexOf("\n", lineStart);
+    }
+    const col = offset - lineStart + 1;
+    // One keystroke reports the caret from several events; an unchanged one renders nothing.
+    setCursorPos((current) =>
+      current.offset === offset && current.line === line && current.col === col
+        ? current
+        : { line, col, offset }
+    );
   }, []);
+
+  const markSaving = useCallback((): void => {
+    setSaveStatus("saving");
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    saveTimerRef.current = setTimeout(() => setSaveStatus("saved"), 450);
+  }, []);
+
+  const flushSelection = useCallback((): void => {
+    const selection = pendingSelectionRef.current;
+    const textarea = textareaRef.current;
+    if (!selection || !textarea) return;
+    pendingSelectionRef.current = null;
+    textarea.focus();
+    textarea.setSelectionRange(selection.start, selection.end, selection.direction);
+    updateCursorCoords();
+  }, [updateCursorCoords]);
+
+  /**
+   * Selects a range once React has committed the next value. Setting the
+   * selection earlier is lost because a controlled value moves the caret.
+   */
+  const selectAfterRender = useCallback((start: number, end = start): void => {
+    pendingSelectionRef.current = {
+      start,
+      end,
+      direction: textareaRef.current?.selectionDirection ?? "none",
+    };
+  }, []);
+
+  // Runs after every commit: the pending selection belongs to the value just rendered.
+  useLayoutEffect(flushSelection);
+
+  const applyEdit = useCallback<ApplyEdit>(
+    (nextCode, selectionStart, selectionEnd = selectionStart) => {
+      selectAfterRender(selectionStart, selectionEnd);
+      if (nextCode === code) {
+        flushSelection();
+        return;
+      }
+      onChange(nextCode);
+      history.pushHistory(nextCode, selectionStart);
+      markSaving();
+    },
+    [code, onChange, history, markSaving, selectAfterRender, flushSelection]
+  );
+
+  const find = useFindReplace({
+    code,
+    readOnly,
+    textareaRef,
+    applyEdit,
+    onSelect: updateCursorCoords,
+  });
+
+  const restoreEntry = useCallback(
+    (entry: HistoryEntry | null): void => {
+      if (!entry || readOnly) return;
+      multiCursor.clearSelections();
+      selectAfterRender(entry.cursor);
+      if (entry.code === code) flushSelection();
+      else onChange(entry.code);
+    },
+    [code, onChange, readOnly, multiCursor, selectAfterRender, flushSelection]
+  );
+
+  // React's onBeforeInput is a keypress polyfill: only the native event reports
+  // `historyUndo`/`historyRedo` (Edit menu, touch gestures), which must use our stack.
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+    const handleBeforeInput = (event: Event): void => {
+      if (!(event instanceof InputEvent)) return;
+      if (event.inputType === "historyUndo" || event.inputType === "historyRedo") {
+        event.preventDefault();
+        restoreEntry(event.inputType === "historyUndo" ? history.undo(code) : history.redo(code));
+        return;
+      }
+      history.captureCursor(textarea.selectionStart);
+    };
+    textarea.addEventListener("beforeinput", handleBeforeInput);
+    return () => textarea.removeEventListener("beforeinput", handleBeforeInput);
+  }, [code, history, restoreEntry]);
+
+  const applyCompletion = useCallback(
+    (applied: AppliedCompletion): void => {
+      applyEdit(applied.newCode, applied.newCursor, applied.newSelectionEnd);
+      snippetSession.start(applied.tabStops ?? [], applied.newCode);
+    },
+    [applyEdit, snippetSession]
+  );
+
+  const jumpToTabStop = useCallback(
+    (direction: 1 | -1): boolean => {
+      const textarea = textareaRef.current;
+      if (!textarea) return false;
+      const stop = snippetSession.jump(direction, code, textarea.selectionStart);
+      if (!stop) return false;
+      textarea.setSelectionRange(stop.start, stop.end);
+      updateCursorCoords();
+      return true;
+    },
+    [code, snippetSession, updateCursorCoords]
+  );
+
+  // The notice describes the text it was produced for and disappears with the next edit.
+  const [formatFailure, setFormatFailure] = useState<{ code: string; message: string } | null>(
+    null
+  );
+  const handleFormat = useCallback(async () => {
+    if (!code || readOnly) return;
+    const cursor = textareaRef.current?.selectionStart ?? 0;
+    const formatted = await formatCode(code, filepath, cursor);
+    if (formatted.status !== "formatted") {
+      setFormatFailure({
+        code,
+        message:
+          formatted.status === "unsupported"
+            ? "Форматирование недоступно для этого типа файла"
+            : "Не удалось отформатировать: в коде синтаксическая ошибка",
+      });
+      return;
+    }
+    setFormatFailure(null);
+    if (formatted.code !== code) applyEdit(formatted.code, formatted.cursorOffset);
+  }, [code, filepath, readOnly, applyEdit]);
+  const formatNotice = formatFailure?.code === code ? formatFailure.message : null;
 
   const { handleKeyDown } = useEditorKeyHandlers({
     code,
-    onChange: (val) => {
-      onChange(val);
-      setSaveStatus("saving");
-      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
-      saveTimerRef.current = setTimeout(() => setSaveStatus("saved"), 450);
-    },
+    applyEdit,
+    restoreEntry,
+    applyCompletion,
+    jumpToTabStop,
     intelliSense,
     history,
     multiCursor,
     onRun,
+    tabSize: TAB_SIZE,
+    wordWrap,
     readOnly,
     filepath,
   });
 
-  useEffect(() => {
-    const handleGlobalKey = (e: KeyboardEvent) => {
-      if (e.key === "F11") {
-        e.preventDefault();
-        toggleFullscreen();
-        return;
+  /** Selects a range and scrolls it to the upper third of the editor. */
+  const revealRange = useCallback(
+    (start: number, end: number): void => {
+      const textarea = textareaRef.current;
+      if (!textarea) return;
+      textarea.focus();
+      textarea.setSelectionRange(start, end);
+      const caret = getCaretCoordinates(textarea, start);
+      if (
+        caret.top < textarea.scrollTop ||
+        caret.lineBottom > textarea.scrollTop + textarea.clientHeight
+      ) {
+        textarea.scrollTop = Math.max(0, caret.top - textarea.clientHeight / 3);
       }
-      if (e.key === "Escape") {
-        if (intelliSense.isOpen) {
-          e.preventDefault();
-          intelliSense.closeCompletions();
-          return;
-        }
-        if (effectiveFullscreen) {
-          e.preventDefault();
-          toggleFullscreen();
-          return;
-        }
-      }
-      if (e.altKey && e.key.toLowerCase() === "z") {
+      updateCursorCoords();
+    },
+    [updateCursorCoords]
+  );
+
+  const goToDefinition = useDefinitionNavigation({
+    filepath,
+    files,
+    onFileSelect,
+    requestDefinition: typeScriptAnalysis.requestDefinition,
+    reveal: revealRange,
+  });
+
+  /** F8 / Shift+F8: select the next or previous problem, wrapping around. */
+  const goToProblem = useCallback(
+    (direction: 1 | -1): void => {
+      const textarea = textareaRef.current;
+      const problems = diagnostics.problems
+        .filter((problem) => problem.severity !== "hint")
+        .sort((a, b) => a.start - b.start);
+      if (!textarea || problems.length === 0) return;
+      const cursor = textarea.selectionStart;
+      const target =
+        direction > 0
+          ? (problems.find((problem) => problem.start > cursor) ?? problems[0])
+          : ([...problems].reverse().find((problem) => problem.start < cursor) ??
+            problems[problems.length - 1]);
+      revealRange(target.start, Math.max(target.start, target.end));
+    },
+    [diagnostics.problems, revealRange]
+  );
+
+  // Editor commands require focus inside the editor, as in VS Code.
+  const handleEditorKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLElement>): void => {
+      // VS Code hides the hover on any key except bare modifiers (Cmd stays for Cmd+click).
+      if (!MODIFIER_KEYS.has(e.key)) hoverSignatures.closeHover();
+      if (e.altKey && !e.shiftKey && !e.metaKey && !e.ctrlKey && matchesKey(e, "KeyZ")) {
         e.preventDefault();
         toggleWordWrap();
         return;
       }
-      if (e.shiftKey && e.altKey && e.key.toLowerCase() === "f") {
+      if (e.altKey && e.shiftKey && !e.metaKey && !e.ctrlKey && matchesKey(e, "KeyF")) {
         e.preventDefault();
-        handleFormat();
+        void handleFormat();
         return;
+      }
+      // One Escape closes one widget: an open suggest list has already taken it.
+      if (e.key === "Escape" && !e.defaultPrevented && signatureHelp.signature) {
+        e.preventDefault();
+        signatureHelp.close();
+        return;
+      }
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.code === "Space") {
+        e.preventDefault();
+        signatureHelp.trigger();
+        return;
+      }
+      // Find, replace, go to line (Cmd/Ctrl+F, Cmd/Ctrl+H, Ctrl+G, F3); Escape closes the panel.
+      if (find.handleShortcut(e)) return;
+      if (e.key === "F12" && textareaRef.current) {
+        e.preventDefault();
+        void goToDefinition(textareaRef.current.selectionStart);
+        return;
+      }
+      if (e.key === "F8" && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        e.preventDefault();
+        goToProblem(e.shiftKey ? -1 : 1);
+        return;
+      }
+      // Cmd/Ctrl+. moves focus to the quick fixes, as VS Code opens its light bulb.
+      if ((e.metaKey || e.ctrlKey) && e.code === "Period" && firstQuickFixRef.current) {
+        e.preventDefault();
+        firstQuickFixRef.current.focus();
+      }
+    },
+    [
+      handleFormat,
+      toggleWordWrap,
+      goToProblem,
+      goToDefinition,
+      signatureHelp,
+      hoverSignatures,
+      find,
+    ]
+  );
+
+  useEffect(() => {
+    const handleGlobalKey = (e: KeyboardEvent): void => {
+      if (e.defaultPrevented) return;
+      // Only the editor the user is in reacts: several mounted editors would toggle each
+      // other back, and F11 elsewhere on the page keeps the browser's own fullscreen.
+      const root = wrapperRef.current;
+      if (!root || !(root.contains(document.activeElement) || root.matches(":hover"))) return;
+      if (e.key === "F11" || (e.key === "Escape" && effectiveFullscreen)) {
+        e.preventDefault();
+        toggleFullscreen();
       }
     };
 
     window.addEventListener("keydown", handleGlobalKey);
     return () => window.removeEventListener("keydown", handleGlobalKey);
-  }, [handleFormat, effectiveFullscreen, toggleFullscreen, intelliSense, toggleWordWrap]);
-
-  const useCompiler = isLinterEnabled && supportsLanguageService;
-  const lintResult = useMemo(() => {
-    if (!isLinterEnabled) {
-      return EMPTY_LINT_RESULT;
-    }
-    if (useCompiler) return typeScriptAnalysis.result ?? EMPTY_LINT_RESULT;
-    return lintJavaScriptCode(deferredCode, { files: deferredFiles, filepath });
-  }, [
-    isLinterEnabled,
-    deferredCode,
-    deferredFiles,
-    filepath,
-    useCompiler,
-    typeScriptAnalysis.result,
-  ]);
-  const isAnalysisPending =
-    isLinterEnabled &&
-    (deferredCode !== code || deferredFiles !== files || typeScriptAnalysis.isPending);
-
-  const activeTypo = useMemo((): TypoInfo | null => {
-    if (lintResult.typoMap && lintResult.typoMap[cursorPos.line]) {
-      const p = lintResult.typoMap[cursorPos.line];
-      return { line: p.line, typo: p.typo || "", correct: p.correct || "" };
-    }
-    const first = lintResult.problems.find((p) => p.rule === "keyword-typo");
-    if (first) {
-      return { line: first.line, typo: first.typo || "", correct: first.correct || "" };
-    }
-    return null;
-  }, [cursorPos.line, lintResult.problems, lintResult.typoMap]);
-
-  const activeMissingImport = useMemo((): MissingImportInfo | null => {
-    if (lintResult.missingImportMap && lintResult.missingImportMap[cursorPos.line]) {
-      const p = lintResult.missingImportMap[cursorPos.line];
-      return {
-        line: p.line,
-        symbol: p.symbol || "",
-        module: p.module || "react",
-        isDefault: p.isDefault,
-      };
-    }
-    if (lintResult.allMissingImports && lintResult.allMissingImports.length > 0) {
-      const first = lintResult.allMissingImports[0];
-      return {
-        line: first.line,
-        symbol: first.symbol || "",
-        module: first.module || "react",
-        isDefault: first.isDefault,
-      };
-    }
-    return null;
-  }, [cursorPos.line, lintResult.allMissingImports, lintResult.missingImportMap]);
-
-  const errorLines = useMemo(
-    () =>
-      new Set<number>(lintResult.problems.filter((p) => p.severity === "error").map((e) => e.line)),
-    [lintResult.problems]
-  );
-  const warningLines = useMemo(
-    () =>
-      new Set<number>(
-        lintResult.problems.filter((p) => p.severity === "warning").map((w) => w.line)
-      ),
-    [lintResult.problems]
-  );
+  }, [effectiveFullscreen, toggleFullscreen]);
 
   const highlightedCode = useMemo(
     () =>
       highlightCode(code + "\n", filepath, {
-        problems: lintResult.problems,
-        multiSelections: multiCursor.selections,
+        problems: diagnostics.problems,
       }),
-    [code, filepath, lintResult.problems, multiCursor.selections]
+    [code, filepath, diagnostics.problems]
   );
   const lineCount = useMemo(() => code.split("\n").length, [code]);
+  const lineHeights = useWrappedLineHeights(textareaRef, wordWrap, `${code}:${fontSize}`);
+  const bracketPair = useMemo(
+    () => findMatchingBracketPair(code, cursorPos.offset) ?? [],
+    [code, cursorPos.offset]
+  );
+  const secondaryCarets = useMemo(() => {
+    const collapsed = multiCursor.selections.filter(({ start, end }) => start === end);
+    return collapsed.length > 1 ? collapsed.map(({ start }) => start) : [];
+  }, [multiCursor.selections]);
 
   const [isScrolling, setIsScrolling] = useState(false);
   const isScrollingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -264,6 +442,8 @@ export const useCodeEditor = ({
         intelliSense.updatePosition(textareaRef.current);
       }
     }
+    signatureHelp.updatePosition();
+    hoverSignatures.closeHover();
     setIsScrolling(true);
     if (isScrollingTimeoutRef.current) clearTimeout(isScrollingTimeoutRef.current);
     isScrollingTimeoutRef.current = setTimeout(() => {
@@ -280,6 +460,8 @@ export const useCodeEditor = ({
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (readOnly) return;
+    // A native edit (cut, drop, IME, undo) moved offsets under the extra cursors.
+    if (multiCursor.hasMultipleCursors) multiCursor.clearSelections();
     let val = e.target.value;
     let pos = e.target.selectionStart;
     const input = e.nativeEvent;
@@ -310,9 +492,7 @@ export const useCodeEditor = ({
       input instanceof InputEvent ? { inputType: input.inputType, data: input.data } : undefined
     );
     updateCursorCoords();
-    setSaveStatus("saving");
-    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
-    saveTimerRef.current = setTimeout(() => setSaveStatus("saved"), 450);
+    markSaving();
 
     if (textareaRef.current) {
       if (isTyping) {
@@ -328,12 +508,16 @@ export const useCodeEditor = ({
       const text = e.clipboardData.getData("text");
       if (text) {
         e.preventDefault();
-        multiCursor.handleMultiPaste(text, code, onChange, history, textareaRef.current);
+        multiCursor.handleMultiPaste(text, code, applyEdit);
       }
     }
   };
 
-  const handleTextareaClick = () => {
+  const handleTextareaClick = (e: React.MouseEvent<HTMLTextAreaElement>) => {
+    snippetSession.cancel();
+    if (e.metaKey || e.ctrlKey) {
+      void goToDefinition(e.currentTarget.selectionStart);
+    }
     updateCursorCoords();
     intelliSense.closeCompletions();
     multiCursor.clearSelections();
@@ -341,6 +525,7 @@ export const useCodeEditor = ({
 
   const handleTextareaBlur = () => {
     intelliSense.closeCompletions();
+    signatureHelp.close();
   };
 
   const handleCursorKeyUp = () => {
@@ -350,28 +535,11 @@ export const useCodeEditor = ({
     }
   };
 
-  const handleFixTypo = (typo: TypoInfo) => {
-    if (readOnly) return;
-    const fixed = fixTypoInCode(code, typo.line, typo.typo, typo.correct);
-    onChange(fixed);
-    history.pushHistory(fixed);
-    if (textareaRef.current) {
-      textareaRef.current.value = fixed;
-      textareaRef.current.focus();
-    }
-  };
-
-  const handleFixMissingImport = (imp: MissingImportInfo) => {
-    if (readOnly) return;
-    const res = addImportToFile(code, imp.symbol, imp.module, imp.isDefault);
-    if (res.insertedLength > 0 && res.newCode) {
-      onChange(res.newCode);
-      history.pushHistory(res.newCode);
-      if (textareaRef.current) {
-        textareaRef.current.value = res.newCode;
-        textareaRef.current.focus();
-      }
-    }
+  const applyQuickFix = (index: number): void => {
+    const fix = diagnostics.quickFixes[index];
+    if (!fix || readOnly) return;
+    const { code: fixed, mapOffset } = applyTextChanges(code, fix.changes);
+    applyEdit(fixed, mapOffset(textareaRef.current?.selectionStart ?? 0));
   };
 
   const langInfo = useMemo(() => getLanguageInfo(filepath), [filepath]);
@@ -380,6 +548,7 @@ export const useCodeEditor = ({
     fontSize,
     increaseFontSize,
     decreaseFontSize,
+    wrapperRef,
     textareaRef,
     highlightRef,
     gutterRef,
@@ -394,21 +563,30 @@ export const useCodeEditor = ({
     history,
     intelliSense,
     hoverSignatures,
+    signatureHelp,
     multiCursor,
-    lintResult,
+    find,
+    diagnostics,
+    firstQuickFixRef,
+    applyQuickFix,
+    goToProblem,
     requestRename: typeScriptAnalysis.requestRename,
-    isAnalysisPending,
-    activeTypo,
-    activeMissingImport,
-    errorLines,
-    warningLines,
+    isAnalysisPending: typeScriptAnalysis.isPending,
     highlightedCode,
     lineCount,
+    lineHeights,
+    bracketPair,
+    secondaryCarets,
     langInfo,
     isScrolling,
     isLinterEnabled,
     handleToggleLinter,
     handleFormat,
+    formatNotice,
+    applyEdit,
+    applyCompletion,
+    restoreEntry,
+    selectAfterRender,
     updateCursorCoords,
     handleScroll,
     handleTextChange,
@@ -416,8 +594,7 @@ export const useCodeEditor = ({
     handleTextareaClick,
     handleTextareaBlur,
     handleCursorKeyUp,
-    handleFixTypo,
-    handleFixMissingImport,
+    handleEditorKeyDown,
     handleKeyDown,
   };
 };

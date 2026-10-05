@@ -47,19 +47,8 @@ export const SidebarListSkeleton = memo(
       <div className={clsx(styles.container, className)}>
         {/* Sticky wrapper matching SidebarProgressCard layout */}
         <div className={styles.stickyWrapper}>
-          <div className={styles.progressCard}>
-            <div className={styles.headerRow}>
-              <div className={styles.sectionTitle}>
-                <UiSkeleton width={13} height={13} radius={2} />
-                <UiSkeleton width={115} height={12} radius={3} />
-              </div>
-              <UiSkeleton width={32} height={14} radius={3} />
-            </div>
-
-            <div className={styles.barTrack}>
-              <UiSkeleton width="45%" height={4} radius={2} />
-            </div>
-          </div>
+          {/* Same placeholder as the home skeleton for the progress card */}
+          <UiSkeleton width="100%" height={46} radius={6} />
 
           {/* Quick actions row matching SidebarQuickActions 4 buttons */}
           <div className={styles.quickActions} aria-label="Быстрые действия">

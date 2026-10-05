@@ -10,14 +10,8 @@ export * from "./importManager";
 export * from "./languages";
 export * from "./snippetsData";
 export * from "./snippetsEngine";
-export * from "./typeSignaturesData";
-export * from "./typeSignatures";
-export * from "./typeInference";
-export * from "./componentPropsChecker";
-export * from "./typeChecker";
-export * from "./codeLinter";
 export * from "./codeFormatter";
-export * from "./typescript-checker";
+export * from "./typescript-client";
 
 export * from "./markup-context";
 export * from "./linked-tag-edit";

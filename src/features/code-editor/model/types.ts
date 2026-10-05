@@ -24,25 +24,11 @@ export interface CodeEditorProps {
   className?: string;
 }
 
+/** Replaces the document, records history and selects the given range after render. */
+export type ApplyEdit = (code: string, selectionStart: number, selectionEnd?: number) => void;
+
 export interface CursorPosition {
   line: number;
   col: number;
-}
-
-export interface TypoInfo {
-  line: number;
-  typo: string;
-  correct: string;
-}
-
-export interface MissingImportInfo {
-  line: number;
-  symbol: string;
-  module: string;
-  isDefault?: boolean;
-}
-
-export interface LanguageInfo {
-  name: string;
-  iconClass: string;
+  offset: number;
 }

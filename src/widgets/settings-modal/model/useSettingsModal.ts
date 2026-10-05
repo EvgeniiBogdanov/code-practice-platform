@@ -11,6 +11,7 @@ export const useSettingsModal = () => {
   const [resetReviewsConfirmOpen, setResetReviewsConfirmOpen] = useState(false);
   const [resetUIConfirmOpen, setResetUIConfirmOpen] = useState(false);
   const [resetAllConfirmOpen, setResetAllConfirmOpen] = useState(false);
+  const [signOutConfirmOpen, setSignOutConfirmOpen] = useState(false);
 
   const resetUISettings = useUIStore((state) => state.resetUISettings);
   const handleFullReset = useProgressStore((state) => state.handleFullReset);
@@ -25,12 +26,20 @@ export const useSettingsModal = () => {
         isOpen &&
         !resetReviewsConfirmOpen &&
         !resetUIConfirmOpen &&
-        !resetAllConfirmOpen
+        !resetAllConfirmOpen &&
+        !signOutConfirmOpen
       ) {
         setIsOpen(false);
       }
     },
-    [isOpen, resetReviewsConfirmOpen, resetUIConfirmOpen, resetAllConfirmOpen, setIsOpen]
+    [
+      isOpen,
+      resetReviewsConfirmOpen,
+      resetUIConfirmOpen,
+      resetAllConfirmOpen,
+      signOutConfirmOpen,
+      setIsOpen,
+    ]
   );
 
   useEffect(() => {
@@ -79,6 +88,8 @@ export const useSettingsModal = () => {
     setResetUIConfirmOpen,
     resetAllConfirmOpen,
     setResetAllConfirmOpen,
+    signOutConfirmOpen,
+    setSignOutConfirmOpen,
     handleResetSectionReviews,
     handleResetAllReviews,
     handleResetUISettings,

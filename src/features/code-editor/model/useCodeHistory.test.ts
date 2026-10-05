@@ -24,6 +24,19 @@ describe("useCodeHistory", () => {
     expect(result.current.canRedo).toBe(false);
   });
 
+  it("records an IME composition as a single undo step", () => {
+    const { result } = renderHook(() => useCodeHistory(""));
+
+    act(() => {
+      result.current.pushHistory("n", 1, { inputType: "insertCompositionText", data: "n" });
+      result.current.pushHistory("ni", 2, { inputType: "insertCompositionText", data: "ni" });
+      result.current.pushHistory("你", 1, { inputType: "insertFromComposition", data: "你" });
+    });
+
+    act(() => expect(result.current.undo("你")?.code).toBe(""));
+    expect(result.current.canUndo).toBe(false);
+  });
+
   it("starts a new undo step after a pause and discards redo after a new edit", () => {
     vi.useFakeTimers();
     const { result } = renderHook(() => useCodeHistory(""));
@@ -107,5 +120,18 @@ describe("useCodeHistory", () => {
     expect(reopened.result.current.canUndo).toBe(false);
     reopened.unmount();
     activateCodeHistoryTask(null);
+  });
+});
+
+describe("useCodeHistory identity", () => {
+  it("returns the same object until undo/redo availability changes", () => {
+    const { result, rerender } = renderHook(() => useCodeHistory(""));
+    const first = result.current;
+    rerender();
+    expect(result.current).toBe(first);
+
+    act(() => result.current.pushHistory("a", 1, { inputType: "insertText", data: "a" }));
+    expect(result.current).not.toBe(first);
+    expect(result.current.canUndo).toBe(true);
   });
 });

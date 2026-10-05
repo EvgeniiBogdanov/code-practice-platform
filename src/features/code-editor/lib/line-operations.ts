@@ -197,3 +197,67 @@ export const duplicateLines = (
     changed: true,
   };
 };
+
+const unchanged = (code: string, start: number, end: number): LineOperationResult => ({
+  newCode: code,
+  newSelectionStart: start,
+  newSelectionEnd: end,
+  changed: false,
+});
+
+/** Removes the selected lines; the caret lands on the line that took their place. */
+export const deleteLines = (
+  code: string,
+  selectionStart: number,
+  selectionEnd: number
+): LineOperationResult => {
+  const lines = code.split("\n");
+  const offsets = getLineOffsets(code);
+  const { startLine, endLine } = getSelectedLineRange(code, selectionStart, selectionEnd, offsets);
+  const column = selectionStart - offsets[startLine];
+  lines.splice(startLine, endLine - startLine + 1);
+  if (lines.length === 0) return { ...unchanged("", 0, 0), changed: code !== "" };
+
+  const target = Math.min(startLine, lines.length - 1);
+  const newOffsets = getLineOffsets(lines.join("\n"));
+  const caret = newOffsets[target] + Math.min(column, lines[target].length);
+  return {
+    newCode: lines.join("\n"),
+    newSelectionStart: caret,
+    newSelectionEnd: caret,
+    changed: true,
+  };
+};
+
+/** Opens an empty line above the caret's line, indented like it. */
+export const insertLineAbove = (
+  code: string,
+  selectionStart: number,
+  selectionEnd: number
+): LineOperationResult => {
+  const lines = code.split("\n");
+  const offsets = getLineOffsets(code);
+  const { startLine } = getSelectedLineRange(code, selectionStart, selectionEnd, offsets);
+  const indent = /^[ \t]*/.exec(lines[startLine])?.[0] ?? "";
+  lines.splice(startLine, 0, indent);
+  const caret = offsets[startLine] + indent.length;
+  return {
+    newCode: lines.join("\n"),
+    newSelectionStart: caret,
+    newSelectionEnd: caret,
+    changed: true,
+  };
+};
+
+/**
+ * Smart Home: the first press goes to the first non-blank character, the next to column 0.
+ * A blank line has no such character, so it always goes to column 0.
+ */
+export const getSmartHomeOffset = (code: string, caret: number): number => {
+  const lineStart = code.lastIndexOf("\n", caret - 1) + 1;
+  const indentLength = /^[ \t]*/.exec(code.slice(lineStart))?.[0].length ?? 0;
+  const lineEnd = code.indexOf("\n", lineStart);
+  const blank = lineStart + indentLength === (lineEnd === -1 ? code.length : lineEnd);
+  const firstText = lineStart + indentLength;
+  return blank || caret === firstText ? lineStart : firstText;
+};

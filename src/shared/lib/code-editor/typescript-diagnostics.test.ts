@@ -100,6 +100,8 @@ describe("TSX compiler mode", () => {
 
 describe("JSX and TSX language features", () => {
   const editor = createTypeScriptEditorService(libraries);
+  const errors = (input: Parameters<typeof editor.diagnose>[0]) =>
+    editor.diagnose(input).filter((problem) => problem.severity !== "hint");
 
   it("reports mismatched JSX tags in JavaScript files", () => {
     const problems = editor.diagnose({
@@ -169,20 +171,125 @@ describe("JSX and TSX language features", () => {
     );
     const packageEditor = createTypeScriptEditorService(packageLibraries);
     expect(
-      packageEditor.diagnose({
-        code: 'import { Heart } from "lucide-react"; const view = <Heart size={24} />;',
-        filepath: "App.tsx",
-        files: [],
-      })
+      packageEditor
+        .diagnose({
+          code: 'import { Heart } from "lucide-react"; const view = <Heart size={24} />;',
+          filepath: "App.tsx",
+          files: [],
+        })
+        .filter((problem) => problem.severity !== "hint")
     ).toEqual([]);
   });
 
   it("uses a virtual tsconfig when checking editor files", () => {
     const code = "const greet = (name) => name;";
     const files = [{ name: "tsconfig.json", code: '{"compilerOptions":{"strict":false}}' }];
-    expect(editor.diagnose({ code, filepath: "App.tsx", files })).toEqual([]);
-    expect(editor.diagnose({ code, filepath: "App.tsx", files: [] })[0]?.message).toContain(
-      "TS7006"
+    expect(errors({ code, filepath: "App.tsx", files })).toEqual([]);
+    expect(errors({ code, filepath: "App.tsx", files: [] })[0]?.message).toContain("TS7006");
+  });
+});
+
+describe("editor language service parity with VS Code", () => {
+  const editor = createTypeScriptEditorService(libraries);
+  const at = (code: string, filepath = "main.ts") => ({ code, filepath, files: [] });
+
+  it("filters completions by prefix before limiting the list", () => {
+    const code = "document.querySel";
+    const labels = editor.complete(at(code), code.length).map(({ label }) => label);
+    expect(labels.slice(0, 2).sort()).toEqual(["querySelector", "querySelectorAll"]);
+  });
+
+  it("matches word starts fuzzily, like VS Code's suggest widget", () => {
+    const code = "gcs";
+    const labels = editor.complete(at(code), code.length).map(({ label }) => label);
+    expect(labels).toContain("getComputedStyle");
+    expect(labels).not.toContain("console");
+  });
+
+  it("reaches globals late in the alphabet", () => {
+    const code = "setTime";
+    expect(editor.complete(at(code), code.length).map(({ label }) => label)).toContain(
+      "setTimeout"
     );
+  });
+
+  it("knows modern standard library methods", () => {
+    const problems = editor
+      .diagnose(at("const sorted = [3, 1].toSorted(); const g = Object.groupBy([1], (n) => n);"))
+      .filter((problem) => problem.severity !== "hint");
+    expect(problems).toEqual([]);
+  });
+
+  it("reports undefined names in JavaScript without inference noise", () => {
+    const messages = editor
+      .diagnose(
+        at(
+          'import { useState } from "react";\nexport function A() {\n  const [data, setData] = useState(null);\n  setData({ id: 1 });\n  return missingValue + data;\n}',
+          "A.jsx"
+        )
+      )
+      .filter((problem) => problem.severity !== "hint")
+      .map(({ message }) => message);
+    expect(messages).toHaveLength(1);
+    expect(messages[0]).toContain("TS2304");
+  });
+
+  it("returns ranges and marks unused declarations as hints", () => {
+    const code = "const unused = 1;\nconst value: number = missing;\nexport { value };";
+    const problems = editor.diagnose(at(code));
+    const error = problems.find(({ code: errorCode }) => errorCode === 2304);
+    expect(error && code.slice(error.start, error.end)).toBe("missing");
+    const hint = problems.find(({ severity }) => severity === "hint");
+    expect(hint && code.slice(hint.start, hint.end)).toBe("unused");
+  });
+
+  it("offers an import quick fix for a React hook", () => {
+    const code = "export const useCounter = () => useState(0);";
+    const problem = editor.diagnose(at(code, "use-counter.ts")).find((item) => item.code === 2304);
+    expect(problem).toBeDefined();
+    if (!problem) return;
+    const fixes = editor.codefix(
+      at(code, "use-counter.ts"),
+      problem.start,
+      problem.end,
+      problem.code
+    );
+    const importFix = fixes.find(({ description }) => description.includes("react"));
+    expect(importFix?.changes[0].newText).toContain('import { useState } from "react"');
+  });
+
+  it("suggests the spelling fix for a typo", () => {
+    const code = "const total = 1;\nexport const twice = totl * 2;";
+    const problem = editor.diagnose(at(code)).find((item) => item.code === 2552);
+    expect(problem).toBeDefined();
+    if (!problem) return;
+    const fixes = editor.codefix(at(code), problem.start, problem.end, problem.code);
+    expect(fixes[0]?.changes[0].newText).toBe("total");
+  });
+
+  it("checks JavaScript scoping like the removed heuristic linter did", () => {
+    const errorsOf = (code: string) =>
+      editor
+        .diagnose(at(code, "solution.js"))
+        .filter((problem) => problem.severity === "error")
+        .map(({ code: errorCode }) => errorCode);
+    expect(
+      errorsOf("for (let i = 0; i < 2; i++) {}\nfor (let i = 0; i < 3; i++) {}\nexport {};")
+    ).toEqual([]);
+    expect(errorsOf("var x = 10;\nvar x = 20;\nexport { x };")).toEqual([]);
+    expect(errorsOf("const z = 1;\nconst z = 2;\nexport { z };")).toContain(2451);
+  });
+
+  it("finds a definition in another editor file", () => {
+    const code = 'import { helper } from "./utils";\nhelper();';
+    const location = editor.definition(
+      {
+        code,
+        filepath: "main.ts",
+        files: [{ name: "utils.ts", code: "export const helper = () => 1;" }],
+      },
+      code.lastIndexOf("helper") + 1
+    );
+    expect(location).toEqual({ filepath: "utils.ts", start: 13, end: 19 });
   });
 });

@@ -17,6 +17,7 @@ import { clsx } from "clsx";
 import { Tooltip, CodeButton, Switch } from "@/shared/ui";
 import { TaskFile } from "@/shared/lib/code-editor";
 import { useCopy } from "@/shared/lib/hooks";
+import { getFileIconKind, type FileIconKind } from "../../lib/file-icon";
 import styles from "./EditorToolbar.module.css";
 
 export interface EditorToolbarProps {
@@ -31,6 +32,8 @@ export interface EditorToolbarProps {
   isLinterEnabled?: boolean;
   onToggleLinter?: (enabled: boolean) => void;
   onFormat?: () => void;
+  /** False when the file's language has no formatter; the button is disabled with a reason. */
+  canFormat?: boolean;
   wordWrap?: boolean;
   onToggleWordWrap?: () => void;
   onReset?: () => void;
@@ -47,6 +50,17 @@ export interface EditorToolbarProps {
   className?: string;
 }
 
+const FILE_ICON_CLASSES: Record<FileIconKind, string> = {
+  js: styles.fileIconJs,
+  jsx: styles.fileIconJsx,
+  ts: styles.fileIconTs,
+  tsx: styles.fileIconTsx,
+  css: styles.fileIconCss,
+  html: styles.fileIconHtml,
+  json: styles.fileIconJson,
+  other: styles.fileIcon,
+};
+
 export const EditorToolbar = memo(
   ({
     files = [],
@@ -60,6 +74,7 @@ export const EditorToolbar = memo(
     isLinterEnabled,
     onToggleLinter,
     onFormat,
+    canFormat = true,
     wordWrap,
     onToggleWordWrap,
     onReset,
@@ -77,17 +92,6 @@ export const EditorToolbar = memo(
   }: EditorToolbarProps) => {
     const { copied, copy } = useCopy(codeText);
 
-    const getFileIconClass = (filename: string): string => {
-      const ext = filename.split(".").pop()?.toLowerCase();
-      if (ext === "jsx") return styles.fileIconJsx;
-      if (ext === "tsx") return styles.fileIconTsx;
-      if (ext === "ts" || ext === "mts" || ext === "cts") return styles.fileIconTs;
-      if (ext === "css" || ext === "scss" || ext === "less") return styles.fileIconCss;
-      if (ext === "html" || ext === "htm") return styles.fileIconHtml;
-      if (ext === "json") return styles.fileIconJson;
-      return styles.fileIconJs;
-    };
-
     return (
       <div className={clsx(styles.toolbar, className)}>
         <div className={styles.left}>
@@ -102,14 +106,14 @@ export const EditorToolbar = memo(
                   className={clsx(styles.fileTab, isActive && styles.active)}
                   onClick={() => onFileSelect && onFileSelect(idx)}
                 >
-                  <FileCode size={13} className={getFileIconClass(name)} />
+                  <FileCode size={13} className={FILE_ICON_CLASSES[getFileIconKind(name)]} />
                   <span className={styles.fileTabName}>{name}</span>
                 </button>
               );
             })
           ) : (
             <div className={styles.singleFile}>
-              <FileCode size={13} className={getFileIconClass(filepath)} />
+              <FileCode size={13} className={FILE_ICON_CLASSES[getFileIconKind(filepath)]} />
               <span className={styles.fileTabName}>{filepath}</span>
             </div>
           )}
@@ -169,10 +173,18 @@ export const EditorToolbar = memo(
           )}
 
           {!readOnly && onFormat && (
-            <Tooltip content="Форматировать код (Shift+Alt+F)" side="bottom">
+            <Tooltip
+              content={
+                canFormat
+                  ? "Форматировать код (Shift+Alt+F)"
+                  : "Форматирование недоступно для этого типа файла"
+              }
+              side="bottom"
+            >
               <CodeButton
                 icon={<Wand2 size={14} />}
                 onClick={onFormat}
+                disabled={!canFormat}
                 aria-label="Форматировать код (Prettier)"
               />
             </Tooltip>

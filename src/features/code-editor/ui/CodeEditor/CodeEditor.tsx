@@ -1,18 +1,42 @@
-import React from "react";
+import React, { useId } from "react";
 import { Check, CheckCircle2, AlertCircle, Code2 } from "lucide-react";
 import { clsx } from "clsx";
 import { Tooltip } from "@/shared/ui";
+import { canFormat, type LanguageId } from "@/shared/lib/code-editor";
 import { useCodeEditor } from "../../model/use-code-editor";
 import { CodeEditorProps } from "../../model/types";
 import { LineNumbers } from "../LineNumbers";
 import { EditorToolbar } from "../EditorToolbar";
 import { QuickFixBanner } from "../QuickFixBanner";
 import { SuggestionsDropdown } from "../SuggestionsDropdown";
+import { getSuggestionOptionId } from "../../lib/suggestion-option-id";
 import { HoverSignatureCard } from "../HoverSignatureCard";
+import { EditorDecorations } from "../EditorDecorations";
+import { FindReplaceBar } from "../FindReplaceBar";
+import { TextMarkLayer } from "../TextMarkLayer";
+import { SignatureHelpCard } from "../SignatureHelpCard";
 import styles from "./CodeEditor.module.css";
-import { applyRenameEdits } from "../../lib/rename-symbol";
+import { applyRenameEdits, getRenamedSelection } from "../../lib/rename-symbol";
+import { TAB_SIZE, pluralize, type PluralForms } from "../../lib/editor-utils";
 
 export type { CodeEditorProps };
+
+const LANGUAGE_ICON_CLASSES: Record<LanguageId, string> = {
+  javascript: styles.langIconJs,
+  javascriptreact: styles.langIconJsx,
+  typescript: styles.langIconTs,
+  typescriptreact: styles.langIconTsx,
+  css: styles.langIconCss,
+  scss: styles.langIconCss,
+  less: styles.langIconCss,
+  html: styles.langIconHtml,
+  json: styles.langIconJson,
+  sql: styles.langIconSql,
+  markdown: styles.langIconOther,
+  plaintext: styles.langIconOther,
+};
+const ERROR_FORMS: PluralForms = { one: "ошибка", few: "ошибки", many: "ошибок" };
+const LINE_FORMS: PluralForms = { one: "строка", few: "строки", many: "строк" };
 
 export const CodeEditor = ({
   code,
@@ -35,10 +59,12 @@ export const CodeEditor = ({
   fillHeight = false,
   className,
 }: CodeEditorProps): React.JSX.Element => {
+  const suggestionsId = useId();
   const {
     fontSize,
     increaseFontSize,
     decreaseFontSize,
+    wrapperRef,
     textareaRef,
     highlightRef,
     gutterRef,
@@ -52,21 +78,30 @@ export const CodeEditor = ({
     history,
     intelliSense,
     hoverSignatures,
+    signatureHelp,
     multiCursor,
-    lintResult,
+    find,
+    diagnostics,
+    firstQuickFixRef,
+    applyQuickFix,
+    goToProblem,
     requestRename,
     isAnalysisPending,
-    activeTypo,
-    activeMissingImport,
-    errorLines,
-    warningLines,
     highlightedCode,
     lineCount,
+    lineHeights,
+    bracketPair,
+    secondaryCarets,
     langInfo,
     isScrolling,
     isLinterEnabled,
     handleToggleLinter,
     handleFormat,
+    formatNotice,
+    applyEdit,
+    applyCompletion,
+    restoreEntry,
+    selectAfterRender,
     updateCursorCoords,
     handleScroll,
     handleTextChange,
@@ -74,8 +109,7 @@ export const CodeEditor = ({
     handleTextareaClick,
     handleTextareaBlur,
     handleCursorKeyUp,
-    handleFixTypo,
-    handleFixMissingImport,
+    handleEditorKeyDown,
     handleKeyDown,
   } = useCodeEditor({
     code,
@@ -87,20 +121,8 @@ export const CodeEditor = ({
     readOnly,
     isFullscreen,
     onToggleFullscreen,
+    onFileSelect,
   });
-
-  const applyHistoryEntry = (entry: { code: string; cursor: number } | null): void => {
-    if (!entry || readOnly) return;
-    multiCursor.clearSelections();
-    onChange(entry.code);
-    setTimeout(() => {
-      const textarea = textareaRef.current;
-      if (!textarea) return;
-      textarea.focus();
-      textarea.setSelectionRange(entry.cursor, entry.cursor);
-      updateCursorCoords();
-    }, 0);
-  };
 
   const handleRename = async (): Promise<void> => {
     const cursor = textareaRef.current?.selectionStart;
@@ -131,38 +153,40 @@ export const CodeEditor = ({
     const renamed = applyRenameEdits(currentFiles, edits, nextName);
     const active = renamed.find((file) => file.name === filepath);
     if (!active) return;
-    if (
-      renamed.some(
-        (file) =>
-          file.name !== filepath &&
-          file.code !== currentFiles.find((item) => item.name === file.name)?.code
-      )
-    ) {
-      if (!onFilesChange) return;
-      onFilesChange(renamed);
-    } else {
-      onChange(active.code);
+    const renamedSelection = getRenamedSelection(edits, currentEdit, nextName);
+    const touchesOtherFiles = renamed.some(
+      (file) =>
+        file.name !== filepath &&
+        file.code !== currentFiles.find((item) => item.name === file.name)?.code
+    );
+    if (!touchesOtherFiles) {
+      applyEdit(active.code, renamedSelection.start, renamedSelection.end);
+      return;
     }
-    history.pushHistory(active.code, currentEdit.start + nextName.length);
-    setTimeout(() => {
-      textareaRef.current?.focus();
-      textareaRef.current?.setSelectionRange(
-        currentEdit.start,
-        currentEdit.start + nextName.length
-      );
-    }, 0);
+    if (!onFilesChange) return;
+    selectAfterRender(renamedSelection.start, renamedSelection.end);
+    onFilesChange(renamed);
+    history.pushHistory(active.code, renamedSelection.end);
   };
+
+  const isHoverVisible =
+    (hoverSignatures.hoverInfo !== null || hoverSignatures.hoverProblems.length > 0) &&
+    !hideTooltips &&
+    !intelliSense.isOpen;
 
   return (
     <div
+      ref={wrapperRef}
       className={clsx(
         styles.editorWrapper,
         effectiveFullscreen && !fillHeight && styles.fullscreen,
         fillHeight && styles.fillHeight,
-        intelliSense.isOpen && styles.hasOpenDropdown,
+        (intelliSense.isOpen || signatureHelp.signature || isHoverVisible) &&
+          styles.hasOpenDropdown,
         className
       )}
       style={{ "--editor-font-size": `${fontSize}px` } as React.CSSProperties}
+      onKeyDown={handleEditorKeyDown}
     >
       <Tooltip.Provider delayDuration={600} skipDelayDuration={300}>
         <EditorToolbar
@@ -172,11 +196,12 @@ export const CodeEditor = ({
           filepath={filepath}
           canUndo={history.canUndo}
           canRedo={history.canRedo}
-          onUndo={() => applyHistoryEntry(history.undo(code))}
-          onRedo={() => applyHistoryEntry(history.redo(code))}
+          onUndo={() => restoreEntry(history.undo(code))}
+          onRedo={() => restoreEntry(history.redo(code))}
           isLinterEnabled={isLinterEnabled}
           onToggleLinter={handleToggleLinter}
           onFormat={handleFormat}
+          canFormat={canFormat(filepath)}
           wordWrap={wordWrap}
           onToggleWordWrap={toggleWordWrap}
           onReset={onReset}
@@ -194,10 +219,10 @@ export const CodeEditor = ({
 
         {!readOnly && !isAnalysisPending && (
           <QuickFixBanner
-            activeTypo={activeTypo}
-            activeMissingImport={activeMissingImport}
-            onFixTypo={handleFixTypo}
-            onFixMissingImport={handleFixMissingImport}
+            diagnostic={diagnostics.activeDiagnostic}
+            fixes={diagnostics.quickFixes}
+            onApply={applyQuickFix}
+            firstFixRef={firstQuickFixRef}
           />
         )}
 
@@ -206,8 +231,10 @@ export const CodeEditor = ({
             ref={gutterRef}
             lineCount={lineCount}
             activeLine={cursorPos.line}
-            errorLines={errorLines}
-            warningLines={warningLines}
+            errorLines={diagnostics.errorLines}
+            warningLines={diagnostics.warningLines}
+            lineMessages={diagnostics.lineMessages}
+            lineHeights={lineHeights}
             fontSize={fontSize}
           />
 
@@ -217,27 +244,26 @@ export const CodeEditor = ({
               className={clsx(styles.highlightLayer, wordWrap && styles.wrapOn)}
               aria-hidden="true"
             >
+              <TextMarkLayer
+                code={code}
+                variant="find"
+                marks={find.highlights}
+                active={find.activeMatch}
+              />
+              <TextMarkLayer code={code} variant="selection" marks={multiCursor.selections} />
               <code dangerouslySetInnerHTML={{ __html: highlightedCode }} />
+              <EditorDecorations
+                carets={secondaryCarets}
+                brackets={bracketPair}
+                textareaRef={textareaRef}
+                layoutKey={`${code.length}:${fontSize}:${wordWrap}`}
+              />
             </pre>
 
             <textarea
               ref={textareaRef}
               value={code}
               readOnly={readOnly}
-              onBeforeInput={(e) => {
-                const input = e.nativeEvent;
-                if (input instanceof InputEvent && input.inputType === "historyUndo") {
-                  e.preventDefault();
-                  applyHistoryEntry(history.undo(code));
-                  return;
-                }
-                if (input instanceof InputEvent && input.inputType === "historyRedo") {
-                  e.preventDefault();
-                  applyHistoryEntry(history.redo(code));
-                  return;
-                }
-                history.captureCursor(e.currentTarget.selectionStart);
-              }}
               onChange={handleTextChange}
               onPaste={handlePaste}
               onKeyDown={(e) => {
@@ -253,6 +279,7 @@ export const CodeEditor = ({
               onClick={handleTextareaClick}
               onBlur={handleTextareaBlur}
               onScroll={handleScroll}
+              onMouseDown={hoverSignatures.closeHover}
               onMouseMove={(e) => hoverSignatures.handleMouseMove(e, code)}
               onMouseLeave={hoverSignatures.handleMouseLeave}
               className={clsx(
@@ -261,48 +288,55 @@ export const CodeEditor = ({
                 wordWrap && styles.wrapOn
               )}
               placeholder="// Напишите ваш код решения здесь..."
+              aria-label="Редактор кода"
+              aria-multiline="true"
+              aria-autocomplete="list"
+              aria-haspopup="listbox"
+              aria-controls={intelliSense.isOpen ? suggestionsId : undefined}
+              aria-activedescendant={
+                intelliSense.isOpen
+                  ? getSuggestionOptionId(suggestionsId, intelliSense.selectedIndex)
+                  : undefined
+              }
               spellCheck={false}
               autoCapitalize="off"
               autoComplete="off"
               autoCorrect="off"
             />
 
+            <FindReplaceBar find={find} readOnly={readOnly} />
+
+            {/* VS Code hides parameter hints behind an open suggest list; they return when it closes. */}
+            {signatureHelp.signature && !hideTooltips && !intelliSense.isOpen && (
+              <SignatureHelpCard
+                signature={signatureHelp.signature}
+                position={signatureHelp.position}
+              />
+            )}
+
             {intelliSense.isOpen && (
               <SuggestionsDropdown
+                id={suggestionsId}
                 items={intelliSense.items}
+                query={intelliSense.word}
                 selectedIndex={intelliSense.selectedIndex}
                 position={intelliSense.popupPosition}
-                onHover={intelliSense.selectIndex}
                 onSelect={(item) => {
-                  if (textareaRef.current) {
-                    const applied = intelliSense.applySelected(
-                      code,
-                      textareaRef.current.selectionStart,
-                      files,
-                      filepath,
-                      item
-                    );
-                    if (applied) {
-                      onChange(applied.newCode);
-                      history.pushHistory(applied.newCode, applied.newCursor);
-                      setTimeout(() => {
-                        if (textareaRef.current) {
-                          textareaRef.current.selectionStart = textareaRef.current.selectionEnd =
-                            applied.newCursor;
-                          textareaRef.current.focus();
-                          updateCursorCoords();
-                        }
-                      }, 0);
-                    }
-                  }
+                  const cursor = textareaRef.current?.selectionStart;
+                  if (cursor === undefined) return;
+                  const applied = intelliSense.applySelected(code, cursor, files, filepath, item);
+                  if (applied) applyCompletion(applied);
                 }}
               />
             )}
 
-            {hoverSignatures.hoverInfo && !hideTooltips && !intelliSense.isOpen && (
+            {isHoverVisible && (
               <HoverSignatureCard
                 info={hoverSignatures.hoverInfo}
+                problems={hoverSignatures.hoverProblems}
                 position={hoverSignatures.position}
+                onMouseEnter={hoverSignatures.keepHover}
+                onMouseLeave={hoverSignatures.handleMouseLeave}
               />
             )}
           </div>
@@ -312,6 +346,14 @@ export const CodeEditor = ({
 
         <div className={styles.statusBar}>
           <div className={styles.statusLeft}>
+            {formatNotice && (
+              <>
+                <span className={clsx(styles.statusItem, styles.diagErr)} role="status">
+                  {formatNotice}
+                </span>
+                <span className={styles.statusSep}>|</span>
+              </>
+            )}
             {saveStatus && (
               <Tooltip
                 content={
@@ -345,31 +387,32 @@ export const CodeEditor = ({
 
             <span className={styles.statusSep}>|</span>
 
-            {lintResult.errorCount > 0 ? (
-              <Tooltip
-                content="Обнаружена ошибка синтаксиса, типов или отсутствующий импорт"
-                side="top"
-              >
-                <span className={clsx(styles.statusItem, styles.diagErr)}>
-                  <AlertCircle size={11} />
-                  <span>
-                    {lintResult.errorCount} {lintResult.errorCount === 1 ? "ошибка" : "ошибок"}
-                    {activeTypo
-                      ? `: ${activeTypo.typo} → ${activeTypo.correct}`
-                      : activeMissingImport
-                        ? `: не импортирован '${activeMissingImport.symbol}'`
-                        : ""}
+            {/* Announced politely: screen readers hear the error count after each check. */}
+            <span className={styles.liveRegion} role="status">
+              {diagnostics.errorCount > 0 ? (
+                <Tooltip
+                  content={`${diagnostics.activeDiagnostic?.message ?? ""}\nF8 — следующая проблема`}
+                  contentClassName={styles.statusTooltip}
+                  side="top"
+                >
+                  <button
+                    type="button"
+                    className={clsx(styles.statusItem, styles.statusButton, styles.diagErr)}
+                    onClick={() => goToProblem(1)}
+                  >
+                    <AlertCircle size={11} />
+                    <span>{pluralize(diagnostics.errorCount, ERROR_FORMS)}</span>
+                  </button>
+                </Tooltip>
+              ) : (
+                <Tooltip content="Синтаксис и типы корректны" side="top">
+                  <span className={clsx(styles.statusItem, styles.diagOk)}>
+                    <CheckCircle2 size={11} />
+                    <span>Синтаксис корректен</span>
                   </span>
-                </span>
-              </Tooltip>
-            ) : (
-              <Tooltip content="Синтаксис и типы корректны" side="top">
-                <span className={clsx(styles.statusItem, styles.diagOk)}>
-                  <CheckCircle2 size={11} />
-                  <span>Синтаксис корректен</span>
-                </span>
-              </Tooltip>
-            )}
+                </Tooltip>
+              )}
+            </span>
 
             <span className={styles.statusSep}>|</span>
 
@@ -393,19 +436,18 @@ export const CodeEditor = ({
             </span>
             <span className={styles.statusSep}>|</span>
             <span className={styles.statusItem}>
-              {lineCount} {lineCount === 1 ? "строка" : lineCount < 5 ? "строки" : "строк"} (
-              {code.length} симв)
+              {pluralize(lineCount, LINE_FORMS)} ({code.length} симв)
             </span>
           </div>
 
           <div className={styles.statusRight}>
-            <span className={styles.statusItem}>Пробелы: 2</span>
+            <span className={styles.statusItem}>Пробелы: {TAB_SIZE}</span>
             <span className={styles.statusSep}>|</span>
             <span className={styles.statusItem}>UTF-8</span>
             <span className={styles.statusSep}>|</span>
             <Tooltip content={`Язык синтаксиса: ${langInfo.name}`} side="top">
               <span className={styles.statusItem}>
-                <Code2 size={11} className={langInfo.iconClass} />
+                <Code2 size={11} className={LANGUAGE_ICON_CLASSES[langInfo.id]} />
                 <span>{langInfo.name}</span>
               </span>
             </Tooltip>

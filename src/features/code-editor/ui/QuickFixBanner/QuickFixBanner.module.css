@@ -1,4 +1,6 @@
 .quickfixBanner {
+  /* The severity shows as an accent edge, like a VS Code diagnostic. */
+  --accent: var(--accent-yellow);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -8,6 +10,14 @@
   gap: 12px;
   animation: fadeIn 0.15s ease;
   user-select: none;
+}
+
+.quickfixBanner[data-severity="error"] {
+  --accent: var(--color-error);
+}
+
+.quickfixBanner {
+  box-shadow: inset 2px 0 0 var(--accent);
 }
 
 @keyframes fadeIn {
@@ -48,54 +58,47 @@
   text-overflow: ellipsis;
 }
 
-.message code {
-  color: var(--code-inline-text);
-  background: var(--code-inline-bg);
-  padding: 1px 5px;
-  border-radius: 3px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-}
-
-.errorWord {
-  color: var(--color-error) !important;
-  background: var(--accent-red-bg) !important;
-  text-decoration: underline wavy var(--color-error);
-}
-
-.message strong {
-  color: var(--text-main);
-  font-weight: 600;
-}
-
-.importModName {
-  color: var(--accent-orange);
-  font-family: var(--font-mono);
+.actions {
+  display: flex;
+  gap: var(--space-1-5);
+  min-width: 0;
+  flex-shrink: 1;
+  overflow: hidden;
 }
 
 .fixBtn {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 3px 9px;
-  height: 23px;
-  background: var(--state-hover);
+  padding: 3px 10px;
+  height: 24px;
   color: var(--text-main);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm, 4px);
+  background: color-mix(in srgb, var(--accent-blue) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-blue) 30%, transparent);
+  border-radius: var(--radius-full);
   font-size: 11px;
   font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
-  flex-shrink: 0;
+  max-width: 36ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
   box-shadow: none;
-  transition: all 0.12s ease;
+  transition:
+    background-color 0.12s ease,
+    border-color 0.12s ease;
   user-select: none;
 }
 
 .fixBtn:hover {
-  background: var(--state-active);
+  background: color-mix(in srgb, var(--accent-blue) 22%, transparent);
+  border-color: color-mix(in srgb, var(--accent-blue) 50%, transparent);
   color: var(--text-main);
+}
+
+.fixBtn:focus-visible {
+  outline: var(--space-0-5) solid var(--accent-blue);
+  outline-offset: var(--space-px);
 }
 
 .fixBtn:active {

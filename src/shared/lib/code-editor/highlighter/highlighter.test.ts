@@ -193,3 +193,89 @@ describe("codeHighlighter - Unified Dispatcher", () => {
     expect(result).toContain('class="hl-kw">export</span>');
   });
 });
+
+describe("JS/TS highlighting across file formats", () => {
+  it("treats a comparison without spaces as an operator, not a JSX tag", () => {
+    const result = highlightCode("for (let i = 0; i<n; i++) {}", "App.jsx");
+    expect(result).not.toContain('class="hl-tag"');
+    expect(result).not.toContain("hl-tag-punct");
+  });
+
+  it("keeps TSX generics out of markup", () => {
+    const result = highlightCode("const [v] = useState<string>('');", "App.tsx");
+    expect(result).toContain('class="hl-type">string</span>');
+    expect(result).not.toContain("hl-tag");
+  });
+
+  it("highlights JSX in .js files like VS Code", () => {
+    const result = highlightCode('export default () => <div className="a">hi</div>;', "A.js");
+    expect(result).toContain('class="hl-tag">div</span>');
+    expect(result).toContain('class="hl-attr">className</span>');
+  });
+
+  it("keeps a tag open across arrow functions inside attributes", () => {
+    const result = highlightCode('const a = <b onClick={() => x > 1} id="c" />;', "A.jsx");
+    expect(result).toContain('class="hl-attr">id</span>');
+  });
+
+  it("highlights nested template expressions", () => {
+    const result = highlightCode("const c = `a ${f({ x: 1 })} ${ok ? `y` : `z`} b`;", "a.js");
+    expect(result).toContain('class="hl-fn">f</span>');
+    expect(result).toContain('class="hl-num">1</span>');
+    expect(result.match(/class="hl-op">\$\{<\/span>/g)).toHaveLength(2);
+    // Plain characters of a template share a span; the text after the last `}` is one run.
+    expect(result).toContain('<span class="hl-op">}</span><span class="hl-str"> b`</span>');
+  });
+
+  it("maps multi-selections inside template expressions to source offsets", () => {
+    const code = "const s = `${name}`; name;";
+    const first = code.indexOf("name");
+    const result = highlightCode(code, "a.js", {
+      multiSelections: [{ start: first, end: first + 4 }],
+    });
+    expect(result.match(/hl-multi-selected/g)).toHaveLength(1);
+  });
+
+  it("does not color TypeScript-only words as keywords in JavaScript", () => {
+    const result = highlightCode("const type = action.type; const { interface: x } = y;", "r.js");
+    expect(result).not.toContain('class="hl-kw">type</span>');
+    expect(result).not.toContain('class="hl-kw">interface</span>');
+  });
+
+  it("keeps contextual TypeScript keywords for declarations only", () => {
+    const result = highlightCode("type Id = string;\nconst { type } = action;", "a.ts");
+    expect(result.match(/class="hl-kw">type<\/span>/g)).toHaveLength(1);
+  });
+
+  it("colors hooks in .ts files", () => {
+    expect(highlightCode("const [a] = useState(0);", "useA.ts")).toContain(
+      'class="hl-hook">useState</span>'
+    );
+  });
+
+  it("squiggles diagnostics by absolute range", () => {
+    const code = "const value = missing.prop;";
+    const start = code.indexOf("missing");
+    const result = highlightCode(code, "a.ts", {
+      problems: [
+        { line: 1, col: start + 1, start, end: start + 7, message: "", severity: "error" },
+      ],
+    });
+    expect(result).toContain('class="hl-squiggly-error">missing</span>');
+    expect(result).not.toContain("hl-prop hl-squiggly-error");
+  });
+});
+
+describe("SQL and language registry", () => {
+  it("highlights SQL keywords case-insensitively and -- comments", () => {
+    const result = highlightCode("select name from users -- active only\nWHERE id = 1;", "q.sql");
+    expect(result).toContain('class="hl-kw">select</span>');
+    expect(result).toContain('class="hl-kw">WHERE</span>');
+    expect(result).toContain('class="hl-cm">-- active only</span>');
+    expect(result).toContain('class="hl-num">1</span>');
+  });
+
+  it("treats unknown extensions as plain text", () => {
+    expect(highlightCode("const a = <b>", "config.yaml")).toBe("const a = &lt;b&gt;");
+  });
+});

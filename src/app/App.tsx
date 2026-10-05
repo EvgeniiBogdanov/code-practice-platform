@@ -13,7 +13,10 @@ export const router = createRouter({
   basepath: import.meta.env.BASE_URL,
   defaultPreload: "intent",
   defaultPendingComponent: () => <UiLoader center size="lg" />,
-  defaultPendingMinMs: 0,
+  // Show the spinner quickly instead of keeping the old page frozen (default is 1s), and keep it
+  // long enough not to flash on fast loads.
+  defaultPendingMs: 150,
+  defaultPendingMinMs: 400,
 });
 
 declare module "@tanstack/react-router" {

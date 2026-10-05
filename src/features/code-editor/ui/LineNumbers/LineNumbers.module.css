@@ -49,3 +49,15 @@
   color: var(--color-warning);
   font-weight: 700;
 }
+
+.messages {
+  max-width: 60ch;
+  white-space: pre-line;
+  font-family: var(--font-mono);
+}
+
+/* A wrapped line spans several rows; its number stays on the first one. */
+.wrapped {
+  height: var(--row-height, 1.6em);
+  align-items: flex-start;
+}
