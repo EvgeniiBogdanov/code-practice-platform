@@ -8,3 +8,4 @@ export * from "./transpiler";
 export * from "./sandboxHtmlBuilder";
 export * from "./reactLiveRunner";
 export * from "./testEngine";
+export * from "./is-message-from-frame-in";

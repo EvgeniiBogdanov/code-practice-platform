@@ -1,9 +1,7 @@
 import React, { memo } from "react";
-import { ArrowDown } from "lucide-react";
 import { clsx } from "clsx";
 import { Task } from "@/entities/task";
 import {
-  Tooltip,
   Accordion,
   ErrorBoundary,
   ViewModeToggle,
@@ -41,9 +39,7 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
     consoleLogs,
     isRunning,
     lastExecution,
-    isConsoleVisible,
-    consoleWrapperRef,
-    scrollToConsole,
+    tabRef,
     recommendationNote,
     isRecommended,
     hasWarning,
@@ -57,7 +53,7 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
   } = useSolutionTab(task);
 
   return (
-    <div className={clsx(styles.container, className)}>
+    <div ref={tabRef} className={clsx(styles.container, className)}>
       <SolutionVariantsRow
         solutions={solutions}
         selectedIdx={selectedSolutionIdx}
@@ -121,17 +117,15 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
                         onToggleFullscreen={toggleFullscreen}
                         isFullscreenTransitioning={isTransitioning}
                         bottomConsole={
-                          <div ref={consoleWrapperRef}>
-                            <JsConsole
-                              logs={consoleLogs}
-                              isRunning={isRunning}
-                              lastExecution={lastExecution}
-                              filename={activeFile.name}
-                              onRun={() => handleRunCode()}
-                              onStop={handleStopCode}
-                              onClear={handleClearConsole}
-                            />
-                          </div>
+                          <JsConsole
+                            logs={consoleLogs}
+                            isRunning={isRunning}
+                            lastExecution={lastExecution}
+                            filename={activeFile.name}
+                            onRun={() => handleRunCode()}
+                            onStop={handleStopCode}
+                            onClear={handleClearConsole}
+                          />
                         }
                       />
                     }
@@ -153,19 +147,6 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
               </UiFullscreenPanel>
             ) : (
               <UiSkeleton height={EDITOR_PLACEHOLDER_HEIGHT} />
-            )}
-
-            {!isConsoleVisible && (
-              <Tooltip content="Перейти к консоли" side="left" sideOffset={10}>
-                <button
-                  type="button"
-                  className={styles.quickScrollConsoleBtn}
-                  onClick={scrollToConsole}
-                  aria-label="Перейти к консоли"
-                >
-                  <ArrowDown size={17} />
-                </button>
-              </Tooltip>
             )}
           </>
         )}

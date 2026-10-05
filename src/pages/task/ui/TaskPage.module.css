@@ -290,3 +290,9 @@
     flex-shrink: 0;
   }
 }
+
+/* Kept-alive tab: skipped like display:none, but the browser keeps its layout, so showing it
+   again does not re-layout the whole editor. */
+.inactiveTab {
+  content-visibility: hidden;
+}

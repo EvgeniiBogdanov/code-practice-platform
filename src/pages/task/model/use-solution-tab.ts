@@ -1,9 +1,9 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
-import { useElementVisibility, type UseElementVisibilityResult } from "@/shared/lib/hooks";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { Task, TaskSolution, getTaskFiles, hasTaskVisualComponent } from "@/entities/task";
 import {
   getUserSolution,
   getUserSolutionSync,
+  canReadUserSolutionSync,
   saveUserSolution,
   deleteUserSolution,
   subscribeToSyncEvents,
@@ -13,6 +13,7 @@ import {
   clearRunningTimers,
   NodeRunnerLogEntry,
   TaskSourceFile,
+  isMessageFromFrameIn,
 } from "@/shared/lib/code-runners";
 import { ViewMode } from "@/shared/ui";
 
@@ -34,9 +35,7 @@ export interface UseSolutionTabReturn {
   consoleLogs: NodeRunnerLogEntry[];
   isRunning: boolean;
   lastExecution: { durationMs?: number; exitCode?: number } | null;
-  isConsoleVisible: boolean;
-  consoleWrapperRef: UseElementVisibilityResult<HTMLDivElement>["ref"];
-  scrollToConsole: () => void;
+  tabRef: React.RefObject<HTMLDivElement | null>;
   recommendationNote?: string;
   isRecommended?: boolean;
   hasWarning?: boolean;
@@ -106,9 +105,7 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
   // The editor waits for the stored code: rendering defaults first made it jump once the
   // async read finished (and flipped the quick-scroll button) whenever the sync cache missed.
   const [loadedScope, setLoadedScope] = useState<string | null>(() =>
-    typeof getUserSolutionSync(task.id, "sol", activeFileIdx, selectedSolutionIdx) === "string"
-      ? savedScope
-      : null
+    canReadUserSolutionSync(task.id, "sol", activeFileIdx, selectedSolutionIdx) ? savedScope : null
   );
   const activeFile = files[activeFileIdx] || files[0] || { name: "index.jsx", code: "" };
 
@@ -124,11 +121,7 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
     exitCode?: number;
   } | null>(null);
 
-  const {
-    ref: consoleWrapperRef,
-    element: consoleElement,
-    isVisible: isConsoleVisible,
-  } = useElementVisibility();
+  const tabRef = useRef<HTMLDivElement>(null);
 
   // Reset state when task changes
   useEffect(() => {
@@ -197,6 +190,8 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
   // Listen for console logs from sandbox iframe
   useEffect(() => {
     const handleMessage = (e: MessageEvent) => {
+      // Both editor tabs stay mounted: only logs of this tab's own sandbox belong here.
+      if (!isMessageFromFrameIn(tabRef.current, e)) return;
       if (e.data && e.data.type === "SANDBOX_CONSOLE") {
         const text = String(e.data.text ?? "");
         const logType =
@@ -216,10 +211,6 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
   }, []);
-
-  const scrollToConsole = useCallback((): void => {
-    consoleElement?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  }, [consoleElement]);
 
   const handleCodeChange = useCallback(
     (newCode: string) => {
@@ -328,9 +319,7 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
     consoleLogs,
     isRunning,
     lastExecution,
-    isConsoleVisible,
-    consoleWrapperRef,
-    scrollToConsole,
+    tabRef,
     recommendationNote,
     isRecommended,
     hasWarning,

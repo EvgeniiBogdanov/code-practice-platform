@@ -24,7 +24,11 @@ const pendingWrites = new Map<string, SolutionRecord>();
 
 const MAX_MEMORY_CACHE_ENTRIES = 150;
 
+/** Ids known to exist in IndexedDB; `null` until the startup scan finishes. */
+let storedSolutionIds: Set<string> | null = null;
+
 function setMemoryCache(id: string, code: string, updatedAt?: number): void {
+  storedSolutionIds?.add(id);
   if (memoryCache.has(id)) {
     memoryCache.delete(id);
     memoryCacheTimestamps.delete(id);
@@ -303,6 +307,7 @@ export async function deleteSolutionsForTasks(taskIds: Array<string | number>): 
 }
 
 export async function clearAllSolutions(): Promise<void> {
+  storedSolutionIds?.clear();
   memoryCache.clear();
   memoryCacheTimestamps.clear();
   pendingWrites.clear();
@@ -337,6 +342,7 @@ export async function initSolutionsCache(): Promise<void> {
 
   try {
     const allRecords = await dbGetAll<SolutionRecord>(STORES.SOLUTIONS);
+    storedSolutionIds = new Set(allRecords.map((record) => record.id));
     allRecords.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
     const recentRecords = allRecords.slice(0, 100);
     for (const record of recentRecords) {
@@ -366,6 +372,20 @@ export function getUserSolutionSync(
   const key = buildSolutionKey(taskId, prefix, fileIdx, variantIdx);
   const cached = peekCachedSolution(key);
   return cached !== null ? cached : fallbackCode;
+}
+
+/**
+ * True when `getUserSolutionSync` already has the final answer: the code is in memory or no
+ * record exists. False means IndexedDB may still hold code the sync read cannot see.
+ */
+export function canReadUserSolutionSync(
+  taskId: string | number,
+  prefix: "cand" | "sol" = "cand",
+  fileIdx = 0,
+  variantIdx = 0
+): boolean {
+  const key = buildSolutionKey(taskId, prefix, fileIdx, variantIdx);
+  return memoryCache.has(key) || (storedSolutionIds !== null && !storedSolutionIds.has(key));
 }
 
 export async function getUserSolution(

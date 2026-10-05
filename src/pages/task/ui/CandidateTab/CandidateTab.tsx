@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { ArrowDown } from "lucide-react";
+import React, { memo, useState, useEffect, useMemo, useRef } from "react";
 import { clsx } from "clsx";
-import { useElementVisibility } from "@/shared/lib/hooks";
 import { Task, getTaskFiles, hasTaskVisualComponent } from "@/entities/task";
 import {
   getUserSolution,
   getUserSolutionSync,
+  canReadUserSolutionSync,
   saveUserSolution,
   deleteUserSolution,
   subscribeToSyncEvents,
@@ -15,9 +14,9 @@ import {
   clearRunningTimers,
   NodeRunnerLogEntry,
   TaskSourceFile,
+  isMessageFromFrameIn,
 } from "@/shared/lib/code-runners";
 import {
-  Tooltip,
   ErrorBoundary,
   ViewModeToggle,
   ViewMode,
@@ -37,7 +36,8 @@ export interface CandidateTabProps {
   className?: string;
 }
 
-export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.Element => {
+export const CandidateTab = memo(({ task, className }: CandidateTabProps): React.JSX.Element => {
+  const tabRef = useRef<HTMLDivElement>(null);
   const initialFiles: TaskSourceFile[] = useMemo(() => {
     if (!task) return [{ name: "main.js", code: "" }];
     const rawFiles = getTaskFiles(task, "candidate");
@@ -56,9 +56,7 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
   // async read finished (and flipped the quick-scroll button) whenever the sync cache missed.
   const savedScope = `${task?.id ?? "none"}:${activeFileIdx}`;
   const [loadedScope, setLoadedScope] = useState<string | null>(() =>
-    !task || typeof getUserSolutionSync(task.id, "cand", activeFileIdx) === "string"
-      ? savedScope
-      : null
+    !task || canReadUserSolutionSync(task.id, "cand", activeFileIdx) ? savedScope : null
   );
   const isSavedReady = loadedScope === savedScope;
   const activeFile = files[activeFileIdx] || files[0] || { name: "main.js", code: "" };
@@ -77,12 +75,6 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
     durationMs?: number;
     exitCode?: number;
   } | null>(null);
-
-  const {
-    ref: consoleWrapperRef,
-    element: consoleElement,
-    isVisible: isConsoleVisible,
-  } = useElementVisibility();
 
   // Reset when task changes
   useEffect(() => {
@@ -169,6 +161,8 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
   // Listen for console logs from sandbox iframe
   useEffect(() => {
     const handleMessage = (e: MessageEvent) => {
+      // Both editor tabs stay mounted: only logs of this tab's own sandbox belong here.
+      if (!isMessageFromFrameIn(tabRef.current, e)) return;
       if (e.data && e.data.type === "SANDBOX_CONSOLE") {
         const text = String(e.data.text ?? "");
         const logType =
@@ -260,7 +254,7 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
   }, []);
 
   return (
-    <div className={clsx(styles.container, className)}>
+    <div ref={tabRef} className={clsx(styles.container, className)}>
       {hasVisualComponent && <ViewModeToggle mode={viewMode} onChange={setViewMode} />}
 
       <ErrorBoundary>
@@ -309,17 +303,15 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
                         onToggleFullscreen={toggleFullscreen}
                         isFullscreenTransitioning={isTransitioning}
                         bottomConsole={
-                          <div ref={consoleWrapperRef}>
-                            <JsConsole
-                              logs={consoleLogs}
-                              isRunning={isRunning}
-                              lastExecution={lastExecution}
-                              filename={activeFile.name}
-                              onRun={() => handleRunCode()}
-                              onStop={handleStopCode}
-                              onClear={handleClearConsole}
-                            />
-                          </div>
+                          <JsConsole
+                            logs={consoleLogs}
+                            isRunning={isRunning}
+                            lastExecution={lastExecution}
+                            filename={activeFile.name}
+                            onRun={() => handleRunCode()}
+                            onStop={handleStopCode}
+                            onClear={handleClearConsole}
+                          />
                         }
                       />
                     }
@@ -341,28 +333,11 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
             ) : (
               <UiSkeleton height={EDITOR_PLACEHOLDER_HEIGHT} />
             )}
-
-            {/* Quick-scroll to console button */}
-            {!isConsoleVisible && (
-              <Tooltip content="Перейти к консоли" side="left" sideOffset={10}>
-                <button
-                  type="button"
-                  className={styles.quickScrollConsoleBtn}
-                  onClick={() => {
-                    consoleElement?.scrollIntoView({
-                      behavior: "smooth",
-                      block: "nearest",
-                    });
-                  }}
-                  aria-label="Перейти к консоли"
-                >
-                  <ArrowDown size={17} />
-                </button>
-              </Tooltip>
-            )}
           </>
         )}
       </ErrorBoundary>
     </div>
   );
-};
+});
+
+CandidateTab.displayName = "CandidateTab";

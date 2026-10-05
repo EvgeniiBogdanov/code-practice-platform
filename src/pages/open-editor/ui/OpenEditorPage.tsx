@@ -1,8 +1,7 @@
 import { getTaskSolutionSource } from "@/entities/task";
 import React, { useCallback, useState, useEffect, useMemo, useRef } from "react";
-import { useElementVisibility } from "@/shared/lib/hooks";
 import { useNavigate } from "@tanstack/react-router";
-import { Home, FileQuestion, ArrowDown } from "lucide-react";
+import { Home, FileQuestion } from "lucide-react";
 import { getTaskFiles, hasTaskVisualComponent } from "@/entities/task";
 import type { SectionType } from "@/entities/task/meta";
 import { useTaskById } from "@/entities/task/catalog";
@@ -21,7 +20,7 @@ import {
   deleteUserSolution,
   subscribeToSyncEvents,
 } from "@/shared/lib/storage";
-import { Tooltip, ErrorBoundary, ResizableSplitPane, UiLoader, ViewMode } from "@/shared/ui";
+import { ErrorBoundary, ResizableSplitPane, UiLoader, ViewMode } from "@/shared/ui";
 import { useUIStore } from "@/entities/ui-state";
 import { TaskVisualization } from "@/widgets/task-visualization";
 import { useFullscreenExitTransition } from "../model/use-fullscreen-exit-transition";
@@ -122,12 +121,6 @@ export const OpenEditorPage = ({
     durationMs?: number;
     exitCode?: number;
   } | null>(null);
-
-  const {
-    ref: consoleWrapperRef,
-    element: consoleElement,
-    isVisible: isConsoleVisible,
-  } = useElementVisibility();
 
   // Keep the initial state intact to prevent a post-paint layout update on fullscreen entry.
   useEffect(() => {
@@ -451,17 +444,15 @@ export const OpenEditorPage = ({
   const previewStoragePrefix = previewTarget === "solution" ? "sol" : "cand";
 
   const consoleNode = (
-    <div ref={consoleWrapperRef}>
-      <JsConsole
-        logs={consoleLogs}
-        isRunning={isRunning}
-        lastExecution={lastExecution}
-        filename={activeFile.name}
-        onRun={() => handleRunCode()}
-        onStop={handleStopCode}
-        onClear={handleClearConsole}
-      />
-    </div>
+    <JsConsole
+      logs={consoleLogs}
+      isRunning={isRunning}
+      lastExecution={lastExecution}
+      filename={activeFile.name}
+      onRun={() => handleRunCode()}
+      onStop={handleStopCode}
+      onClear={handleClearConsole}
+    />
   );
 
   return (
@@ -557,24 +548,6 @@ export const OpenEditorPage = ({
                   isFullscreenTransitioning={isFullscreenExiting}
                   bottomConsole={consoleNode}
                 />
-              )}
-
-              {!isConsoleVisible && !isReact && tab !== "visualization" && (
-                <Tooltip content="Перейти к консоли" side="left" sideOffset={10}>
-                  <button
-                    type="button"
-                    className={styles.quickScrollConsoleBtn}
-                    onClick={() => {
-                      consoleElement?.scrollIntoView({
-                        behavior: "smooth",
-                        block: "nearest",
-                      });
-                    }}
-                    aria-label="Перейти к консоли"
-                  >
-                    <ArrowDown size={17} />
-                  </button>
-                </Tooltip>
               )}
             </>
           )}

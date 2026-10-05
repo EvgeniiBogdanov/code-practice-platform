@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Play, CheckCircle, BookOpen, HelpCircle, ListChecks, Box } from "lucide-react";
 import { clsx } from "clsx";
@@ -43,6 +43,20 @@ export const TaskPage = React.memo<TaskPageProps>(
     const activeTab =
       requestedTab === "visualization" && !hasVisualization ? "candidate" : requestedTab;
 
+    // LeetCode-style tabs: a visited tab stays mounted and is only hidden, so switching back
+    // is instant and keeps editor state (no remount, no reload of stored code).
+    const [visited, setVisited] = useState({ taskId, tabs: new Set([activeTab]) });
+    if (visited.taskId !== taskId || !visited.tabs.has(activeTab)) {
+      setVisited({
+        taskId,
+        tabs: new Set(visited.taskId === taskId ? [...visited.tabs, activeTab] : [activeTab]),
+      });
+    }
+    const renderKeptTab = (tab: string, content: React.ReactNode): React.ReactNode =>
+      (tab === activeTab || (visited.taskId === taskId && visited.tabs.has(tab))) && (
+        <div className={clsx(tab !== activeTab && styles.inactiveTab)}>{content}</div>
+      );
+
     const completedTasks = useProgressStore((state) => state.completedTasks);
     const setTaskStatus = useProgressStore((state) => state.setTaskStatus);
     const submitReview = useReviewStore((state) => state.submitReview);
@@ -59,6 +73,16 @@ export const TaskPage = React.memo<TaskPageProps>(
       activateCodeHistoryTask(`${section}:${taskId}`);
     }, [section, taskId]);
 
+    // The URL only mirrors the tab. Syncing it re-renders the whole route tree, so it runs
+    // after the new tab has painted; a newer click or leaving the task cancels the pending one.
+    const pendingTabUrlRef = useRef<number | null>(null);
+    useEffect(
+      () => (): void => {
+        if (pendingTabUrlRef.current !== null) cancelAnimationFrame(pendingTabUrlRef.current);
+      },
+      [taskId]
+    );
+
     if (!isLoading && !task) {
       return (
         <div className={styles.notFound}>
@@ -73,11 +97,18 @@ export const TaskPage = React.memo<TaskPageProps>(
 
     const handleTabChange = (tabId: string) => {
       setActiveTab(tabId);
-      navigate({
-        to: ".",
-        search: (prev: Record<string, unknown>) => ({ ...prev, tab: tabId }),
-        replace: true,
-        resetScroll: false,
+      if (pendingTabUrlRef.current !== null) cancelAnimationFrame(pendingTabUrlRef.current);
+      // rAF fires before the paint of the frame that shows the tab, so wait one more frame.
+      pendingTabUrlRef.current = requestAnimationFrame(() => {
+        pendingTabUrlRef.current = requestAnimationFrame(() => {
+          pendingTabUrlRef.current = null;
+          navigate({
+            to: ".",
+            search: (prev: Record<string, unknown>) => ({ ...prev, tab: tabId }),
+            replace: true,
+            resetScroll: false,
+          });
+        });
       });
     };
 
@@ -301,8 +332,8 @@ export const TaskPage = React.memo<TaskPageProps>(
                 <TaskTabSkeleton tab={activeTab} />
               ) : (
                 <React.Suspense fallback={<TaskTabSkeleton tab={activeTab} task={task} />}>
-                  {activeTab === "candidate" && <CandidateTab task={task} />}
-                  {activeTab === "solution" && <SolutionTab task={task} />}
+                  {renderKeptTab("candidate", <CandidateTab task={task} />)}
+                  {renderKeptTab("solution", <SolutionTab task={task} />)}
                   {hasVisualization && (
                     <TaskVisualizationTab
                       key={taskId}
@@ -310,9 +341,9 @@ export const TaskPage = React.memo<TaskPageProps>(
                       active={activeTab === "visualization"}
                     />
                   )}
-                  {activeTab === "materials" && <MaterialsTab task={task} />}
-                  {activeTab === "questions" && <QuestionsTab task={task} />}
-                  {activeTab === "checklist" && <ChecklistTab task={task} />}
+                  {renderKeptTab("materials", <MaterialsTab task={task} />)}
+                  {renderKeptTab("questions", <QuestionsTab task={task} />)}
+                  {renderKeptTab("checklist", <ChecklistTab task={task} />)}
                 </React.Suspense>
               )}
             </div>

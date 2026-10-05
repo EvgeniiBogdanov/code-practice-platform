@@ -20,6 +20,8 @@ export const useWrappedLineHeights = (
     }
     // Most edits do not change any row height: keep the array so the gutter does not re-render.
     const measure = (): void => {
+      // A hidden (kept-alive) editor has no width: measuring it would wrap every character.
+      if (!textarea.clientWidth) return;
       const next = measureLineHeights(textarea);
       setHeights((current) => (sameHeights(current, next) ? current : next));
     };
