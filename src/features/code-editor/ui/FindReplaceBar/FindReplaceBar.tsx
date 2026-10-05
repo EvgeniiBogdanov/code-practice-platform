@@ -80,6 +80,7 @@ export const FindReplaceBar = ({
         <div className={styles.row}>
           <input
             ref={lineRef}
+            name="go-to-line"
             className={styles.input}
             type="text"
             inputMode="numeric"
@@ -108,6 +109,7 @@ export const FindReplaceBar = ({
       <div className={styles.row}>
         <input
           ref={queryRef}
+          name="find-query"
           className={clsx(styles.input, find.error && styles.invalid)}
           type="text"
           placeholder="Найти"
@@ -179,6 +181,7 @@ export const FindReplaceBar = ({
       {mode === "replace" && !readOnly && (
         <div className={styles.row}>
           <input
+            name="find-replacement"
             className={styles.input}
             type="text"
             placeholder="Заменить"

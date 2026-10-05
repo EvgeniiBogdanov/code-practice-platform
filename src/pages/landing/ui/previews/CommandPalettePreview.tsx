@@ -79,6 +79,7 @@ export const CommandPalettePreview = (): React.JSX.Element => {
         <Search size={16} aria-hidden="true" />
         <input
           ref={inputRef}
+          name="palette-query"
           className={styles.paletteInput}
           value={visibleQuery}
           placeholder="Найти задачу…"

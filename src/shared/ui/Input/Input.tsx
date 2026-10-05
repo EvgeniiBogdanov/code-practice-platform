@@ -1,4 +1,4 @@
-import React, { forwardRef, InputHTMLAttributes } from "react";
+import React, { forwardRef, InputHTMLAttributes, useId } from "react";
 import { clsx } from "clsx";
 import styles from "./Input.module.css";
 
@@ -27,10 +27,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       size = "md",
       variant = "default",
       disabled,
+      id,
       ...props
     },
     ref
   ): React.JSX.Element => {
+    const generatedId = useId();
+    const inputId = id ?? generatedId;
     const inputClassNames = clsx(
       styles.input,
       styles[`size-${size}`],
@@ -43,10 +46,20 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div className={clsx(styles.container, containerClassName)}>
-        {label && <label className={styles.label}>{label}</label>}
+        {label && (
+          <label htmlFor={inputId} className={styles.label}>
+            {label}
+          </label>
+        )}
         <div className={styles.inputWrapper}>
           {leftIcon && <span className={styles.leftIcon}>{leftIcon}</span>}
-          <input ref={ref} disabled={disabled} className={inputClassNames} {...props} />
+          <input
+            ref={ref}
+            id={inputId}
+            disabled={disabled}
+            className={inputClassNames}
+            {...props}
+          />
           {rightIcon && <span className={styles.rightIcon}>{rightIcon}</span>}
         </div>
         {error && <span className={styles.errorMessage}>{error}</span>}

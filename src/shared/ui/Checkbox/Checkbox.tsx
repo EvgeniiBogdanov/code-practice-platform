@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useId } from "react";
 import { clsx } from "clsx";
 import { Check } from "lucide-react";
 import styles from "./Checkbox.module.css";
@@ -26,6 +26,7 @@ export const Checkbox = ({
   id,
   ...props
 }: CheckboxProps) => {
+  const generatedId = useId();
   const isChecked = Boolean(checked);
   const labelText = label !== undefined ? label : children;
 
@@ -48,7 +49,7 @@ export const Checkbox = ({
     <label className={rowClasses}>
       <input
         type="checkbox"
-        id={id}
+        id={id ?? generatedId}
         checked={isChecked}
         onChange={onChange}
         disabled={disabled}

@@ -262,6 +262,7 @@ export const CodeEditor = ({
 
             <textarea
               ref={textareaRef}
+              name="code-editor"
               value={code}
               readOnly={readOnly}
               onChange={handleTextChange}

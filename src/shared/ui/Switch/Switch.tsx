@@ -1,4 +1,4 @@
-import React, { forwardRef, memo } from "react";
+import React, { forwardRef, memo, useId } from "react";
 import { clsx } from "clsx";
 import styles from "./Switch.module.css";
 
@@ -30,6 +30,7 @@ export const Switch = memo(
       }: SwitchProps,
       ref
     ): React.JSX.Element => {
+      const generatedId = useId();
       const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         if (disabled) return;
         onChange(e.target.checked);
@@ -48,7 +49,7 @@ export const Switch = memo(
           <input
             type="checkbox"
             role="switch"
-            id={id}
+            id={id ?? generatedId}
             name={name}
             checked={checked}
             onChange={handleChange}
