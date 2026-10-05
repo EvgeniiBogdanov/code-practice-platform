@@ -102,6 +102,14 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
   const [files, setFiles] = useState<TaskSourceFile[]>(initialFiles);
   const currentFilesScope = `${task.section}:${task.id}:${selectedSolutionIdx}`;
   const [filesScope, setFilesScope] = useState(currentFilesScope);
+  const savedScope = `${currentFilesScope}:${activeFileIdx}`;
+  // The editor waits for the stored code: rendering defaults first made it jump once the
+  // async read finished (and flipped the quick-scroll button) whenever the sync cache missed.
+  const [loadedScope, setLoadedScope] = useState<string | null>(() =>
+    typeof getUserSolutionSync(task.id, "sol", activeFileIdx, selectedSolutionIdx) === "string"
+      ? savedScope
+      : null
+  );
   const activeFile = files[activeFileIdx] || files[0] || { name: "index.jsx", code: "" };
 
   const hasVisualComponent = useMemo(() => hasTaskVisualComponent(task, files), [task, files]);
@@ -147,7 +155,8 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
     let isMounted = true;
     async function loadSaved() {
       const saved = await getUserSolution(task.id, "sol", activeFileIdx, selectedSolutionIdx);
-      if (isMounted && typeof saved === "string") {
+      if (!isMounted) return;
+      if (typeof saved === "string") {
         setFiles((prev) => {
           const next = [...prev];
           if (next[activeFileIdx]) {
@@ -156,6 +165,7 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
           return next;
         });
       }
+      setLoadedScope(`${task.section}:${task.id}:${selectedSolutionIdx}:${activeFileIdx}`);
     }
     loadSaved();
     return () => {
@@ -313,7 +323,7 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
     isHintExpanded,
     setIsHintExpanded,
     files,
-    isFilesReady: filesScope === currentFilesScope,
+    isFilesReady: filesScope === currentFilesScope && loadedScope === savedScope,
     activeFile,
     consoleLogs,
     isRunning,

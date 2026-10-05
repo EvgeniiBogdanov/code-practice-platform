@@ -31,7 +31,7 @@ describe("CandidateTab - SOLUTIONS_CLEARED Sync Event", () => {
   it("resets files to initial template code when SOLUTIONS_CLEARED is broadcast with all: true", async () => {
     render(<CandidateTab task={mockTask} />);
 
-    expect(screen.getByTestId("code-editor")).toHaveTextContent("function initialCode() {}");
+    expect(await screen.findByTestId("code-editor")).toHaveTextContent("function initialCode() {}");
 
     act(() => {
       broadcastSyncEvent("SOLUTIONS_CLEARED", { all: true });
@@ -42,6 +42,7 @@ describe("CandidateTab - SOLUTIONS_CLEARED Sync Event", () => {
 
   it("resets files when SOLUTIONS_CLEARED matches current task ID", async () => {
     render(<CandidateTab task={mockTask} />);
+    await screen.findByTestId("code-editor");
 
     act(() => {
       broadcastSyncEvent("SOLUTIONS_CLEARED", { taskIds: ["test-task-1"] });
