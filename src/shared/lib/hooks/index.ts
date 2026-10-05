@@ -5,3 +5,4 @@ export * from "./useGlobalShortcuts";
 export * from "./useCopy";
 export * from "./use-parent-size";
 export * from "./use-in-view";
+export * from "./use-element-visibility";

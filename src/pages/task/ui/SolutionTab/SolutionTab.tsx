@@ -41,6 +41,7 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
     lastExecution,
     isConsoleVisible,
     consoleWrapperRef,
+    scrollToConsole,
     recommendationNote,
     isRecommended,
     hasWarning,
@@ -155,12 +156,7 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
                 <button
                   type="button"
                   className={styles.quickScrollConsoleBtn}
-                  onClick={() =>
-                    consoleWrapperRef.current?.scrollIntoView({
-                      behavior: "smooth",
-                      block: "nearest",
-                    })
-                  }
+                  onClick={scrollToConsole}
                   aria-label="Перейти к консоли"
                 >
                   <ArrowDown size={17} />

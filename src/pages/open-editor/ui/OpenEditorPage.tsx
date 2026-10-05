@@ -1,5 +1,6 @@
 import { getTaskSolutionSource } from "@/entities/task";
 import React, { useCallback, useState, useEffect, useMemo, useRef } from "react";
+import { useElementVisibility } from "@/shared/lib/hooks";
 import { useNavigate } from "@tanstack/react-router";
 import { Home, FileQuestion, ArrowDown } from "lucide-react";
 import { getTaskFiles, hasTaskVisualComponent } from "@/entities/task";
@@ -121,9 +122,12 @@ export const OpenEditorPage = ({
     durationMs?: number;
     exitCode?: number;
   } | null>(null);
-  const [isConsoleVisible, setIsConsoleVisible] = useState(true);
 
-  const consoleWrapperRef = useRef<HTMLDivElement>(null);
+  const {
+    ref: consoleWrapperRef,
+    element: consoleElement,
+    isVisible: isConsoleVisible,
+  } = useElementVisibility();
 
   // Keep the initial state intact to prevent a post-paint layout update on fullscreen entry.
   useEffect(() => {
@@ -131,7 +135,6 @@ export const OpenEditorPage = ({
 
     previousEditorSessionKeyRef.current = editorSessionKey;
     setActiveFileIdx(0);
-    setIsConsoleVisible(true);
     setFiles(initialFiles);
     setPreviewTarget(tab === "solution" ? "solution" : "candidate");
     const hasVis = task ? hasTaskVisualComponent(task, initialFiles) : isReact;
@@ -252,31 +255,6 @@ export const OpenEditorPage = ({
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
   }, [tab]);
-
-  // Track console visibility
-  useEffect(() => {
-    const el = consoleWrapperRef.current;
-    if (!el || isReact || viewMode === "preview" || tab === "visualization") {
-      setIsConsoleVisible(true);
-      return;
-    }
-
-    let isMounted = true;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (isMounted && entry && entry.target && entry.target.isConnected) {
-          setIsConsoleVisible(entry.isIntersecting);
-        }
-      },
-      { threshold: 0 }
-    );
-
-    observer.observe(el);
-    return () => {
-      isMounted = false;
-      observer.disconnect();
-    };
-  }, [isReact, viewMode, activeFileIdx, task]);
 
   const handleCodeChange = (newCode: string) => {
     setFiles((prev) => {
@@ -581,13 +559,13 @@ export const OpenEditorPage = ({
                 />
               )}
 
-              {!isConsoleVisible && (
+              {!isConsoleVisible && !isReact && tab !== "visualization" && (
                 <Tooltip content="Перейти к консоли" side="left" sideOffset={10}>
                   <button
                     type="button"
                     className={styles.quickScrollConsoleBtn}
                     onClick={() => {
-                      consoleWrapperRef.current?.scrollIntoView({
+                      consoleElement?.scrollIntoView({
                         behavior: "smooth",
                         block: "nearest",
                       });

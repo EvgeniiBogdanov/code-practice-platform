@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
+import { useElementVisibility, type UseElementVisibilityResult } from "@/shared/lib/hooks";
 import { Task, TaskSolution, getTaskFiles, hasTaskVisualComponent } from "@/entities/task";
 import {
   getUserSolution,
@@ -34,7 +35,8 @@ export interface UseSolutionTabReturn {
   isRunning: boolean;
   lastExecution: { durationMs?: number; exitCode?: number } | null;
   isConsoleVisible: boolean;
-  consoleWrapperRef: React.RefObject<HTMLDivElement | null>;
+  consoleWrapperRef: UseElementVisibilityResult<HTMLDivElement>["ref"];
+  scrollToConsole: () => void;
   recommendationNote?: string;
   isRecommended?: boolean;
   hasWarning?: boolean;
@@ -113,15 +115,17 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
     durationMs?: number;
     exitCode?: number;
   } | null>(null);
-  const [isConsoleVisible, setIsConsoleVisible] = useState(true);
 
-  const consoleWrapperRef = useRef<HTMLDivElement>(null);
+  const {
+    ref: consoleWrapperRef,
+    element: consoleElement,
+    isVisible: isConsoleVisible,
+  } = useElementVisibility();
 
   // Reset state when task changes
   useEffect(() => {
     setSelectedSolutionIdx(0);
     setActiveFileIdx(0);
-    setIsConsoleVisible(true);
     setIsHintExpanded(false);
     setConsoleLogs([]);
     setIsRunning(false);
@@ -203,30 +207,9 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
     return () => window.removeEventListener("message", handleMessage);
   }, []);
 
-  // IntersectionObserver to track console visibility
-  useEffect(() => {
-    const el = consoleWrapperRef.current;
-    if (!el || viewMode === "preview") {
-      setIsConsoleVisible(true);
-      return;
-    }
-
-    let isMounted = true;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (isMounted && entry && entry.target && entry.target.isConnected) {
-          setIsConsoleVisible(entry.isIntersecting);
-        }
-      },
-      { threshold: 0 }
-    );
-
-    observer.observe(el);
-    return () => {
-      isMounted = false;
-      observer.disconnect();
-    };
-  }, [viewMode, activeFileIdx, task.id]);
+  const scrollToConsole = useCallback((): void => {
+    consoleElement?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [consoleElement]);
 
   const handleCodeChange = useCallback(
     (newCode: string) => {
@@ -337,6 +320,7 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
     lastExecution,
     isConsoleVisible,
     consoleWrapperRef,
+    scrollToConsole,
     recommendationNote,
     isRecommended,
     hasWarning,

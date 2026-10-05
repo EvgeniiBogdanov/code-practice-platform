@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { ArrowDown } from "lucide-react";
 import { clsx } from "clsx";
+import { useElementVisibility } from "@/shared/lib/hooks";
 import { Task, getTaskFiles, hasTaskVisualComponent } from "@/entities/task";
 import {
   getUserSolution,
@@ -65,15 +66,17 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
     durationMs?: number;
     exitCode?: number;
   } | null>(null);
-  const [isConsoleVisible, setIsConsoleVisible] = useState(true);
 
-  const consoleWrapperRef = useRef<HTMLDivElement>(null);
+  const {
+    ref: consoleWrapperRef,
+    element: consoleElement,
+    isVisible: isConsoleVisible,
+  } = useElementVisibility();
 
   // Reset when task changes
   useEffect(() => {
     if (!task) return;
     setActiveFileIdx(0);
-    setIsConsoleVisible(true);
     setFiles(initialFiles);
     setViewMode("code");
     setConsoleLogs([]);
@@ -173,31 +176,6 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
   }, []);
-
-  // IntersectionObserver to track console visibility for the quick-scroll button
-  useEffect(() => {
-    const el = consoleWrapperRef.current;
-    if (!el || viewMode === "preview" || typeof IntersectionObserver === "undefined") {
-      setIsConsoleVisible(true);
-      return;
-    }
-
-    let isMounted = true;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (isMounted && entry && entry.target && entry.target.isConnected) {
-          setIsConsoleVisible(entry.isIntersecting);
-        }
-      },
-      { threshold: 0 }
-    );
-
-    observer.observe(el);
-    return () => {
-      isMounted = false;
-      observer.disconnect();
-    };
-  }, [viewMode, activeFileIdx, task?.id]);
 
   const handleCodeChange = (newCode: string) => {
     setFiles((prev) => {
@@ -355,7 +333,7 @@ export const CandidateTab = ({ task, className }: CandidateTabProps): React.JSX.
                   type="button"
                   className={styles.quickScrollConsoleBtn}
                   onClick={() => {
-                    consoleWrapperRef.current?.scrollIntoView({
+                    consoleElement?.scrollIntoView({
                       behavior: "smooth",
                       block: "nearest",
                     });
