@@ -333,26 +333,30 @@ describe("taskRegistry", () => {
     expect(reactTasks.some((t) => t.id === "a5")).toBe(true);
   });
 
-  it("should retrieve all 26 Objects tasks with full metadata", async () => {
+  it("should retrieve all 18 Objects tasks with full metadata", async () => {
     const jsTasks = await getTasksBySection("javascript");
     const objectTasks = jsTasks.filter((t) => t.group === "Объекты");
 
-    expect(objectTasks).toHaveLength(26);
+    expect(objectTasks).toHaveLength(18);
     expect(objectTasks.map((t) => t.id)).toEqual([
-      ...Array.from({ length: 13 }, (_, index) => `js${197 + index}`),
-      "js170",
-      "js210",
-      "js211",
+      "js197",
+      "js198",
+      "js199",
+      "js200",
+      "js201",
       "js216",
+      "js204",
+      "js205",
       "js217",
+      "js246",
+      "js207",
+      "js208",
+      "js247",
       "js222",
       "js223",
       "js224",
       "js225",
       "js228",
-      "js246",
-      "js247",
-      "js248",
     ]);
 
     // Test specific tasks across tiers
@@ -361,30 +365,29 @@ describe("taskRegistry", () => {
     expect(task197?.subgroup).toBe("Базовый синтаксис");
     expect(task197?.title).toContain("CRUD");
 
-    const task202 = await getTaskById("js202");
-    expect(task202?.group).toBe("Объекты");
-    expect(task202?.subgroup).toBe("Манипуляции и Утилиты");
-    expect(task202?.title).toContain("isEmpty");
+    const task204 = await getTaskById("js204");
+    expect(task204?.group).toBe("Объекты");
+    expect(task204?.subgroup).toBe("Манипуляции и Утилиты");
+    expect(task204?.title).toContain("pick");
 
     const task207 = await getTaskById("js207");
     expect(task207?.group).toBe("Объекты");
-    expect(task207?.subgroup).toBe("Собеседования: Hard");
+    expect(task207?.subgroup).toBe("Доступ по пути");
     expect(task207?.title).toContain("get / Lodash _.get");
+  });
 
-    const task170 = await getTaskById("js170");
-    expect(task170?.group).toBe("Объекты");
-    expect(task170?.subgroup).toBe("Собеседования: Hard");
-    expect(task170?.title).toContain("deepFreeze");
-
-    const task210 = await getTaskById("js210");
-    expect(task210?.group).toBe("Объекты");
-    expect(task210?.subgroup).toBe("Собеседования: Hard");
-    expect(task210?.title).toContain("deepClone");
-
-    const task211 = await getTaskById("js211");
-    expect(task211?.group).toBe("Объекты");
-    expect(task211?.subgroup).toBe("Собеседования: Hard");
-    expect(task211?.title).toContain("deepMerge");
+  it("should place recursive object interview tasks into the Recursion group", async () => {
+    for (const [id, titlePart] of [
+      ["js206", "deepEqual"],
+      ["js170", "deepFreeze"],
+      ["js210", "deepClone"],
+      ["js211", "deepMerge"],
+    ]) {
+      const task = await getTaskById(id);
+      expect(task?.group, id).toBe("Рекурсия");
+      expect(task?.subgroup, id).toBe("Объекты: задачи с собеседований");
+      expect(task?.title, id).toContain(titlePart);
+    }
   });
 
   it("should place Objects group strictly before Arrays in JavaScript tasks order", async () => {

@@ -1,24 +1,29 @@
-console.log("1: Script start"); // 1: Script start
-
 async function async1() {
-  console.log("2: async1 start"); // 2: async1 start
+  console.log("async1 start"); // 2 — тело async-функции до первого await выполняется синхронно
   await async2();
-  console.log("3: async1 end"); // 3: async1 end
+  console.log("async1 end"); // 6 — продолжение после await — это микрозадача
 }
 
 async function async2() {
-  console.log("4: async2"); // 4: async2
+  console.log("async2"); // 3 — вызывается синхронно
 }
+
+console.log("script start"); // 1
+
+setTimeout(() => {
+  console.log("setTimeout"); // 8 — макрозадача: после всех микрозадач
+}, 0);
 
 async1();
 
-setTimeout(() => {
-  console.log("5: setTimeout"); // 5: setTimeout
-}, 0);
-
-Promise.resolve().then(() => {
-  console.log("6: promise 1"); // 6: promise 1
+new Promise((resolve) => {
+  console.log("promise1"); // 4 — executor выполняется синхронно
+  resolve();
+}).then(() => {
+  console.log("promise2"); // 7 — микрозадача, поставлена в очередь после async1
 });
 
-console.log("7: Script end"); // 7: Script end
-// Порядок вывода: 1, 2, 4, 7, 3, 6, 5
+console.log("script end"); // 5
+
+// Итог: script start, async1 start, async2, promise1, script end,
+//       async1 end, promise2, setTimeout

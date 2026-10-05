@@ -104,8 +104,9 @@ describe("JavaScript task explanations", () => {
   it("provides substantial dedicated material for every visible Map task", () => {
     const mapTaskIds = JS_COLLECTIONS_MAP_TASKS.map(({ id }) => id);
 
-    expect(mapTaskIds).toHaveLength(12);
+    expect(mapTaskIds).toHaveLength(13);
     expect(mapTaskIds).toContain("js196");
+    expect(mapTaskIds).toContain("js274");
 
     for (const taskId of mapTaskIds) {
       expect(countWords(TASK_EXPLANATIONS[taskId]), taskId).toBeGreaterThan(250);
@@ -160,7 +161,7 @@ describe("JavaScript task explanations", () => {
     ];
     const requestedTaskIds = requestedGroups.flatMap((tasks) => tasks.map(({ id }) => id));
 
-    expect(requestedTaskIds).toHaveLength(39);
+    expect(requestedTaskIds).toHaveLength(43);
     expect(JS_LOOPS_TASKS.map(({ id }) => id)).toEqual(
       Array.from({ length: 7 }, (_, index) => `js${index + 1}`)
     );
@@ -174,9 +175,29 @@ describe("JavaScript task explanations", () => {
       "js130",
       "js131",
     ]);
-    expect(JS_RECURSION_TASKS.map(({ id }) => id)).toEqual(
-      Array.from({ length: 16 }, (_, index) => `js${index + 132}`)
-    );
+    expect(JS_RECURSION_TASKS.map(({ id }) => id)).toEqual([
+      "js132",
+      "js133",
+      "js134",
+      "js135",
+      "js147",
+      "js136",
+      "js137",
+      "js139",
+      "js144",
+      "js138",
+      "js140",
+      "js146",
+      "js145",
+      "js141",
+      "js142",
+      "js206",
+      "js209",
+      "js170",
+      "js248",
+      "js211",
+      "js210",
+    ]);
 
     for (const taskId of requestedTaskIds) {
       expect(countWords(TASK_EXPLANATIONS[taskId]), taskId).toBeGreaterThan(225);
@@ -197,7 +218,7 @@ describe("JavaScript task explanations", () => {
   it("provides a specification-based explanation for every data-types task", () => {
     const typeTaskIds = JS_TYPES_COERCION_TASKS.map(({ id }) => id);
 
-    expect(typeTaskIds).toEqual(["js186", "js187", "js188"]);
+    expect(typeTaskIds).toEqual(["js256", "js186", "js187", "js188"]);
 
     for (const taskId of typeTaskIds) {
       expect(countWords(TASK_EXPLANATIONS[taskId]), taskId).toBeGreaterThan(500);
@@ -243,7 +264,7 @@ describe("JavaScript task explanations", () => {
   it("provides comprehensive deep explanations for all tasks in the Objects section", () => {
     const objectTaskIds = JS_OBJECTS_TASKS.map(({ id }) => id);
 
-    expect(objectTaskIds).toHaveLength(26);
+    expect(objectTaskIds).toHaveLength(18);
 
     for (const taskId of objectTaskIds) {
       expect(countWords(TASK_EXPLANATIONS[taskId]), taskId).toBeGreaterThan(150);
@@ -259,8 +280,6 @@ describe("JavaScript task explanations", () => {
     expect(TASK_EXPLANATIONS.js199).toContain("OrdinaryOwnPropertyKeys");
     expect(TASK_EXPLANATIONS.js200).toContain("undefined");
     expect(TASK_EXPLANATIONS.js201).toContain("Shallow Copy");
-    expect(TASK_EXPLANATIONS.js202).toContain("Symbol");
-    expect(TASK_EXPLANATIONS.js203).toContain("invert");
     expect(TASK_EXPLANATIONS.js204).toContain("whitelist");
     expect(TASK_EXPLANATIONS.js205).toContain("Set");
     expect(TASK_EXPLANATIONS.js206).toContain("Object.is");
@@ -304,7 +323,7 @@ describe("JavaScript task explanations", () => {
   it("provides deep interview explanations for all newly added array/transformation tasks", () => {
     const newTasks = [
       "js232", "js233", "js234", "js235",
-      "js241", "js242", "js243", "js244", "js246", "js247", "js248",
+      "js243", "js244", "js246", "js247", "js248",
     ];
 
     for (const taskId of newTasks) {
@@ -321,12 +340,29 @@ describe("JavaScript task explanations", () => {
     expect(TASK_EXPLANATIONS.js233).toContain("Array.prototype.filter");
     expect(TASK_EXPLANATIONS.js234).toContain("Array.prototype.reduce");
     expect(TASK_EXPLANATIONS.js235).toContain("chunk");
-    expect(TASK_EXPLANATIONS.js241).toContain("expiry");
-    expect(TASK_EXPLANATIONS.js242).toContain("apply");
     expect(TASK_EXPLANATIONS.js243).toContain("Unicode");
     expect(TASK_EXPLANATIONS.js244).toContain("Лексический");
     expect(TASK_EXPLANATIONS.js246).toContain("diff");
     expect(TASK_EXPLANATIONS.js247).toContain("safeGet");
     expect(TASK_EXPLANATIONS.js248).toContain("camelCase");
+  });
+
+  it("provides deep interview explanations for all curriculum expansion tasks (js249-js294)", () => {
+    const expansionTaskIds = Array.from({ length: 46 }, (_, index) => `js${249 + index}`);
+
+    for (const taskId of expansionTaskIds) {
+      expect(TASK_EXPLANATIONS[taskId], `Explanation for ${taskId} must exist`).toBeDefined();
+      expect(countWords(TASK_EXPLANATIONS[taskId]), taskId).toBeGreaterThan(200);
+      expect(TASK_EXPLANATIONS[taskId], taskId).toContain("Что делает решение");
+      expect(TASK_EXPLANATIONS[taskId], taskId).toContain("Граничные случаи и ошибки");
+      expect(TASK_EXPLANATIONS[taskId], taskId).toContain("Сложность");
+      expect(TASK_EXPLANATIONS[taskId], taskId).toContain("Что запомнить для собеседования");
+    }
+
+    expect(TASK_EXPLANATIONS.js251).toContain("TDZ");
+    expect(TASK_EXPLANATIONS.js274).toContain("keys().next().value");
+    expect(TASK_EXPLANATIONS.js279).toContain("new.target");
+    expect(TASK_EXPLANATIONS.js291).toContain("thenable");
+    expect(TASK_EXPLANATIONS.js293).toContain("микрозадач");
   });
 });

@@ -1,25 +1,17 @@
 import React from "react";
 import {
   Code2,
-  Zap,
   Cpu,
   Brain,
   Wrench,
   Package,
   Workflow,
   GitMerge,
-  Binary,
-  Boxes,
   Layers,
   Link2,
-  Box,
-  Lock,
-  Crown,
   Search,
   Hash,
   GitBranch,
-  Repeat,
-  FileCode,
   BookOpen,
 } from "lucide-react";
 import { GaugeIndicator, type MetaBadgeVariant } from "@/shared/ui";
@@ -29,6 +21,7 @@ import {
   type JsTaskAlgorithm,
 } from "../curriculum/javascript/data/task-algorithms";
 import { isSyntaxTask, getJsTaskProbabilityInfo } from "./get-js-task-probability";
+import { getContextBadge } from "./js-task-context-badge";
 import type { Task } from "../types";
 
 export interface TaskBadge {
@@ -182,86 +175,6 @@ const getPrimaryBadge = (
     return { id: "syntax", label: "Синтаксис", variant: "blue", icon: <Code2 size={ICON_SIZE} /> };
   }
   return { id: "base", label: "База", variant: "yellow", icon: <BookOpen size={ICON_SIZE} /> };
-};
-
-const getContextBadge = (group: string, subgroup: string, primaryId: string): TaskBadge | null => {
-  if (
-    group === "Асинхронность" ||
-    ["Event Loop", "Таймеры", "Основы Promise", "async/await", "Комбинаторы"].includes(subgroup)
-  ) {
-    return { id: "async", label: "Асинхронность", variant: "pink", icon: <Zap size={ICON_SIZE} /> };
-  }
-  if (group === "Рекурсия" && primaryId !== "algo") {
-    return {
-      id: "recursion",
-      label: "Рекурсия",
-      variant: "orange",
-      icon: <GitMerge size={ICON_SIZE} />,
-    };
-  }
-  if (group === "Типы данных") {
-    return {
-      id: "types",
-      label: "Типы данных",
-      variant: "yellow",
-      icon: <Binary size={ICON_SIZE} />,
-    };
-  }
-  if (group === "Прототипы THIS") {
-    return {
-      id: "prototypes",
-      label: "This и прототипы",
-      variant: "purple",
-      icon: <Crown size={ICON_SIZE} />,
-    };
-  }
-  if (
-    group === "Замыкания" ||
-    group === "Замыкания и функции" ||
-    subgroup.startsWith("Замыкания")
-  ) {
-    return { id: "closures", label: "Замыкания", variant: "cyan", icon: <Lock size={ICON_SIZE} /> };
-  }
-  if (group === "Циклы" && primaryId !== "base") {
-    return { id: "loops", label: "Циклы", variant: "blue", icon: <Repeat size={ICON_SIZE} /> };
-  }
-  if (subgroup === "Map") {
-    return { id: "map", label: "Map", variant: "purple", icon: <Boxes size={ICON_SIZE} /> };
-  }
-  if (subgroup === "Set") {
-    return { id: "set", label: "Set", variant: "purple", icon: <Boxes size={ICON_SIZE} /> };
-  }
-  if (group === "Коллекции") {
-    return {
-      id: "collections",
-      label: "Коллекции",
-      variant: "purple",
-      icon: <Boxes size={ICON_SIZE} />,
-    };
-  }
-  if (group === "Объекты" && primaryId !== "utility") {
-    return { id: "objects", label: "Объекты", variant: "blue", icon: <Box size={ICON_SIZE} /> };
-  }
-  if (group === "Массивы") {
-    return { id: "arrays", label: "Массивы", variant: "green", icon: <Layers size={ICON_SIZE} /> };
-  }
-  if (group === "Строки и Утилиты") {
-    return {
-      id: "strings-utils",
-      label: "Строки и Утилиты",
-      variant: "green",
-      icon: <FileCode size={ICON_SIZE} />,
-    };
-  }
-  if (group === "Паттерны проектирования" && primaryId !== "pattern") {
-    return {
-      id: "patterns",
-      label: "Паттерны",
-      variant: "cyan",
-      icon: <Workflow size={ICON_SIZE} />,
-    };
-  }
-  return null;
 };
 
 export const getJsTaskBadges = (task: Task): TaskBadge[] => {

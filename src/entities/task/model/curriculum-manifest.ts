@@ -1,10 +1,10 @@
 import { SectionType } from "../types";
 
 export const CURRICULUM_COUNTS: Record<SectionType, number> = {
-  javascript: 226,
+  javascript: 256,
   typescript: 54,
   react: 83,
-  algorithms: 36,
+  algorithms: 44,
 };
 
 export const getTaskSectionById = (taskId: string | number): SectionType => {

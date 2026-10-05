@@ -23,10 +23,10 @@ describe("SidebarListSkeleton", () => {
     expect(folders).toHaveLength(10);
   });
 
-  it("renders 11 folders for javascript section", () => {
+  it("renders 14 folders for javascript section", () => {
     render(<SidebarListSkeleton section="javascript" />);
     const folders = screen.getAllByTestId("sidebar-folder-skeleton");
-    expect(folders).toHaveLength(11);
+    expect(folders).toHaveLength(14);
   });
 
   it("renders 7 folders for react section", () => {
@@ -48,7 +48,7 @@ describe("SidebarListSkeleton", () => {
 
     const jsTasks = await loadTaskSection("javascript");
     const { groupedTasks: jsGroups } = groupJsTasks(jsTasks);
-    expect(Object.keys(jsGroups)).toHaveLength(11);
+    expect(Object.keys(jsGroups)).toHaveLength(14);
 
     const reactTasks = await loadTaskSection("react");
     const reactCats = getReactCategories(useUIStore.getState(), reactTasks);

@@ -1,4 +1,6 @@
 import { describe, it, expect } from "vitest";
+import { JS_TASKS } from "../curriculum/javascript/data/tasksData";
+import { TASK_PROBABILITY_OVERRIDES } from "./js-task-probability-overrides";
 import {
   isSyntaxTask,
   getJsTaskProbability,
@@ -20,6 +22,7 @@ describe("get-js-task-probability (Middle to Senior calibration)", () => {
       expect(isSyntaxTask("1. Создание Promise (Уровень 1)")).toBe(true);
       expect(isSyntaxTask("1. Базовый async/await (Уровень 2)")).toBe(true);
       expect(isSyntaxTask("1. Что такое база рекурсии (base case)")).toBe(true);
+      expect(isSyntaxTask("4. finally")).toBe(true);
     });
 
     it("does not flag regular coding tasks as syntax", () => {
@@ -27,6 +30,27 @@ describe("get-js-task-probability (Middle to Senior calibration)", () => {
       expect(isSyntaxTask("1. Полифил Promise.all")).toBe(false);
       expect(isSyntaxTask("1. Шина событий (EventEmitter / PubSub)")).toBe(false);
       expect(isSyntaxTask("6. Бинарный поиск")).toBe(false);
+      expect(
+        isSyntaxTask("1. Поток управления в try / catch / finally: Приоритеты return и throw")
+      ).toBe(false);
+    });
+  });
+
+  describe("TASK_PROBABILITY_OVERRIDES", () => {
+    const javascriptTasks = JS_TASKS as Task[];
+    const taskIds = new Set(javascriptTasks.map(({ id }) => String(id)));
+
+    it("references only existing JavaScript tasks", () => {
+      const unknownIds = Object.keys(TASK_PROBABILITY_OVERRIDES).filter((id) => !taskIds.has(id));
+      expect(unknownIds).toEqual([]);
+    });
+
+    it("calibrates every non-syntax JavaScript task explicitly", () => {
+      const uncalibrated = javascriptTasks
+        .filter((task) => !isSyntaxTask(task.title || ""))
+        .map(({ id }) => String(id))
+        .filter((id) => !(id in TASK_PROBABILITY_OVERRIDES));
+      expect(uncalibrated).toEqual([]);
     });
   });
 
@@ -100,10 +124,10 @@ describe("get-js-task-probability (Middle to Senior calibration)", () => {
       expect(getJsTaskProbability(eventEmitterTask)).toBe(98);
 
       const deepCloneTask: Task = {
-        id: "js218",
-        title: "21. Глубокое клонирование (deepClone) с циклическими ссылками",
-        group: "Объекты",
-        subgroup: "Манипуляции и Утилиты",
+        id: "js210",
+        title: "6. Глубокое клонирование с циклическими ссылками (deepClone + WeakMap)",
+        group: "Рекурсия",
+        subgroup: "Объекты: задачи с собеседований",
         section: "javascript",
       };
       expect(getJsTaskProbability(deepCloneTask)).toBe(98);
