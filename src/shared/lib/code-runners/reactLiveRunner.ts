@@ -11,6 +11,7 @@ import * as LucideIcons from "lucide-react";
 import * as ReactRedux from "react-redux";
 import * as ReduxToolkit from "@reduxjs/toolkit";
 import * as ZustandMiddleware from "zustand/middleware";
+import * as ReactQuery from "@tanstack/react-query";
 import { create as createZustandStore, useStore as useZustandStore } from "zustand";
 import { peekCachedSolution } from "../storage";
 import { transpileCode, normalizeAndProtectLoops } from "./transpiler";
@@ -37,6 +38,7 @@ if (typeof window !== "undefined") {
     ReduxToolkit,
     ZustandModule,
     ZustandMiddleware,
+    ReactQuery,
   };
 }
 
@@ -178,6 +180,9 @@ export function compileReactProject(
     }
     if (modulePath === "zustand/middleware") {
       return { ...ZustandMiddleware, default: ZustandMiddleware };
+    }
+    if (modulePath === "@tanstack/react-query") {
+      return { ...ReactQuery, default: ReactQuery };
     }
 
     if (

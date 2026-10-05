@@ -2,7 +2,7 @@ import { memo } from "react";
 import { Link } from "@tanstack/react-router";
 import { CheckCircle2, ArrowRight, FileText } from "lucide-react";
 import { clsx } from "clsx";
-import { Task } from "@/entities/task";
+import { getDifficultyTone, type Task } from "@/entities/task";
 import { ReviewItem } from "@/entities/review";
 import { useProgressStore } from "@/entities/progress";
 import { Card, NotificationBadge } from "@/shared/ui";
@@ -31,11 +31,10 @@ const getTaskRatingClass = (
   if (r === "medium") return styles.ratingMedium;
   if (r === "easy") return styles.ratingEasy;
 
-  const d = difficulty?.toLowerCase();
-  if (d === "hard") return styles.ratingHard;
-  if (d === "medium" || d === "ts" || d === "refactoring") return styles.ratingMedium;
-  if (d === "easy" || d === "warm-up" || d === "middle") return styles.ratingEasy;
-  if (d === "strong") return styles.ratingPurple;
+  const tone = getDifficultyTone(difficulty);
+  if (tone === "hard") return styles.ratingHard;
+  if (tone === "medium") return styles.ratingMedium;
+  if (tone === "easy") return styles.ratingEasy;
 
   return "";
 };

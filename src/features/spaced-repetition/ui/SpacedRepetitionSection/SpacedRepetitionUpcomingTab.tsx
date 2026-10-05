@@ -2,7 +2,7 @@ import { memo } from "react";
 import { Link } from "@tanstack/react-router";
 import { CalendarClock, ArrowRight, Clock, FileText } from "lucide-react";
 import { clsx } from "clsx";
-import { Task } from "@/entities/task";
+import { getDifficultyTone, type Task } from "@/entities/task";
 import { useProgressStore } from "@/entities/progress";
 import { Card, NotificationBadge, Tooltip } from "@/shared/ui";
 import { isDueTaskUnsolved } from "../../lib/sortDueTasks";
@@ -30,11 +30,10 @@ const getTaskRatingClass = (
   if (r === "medium") return styles.ratingMedium;
   if (r === "easy") return styles.ratingEasy;
 
-  const d = difficulty?.toLowerCase();
-  if (d === "hard") return styles.ratingHard;
-  if (d === "medium" || d === "ts" || d === "refactoring") return styles.ratingMedium;
-  if (d === "easy" || d === "warm-up" || d === "middle") return styles.ratingEasy;
-  if (d === "strong") return styles.ratingPurple;
+  const tone = getDifficultyTone(difficulty);
+  if (tone === "hard") return styles.ratingHard;
+  if (tone === "medium") return styles.ratingMedium;
+  if (tone === "easy") return styles.ratingEasy;
 
   return "";
 };

@@ -294,6 +294,7 @@ export function buildSandboxIframeSrcDoc({
         var ReduxToolkit = runtime.ReduxToolkit;
         var ZustandModule = runtime.ZustandModule;
         var ZustandMiddleware = runtime.ZustandMiddleware;
+        var ReactQuery = runtime.ReactQuery;
 
         var IframeErrorBoundary = (function(_super) {
           function IframeErrorBoundary(props) {
@@ -341,6 +342,7 @@ export function buildSandboxIframeSrcDoc({
           if (modulePath === '@reduxjs/toolkit') return Object.assign({}, ReduxToolkit, { default: ReduxToolkit });
           if (modulePath === 'zustand') return ZustandModule;
           if (modulePath === 'zustand/middleware') return Object.assign({}, ZustandMiddleware, { default: ZustandMiddleware });
+          if (modulePath === '@tanstack/react-query') return Object.assign({}, ReactQuery, { default: ReactQuery });
           if (modulePath.endsWith('.css') || modulePath.endsWith('.scss') || modulePath.endsWith('.less')) return {};
 
           var cleanPath = modulePath.replace(/^(\\.\\/|\\.\\.\\/)+/, '');

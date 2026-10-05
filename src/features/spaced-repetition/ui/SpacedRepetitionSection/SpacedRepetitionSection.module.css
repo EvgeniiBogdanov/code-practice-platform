@@ -817,11 +817,6 @@
   color: var(--color-error);
 }
 
-.ratingPurple,
-.diff_strong {
-  color: var(--accent-purple);
-}
-
 .upcomingRowTitle.ratingHard {
   color: var(--color-rating-hard);
 }
@@ -836,10 +831,6 @@
 
 .upcomingRowTitle.ratingUnsolved {
   color: var(--color-error);
-}
-
-.upcomingRowTitle.ratingPurple {
-  color: var(--accent-purple);
 }
 
 /* Unsolved Tab Styles */

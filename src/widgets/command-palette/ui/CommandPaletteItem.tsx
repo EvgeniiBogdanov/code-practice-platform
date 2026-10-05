@@ -53,14 +53,17 @@ const getDifficultyMeta = (diff?: string): { text: string; variant: BadgeVariant
   if (d === "refactoring") {
     return { text: "Рефакторинг", variant: "blue" };
   }
-  if (d === "middle" || d === "easy") {
-    return { text: d === "middle" ? "Middle" : "Легко", variant: "green" };
+  if (d === "easy") {
+    return { text: "Легко", variant: "green" };
   }
-  if (d === "strong") {
-    return { text: "Strong", variant: "purple" };
+  if (d === "junior") {
+    return { text: "Junior", variant: "green" };
   }
-  if (d === "ts") {
-    return { text: "TypeScript", variant: "blue" };
+  if (d === "middle") {
+    return { text: "Middle", variant: "yellow" };
+  }
+  if (d === "senior") {
+    return { text: "Senior", variant: "red" };
   }
   if (d === "medium") {
     return { text: "Средне", variant: "yellow" };

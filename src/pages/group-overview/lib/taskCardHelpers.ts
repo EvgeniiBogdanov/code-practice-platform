@@ -1,4 +1,4 @@
-import { Task } from "@/entities/task";
+import { getDifficultyTone, type Task } from "@/entities/task";
 import { ReviewItem } from "@/entities/review";
 import styles from "../ui/GroupOverviewPage.module.css";
 
@@ -15,11 +15,9 @@ export const getTaskGradientClass = (
     if (taskReview?.rating === "medium") return styles.ratingGradientMedium;
     if (taskReview?.rating === "easy") return styles.ratingGradientEasy;
 
-    const d = String(task?.difficulty || "").toLowerCase();
-    if (d === "hard" || d === "strong") return styles.ratingGradientHard;
-    if (d === "medium" || d === "middle" || d === "refactoring" || d === "ts") {
-      return styles.ratingGradientMedium;
-    }
+    const tone = getDifficultyTone(task?.difficulty);
+    if (tone === "hard") return styles.ratingGradientHard;
+    if (tone === "medium") return styles.ratingGradientMedium;
     return styles.ratingGradientEasy;
   }
   return "";
@@ -47,13 +45,8 @@ export const getTaskTooltipTitle = (
       return `${task.title} • Оценка сложности: ${ratingLabel}`;
     }
 
-    const d = String(task?.difficulty || "").toLowerCase();
-    const diffLabel =
-      d === "hard" || d === "strong"
-        ? "Сложная"
-        : d === "medium" || d === "middle" || d === "refactoring" || d === "ts"
-          ? "Средняя"
-          : "Легкая";
+    const tone = getDifficultyTone(task?.difficulty);
+    const diffLabel = tone === "hard" ? "Сложная" : tone === "medium" ? "Средняя" : "Легкая";
 
     return `${task.title} • Сложность: ${diffLabel}`;
   }

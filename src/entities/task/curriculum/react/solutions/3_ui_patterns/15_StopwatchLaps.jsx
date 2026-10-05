@@ -16,51 +16,45 @@ export default function Stopwatch() {
   const [elapsedTime, setElapsedTime] = useState(0);
   const [laps, setLaps] = useState([]);
 
-  const startTimeRef = useRef(0);
-  const accumulatedTimeRef = useRef(0);
-  const intervalIdRef = useRef(null);
+  // Технические значения — в ref: они не рисуются напрямую и не должны вызывать рендер
+  const startTimeRef = useRef(0); // момент последнего старта (performance.now)
+  const accumulatedTimeRef = useRef(0); // время, набранное до последней паузы
+  const frameIdRef = useRef(null);
 
-  // Очистка интервала при размонтировании компонента для предотвращения утечки памяти
-  useEffect(() => {
-    return () => {
-      if (intervalIdRef.current) {
-        clearInterval(intervalIdRef.current);
-      }
-    };
-  }, []);
+  // Точное текущее время считается по меткам, а не суммированием тиков:
+  // таймеры и кадры не гарантируют точность, разница меток — гарантирует
+  const getCurrentTime = () => accumulatedTimeRef.current + performance.now() - startTimeRef.current;
+
+  const stopLoop = () => {
+    if (frameIdRef.current !== null) cancelAnimationFrame(frameIdRef.current);
+    frameIdRef.current = null;
+  };
+
+  // Цикл отрисовки синхронизирован с частотой экрана и сам замирает в фоновой вкладке
+  const tick = () => {
+    setElapsedTime(getCurrentTime());
+    frameIdRef.current = requestAnimationFrame(tick);
+  };
+
+  useEffect(() => stopLoop, []);
 
   const handleStart = () => {
     if (isRunning) return;
-
+    startTimeRef.current = performance.now();
     setIsRunning(true);
-    startTimeRef.current = Date.now();
-
-    intervalIdRef.current = setInterval(() => {
-      // Расчет по разнице меток времени компенсирует дрейф Event Loop
-      setElapsedTime(Date.now() - startTimeRef.current + accumulatedTimeRef.current);
-    }, 16);
+    frameIdRef.current = requestAnimationFrame(tick);
   };
 
   const handlePause = () => {
     if (!isRunning) return;
-
-    if (intervalIdRef.current) {
-      clearInterval(intervalIdRef.current);
-      intervalIdRef.current = null;
-    }
-
-    accumulatedTimeRef.current += Date.now() - startTimeRef.current;
+    stopLoop();
+    accumulatedTimeRef.current = getCurrentTime();
     setElapsedTime(accumulatedTimeRef.current);
     setIsRunning(false);
   };
 
   const handleReset = () => {
-    if (intervalIdRef.current) {
-      clearInterval(intervalIdRef.current);
-      intervalIdRef.current = null;
-    }
-
-    startTimeRef.current = 0;
+    stopLoop();
     accumulatedTimeRef.current = 0;
     setIsRunning(false);
     setElapsedTime(0);
@@ -69,18 +63,13 @@ export default function Stopwatch() {
 
   const handleLap = () => {
     if (!isRunning) return;
+    // Время круга — точная метка в момент нажатия, а не значение из последнего кадра
+    const totalTime = getCurrentTime();
 
-    const currentTotal = elapsedTime;
-    const prevTotal = laps.length > 0 ? laps[0].totalTime : 0;
-    const splitTime = currentTotal - prevTotal;
-
-    const newLap = {
-      id: laps.length + 1,
-      totalTime: currentTotal,
-      splitTime,
-    };
-
-    setLaps((prev) => [newLap, ...prev]);
+    setLaps((prev) => {
+      const prevTotal = prev.length > 0 ? prev[0].totalTime : 0;
+      return [{ id: prev.length + 1, totalTime, splitTime: totalTime - prevTotal }, ...prev];
+    });
   };
 
   return (

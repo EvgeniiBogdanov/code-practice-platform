@@ -1,1 +1,0 @@
-const myRef = useRef(null);

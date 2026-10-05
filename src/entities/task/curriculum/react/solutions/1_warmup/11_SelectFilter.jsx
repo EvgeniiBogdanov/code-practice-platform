@@ -1,42 +1,42 @@
 import { useState } from 'react';
 
 const PRODUCTS = [
-  { id: 1, name: "Ноутбук", category: "Электроника" },
-  { id: 2, name: "Футболка", category: "Одежда" },
-  { id: 3, name: "Книга по React", category: "Книги" },
-  { id: 4, name: "Смартфон", category: "Электроника" },
-  { id: 5, name: "Джинсы", category: "Одежда" },
+  { id: 1, name: 'Ноутбук', category: 'Электроника' },
+  { id: 2, name: 'Футболка', category: 'Одежда' },
+  { id: 3, name: 'Книга по React', category: 'Книги' },
+  { id: 4, name: 'Смартфон', category: 'Электроника' },
+  { id: 5, name: 'Джинсы', category: 'Одежда' },
 ];
 
-const CATEGORY = {
-  all: "Все",
-  electronics: "Электроника",
-  cloth: "Одежда",
-  books: "Книги",
-};
+const ALL = 'all';
+
+// Список категорий выводится из данных: новая категория появится в селекте без правок разметки
+const CATEGORIES = [...new Set(PRODUCTS.map((product) => product.category))];
 
 const SelectFilter = () => {
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [category, setCategory] = useState(ALL);
 
-  const filteredProducts =
-    selectedCategory === "all"
-      ? PRODUCTS
-      : PRODUCTS.filter((prod) => prod.category === CATEGORY[selectedCategory]);
+  const visibleProducts =
+    category === ALL ? PRODUCTS : PRODUCTS.filter((product) => product.category === category);
 
   return (
     <div>
-      <select
-        value={selectedCategory}
-        onChange={(e) => setSelectedCategory(e.target.value)}
-      >
-        <option value="all">{CATEGORY.all}</option>
-        <option value="electronics">{CATEGORY.electronics}</option>
-        <option value="cloth">{CATEGORY.cloth}</option>
-        <option value="books">{CATEGORY.books}</option>
-      </select>
+      <label>
+        Категория{' '}
+        <select value={category} onChange={(e) => setCategory(e.target.value)}>
+          <option value={ALL}>Все</option>
+          {CATEGORIES.map((name) => (
+            <option key={name} value={name}>
+              {name}
+            </option>
+          ))}
+        </select>
+      </label>
       <ul>
-        {filteredProducts.map((prod) => (
-          <li key={prod.id}>{`${prod.name} (${prod.category})`}</li>
+        {visibleProducts.map((product) => (
+          <li key={product.id}>
+            {product.name} ({product.category})
+          </li>
         ))}
       </ul>
     </div>

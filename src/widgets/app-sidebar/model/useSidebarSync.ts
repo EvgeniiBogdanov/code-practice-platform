@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "@tanstack/react-router";
-import type { SectionType } from "@/entities/task/meta";
+import { getReactGroupId, type ReactGroupId, type SectionType } from "@/entities/task/meta";
 import { useTaskSection } from "@/entities/task/catalog";
 import { useUIStore } from "@/entities/ui-state";
 
@@ -51,21 +51,17 @@ export const useSidebarSync = (): void => {
 
     // 1. React tasks synchronization
     if (pathname.startsWith("/react")) {
-      const isWarmup = task.difficulty === "warm-up";
-      const isRefactoring = task.difficulty === "refactoring";
-      const isMiddle = task.difficulty === "middle";
-      const isStateManagement = task.category === "Управление состоянием";
-      const isReactTs = task.category === "TypeScript: Паттерны типизации";
-      const isReactTsPractice = task.category === "TypeScript: Прикладные сценарии";
-      const isLifecycle = task.category === "Жизненный цикл и рантайм";
-
-      if (isWarmup) setWarmupExpanded(true);
-      else if (isRefactoring) setRefactoringExpanded(true);
-      else if (isMiddle) setTasksExpanded(true);
-      else if (isStateManagement) setAdvancedExpanded(true);
-      else if (isReactTs) setReactTsExpanded(true);
-      else if (isReactTsPractice) setReactTsPracticeExpanded(true);
-      else if (isLifecycle) setLifecycleExpanded(true);
+      const expandGroup: Record<ReactGroupId, (expanded: boolean) => void> = {
+        "group-warmup": setWarmupExpanded,
+        "group-refactoring": setRefactoringExpanded,
+        "group-middle": setTasksExpanded,
+        "group-strong": setAdvancedExpanded,
+        "group-lifecycle": setLifecycleExpanded,
+        "group-ts": setReactTsExpanded,
+        "group-ts-practice": setReactTsPracticeExpanded,
+      };
+      const groupId = getReactGroupId(task);
+      if (groupId) expandGroup[groupId](true);
     }
 
     // 2. JavaScript tasks synchronization

@@ -26,6 +26,7 @@ const reactLibraries = import.meta.glob<string>(
     "/node_modules/react-redux/dist/*.d.ts",
     "/node_modules/zustand/**/*.d.ts",
     "/node_modules/@reduxjs/toolkit/dist/**/*.d.ts",
+    "/node_modules/@tanstack/{react-query,query-core}/build/modern/*.d.ts",
   ],
   { query: "?raw", import: "default", eager: true }
 );
@@ -35,6 +36,7 @@ const packageMetadata = import.meta.glob<string>(
     "/node_modules/@types/{react,react-dom,prop-types,scheduler}/package.json",
     "/node_modules/{csstype,lucide-react,react-redux,zustand}/package.json",
     "/node_modules/@reduxjs/toolkit/package.json",
+    "/node_modules/@tanstack/{react-query,query-core}/package.json",
   ],
   { query: "?raw", import: "default", eager: true }
 );
