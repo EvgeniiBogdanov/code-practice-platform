@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from "react";
 import { Brain, Flame, Wrench, Rocket, RotateCcw } from "lucide-react";
 import { getScriptGroupMeta, getAlgoGroupMeta } from "@/entities/task";
-import type { SectionType, Task } from "@/entities/task/meta";
+import { isTaskInReactGroup, type SectionType, type Task } from "@/entities/task/meta";
 import { useTaskSection } from "@/entities/task/catalog";
 import { useProgressStore, selectIsTaskCompleted, ProgressState } from "@/entities/progress";
 import { useReviewStore, isTaskDue, getGroupCompletionClass, ReviewItem } from "@/entities/review";
@@ -161,7 +161,7 @@ export const useSectionOverview = (section: SectionType): UseSectionOverviewRetu
           id: "warmup",
           name: "1. Разминка",
           icon: React.createElement(Flame, { size: 18, color: "var(--color-react-group-warmup)" }),
-          tasks: sectionTasks.filter((t) => t.category === "warmup" || t.difficulty === "warm-up"),
+          tasks: sectionTasks.filter((t) => isTaskInReactGroup(t, "group-warmup")),
           firstTaskId: "warmup-1",
           color: "var(--color-react-group-warmup)",
         },
@@ -172,9 +172,7 @@ export const useSectionOverview = (section: SectionType): UseSectionOverviewRetu
             size: 18,
             color: "var(--color-react-group-refactoring)",
           }),
-          tasks: sectionTasks.filter(
-            (t) => t.category === "refactoring" || t.difficulty === "refactoring"
-          ),
+          tasks: sectionTasks.filter((t) => isTaskInReactGroup(t, "group-refactoring")),
           firstTaskId: "refactor-1",
           color: "var(--color-react-group-refactoring)",
         },
@@ -182,9 +180,7 @@ export const useSectionOverview = (section: SectionType): UseSectionOverviewRetu
           id: "middle",
           name: "3. UI-компоненты и паттерны",
           icon: React.createElement(Rocket, { size: 18, color: "var(--color-react-group-middle)" }),
-          tasks: sectionTasks.filter(
-            (t) => t.category === "UI-компоненты и паттерны" || t.difficulty === "middle"
-          ),
+          tasks: sectionTasks.filter((t) => isTaskInReactGroup(t, "group-middle")),
           firstTaskId: "middle-1",
           color: "var(--color-react-group-middle)",
         },
@@ -192,7 +188,7 @@ export const useSectionOverview = (section: SectionType): UseSectionOverviewRetu
           id: "strong",
           name: "4. Управление состоянием",
           icon: React.createElement(Brain, { size: 18, color: "var(--color-react-group-strong)" }),
-          tasks: sectionTasks.filter((t) => t.category === "Управление состоянием"),
+          tasks: sectionTasks.filter((t) => isTaskInReactGroup(t, "group-strong")),
           firstTaskId: "a1",
           color: "var(--color-react-group-strong)",
         },
@@ -203,7 +199,7 @@ export const useSectionOverview = (section: SectionType): UseSectionOverviewRetu
             size: 18,
             color: "var(--color-react-group-lifecycle)",
           }),
-          tasks: sectionTasks.filter((t) => t.category === "Жизненный цикл и рантайм"),
+          tasks: sectionTasks.filter((t) => isTaskInReactGroup(t, "group-lifecycle")),
           firstTaskId: "a4",
           color: "var(--color-react-group-lifecycle)",
         },
@@ -211,7 +207,7 @@ export const useSectionOverview = (section: SectionType): UseSectionOverviewRetu
           id: "ts",
           name: "6. TypeScript: Паттерны типизации",
           icon: React.createElement(TypeScriptIcon, { size: 18 }),
-          tasks: sectionTasks.filter((t) => t.category === "TypeScript: Паттерны типизации"),
+          tasks: sectionTasks.filter((t) => isTaskInReactGroup(t, "group-ts")),
           firstTaskId: "ts-1",
           color: "var(--color-react-group-ts)",
         },
@@ -219,7 +215,7 @@ export const useSectionOverview = (section: SectionType): UseSectionOverviewRetu
           id: "ts-practice",
           name: "7. TypeScript: Прикладные сценарии",
           icon: React.createElement(TypeScriptIcon, { size: 18 }),
-          tasks: sectionTasks.filter((t) => t.category === "TypeScript: Прикладные сценарии"),
+          tasks: sectionTasks.filter((t) => isTaskInReactGroup(t, "group-ts-practice")),
           firstTaskId: "ts-practice-1",
           color: "var(--color-react-group-ts-practice)",
         },

@@ -131,6 +131,18 @@ export const KNOWN_MODULES: Record<string, { name: string; default?: string; nam
     name: "zustand/middleware",
     named: ["persist", "devtools", "combine", "immer", "subscribeWithSelector"],
   },
+  "@tanstack/react-query": {
+    name: "@tanstack/react-query",
+    named: [
+      "useQuery",
+      "useMutation",
+      "useQueryClient",
+      "useSuspenseQuery",
+      "useInfiniteQuery",
+      "QueryClient",
+      "QueryClientProvider",
+    ],
+  },
   "@tanstack/react-router": {
     name: "@tanstack/react-router",
     named: [

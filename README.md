@@ -14,7 +14,7 @@
 <br />
 
 [![CI](https://img.shields.io/github/actions/workflow/status/EvgeniiBogdanov/code-practice-platform/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/EvgeniiBogdanov/code-practice-platform/actions/workflows/ci.yml)
-[![Version](https://img.shields.io/badge/version-2.4.23-black?style=flat-square)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.4.24-black?style=flat-square)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-source--available-black?style=flat-square)](LICENSE.md)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=white)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?style=flat-square&logo=typescript&logoColor=white)](tsconfig.json)
@@ -37,7 +37,7 @@
 | :------------- | ----: | :---------------------------------------------------------------------- |
 | **JavaScript** |   256 | От var/let/const и типов до this, классов, Event Loop и MyPromise       |
 | **TypeScript** |    54 | От аннотаций и сужения типов до infer, вариантности и рекурсивных типов |
-| **React**      |    83 | Хуки React 19, рефакторинг, перерендеры, Zustand и Redux Toolkit        |
+| **React**      |   101 | Хуки и Actions React 19, перерендеры, Zustand, Redux и TanStack Query   |
 | **Алгоритмы**  |    44 | Two Pointers, Sliding Window, графы и деревья с визуализацией O(N)/O(1) |
 
 ## Возможности

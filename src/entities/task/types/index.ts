@@ -3,7 +3,7 @@ import React from "react";
 export type SectionType = "javascript" | "typescript" | "react" | "algorithms";
 
 export type TaskDifficulty =
-  "warm-up" | "refactoring" | "middle" | "strong" | "ts" | "easy" | "medium" | "hard";
+  "warm-up" | "refactoring" | "junior" | "middle" | "senior" | "easy" | "medium" | "hard";
 
 export interface TaskFile {
   name: string;

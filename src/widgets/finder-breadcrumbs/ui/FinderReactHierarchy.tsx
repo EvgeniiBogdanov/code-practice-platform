@@ -16,6 +16,7 @@ import { clsx } from "clsx";
 import { useProgressStore, selectIsTaskCompleted } from "@/entities/progress";
 import { useReviewStore, isTaskDue, getGroupCompletionClass } from "@/entities/review";
 import { useTaskSection } from "@/entities/task/catalog";
+import { isTaskInReactGroup } from "@/entities/task/meta";
 import { FinderHierarchyProps } from "../model/types";
 import { getRatingClass } from "../lib/getRatingClass";
 import { NodeCount, Tooltip, ReactIcon, TypeScriptIcon } from "@/shared/ui";
@@ -40,49 +41,49 @@ export const FinderReactHierarchy = ({
         label: "Разминка",
         icon: <Flame size={14} className={styles.iconFlame} />,
         infoId: "group-warmup",
-        tasks: tasks.filter((t) => t.difficulty === "warm-up"),
+        tasks: tasks.filter((t) => isTaskInReactGroup(t, "group-warmup")),
       },
       {
         id: "refactoring",
         label: "Рефакторинг",
         icon: <Wrench size={14} className={styles.iconWrench} />,
         infoId: "group-refactoring",
-        tasks: tasks.filter((t) => t.difficulty === "refactoring"),
+        tasks: tasks.filter((t) => isTaskInReactGroup(t, "group-refactoring")),
       },
       {
         id: "middle",
         label: "UI-компоненты и паттерны",
         icon: <Rocket size={14} className={styles.iconRocket} />,
         infoId: "group-middle",
-        tasks: tasks.filter((t) => t.difficulty === "middle"),
+        tasks: tasks.filter((t) => isTaskInReactGroup(t, "group-middle")),
       },
       {
         id: "strong",
         label: "Управление состоянием",
         icon: <Brain size={14} className={styles.iconBrain} />,
         infoId: "group-strong",
-        tasks: tasks.filter((t) => t.category === "Управление состоянием"),
+        tasks: tasks.filter((t) => isTaskInReactGroup(t, "group-strong")),
       },
       {
         id: "lifecycle",
         label: "Жизненный цикл и рантайм",
         icon: <RotateCcw size={14} />,
         infoId: "group-lifecycle",
-        tasks: tasks.filter((t) => t.category === "Жизненный цикл и рантайм"),
+        tasks: tasks.filter((t) => isTaskInReactGroup(t, "group-lifecycle")),
       },
       {
         id: "ts",
         label: "TypeScript: Паттерны типизации",
         icon: <TypeScriptIcon size={14} />,
         infoId: "group-ts",
-        tasks: tasks.filter((t) => t.category === "TypeScript: Паттерны типизации"),
+        tasks: tasks.filter((t) => isTaskInReactGroup(t, "group-ts")),
       },
       {
         id: "ts-practice",
         label: "TypeScript: Прикладные сценарии",
         icon: <TypeScriptIcon size={14} />,
         infoId: "group-ts-practice",
-        tasks: tasks.filter((t) => t.category === "TypeScript: Прикладные сценарии"),
+        tasks: tasks.filter((t) => isTaskInReactGroup(t, "group-ts-practice")),
       },
     ],
     [tasks]

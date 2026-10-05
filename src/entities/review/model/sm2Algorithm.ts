@@ -286,7 +286,7 @@ export function getGroupCompletionClass(
     const rev = reviews[String(t.id)];
     const rating =
       rev?.rating ||
-      (t.difficulty === "hard" || t.difficulty === "strong"
+      (t.difficulty === "hard" || t.difficulty === "senior"
         ? "hard"
         : t.difficulty === "medium" || t.difficulty === "middle"
           ? "medium"

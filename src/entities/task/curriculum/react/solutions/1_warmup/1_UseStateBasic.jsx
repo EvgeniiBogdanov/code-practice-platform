@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 const App = () => {
-  // Создаём состояние с начальным значением пустой строки
+  // useState возвращает пару: текущее значение и функцию для его изменения
   const [text, setText] = useState('test');
   
   return <div>{text}</div>;

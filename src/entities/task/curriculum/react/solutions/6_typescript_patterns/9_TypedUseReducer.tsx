@@ -22,8 +22,11 @@ function reducer(state: State, action: Action): State {
       return { status: 'success', data: action.payload };
     case 'FETCH_ERROR':
       return { status: 'error', error: action.payload };
-    default:
-      return state;
+    default: {
+      // Проверка полноты: новый тип действия без case станет ошибкой компиляции
+      const unhandled: never = action;
+      throw new Error(`Неизвестное действие: ${JSON.stringify(unhandled)}`);
+    }
   }
 }
 
@@ -45,8 +48,8 @@ export function PostsLoader() {
       {state.status === 'loading' && <p>Загрузка...</p>}
       {state.status === 'success' && (
         <ul>
-          {state.data.map((post, idx) => (
-            <li key={idx}>{post}</li>
+          {state.data.map((post) => (
+            <li key={post}>{post}</li>
           ))}
         </ul>
       )}

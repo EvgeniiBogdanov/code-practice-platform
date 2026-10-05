@@ -2,7 +2,12 @@ import React, { useMemo, useState, useEffect, useCallback, useDeferredValue } fr
 import { useLocation } from "@tanstack/react-router";
 import { Folder } from "lucide-react";
 import { groupTasksBySubgroup, hasTaskSubgroups } from "@/entities/task";
-import { REACT_GROUPS_CONFIG, getScriptGroupMeta, getAlgoGroupMetaByInfoId } from "@/entities/task";
+import {
+  REACT_GROUPS_CONFIG,
+  getScriptGroupMeta,
+  getAlgoGroupMetaByInfoId,
+  isTaskInReactGroup,
+} from "@/entities/task";
 import type { Task, SectionType } from "@/entities/task/meta";
 import { useTaskSection } from "@/entities/task/catalog";
 import { useProgressStore } from "@/entities/progress";
@@ -17,17 +22,6 @@ import {
 } from "../lib/taskCardHelpers";
 
 export { formatLastSolved, getTaskGradientClass, getTaskTooltipTitle };
-
-const isTaskInReactGroup = (task: Task, groupId: string): boolean => {
-  if (groupId === "group-warmup") return task.difficulty === "warm-up";
-  if (groupId === "group-refactoring") return task.difficulty === "refactoring";
-  if (groupId === "group-middle") return task.difficulty === "middle";
-  if (groupId === "group-strong") return task.category === "Управление состоянием";
-  if (groupId === "group-ts") return task.category === "TypeScript: Паттерны типизации";
-  if (groupId === "group-ts-practice") return task.category === "TypeScript: Прикладные сценарии";
-  if (groupId === "group-lifecycle") return task.category === "Жизненный цикл и рантайм";
-  return false;
-};
 
 export const useGroupOverview = (groupId: string): GroupOverviewState => {
   const completedTasks = useProgressStore((state) => state.completedTasks);

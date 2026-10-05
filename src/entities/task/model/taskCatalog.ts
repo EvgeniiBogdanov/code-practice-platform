@@ -1,5 +1,6 @@
 import { useEffect, useSyncExternalStore } from "react";
 import type { SectionType, Task, TaskDifficulty } from "../types";
+import { REACT_GROUP_CATEGORIES, type ReactGroupId } from "./reactGroups";
 
 const EMPTY_TASKS: Task[] = [];
 const sectionCache: Partial<Record<SectionType, Task[]>> = {};
@@ -33,44 +34,25 @@ const SECTION_LOADERS: Record<SectionType, () => Promise<Task[]>> = {
   },
   react: async () => {
     const module = await import("../curriculum/react/data/tasksData");
+    const toReactTasks = (
+      tasks: readonly RawTask[],
+      groupId: ReactGroupId,
+      fallbackDifficulty?: TaskDifficulty
+    ): Task[] =>
+      normalizeTasks(tasks, "react", REACT_GROUP_CATEGORIES[groupId], fallbackDifficulty);
+
     return [
-      ...normalizeTasks(module.WARMUP_TASKS as readonly RawTask[], "react", "Разминка", "warm-up"),
-      ...normalizeTasks(
+      ...toReactTasks(module.WARMUP_TASKS as readonly RawTask[], "group-warmup", "warm-up"),
+      ...toReactTasks(
         module.REFACTORING_TASKS as readonly RawTask[],
-        "react",
-        "Рефакторинг",
+        "group-refactoring",
         "refactoring"
       ),
-      ...normalizeTasks(
-        module.MAIN_TASKS as readonly RawTask[],
-        "react",
-        "UI-компоненты и паттерны",
-        "middle"
-      ),
-      ...normalizeTasks(
-        module.ADVANCED_TASKS as readonly RawTask[],
-        "react",
-        "Управление состоянием",
-        "strong"
-      ),
-      ...normalizeTasks(
-        module.REACT_TS_TASKS as readonly RawTask[],
-        "react",
-        "TypeScript: Паттерны типизации",
-        "ts"
-      ),
-      ...normalizeTasks(
-        module.REACT_TS_PRACTICE_TASKS as readonly RawTask[],
-        "react",
-        "TypeScript: Прикладные сценарии",
-        "ts"
-      ),
-      ...normalizeTasks(
-        module.LIFECYCLE_TASKS as readonly RawTask[],
-        "react",
-        "Жизненный цикл и рантайм",
-        "strong"
-      ),
+      ...toReactTasks(module.MAIN_TASKS as readonly RawTask[], "group-middle"),
+      ...toReactTasks(module.ADVANCED_TASKS as readonly RawTask[], "group-strong"),
+      ...toReactTasks(module.REACT_TS_TASKS as readonly RawTask[], "group-ts"),
+      ...toReactTasks(module.REACT_TS_PRACTICE_TASKS as readonly RawTask[], "group-ts-practice"),
+      ...toReactTasks(module.LIFECYCLE_TASKS as readonly RawTask[], "group-lifecycle"),
     ];
   },
   algorithms: async () => {

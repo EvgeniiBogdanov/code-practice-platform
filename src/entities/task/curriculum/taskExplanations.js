@@ -4,7 +4,7 @@ const BASE_TASK_EXPLANATIONS = {
   5: `### Суть задачи
 Реализовать поиск и фильтрацию персонажей Rick and Morty API с реактивным обновлением списка при изменении текста и/или статуса, корректно обрабатывая состояния загрузки, ошибок, отменённых запросов и пустой выдачи.
 
-### � Пошаговые этапы решения:
+### 🛠 Пошаговые этапы решения:
 
 1. **Структура состояний (\`useState\`)**:
    \`\`\`jsx
@@ -130,14 +130,14 @@ const BASE_TASK_EXPLANATIONS = {
    \`\`\`
    Каждое состояние рендерится исключительно, что исключает баги типа «показал и загрузку и список одновременно».
 
-### � Ключевые выводы:
+### 💡 Ключевые выводы:
 - **State machine** для async-состояний (\`idle\`/\`loading\`/\`success\`/\`error\`) — лучше, чем пачка независимых boolean флагов.
 - **\`URLSearchParams\` для сетевых запросов** — собирает безопасную query-строку для \`fetch\` с автоматическим экранированием спецсимволов. Не путать с изменением адреса страницы в браузере (для этого требуется отдельный вызов \`window.history.replaceState\`).
 - **\`AbortController\`** обязателен в любом \`useEffect\`, который делает fetch с зависимостями, меняющимися чаще, чем отвечает сервер.
 - **Inline обработчики** — нормально для 1–2 полей. Не бойтесь их использовать.
 - **Отдельный status для HTTP-кодов** (404 = пустой массив, не ошибка) — правильное понимание API. Rick & Morty API возвращает 404 при отсутствии результатов, а не пустой results.
 
-### � Что добавить, чтобы решение стало уровня Senior:
+### 🚀 Что добавить, чтобы решение стало уровня Senior:
 
 | Улучшение | Зачем |
 | --- | --- |
@@ -160,336 +160,413 @@ const BASE_TASK_EXPLANATIONS = {
 *Реализация этих трёх пунктов превращает «работает на демо» в «готово к продакшену».`,
 
   6: `### Суть задачи
-Реализация CRUD-логики для списка задач на основе \`useState\`: добавление, удаление и переключение статуса выполнения элементов, с контролируемым инпутом и условным рендерингом.
+Список задач: добавление без пустых строк, удаление и переключение статуса «выполнено».
 
-### � Пошаговые этапы решения:
+### 🛠 Решение
+**Состояние** — массив задач и текст поля:
+\`\`\`jsx
+const [todos, setTodos] = useState(INITIAL_TODOS);
+const [text, setText] = useState('');
+\`\`\`
 
-1. **Хранение состояния списка и инпута**:
-   \`\`\`jsx
-   const [todos, setTodos] = useState([
-     { id: 1, text: 'Изучить React', completed: false },
-     { id: 2, text: 'Пройти собеседование', completed: false }
-   ]);
-   const [inputText, setInputText] = useState('');
-   \`\`\`
-**Разбор**: Список задач хранится в состоянии как массив объектов с полями \`id\`, \`text\`, \`completed\`. Текст инпута тоже вынесен в отдельное состояние — это делает поле «контролируемым» (controlled input), то есть React полностью управляет его значением через \`value={inputText}\`.
+**Добавление через форму** — работает и по кнопке, и по Enter:
+\`\`\`jsx
+const handleSubmit = (e) => {
+  e.preventDefault();
+  const trimmed = text.trim();
+  if (!trimmed) return;
+  setTodos((prev) => [...prev, { id: crypto.randomUUID(), text: trimmed, completed: false }]);
+  setText('');
+};
+\`\`\`
 
-2. **Добавление задачи**:
-   \`\`\`jsx
-   const addTodo = () => {
-     if (inputText.trim() === '') return;
-     setTodos([
-       ...todos,
-       { id: Date.now(), text: inputText.trim(), completed: false }
-     ]);
-     setInputText('');
-   };
-   \`\`\`
-**Разбор**: Перед добавлением текст проверяется на пустоту через \`.trim()\` — это защищает от задач, состоящих только из пробелов. Новый todo создаётся с уникальным id на основе \`Date.now()\` (временная метка в миллисекундах — для простых приложений этого достаточно, хотя в реальных проектах лучше использовать uuid, так как при очень быстром двойном клике \`Date.now()\` теоретически может повториться). Массив обновляется иммутабельно через spread-оператор \`[...todos, newTodo]\`, после чего инпут очищается.
+**Переключение и удаление** — иммутабельно, по id:
+\`\`\`jsx
+const toggleTodo = (id) =>
+  setTodos((prev) =>
+    prev.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo))
+  );
 
-3. **Удаление задачи**:
-   \`\`\`jsx
-   const deleteTodo = (id) => {
-     setTodos(todos.filter(todo => todo.id !== id));
-   };
-   \`\`\`
-**Разбор**: Используется \`filter\`, который возвращает новый массив без элемента с совпадающим id. Это стандартный иммутабельный паттерн удаления элемента из списка в React — исходный массив \`todos\` не мутируется напрямую.
+const deleteTodo = (id) => setTodos((prev) => prev.filter((todo) => todo.id !== id));
+\`\`\`
 
-4. **Переключение статуса выполнения**:
-   \`\`\`jsx
-   const toggleTodo = (id) => {
-     setTodos(todos.map(todo => 
-       todo.id === id ? { ...todo, completed: !todo.completed } : todo
-     ));
-   };
-   \`\`\`
-**Разбор**: \`map\` проходит по всем задачам и для нужной (по id) создаёт новый объект с инвертированным \`completed\`, а остальные возвращает без изменений. Важно, что создаётся именно новый объект (\`{ ...todo, completed: !todo.completed }\`), а не мутация старого — это нужно для корректного обнаружения изменений React.
+**Разметка** — интерактивные элементы доступны с клавиатуры:
+\`\`\`jsx
+<button
+  type="button"
+  aria-pressed={todo.completed}
+  onClick={() => toggleTodo(todo.id)}
+  style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}
+>
+  {todo.text}
+</button>
+\`\`\`
 
-5. **Разметка и условное отображение**:
-   \`\`\`jsx
-   <span 
-     onClick={() => toggleTodo(todo.id)} 
-     style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}
-   >
-     {todo.text}
-   </span>
-   <button onClick={() => deleteTodo(todo.id)}>Удалить</button>
-   \`\`\`
-**Разбор**: Клик по тексту вызывает \`toggleTodo\`, а стиль \`textDecoration\` зависит от \`todo.completed\` — это и есть визуальное отличие выполненных задач. Каждый \`<li>\` получает \`key={todo.id}\`, что критично для корректной работы React при перерисовке списка (без стабильного ключа возможны баги при удалении/переключении элементов).
+### ⚠️ Частые ошибки
+- \`onClick\` на \`<span>\` — элемент недоступен с клавиатуры и непонятен скринридеру.
+- Отдельная кнопка без \`<form>\` — Enter не добавляет задачу.
+- \`setTodos([...todos, item])\` — работает, но опирается на значение из замыкания. Функциональная форма надёжнее.
+- \`key={index}\` или \`id: Date.now()\`.
 
-### � Ключевые выводы:
-- Все обновления списка выполняются иммутабельно (\`filter\`, \`map\`, spread) — это основа предсказуемого поведения состояния в React.
-- Разделение ответственности: \`inputText\` управляет полем ввода, \`todos\` — данными списка; это два независимых состояния.
-- \`key={todo.id}\` обязателен при рендере списков и должен быть стабильным и уникальным (использование индекса массива вместо id — частая ошибка, которая ломает переключение/удаление при определённых сценариях).
-- Валидация (\`trim()\`) на входе предотвращает попадание «мусорных» данных в состояние ещё до обновления списка.`,
-
-  8: `### Суть задачи
-Иммутабельное добавление элементов в массив состояния без применения метода \`.push()\`.
-
-### � Пошаговые этапы решения:
-
-1. **Использование spread-оператора**:
-   \`\`\`jsx
-   setTodos((prevTodos) => [...prevTodos, inputValue]);
-   \`\`\`
-
-### � Ключевые выводы:
-- Мутация массива по ссылке (\`push\`) не распознается React, и UI не перерисовывается.`,
+### 💡 Ключевые выводы
+- CRUD над массивом в state: добавление — spread, изменение — \`map\`, удаление — \`filter\`.
+- Доступность — часть правильного решения: кнопки для действий, формы для ввода.`,
 
   9: `### Суть задачи
-Todo-приложение с двумя независимыми списками (\`today\` / \`tomorrow\`) в едином объекте состояния, при этом инпуты для каждого списка хранятся отдельно — демонстрация паттерна «разделения состояний по зонам ответственности» и иммутабельного обновления вложенного объекта.
+Два списка задач («Сегодня» и «Завтра») в одном объекте состояния. У каждого — своё поле ввода, добавление и удаление.
 
-### � Пошаговые этапы решения:
+### 🔍 Главная ловушка — дублирование
+Прямолинейное решение заводит \`addToday\`, \`addTomorrow\`, \`deleteToday\`, \`deleteTomorrow\` и два одинаковых блока разметки. Любая правка вносится дважды, а третий список потребует копировать всё ещё раз. На собеседовании это сразу заметят.
 
-1. **Разделение состояний**:
-   \`\`\`jsx
-   const [todo, setTodo] = useState(initialData);
-   const [today, setToday] = useState("");
-   const [tomorrow, setTomorrow] = useState("");
-   \`\`\`
-**Разбор**: Данные задач (\`todo\`) и значения инпутов (\`today\`, \`tomorrow\`) — это разная по природе информация с разной частотой обновления, поэтому они хранятся в разных состояниях. Так инпуты можно очищать независимо от списка задач, не задевая другие поля.
+### 🛠 Решение
+**1. Единый state и обработчики, параметризованные ключом списка**
+\`\`\`jsx
+const [todos, setTodos] = useState(initialData);
 
-2. **Добавление задачи с валидацией пустой строки**:
-   \`\`\`jsx
-   const addToday = () => {
-     if (today.trim() === "") return;
+const addTask = (listKey, text) => {
+  setTodos((prev) => ({
+    ...prev,
+    [listKey]: [...prev[listKey], { id: crypto.randomUUID(), text }],
+  }));
+};
 
-     const item = {
-       id: Date.now(),
-       text: today,
-     };
+const deleteTask = (listKey, id) => {
+  setTodos((prev) => ({
+    ...prev,
+    [listKey]: prev[listKey].filter((item) => item.id !== id),
+  }));
+};
+\`\`\`
+Копируется внешний объект и изменяемый массив; второй список остаётся той же ссылкой.
 
-     setTodo((prev) => ({
-       ...prev,
-       today: [...prev.today, item],
-     }));
+**2. Повторяющаяся разметка — в компоненте секции**
+\`\`\`jsx
+const TodoSection = ({ title, items, onAdd, onDelete }) => {
+  const [draft, setDraft] = useState('');
 
-     setToday("");
-   };
-   \`\`\`
-**Разбор**: Проверка \`today.trim() === ""\` отсекает пустые и состоящие из пробелов задачи. \`Date.now()\` используется как простой способ получить уникальный id. Обновление стейта идёт через функциональную форму \`setTodo(prev => ...)\`, чтобы не потерять актуальное значение \`tomorrow\` при спред-копировании объекта (\`...prev\`). После добавления инпут сбрасывается через \`setToday("")\`.
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const text = draft.trim();
+    if (!text) return;
+    onAdd(text);
+    setDraft('');
+  };
+  // список + форма
+};
+\`\`\`
+Черновик нужен только своей секции — он хранится в ней, а не в общем state.
 
-3. **Иммутабельное обновление вложенного массива при удалении**:
-   \`\`\`jsx
-   const deleteToday = (id) => {
-     setTodo((prev) => ({
-       ...prev,
-       today: prev.today.filter((item) => item.id !== id),
-     }));
-   };
-   \`\`\`
-**Разбор**: \`filter\` возвращает новый массив без элемента с совпавшим id, а спред-оператор (\`...prev\`) сохраняет нетронутым второй список (\`tomorrow\`). Это ключевой момент — при работе с вложенным состоянием (\`{ today, tomorrow }\`) нельзя мутировать массив напрямую (\`push\`, \`splice\`), иначе React не увидит изменения и не перерендерит компонент.
+**3. Секции из конфига**
+\`\`\`jsx
+const SECTIONS = [
+  { key: 'today', title: 'Сегодня' },
+  { key: 'tomorrow', title: 'Завтра' },
+];
 
-4. **Симметричная логика для «Завтра»**:
-   \`\`\`jsx
-   const addTomorrow = () => { /* аналогично addToday */ };
-   const deleteTomorrow = (id) => { /* аналогично deleteTomorrow */ };
-   \`\`\`
-**Разбор**: Функции для \`tomorrow\` дублируют логику \`today\`, меняя только соответствующее поле объекта и state инпута. В реальном проекте такое дублирование обычно выносят в кастомный хук или обобщённую функцию с параметром \`listName\`, чтобы не повторять код.
+{SECTIONS.map(({ key, title }) => (
+  <TodoSection
+    key={key}
+    title={title}
+    items={todos[key]}
+    onAdd={(text) => addTask(key, text)}
+    onDelete={(id) => deleteTask(key, id)}
+  />
+))}
+\`\`\`
 
-5. **Рендер списков и форм**:
-   \`\`\`jsx
-   <ul>
-     {!!todo.today.length && todo.today.map((item) => (
-       <li key={item.id}>
-         <span>{item.text}</span>
-         <button onClick={() => deleteToday(item.id)}>Удалить</button>
-       </li>
-     ))}
-   </ul>
-   \`\`\`
-**Разбор**: \`key={item.id}\` — обязателен для корректной сверки списка React'ом при удалении элементов. Конструкция \`!!todo.today.length && ...\` — защита от рендера \`0\` при пустом массиве (хотя тут скорее избыточна, так как \`.map\` по пустому массиву просто вернёт \`[]\`, а не \`0/false\`, поэтому короткое замыкание можно было бы убрать).
+### ⚠️ Частые ошибки
+- Мутация вложенного массива: \`prev.today.push(item)\`.
+- Копирование только внешнего объекта без нового массива.
+- \`id: Date.now()\` — совпадёт при быстром добавлении.
 
-### � Ключевые выводы:
-- При хранении связанных, но независимо изменяемых данных (список задач vs текст инпута) их стоит разносить по разным \`useState\`, а не запихивать всё в один объект.
-- Обновление вложенного объекта состояния всегда должно быть иммутабельным: сначала спред родительского объекта (\`...prev\`), затем — новый массив (через \`filter\`/\`map\`/спред), но не мутация существующего.
-- \`Date.now()\` — приемлемый способ генерации id для учебных задач, но не гарантирует уникальность при очень быстром добавлении (в один и тот же миллисекунд) — в проде для этого используют \`crypto.randomUUID()\` или библиотеки типа \`nanoid\`.
-- Повторяющаяся логика для \`today\`/\`tomorrow\` — кандидат на рефакторинг в переиспользуемый хук (\`useTodoList(key)\`), что уменьшило бы дублирование кода почти вдвое.`,
+### 💡 Ключевые выводы
+- Вычисляемый ключ \`[listKey]\` убирает дублирование обработчиков.
+- Состояние храните там, где оно используется: общие данные — наверху, черновик поля — в секции.`,
 
   10: `### Суть задачи
-Перезагрузка изображения в обход кэша и корректная очистка оперативной памяти от Blob-ссылок.
+Перезагружать картинку по кнопке через \`fetch\`, показывать её из Blob и не допускать утечек памяти.
 
-### � Пошаговые этапы решения:
+### 🛠 Решение
+**1. Технические ресурсы — в ref**
+\`\`\`jsx
+const objectUrlRef = useRef(null);   // текущий blob-URL
+const controllerRef = useRef(null);  // текущий запрос
+\`\`\`
+Они не влияют на разметку и нужны только для очистки.
 
-1. **Создание и отзыв Blob-URL**:
-   \`\`\`jsx
-   const blob = await res.blob();
-   const nextUrl = URL.createObjectURL(blob);
-   if (objectUrlRef.current) {
-     URL.revokeObjectURL(objectUrlRef.current);
-   }
-   objectUrlRef.current = nextUrl;
-   \`\`\`
+**2. Загрузка с отменой предыдущего запроса**
+\`\`\`jsx
+const handleRefetch = async () => {
+  controllerRef.current?.abort();
+  const controller = new AbortController();
+  controllerRef.current = controller;
+  setStatus('loading');
 
-2. **Очистка памяти при размонтировании**:
-   \`\`\`jsx
-   useEffect(() => {
-     return () => {
-       if (objectUrlRef.current) URL.revokeObjectURL(objectUrlRef.current);
-     };
-   }, []);
-   \`\`\`
+  try {
+    const response = await fetch(src, { cache: 'no-store', signal: controller.signal });
+    if (!response.ok) throw new Error(\`HTTP \${response.status}\`);
+    const blob = await response.blob();
+    if (controller.signal.aborted) return;
 
-### � Ключевые выводы:
-- Ссылки, созданные через \`URL.createObjectURL\`, должны обязательно уничтожаться через \`URL.revokeObjectURL\`.`,
+    const nextUrl = URL.createObjectURL(blob);
+    if (objectUrlRef.current) URL.revokeObjectURL(objectUrlRef.current);
+    objectUrlRef.current = nextUrl;
+
+    setImageSrc(nextUrl);
+    setStatus('success');
+  } catch (err) {
+    if (controller.signal.aborted) return;
+    setStatus('error');
+  }
+};
+\`\`\`
+- \`cache: 'no-store'\` — браузер не вернёт картинку из HTTP-кеша.
+- Старый blob-URL освобождается только после того, как готов новый.
+
+**3. Очистка при размонтировании**
+\`\`\`jsx
+useEffect(() => {
+  return () => {
+    controllerRef.current?.abort();
+    if (objectUrlRef.current) URL.revokeObjectURL(objectUrlRef.current);
+  };
+}, []);
+\`\`\`
+
+### 🔍 Неочевидная утечка
+Если компонент размонтировали **во время** загрузки, cleanup уже выполнился, а \`fetch\` завершится позже и создаст blob-URL, который никто не освободит. Поэтому запрос отменяется в cleanup, а URL не создаётся, если \`signal.aborted\`.
+
+### ⚠️ Частые ошибки
+- Нет \`revokeObjectURL\` — каждая перезагрузка оставляет изображение в памяти.
+- Освобождать текущий URL до того, как новый готов, — картинка «пропадает».
+- Ошибка только в \`console.log\` — пользователь не понимает, что произошло.
+
+### 💡 Ключевые выводы
+- Всё, что создаётся вручную (blob-URL, таймеры, подписки, запросы), нужно освобождать: при замене и при размонтировании.
+- Асинхронный код должен учитывать, что компонент может исчезнуть до его завершения.`,
 
   11: `### Суть задачи
-Объединение сетевых и локально созданных сущностей в единый список.
+Загрузить первые 5 постов по \`url\`, показать загрузку и ошибку, добавлять посты локально в начало списка и удалять их.
 
-### � Пошаговые этапы решения:
+### 🛠 Решение
+**1. Загрузка с отменой**
+\`\`\`jsx
+useEffect(() => {
+  const controller = new AbortController();
 
-1. **Добавление нового поста в начало массива**:
-   \`\`\`jsx
-   const newPost = { id: Date.now(), title: newTitle.trim(), isLocal: true };
-   setPosts(prev => [newPost, ...prev]);
-   \`\`\`
+  const loadPosts = async () => {
+    setStatus('loading');
+    setError(null);
+    try {
+      const response = await fetch(url, { signal: controller.signal });
+      if (!response.ok) throw new Error(\`HTTP \${response.status}\`);
+      const data = await response.json();
+      setPosts(data.slice(0, POSTS_LIMIT));
+      setStatus('success');
+    } catch (err) {
+      if (err.name === 'AbortError') return;
+      setError(err.message);
+      setStatus('error');
+    }
+  };
 
-### � Ключевые выводы:
-- Для вставки элемента в начало массива используйте синтаксис \`[newItem, ...prevArray]\`.`,
+  loadPosts();
+  return () => controller.abort();
+}, [url]);
+\`\`\`
+- \`url\` в зависимостях — при его смене запрос перезапускается.
+- Отмена в cleanup защищает от гонки: поздний ответ для старого \`url\` не перезапишет список.
+- Статус \`'loading'\` с самого начала — запрос стартует при монтировании.
+
+**2. Локальное добавление в начало**
+\`\`\`jsx
+const addPost = (e) => {
+  e.preventDefault();
+  const title = newTitle.trim();
+  if (!title) return;
+  setPosts((prev) => [{ id: crypto.randomUUID(), title, isLocal: true }, ...prev]);
+  setNewTitle('');
+};
+\`\`\`
+UUID не пересечётся с числовыми id сервера, а флаг \`isLocal\` позволяет показать пометку «(локальный)».
+
+**3. Удаление** — \`filter\` по id.
+
+**4. Рендер по статусу**: загрузка, ошибка, пустой список или посты.
+
+### ⚠️ Частые ошибки
+- Нет проверки \`response.ok\`.
+- Начальный статус \`''\` — первый рендер ничего не показывает.
+- \`id: Date.now()\` для локальных постов.
+
+### 💡 Ключевые выводы
+- Серверные данные в state после загрузки меняются так же иммутабельно, как любые другие.
+- Эффект, зависящий от параметра, должен отменять устаревшие запросы.`,
 
   12: `### Суть задачи
-Переключение типа инпута с автоматическим скрытием текста по таймеру и сбросом таймера при новом вводе.
+Поле пароля с кнопкой «Показать». Показанный пароль скрывается через \`hideTimeoutMs\`, ввод перезапускает отсчёт, а при размонтировании таймер очищается.
 
-### � Пошаговые этапы решения:
+### 🛠 Решение
+Таймер — это синхронизация с внешней системой, поэтому он живёт в эффекте:
+\`\`\`jsx
+useEffect(() => {
+  if (!isVisible) return;
 
-1. **Таймер в useEffect с очисткой**:
-   \`\`\`jsx
-   useEffect(() => {
-     if (isVisible) {
-       timerRef.current = setTimeout(() => {
-         setIsVisible(false);
-       }, hideTimeoutMs);
-     }
-     return () => {
-       if (timerRef.current) clearTimeout(timerRef.current);
-     };
-   }, [isVisible, password, hideTimeoutMs]);
-   \`\`\`
+  const timeoutId = setTimeout(() => setIsVisible(false), hideTimeoutMs);
+  return () => clearTimeout(timeoutId);
+}, [isVisible, password, hideTimeoutMs]);
+\`\`\`
+Один эффект покрывает все требования:
+| Событие | Что происходит |
+|---|---|
+| Пользователь показал пароль | эффект ставит таймер |
+| Ввод символа | меняется \`password\` → cleanup отменяет таймер → ставится новый |
+| Скрыл вручную | \`isVisible = false\` → cleanup отменяет таймер, новый не ставится |
+| Размонтирование | cleanup отменяет таймер |
 
-### � Ключевые выводы:
-- Добавление \`password\` в массив зависимостей эффекта гарантирует перезапуск 5-секундного отсчета при каждом новом вводимом символе.`,
+\`useRef\` для id не нужен: таймер принадлежит одному запуску эффекта, и cleanup видит его через замыкание.
+
+### ⚠️ Частые ошибки
+- Таймер в обработчике клика без отмены — после ручного скрытия и повторного показа срабатывает старый таймер и скрывает пароль раньше.
+- Нет cleanup — \`setIsVisible\` вызывается после размонтирования.
+- Кнопка без \`type="button"\` внутри формы отправляет форму.
+
+### 💡 Ключевые выводы
+- Зависимость эффекта — удобный способ «перезапустить» таймер при изменении значения.
+- Cleanup эффекта — единая точка отмены для всех сценариев.`,
 
   13: `### Суть задачи
-Реализация двусторонней синхронизации состояния фильтрации каталога товаров с параметрами URL (\`URLSearchParams\`) и браузерным \`History API\`.
+Каталог с поиском, категорией, наличием и сортировкой, где состояние фильтров синхронизировано с адресной строкой: ссылкой можно поделиться, а «Назад» и «Вперёд» работают.
 
-### 💡 Пошаговые этапы решения:
+### 🛠 Решение
+**1. Сериализация через URLSearchParams**
+\`\`\`jsx
+const parseFiltersFromUrl = (search) => {
+  const params = new URLSearchParams(search);
+  return {
+    query: params.get('query') ?? '',
+    category: params.get('category') ?? 'all',
+    inStock: params.get('inStock') === 'true',
+    sort: params.get('sort') ?? 'none',
+  };
+};
 
-1. **Считывание начального состояния из \`window.location.search\`**:
-   При монтировании компонента начальный стейт фильтров инициализируется из URL-строки:
-   \`\`\`jsx
-   const parseFiltersFromUrl = (searchString) => {
-     const params = new URLSearchParams(searchString);
-     return {
-       query: params.get('query') || '',
-       category: params.get('category') || 'all',
-       // Важно: парсинг булева значения из строки
-       inStock: params.get('inStock') === 'true',
-       sort: params.get('sort') || 'none',
-     };
-   };
-   \`\`\`
+const serializeFiltersToQuery = (filters) => {
+  const params = new URLSearchParams();
+  if (filters.query.trim()) params.set('query', filters.query.trim());
+  if (filters.category !== 'all') params.set('category', filters.category);
+  if (filters.inStock) params.set('inStock', 'true');
+  if (filters.sort !== 'none') params.set('sort', filters.sort);
+  return params.toString();
+};
+\`\`\`
+- \`URLSearchParams\` сам экранирует значения.
+- Значения по умолчанию в URL не попадают.
+- Все значения из URL — строки. \`Boolean("false")\` вернёт \`true\`, поэтому boolean разбирается сравнением со строкой \`'true'\`.
 
-2. **Формирование чистого URL при обновлении фильтров**:
-   Чтобы не засорять адресную строку лишними параметрами по умолчанию (\`?query=&category=all&inStock=false\`), дефолтные значения не добавляются:
-   \`\`\`jsx
-   const serializeFiltersToQuery = (filters) => {
-     const params = new URLSearchParams();
-     if (filters.query.trim()) params.set('query', filters.query.trim());
-     if (filters.category && filters.category !== 'all') params.set('category', filters.category);
-     if (filters.inStock) params.set('inStock', 'true');
-     if (filters.sort && filters.sort !== 'none') params.set('sort', filters.sort);
-     return params.toString();
-   };
-   \`\`\`
+**2. Инициализация из URL — один раз**
+\`\`\`jsx
+const [filters, setFilters] = useState(() => parseFiltersFromUrl(window.location.search));
+\`\`\`
 
-3. **Синхронизация через \`window.history.replaceState\`**:
-   Для исключения захламления истории переходов браузера каждым вводимым символом или кликом фильтра обновляем URL через \`replaceState\`:
-   \`\`\`jsx
-   const queryString = serializeFiltersToQuery(nextFilters);
-   const newUrl = queryString ? \`?\${queryString}\` : window.location.pathname;
-   window.history.replaceState(null, '', newUrl);
-   \`\`\`
+**3. Обновление state и URL — в обработчике**
+\`\`\`jsx
+const applyFilters = (nextFilters, { replace = false } = {}) => {
+  setFilters(nextFilters);
+  const query = serializeFiltersToQuery(nextFilters);
+  const url = query ? \`?\${query}\` : window.location.pathname;
+  if (replace) window.history.replaceState(null, '', url);
+  else window.history.pushState(null, '', url);
+};
+\`\`\`
+- Категория, сортировка, наличие и сброс → \`pushState\`: «Назад» отменит изменение.
+- Ввод текста → \`replaceState\`: иначе история заполнится записями на каждый символ.
+- Запись в историю — побочный эффект, поэтому она **не** живёт внутри \`setFilters(prev => ...)\`: функция-обновление должна быть чистой, а в StrictMode React вызывает её дважды.
 
-4. **Поддержка навигации кнопками «Назад» / «Вперёд» (\`popstate\`)**:
-   Когда пользователь перемещается по истории браузера, срабатывает событие \`popstate\`:
-   \`\`\`jsx
-   useEffect(() => {
-     const handlePopState = () => {
-       setFilters(parseFiltersFromUrl(window.location.search));
-     };
-     window.addEventListener('popstate', handlePopState);
-     return () => window.removeEventListener('popstate', handlePopState);
-   }, []);
-   \`\`\`
+**4. «Назад» и «Вперёд»**
+\`\`\`jsx
+useEffect(() => {
+  const handlePopState = () => setFilters(parseFiltersFromUrl(window.location.search));
+  window.addEventListener('popstate', handlePopState);
+  return () => window.removeEventListener('popstate', handlePopState);
+}, []);
+\`\`\`
 
-### ⚠️ Частые ошибки на собеседованиях:
-- **Ловушка \`Boolean("false")\`**: Метод \`params.get('inStock')\` возвращает строку \`"false"\`. Конструкция \`Boolean(params.get('inStock'))\` вернет \`true\`, так как строка непустая! Проверяйте строго: \`params.get('inStock') === 'true'\`.
-- **Бесконечный цикл эффектов**: Если синхронизировать URL через \`useEffect([filters])\`, а фильтры через \`useEffect([window.location.search])\`, можно легко получить infinite loop при неаккуратном сравнении. Обновление URL в обработчиках изменения фильтров (или единый источник правды) предотвращает эту проблему.
-- **Отсутствие отписки**: Забытая отписка \`removeEventListener('popstate', ...)\` приводит к утечкам памяти при переходе между страницами.`,
+**5. Список — производные данные**
+Фильтрация и сортировка (\`toSorted\`, без мутации) вычисляются при рендере. Для восьми товаров \`useMemo\` не нужен.
+
+### ⚠️ Частые ошибки
+- \`Boolean(params.get('inStock'))\` — строка \`"false"\` превращается в \`true\`.
+- Только \`replaceState\` — в истории нет записей, и «Назад» уводит со страницы.
+- Побочные эффекты внутри функции-обновления \`setState\`.
+- Значения по умолчанию в URL: \`?category=all&sort=none\`.
+- Нет подписки на \`popstate\` — URL меняется, а фильтры нет.
+
+### 💡 Ключевые выводы
+- URL — полноценное хранилище состояния интерфейса.
+- В приложениях с роутером используют \`useSearchParams\` (React Router) или search-параметры TanStack Router — принцип тот же.`,
 
   14: `### Суть задачи
-Реализовать доступный выпадающий список с автодополнением (Combobox / Autocomplete) с поддержкой клавиатурной навигации (\`ArrowDown\`, \`ArrowUp\`, \`Enter\`, \`Escape\`), выбором мышью и управлением фокусом.
+Доступное поле с автодополнением (combobox): фильтрация подсказок, навигация с клавиатуры, выбор мышью и разметка для скринридеров.
 
-### 💡 Пошаговые этапы решения:
+### 🛠 Решение
+**1. Состояние**
+\`\`\`jsx
+const [query, setQuery] = useState('');
+const [isOpen, setIsOpen] = useState(false);
+const [highlightedIndex, setHighlightedIndex] = useState(-1); // -1 — ничего не подсвечено
+\`\`\`
+Список подсказок — производные данные, вычисляются из \`query\`.
 
-1. **Моделирование состояния**:
-   \`\`\`jsx
-   const [query, setQuery] = useState('');
-   const [isOpen, setIsOpen] = useState(false);
-   const [highlightedIndex, setHighlightedIndex] = useState(-1);
-   \`\`\`
-   Для отслеживания подсвеченного элемента клавиатурой используется числовой индекс (\`highlightedIndex\`), где \`-1\` означает отсутствие выделения.
+**2. Клавиатура**
+\`\`\`jsx
+if (e.key === 'ArrowDown') {
+  e.preventDefault(); // каретка не прыгает в конец текста
+  setHighlightedIndex((prev) => (prev + 1) % filteredItems.length);
+} else if (e.key === 'ArrowUp') {
+  e.preventDefault();
+  setHighlightedIndex((prev) => (prev - 1 + filteredItems.length) % filteredItems.length);
+} else if (e.key === 'Enter' && highlightedIndex >= 0) {
+  e.preventDefault();
+  handleSelect(filteredItems[highlightedIndex]);
+} else if (e.key === 'Escape') {
+  setIsOpen(false);
+}
+\`\`\`
+Остаток от деления зацикливает навигацию.
 
-2. **Вычисление списка подсказок**:
-   \`\`\`jsx
-   const filteredItems = useMemo(() => {
-     const trimmed = query.trim().toLowerCase();
-     if (!trimmed) return [];
-     return items.filter((item) => item.toLowerCase().includes(trimmed));
-   }, [items, query]);
-   \`\`\`
-   Если инпут пуст, список подсказок не должен отображаться.
+**3. Выбор мышью и onBlur**
+Событие \`blur\` поля происходит раньше \`click\` по опции — список закроется и click потеряется. Выбор делаем на \`onMouseDown\` с \`preventDefault()\`: поле не теряет фокус, и выбор успевает сработать.
 
-3. **Обработка клавиш в \`onKeyDown\`**:
-   \`\`\`jsx
-   const handleKeyDown = (e) => {
-     if (!isOpen || filteredItems.length === 0) {
-       if (e.key === 'ArrowDown' && query.trim()) setIsOpen(true);
-       return;
-     }
+**4. Доступность (WAI-ARIA)**
+\`\`\`jsx
+const listboxId = useId();
+const getOptionId = (index) => \`\${listboxId}-option-\${index}\`;
 
-     if (e.key === 'ArrowDown') {
-       e.preventDefault(); // Предотвращаем скролл страницы
-       setHighlightedIndex((prev) => (prev + 1) % filteredItems.length);
-     } else if (e.key === 'ArrowUp') {
-       e.preventDefault();
-       setHighlightedIndex((prev) => (prev - 1 + filteredItems.length) % filteredItems.length);
-     } else if (e.key === 'Enter') {
-       e.preventDefault();
-       if (highlightedIndex >= 0 && highlightedIndex < filteredItems.length) {
-         handleSelect(filteredItems[highlightedIndex]);
-       }
-     } else if (e.key === 'Escape') {
-       e.preventDefault();
-       setIsOpen(false);
-       setHighlightedIndex(-1);
-     }
-   };
-   \`\`\`
+<input
+  role="combobox"
+  aria-expanded={isOpen}
+  aria-autocomplete="list"
+  aria-controls={listboxId}
+  aria-activedescendant={highlightedIndex >= 0 ? getOptionId(highlightedIndex) : undefined}
+/>
+<ul id={listboxId} role="listbox">
+  <li id={getOptionId(index)} role="option" aria-selected={isSelected}>...</li>
+</ul>
+\`\`\`
+- Фокус остаётся в поле, а \`aria-activedescendant\` сообщает скринридеру, какая опция подсвечена.
+- \`useId\` даёт уникальные id: компонент можно использовать несколько раз на странице.
+- «Ничего не найдено» — обычный текст с \`role="status"\`, а не опция: выбрать его нельзя.
 
-4. **Предотвращение преждевременного закрытия на \`onBlur\`**:
-   Классическая ловушка: если закрывать список на \`onBlur\` инпута, клик мышью по подсказке не успевает сработать, так как \`blur\` происходит до события \`click\`.
-   Решение: на элементе списка использовать \`onMouseDown={(e) => e.preventDefault()}\` или производить выбор сразу на \`onMouseDown\`.
+### ⚠️ Частые ошибки
+- Нет \`preventDefault\` на стрелках.
+- Выбор на \`onClick\` при закрытии списка по \`onBlur\`.
+- \`highlightedIndex\` не сбрасывается при новом вводе — подсветка указывает за пределы списка.
+- Захардкоженные id и отсутствие \`aria-activedescendant\`.
 
-5. **Семантика доступности (WAI-ARIA)**:
-   - Инпут: \`role="combobox"\`, \`aria-expanded={isOpen}\`, \`aria-autocomplete="list"\`.
-   - Список: \`role="listbox"\`.
-   - Пункт: \`role="option"\`, \`aria-selected={isSelected}\`.
-
-### ⚠️ Частые ошибки на собеседованиях:
-- Забывают \`e.preventDefault()\` на стрелках, из-за чего каретка прыгает в начало/конец инпута или скроллится страница.
-- Не сбрасывают \`highlightedIndex\` при изменении поискового запроса.
-- Дублируют отфильтрованный список в стейт вместо \`useMemo\` или прямого вычисления во время рендера.`,
+### 💡 Ключевые выводы
+- Combobox — частая задача на senior-собеседованиях именно из-за доступности.
+- В продакшене используют готовые headless-решения (Downshift, Radix, React Aria), но механику нужно уметь объяснить.`,
 
   15: `### Суть задачи
 Реализация паттерна **Optimistic UI (оптимистичное обновление)** с сохранением снимка предыдущего состояния и механизмом **отката (Rollback)** при возникновении серверной или сетевой ошибки.
@@ -536,512 +613,609 @@ Todo-приложение с двумя независимыми спискам�
 - **Подавление ошибок**: Пользователь должен четко понимать, почему действие не применилось (показ сообщения об ошибке / toast).`,
 
   16: `### Суть задачи
-Реализация корзины интернет-магазина с подсчетом стоимости товаров, скидок по промокодам и условий бесплатной доставки.
+Корзина с изменением количества, промокодами и расчётом доставки. Главное, что проверяют, — умеет ли кандидат отделить **минимальное состояние** от **производного состояния** (derived state).
 
-Главная цель этой задачи на собеседовании — проверить, умеет ли кандидат проектировать **производное состояние (Derived State)** без создания избыточных эффектов-синхронизаторов.
+### 🛠 Решение
+**1. Минимальный state**
+\`\`\`jsx
+const [items, setItems] = useState(initialItems);
+const [promoInput, setPromoInput] = useState('');
+const [appliedCode, setAppliedCode] = useState(null);
+const [promoError, setPromoError] = useState('');
+\`\`\`
 
-### 💡 Пошаговые этапы решения:
+**2. Правила — данными, константы — вынесены**
+\`\`\`jsx
+const FREE_DELIVERY_FROM = 3000;
+const DELIVERY_PRICE = 300;
 
-1. **Минимальный стейт**:
-   \`\`\`jsx
-   const [items, setItems] = useState(initialItems);
-   const [appliedPromo, setAppliedPromo] = useState(null);
-   \`\`\`
-   В стейте хранятся **только** изменяемые исходные данные (список товаров и активный промокод).
+const PROMO_CODES = {
+  SAVE10: { minSubtotal: 0, getDiscount: (subtotal) => Math.round(subtotal * 0.1) },
+  SALE500: { minSubtotal: 2000, getDiscount: (subtotal) => Math.min(500, subtotal) },
+};
+\`\`\`
 
-2. **Иммутабельное изменение количества и удаление**:
-   \`\`\`jsx
-   const handleIncrease = (id) => {
-     setItems((prev) =>
-       prev.map((item) =>
-         item.id === id && item.quantity < item.maxStock
-           ? { ...item, quantity: item.quantity + 1 }
-           : item
-       )
-     );
-   };
-   \`\`\`
+**3. Всё остальное — производное состояние, вычисляемое при рендере**
+\`\`\`jsx
+const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+const promo = appliedCode ? PROMO_CODES[appliedCode] : null;
+const isPromoActive = promo !== null && subtotal >= promo.minSubtotal;
+const discount = isPromoActive ? promo.getDiscount(subtotal) : 0;
+const amountAfterDiscount = subtotal - discount;
+const delivery = items.length === 0 || amountAfterDiscount >= FREE_DELIVERY_FROM ? 0 : DELIVERY_PRICE;
+const total = amountAfterDiscount + delivery;
+\`\`\`
+Если после применения SALE500 пользователь уменьшит корзину ниже 2000 ₽, \`isPromoActive\` станет \`false\`, и скидка исчезнет сама — без единого эффекта.
 
-3. **Расчет итогов прямо во время рендера**:
-   \`\`\`jsx
-   const subtotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+**4. Количество — одна функция с ограничением диапазона**
+\`\`\`jsx
+const changeQuantity = (id, delta) => {
+  setItems((prev) =>
+    prev.map((item) =>
+      item.id === id
+        ? { ...item, quantity: Math.min(item.maxStock, Math.max(1, item.quantity + delta)) }
+        : item
+    )
+  );
+};
+\`\`\`
+Кнопки дополнительно блокируются через \`disabled\` на границах.
 
-   let discount = 0;
-   if (appliedPromo === 'SAVE10') {
-     discount = Math.round(subtotal * 0.1);
-   } else if (appliedPromo === 'SALE500') {
-     discount = subtotal >= 2000 ? Math.min(500, subtotal) : 0;
-   }
+**5. Применение промокода** проверяет пустой ввод, неизвестный код и минимальную сумму, а при успехе сохраняет только код.
 
-   const amountAfterDiscount = Math.max(0, subtotal - discount);
-   const delivery = items.length === 0 ? 0 : amountAfterDiscount >= 3000 ? 0 : 300;
-   const total = amountAfterDiscount + delivery;
-   \`\`\`
+### ⚠️ Частые ошибки
+- \`useState\` для \`total\` и \`discount\` + \`useEffect([items])\` — каскадные рендеры.
+- Хранить в state рассчитанную скидку: она «застывает» и не реагирует на изменение корзины.
+- Магические числа 2000, 3000, 300, разбросанные по коду.
 
-### ⚠️ Частые ошибки на собеседованиях:
-- **Антипаттерн синхронизирующих useEffect**: Хранение \`totalPrice\` и \`discount\` в отдельных \`useState\` и их обновление через \`useEffect([items, appliedPromo])\`. Это вызывает лишний каскадный рендер и рассинхронизацию интерфейса. Документация React прямо рекомендует вычислять производные значения на лету.
-- **Мутация массива**: Прямое изменение \`item.quantity++\` в массиве вместо возврата нового объекта через \`map\`.
-- **Забытая проверка граничных условий**: Возможность уменьшить количество товара до 0 или отрицательных чисел, а также превысить складской остаток \`maxStock\`.`,
+### 💡 Ключевые выводы
+- State — минимальный набор фактов, остальное — вычисления при рендере.
+- Бизнес-правила удобнее описывать данными: их проще читать, расширять и тестировать.`,
 
   17: `### Суть задачи
-Реализация паттерна **Compound Components (составные компоненты)** на примере компонента Accordion (\`Accordion\`, \`Accordion.Item\`, \`Accordion.Header\`, \`Accordion.Body\`).
+Спроектировать составной компонент (Compound Components) — аккордеон, части которого (\`Accordion.Item\`, \`Accordion.Header\`, \`Accordion.Body\`) координируют состояние через Context.
 
-Паттерн позволяет создавать гибкие декларативные UI-компоненты, которые координируют свое состояние через React Context без ручной передачи пропсов (\`prop drilling\`).
+### 🛠 Решение
+**1. Два контекста**
+- \`AccordionContext\` — какие секции открыты и как их переключить (уровень всего аккордеона).
+- \`AccordionItemContext\` — данные конкретной секции: \`id\`, \`isOpen\` и id для связки заголовка с панелью.
 
-### 💡 Пошаговые этапы решения:
+**2. Хуки доступа с проверкой**
+\`\`\`jsx
+const useAccordion = () => {
+  const context = useContext(AccordionContext);
+  if (!context) throw new Error('Компоненты Accordion.* должны использоваться внутри <Accordion>');
+  return context;
+};
+\`\`\`
+Одна проверка вместо копий в каждом подкомпоненте. Ошибка понятна сразу (fail fast).
 
-1. **Создание контекстов**:
-   \`\`\`jsx
-   const AccordionContext = createContext(null);
-   const AccordionItemContext = createContext(null);
-   \`\`\`
-   - \`AccordionContext\` координирует открытые секции на уровне всего аккордеона.
-   - \`AccordionItemContext\` передает \`id\` и \`isOpen\` вложенным \`Header\` и \`Body\`.
+**3. Корневой компонент и режимы**
+\`\`\`jsx
+const toggleItem = (id) => {
+  setOpenIds((prev) => {
+    const next = new Set(allowMultiple ? prev : []);
+    if (prev.has(id)) next.delete(id);
+    else next.add(id);
+    return next;
+  });
+};
+\`\`\`
+В single-режиме новый \`Set\` начинается пустым — открывается только выбранная секция.
 
-2. **Корневой компонент с поддержкой режимов**:
-   \`\`\`jsx
-   export function Accordion({ children, defaultOpenId = null, allowMultiple = false }) {
-     const [openIds, setOpenIds] = useState(() => {
-       if (!defaultOpenId) return new Set();
-       return new Set(Array.isArray(defaultOpenId) ? defaultOpenId : [defaultOpenId]);
-     });
+**4. Секция и доступность**
+\`\`\`jsx
+function AccordionItem({ id, children }) {
+  const { isItemOpen } = useAccordion();
+  const baseId = useId();
+  const item = { id, isOpen: isItemOpen(id), headerId: \`\${baseId}-header\`, panelId: \`\${baseId}-panel\` };
+  return <AccordionItemContext value={item}>{children}</AccordionItemContext>;
+}
+\`\`\`
+Заголовок — кнопка с \`aria-expanded\` и \`aria-controls\`, панель — \`role="region"\` с \`aria-labelledby\`. Скринридер связывает их и объявляет состояние.
 
-     const toggleItem = (id) => {
-       setOpenIds((prev) => {
-         const next = new Set(allowMultiple ? prev : []);
-         if (prev.has(id)) next.delete(id);
-         else next.add(id);
-         return next;
-       });
-     };
+**5. Статические свойства**
+\`\`\`jsx
+Accordion.Item = AccordionItem;
+Accordion.Header = AccordionHeader;
+Accordion.Body = AccordionBody;
+\`\`\`
+Использование читается как разметка: \`<Accordion.Item>\`, \`<Accordion.Header>\`.
 
-     const isItemOpen = (id) => openIds.has(id);
+### ⚠️ Частые ошибки
+- \`React.Children.map\` + \`cloneElement\` — ломается, как только потребитель обернёт секцию в свой компонент.
+- Нет \`aria-expanded\` и связи заголовка с панелью.
+- Проверки контекста скопированы в каждый подкомпонент.
 
-     return (
-       <AccordionContext.Provider value={{ isItemOpen, toggleItem }}>
-         <div>{children}</div>
-       </AccordionContext.Provider>
-     );
-   }
-   \`\`\`
-
-3. **Привязка подкомпонентов**:
-   \`\`\`jsx
-   Accordion.Item = AccordionItem;
-   Accordion.Header = AccordionHeader;
-   Accordion.Body = AccordionBody;
-   \`\`\`
-   Это обеспечивает лаконичный синтаксис использования вида \`<Accordion.Item>\`.
-
-4. **Защитные проверки контекста**:
-   В каждом подкомпоненте обязательно проверяется наличие контекста. Если компонент вызван вне правильного родителя — выбрасывается информативная ошибка.
-
-### ⚠️ Частые ошибки на собеседованиях:
-- Пытаются клонировать детей через \`React.Children.map\` и \`React.cloneElement\`. Этот подход устарел, ломается при любой пользовательской обертке и не дает вставить произвольные теги между компонентами.
-- Забывают атрибут доступности \`aria-expanded\` на кнопке заголовка.`,
+### 💡 Ключевые выводы
+- Compound Components = общий Context + набор подкомпонентов, которые потребитель свободно компонует.
+- Паттерн лежит в основе Radix UI, Headless UI и React Aria. Следующий шаг — поддержка controlled-режима (\`value\` / \`onValueChange\`).`,
 
   18: `### Суть задачи
-Реализовать точный спортивный секундомер с кнопками «Старт», «Пауза», «Круг» (Lap), «Сброс» и компенсацией системного дрейфа таймера.
+Точный секундомер с паузой, кругами и сбросом. Главная проверка — понимает ли кандидат, почему нельзя считать время количеством тиков таймера (Event Loop Drift).
 
-### 💡 Пошаговые этапы решения:
+### 🔍 Проблема дрейфа (Event Loop Drift)
+\`\`\`js
+setInterval(() => setTime((t) => t + 10), 10);
+\`\`\`
+Таймер — это обещание вызвать колбэк **не раньше** чем через 10 мс. Если основной поток занят рендером или другим кодом, тик опаздывает. Опоздания складываются, а в фоновой вкладке браузер замедляет таймеры до одного раза в секунду — секундомер «теряет» время.
 
-1. **Проблема дрейфа таймера (Event Loop Drift)**:
-   При наивном подходе:
-   \`\`\`javascript
-   setInterval(() => setTime((t) => t + 10), 10);
-   \`\`\`
-   Таймер неизбежно отстаёт! Из-за загрузки главного потока JavaScript и особенностей планировщика браузера интервалы выполняются с задержками (12–16 мс вместо 10 мс). За несколько минут погрешность достигает нескольких секунд.
+### 🛠 Решение: время — это разница меток
+\`\`\`jsx
+const startTimeRef = useRef(0);       // момент последнего старта
+const accumulatedTimeRef = useRef(0); // время до последней паузы
+const frameIdRef = useRef(null);
 
-2. **Точный расчет через разницу временных меток**:
-   \`\`\`javascript
-   const handleStart = () => {
-     setIsRunning(true);
-     startTimeRef.current = Date.now();
+const getCurrentTime = () =>
+  accumulatedTimeRef.current + performance.now() - startTimeRef.current;
+\`\`\`
+Сколько бы раз ни вызвался колбэк, результат точен: время вычисляется, а не накапливается.
 
-     intervalIdRef.current = setInterval(() => {
-       setElapsedTime(Date.now() - startTimeRef.current + accumulatedTimeRef.current);
-     }, 16);
-   };
-   \`\`\`
-   Интервал служит только тикером перерисовки UI (с частотой ~60 FPS), а само время вычисляется строго математически по системным часам (\`Date.now()\`).
+**Цикл отрисовки** через \`requestAnimationFrame\` — синхронизирован с частотой экрана и засыпает в фоновой вкладке:
+\`\`\`jsx
+const tick = () => {
+  setElapsedTime(getCurrentTime());
+  frameIdRef.current = requestAnimationFrame(tick);
+};
+\`\`\`
 
-3. **Использование \`useRef\` для технического состояния**:
-   \`startTimeRef\`, \`accumulatedTimeRef\` и \`intervalIdRef\` хранятся в \`useRef\`, потому что их изменение не должно вызывать лишние промежуточные перерендеры.
+**Старт и пауза**:
+\`\`\`jsx
+const handleStart = () => {
+  startTimeRef.current = performance.now();
+  setIsRunning(true);
+  frameIdRef.current = requestAnimationFrame(tick);
+};
 
-4. **Фиксация кругов (Laps)**:
-   \`\`\`javascript
-   const handleLap = () => {
-     const currentTotal = elapsedTime;
-     const prevTotal = laps.length > 0 ? laps[0].totalTime : 0;
-     const splitTime = currentTotal - prevTotal;
+const handlePause = () => {
+  stopLoop(); // cancelAnimationFrame
+  accumulatedTimeRef.current = getCurrentTime();
+  setElapsedTime(accumulatedTimeRef.current);
+  setIsRunning(false);
+};
+\`\`\`
 
-     setLaps((prev) => [{ id: laps.length + 1, totalTime: currentTotal, splitTime }, ...prev]);
-   };
-   \`\`\`
+**Круг** — точная метка в момент нажатия, а не значение из последнего кадра:
+\`\`\`jsx
+const handleLap = () => {
+  const totalTime = getCurrentTime();
+  setLaps((prev) => {
+    const prevTotal = prev.length > 0 ? prev[0].totalTime : 0;
+    return [{ id: prev.length + 1, totalTime, splitTime: totalTime - prevTotal }, ...prev];
+  });
+};
+\`\`\`
 
-5. **Обязательная очистка в \`useEffect\`**:
-   \`\`\`javascript
-   useEffect(() => {
-     return () => {
-       if (intervalIdRef.current) clearInterval(intervalIdRef.current);
-     };
-   }, []);
-   \`\`\`
+**Очистка**: \`useEffect(() => stopLoop, [])\` останавливает цикл при размонтировании.
 
-### ⚠️ Частые ошибки на собеседованиях:
-- Отсутствие очистки интервала в cleanup функции, что вызывает утечку памяти при уходе со страницы.
-- Потеря накопленного времени при нажатии «Пауза» и повторном «Старте».
-- Прямое хранение ID интервала в \`useState\`, вызывающее двойные рендеры.`,
+### Почему \`performance.now()\`, а не \`Date.now()\`
+\`Date.now()\` зависит от системных часов: синхронизация времени или ручной перевод может сдвинуть его назад, и секундомер покажет отрицательное время. \`performance.now()\` монотонный и точнее.
+
+### ⚠️ Частые ошибки
+- Считать время суммой тиков.
+- Хранить метки и id таймера в \`useState\` — лишние рендеры и устаревшие значения в обработчиках.
+- Брать время круга из \`elapsedTime\` — оно отстаёт на кадр.
+- Не останавливать цикл при размонтировании.
+
+### 💡 Ключевые выводы
+- Таймеры и кадры отвечают за **частоту обновления экрана**, метки времени — за **точность**.
+- Технические значения, не влияющие на разметку напрямую, живут в \`useRef\`.`,
 
   51: `### Суть задачи
-Доработать компонент поиска персонажей Rick & Morty API, добавив **Debounce** для откладывания сетевых запросов при быстром наборе текста в инпуте.
+Добавить к поиску персонажей debounce: запрос уходит только после паузы в наборе имени.
 
-### 💡 Пошаговые этапы решения:
+### 🛠 Решение
+**1. Хук \`useDebounce\`**
+\`\`\`jsx
+const useDebounce = (value, delay = 300) => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+  useEffect(() => {
+    const timeoutId = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(timeoutId);
+  }, [value, delay]);
+  return debouncedValue;
+};
+\`\`\`
+Каждое изменение \`value\` отменяет предыдущий таймер — значение обновится, только когда пользователь перестанет печатать.
 
-1. **Создание кастомного хука \`useDebounce\`**:
-   \`\`\`jsx
-   const useDebounce = (value, delay = 300) => {
-     const [debouncedValue, setDebouncedValue] = useState(value);
-     useEffect(() => {
-       const handler = setTimeout(() => setDebouncedValue(value), delay);
-       return () => clearTimeout(handler);
-     }, [value, delay]);
-     return debouncedValue;
-   };
-   \`\`\`
-**Разбор**: При каждом нажатии клавиши инпут обновляет \`name\`. Хук \`useDebounce\` задерживает обновление \`debouncedValue\` на 300 мс. Если пользователь вводит следующий символ до истечения таймаута, функция очистки \`useEffect\` сбрасывает предыдущий таймер через \`clearTimeout\`.
+**2. Два значения**
+\`\`\`jsx
+const [name, setName] = useState('');               // для инпута — мгновенно
+const debouncedName = useDebounce(name.trim(), 300); // для запроса — с задержкой
+\`\`\`
 
-2. **Использование \`debouncedName\` в \`useEffect\`**:
-   \`\`\`jsx
-   const debouncedName = useDebounce(name, 300);
+**3. Эффект загрузки зависит от отложенного значения**
+\`\`\`jsx
+useEffect(() => {
+  const controller = new AbortController();
+  // ... fetchPeople(debouncedName, statusFilter, controller.signal)
+  return () => controller.abort();
+}, [debouncedName, statusFilter]);
+\`\`\`
+Смена статуса в селекте применяется сразу — задерживать её незачем, это одно действие, а не серия нажатий.
 
-   useEffect(() => {
-     // ...
-     fetchPeople(debouncedName, statusFilter, signal);
-   }, [debouncedName, statusFilter]);
-   \`\`\`
-**Разбор**: Сетевой эффект завязана на \`debouncedName\`, а не на сырой \`name\`. Текст в инпуте обновляется мгновенно для хорошего UX, а запрос отправляется только после паузы в печати.
+### ⚠️ Частые ошибки
+- Задерживать само поле ввода — интерфейс «залипает».
+- \`debounce\` из lodash, созданный в теле компонента, — новая функция на каждом рендере, задержка не работает.
+- Убрать \`AbortController\`, считая, что debounce защищает от гонки.
 
-3. **Связка Debounce и URLSearchParams**:
-   Инпут остаётся мгновенно отзывчивым благодаря локальному состоянию \`name\`. Когда пользователь прекращает ввод и таймер \`useDebounce\` (300 мс) истекает, обновляется \`debouncedName\` и запускается сетевой эффект. Внутри \`fetchPeople\` объект \`URLSearchParams\` конструирует валидную query-строку только для фактически отправляемого запроса к API, защищая бэкенд от спама.
-
-### 💡 Ключевые выводы:
-- **Debounce** предотвращает спам сетевыми запросами на каждый введенный символ.
-- Очистка \`clearTimeout\` в \`useEffect\` обязательна, чтобы не было утечек таймеров при быстром вводе.`,
+### 💡 Ключевые выводы
+- Debounce — для потока событий (ввод), а не для одиночных действий (выбор в селекте).
+- Debounce уменьшает число запросов, отмена защищает от гонки — нужны оба.`,
 
   52: `### Суть задачи
-Доработать компонент поиска персонажей Rick & Morty API с задебауншенным вводом, добавив **кэширование сетевых запросов через Map** для предотвращения повторных запросов при одинаковых фильтрах.
+Добавить кеширование: повторный поиск с теми же фильтрами берёт данные из памяти, без запроса к API.
 
-### 💡 Пошаговые этапы решения:
+### 🛠 Решение
+**1. Кеш на уровне модуля**
+\`\`\`jsx
+const cache = new Map();
+\`\`\`
+Он переживает перерендеры и повторные монтирования компонента. \`useRef\` и \`useState\` для этого не подходят — они живут вместе с экземпляром.
 
-1. **Создание экземпляра \`Map\` в module-scope**:
-   \`\`\`jsx
-   const cache = new Map();
-   \`\`\`
-**Разбор**: Объект \`Map\` создается вне компонента. Это позволяет хранить ответы между рендерами и сохранять кэш даже при перемонтировании компонента в рамках сессии.
+**2. Нормализованный ключ**
+\`\`\`jsx
+const buildQuery = (name, status) => {
+  const params = new URLSearchParams();
+  const normalizedName = name.trim().toLowerCase();
+  if (normalizedName) params.set('name', normalizedName);
+  if (status) params.set('status', status);
+  return params.toString();
+};
+\`\`\`
+«Rick», « rick » и «RICK» дают один ключ — и один запрос.
 
-2. **Формирование ключа кэша через \`URLSearchParams\` и проверка перед \`fetch\`**:
-   \`\`\`jsx
-   const fetchPeople = async (name, status, signal) => {
-     const params = new URLSearchParams();
-     if (name) params.append("name", name);
-     if (status) params.append("status", status);
+**3. Проверка кеша до запроса**
+\`\`\`jsx
+useEffect(() => {
+  const cached = cache.get(query);
+  if (cached) {
+    setCharacters(cached);
+    setStatus('success');
+    return;
+  }
 
-     const cacheKey = params.toString();
-     if (cache.has(cacheKey)) {
-       return cache.get(cacheKey);
-     }
+  const controller = new AbortController();
+  const loadCharacters = async () => {
+    setStatus('loading');
+    try {
+      const data = await fetchPeople(query, controller.signal);
+      cache.set(query, data); // кешируем только успех
+      setCharacters(data);
+      setStatus('success');
+    } catch (e) {
+      if (e.name === 'AbortError') return;
+      setError(e.message);
+      setStatus('error');
+    }
+  };
 
-     const res = await fetch(
-       \`https://rickandmortyapi.com/api/character?\${cacheKey}\`,
-       { signal }
-     );
-     // ...
-     const results = data.results || [];
-     cache.set(cacheKey, results);
-     return results;
-   };
-   \`\`\`
-**Разбор**: \`URLSearchParams.toString()\` создает стандартизированную сериализованную строку параметров (например \`name=Rick&status=alive\`), которая решает две ключевые инженерные задачи:
-1. **Идеальный ключ кэша (\`cacheKey\`)**: исключает коллизии ключей при наивной конкатенации (например \`name="a"\` + \`status="bc"\` vs \`name="ab"\` + \`status="c"\`), гарантируя детерминированное попадание в \`cache.has(cacheKey)\`.
-2. **Параметры сетевого запроса к API**: строка подставляется напрямую в URL для \`fetch\`. При этом данный процесс происходит только в оперативной памяти JS для HTTP-запросов и не влияет на адресную строку браузера (для неё потребовался бы отдельный вызов \`history.replaceState\`).
+  loadCharacters();
+  return () => controller.abort();
+}, [query]);
+\`\`\`
+- Попадание в кеш показывает данные сразу, без мигания «Загрузка...».
+- Ошибки не кешируются — запрос можно повторить.
+- Функция \`fetchPeople\` отвечает только за сеть, кеширование — отдельная ответственность.
 
-### 💡 Ключевые выводы:
-- **In-memory cache на \`Map\`** — простая и эффектная реализация кэширования для собеседований.
-- **\`URLSearchParams.toString()\` в роли ключа кэша** защищает от коллизий и нормализует параметры запроса.
-- **Сочетание \`Debounce\` + \`Map\` + \`AbortController\`** даёт максимальную отзывчивость UI и минимизирует сетевую нагрузку.`,
+### ⚠️ Частые ошибки
+- Кеш в \`useState\` — пропадает при размонтировании и вызывает лишние рендеры.
+- Ключ без нормализации — дубли записей.
+- Кешировать ошибки или пустые ответы при сбое.
+
+### 🚀 Что спросят дальше
+- **Рост памяти**: ограничьте размер (LRU) или время жизни записей (TTL).
+- **Дедупликация**: два компонента с одинаковым запросом в один момент отправят два запроса — решается кешированием промиса.
+- **Устаревание**: данные на сервере меняются — нужно фоновое обновление.
+
+Всё это из коробки дают TanStack Query и SWR: на собеседовании стоит упомянуть, что свой кеш — учебная модель, а в продакшене используют библиотеку.
+
+### 💡 Ключевые выводы
+- Кеш = нормализованный ключ + хранилище, переживающее компонент + политика инвалидации.`,
 
   w1: `### Суть задачи
-Определить состояние в компоненте React и отобразить его значение в разметке JSX. Новички часто путают синтаксис деструктуризации или пытаются менять переменную состояния напрямую, что не вызывает перерендер.
+Объявить состояние в компоненте и вывести его в JSX. Это базовый кирпич React: данные, от которых зависит интерфейс, живут в state.
 
-### � Пошаговые этапы решения:
+### 🛠 Решение
+\`\`\`jsx
+import { useState } from 'react';
 
-1. **Импорт хука \`useState\`**:
-   Хуки в React импортируются из пакета \`react\`.
-   \`\`\`jsx
-   import { useState } from 'react';
-   \`\`\`
+const App = () => {
+  const [text, setText] = useState('test');
+  return <div>{text}</div>;
+};
+\`\`\`
+- \`useState('test')\` возвращает пару: текущее значение и функцию-сеттер.
+- Деструктуризация массива позволяет назвать их как удобно: \`[text, setText]\`.
+- Значение выводится в JSX через фигурные скобки \`{text}\`.
 
-2. **Объявление состояния компонента**:
-   Вызываем \`useState\` с начальным значением \`'test'\`. Используем синтаксис деструктуризации кортежа \`[state, setState]\`.
-   \`\`\`jsx
-   const [text, setText] = useState('test');
-   \`\`\`
+### Как это работает
+Компонент — обычная функция, которая вызывается на каждом рендере. Значение state хранится внутри React и привязано к месту компонента в дереве. Вызов \`setText(...)\` сохраняет новое значение и планирует повторный рендер, в котором \`useState\` вернёт уже его.
 
-3. **Отображение состояния в JSX**:
-   Встраиваем переменную \`text\` в JSX-разметку через фигурные скобки \`{text}\`.
-   \`\`\`jsx
-   return <div>{text}</div>;
-   \`\`\`
+### ⚠️ Частые ошибки
+- Присваивание \`text = '...'\` вместо \`setText('...')\` — рендера не будет.
+- Вызов хука внутри \`if\`, цикла или после раннего \`return\` — нарушает порядок вызовов хуков.
+- Хранение в state того, что можно вычислить из других данных (об этом — задача про derived state).
 
-### � Ключевые выводы:
-- \`useState\` возвращает массив из 2 элементов: текущее значение и функцию-сеттер для его изменения.
-- Прямая мутация (\`text = "new"\`) запрещена и не вызывает рендер компонента.`,
+### 💡 Ключевые выводы
+- Состояние меняется только через сеттер.
+- Хуки вызываются на верхнем уровне компонента, всегда в одном порядке.`,
 
   w2: `### Суть задачи
-Создать управляемый инпут (Controlled Input) для ввода текста с кнопкой сброса. В React значение поля формы хранится в состоянии React, а не в DOM.
+Сделать управляемый инпут поиска с выводом введённого текста и кнопкой очистки.
 
-### � Пошаговые этапы решения:
+### 🛠 Решение
+\`\`\`jsx
+const [text, setText] = useState('');
 
-1. **Связывание значения инпута со стейтом**:
-   Передаем в атрибут \`value\` значение переменной состояния, а на событие \`onChange\` навешиваем обработчик ввода.
-   \`\`\`jsx
-   <input 
-     value={text} 
-     onChange={handleChange} 
-     placeholder="Введите поисковый запрос..." 
-   />
-   \`\`\`
+<input value={text} onChange={(e) => setText(e.target.value)} />
+<p>Вы ищете: {text}</p>
+<button onClick={() => setText('')}>Очистить</button>
+\`\`\`
+- \`value={text}\` — поле всегда показывает значение из state.
+- \`onChange\` записывает каждый ввод в state, React перерисовывает поле.
+- Очистка — это просто \`setText('')\`: DOM трогать не нужно.
 
-2. **Считывание пользовательского ввода**:
-   В функции \`handleChange\` извлекаем введенную строку через \`e.target.value\` и передаем в сеттер \`setText\`.
-   \`\`\`jsx
-   function handleChange(e) {
-     setText(e.target.value);
-   }
-   \`\`\`
+### Почему это называется «управляемый»
+Источник правды — state React. Поэтому текст легко очистить, проверить, отформатировать или использовать в другой части интерфейса.
 
-3. **Реализация кнопки очистки**:
-   По клику на кнопку сбрасываем значение состояния в пустую строку.
-   \`\`\`jsx
-   <button onClick={() => setText('')}>Очистить</button>
-   \`\`\`
+### ⚠️ Частые ошибки
+- \`value\` без \`onChange\` — поле перестаёт реагировать на ввод.
+- Начальное значение \`undefined\` или \`null\` вместо \`''\` — предупреждение о переключении из uncontrolled в controlled.
+- Очистка через \`document.querySelector('input').value = ''\` — state и экран расходятся.
 
-### � Ключевые выводы:
-- Для управляемого инпута необходима пара пропсов: \`value={state}\` и \`onChange={handler}\`.
-- Чтение введенных символов выполняется из свойства \`e.target.value\`.`,
+### 💡 Ключевые выводы
+- Управляемое поле = \`value\` + \`onChange\`.
+- Начальное значение текстового поля — пустая строка.`,
 
   w3: `### Суть задачи
-Реализовать управляемый чекбокс для подписки. Распространенная ошибка — попытка считывать \`e.target.value\` вместо \`e.target.checked\`.
+Управляемый чекбокс подписки с текстовым статусом.
 
-### � Пошаговые этапы решения:
+### 🛠 Решение
+\`\`\`jsx
+const [isSubscribed, setIsSubscribed] = useState(false);
 
-1. **Булево состояние**:
-   Состояние чекбокса инициализируется значением \`false\`.
-   \`\`\`jsx
-   const [isSubscribed, setIsSubscribed] = useState(false);
-   \`\`\`
+<label>
+  <input
+    type="checkbox"
+    checked={isSubscribed}
+    onChange={(e) => setIsSubscribed(e.target.checked)}
+  />
+  Получать новости на email
+</label>
+<p>{isSubscribed ? 'Вы подписаны на рассылку.' : 'Вы не подписаны на рассылку.'}</p>
+\`\`\`
+- У чекбокса управляемое свойство — \`checked\`, а не \`value\`.
+- Новое значение берём из \`e.target.checked\` (boolean).
+- \`<label>\` вокруг поля делает кликабельным и текст.
 
-2. **Использование пропса \`checked\`**:
-   Для элементов \`<input type="checkbox" />\` вместо \`value\` передается проп \`checked\`.
-   \`\`\`jsx
-   <input
-     type="checkbox"
-     checked={isSubscribed}
-     onChange={handleChange}
-   />
-   \`\`\`
+### ⚠️ Частые ошибки
+- \`e.target.value\` — всегда строка \`'on'\`, флажок не переключится.
+- \`setIsSubscribed(!isSubscribed)\` — работает, но опирается на значение из замыкания. \`e.target.checked\` надёжнее.
+- Чекбокс без подписи — проблема доступности.
 
-3. **Чтение свойства \`checked\` события**:
-   Извлекаем флаг выбора из \`e.target.checked\`.
-   \`\`\`jsx
-   function handleChange(e) {
-     setIsSubscribed(e.target.checked);
-   }
-   \`\`\`
-
-### � Ключевые выводы:
-- Управляемые чекбоксы требуют проп \`checked={state}\` и чтение \`e.target.checked\` в обработчике.`,
+### 💡 Ключевые выводы
+- Текстовые поля управляются через \`value\`, чекбоксы и радиокнопки — через \`checked\`.`,
 
   w4: `### Суть задачи
-Исправить тонкий баг условного рендеринга JSX, когда выражение \`0 && <Component />\` выводит число \`0\` на экран вместо скрытия элемента.
+Исправить классический баг: при \`unreadCount = 0\` на странице появляется цифра \`0\`.
 
-### � Пошаговые этапы решения:
+### 🔍 Причина
+\`\`\`jsx
+{unreadCount && <p>Новых сообщений: {unreadCount}</p>}
+\`\`\`
+\`0 && ...\` возвращает \`0\`. React скрывает \`false\`, \`null\` и \`undefined\`, но число \`0\` — это текст, и оно рендерится.
 
-1. **Проблема числа 0 в JSX**:
-   В JavaScript выражение \`0 && <p>Сообщение</p>\` вычисляется в \`0\`. В отличие от \`false\`, \`null\` или \`undefined\`, число \`0\` является допустимым узлом для рендеринга в JSX и отображается на странице.
+### 🛠 Решение
+Слева от \`&&\` должно стоять булево значение:
+\`\`\`jsx
+{unreadCount > 0 && <p>Новых сообщений: {unreadCount}</p>}
+\`\`\`
+Альтернативы: \`Boolean(unreadCount) && ...\`, \`!!unreadCount && ...\` или тернарный оператор \`unreadCount > 0 ? <p>...</p> : null\`.
 
-2. **Безопасный условный рендеринг**:
-   Для проверки длины массива или числовых счетчиков используйте явное сравнение с нулем \`length > 0\` или приведение к boolean через \`Boolean(length)\`.
-   \`\`\`jsx
-   {unreadCount > 0 && <p>У вас невостребованных сообщений: {unreadCount}</p>}
-   \`\`\`
+### ⚠️ Частые ошибки
+- \`{items.length && <List />}\` — тот же баг для пустых массивов.
+- \`{price && <Price />}\` при цене \`0\` скроет бесплатный товар, хотя его нужно показать. Проверяйте ровно то условие, которое имеете в виду: \`price !== undefined\`.
 
-### � Ключевые выводы:
-- Никогда не используйте чистые числа в левой части оператора \`&&\` при условном рендеринге.
-- Всегда пишите явное сравнение \`count > 0 && ...\` или тернарный оператор.`,
+### 💡 Ключевые выводы
+- Слева от \`&&\` в JSX — только boolean.
+- Для выбора между двумя вариантами используйте тернарный оператор.`,
 
   w5: `### Суть задачи
-Реализовать счетчик с инкрементом и декрементом, защищенный от опускания ниже 0.
+Счётчик с кнопками «+» и «−», который не опускается ниже нуля.
 
-### � Пошаговые этапы решения:
+### 🛠 Решение
+\`\`\`jsx
+const [count, setCount] = useState(0);
 
-1. **Увеличение значения (Increment)**:
-   Прибавляем единицу к предыдущему состоянию.
-   \`\`\`jsx
-   const increment = () => {
-     setCount(prev => prev + 1);
-   };
-   \`\`\`
+const increment = () => setCount((prev) => prev + 1);
+const decrement = () => setCount((prev) => Math.max(0, prev - 1));
+\`\`\`
+- Новое значение зависит от предыдущего, поэтому используем функциональную форму \`prev => ...\`.
+- \`Math.max(0, prev - 1)\` не даёт уйти в минус.
+- Для UX можно дополнительно заблокировать кнопку: \`<button disabled={count === 0}>\`.
 
-2. **Защищенное уменьшение (Decrement)**:
-   Используем \`Math.max(0, prev - 1)\`, чтобы счетчик не опускался ниже нуля.
-   \`\`\`jsx
-   const decrement = () => {
-     setCount(prev => Math.max(0, prev - 1));
-   };
-   \`\`\`
+### ⚠️ Частые ошибки
+- \`count++\` или \`count = count + 1\` — меняется переменная, а не state, рендера нет.
+- Проверка \`if (count > 0) setCount(count - 1)\` работает, но опирается на значение из замыкания. При нескольких обновлениях подряд оно может быть устаревшим.
 
-### � Ключевые выводы:
-- Для предотвращения выхода за границы допустимых значений используйте математические функции (\`Math.max\`) или логические проверки.`,
+### 💡 Ключевые выводы
+- Если новое состояние вычисляется из старого — используйте \`setState(prev => ...)\`.
+- Инварианты данных (не меньше нуля) проверяются при обновлении, а не только в разметке.`,
 
   w6: `### Суть задачи
-Понять механизмы батчинга (batching) обновлений в React 18 и предотвратить утерю шагов при сериях вызовов \`setState\`.
+Увеличить счётчик на 3 за один клик и понять, почему наивное решение даёт +1.
 
-### � Пошаговые этапы решения:
+### 🔍 Почему не работает setCount(count + 1) трижды
+\`\`\`jsx
+// count === 0
+setCount(count + 1); // поставить 1
+setCount(count + 1); // поставить 1
+setCount(count + 1); // поставить 1
+\`\`\`
+\`count\` — константа текущего рендера (снимок). Все три вызова видят 0, и React получает три одинаковых значения.
 
-1. **Проблема прямого вызова**:
-   Если вызвать \`setCount(count + 1)\` три раза подряд, все вызовы возьмут одно и то же устаревшее значение \`count\` из текущего замыкания рендера.
+### 🛠 Решение — функциональная форма
+\`\`\`jsx
+const handleAddTriple = () => {
+  setCount((prev) => prev + 1); // 0 → 1
+  setCount((prev) => prev + 1); // 1 → 2
+  setCount((prev) => prev + 1); // 2 → 3
+};
+\`\`\`
+React ставит функции в очередь и применяет их по порядку, передавая каждой результат предыдущей. Все три обновления попадают в **один** рендер — это батчинг.
 
-2. **Функциональная форма \`setState\`**:
-   Передаем функцию-коллбэк \`(prev) => prev + 1\`. React ставит эти функции в очередь и выполняет их последовательно.
-   \`\`\`jsx
-   const handleAddTriple = () => {
-     setCount((prev) => prev + 1);
-     setCount((prev) => prev + 1);
-     setCount((prev) => prev + 1);
-   };
-   \`\`\`
+### ⚠️ Частые ошибки
+- Ожидать, что \`console.log(count)\` сразу после \`setCount\` покажет новое значение. Покажет старое: обновится только в следующем рендере.
+- Думать, что батчинг «теряет» обновления. Он объединяет рендеры, а не обновления.
 
-### � Ключевые выводы:
-- Всегда используйте функциональную форму \`setState(prev => ...)\`, когда новое состояние зависит от предыдущего.`,
+### 💡 Ключевые выводы
+- State внутри рендера — снимок, \`setState\` его не меняет.
+- Когда следующее значение зависит от предыдущего, используйте \`setState(prev => ...)\`.`,
 
   w7: `### Суть задачи
-Обновить одно свойство объекта в состоянии React, сохранив остальные свойства неизменными.
+Обновить одно поле объекта в state, сохранив остальные.
 
-### � Пошаговые этапы решения:
+### 🛠 Решение
+\`\`\`jsx
+setUser((prev) => ({
+  ...prev,
+  age: prev.age + 1,
+}));
+\`\`\`
+- Spread \`...prev\` копирует все поля в **новый** объект.
+- Нужное поле переопределяется после spread.
+- Круглые скобки \`({ ... })\` нужны, чтобы стрелочная функция вернула объект, а не открыла блок кода.
 
-1. **Иммутабельное копирование объекта**:
-   Используем spread-оператор \`...prevUser\` для копирования всех существующих полей и переопределяем только \`age\`.
-   \`\`\`jsx
-   setUser((prevUser) => ({
-     ...prevUser,
-     age: prevUser.age + 1,
-   }));
-   \`\`\`
+### Почему важна новая ссылка
+React решает, нужен ли рендер, сравнивая старое и новое значение через \`Object.is\`. Мутированный объект — это та же ссылка, поэтому React считает, что ничего не изменилось.
 
-2. **Круглые скобки вокруг объекта**:
-   Оборачиваем тело стрелочной функции в круглые скобки \`({ ... })\`, чтобы JavaScript распарсил фигруные скобки как объект, а не как блок кода.
+### ⚠️ Частые ошибки
+- \`setUser({ age: 31 })\` — остальные поля потеряются: хук не сливает объекты.
+- Spread копирует только верхний уровень. Вложенные объекты остаются общими по ссылке, их тоже нужно копировать.
 
-### � Ключевые выводы:
-- В отличие от классового \`this.setState\`, хук \`useState\` не сливает объекты автоматически. Необновленные свойства нужно копировать вручную через \`...\`.`,
+### 💡 Ключевые выводы
+- Состояние неизменяемо: создавайте новый объект вместо изменения старого.
+- При глубокой вложенности упрощайте структуру state или используйте Immer.`,
 
   w8: `### Суть задачи
-Создать универсальный обработчик формы для нескольких полей ввода с помощью вычислимых свойств объектов \`[e.target.name]\`.
+Форма из трёх полей с единым объектом состояния и одним обработчиком.
 
-### � Пошаговые этапы решения:
+### 🛠 Решение
+\`\`\`jsx
+const [form, setForm] = useState({ name: '', email: '', city: '' });
 
-1. **Единый объект состояния**:
-   Храним данные всех полей формы в одном объекте:
-   \`\`\`jsx
-   const [form, setForm] = useState({ name: '', email: '', city: '' });
-   \`\`\`
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  setForm((prev) => ({ ...prev, [name]: value }));
+};
 
-2. **Универсальный обработчик по \`name\`**:
-   Каждому \`<input>\` задаем атрибут \`name\`, совпадающий с ключом в объекте состояния. Извлекаем \`name\` и \`value\` из события и обновляем стейт:
-   \`\`\`jsx
-   const handleChange = (e) => {
-     const { name, value } = e.target;
-     setForm(prev => ({ ...prev, [name]: value }));
-   };
-   \`\`\`
+<input name="email" value={form.email} onChange={handleChange} />
+\`\`\`
+- Атрибут \`name\` каждого поля совпадает с ключом в объекте.
+- Вычисляемый ключ \`[name]\` обновляет нужное поле.
+- Spread \`...prev\` сохраняет остальные поля.
 
-### � Ключевые выводы:
-- Вычислимые свойства объектов (\`[name]\`) позволяют избавиться от создания отдельных функций-обработчиков под каждый инпут.`,
+### ⚠️ Частые ошибки
+- Забыть \`name\` у поля или опечататься в нём — обработчик создаст новый лишний ключ.
+- \`setForm({ [name]: value })\` без spread — остальные поля пропадут.
+- Чекбоксы в той же форме: для них нужно брать \`checked\`, а не \`value\` (\`type === 'checkbox' ? checked : value\`).
+
+### 💡 Ключевые выводы
+- Один обработчик + атрибут \`name\` масштабируется на любое число полей.
+- Для больших форм с валидацией используют библиотеки (React Hook Form) или Actions из React 19.`,
 
   w9: `### Суть задачи
-Отменить стандартное поведение браузера при сабмите формы с помощью метода \`e.preventDefault()\`.
+Отправить форму поиска без перезагрузки страницы — и по кнопке, и по Enter.
 
-### � Пошаговые этапы решения:
+### 🛠 Решение
+\`\`\`jsx
+const handleSubmit = (e) => {
+  e.preventDefault();
+  setSubmittedQuery(query);
+  setQuery('');
+};
 
-1. **Использование тега \`<form>\` и события \`onSubmit\`**:
-   Форма оборачивается в \`<form onSubmit={handleSubmit}>\`, а кнопка сабмита имеет \`type="submit"\`.
+<form onSubmit={handleSubmit}>
+  <input value={query} onChange={(e) => setQuery(e.target.value)} />
+  <button type="submit">Искать</button>
+</form>
+\`\`\`
+- \`onSubmit\` у формы срабатывает и по клику, и по Enter.
+- \`e.preventDefault()\` отменяет отправку формы браузером и перезагрузку страницы.
 
-2. **Вызов \`e.preventDefault()\`**:
-   Первой строчкой в обработчике сабмита вызывается \`e.preventDefault()\`, предотвращая перезагрузку всей страницы браузером:
-   \`\`\`jsx
-   const handleSubmit = (e) => {
-     e.preventDefault();
-     // Обработка данных формы
-   };
-   \`\`\`
+### ⚠️ Частые ошибки
+- \`onClick\` на кнопке вместо \`onSubmit\` на форме — Enter перестаёт работать, встроенная валидация пропускается.
+- Кнопки без \`type\` внутри формы — по умолчанию это \`submit\`, и «Очистить» внезапно отправляет форму.
 
-### � Ключевые выводы:
-- Перехват события \`onSubmit\` с вызовом \`e.preventDefault()\` обязателен для сохранения Single Page Application (SPA) навигации и отмены перезагрузки страницы.`,
+### 💡 Ключевые выводы
+- Обрабатывайте отправку через \`onSubmit\` формы и вызывайте \`e.preventDefault()\`.
+- В React 19 есть альтернатива: \`<form action={fn}>\` — React сам предотвращает перезагрузку и передаёт \`FormData\` (см. задачу про Actions).`,
 
   w10: `### Суть задачи
-Реализовать регистронезависимый поиск по списку пользователей без дублирования состояния.
+Регистронезависимый поиск по списку пользователей.
 
-### � Пошаговые этапы решения:
+### 🛠 Решение
+\`\`\`jsx
+const [query, setQuery] = useState('');
 
-1. **Единственный источник правды**:
-   В \`useState\` хранится только поисковая строка \`query\`.
+const normalizedQuery = query.trim().toLowerCase();
+const filteredUsers = USERS.filter((user) =>
+  user.name.toLowerCase().includes(normalizedQuery)
+);
+\`\`\`
+- В state хранится только строка поиска — единственный источник правды.
+- Отфильтрованный список вычисляется при рендере.
+- Запрос нормализуется один раз (\`trim\` + \`toLowerCase\`), а не на каждой итерации.
+- Пустой результат показывает сообщение «Никого не нашли» — пользователь понимает, что поиск сработал.
 
-2. **Вычисляемый отфильтрованный список (Derived State)**:
-   Фильтрация происходит прямо во время рендера:
-   \`\`\`jsx
-   const filteredUsers = USERS.filter((user) => {
-     return user.name.toLowerCase().includes(query.toLowerCase());
-   });
-   \`\`\`
+### ⚠️ Частые ошибки
+- Хранить \`filteredUsers\` в \`useState\` и обновлять в \`useEffect\` — лишний рендер и рассинхронизация.
+- Фильтровать и перезаписывать исходный массив — после очистки поиска данные не вернутся.
+- \`key={index}\` в отфильтрованном списке — индексы меняются вместе с фильтром.
 
-### � Ключевые выводы:
-- Не создавайте отдельный \`useState\` для отфильтрованного списка — вычисляйте его на лету.`,
+### 💡 Ключевые выводы
+- Всё, что вычисляется из state и пропсов, вычисляйте при рендере.
+- Нормализуйте ввод: пробелы по краям и регистр.`,
 
   w11: `### Суть задачи
-Реализовать выпадающий список \`<select>\` для фильтрации массива объектов по категории.
+Фильтр товаров по категории через выпадающий список.
 
-### � Пошаговые этапы решения:
+### 🛠 Решение
+\`\`\`jsx
+const ALL = 'all';
+const CATEGORIES = [...new Set(PRODUCTS.map((product) => product.category))];
 
-1. **Управляемый \`<select>\`**:
-   Состояние инициализируется выбранным значением (например, \`'Все'\`). Элементу \`<select>\` передается \`value\` и \`onChange\`.
-   \`\`\`jsx
-   const [selectedCategory, setSelectedCategory] = useState('Все');
-   
-   <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
-     <option value="Все">Все</option>
-     <option value="Электроника">Электроника</option>
-     <option value="Одежда">Одежда</option>
-     <option value="Книги">Книги</option>
-   </select>
-   \`\`\`
+const [category, setCategory] = useState(ALL);
 
-2. **Фильтрация списка**:
-   Вычисляем отфильтрованный массив во время рендера:
-   \`\`\`jsx
-   const filteredProducts = selectedCategory === 'Все'
-     ? PRODUCTS
-     : PRODUCTS.filter((product) => product.category === selectedCategory);
-   \`\`\`
+const visibleProducts =
+  category === ALL ? PRODUCTS : PRODUCTS.filter((product) => product.category === category);
 
-### � Ключевые выводы:
-- Выпадающий список \`<select>\` в React управляется так же, как обычный инпут: через \`value={state}\` и \`e.target.value\` в событии \`onChange\`.
-- При выборе варианта сброса фильтра ("Все") возвращаем весь исходный массив без применения метода \`.filter()\`.`,
+<select value={category} onChange={(e) => setCategory(e.target.value)}>
+  <option value={ALL}>Все</option>
+  {CATEGORIES.map((name) => (
+    <option key={name} value={name}>{name}</option>
+  ))}
+</select>
+\`\`\`
+- \`<select>\` управляется через \`value\` и \`onChange\`, как обычный инпут.
+- Категории выводятся из данных через \`Set\` — новая категория появится автоматически.
+- Служебное значение «все категории» вынесено в константу \`ALL\`, чтобы не путать его с названием категории.
+- Список товаров вычисляется при рендере.
+
+### ⚠️ Частые ошибки
+- \`selected\` на \`<option>\` вместо \`value\` на \`<select>\` — так в React не делают.
+- Хардкод опций, который расходится с данными.
+- Хранить отфильтрованный массив в state.
+
+### 💡 Ключевые выводы
+- Управляемый \`<select>\` = \`value\` + \`onChange\` на самом \`<select>\`.
+- Генерируйте опции из данных и держите служебные значения в константах.`,
 
   w12: `### Суть задачи
 Научиться корректно обрабатывать списки элементов без уникальных идентификаторов (id), получаемые из внешнего API.
 
-### � Ошибки и подвохи на собеседовании:
+### ⚠️ Ошибки и подвохи на собеседовании:
 
 1. **Использование key={index}**:
    Индекс элемента в массиве изменчив. Если пользователь удалит элемент из списка, индексы всех последующих элементов сдвинутся. При несовпадении ключей React может неправильно сопоставить компоненты при сверке DOM (reconciliation), перепутать их внутреннее состояние или вызвать лишние перерисовки.
@@ -1061,313 +1235,521 @@ Todo-приложение с двумя независимыми спискам�
    \`\`\`
    После этого каждый объект массива приобретает свой стабильный id, который можно смело передавать в key={product.id}.
 
-### � Ключевые выводы:
+### 💡 Ключевые выводы:
 - Никогда не создавайте случайные key (Math.random(), randomUUID()) прямо внутри выражения JSX .map(...).
 - Мапируйте исходные серверные данные один раз, приписывая стабильные id при занесении в state.`,
 
   w13: `### Суть задачи
-Написание базовой асинхронной функции с синтаксисом \`async/await\` и перехватом ошибок через блок \`try/catch\`.
+Написать async-функцию загрузки данных с корректной обработкой ошибок.
 
-### 💡 Пошаговые этапы решения:
+### 🛠 Решение
+\`\`\`js
+const loadData = async (url) => {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(\`HTTP \${response.status}\`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Не удалось загрузить данные:', error);
+    throw error;
+  } finally {
+    console.log('Запрос завершён');
+  }
+};
+\`\`\`
+- \`await\` приостанавливает функцию до завершения промиса.
+- Отклонённый промис превращается в исключение и попадает в \`catch\`.
+- \`finally\` выполняется всегда — удобно для снятия индикатора загрузки.
+- Ошибка пробрасывается дальше, чтобы вызывающий код решил, что показать пользователю.
 
-1. **Объявление async-функции и блок try/catch**:
-   \`\`\`js
-   const fetchData = async () => {
-     try {
-       const response = await someAsyncOperation();
-       return response;
-     } catch (error) {
-       console.error("Ошибка запроса:", error);
-       throw error;
-     }
-   };
-   \`\`\`
+### ⚠️ Частые ошибки
+- Назвать функцию \`fetch\` — она перекроет глобальный \`fetch\`.
+- Пустой \`catch {}\` — ошибка исчезает, и баг невозможно найти.
+- Забыть \`await\` перед \`response.json()\` — в переменной окажется промис.
 
-### 🎯 Ключевые выводы:
-- Любая функция, объявленная с ключевым словом \`async\`, автоматически возвращает \`Promise\`.
-- Исключения внутри блока \`try\` перехватываются в секции \`catch\`, заменяя цепочки \`.then().catch()\`.`,
+### 💡 Ключевые выводы
+- async-функция всегда возвращает Promise.
+- Ловите ошибку там, где можете её обработать; иначе — пробрасывайте.`,
 
   w14: `### Суть задачи
-Реализовать сетевой запрос к API с помощью \`fetch\` и \`async/await\`, правильно обрабатывая ошибки HTTP.
+Написать функцию \`fetchUsers\`, которая загружает пользователей и правильно сообщает об ошибках.
 
-### � Пошаговые этапы решения:
+### 🛠 Решение
+\`\`\`js
+const fetchUsers = async () => {
+  const response = await fetch('https://jsonplaceholder.typicode.com/users');
 
-1. **Проверка HTTP-статуса**:
-   Метод \`fetch\` не генерирует исключения при статусах 404 или 500. Проверяем свойство \`res.ok\`.
-   \`\`\`js
-   if (!res.ok) throw new Error(\`\${res.status}\`);
-   \`\`\`
+  if (!response.ok) {
+    throw new Error(\`Не удалось загрузить пользователей: HTTP \${response.status}\`);
+  }
 
-2. **Распаковка JSON**:
-   Метод \`res.json()\` также является асинхронным и требует \`await\`.
-   \`\`\`js
-   const users = await res.json();
-   \`\`\`
+  return response.json();
+};
+\`\`\`
+- \`fetch\` не считает 404 и 500 ошибкой — проверяем \`response.ok\` сами.
+- Функция пробрасывает ошибку, а не глотает её: решение, что показать пользователю, принимает вызывающий код.
 
-### � Ключевые выводы:
-- Не забывайте проверку \`res.ok\` и \`await\` перед \`res.json()\`.`,
+### Как вызывать
+\`\`\`js
+try {
+  const users = await fetchUsers();
+} catch (error) {
+  console.error(error.message);
+}
+\`\`\`
+
+### ⚠️ Частые ошибки
+- Нет проверки \`response.ok\` — на 500 код попытается разобрать HTML-страницу ошибки как JSON.
+- \`catch (e) { throw new Error(e.message) }\` — исходный стек теряется. Если нужно добавить контекст, используйте \`new Error('...', { cause: e })\`.
+- \`catch (e) { console.log(e) }\` без проброса — функция вернёт \`undefined\`, и UI покажет пустой список вместо ошибки.
+
+### 💡 Ключевые выводы
+- \`fetch\` + проверка \`res.ok\` + \`await res.json()\` — минимальный корректный запрос.
+- Функции доступа к данным пробрасывают ошибки, компоненты их обрабатывают.`,
 
   w15: `### Суть задачи
-Изучить устройство хука \`useEffect\`, массив зависимостей и функцию очистки (cleanup).
+Разобраться в устройстве \`useEffect\`: эффект, очистка и зависимости.
 
-### � Пошаговые этапы решения:
+### 🛠 Синтаксис
+\`\`\`js
+useEffect(() => {
+  // 1. Синхронизация с внешней системой
+  const id = setInterval(tick, 1000);
 
-1. **Структура хука**:
-   Первым аргументом передается коллбэк, вторым — массив зависимостей.
-   \`\`\`js
-   useEffect(() => {
-     // Логика эффекта
-     return () => { /* Очистка */ };
-   }, []);
-   \`\`\`
+  // 2. Cleanup
+  return () => clearInterval(id);
+}, [tick]); // 3. Зависимости
+\`\`\`
 
-2. **Массив зависимостей**:
-   - \`[]\` — эффект сработает ровно 1 раз при монтировании.
-   - \`[dep]\` — эффект перезапустится при изменении \`dep\`.
-   - без массива — эффект выполняется после каждого рендеринга.
+### Массив зависимостей
+| Запись | Когда выполняется |
+|---|---|
+| \`useEffect(fn)\` | после каждого рендера |
+| \`useEffect(fn, [])\` | один раз после монтирования |
+| \`useEffect(fn, [a, b])\` | после монтирования и при изменении \`a\` или \`b\` |
 
-### � Ключевые выводы:
-- Функция очистки (\`return () => {}\`) необходима для сброса таймеров, отписки от событий и отмены сетевых подписок.`,
+В зависимости попадают все реактивные значения, которые использует эффект: пропсы, state и функции, объявленные в компоненте.
+
+### Жизненный цикл эффекта
+1. Рендер и коммит в DOM.
+2. Браузер отрисовывает экран.
+3. Выполняется эффект.
+4. При смене зависимостей: cleanup старого эффекта → новый эффект.
+5. При размонтировании: cleanup.
+
+### ⚠️ Частые ошибки
+- Забытые зависимости — эффект работает со значениями из старого рендера.
+- \`useEffect(async () => ...)\` — эффект вернёт Promise вместо cleanup.
+- Эффект для вычислений или реакции на клик — это работа рендера и обработчиков.
+
+### 💡 Ключевые выводы
+- \`useEffect\` — инструмент синхронизации с внешним миром: подписки, таймеры, сеть, DOM API.
+- Каждой подписке — своя очистка.`,
 
   w16: `### Суть задачи
-Загрузить данные из сетевого API при монтировании компонента, корректно обработать состояния загрузки и ошибки.
+Загрузить пользователей при монтировании и показать загрузку, ошибку или список.
 
-### � Пошаговые этапы решения:
+### 🛠 Решение
+\`\`\`jsx
+const fetchUsers = async () => {
+  const response = await fetch(USERS_URL);
+  if (!response.ok) throw new Error(\`HTTP \${response.status}\`);
+  return response.json();
+};
 
-1. **Внутренняя асинхронная функция**:
-   Коллбэк \`useEffect\` не должен быть \`async\`. Создаём асинхронную функцию внутри эффекта и вызываем её.
-   \`\`\`js
-   useEffect(() => {
-     const loadUsers = async () => {
-       setStatus("loading");
-       try {
-         const data = await fetchUsers();
-         setUsers(data);
-         setStatus("success");
-       } catch (e) {
-         setError(e.message);
-         setStatus("error");
-       }
-     };
-     loadUsers();
-   }, []);
-   \`\`\`
+const UsersList = () => {
+  const [users, setUsers] = useState([]);
+  const [status, setStatus] = useState('loading');
+  const [error, setError] = useState(null);
 
-2. **Функция запроса не глотает ошибки, а пробрасывает их**:
-   \`fetchUsers\` отвечает только за получение данных. Если ответ не ok — она кидает \`Error\`, а не логирует и не возвращает \`undefined\`. Решение о том, что делать с ошибкой, принимает вызывающий код (компонент), а не сама функция запроса.
-   \`\`\`js
-   const fetchUsers = async () => {
-     const res = await fetch("https://jsonplaceholder.typicode.com/users");
-     if (!res.ok) {
-       throw new Error(\`HTTP \${res.status}\`);
-     }
-     return res.json();
-   };
-   \`\`\`
+  useEffect(() => {
+    const loadUsers = async () => {
+      try {
+        setUsers(await fetchUsers());
+        setStatus('success');
+      } catch (err) {
+        setError(err.message);
+        setStatus('error');
+      }
+    };
+    loadUsers();
+  }, []);
 
-3. **Явный \`status\` вместо булевого флага**:
-   Используем строковый enum состояния (\`"idle" | "loading" | "success" | "error"\`), а не булево значение с невнятным именем вроде \`isStatus\`. Это даёт возможность различать состояния "ещё не начали", "грузим", "успех" и "ошибка" — а не только \`true\`/\`false\`.
+  if (status === 'loading') return <p>Загрузка...</p>;
+  if (status === 'error') return <p>Ошибка: {error}</p>;
+  return <ul>{users.map((user) => <li key={user.id}>{user.name}</li>)}</ul>;
+};
+\`\`\`
+- Колбэк эффекта синхронный, асинхронная функция объявлена внутри.
+- \`fetchUsers\` пробрасывает ошибку, компонент решает, что показать.
+- Статус — одна строка, а не набор флагов. Запрос стартует сразу, поэтому начальный статус — \`'loading'\`.
+- Ранние \`return\` делают рендер читаемым: каждое состояние — отдельная ветка.
 
-4. **Отдельный \`state\` для текста ошибки**:
-   Ошибка хранится не в переменной, случайно доступной в замыкании, а в собственном state (\`error\`), который потом безопасно вставляется в JSX:
-   \`\`\`jsx
-   {status === "error" && <p>Ошибка: {error}</p>}
-   \`\`\`
+### ⚠️ Частые ошибки
+- \`useEffect(async () => ...)\`.
+- Нет проверки \`res.ok\` — ошибки сервера выглядят как пустые данные.
+- Несколько флагов \`isLoading\` / \`isError\`, которые противоречат друг другу.
+- Нет отмены запроса при размонтировании — это следующая задача про \`AbortController\`.
 
-5. **Отображение состояний**:
-   Отображаем индикаторы загрузки, успеха или ошибки на основе \`status\`, а список рендерим независимо от него — как только \`users\` не пуст.
-
-### � Ключевые выводы:
-- Никогда не пишите \`useEffect(async () => ...)\`. Создавайте внутреннюю функцию.
-- Функция-загрузчик (\`fetchUsers\`) не должна сама решать, что делать с ошибкой — она должна её пробрасывать (\`throw\`), а не логировать и молча возвращать \`undefined\`.
-- Текст ошибки храните в отдельном state, а не полагайтесь на переменную из внешней области видимости — иначе в JSX она будет \`undefined\`.
-- Называйте состояние по смыслу (\`status: "idle" | "loading" | "success" | "error"\`), а не булевым флагом с обманчивым именем.`,
+### 💡 Ключевые выводы
+- Загрузка в эффекте = асинхронная функция внутри + обработка трёх состояний.
+- В продакшене серверное состояние обычно отдают TanStack Query: кеш, повторы и отмена из коробки.`,
 
   w17: `### Суть задачи
-Отмена незавершённых асинхронных сетевых запросов при размонтировании компонента с использованием \`AbortController\`.
+Загрузить пользователей в \`useEffect\` и уметь **отменить** запрос, когда он больше не нужен: компонент размонтирован, параметры запроса изменились или эффект перезапустился в StrictMode.
 
-### � Пошаговые этапы решения:
+### 🔍 Какую проблему решаем
+Эффект запускает асинхронную работу, которая живёт дольше самого эффекта. Пример:
+1. Пользователь открыл страницу — ушёл запрос.
+2. Через 100 мс ушёл со страницы — компонент размонтирован.
+3. Через 2 секунды пришёл ответ — код вызывает \`setUsers\` для компонента, которого уже нет.
 
-1. **Создание \`AbortController\` внутри эффекта**:
-   \`\`\`jsx
-   useEffect(() => {
-     const controller = new AbortController();
-     const signal = controller.signal;
-     // ...
-     return () => controller.abort();
-   }, []);
-   \`\`\`
-**Разбор**: Экземпляр \`AbortController\` создается при вызове эффекта. Свойство \`signal\` передаётся в опции \`fetch(url, { signal })\`. При размонтировании компонента вызов \`controller.abort()\` моментально прекращает сетевой запрос.
+Ресурсы потрачены впустую. А если вместо размонтирования сменился параметр (\`userId\`), поздний ответ **перезапишет** данные нового запроса — это уже баг в интерфейсе.
 
-2. **Фильтрация ошибки \`AbortError\`**:
-   \`\`\`jsx
-   try {
-     const data = await fetchUsers(signal);
-     setUsers(data);
-   } catch (e) {
-     if (e.name === "AbortError") return;
-     setError(e.message);
-     setStatus("error");
-   }
-   \`\`\`
-**Разбор**: Когда запрос отменяется через \`abort()\`, \`fetch\` выбрасывает исключение с \`e.name === "AbortError"\`. Мы явно фильтруем эту ошибку и не записываем её в стейт ошибок компонента.
+### Как устроен AbortController
+\`\`\`js
+const controller = new AbortController();
+const { signal } = controller;
 
-### � Ключевые выводы:
-- \`AbortController\` — стандартный Web API механизм отмены фетч-запросов.
-- Игнорирование \`AbortError\` в блоке \`catch\` предотвращает показ ложных сообщений об ошибках пользователю при отмене.`,
+signal.aborted;      // false
+controller.abort();  // отменить
+signal.aborted;      // true
+signal.reason;       // DOMException с именем "AbortError"
+\`\`\`
+- **controller** — кнопка «отменить».
+- **signal** — провод, который передают тем, кто должен узнать об отмене: \`fetch\`, \`addEventListener\`, axios и другим API.
+- Отмена **необратима**: отменённый signal остаётся отменённым навсегда, повторный \`abort()\` ничего не делает. Поэтому на каждый запуск эффекта нужен **новый** контроллер.
+
+### Что происходит с fetch при отмене
+| Момент вызова \`abort()\` | Результат |
+|---|---|
+| До получения ответа | промис \`fetch(...)\` отклоняется |
+| Заголовки получены, тело ещё читается | отклоняется \`response.json()\` |
+| Тело уже прочитано | ничего: отменять нечего |
+
+Отклонение происходит с \`signal.reason\`. Если вызвать \`abort()\` без аргументов, это \`DOMException\` с \`name === 'AbortError'\`.
+
+### 🛠 Решение по шагам
+**1. Функция запроса принимает signal и не прячет ошибки**
+\`\`\`jsx
+const fetchUsers = async (signal) => {
+  const response = await fetch(USERS_URL, { signal });
+  if (!response.ok) throw new Error(\`HTTP \${response.status}\`);
+  return response.json();
+};
+\`\`\`
+Без \`try/catch\`: функции нечего делать с ошибкой, решение принимает компонент.
+
+**2. Свой контроллер на каждый запуск эффекта**
+\`\`\`jsx
+useEffect(() => {
+  const controller = new AbortController();
+
+  const loadUsers = async () => {
+    try {
+      const data = await fetchUsers(controller.signal);
+      setUsers(data);
+      setStatus('success');
+    } catch (err) {
+      if (controller.signal.aborted) return; // отмена — не ошибка
+      setError(err.message);
+      setStatus('error');
+    }
+  };
+
+  loadUsers();
+  return () => controller.abort();
+}, []);
+\`\`\`
+
+**3. Cleanup отменяет запрос**
+React вызывает cleanup перед размонтированием и перед каждым повторным запуском эффекта. Каждый запуск отменяет **только свой** запрос, потому что контроллер — локальная переменная этого запуска.
+
+### Почему \`signal.aborted\`, а не \`err.name === 'AbortError'\`
+Проверка по имени хрупкая:
+- **Переобёрнутая ошибка.** В заготовке задачи \`fetchUsers\` делает \`\` throw new Error(\`Error: \${e.message}\`) \`\`. После этого \`err.name === 'Error'\`, фильтр не срабатывает, и пользователь видит ложное сообщение вроде «Ошибка: signal is aborted without reason» (текст зависит от браузера).
+- **Своя причина отмены.** \`controller.abort(new Error('Пользователь ушёл'))\` — fetch отклонится именно этой ошибкой.
+- **Таймаут.** \`AbortSignal.timeout(5000)\` отклоняет с \`name === 'TimeoutError'\`.
+
+\`controller.signal.aborted\` однозначно отвечает на вопрос «это мы отменили?».
+
+### Жизненный цикл на практике
+| Событие | Что происходит |
+|---|---|
+| Монтирование | эффект создаёт контроллер A, уходит запрос A |
+| StrictMode (только dev) | cleanup → \`A.abort()\`, эффект снова: контроллер B, запрос B. В Network запрос A — «(canceled)» |
+| Размонтирование до ответа | cleanup → \`B.abort()\`, \`catch\` видит \`aborted\` и молча выходит |
+| Ответ пришёл вовремя | обычный \`setUsers\`, последующий \`abort()\` в cleanup ничего не делает |
+
+### Тот же приём при смене параметров
+\`\`\`jsx
+useEffect(() => {
+  const controller = new AbortController();
+  fetch(\`/api/users/\${userId}\`, { signal: controller.signal })
+    .then((r) => r.json())
+    .then(setUser)
+    .catch((err) => {
+      if (!controller.signal.aborted) setError(err.message);
+    });
+  return () => controller.abort();
+}, [userId]);
+\`\`\`
+Сменился \`userId\` → cleanup отменил старый запрос → его поздний ответ уже не перезапишет нового пользователя. Это и есть защита от гонки.
+
+### Чего abort() НЕ делает
+- **Не отменяет действие на сервере.** Запрос мог уже дойти и обработаться. Для GET это не страшно, а POST (оплата, создание записи) отмена не откатывает: такие операции делают идемпотентными.
+- **Не останавливает код, который signal не слушает.** Если после \`fetch\` есть \`await\` другой долгой операции, проверьте \`signal.aborted\` (или вызовите \`signal.throwIfAborted()\`) перед обновлением state.
+
+### Полезные возможности signal
+\`\`\`js
+// Таймаут без ручного setTimeout
+fetch(url, { signal: AbortSignal.timeout(5000) });
+
+// Отмена по любому из сигналов: размонтирование ИЛИ таймаут
+fetch(url, { signal: AbortSignal.any([controller.signal, AbortSignal.timeout(5000)]) });
+
+// Отписка от нескольких событий одним вызовом
+window.addEventListener('resize', onResize, { signal: controller.signal });
+window.addEventListener('scroll', onScroll, { signal: controller.signal });
+controller.abort(); // снимает оба слушателя
+\`\`\`
+TanStack Query передаёт \`signal\` в \`queryFn\` сам — достаточно пробросить его в \`fetch\`.
+
+### AbortController или флаг ignore
+| | \`AbortController\` | \`let ignore = false\` |
+|---|---|---|
+| Обрывает сетевой запрос | да | нет, запрос выполняется до конца |
+| Защищает state от устаревшего ответа | да | да |
+| Работает с любым промисом | только с API, принимающими signal | да |
+
+### ⚠️ Частые ошибки
+- **Контроллер вне эффекта** (в теле компонента или в \`useRef\` на все запуски) — после первой отмены все следующие запросы падают сразу.
+- **Ложная ошибка на экране** — отмена не отфильтрована в \`catch\`.
+- **Фильтр по \`err.name\` после переобёртывания ошибки** — имя \`AbortError\` потеряно.
+- **\`useEffect(async () => ...)\`** — эффект вернёт промис вместо cleanup, и \`abort()\` некуда поставить.
+- **Ожидание, что отмена откатит POST на сервере.**
+
+### 💡 Ключевые выводы
+- Любой асинхронный эффект должен уметь отменяться в cleanup.
+- Один запуск эффекта — один контроллер.
+- Отмену определяйте по \`signal.aborted\`, а не по имени ошибки.
+- Отмена экономит сеть и защищает от гонок, но не отменяет то, что уже сделал сервер.`,
 
   w18: `### Суть задачи
-Мемоизация результатов вычислений для исключения повторных расчетов при посторонних рендерах.
+Освоить синтаксис \`useMemo\` и понять, когда он оправдан.
 
-### � Пошаговые этапы решения:
+### 🛠 Синтаксис
+\`\`\`js
+const sortedItems = useMemo(() => [...items].sort(compareByPrice), [items]);
+\`\`\`
+- Первый аргумент — функция, которая вычисляет значение.
+- Второй — зависимости. Пока они не изменились (по \`Object.is\`), возвращается закешированный результат.
 
-1. **Синтаксис \`useMemo\`**:
-   \`\`\`js
-   const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
-   \`\`\`
+### Два законных сценария
+1. **Дорогое вычисление**: сортировка или фильтрация тысяч элементов, когда компонент часто рендерится по другим причинам.
+2. **Стабильная ссылка**: объект или массив уходит в \`memo\`-компонент или в зависимости эффекта.
+\`\`\`js
+const options = useMemo(() => ({ sortBy, order }), [sortBy, order]);
+\`\`\`
 
-2. **Зависимости**:
-   Вычисление повторяется только при изменении \`a\` или \`b\`.
+### ⚠️ Частые ошибки
+- \`useMemo(() => a + b, [a, b])\` — мемоизация дороже самого сложения.
+- Мутации внутри (\`items.sort()\` сортирует исходный массив на месте) — копируйте: \`[...items].sort()\` или \`items.toSorted()\`.
+- Забытые зависимости — устаревший результат.
 
-### � Ключевые выводы:
-- \`useMemo\` запоминает результат вычисления (\`return value\`).`,
+### 💡 Ключевые выводы
+- \`useMemo\` кеширует **значение**, \`useCallback\` — **функцию**.
+- Сначала измерьте, потом мемоизируйте.`,
 
   w19: `### Суть задачи
-Мемоизация фильтрации большого массива пользователей, чтобы она не пересчитывалась при ре-рендерах, вызванных сменой темы, а срабатывала только при изменении поискового запроса.
+Не пересчитывать фильтрацию 10 000 пользователей при рендерах, не связанных с поиском (смена темы).
 
-### � Пошаговые этапы решения:
+### 🛠 Решение
+\`\`\`jsx
+const filteredUsers = useMemo(() => {
+  const normalizedQuery = query.trim().toLowerCase();
+  return USERS.filter((user) => user.toLowerCase().includes(normalizedQuery));
+}, [query]);
 
-1. **Импортируем \`useMemo\` из React**:
-   \`\`\`javascript
-   import { useState, useMemo } from 'react';
-   \`\`\`
+<ul>
+  {filteredUsers.map((user) => (
+    <li key={user}>{user}</li>
+  ))}
+</ul>
+\`\`\`
+- Зависимость только \`query\`: от \`theme\` результат не зависит.
+- Клик по кнопке темы вызывает рендер, но берёт результат из кеша.
+- Ключ — сама строка имени: она уникальна и стабильна. Индекс не подходит — он меняется вместе с фильтром.
 
-2. **Оборачиваем фильтрацию в \`useMemo\`**:
-   \`\`\`javascript
-   const filteredUsers = useMemo(() => {
-     return USERS.filter((user) => user.toLowerCase().includes(query.toLowerCase()));
-   }, [query]);
-   \`\`\`
-   В массив зависимостей передаём только \`query\` — именно от него зависит результат вычисления. \`theme\` в зависимости не входит, так как фильтрация от него не зависит.
+### Как убедиться, что оптимизация нужна
+Оберните вычисление в \`console.time('filter')\` / \`console.timeEnd('filter')\` или запишите профиль в React DevTools. Если фильтрация занимает меньше миллисекунды, \`useMemo\` не нужен.
 
-3. **Полный код**:
-   \`\`\`jsx
-   import { useState, useMemo } from 'react';
+### ⚠️ Частые ошибки
+- \`key={index}\` в фильтруемом списке.
+- Лишние зависимости (\`theme\`) — кеш сбрасывается без причины.
+- Ожидать, что \`useMemo\` ускорит рендер самого списка: он кеширует только вычисление.
 
-   const USERS = Array.from({ length: 10000 }, (_, i) => \`Пользователь \${i}\`);
-
-   const FilteredList = () => {
-     const [query, setQuery] = useState('');
-     const [theme, setTheme] = useState('light');
-
-     const filteredUsers = useMemo(() => {
-       return USERS.filter((user) => user.toLowerCase().includes(query.toLowerCase()));
-     }, [query]);
-
-     return (
-       <div>
-         <button onClick={() => setTheme(t => t === 'light' ? 'dark' : 'light')}>
-           Тема: {theme}
-         </button>
-         <input value={query} onChange={(e) => setQuery(e.target.value)} />
-         <ul>
-           {filteredUsers.map((user, i) => <li key={i}>{user}</li>)}
-         </ul>
-       </div>
-     );
-   };
-
-   export default FilteredList;
-   \`\`\`
-
-### � Ключевые выводы:
-- В компоненте два независимых состояния: \`query\` и \`theme\`. Изменение \`theme\` вызывает ре-рендер, но не должно приводить к повторной фильтрации 10 000 элементов.
-- \`useMemo\` с зависимостью \`[query]\` решает именно эту проблему: пересчёт \`filteredUsers\` происходит только при изменении текста поиска, а клик по кнопке темы использует закешированный результат.
-- Это классический показательный случай для \`useMemo\` — большой объём данных (10 000 элементов) плюс несвязанный state, вызывающий "лишние" ре-рендеры. Без мемоизации фильтрация выполнялась бы заново при каждом клике на "Тема", хотя список пользователей никак не менялся.`,
+### 💡 Ключевые выводы
+- \`useMemo\` полезен, когда дорогое вычисление повторяется из-за несвязанных рендеров.
+- Если медленный рендер, а не вычисление, — смотрите в сторону виртуализации и \`useDeferredValue\`.`,
 
   w20: `### Суть задачи
-Сохранение ссылки на функцию между рендерами компонента.
+Освоить синтаксис \`useCallback\` и понять, когда он нужен.
 
-### � Пошаговые этапы решения:
+### 🛠 Синтаксис
+\`\`\`js
+const handleSelect = useCallback(
+  (id) => {
+    onSelect(id, filter);
+  },
+  [onSelect, filter]
+);
+\`\`\`
+- Возвращает ту же функцию между рендерами, пока зависимости не изменились.
+- \`useCallback(fn, deps)\` эквивалентен \`useMemo(() => fn, deps)\`.
 
-1. **Синтаксис \`useCallback\`**:
-   \`\`\`js
-   const memoizedCallback = useCallback(() => {
-     doSomething(a, b);
-   }, [a, b]);
-   \`\`\`
+### Когда это нужно
+- Функция уходит в компонент, обёрнутый в \`memo\`.
+- Функция в зависимостях \`useEffect\`, и эффект не должен перезапускаться на каждый рендер.
 
-### � Ключевые выводы:
-- \`useCallback(fn, deps)\` эквивалентен \`useMemo(() => fn, deps)\`.`,
+### ⚠️ Частые ошибки
+- \`useCallback\` для обработчика обычной кнопки — ссылка никем не сравнивается, оптимизации нет.
+- Пропущенные зависимости — устаревшее замыкание.
+- Ожидать, что \`useCallback\` ускорит сам компонент: он лишь стабилизирует ссылку.
+
+### 💡 Ключевые выводы
+- \`useCallback\` работает только в связке с потребителем, который сравнивает ссылки.
+- С функциональным сеттером (\`setX(prev => ...)\`) state часто можно убрать из зависимостей.`,
 
   w21: `### Суть задачи
-Создание стабильной ссылки на функцию инкремента с использованием функционального сеттера.
+Не перерисовывать кнопку при каждом изменении счётчика: связка \`React.memo\` + \`useCallback\`.
 
-### � Пошаговые этапы решения:
+### 🛠 Решение
+\`\`\`jsx
+const IncrementButton = React.memo(({ onIncrement }) => (
+  <button onClick={onIncrement}>Увеличить</button>
+));
 
-1. **Функциональный сеттер без зависимостей**:
-   \`\`\`jsx
-   const increment = useCallback(() => {
-     setCount((prev) => prev + 1);
-   }, []);
-   \`\`\`
+const SimpleCounter = () => {
+  const [count, setCount] = useState(0);
 
-### � Ключевые выводы:
-- Сочетание \`useCallback\` + \`setState(prev => ...)\` позволяет указывать пустой массив зависимостей \`[]\`.`,
+  const increment = useCallback(() => {
+    setCount((prev) => prev + 1);
+  }, []);
+
+  return (
+    <>
+      <p>Счётчик: {count}</p>
+      <IncrementButton onIncrement={increment} />
+    </>
+  );
+};
+\`\`\`
+- \`React.memo\` пропускает рендер ребёнка, если пропсы поверхностно равны.
+- Без \`useCallback\` функция \`increment\` новая на каждом рендере, и memo не работает.
+- Функциональный сеттер позволяет оставить зависимости пустыми.
+
+### Как проверить
+Добавьте \`console.log\` в \`IncrementButton\` или включите «Highlight updates» в React DevTools: после клика кнопка не должна подсвечиваться.
+
+### ⚠️ Частые ошибки
+- Только \`useCallback\` без \`memo\` — эффекта нет.
+- \`count\` в зависимостях вместо функционального сеттера — функция пересоздаётся на каждый клик.
+
+### 💡 Ключевые выводы
+- \`memo\` и \`useCallback\` работают только вместе.
+- Для такого маленького компонента оптимизация не нужна — это учебный пример механики. В реальном коде мемоизируют дорогие поддеревья.`,
 
   w22: `### Суть задачи
-Использование \`useRef\` для хранения мутабельных значений, которые не вызывают перерендер компонента.
+Освоить два сценария \`useRef\`: доступ к DOM и хранение значения между рендерами.
 
-### � Пошаговые этапы решения:
+### 🛠 Синтаксис
+\`\`\`jsx
+// 1. Ссылка на DOM-элемент
+const inputRef = useRef(null);
+<input ref={inputRef} />
+// после монтирования: inputRef.current.focus()
 
-1. **Создание рефа**:
-   \`\`\`js
-   const myRef = useRef(null);
-   \`\`\`
+// 2. Значение, которое не влияет на разметку
+const timerIdRef = useRef(null);
+timerIdRef.current = setInterval(tick, 1000);
+\`\`\`
+\`useRef\` возвращает объект \`{ current }\`, который живёт всё время жизни компонента.
 
-### � Ключевые выводы:
-- Изменение \`myRef.current = newValue\` происходит синхронно и не вызывает рендер.`,
+### useRef или useState
+| | \`useState\` | \`useRef\` |
+|---|---|---|
+| Изменение вызывает рендер | да | нет |
+| Значение доступно в JSX | да | не стоит |
+| Типичное применение | данные для UI | DOM-узлы, id таймеров, предыдущие значения |
+
+### ⚠️ Частые ошибки
+- Хранить в ref то, что выводится на экран, — экран не обновится.
+- Читать \`ref.current\` во время рендера.
+
+### 💡 Ключевые выводы
+- ref — «коробка», которая переживает рендеры и не вызывает их.`,
 
   w23: `### Суть задачи
-Установка фокуса на инпут по клику на кнопку через ссылку \`useRef\`.
+Поставить фокус на инпут по клику на кнопку через \`useRef\`.
 
-### � Пошаговые этапы решения:
+### 🛠 Решение
+\`\`\`jsx
+const inputRef = useRef(null);
 
-1. **Привязка ref в JSX**:
-   \`\`\`jsx
-   <input ref={inputRef} type="text" />
-   \`\`\`
+const handleFocus = () => {
+  inputRef.current?.focus();
+};
 
-2. **Вызов метода \`.focus()\`**:
-   \`\`\`jsx
-   const handleFocus = () => {
-     if (inputRef.current) {
-       inputRef.current.focus();
-     }
-   };
-   \`\`\`
+<input ref={inputRef} />
+<button onClick={handleFocus}>Сделать фокус</button>
+\`\`\`
+- \`ref={inputRef}\` — React запишет DOM-узел в \`inputRef.current\` после монтирования.
+- В обработчике клика узел уже существует; опциональная цепочка \`?.\` защищает от \`null\`, если поле не отрендерено.
 
-### � Ключевые выводы:
-- \`useRef\` — единственный легитимный способ обращения к DOM-узлам в React без \`document.getElementById\`.`,
+### ⚠️ Частые ошибки
+- Вызывать \`inputRef.current.focus()\` прямо в теле компонента — во время рендера там ещё \`null\`.
+- \`document.getElementById\` вместо ref.
+
+### 💡 Ключевые выводы
+- ref — способ «выйти» из React к DOM для императивных действий: фокус, скролл, измерения, медиа.`,
 
   w24: `### Суть задачи
-Считывание значения формы через \`useRef\` при отправке без сохранения каждого символа в состояние.
+Сделать неуправляемую форму: значение живёт в DOM и читается через ref только при отправке.
 
-### � Пошаговые этапы решения:
+### 🛠 Решение
+\`\`\`jsx
+const inputRef = useRef(null);
 
-1. **Чтение значения из DOM при сабмите**:
-   \`\`\`jsx
-   const handleSubmit = () => {
-     if (inputRef.current) {
-       console.log("Отправлено значение:", inputRef.current.value);
-       inputRef.current.value = "";
-       inputRef.current.focus();
-     }
-   };
-   \`\`\`
+const handleSubmit = (e) => {
+  e.preventDefault();
+  const input = inputRef.current;
+  console.log('Отправлено значение:', input.value);
+  input.value = '';
+  input.focus();
+};
 
-### � Ключевые выводы:
-- Неконтролируемые компоненты оптимизируют формы, так как не вызывают перерисовок при каждом нажатии клавиши.`,
+<form onSubmit={handleSubmit}>
+  <input ref={inputRef} name="username" defaultValue="" />
+  <button type="submit">Отправить</button>
+</form>
+\`\`\`
+- Отправка через \`onSubmit\` формы: работает и по Enter.
+- Ввод не вызывает рендеров — React не управляет \`value\`.
+- Для неуправляемого поля прямая запись \`input.value = ''\` допустима: источник правды — DOM.
+
+### Когда выбирать
+- **Неуправляемая**: простые формы, значения нужны только при отправке, интеграция с не-React кодом.
+- **Управляемая**: мгновенная валидация, маски ввода, зависимые поля.
+
+### ⚠️ Частые ошибки
+- Писать в \`.value\` управляемого поля — состояние React и DOM расходятся (см. рефакторинг про \`useImperativeHandle\`).
+- \`value\` без \`onChange\` вместо \`defaultValue\`.
+
+### 💡 Ключевые выводы
+- Для многих полей удобнее \`new FormData(e.currentTarget)\` или \`<form action>\` из React 19, чем ref на каждое поле.`,
 
   w25: `### Суть задачи
 Реализация базовых операций управления коллекцией в React (CRUD): добавление, переключение флага и удаление элементов массива с соблюдением строгой иммутабельности.
@@ -1439,123 +1821,137 @@ Todo-приложение с двумя независимыми спискам�
 - Если состояние нужно нескольким компонентам, его поднимают в ближайшего общего предка.`,
 
   w27: `### Суть задачи
-Запуск периодического интервала (\`setInterval\`) в \`useEffect\`, обязательная очистка в cleanup-функции и преодоление проблемы устаревшего замыкания (Stale Closure).
+Запустить секундомер через \`setInterval\` в эффекте, правильно его очистить и избежать устаревшего замыкания.
 
-### Пошаговые этапы решения:
+### 🛠 Решение
+\`\`\`jsx
+useEffect(() => {
+  const intervalId = setInterval(() => {
+    setSeconds((prev) => prev + 1);
+  }, 1000);
 
-1. **Запуск интервала при монтировании и очистка**:
-   \`\`\`jsx
-   useEffect(() => {
-     const intervalId = setInterval(() => {
-       // Функциональная форма обновления
-       setSeconds((prev) => prev + 1);
-     }, 1000);
+  return () => clearInterval(intervalId);
+}, []);
+\`\`\`
+- Интервал создаётся один раз после монтирования.
+- Функциональный сеттер не зависит от значения в замыкании, поэтому зависимостей нет.
+- Cleanup останавливает интервал при размонтировании.
 
-     return () => clearInterval(intervalId);
-   }, []);
-   \`\`\`
+### 🔍 Ловушка stale closure
+\`\`\`jsx
+useEffect(() => {
+  const id = setInterval(() => setSeconds(seconds + 1), 1000); // seconds навсегда 0
+  return () => clearInterval(id);
+}, []);
+\`\`\`
+Колбэк видит \`seconds\` из первого рендера. Добавить \`seconds\` в зависимости — тоже плохо: интервал будет пересоздаваться каждую секунду.
 
-### Ключевые выводы:
-- Если использовать \`setSeconds(seconds + 1)\` при \`deps = []\`, интервал навсегда замкнет значение \`0\` и счетчик остановится на \`1\`.
-- Функциональный сеттер \`prev => prev + 1\` всегда получает актуальное значение из внутренней очереди React, позволяя оставлять массив зависимостей пустым.
-- Очистка таймера в \`return () => clearInterval(id)\` обязательна для защиты от утечек памяти.`,
+### ⚠️ Частые ошибки
+- Нет cleanup — интервалы копятся, в StrictMode таймер идёт ×2.
+- Хранить id интервала в \`useState\` — лишние рендеры (для этого есть \`useRef\`).
+
+### 💡 Ключевые выводы
+- Каждому \`setInterval\` — свой \`clearInterval\` в cleanup.
+- Функциональная форма сеттера убирает state из зависимостей эффекта.`,
 
   w28: `### Суть задачи
-Синхронизация компонента с глобальными событиями браузера (\`window.addEventListener\`) и безопасное удаление слушателя при размонтировании или закрытии.
+Закрывать модальное окно по Escape через глобальный слушатель клавиатуры и корректно отписываться.
 
-### Пошаговые этапы решения:
+### 🛠 Решение
+\`\`\`jsx
+useEffect(() => {
+  if (!isOpen) return;
 
-1. **Подписка на событие клавиши Escape**:
-   \`\`\`jsx
-   useEffect(() => {
-     if (!isOpen) return;
+  const handleKeyDown = (e) => {
+    if (e.key === 'Escape') setIsOpen(false);
+  };
 
-     const handleKeyDown = (e) => {
-       if (e.key === "Escape") {
-         setIsOpen(false);
-       }
-     };
+  window.addEventListener('keydown', handleKeyDown);
+  return () => window.removeEventListener('keydown', handleKeyDown);
+}, [isOpen]);
+\`\`\`
+- Подписываемся только когда окно открыто.
+- Обработчик сохранён в переменную — в \`removeEventListener\` уходит та же ссылка.
+- При закрытии или размонтировании cleanup снимает слушатель.
 
-     window.addEventListener("keydown", handleKeyDown);
-     return () => {
-       window.removeEventListener("keydown", handleKeyDown);
-     };
-   }, [isOpen]);
-   \`\`\`
+### ⚠️ Частые ошибки
+- \`removeEventListener('keydown', (e) => ...)\` — новая функция, слушатель не удалится.
+- Подписка без cleanup — слушатели копятся при каждом открытии.
+- Обработчик читает state из замыкания и не перезапускается при его изменении — устаревшее значение (разбор в задаче рефакторинга про \`useEffectEvent\`).
 
-### Ключевые выводы:
-- Для снятия обработчика через \`removeEventListener\` необходимо передавать ровно ту же функцию по ссылке.
-- Зависимость \`[isOpen]\` обеспечивает подписку только тогда, когда модальное окно действительно открыто.`,
-
-  w29: `### Суть задачи
-Использование \`useRef\` для хранения технического мутабельного значения (ID интервала) между рендерами без вызова повторной перерисовки компонента.
-
-### Пошаговые этапы решения:
-
-1. **Инициализация рефа и управление интервалом**:
-   \`\`\`jsx
-   const timerRef = useRef(null);
-
-   const handleStart = () => {
-     if (timerRef.current !== null) return;
-     timerRef.current = setInterval(() => setTime((prev) => prev + 1), 1000);
-   };
-
-   const handleStop = () => {
-     if (timerRef.current !== null) {
-       clearInterval(timerRef.current);
-       timerRef.current = null;
-     }
-   };
-   \`\`\`
-
-### Ключевые выводы:
-- Обычная локальная переменная \`let timer\` сбрасывается при каждом рендере.
-- Запись в \`useState\` вызывает рендер (а нам не нужно перерисовывать UI при смене id таймера).
-- \`useRef\` сохраняет значение между рендерами и его мутация (\`ref.current = ...\`) не триггерит рендер.`,
+### 💡 Ключевые выводы
+- \`add\` и \`remove\` — с одной и той же ссылкой на функцию.
+- Подписка живёт ровно столько, сколько нужна: управляйте этим через зависимости эффекта.`,
 
   w30: `### Суть задачи
-Применение концепции вычисляемого состояния (Derived State) на лету во время рендеринга и устранение антипаттерна дублирования стейта.
+Посчитать количество товаров и итоговую сумму корзины без лишних \`useState\` и \`useEffect\`.
 
-### Пошаговые этапы решения:
+### 🛠 Решение
+\`\`\`jsx
+const [items, setItems] = useState(INITIAL_CART);
 
-1. **Расчет итоговых показателей прямо в теле компонента**:
-   \`\`\`jsx
-   const totalCount = items.reduce((sum, item) => sum + item.count, 0);
-   const totalPrice = items.reduce((sum, item) => sum + item.price * item.count, 0);
-   \`\`\`
+// Производные данные вычисляются при каждом рендере
+const totalCount = items.reduce((sum, item) => sum + item.count, 0);
+const totalPrice = items.reduce((sum, item) => sum + item.price * item.count, 0);
+\`\`\`
+Изменение количества обновляет только \`items\`, а итоги пересчитываются в том же рендере:
+\`\`\`jsx
+const handleUpdateCount = (id, delta) => {
+  setItems((prev) =>
+    prev
+      .map((item) => (item.id === id ? { ...item, count: item.count + delta } : item))
+      .filter((item) => item.count > 0)
+  );
+};
+\`\`\`
 
-### Ключевые выводы:
-- Никогда не создавайте \`useState\` для значений, которые можно быстро вычислить из имеющихся пропсов или другого стейта.
-- Никогда не используйте \`useEffect\` для синхронизации вычисляемых данных — это приводит к каскадным рендерам и ошибкам синхронизации.`,
+### 🔍 Антипаттерн, которого избегаем
+\`\`\`jsx
+const [totalPrice, setTotalPrice] = useState(0);
+useEffect(() => {
+  setTotalPrice(items.reduce(...));
+}, [items]);
+\`\`\`
+Первый рендер показывает устаревшую сумму, эффект вызывает второй рендер, а при ошибке в зависимостях данные расходятся.
+
+### ⚠️ Частые ошибки
+- Хранить в state то, что вычисляется из другого state.
+- Оборачивать дешёвые вычисления в \`useMemo\` «на всякий случай».
+
+### 💡 Ключевые выводы
+- Минимальный state + вычисления при рендере = нет рассинхронизации.
+- \`useEffect\` нужен для синхронизации с внешними системами, а не между частями state.`,
 
   w31: `### Суть задачи
-Создание переиспользуемого пользовательского хука (\`useToggle\`) для инкапсуляции типовой логики переключения булевого состояния.
+Вынести логику переключателя в переиспользуемый хук \`useToggle\`.
 
-### Пошаговые этапы решения:
+### 🛠 Решение
+\`\`\`jsx
+export const useToggle = (initialValue = false) => {
+  const [value, setValue] = useState(Boolean(initialValue));
+  const toggle = useCallback(() => setValue((prev) => !prev), []);
+  return [value, toggle, setValue];
+};
 
-1. **Реализация хука**:
-   \`\`\`jsx
-   export const useToggle = (initialValue = false) => {
-     const [value, setValue] = useState(Boolean(initialValue));
-     const toggle = useCallback(() => setValue((prev) => !prev), []);
-     return [value, toggle, setValue];
-   };
-   \`\`\`
+const [isVisible, toggleVisible, setIsVisible] = useToggle(false);
+\`\`\`
+- Хук — обычная функция, которая вызывает другие хуки.
+- \`toggle\` стабилен благодаря \`useCallback\` и функциональному сеттеру: его можно безопасно передавать в memo-компоненты и эффекты.
+- \`setValue\` возвращается для явных действий «показать» и «скрыть».
 
-2. **Использование в компоненте**:
-   \`\`\`jsx
-   const [isVisible, toggleVisible, setIsVisible] = useToggle(false);
-   \`\`\`
+### ⚠️ Частые ошибки
+- Вызов хука в условии или цикле.
+- Ожидать, что два компонента с одним хуком делят состояние.
+- Имя без \`use\` — линтер перестанет проверять правила хуков.
 
-### Ключевые выводы:
-- Кастомные хуки переиспользуют логику работы со стейтом, а не сам стейт. Каждый компонент получает независимый экземпляр.
-- Имя пользовательского хука обязано начинаться с \`use\` для корректной работы линтера правил хуков React.`,
+### 💡 Ключевые выводы
+- Кастомные хуки переиспользуют логику с состоянием, а не само состояние.
+- Хороший хук повторяет знакомый API: \`useToggle\` выглядит как \`useState\`.`,
 
   a1: `### Суть задачи
 Организация загрузки асинхронных данных через связку \`useReducer\` + кастомный хук, с чётким разделением состояний загрузки, ошибки и успешного результата, а также отменой запроса через \`AbortController\`.
 
-### � Пошаговые этапы решения:
+### 🛠 Пошаговые этапы решения:
 
 1. **Описание состояний через reducer**:
    \`\`\`js
@@ -1630,200 +2026,135 @@ Todo-приложение с двумя независимыми спискам�
    \`\`\`
 **Разбор**: Компонент получает уже готовое, агрегированное состояние из хука и строит рендер по принципу ранних возвратов (early return): сначала проверяется \`loading\`, затем \`error\`, и только потом рендерится основной список. Такой порядок гарантирует, что пользователь никогда не увидит одновременно и спиннер, и данные, и ошибку. \`key={user.id}\` использует стабильный идентификатор из API, а не индекс массива.
 
-### � Ключевые выводы:
+### 💡 Ключевые выводы:
 - \`useReducer\` предпочтительнее нескольких \`useState\`, когда состояния логически связаны и переключаются согласованно (loading/error/data по сути — конечный автомат из трёх взаимоисключающих фаз).
 - Вынесение fetch-логики в кастомный хук (\`useFetchUsers\`) отделяет побочные эффекты и работу с данными от компонента представления — компонент становится «глупым» и легко тестируемым.
 - \`AbortController\` и фильтрация \`AbortError\` — обязательный паттерн для эффектов с асинхронными запросами, предотвращающий утечки состояния (state update on unmounted component) и ложные ошибки.
 - Явная проверка \`response.ok\` необходима, так как \`fetch\` считает HTTP-ошибки «успешным» разрешением промиса.`,
 
   a2: `### Суть задачи
-Загрузка данных с сервера в React-приложении с использованием Redux Toolkit: настройка стора, создание асинхронного thunk-действия через \`createAsyncThunk\`, подключение компонента к стору через \`react-redux\` (\`Provider\`, \`useDispatch\`, \`useSelector\`) и отображение трёх состояний загрузки — «Загрузка...», ошибка, готовые данные.
+Загрузить пользователей через Redux Toolkit: асинхронный thunk, слайс со статусом загрузки, стор и подключение к компоненту.
 
-### � Пошаговые этапы решения:
+### 🛠 Решение
+**1. Thunk**
+\`\`\`js
+export const fetchUsers = createAsyncThunk(
+  'users/fetchUsers',
+  async (_, { signal }) => {
+    const response = await fetch('https://jsonplaceholder.typicode.com/users', { signal });
+    if (!response.ok) throw new Error(\`Не удалось загрузить данные: HTTP \${response.status}\`);
+    return response.json();
+  },
+  {
+    condition: (_, { getState }) => {
+      const { status } = getState().users;
+      return status === 'idle' || status === 'failed';
+    },
+  }
+);
+\`\`\`
+- Возвращённое значение попадает в \`fulfilled\`, выброшенная ошибка — в \`rejected\`. Оборачивать тело в \`try/catch\` с повторным \`throw\` не нужно.
+- \`signal\` позволяет отменить запрос через \`promise.abort()\`.
+- \`condition\` не даёт запустить повторную загрузку, если она уже идёт или данные получены.
 
-1. **Создание асинхронного thunk-действия**:
-   \`\`\`js
-   export const fetchUsers = createAsyncThunk(
-     'users/fetchUsers',
-     async () => {
-       const response = await fetch('https://jsonplaceholder.typicode.com/users');
-       if (!response.ok) {
-         throw new Error('Не удалось загрузить данные');
-       }
-       return await response.json();
-     }
-   );
-   \`\`\`
-**Разбор**: \`createAsyncThunk\` — это фабрика Redux Toolkit, которая автоматически генерирует три экшна на основе жизненного цикла промиса: \`pending\`, \`fulfilled\`, \`rejected\`. Первый аргумент (\`'users/fetchUsers'\`) — префикс типа экшна, второй — асинхронная функция-пейлоад-креатор. Она не требует ручной диспетчеризации каждого состояния — RTK сделает это сам при вызове \`dispatch(fetchUsers())\`.
+**2. Слайс**
+\`\`\`js
+const usersSlice = createSlice({
+  name: 'users',
+  initialState: { users: [], status: 'idle', error: null },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchUsers.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(fetchUsers.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.users = action.payload;
+      })
+      .addCase(fetchUsers.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      });
+  },
+});
+\`\`\`
+«Мутации» безопасны: Immer превращает их в новое состояние.
 
-2. **Обработка жизненного цикла запроса в слайсе**:
-   \`\`\`js
-   extraReducers: (builder) => {
-     builder
-       .addCase(fetchUsers.pending, (state) => {
-         state.status = 'loading';
-         state.error = null;
-       })
-       .addCase(fetchUsers.fulfilled, (state, action) => {
-         state.status = 'succeeded';
-         state.users = action.payload;
-       })
-       .addCase(fetchUsers.rejected, (state, action) => {
-         state.status = 'failed';
-         state.error = action.error.message;
-       });
-   }
-   \`\`\`
-**Разбор**: \`extraReducers\` используется вместо \`reducers\`, потому что экшны \`fetchUsers.pending/fulfilled/rejected\` создаются вне слайса (в самом \`createAsyncThunk\`). Благодаря Immer, встроенному в RTK, состояние мутируется «напрямую» (\`state.status = ...\`), хотя под капотом создаётся новый неизменяемый объект. При ошибке Redux Toolkit сам кладёт сообщение исключения в \`action.error.message\`.
+**3. Стор и компонент**
+\`\`\`jsx
+export const store = configureStore({ reducer: { users: usersReducer } });
 
-3. **Настройка стора**:
-   \`\`\`js
-   export const store = configureStore({
-     reducer: {
-       users: usersReducer
-     }
-   });
-   \`\`\`
-**Разбор**: \`configureStore\` — обёртка над \`createStore\`, которая по умолчанию подключает \`redux-thunk\` (необходим для работы \`createAsyncThunk\`) и Redux DevTools. Ключ \`users\` в объекте \`reducer\` определяет путь к срезу состояния — именно поэтому в компоненте обращаемся к \`state.users\`.
+const { users, status, error } = useSelector((state) => state.users);
+useEffect(() => {
+  dispatch(fetchUsers());
+}, [dispatch]);
 
-4. **Подключение стора к дереву компонентов**:
-   \`\`\`jsx
-   const FetchUsersRTK = () => {
-     return (
-       <Provider store={store}>
-         <App />
-       </Provider>
-     );
-   };
-   \`\`\`
-**Разбор**: \`Provider\` из \`react-redux\` кладёт \`store\` в React Context, делая его доступным любому вложенному компоненту через хуки \`useSelector\`/\`useDispatch\` без необходимости прокидывать пропсы вручную.
+if (status === 'idle' || status === 'loading') return <div>Загрузка...</div>;
+if (status === 'failed') return <div>Ошибка: {error}</div>;
+\`\`\`
 
-5. **Диспетчеризация запроса и чтение состояния в компоненте**:
-   \`\`\`jsx
-   const dispatch = useDispatch();
-   const { users, status, error } = useSelector((state) => state.users);
+### ⚠️ Частые ошибки
+- Нет проверки \`response.ok\` — ответ 500 «успешно» попадёт в \`fulfilled\`.
+- Статус \`idle\` не обработан — первый рендер показывает пустой список вместо загрузки.
+- Повторный \`dispatch(fetchUsers())\` при каждом монтировании без \`condition\`.
 
-   useEffect(() => {
-     dispatch(fetchUsers());
-   }, [dispatch]);
-   \`\`\`
-**Разбор**: \`useDispatch\` возвращает функцию \`dispatch\`, через которую в стор отправляется thunk. \`useSelector\` подписывает компонент на срез \`state.users\` и автоматически ререндерит его при любом изменении этого среза. Эффект с зависимостью \`[dispatch]\` гарантирует однократный запрос при монтировании (сама \`dispatch\` — стабильная ссылка, не меняется между рендерами).
-
-6. **Условный рендеринг по статусу запроса**:
-   \`\`\`jsx
-   if (status === 'loading') return <div>Загрузка...</div>;
-   if (status === 'failed') return <div>Ошибка: {error}</div>;
-
-   return (
-     <ul>
-       {users.map((user) => (
-         <li key={user.id}>{user.name} ({user.email})</li>
-       ))}
-     </ul>
-   );
-   \`\`\`
-**Разбор**: Ранние \`return\` до основной разметки — распространённый паттерн для «состояний загрузки» (loading/error/success), делающий JSX линейным и читаемым. \`key={user.id}\` обязателен для корректной работы React reconciliation при рендере списков.
-
-### � Ключевые выводы:
-- \`createAsyncThunk\` избавляет от ручного написания трёх экшнов (\`pending\`/\`fulfilled\`/\`rejected\`) и связанной с ними логики диспетчеризации.
-- \`extraReducers\` — механизм обработки «внешних» экшнов (созданных вне текущего слайса), в отличие от \`reducers\`, который обрабатывает только «свои» синхронные экшны.
-- Разделение состояния на \`status: 'idle' | 'loading' | 'succeeded' | 'failed'\` (вместо булевых флагов типа \`isLoading\`) — рекомендуемый Redux Toolkit паттерн: исключает противоречивые комбинации флагов (например, одновременно \`isLoading: true\` и \`isError: true\`).
-- \`Provider\` должен оборачивать компонент снаружи, а не внутри — иначе \`useSelector\`/\`useDispatch\` выбросят ошибку об отсутствии стора в контексте.`,
+### 💡 Ключевые выводы
+- \`createAsyncThunk\` = автоматические \`pending\` / \`fulfilled\` / \`rejected\`.
+- Для серверных данных в продакшене чаще берут RTK Query или TanStack Query.`,
 
   a3: `### Суть задачи
-Загрузка данных из внешнего API с последующей клиентской фильтрацией списка через мемоизированные селекторы Redux Toolkit (\`createSelector\`), с управляемым инпутом поиска, синхронизированным со стором через \`dispatch\`.
+Добавить к загрузке пользователей поиск по имени и мемоизированный селектор для фильтрации.
 
-### � Пошаговые этапы решения:
+### 🛠 Решение
+**1. Строка поиска в слайсе**
+\`\`\`js
+reducers: {
+  setSearchQuery: (state, action) => {
+    state.searchQuery = action.payload;
+  },
+},
+\`\`\`
 
-1. **Хранение поискового запроса в сторе**:
-   \`\`\`js
-   const initialState = {
-     users: [],
-     searchQuery: '',
-     status: 'idle',
-     error: null
-   };
+**2. Простые селекторы — обычные функции**
+\`\`\`js
+export const selectUsers = (state) => state.users.users;
+export const selectSearchQuery = (state) => state.users.searchQuery;
+export const selectUsersStatus = (state) => state.users.status;
+export const selectUsersError = (state) => state.users.error;
+\`\`\`
+Они возвращают ссылку на уже существующее значение — оборачивать их в \`createSelector\` бессмысленно.
 
-   reducers: {
-     setSearchQuery: (state, action) => {
-       state.searchQuery = action.payload;
-     }
-   }
-   \`\`\`
-**Разбор**: В отличие от обычного \`useState\` для инпута, значение поиска хранится прямо в Redux-сторе. Это делает поле «управляемым» через глобальное состояние: любой компонент приложения может как читать \`searchQuery\`, так и менять его, диспетча синхронный экшн \`setSearchQuery\`.
+**3. Мемоизация — только для вычисляемых данных**
+\`\`\`js
+export const selectFilteredUsers = createSelector(
+  [selectUsers, selectSearchQuery],
+  (users, searchQuery) => {
+    const query = searchQuery.trim().toLowerCase();
+    if (!query) return users;
+    return users.filter((user) => user.name.toLowerCase().includes(query));
+  }
+);
+\`\`\`
+\`filter\` создаёт новый массив. Без мемоизации \`useSelector\` получал бы новую ссылку на каждый вызов и перерисовывал компонент при любом действии в сторе. \`createSelector\` пересчитывает результат, только когда изменились \`users\` или \`searchQuery\`.
 
-2. **Базовые селекторы через createSelector**:
-   \`\`\`js
-   export const selectUsersState = (state) => state.users;
+**4. Компонент**
+\`\`\`jsx
+const users = useSelector(selectFilteredUsers);
+const searchQuery = useSelector(selectSearchQuery);
 
-   export const selectUsers = createSelector(
-     selectUsersState,
-     (usersState) => usersState.users
-   );
+<input value={searchQuery} onChange={(e) => dispatch(setSearchQuery(e.target.value))} />
+\`\`\`
 
-   export const selectSearchQuery = createSelector(
-     selectUsersState,
-     (usersState) => usersState.searchQuery
-   );
-   \`\`\`
-**Разбор**: \`createSelector\` из Reselect (встроен в RTK) создаёт мемоизированный селектор: он пересчитывает результат, только если изменился один из входных селекторов (\`selectUsersState\`). Это отличает такие селекторы от «обычных» функций вида \`(state) => state.users.users\` — при повторном вызове с тем же состоянием возвращается закешированная ссылка, что снижает число лишних ререндеров.
+### ⚠️ Частые ошибки
+- Фильтрация прямо в \`useSelector(state => state.users.users.filter(...))\` — лишние рендеры.
+- \`createSelector\` для каждого поля — лишний код и накладные расходы без выгоды.
+- Один экземпляр параметризованного селектора на несколько компонентов — кеш постоянно сбрасывается.
 
-3. **Композитный селектор фильтрации**:
-   \`\`\`js
-   export const selectFilteredUsers = createSelector(
-     [selectUsers, selectSearchQuery],
-     (users, searchQuery) => {
-       if (!searchQuery.trim()) return users;
-       return users.filter((user) =>
-         user.name.toLowerCase().includes(searchQuery.toLowerCase())
-       );
-     }
-   );
-   \`\`\`
-**Разбор**: Ключевой приём задачи — вынесение логики фильтрации из компонента в слой селекторов. \`selectFilteredUsers\` принимает на вход результаты двух других мемоизированных селекторов (\`selectUsers\`, \`selectSearchQuery\`) и пересчитывается только при изменении хотя бы одного из них — то есть не на каждый рендер компонента, а только когда действительно изменились данные или строка поиска. Сравнение регистронезависимое (\`toLowerCase()\`), пустой запрос (после \`trim()\`) возвращает исходный список без фильтрации.
-
-4. **Подписка компонента на селекторы**:
-   \`\`\`jsx
-   const users = useSelector(selectFilteredUsers);
-   const searchQuery = useSelector(selectSearchQuery);
-   const status = useSelector(selectUsersStatus);
-   const error = useSelector(selectUsersError);
-   \`\`\`
-**Разбор**: Вместо одного \`useSelector((state) => state.users)\`, возвращающего весь срез целиком (как в предыдущей задаче), здесь используются точечные селекторы. Каждый \`useSelector\` подписывается только на своё значение, и благодаря мемоизации в \`createSelector\` компонент ререндерится только когда действительно изменился нужный ему кусок данных, а не весь объект \`state.users\`.
-
-5. **Управляемый инпут с диспетчеризацией**:
-   \`\`\`jsx
-   const handleSearchChange = (e) => {
-     dispatch(setSearchQuery(e.target.value));
-   };
-
-   <input
-     type="text"
-     value={searchQuery}
-     onChange={handleSearchChange}
-   />
-   \`\`\`
-**Разбор**: Инпут «управляем» не локальным \`useState\`, а Redux-стором: атрибут \`value\` берётся из \`searchQuery\` (селектор), а каждое изменение (\`onChange\`) немедленно диспетчит экшн в стор. Это создаёт однонаправленный поток данных: ввод → экшн → редьюсер → новый стейт → пересчёт \`selectFilteredUsers\` → обновление списка.
-
-6. **Условный рендеринг с привязкой к статусу**:
-   \`\`\`jsx
-   {status === 'loading' && <div>Загрузка...</div>}
-   {status === 'failed' && <div>Ошибка: {error}</div>}
-   {status === 'succeeded' && (
-     <ul>
-       {users.map((user) => (
-         <li key={user.id}>{user.name} ({user.email})</li>
-       ))}
-     </ul>
-   )}
-   \`\`\`
-**Разбор**: Список рендерится строго при \`status === 'succeeded'\` — это исключает попытку отрисовать пустой массив \`users\` до завершения запроса. Важно, что фильтрация (по \`searchQuery\`) применяется поверх уже загруженных данных: инпут остаётся рабочим сразу после успешной загрузки, без повторных запросов к серверу.
-
-### � Ключевые выводы:
-- \`createSelector\` мемоизирует не только конечный результат, но и промежуточные вычисления — при построении цепочки селекторов (\`selectUsers\` → \`selectFilteredUsers\`) пересчёт происходит только при реальном изменении входных данных, что критично для тяжёлых операций типа \`filter\`/\`map\`/\`sort\`.
-- Разделение «сырых» данных (\`users\`) и «производных» данных (\`filteredUsers\`) — рекомендуемый паттерн: фильтрация не хранится в сторе, а вычисляется на лету через селектор, что избавляет от дублирования и рассинхронизации состояния.
-- Фильтрация выполняется на клиенте без повторных сетевых запросов — единственный \`fetchUsers()\` при монтировании достаточен, а поиск работает мгновенно по уже загруженному массиву.
-- Точечная подписка через несколько \`useSelector\` (вместо деструктуризации одного объекта) в связке с мемоизированными селекторами — способ минимизировать лишние ререндеры компонента.`,
+### 💡 Ключевые выводы
+- Мемоизируйте селекторы, которые **создают** новые объекты и массивы.
+- Селекторы — публичный API слайса: компоненты не знают структуру стора.`,
 
   r1: `### Суть задачи
 Найти ошибку мутации состояния и восстановить реактивность компонента. При попытке отключить уведомления интерфейс не обновляется, хотя обработчик вызывается.
@@ -1906,76 +2237,95 @@ export default function Feed({ posts, filterCategory }) {
 - **useMemo опционален**: Если массив содержит до нескольких сотен элементов, обычный \`.filter()\` выполняется за микросекунды и мемоизация не требуется.`,
 
   r3: `### Суть задачи
-Оптимизировать производительность компонента с помощью \`useMemo\`, предотвратив повторное выполнение ресурсоёмких вычислений при несвязанных рендерах.
+Ускорить ввод цвета без \`React.memo\`, \`useMemo\` и \`useCallback\` — только правильной композицией компонентов.
 
-### 🔍 Разбор проблемы и почему это ошибка:
-В компоненте есть тяжелая вычислительная функция:
+### 🔍 Разбор проблемы:
 \`\`\`jsx
-function computeHeavyTask(n) { ... }
-
-export default function ExpensiveComponent() {
-  const [number, setNumber] = useState(1);
-  const [text, setText] = useState('');
-
-  const computedValue = computeHeavyTask(number); // Вызывается на КАЖДЫЙ ввод буквы!
-  ...
-\`\`\`
-При каждом нажатии клавиши в текстовом поле обновляется состояние \`text\`. Это вызывает полный ре-рендер компонента \`ExpensiveComponent\`, в теле которого синхронно запускается \`computeHeavyTask(number)\`. Главный поток JavaScript блокируется, а ввод текста в инпут начинает заметно фризить и тормозить.
-
-### 🛠 Пошаговый рефакторинг:
-Оборачиваем вызов тяжелой функции в хук \`useMemo\` с зависимостью только от \`number\`:
-\`\`\`jsx
-import React, { useState, useMemo } from 'react';
-
-export default function ExpensiveComponent() {
-  const [number, setNumber] = useState(1);
-  const [text, setText] = useState('');
-
-  // Кэшируем результат: пересчет произойдет ТОЛЬКО при смене number
-  const computedValue = useMemo(() => computeHeavyTask(number), [number]);
-
+export default function App() {
+  const [color, setColor] = useState('#ff0000');
   return (
-    <div>
-      <input value={text} onChange={(e) => setText(e.target.value)} />
-      <p>Результат: {computedValue}</p>
+    <div style={{ border: \`4px solid \${color}\` }}>
+      <input value={color} onChange={(e) => setColor(e.target.value)} />
+      <ExpensiveTree /> {/* рендерится на каждое нажатие клавиши */}
     </div>
   );
 }
 \`\`\`
+Состояние \`color\` живёт в \`App\`, поэтому любое изменение перерисовывает весь \`App\` вместе с медленным \`ExpensiveTree\`, хотя цвет ему не нужен.
+
+### 🛠 Решение: поднимаем содержимое вверх через children
+Состояние нужно обёртке (рамка) и инпуту, но не \`ExpensiveTree\`. Выносим всё, что зависит от цвета, в \`ColorFrame\`, а медленное поддерево передаём снаружи:
+\`\`\`jsx
+function ColorFrame({ children }) {
+  const [color, setColor] = useState('#ff0000');
+  return (
+    <div style={{ border: \`4px solid \${color}\`, padding: 16 }}>
+      <input value={color} onChange={(e) => setColor(e.target.value)} />
+      <p style={{ color }}>Привет, мир!</p>
+      {children}
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <ColorFrame>
+      <ExpensiveTree />
+    </ColorFrame>
+  );
+}
+\`\`\`
+Элемент \`<ExpensiveTree />\` создаёт \`App\`, а \`App\` при вводе больше не рендерится. \`ColorFrame\` каждый раз получает тот же объект элемента в \`children\`, и React пропускает это поддерево.
 
 ### 💡 Ключевые выводы:
-- **Когда нужен useMemo**: Для кэширования результатов ресурсоёмких синхронных расчётов (сортировка/фильтрация тысяч элементов, сложные математические алгоритмы), зависящих от узкого набора переменных.
-- **Изоляция независимого стейта**: Изменение текстового ввода (\`text\`) больше не триггерит пересчёт значения для числа (\`number\`).
-- **Сравнение зависимостей**: React при рендере проверяет \`Object.is(prevDeps, nextDeps)\` — если \`number\` не изменился, React возвращает уже вычисленный результат из кэша.`,
+- **Опустить состояние вниз**: если state нужен только части UI, вынесите эту часть в отдельный компонент.
+- **Поднять содержимое вверх**: если state нужен обёртке, передайте независимое поддерево через \`children\`.
+- Начинайте с композиции: она бесплатна и не ломается от inline-объектов. \`memo\` — следующий шаг, а не первый.`,
 
   r4: `### Суть задачи
-Предотвратить паразитные ре-рендеры мемоизированного дочернего компонента с помощью хука \`useCallback\` и функционального обновления стейта.
+Найти, почему \`React.memo\` не защищает \`TodoItem\` от лишних рендеров, хотя \`onRemove\` уже обёрнут в \`useCallback\`.
 
-### 🔍 Разбор проблемы и почему это ошибка:
-В коде компонент \`TodoItem\` оптимизирован через \`React.memo\`:
+### 🔍 Что ломает мемоизацию:
+\`React.memo\` сравнивает каждый проп через \`Object.is\`. Любое значение, созданное заново при рендере родителя, — это новая ссылка:
 \`\`\`jsx
-const TodoItem = React.memo(({ todo, onRemove }) => { ... });
+<TodoItem
+  todo={{ ...todo, text: todo.text.trim() }} // 1. новый объект на каждом рендере
+  onRemove={handleRemove}                    //    стабилен благодаря useCallback
+  style={{ padding: 4 }}                     // 2. новый объект стилей
+>
+  <span>⭐</span>                             {/* 3. children — новый React-элемент */}
+</TodoItem>
 \`\`\`
-Однако в родительском компоненте \`TodoApp\` обработчик удаления объявляется как обычная инлайн-функция:
-\`\`\`jsx
-const handleRemove = (id) => {
-  setTodos(todos.filter(todo => todo.id !== id));
-};
-\`\`\`
-При изменении счётчика \`count\` родитель \`TodoApp\` рендерится заново. При каждом рендере создаётся **новая ссылка** на функцию \`handleRemove\` в памяти. Когда \`React.memo\` сравнивает старые и новые пропсы (\`prevProps.onRemove === nextProps.onRemove\`), сравнение возвращает \`false\`. В результате вся оптимизация ломается: абсолютно все элементы \`TodoItem\` рендерятся заново при каждом клике на счётчик.
+Хватает одного такого пропа, чтобы memo каждый раз пропускал рендер дальше.
 
 ### 🛠 Пошаговый рефакторинг:
-1. Оборачиваем функцию удаления в \`useCallback\`.
-2. Чтобы не добавлять массив \`todos\` в зависимости хука (что приводило бы к пересозданию функции при изменении списка), используем **функциональную форму сеттера** \`setTodos(prev => ...)\`:
+1. **Данные готовим один раз** — при создании состояния, а не в JSX:
+   \`\`\`jsx
+   const [todos, setTodos] = useState(() =>
+     INITIAL_TODOS.map((todo) => ({ ...todo, text: todo.text.trim() }))
+   );
+   \`\`\`
+2. **Константы выносим за пределы компонента**:
+   \`\`\`jsx
+   const ITEM_STYLE = { padding: 4 };
+   \`\`\`
+3. **Статичную разметку переносим внутрь ребёнка** вместо передачи через \`children\`.
+
 \`\`\`jsx
-const handleRemove = useCallback((id) => {
-  setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
-}, []); // Зависимости пусты: ссылка на функцию стабильна на протяжении всей жизни компонента
+const TodoItem = memo(({ todo, onRemove }) => (
+  <li style={ITEM_STYLE}>
+    {todo.text} <span>⭐</span>
+    <button onClick={() => onRemove(todo.id)}>Удалить</button>
+  </li>
+));
+
+<TodoItem key={todo.id} todo={todo} onRemove={handleRemove} />
 \`\`\`
 
 ### 💡 Ключевые выводы:
-- **useCallback сам по себе не ускоряет код**: Он полезен только в комбинации с дочерними компонентами, обёрнутыми в \`React.memo\`, либо при передаче функции в массив зависимостей других хуков (\`useEffect\`, \`useMemo\`).
-- **Функциональный сеттер для стабильности**: Шаблон \`setState(prev => ...)\` позволяет избавиться от зависимости от текущего состояния в \`useCallback\`, делая ссылку абсолютно стабильной (\`[]\`).`,
+- \`React.memo\` работает, только если **все** пропсы ссылочно стабильны: функции, объекты, массивы и JSX.
+- \`children\` — тоже проп. JSX внутри мемоизированного компонента ломает memo.
+- Стабилизировать пропсы можно без хуков: константы вне компонента, примитивы вместо объектов, подготовка данных в состоянии.`,
 
   r5: `### Суть задачи
 Удалить вредные и избыточные оптимизации (\`useMemo\` и \`useCallback\`), ухудшающие читаемость кода и расходующие лишнюю память.
@@ -2021,214 +2371,194 @@ export default function SimpleCalculator({ a = 2, b = 3 }) {
 - **Правило простоты**: Код без лишних хуков легче читать, отлаживать и поддерживать.`,
 
   r6: `### Суть задачи
-Устранить состояние гонки (Race Condition) при асинхронной загрузке данных в \`useEffect\` при быстром переключении входных параметров (\`userId\`).
+Устранить гонку запросов: при быстрой смене \`userId\` на экране оказывается не тот пользователь.
 
-### 🔍 Разбор проблемы и почему это ошибка:
-В исходном коде:
+### 🔍 Разбор проблемы
 \`\`\`jsx
 useEffect(() => {
-  fetchUserData(userId).then(data => setUserData(data));
+  fetchUser(userId).then(setUserData);
 }, [userId]);
 \`\`\`
-Если пользователь быстро переключит профиль с ID=1 на ID=2:
-1. Запускается первый запрос для ID=1.
-2. Не дожидаясь ответа, запускается второй запрос для ID=2.
-3. Из-за сетевых задержек ответ для ID=2 может вернуться за 100 мс, и в стейт запишется пользователь 2.
-4. Ответ для ID=1 возвращается позже (например, через 500 мс) и **перезаписывает актуальные данные** устаревшими. В итоге на экране отображается профиль пользователя 1, хотя выбран ID=2!
+1. \`userId = 1\` — уходит запрос A.
+2. \`userId = 2\` — уходит запрос B.
+3. Ответ B приходит через 100 мс — на экране пользователь 2.
+4. Ответ A приходит через 500 мс и **перезаписывает** state — на экране пользователь 1, хотя выбран 2.
 
-### 🛠 Пошаговый рефакторинг:
-Используем булев флаг отмены (cleanup flag) в функции очистки \`useEffect\`:
+Порядок отправки запросов не гарантирует порядок ответов.
+
+### 🛠 Рефакторинг — флаг актуальности
 \`\`\`jsx
 useEffect(() => {
   let ignore = false;
+  setStatus('loading');
 
-  async function loadUser() {
+  const load = async () => {
     try {
-      const data = await fetchUserData(userId);
+      const response = await fetch(\`/users/\${userId}\`);
+      if (!response.ok) throw new Error(\`HTTP \${response.status}\`);
+      const data = await response.json();
       if (!ignore) {
         setUserData(data);
+        setStatus('success');
       }
     } catch (err) {
       if (!ignore) {
-        console.error(err);
+        setError(err.message);
+        setStatus('error');
       }
     }
-  }
+  };
 
-  loadUser();
-
+  load();
   return () => {
-    ignore = true; // При смене userId старый ответ будет безопасно проигнорирован
+    ignore = true;
   };
 }, [userId]);
 \`\`\`
+У каждого запуска эффекта своя переменная \`ignore\`. Cleanup предыдущего запуска выставляет её в \`true\`, и поздний ответ игнорируется.
 
-### 💡 Ключевые выводы:
-- **Асинхронные ответы не упорядочены**: Порядок отправки запросов не гарантирует порядок их завершения в сети.
-- **Cleanup-функция обязательна**: Функция очистки \`return () => { ... }\` в \`useEffect\` вызывается перед следующим запуском эффекта и при размонтировании компонента, позволяя безопасно нейтрализовать устаревший запрос.
-- **Альтернатива через AbortController**: Для fetch-запросов можно использовать \`controller.abort()\`, отменяя запрос на уровне сетевого стека браузера.`,
+Заодно исправлено:
+- проверка \`response.ok\` — ошибки сервера больше не выглядят как данные;
+- ошибка показывается пользователю, а не только пишется в консоль;
+- состояние описано одним статусом вместо пары \`loading\` + \`userData\`.
+
+### Альтернатива — AbortController
+\`\`\`jsx
+const controller = new AbortController();
+fetch(url, { signal: controller.signal });
+return () => controller.abort();
+\`\`\`
+Отменяет сам запрос и экономит трафик. Флаг \`ignore\` универсальнее: работает с любым промисом.
+
+### ⚠️ Частые ошибки
+- Флаг, объявленный вне эффекта (\`useRef\`), — один на все запуски, и новый запрос «отменяет» сам себя.
+- Защищать только \`setUserData\`, но не \`setError\` и не статус.
+
+### 💡 Ключевые выводы
+- Любой эффект с асинхронным результатом, зависящий от параметров, должен защищаться от гонки.
+- В продакшене эту задачу решают кешем по ключу (TanStack Query, SWR).`,
 
   r7: `### Суть задачи
-Исправить логику поискового инпута с debounce: вынести задержку в кастомный хук \`useDebounce\`, устранить зависание ввода и предотвратить лишние сетевые вызовы.
+Не отправлять запрос на каждое нажатие клавиши: задержать поиск до паузы в вводе и при этом не сломать отзывчивость поля.
 
-### 🔍 Разбор проблемы и почему это ошибка:
-Создание debounce-функции прямо внутри компонента приводит к типичным ошибкам:
-1. Если обернуть обработчик \`onChange\` в debounce без мемоизации, при каждом рендере создаётся новый экземпляр таймера, и debounce вообще не работает.
-2. Если применить задержку к самому стейту инпута, поле ввода начинает запаздывать и лагать при наборе символов пользователем.
-3. Отсутствие отмены устаревших таймеров при размонтировании приводит к попытке обновить стейт уже уничтоженного компонента.
+### 🔍 Разбор проблемы
+\`\`\`jsx
+useEffect(() => {
+  fetch(\`/search?q=\${query}\`).then(...);
+}, [query]);
+\`\`\`
+- Слово «react» — пять запросов вместо одного.
+- Ответы могут прийти в обратном порядке, и на экране окажутся результаты по «rea».
+- \`query\` не экранирован: символы \`&\` и \`#\` ломают URL.
+- Ошибки только пишутся в консоль.
 
-### 🛠 Пошаговый рефакторинг:
-Лучшая практика — разделение состояния на два уровня:
-1. **Мгновенный локальный стейт** (\`query\`) — поле ввода остаётся полностью управляемым и отзывчивым (60 FPS).
-2. **Отложенное значение через кастомный хук** \`useDebounce\`:
+### 🛠 Рефакторинг
+**1. Хук \`useDebounce\`** откладывает значение, пока пользователь печатает:
 \`\`\`jsx
 function useDebounce(value, delay = 500) {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
   useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedValue(value);
-    }, delay);
-
-    return () => {
-      clearTimeout(handler);
-    };
+    const timeoutId = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(timeoutId);
   }, [value, delay]);
 
   return debouncedValue;
 }
 \`\`\`
-3. **Эффект сетевого запроса**, реагирующий только на \`debouncedQuery\`:
+Каждое новое нажатие отменяет предыдущий таймер, и значение обновится только после паузы.
+
+**2. Два значения**: \`query\` для поля (мгновенно) и \`debouncedQuery\` для сети.
 \`\`\`jsx
-export default function Search() {
-  const [query, setQuery] = useState('');
-  const debouncedQuery = useDebounce(query, 500);
-  const [results, setResults] = useState([]);
-
-  useEffect(() => {
-    if (!debouncedQuery.trim()) {
-      setResults([]);
-      return;
-    }
-
-    let ignore = false;
-    async function search() {
-      try {
-        const data = await searchApi(debouncedQuery);
-        if (!ignore) setResults(data);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-
-    search();
-    return () => {
-      ignore = true;
-    };
-  }, [debouncedQuery]);
-
-  return (
-    <input
-      value={query}
-      onChange={(e) => setQuery(e.target.value)}
-      placeholder="Поиск..."
-    />
-  );
-}
+const [query, setQuery] = useState('');
+const debouncedQuery = useDebounce(query.trim(), 500);
 \`\`\`
 
-### 💡 Ключевые выводы:
-- **Разделение ответственности**: Инпут всегда должен оставаться отзывчивым без искусственных задержек, а debounce применяется исключительно к ресурсоёмкой операции (сетевому запросу).
-- **Паттерн useDebounce**: Выделение задержки в универсальный хук делает код чистым, переиспользуемым и легко тестируемым.`,
-
-  r8: `### Суть задачи
-Устранить утечку памяти (Memory Leak), вызванную добавлением глобального слушателя событий \`window.addEventListener('scroll')\` без отписки в функции очистки.
-
-### 🔍 Разбор проблемы и почему это ошибка:
-В коде кнопки прокрутки наверх:
+**3. Эффект запроса с отменой** — debounce не защищает от гонки:
 \`\`\`jsx
 useEffect(() => {
-  window.addEventListener('scroll', handleScroll);
-}, []);
-\`\`\`
-Каждый раз при монтировании компонента на глобальный объект \`window\` регистрируется новый обработчик события \`scroll\`.
-- При размонтировании компонента (например, переход на другую страницу) слушатель остаётся жить в глобальной области видимости.
-- Слушатель удерживает ссылку на функцию и замыкает в памяти компонент, не давая сборщику мусора (Garbage Collector) освободить ресурсы.
-- При частой навигации количество слушателей растёт лавинообразно, вызывая просадку FPS при скролле и утечку памяти.
+  if (!debouncedQuery) {
+    setResults([]);
+    return;
+  }
 
-### 🛠 Пошаговый рефакторинг:
-Возвращаем функцию очистки (\`cleanup\`) из \`useEffect\`, вызывая \`removeEventListener\` с той же ссылкой на функцию:
-\`\`\`jsx
-import React, { useState, useEffect } from 'react';
-
-export default function ScrollToTopButton() {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsVisible(window.scrollY > 300);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
-    // Обязательная очистка при размонтировании:
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  return isVisible ? (
-    <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-      Наверх
-    </button>
-  ) : null;
-}
-\`\`\`
-
-### 💡 Ключевые выводы:
-- **Правило парности для подписок**: На каждый \`addEventListener\`, \`setInterval\` или \`subscribe\` обязательно должен быть парный \`removeEventListener\`, \`clearInterval\` или \`unsubscribe\` в cleanup-функции.
-- **Сохранение ссылки**: Чтобы \`removeEventListener\` сработал, в него необходимо передать ту же самую ссылку на функцию, что и в \`addEventListener\`.`,
-
-  r9: `### Суть задачи
-Заменить императивный поиск DOM-элементов через \`document.getElementById\` на декларативный React-реф (\`useRef\`).
-
-### 🔍 Разбор проблемы и почему это ошибка:
-В исходном коде фокус на поле ввода вызывается через нативный DOM API:
-\`\`\`jsx
-const handleReplyClick = () => {
-  const input = document.getElementById('comment-input');
-  input?.focus();
-};
-...
-<input id="comment-input" />
-\`\`\`
-1. **Нарушение инкапсуляции**: Компонент React должен быть независимой изолированной единицей. Использование глобального ID ломает эту изоляцию.
-2. **Коллизия идентификаторов при переиспользовании**: Если разместить на странице два таких компонента (например, в ленте из нескольких комментариев), в DOM появится несколько элементов с одинаковым атрибутом \`id="comment-input"\`. Метод \`document.getElementById\` всегда вернёт первый найденный в документе элемент, и фокус будет перескакивать на чужой комментарий.
-
-### 🛠 Пошаговый рефакторинг:
-Используем хук \`useRef\` и привязываем его к атрибуту \`ref\` нужного JSX-элемента:
-\`\`\`jsx
-import React, { useRef } from 'react';
-
-export default function PulsoreCommentBox() {
-  const inputRef = useRef(null);
-
-  const handleReplyClick = () => {
-    inputRef.current?.focus();
+  const controller = new AbortController();
+  const search = async () => {
+    try {
+      setError(null);
+      const response = await fetch(
+        \`https://api.example.com/search?q=\${encodeURIComponent(debouncedQuery)}\`,
+        { signal: controller.signal }
+      );
+      if (!response.ok) throw new Error(\`HTTP \${response.status}\`);
+      setResults(await response.json());
+    } catch (err) {
+      if (err.name !== 'AbortError') setError(err.message);
+    }
   };
 
-  return (
-    <div>
-      <button onClick={handleReplyClick}>Ответить</button>
-      <input ref={inputRef} placeholder="Напишите комментарий..." />
-    </div>
-  );
-}
+  search();
+  return () => controller.abort();
+}, [debouncedQuery]);
+\`\`\`
+
+### ⚠️ Частые ошибки
+- \`debounce(fn)\` из lodash прямо в теле компонента — на каждом рендере создаётся новая функция со своим таймером, и задержка не работает. Её нужно создать один раз (\`useMemo\`, \`useRef\`).
+- Задерживать само поле ввода — ввод начинает «залипать».
+- Считать, что debounce защищает от гонки ответов.
+
+### 💡 Ключевые выводы
+- Поле — мгновенно, сеть — с задержкой.
+- Debounce уменьшает число запросов, AbortController защищает от гонки — нужны оба.
+- Альтернатива для тяжёлых вычислений без сети — \`useDeferredValue\`.`,
+
+  r8: `### Суть задачи
+Починить отправку по Ctrl+Enter: глобальный слушатель видит устаревшее значение \`message\`. Подписка при этом должна создаваться один раз.
+
+### 🔍 Разбор проблемы — устаревшее замыкание (stale closure):
+\`\`\`jsx
+useEffect(() => {
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && e.ctrlKey) onSend(message); // message === '' навсегда
+  };
+  window.addEventListener('keydown', handleKeyDown);
+  return () => window.removeEventListener('keydown', handleKeyDown);
+}, []);
+\`\`\`
+Эффект выполнился один раз, и \`handleKeyDown\` замкнул \`message\` первого рендера. Если добавить \`message\` в зависимости, баг пропадёт, но слушатель будет переподписываться на каждое нажатие клавиши.
+
+### 🛠 Решение (React 19.2+): useEffectEvent
+\`\`\`jsx
+const sendMessage = useEffectEvent(() => {
+  onSend(message);
+  setMessage('');
+});
+
+useEffect(() => {
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && e.ctrlKey) sendMessage();
+  };
+  window.addEventListener('keydown', handleKeyDown);
+  return () => window.removeEventListener('keydown', handleKeyDown);
+}, []);
+\`\`\`
+Effect Event всегда читает свежие пропсы и состояние, но не считается реактивной зависимостью, поэтому эффект не перезапускается.
+
+### Как это делали до React 19.2 — паттерн «latest ref»:
+\`\`\`jsx
+const latest = useRef({ message, onSend });
+useLayoutEffect(() => {
+  latest.current = { message, onSend };
+});
+
+// внутри handleKeyDown:
+latest.current.onSend(latest.current.message);
 \`\`\`
 
 ### 💡 Ключевые выводы:
-- **useRef гарантирует локальность**: Каждый экземпляр компонента получает свой собственный реф, указывающий строго на его личный узел в DOM.
-- **Безопасное обращение**: Свойство \`ref.current\` заполняется ссылкой на DOM-узел только после монтирования, поэтому обращение к нему выполняется через optional chaining (\`inputRef.current?.focus()\`).`,
+- Функция внутри эффекта видит значения того рендера, в котором эффект был создан.
+- «Реактивную» логику (на что подписываемся) отделяйте от «событийной» (что делаем при срабатывании).
+- \`useEffectEvent\` вызывают только внутри эффектов; передавать его в пропсы или вызывать при рендере нельзя.`,
 
   r10: `### Суть задачи
 Заменить хранение технического идентификатора таймера (\`timerId\`) в \`useState\` на хук \`useRef\`, устранив паразитный ре-рендер при старте таймера.
@@ -2296,54 +2626,61 @@ export default function AudioRecorder() {
 - **Мутация .current не вызывает рендер**: Запись в \`ref.current = value\` происходит синхронно и мгновенно без триггера обновления компонента.`,
 
   r11: `### Суть задачи
-Исправить проброс рефа (ref forwarding) в кастомный компонент с помощью \`forwardRef\`.
+Починить очистку поля поиска и перевести работу с ref на идиоматичный стиль React 19: ref как обычный проп и \`useImperativeHandle\` вместо прямого доступа родителя к DOM.
 
 ### 🔍 Разбор проблемы и почему это ошибка:
-Родительский компонент пытается управлять фокусом кастомного инпута:
 \`\`\`jsx
-function CustomInput(props) {
-  return <input type="text" {...props} />;
-}
-
-export default function Form() {
-  const inputRef = useRef(null);
-  return <CustomInput ref={inputRef} />; // Ошибка в консоли!
-}
+const handleClear = () => {
+  searchRef.current.value = ''; // пишем прямо в DOM управляемого инпута
+  searchRef.current.focus();
+};
 \`\`\`
-В React пропсы \`key\` и \`ref\` являются служебными зарезервированными ключевыми словами.
-- Обычные функциональные компоненты не получают \`ref\` в объекте \`props\`.
-- При попытке передать \`ref\` на кастомный компонент React выводит предупреждение: *"Function components cannot be given refs. Attempts to access this ref will fail"*, а \`inputRef.current\` остаётся \`null\`.
+- Источник правды у управляемого инпута — состояние \`query\`. Запись в \`.value\` его не меняет: поле выглядит пустым, а \`query\` и счётчик символов хранят старый текст.
+- При следующем рендере \`SearchField\` React сверит DOM с состоянием и вернёт старое значение в поле.
+- Родитель получил весь DOM-узел и может менять что угодно в обход компонента — инкапсуляция сломана.
+- \`forwardRef\` в React 19 больше не нужен: ref приходит обычным пропсом.
 
 ### 🛠 Пошаговый рефакторинг:
-Оборачиваем кастомный компонент в функцию высшего порядка \`forwardRef\`, которая принимает вторым параметром проброшенный реф:
+1. Убираем \`forwardRef\` и принимаем \`ref\` из пропсов.
+2. Внутри компонента заводим собственный \`inputRef\` для DOM-узла.
+3. Через \`useImperativeHandle\` отдаём наружу только нужные команды: \`focus()\` и \`clear()\`. Метод \`clear()\` меняет состояние, а не DOM.
+
 \`\`\`jsx
-import React, { useRef, forwardRef } from 'react';
-
-// forwardRef принимает (props, ref):
-const CustomInput = forwardRef((props, ref) => {
-  return <input ref={ref} type="text" {...props} />;
-});
-
-export default function Form() {
+const SearchField = ({ placeholder, ref }) => {
+  const [query, setQuery] = useState('');
   const inputRef = useRef(null);
 
-  const handleFocus = () => {
-    inputRef.current?.focus();
-  };
+  useImperativeHandle(ref, () => ({
+    focus: () => inputRef.current?.focus(),
+    clear: () => {
+      setQuery('');
+      inputRef.current?.focus();
+    },
+  }), []);
 
   return (
-    <form>
-      <CustomInput ref={inputRef} placeholder="Введите имя..." />
-      <button type="button" onClick={handleFocus}>Сфокусировать</button>
-    </form>
+    <div>
+      <input ref={inputRef} value={query} onChange={(e) => setQuery(e.target.value)} placeholder={placeholder} />
+      <span>Символов: {query.length}</span>
+    </div>
+  );
+};
+
+export default function SearchPanel() {
+  const searchRef = useRef(null);
+  return (
+    <div>
+      <SearchField ref={searchRef} placeholder="Поиск..." />
+      <button onClick={() => searchRef.current?.clear()}>Очистить</button>
+    </div>
   );
 }
 \`\`\`
 
 ### 💡 Ключевые выводы:
-- **Назначение forwardRef**: Позволяет родительскому компоненту получить прямой доступ к DOM-элементу внутри дочернего кастомного компонента.
-- **Сигнатура**: Компонент, обёрнутый в \`forwardRef\`, принимает ровно два аргумента: \`(props, ref)\`.
-- *Примечание по React 19*: В React 19 пропс \`ref\` доступен напрямую как обычный пропс без необходимости \`forwardRef\`, но знание этого паттерна является стандартом для поддержки существующих проектов и прохождения собеседований.`,
+- **React 19**: функциональные компоненты получают \`ref\` как обычный проп, \`forwardRef\` устарел. В проектах на React 18 и ниже он по-прежнему нужен — это частый вопрос на собеседовании.
+- **useImperativeHandle** задаёт узкий публичный контракт компонента вместо выдачи всего DOM-узла.
+- **Управляемые поля меняются только через состояние.** Прямая запись в DOM рассинхронизирует UI и данные.`,
 
   r12: `### Суть задачи
 Изолировать модальное окно от родительского DOM-дерева и контекста наложения стилей с помощью \`createPortal\`.
@@ -2401,419 +2738,144 @@ export default function FeedPost({ post }) {
 - **Всплытие событий (Event Bubbling)**: События, происходящие внутри портала (например, клики), продолжают всплывать по виртуальному дереву React к родительскому компоненту, несмотря на то, что в реальном DOM они находятся в \`document.body\`.`,
 
   r13: `### Суть задачи
-Заменить нативные ссылки \`<a href="...">\` на компонент \`<Link to="...">\` из библиотеки React Router для обеспечения плавной SPA-навигации.
+Перевести навигацию приложения на React Router: ссылки, программный переход после отправки формы и чтение параметров URL.
 
-### 🔍 Разбор проблемы и почему это ошибка:
-В сайдбаре навигации используются стандартные ссылки:
+### 🔍 Разбор проблем:
+1. \`<a href="/messages">\` — браузер делает полный HTTP-запрос: HTML и бандл загружаются заново, всё состояние в памяти теряется.
+2. \`window.location.href = ...\` после создания поста — та же полная перезагрузка, только программная.
+3. \`window.location.pathname.split('/').pop()\` — хрупкий ручной парсинг: ломается при query-параметрах, слеше на конце или вложенных роутах и не реагирует на клиентскую навигацию.
+
+### 🛠 Пошаговый рефакторинг:
 \`\`\`jsx
-export default function Sidebar() {
+import { Link, useNavigate, useParams } from 'react-router-dom';
+
+export function Sidebar() {
   return (
     <nav>
-      <ul>
-        <li><a href="/">Лента</a></li>
-        <li><a href="/messages">Сообщения</a></li>
-        <li><a href="/profile/me">Мой профиль</a></li>
-      </ul>
+      <Link to="/">Лента</Link>
+      <Link to="/messages">Сообщения</Link>
+      <Link to="/profile/me">Мой профиль</Link>
     </nav>
   );
 }
-\`\`\`
-При клике на обычный тег \`<a href="...">\`:
-1. Браузер выполняет стандартный переход: запрашивает новый HTML-документ у веб-сервера.
-2. Текущая страница полностью выгружается из памяти, вызывая белое мерцание (full page reload).
-3. Всё клиентское состояние приложения (глобальные сторы, Redux, Zustand, кэш запросов, локальный стейт форм) сбрасывается и уничтожается.
-4. Все JavaScript-скрипты, стили и шрифты скачиваются и инициализируются заново.
 
-### 🛠 Пошаговый рефакторинг:
-В SPA-приложениях навигация должна происходить на клиенте без перезагрузки документа. Для этого используется компонент \`Link\`:
-\`\`\`jsx
-import React from 'react';
-import { Link } from 'react-router-dom';
-
-export default function Sidebar() {
-  return (
-    <nav>
-      <ul>
-        <li><Link to="/">Лента</Link></li>
-        <li><Link to="/messages">Сообщения</Link></li>
-        <li><Link to="/profile/me">Мой профиль</Link></li>
-      </ul>
-    </nav>
-  );
-}
-\`\`\`
-
-### 💡 Ключевые выводы:
-- **Как работает Link**: Под капотом \`Link\` рендерит обычный тег \`<a>\` (для доступности и SEO), но перехватывает событие клика (\`e.preventDefault()\`) и вызывает метод браузерного History API (\`history.pushState\`).
-- **Мгновенный переход**: URL в адресной строке меняется мгновенно, роутер React монтирует новый компонент страницы, а всё состояние приложения сохраняется.`,
-
-  r14: `### Суть задачи
-Реализовать программную навигацию и чтение параметров URL с использованием официальных хуков \`useNavigate\` и \`useParams\` из React Router v6.
-
-### 🔍 Разбор проблемы и почему это ошибка:
-В исходном коде перенаправление и парсинг URL реализованы через прямые обращения к глобальному объекту \`window.location\`:
-\`\`\`jsx
-// Переход:
-window.location.href = \`/post/\${postId}\`; // Перезагружает всё SPA-приложение!
-
-// Чтение параметра:
-const pathParts = window.location.pathname.split('/');
-const id = pathParts[pathParts.length - 1]; // Хрупкий ручной парсинг URL
-\`\`\`
-- Прямое присваивание \`window.location.href\` сбрасывает всё состояние приложения и вызывает перезагрузку страницы.
-- Ручной разбор строки пути через \`.split('/')\` хрупок: он ломается при появлении query-параметров (\`?tab=comments\`), hash-тегов (\`#top\`) или изменении структуры вложенных роутов.
-
-### 🛠 Пошаговый рефакторинг:
-Используем стандартные хуки React Router:
-1. **useNavigate** — для программных переходов (после отправки формы, авторизации или сетевого ответа):
-\`\`\`jsx
-import { useNavigate } from 'react-router-dom';
-
-export function PostCard({ post }) {
+export function CreatePost() {
   const navigate = useNavigate();
-
-  const handleOpenPost = () => {
-    navigate(\`/post/\${post.id}\`);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newPost = await createPost(title);
+    navigate(\`/post/\${newPost.id}\`);
   };
-
-  return (
-    <div>
-      <h3>{post.title}</h3>
-      <button onClick={handleOpenPost}>Открыть пост</button>
-    </div>
-  );
+  // ...
 }
-\`\`\`
-2. **useParams** — для извлечения динамических параметров роута (сопоставленных с шаблоном \`/post/:id\`):
-\`\`\`jsx
-import { useParams } from 'react-router-dom';
 
+// <Route path="/post/:id" element={<PostPage />} />
 export function PostPage() {
   const { id } = useParams();
-
   return <div>Страница поста ID: {id}</div>;
 }
 \`\`\`
 
 ### 💡 Ключевые выводы:
-- **useNavigate в React Router v6**: Заменил устаревший хук \`useHistory\` из v5. Поддерживает как относительные и абсолютные пути (\`navigate('/home')\`), так и перемещение по истории (\`navigate(-1)\`).
-- **useParams типизирован и надёжен**: Автоматически декодирует спецсимволы и возвращает объект с именованными параметрами маршрута.`,
+- **Link** рендерит обычную ссылку (работают Ctrl+клик, SEO и доступность), но перехватывает клик и меняет URL через History API.
+- **useNavigate** — для переходов после действий: отправки формы, логина, таймаута.
+- **useParams** берёт параметры из описания маршрута, а не из ручного разбора строки.`,
 
-  r15: `# Разбор задачи: код-ревью и рефакторинг \`UserPostsList\`
+  r15: `### Суть задачи
+Код-ревью компонента \`UserPostsList\`: он загружает посты пользователя, фильтрует их по названию и позволяет выбрать пост. На собеседовании важно не только исправить код, но и **назвать проблемы по категориям**.
 
-## Общая картина
+### 🔍 Карта проблем
+| # | Проблема | Категория |
+|---|---|---|
+| 1 | Нет \`res.ok\`, нет \`catch\`, нет отмены запроса | Надёжность, гонка |
+| 2 | \`setInterval\` без \`clearInterval\` | Утечка ресурсов |
+| 3 | \`posts.sort()\` в рендере | Мутация state |
+| 4 | \`key={index}\` | Реконсиляция |
+| 5 | \`handleSelect\` пересоздаётся | Сломанная мемоизация |
+| 6 | \`isLoading\` и \`error\` не используются | Мёртвый код, плохой UX |
+| 7 | Две одинаковые кнопки в \`PostItem\` | Разметка, доступность |
 
-В компоненте одновременно встречаются четыре класса проблем, характерных для React-кода:
-
-1. **Утечки ресурсов** (interval, обновление state после размонтирования).
-2. **Мутация данных** (сортировка массива "на месте").
-3. **Неправильные React-ключи** (\`key={index}\`).
-4. **"Мёртвый" или неполный код** (state есть, а логики для него нет; забытая обработка ошибок).
-
-Разберём каждую по порядку — именно в такой последовательности стоит вести код-ревью: сначала ищем баги, которые ломают работу приложения, потом — утечки памяти, потом — производительность и стиль.
-
----
-
-## 1. Дублирующая кнопка в \`PostItem\` — баг в разметке
-
-### Было
-\`\`\`tsx
-<button onClick={() => onSelect(post.id)}>{post.title}</button>
-<button onClick={() => onSelect(post.id)}>{post.body}</button>
+### 1. Загрузка данных
+\`\`\`jsx
+// Было
+fetch(url).then((r) => r.json()).then((data) => { setPosts(data); setIsLoading(false); });
 \`\`\`
+- \`fetch\` не отклоняет промис на 404 и 500 — нужна проверка \`response.ok\`.
+- Нет \`catch\`: при ошибке сети \`isLoading\` навсегда останется \`true\`, а \`error\` не заполнится.
+- При быстрой смене \`userId\` поздний ответ перезапишет посты другого пользователя.
 
-### Проблема
-Компонент рисует **две кнопки** с абсолютно одинаковым обработчиком \`onSelect(post.id)\`. Разница только в тексте — заголовок и тело поста. Это явно случайность (copy-paste), а не задумка:
-
-- Пользователь видит полный текст поста прямо в списке (\`body\` может быть длинным абзацем) — это ломает вёрстку списка.
-- Обе кнопки делают одно и то же действие — выбор поста, значит вторая кнопка избыточна и вводит пользователя в заблуждение (кажется, что у неё должна быть отдельная функция).
-
-### Стало
-\`\`\`tsx
-<button onClick={() => onSelect(post.id)}>
-  {post.title}
-</button>
-{/* Убрал дублирующую кнопку с body */}
-\`\`\`
-
-**Вывод:** оставили только одну кнопку — по заголовку поста выбираем пост. \`body\` для списка не нужен (его можно показывать отдельно, например, в детальной карточке выбранного поста, но это уже расширение функциональности, а не обязательное исправление).
-
----
-
-## 2. Ключ списка \`key={index}\` вместо \`key={post.id}\`
-
-### Было
-\`\`\`tsx
-{visiblePosts.map((post, index) => (
-  <PostItem key={index} ... />
-))}
-\`\`\`
-
-### Проблема
-Это одна из самых частых ошибок в React. \`key\` нужен React, чтобы понимать, **какой конкретно DOM-элемент** соответствует какому элементу массива между рендерами.
-
-Если использовать индекс массива в качестве ключа, а список **фильтруется и сортируется** (как здесь — есть и \`sort\`, и \`filter\`), то при изменении фильтра индексы у постов "плывут": пост, который был на позиции 2, после фильтрации может оказаться на позиции 0. React же ассоциирует DOM-узел и внутреннее состояние компонента (в т.ч. \`isSelected\`, будущие local state) именно с индексом, а не с постом.
-
-Практические последствия:
-- Неправильная подсветка выбранного элемента (\`isSelected\`) может "прилипнуть" не к тому посту после фильтрации.
-- Если бы \`PostItem\` содержал собственный внутренний \`useState\` (например, "развернуть/свернуть"), это состояние осталось бы у элемента на старой позиции, а не "переехало" бы вместе с постом.
-- \`React.memo\` на \`PostItem\` перестаёт правильно защищать от лишних ре-рендеров, т.к. React путает, какой пропс к какому элементу относится.
-
-### Стало
-\`\`\`tsx
-{visiblePosts.map((post) => (
-  <PostItem key={post.id} ... />
-))}
-\`\`\`
-
-**Правило, которое стоит запомнить:** \`key\` должен быть **стабильным и уникальным идентификатором данных** (id из базы, uuid и т.п.), а не позицией в массиве — за исключением редких случаев полностью статичных списков без сортировки/фильтрации/добавления/удаления.
-
----
-
-## 3. Мутация массива в \`posts.sort(...)\`
-
-### Было
-\`\`\`tsx
-const visiblePosts = posts
-  .sort((a, b) => a.title.localeCompare(b.title))
-  .filter((post) => post.title.toLowerCase().includes(filter.toLowerCase()));
-\`\`\`
-
-### Проблема
-\`Array.prototype.sort()\` — **мутирующий** метод: он не создаёт новый массив, а меняет порядок элементов **в исходном массиве** и возвращает ссылку на тот же массив.
-
-Здесь \`posts\` — это React state, полученный через \`useState\`. Прямая мутация state-массива — антипаттерн, потому что:
-
-- React полагается на то, что state иммутабелен: сравнение \`oldState !== newState\` (по ссылке) используется в оптимизациях (например, в \`React.memo\`, в \`useMemo/useCallback\` зависимостях). Если мутировать массив "на месте", ссылка \`posts\` не меняется, и React/ваши собственные \`useMemo\` не заметят изменения, даже если фактически порядок элементов другой.
-- Это создаёт трудноуловимые баги: сегодня \`sort\` "работает", а завтра кто-то добавит \`useMemo(() => posts, [posts])\` в другом месте кода — и сравнение по ссылке сломает логику, потому что массив "тот же", хотя содержимое переставлено.
-- Общее правило React: **никогда не мутируйте state напрямую** (ни массивы, ни объекты) — только создавайте новые копии через \`setState\`.
-
-### Стало
-\`\`\`tsx
-const visiblePosts = posts
-  .slice() // Создаём копию, чтобы не мутировать оригинал
-  .sort((a, b) => a.title.localeCompare(b.title))
-  .filter((post) => post.title.toLowerCase().includes(filter.toLowerCase()));
-\`\`\`
-
-\`.slice()\` без аргументов создаёт поверхностную копию массива. Сортируется уже копия, оригинальный \`posts\` в state остаётся нетронутым.
-
-> Альтернатива с тем же эффектом: \`[...posts].sort(...)\`.
-
----
-
-## 4. Отсутствие обработки ошибок и незавершённая логика \`isLoading\`
-
-### Было
-\`\`\`tsx
+\`\`\`jsx
+// Стало
 useEffect(() => {
-  setIsLoading(true);
-  fetch(\`https://jsonplaceholder.typicode.com/posts?userId=\${userId}\`)
-    .then((response) => response.json())
-    .then((data: Post[]) => {
-      setPosts(data);
-      setIsLoading(false);
-    });
-}, [userId]);
-\`\`\`
+  const controller = new AbortController();
 
-### Проблемы
-1. **Нет \`.catch(...)\`.** Если сеть недоступна, сервер вернёт 500 или \`response.json()\` не сможет распарсить ответ — промис-цепочка "упадёт" молча (unhandled promise rejection), а \`setIsLoading(false)\` никогда не вызовется. Пользователь увидит вечный "загрузка..." (хотя в исходном коде состояние \`isLoading\` даже не используется в JSX — см. пункт 6).
-2. **Не проверяется \`response.ok\`.** \`fetch\` не бросает исключение на HTTP-ошибки (404, 500) — он резолвит промис с \`ok: false\`. Без явной проверки код попытается распарсить тело ошибки как обычные посты.
-3. Объявлен \`error\` state, но он никогда не устанавливается — то есть в коде есть "мёртвая" переменная, которая создаёт иллюзию обработки ошибок, хотя её нет.
-
-### Стало
-\`\`\`tsx
-useEffect(() => {
-  let isMounted = true;
-  const fetchPosts = async () => {
+  const loadPosts = async () => {
+    setStatus('loading');
+    setError(null);
     try {
-      setIsLoading(true);
-      setError(null);
-      const response = await fetch(
-        \`https://jsonplaceholder.typicode.com/posts?userId=\${userId}\`
-      );
-      if (!response.ok) {
-        throw new Error(\`Failed to fetch posts: \${response.status}\`);
-      }
-      const data: Post[] = await response.json();
-      if (isMounted) {
-        setPosts(data);
-      }
+      const response = await fetch(\`.../posts?userId=\${userId}\`, { signal: controller.signal });
+      if (!response.ok) throw new Error(\`HTTP \${response.status}\`);
+      setPosts(await response.json());
+      setStatus('success');
     } catch (err) {
-      if (isMounted) {
-        setError(err instanceof Error ? err.message : 'Unknown error');
-      }
-    } finally {
-      if (isMounted) {
-        setIsLoading(false);
-      }
+      if (controller.signal.aborted) return;
+      setError(err instanceof Error ? err.message : 'Неизвестная ошибка');
+      setStatus('error');
     }
   };
-  fetchPosts();
-  return () => {
-    isMounted = false;
-  };
+
+  loadPosts();
+  return () => controller.abort();
 }, [userId]);
 \`\`\`
+\`AbortController\` отменяет устаревший запрос и при смене \`userId\`, и при размонтировании. Флаг \`isMounted\` только игнорировал бы ответ — запрос всё равно выполнялся бы.
 
-Что изменилось и зачем:
-- \`try/catch/finally\` вместо цепочки \`.then\` — так проще читать асинхронный код и не забыть про ошибку.
-- Проверка \`response.ok\` — HTTP-ошибки теперь действительно считаются ошибками.
-- \`error\` сбрасывается в \`null\` перед новым запросом — иначе при повторном \`userId\` старая ошибка "зависнет" на экране, пока не придёт новый ответ.
-- \`finally\` гарантирует, что \`isLoading\` всегда станет \`false\`, даже если запрос упал.
-
----
-
-## 5. Утечка памяти №1: обновление state после размонтирования компонента
-
-### Проблема (общая для fetch-эффекта)
-Если пользователь быстро переключает \`userId\` (например, кликает по разным пользователям) или компонент размонтируется, пока запрос ещё летит по сети, то ответ от сервера может прийти **после** того, как компонент уже исчез со страницы. Вызов \`setPosts(data)\` на размонтированном компоненте:
-- в старых версиях React выводил предупреждение в консоль: *"Can't perform a React state update on an unmounted component"*;
-- указывает на потенциальную утечку памяти — React вынужден хранить ссылки на функции-обновители состояния дольше, чем нужно;
-- может привести к **race condition**: если пользователь быстро переключился с \`userId=1\` на \`userId=2\`, а ответ для \`userId=1\` пришёл позже ответа для \`userId=2\`, то в списке отобразятся посты не того пользователя.
-
-### Решение
-Используется флаг \`isMounted\`, который выставляется в \`false\` в cleanup-функции \`useEffect\`:
-\`\`\`tsx
-return () => {
-  isMounted = false;
-};
-\`\`\`
-Перед каждым \`setState\` внутри асинхронной функции проверяем \`if (isMounted)\`. Это простой и рабочий паттерн.
-
-> **Дополнительно (для более продвинутого уровня, не обязательно для junior):** современный и более "правильный" способ — использовать \`AbortController\`, который не просто игнорирует результат, а **реально отменяет** сетевой запрос:
-> \`\`\`tsx
-> const controller = new AbortController();
-> fetch(url, { signal: controller.signal });
-> return () => controller.abort();
-> \`\`\`
-> Флаг \`isMounted\` решает проблему обновления state, но не экономит трафик/сервер — запрос всё равно долетит до сервера и вернётся, просто его результат будет проигнорирован.
-
----
-
-## 6. Утечка памяти №2: \`setInterval\` без \`clearInterval\`
-
-Это, пожалуй, **самая серьёзная ошибка** в исходном коде.
-
-### Было
-\`\`\`tsx
+### 2. Интервал без очистки
+\`\`\`jsx
+// Было
 useEffect(() => {
-  setInterval(() => {
-    console.log(\`Active posts for user \${userId}: \${posts.length}\`);
-  }, 3000);
+  setInterval(() => console.log(...), 3000);
 }, [userId, posts.length]);
 \`\`\`
-
-### Проблема
-У \`useEffect\` нет функции очистки (\`return () => {...}\`). Это значит:
-
-1. Каждый раз, когда эффект запускается заново (а он зависит от \`userId\` **и** \`posts.length\`, то есть будет перезапускаться при каждой загрузке нового списка постов), создаётся **новый** \`setInterval\`, а старый — никуда не девается и продолжает тикать в фоне.
-2. Через какое-то время в памяти будет "жить" сразу несколько таймеров, каждый из которых раз в 3 секунды пишет в консоль — количество логов будет расти линейно, а нагрузка на память и CPU — накапливаться.
-3. Даже если компонент **полностью размонтирован** (пользователь ушёл со страницы), таймер, созданный внутри \`useEffect\`, продолжит работать вечно, потому что ничто не вызвало \`clearInterval\`. Это классическая утечка памяти в React-приложениях.
-
-### Стало
-\`\`\`tsx
-const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
+Эффект перезапускается при каждой загрузке, и каждый запуск добавляет новый интервал. Через минуту в консоль пишут десятки таймеров, а после ухода со страницы они продолжают работать.
+\`\`\`jsx
+// Стало
 useEffect(() => {
-  intervalRef.current = setInterval(() => {
-    console.log(\`Active posts for user \${userId}: \${posts.length}\`);
-  }, 3000);
-  return () => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-  };
+  const intervalId = setInterval(() => console.log(...), 3000);
+  return () => clearInterval(intervalId);
 }, [userId, posts.length]);
 \`\`\`
+\`useRef\` для id здесь не нужен: интервал живёт внутри одного запуска эффекта, локальной переменной достаточно.
 
-**Правило, которое стоит запомнить:** любой \`useEffect\`, который создаёт что-то "живущее" вне React (таймер, подписку, WebSocket, слушатель событий), обязан возвращать функцию очистки, которая это "что-то" убирает. Если этого не сделать — гарантирована утечка ресурсов.
-
-> **Замечание по качеству (необязательное улучшение):** зависимость от \`posts.length\` заставляет интервал пересоздаваться при каждом обновлении списка постов, из-за чего 3-секундный отсчёт постоянно сбрасывается заново. Если цель — просто раз в 3 секунды логировать текущее количество постов, лучше оставить в зависимостях только \`userId\`, а актуальное количество постов брать из \`useRef\`, обновляемого отдельно. Это не баг, а вопрос оптимизации логики, поэтому в решении оставлен рабочий вариант с очисткой, что уже полностью устраняет утечку.
-
----
-
-## 7. \`handleSelect\` создаётся заново при каждом рендере — \`React.memo\` не работает
-
-### Было
-\`\`\`tsx
-const handleSelect = (id: number) => {
-  setSelectedId(id);
-};
+### 3. Мутация в \`sort\`
+\`posts.sort(...)\` сортирует массив **на месте**, то есть меняет state прямо во время рендера. Ссылка не меняется — memo и эффекты не видят изменений. Сначала фильтруем: \`filter\` возвращает новый массив, и сортировать можно уже его (заодно сортируется меньше элементов):
+\`\`\`jsx
+const visiblePosts = posts
+  .filter((post) => post.title.toLowerCase().includes(normalizedFilter))
+  .sort((a, b) => a.title.localeCompare(b.title)); // сортируется копия, а не state
 \`\`\`
+Если сортировка нужна без фильтрации — копируйте явно: \`[...posts].sort(...)\` или \`posts.toSorted(...)\` (ES2023).
 
-### Проблема
-\`PostItem\` обёрнут в \`React.memo\`, что должно защищать его от лишних ре-рендеров: если пропсы не изменились (по неглубокому сравнению \`===\`), компонент не перерисовывается.
+### 4. Ключи
+Список сортируется и фильтруется, поэтому индекс одного и того же поста меняется. С \`key={index}\` React переиспользует не те элементы, и выделение может «перепрыгнуть». Ключ — \`post.id\`.
 
-Но функции в JavaScript сравниваются по ссылке. \`handleSelect\` объявляется заново на каждом рендере \`UserPostsList\` — значит, на каждом рендере родителя \`PostItem\` получает **новую** ссылку на функцию \`onSelect\`, даже если её "смысл" не поменялся. В результате \`React.memo\` перестаёт спасать от лишних рендеров — все \`PostItem\` в списке будут перерисовываться при любом изменении родителя (например, при вводе текста в поле фильтра), хотя сам смысл фильтра к конкретному \`PostItem\` не относится напрямую.
-
-### Стало
-\`\`\`tsx
-const handleSelect = useCallback((id: number) => {
-  setSelectedId(id);
-}, []);
+### 5. Мемоизация
+\`PostItem\` обёрнут в \`memo\`, но получает новый \`handleSelect\` на каждом рендере — memo не срабатывает. Стабилизируем через \`useCallback\`:
+\`\`\`jsx
+const handleSelect = useCallback((id) => setSelectedId(id), []);
 \`\`\`
+\`useMemo\` для фильтрации десятка постов не нужен — это не узкое место.
 
-\`useCallback\` с пустым массивом зависимостей гарантирует, что ссылка на функцию остаётся одной и той же между рендерами (пока не изменятся зависимости — а их здесь и не должно быть, так как \`setSelectedId\` из \`useState\` сама по себе стабильна). Теперь \`React.memo\` на \`PostItem\` действительно работает как задумано.
+### 6. Состояния загрузки и ошибки
+Флаги \`isLoading\` и \`error\` были объявлены, но не выводились. Заменяем их одним статусом \`'loading' | 'success' | 'error'\` и показываем каждое состояние.
 
----
+### 7. Разметка \`PostItem\`
+Две кнопки с одинаковым действием сбивают с толку и дублируют элементы для клавиатуры и скринридера. Оставляем одну кнопку выбора, текст поста выводим абзацем, состояние выбора сообщаем через \`aria-pressed\`.
 
-## 8. State для загрузки и ошибки объявлен, но не используется в разметке
-
-### Проблема
-В исходном коде есть \`isLoading\` и \`error\`, но JSX всегда рендерит один и тот же \`<div>\` со списком, независимо от их значений. Пользователь не видит ни индикатора загрузки, ни сообщения об ошибке — они собираются в state, но никак не показываются. Это классический пример "мёртвого" кода, который создаёт ложное ощущение, что обработка есть.
-
-### Стало
-\`\`\`tsx
-if (isLoading) {
-  return <p>Loading...</p>;
-}
-if (error) {
-  return <p style={{ color: 'red' }}>Error: {error}</p>;
-}
-\`\`\`
-Добавлены ранние \`return\` перед основным JSX, которые показывают пользователю понятную обратную связь о состоянии загрузки.
-
-> **Замечание по UX (необязательное улучшение):** при таком подходе поле фильтра тоже пропадает во время загрузки/ошибки. Для более плавного UX можно было бы не заменять весь интерфейс целиком, а показывать спиннер/ошибку только в области списка, оставляя инпут фильтра всегда видимым. Для целей этой задачи (устранить "мёртвый" state) текущее решение вполне достаточно.
-
----
-
-## Итоговая сравнительная таблица
-
-| № | Проблема | Категория | Как исправлено |
-|---|----------|-----------|-----------------|
-| 1 | Дублирующая кнопка с \`body\` в \`PostItem\` | Баг разметки | Убрана лишняя кнопка |
-| 2 | \`key={index}\` в списке | Антипаттерн React | \`key={post.id}\` |
-| 3 | \`posts.sort()\` мутирует state-массив | Мутация state | \`posts.slice().sort(...)\` |
-| 4 | Нет обработки ошибок fetch, не используется \`response.ok\` | Незавершённая логика | \`try/catch/finally\` + проверка \`response.ok\` |
-| 5 | \`setState\` после размонтирования / race condition | Утечка ресурсов | Флаг \`isMounted\` в cleanup \`useEffect\` |
-| 6 | \`setInterval\` без \`clearInterval\` | Утечка ресурсов (критично) | \`useRef\` + \`clearInterval\` в cleanup |
-| 7 | \`handleSelect\` без \`useCallback\` ломает \`React.memo\` | Производительность | Обёрнут в \`useCallback\` |
-| 8 | \`isLoading\`/\`error\` объявлены, но не отображаются | Мёртвый код | Ранние \`return\` с UI для загрузки/ошибки |
-
----
-
-## Что можно было бы улучшить ещё (сверх решения)
-
-Эти пункты не являются обязательными для базового код-ревью, но могут быть упомянуты как "плюс" на собеседовании или в более глубоком ревью:
-
-1. **\`useMemo\` для \`visiblePosts\`.** Сейчас сортировка и фильтрация пересчитываются при **каждом** рендере компонента, включая рендеры, вызванные изменением \`selectedId\` (клик по посту), а не только \`posts\` или \`filter\`. Для небольшого списка это не критично, но при большом объёме данных стоило бы обернуть вычисление в \`useMemo(() => ..., [posts, filter])\`.
-2. **\`AbortController\` вместо \`isMounted\`.** Как упомянуто в пункте 5 — более современный способ отмены реальных сетевых запросов, а не просто игнорирования их результата.
-3. **Вынос логики загрузки в кастомный хук** (например, \`useUserPosts(userId)\`), чтобы компонент \`UserPostsList\` отвечал только за отображение, а не за детали работы с сетью — это улучшило бы переиспользуемость и тестируемость.
-4. **Дебаунс поля фильтра**, если список постов большой — чтобы не пересчитывать фильтрацию при каждом нажатии клавиши.
-
----
-
-## Главные выводы для запоминания
-
-- **Никогда не мутируйте state напрямую** — используйте копии (\`slice\`, spread-оператор \`[...arr]\`).
-- **\`key\` в списках должен быть стабильным ID**, а не индексом массива, если список может меняться порядком/составом.
-- **Любой побочный эффект, создающий что-то "живое" вне React (таймер, подписка, соединение), обязан очищаться** через \`return\` в \`useEffect\`.
-- **Асинхронные операции в \`useEffect\` нужно обезопасить** от обновления state после размонтирования компонента (\`isMounted\`/\`AbortController\`).
-- **Если объявили \`isLoading\`/\`error\` в state — используйте их в разметке**, иначе это просто мёртвый код, создающий ложное чувство надёжности.
-- **\`useCallback\`/\`useMemo\` имеют смысл только в паре с \`React.memo\`** на дочерних компонентах — иначе они не приносят никакой пользы, а просто добавляют шум в код.`,
+### 💡 Ключевые выводы
+- На ревью группируйте находки: надёжность и гонки, утечки, мутации, ключи, мемоизация, UX.
+- Исправляйте причину, а не симптом: мутацию — неизменяющими методами, а не \`useMemo\`.
+- В продакшене загрузку постов логично отдать TanStack Query: кеш по ключу \`['posts', userId]\` решает гонку, повторы и состояния загрузки.`,
 
   r16: `# Подробный разбор задачи: рефакторинг компонента Timer
 
@@ -3138,7 +3200,7 @@ export default function List() {
 
 ### Почему это баг
 При каждом повторном рендере функционального компонента его тело выполняется заново. Локальная переменная \`let timer = null\` пересоздаётся и снова инициализируется значением \`null\`.
-Когда таймер делает первый тик и вызывает \`setNumbers\`, происходит перерендер, и ссылка на созданный интервал теряется (\`timer\` снова равен \`null\`). При нажатии на «Стоп» вызывается \`clearInterval(null)\`, а работающий в фоновом потоке таймер продолжает бесконечно добавлять числа.
+Когда таймер делает первый тик и вызывает \`setNumbers\`, происходит перерендер, и ссылка на созданный интервал теряется (\`timer\` снова равен \`null\`). При нажатии на «Стоп» вызывается \`clearInterval(null)\`, а уже запущенный интервал продолжает бесконечно добавлять числа.
 
 Аналогично, \`let started = false\` сбрасывается в \`false\` на каждом рендере, из-за чего кнопки не получают реактивного состояния блокировки.
 
@@ -3214,7 +3276,8 @@ const nextId = React.useRef(4);
 
 const addRandomNumber = React.useCallback(() => {
   const random = Math.floor(Math.random() * 10) + 1;
-  setNumbers((prev) => [...prev, { id: nextId.current++, value: random }]);
+  const id = nextId.current++; // вне updater: функция-обновление должна быть чистой
+  setNumbers((prev) => [...prev, { id, value: random }]);
 }, []);
 
 const removeNumber = React.useCallback((id) => {
@@ -3386,9 +3449,9 @@ const removeNumber = React.useCallback((id) => {
    };
    \`\`\`
 
-4. **Событие отправки формы — \`React.FormEvent<HTMLFormElement>\`**:
+4. **Событие отправки формы — \`React.SubmitEvent<HTMLFormElement>\`** (в старом коде — \`React.FormEvent\`, в @types/react 19 он помечен устаревшим):
    \`\`\`tsx
-   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
      e.preventDefault();
      alert(\`Отправлено: \${text}\`);
    };
@@ -3400,60 +3463,57 @@ const removeNumber = React.useCallback((id) => {
 - Для инпутов файлов всегда учитывайте, что \`files\` может быть \`null\` при отмене выбора пользователем.`,
 
   ts4: `### Суть задачи
-Реализовать безопасное моделирование ролей пользователей с помощью **Discriminated Unions (размеченных объединений)** и кастомного **Type Guard (защитника типа)**, исключив ошибки доступа к несуществующим полям.
+Спроектировать типы пользователей так, чтобы невозможные комбинации полей не компилировались, и безопасно отрисовать каждый вариант.
 
-### Пошаговые этапы решения:
+### 🛠 Решение
+**1. Discriminated union**
+\`\`\`tsx
+type BaseUser = { id: number; name: string };
+type AdminUser = BaseUser & { role: 'admin'; permissions: string[] };
+type EmployeeUser = BaseUser & { role: 'employee'; department: string };
+type GuestUser = BaseUser & { role: 'guest' };
 
-1. **Создание вариантов типов с единым полем-дискриминантом \`role\`**:
-   \`\`\`tsx
-   export type BaseUser = { id: number; name: string };
+type User = AdminUser | EmployeeUser | GuestUser;
+\`\`\`
+У каждого варианта свой набор полей, а \`role\` — общий дискриминант. «Гость с правами администратора» теперь просто не скомпилируется.
 
-   export type AdminUser = BaseUser & {
-     role: 'admin';
-     permissions: string[];
-   };
+**2. Сужение и проверка полноты**
+\`\`\`tsx
+function assertNever(value: never): never {
+  throw new Error(\`Необработанный вариант: \${JSON.stringify(value)}\`);
+}
 
-   export type EmployeeUser = BaseUser & {
-     role: 'employee';
-     department: string;
-   };
+switch (user.role) {
+  case 'admin':
+    return <p>Права: {user.permissions.join(', ')}</p>; // user: AdminUser
+  case 'employee':
+    return <p>Отдел: {user.department}</p>;            // user: EmployeeUser
+  case 'guest':
+    return <p>Гость: {user.name}</p>;
+  default:
+    return assertNever(user);
+}
+\`\`\`
+Если в union добавят роль \`'manager'\` и забудут \`case\`, в \`default\` попадёт не \`never\`, и TypeScript покажет ошибку. Без этой проверки новая роль молча отобразилась бы как «гость».
 
-   export type GuestUser = BaseUser & {
-     role: 'guest';
-   };
+**3. Type guard — там, где сужение не выводится само**
+\`\`\`tsx
+function isAdmin(user: User): user is AdminUser {
+  return user.role === 'admin';
+}
 
-   export type User = AdminUser | EmployeeUser | GuestUser;
-   \`\`\`
+const permissions = users.filter(isAdmin).flatMap((admin) => admin.permissions);
+\`\`\`
+Внутри \`switch\` guard не нужен. Он полезен для \`filter\` и переиспользуемых проверок.
 
-2. **Создание кастомного Type Guard**:
-   Функция с предикатом возвращаемого типа \`user is AdminUser\` сужает тип \`User\` до \`AdminUser\`:
-   \`\`\`tsx
-   export function isAdmin(user: User): user is AdminUser {
-     return user.role === 'admin';
-   }
-   \`\`\`
+### ⚠️ Частые ошибки
+- Один тип с опциональными полями — невозможные состояния разрешены.
+- Ветка «иначе» без проверки полноты — новые варианты проглатываются молча.
+- \`as AdminUser\` вместо сужения — компилятор перестаёт помогать.
 
-3. **Сужение типов в компоненте**:
-   Внутри ветвлений \`if (isAdmin(user))\` или \`if (user.role === 'employee')\` TypeScript автоматически открывает доступ к специфичным полям:
-   \`\`\`tsx
-   export function UserBadge({ user }: { user: User }) {
-     if (isAdmin(user)) {
-       // user сужен до AdminUser -> permissions доступен
-       return <p>Права доступа: {user.permissions.join(', ')}</p>;
-     }
-
-     if (user.role === 'employee') {
-       // user сужен до EmployeeUser -> department доступен
-       return <p>Отдел: {user.department}</p>;
-     }
-
-     return <p>Гость: {user.name}</p>;
-   }
-   \`\`\`
-
-### Ключевые выводы:
-- Discriminated Unions гарантируют, что состояние данных консистентно: у гостя не могут появиться права администратора, а у администратора — отдел сотрудника.
-- Кастомные защитники типов (\`arg is Type\`) позволяют инкапсулировать сложные проверки условий, сохраняя автосужение типов во всём проекте.`,
+### 💡 Ключевые выводы
+- Моделируйте данные так, чтобы невозможные состояния были непредставимы.
+- \`switch\` по дискриминанту + \`assertNever\` — стандарт обработки union.`,
 
   ts5: `### Суть задачи
 Использование стандартных утилитных типов TypeScript (\`Omit\`, \`Pick\`, \`Record\`) для преобразования серверных DTO-моделей в пропсы UI-компонентов и создания исчерпывающих словарей конфигураций.
@@ -3541,56 +3601,54 @@ const removeNumber = React.useCallback((id) => {
 - Это стандартный паттерн для всех React-хуков, возвращающих пару \`[значение, функция]\`.`,
 
   ts7: `### Суть задачи
-Спроектировать надёжную архитектуру React Context на TypeScript с инициализацией \`null\` по умолчанию и кастомным хуком \`useAuth\`, защищающим приложение от вызовов вне контекстного провайдера.
+Спроектировать типобезопасный контекст авторизации, который нельзя случайно использовать вне провайдера.
 
-### Пошаговые этапы решения:
+### 🛠 Решение
+**1. Тип значения и контекст с \`null\`**
+\`\`\`tsx
+export type AuthContextType = {
+  user: string | null;
+  login: (name: string) => void;
+  logout: () => void;
+};
 
-1. **Типизация данных контекста**:
-   \`\`\`tsx
-   export type AuthContextType = {
-     user: string | null;
-     login: (name: string) => void;
-     logout: () => void;
-   };
-   \`\`\`
+const AuthContext = createContext<AuthContextType | null>(null);
+\`\`\`
+\`null\` означает «провайдера нет». Заглушка вроде \`{ login: () => {} }\` скрыла бы ошибку.
 
-2. **Создание контекста с \`null\`**:
-   \`\`\`tsx
-   const AuthContext = createContext<AuthContextType | null>(null);
-   \`\`\`
-   - Инициализация \`null\` честно отражает, что вне дерева провайдера значение контекста недоступно.
+**2. Провайдер со стабильным \`value\`**
+\`\`\`tsx
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<string | null>(null);
+  const login = useCallback((name: string) => setUser(name), []);
+  const logout = useCallback(() => setUser(null), []);
 
-3. **Реализация провайдера \`AuthProvider\`**:
-   \`\`\`tsx
-   export function AuthProvider({ children }: { children: React.ReactNode }) {
-     const [user, setUser] = useState<string | null>(null);
+  const value = useMemo<AuthContextType>(() => ({ user, login, logout }), [user, login, logout]);
 
-     const login = (name: string) => setUser(name);
-     const logout = () => setUser(null);
+  return <AuthContext value={value}>{children}</AuthContext>;
+}
+\`\`\`
+- Объект в JSX был бы новым на каждом рендере и перерисовывал бы всех потребителей.
+- В React 19 контекст сам является провайдером: \`<AuthContext value={...}>\`.
 
-     return (
-       <AuthContext.Provider value={{ user, login, logout }}>
-         {children}
-       </AuthContext.Provider>
-     );
-   }
-   \`\`\`
+**3. Хук с проверкой**
+\`\`\`tsx
+export function useAuth(): AuthContextType {
+  const context = useContext(AuthContext);
+  if (!context) throw new Error('useAuth должен использоваться внутри <AuthProvider>');
+  return context;
+}
+\`\`\`
+После проверки TypeScript сужает тип до \`AuthContextType\` — потребители работают без \`?.\` и проверок на \`null\`.
 
-4. **Кастомный хук с проверкой на \`null\`**:
-   \`\`\`tsx
-   export function useAuth(): AuthContextType {
-     const context = useContext(AuthContext);
-     if (!context) {
-       throw new Error('useAuth должен использоваться внутри <AuthProvider>');
-     }
-     return context;
-   }
-   \`\`\`
+### ⚠️ Частые ошибки
+- \`createContext<AuthContextType>({} as AuthContextType)\` — приведение обманывает компилятор.
+- Экспорт самого контекста и прямой \`useContext\` в компонентах — проверку легко забыть.
+- Немемоизированный \`value\` в контексте, который читает всё приложение.
 
-### Ключевые выводы:
-- Проверка \`if (!context) throw new Error(...)\` сужает тип с \`AuthContextType | null\` до чистого \`AuthContextType\`.
-- Потребителям хука \`useAuth()\` больше не нужно ставить опциональные цепочки \`context?.user\` или проверять контекст на \`null\`.
-- Если компонент ошибочно отрендерится без \`AuthProvider\`, разработчик получит понятную ошибку в консоли вместо тихого сбоя.`,
+### 💡 Ключевые выводы
+- Контекст + провайдер + хук с проверкой — стандартная тройка для любого контекста.
+- Типы помогают, только если их не обходить приведениями.`,
 
   ts8: `### Суть задачи
 Разобрать фундаментальные отличия типов \`React.ReactNode\`, \`React.ReactElement\` и утилиты \`React.PropsWithChildren<T>\` при проектировании компонентных интерфейсов.
@@ -3636,66 +3694,64 @@ const removeNumber = React.useCallback((id) => {
 - Для слотов, требующих строго переданный JSX-компонент для клонирования (\`React.cloneElement\`) или строгой разметки, используйте \`React.ReactElement\`.`,
 
   ts9: `### Суть задачи
-Типизация хука \`useReducer\` с использованием Discriminated Union для состояний и экшенов, исключающая появление рассинхронизированных и невозможных состояний в UI.
+Спроектировать типы состояния и действий редьюсера так, чтобы противоречивые комбинации данных были невозможны.
 
-### Пошаговые этапы решения:
+### 🛠 Решение
+**1. Состояние — union по статусу**
+\`\`\`tsx
+type State =
+  | { status: 'idle' }
+  | { status: 'loading' }
+  | { status: 'success'; data: string[] }
+  | { status: 'error'; error: string };
+\`\`\`
+Нет «загрузки с ошибкой» и «данных при ошибке»: каждое состояние несёт только свои поля.
 
-1. **Дискриминантные типы состояний (\`State\`)**:
-   \`\`\`tsx
-   type State =
-     | { status: 'idle' }
-     | { status: 'loading' }
-     | { status: 'success'; data: string[] }
-     | { status: 'error'; error: string };
-   \`\`\`
+**2. Действия — union с привязанным payload**
+\`\`\`tsx
+type Action =
+  | { type: 'FETCH_START' }
+  | { type: 'FETCH_SUCCESS'; payload: string[] }
+  | { type: 'FETCH_ERROR'; payload: string };
+\`\`\`
 
-2. **Дискриминантные типы экшенов (\`Action\`)**:
-   Поле \`type\` выступает дискриминантом. Тип полезной нагрузки (\`payload\`) строго привязан к конкретному типу экшена:
-   \`\`\`tsx
-   type Action =
-     | { type: 'FETCH_START' }
-     | { type: 'FETCH_SUCCESS'; payload: string[] }
-     | { type: 'FETCH_ERROR'; payload: string };
-   \`\`\`
+**3. Редьюсер с проверкой полноты**
+\`\`\`tsx
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case 'FETCH_START':
+      return { status: 'loading' };
+    case 'FETCH_SUCCESS':
+      return { status: 'success', data: action.payload };
+    case 'FETCH_ERROR':
+      return { status: 'error', error: action.payload };
+    default: {
+      const unhandled: never = action;
+      throw new Error(\`Неизвестное действие: \${JSON.stringify(unhandled)}\`);
+    }
+  }
+}
+\`\`\`
+Добавят действие и забудут \`case\` — ошибка компиляции, а не тихий \`return state\`.
 
-3. **Чистый редуктор с автосужением**:
-   Внутри \`switch (action.type)\` TypeScript автоматически контролирует тип \`payload\` и структуру возвращаемого объекта:
-   \`\`\`tsx
-   function reducer(state: State, action: Action): State {
-     switch (action.type) {
-       case 'FETCH_START':
-         return { status: 'loading' };
-       case 'FETCH_SUCCESS':
-         return { status: 'success', data: action.payload };
-       case 'FETCH_ERROR':
-         return { status: 'error', error: action.payload };
-       default:
-         return state;
-     }
-   }
-   \`\`\`
+**4. Рендер с сужением**
+\`\`\`tsx
+{state.status === 'success' && (
+  <ul>
+    {state.data.map((post) => <li key={post}>{post}</li>)}
+  </ul>
+)}
+\`\`\`
+\`state.data\` доступна только в ветке \`'success'\` — обратиться к ней раньше времени не получится.
 
-4. **Использование в компоненте**:
-   \`\`\`tsx
-   export function PostsLoader() {
-     const [state, dispatch] = useReducer(reducer, { status: 'idle' });
+### ⚠️ Частые ошибки
+- \`{ loading: boolean; data?: string[]; error?: string }\` — невозможные состояния разрешены.
+- \`payload: any\` в действиях.
+- \`default: return state\` без проверки \`never\`.
 
-     return (
-       <div>
-         <button onClick={() => dispatch({ type: 'FETCH_START' })}>Загрузить</button>
-         {state.status === 'loading' && <p>Загрузка...</p>}
-         {state.status === 'success' && (
-           <ul>{state.data.map((post, idx) => <li key={idx}>{post}</li>)}</ul>
-         )}
-         {state.status === 'error' && <p>Ошибка: {state.error}</p>}
-       </div>
-     );
-   }
-   \`\`\`
-
-### Ключевые выводы:
-- Паттерн Discriminated Union в \`useReducer\` предотвращает рассинхронизацию (например, когда \`isLoading: true\`, но в стейте одновременно лежит старая \`error\`).
-- Попытка отправить \`dispatch({ type: 'FETCH_SUCCESS', payload: 123 })\` вызовет ошибку компиляции на этапе разработки.`,
+### 💡 Ключевые выводы
+- Union по статусу — главный приём моделирования асинхронных состояний.
+- Проверка \`never\` превращает «забыли обработать» в ошибку компиляции.`,
 
   ts10: `### Суть задачи
 Спроектировать интерфейс пропсов компонента \`StatusBadge\` так, чтобы на уровне компилятора TypeScript запретить одновременную передачу взаимоисключающих пропсов (например, числового счётчика \`count\` и флага точки \`dot\`).
@@ -3748,115 +3804,115 @@ const removeNumber = React.useCallback((id) => {
 - Оператор \`in\` позволяет TypeScript безопасно сужать типы при работе с опциональными свойствами объединений.`,
 
   ts11: `### Суть задачи
-Сохранить обобщенный тип (дженерик) \`<T>\` для списка опций при оборачивании компонента выпадающего списка \`Select\` в \`React.forwardRef\`.
+Сохранить generic-тип \`<T>\` опций в компоненте \`Select\` и пробросить \`ref\` на нативный \`<select>\` без \`forwardRef\`, \`any\` и приведений типов.
+
+### 🔍 Почему исходный код плох:
+- \`forwardRef\` возвращает \`ForwardRefExoticComponent<P>\` с фиксированными пропсами, и generic-параметр теряется. Поэтому автор написал \`SelectProps<any>\`.
+- \`e.target.value as any\` скрывает реальную ошибку: значение в DOM всегда строка. Для опций \`true\` / \`false\` в \`onChange\` придут строки \`"true"\` / \`"false"\`.
 
 ### Пошаговые этапы решения:
-
-1. **Проблема \`React.forwardRef\` с дженериками**:
-   Стандартный \`React.forwardRef\` стирает параметры дженерика, приводя их к базовым ограничениям или \`unknown\`.
-
-2. **Определение пропсов компонента**:
+1. **ref — обычный проп (React 19)**: описываем его прямо в типе пропсов.
    \`\`\`tsx
-   export type Option<T> = {
-     label: string;
-     value: T;
-   };
-
    export type SelectProps<T> = {
      options: Option<T>[];
      value: T;
-     onChange: (val: T) => void;
+     onChange: (value: T) => void;
+     ref?: React.Ref<HTMLSelectElement>;
    };
    \`\`\`
-
-3. **Внутренняя функция компонента**:
+2. **Обычная generic-функция**: без обёртки тип \`T\` выводится из пропсов в месте использования.
+3. **Индекс вместо строки**: в \`<option>\` кладём индекс, а настоящее значение берём из массива — так компонент работает с любыми \`T\` без приведений.
    \`\`\`tsx
-   function SelectInner<T extends string | number>(
-     props: SelectProps<T>,
-     ref: React.Ref<HTMLSelectElement>
-   ) {
+   export function Select<T>({ options, value, onChange, ref }: SelectProps<T>) {
+     const selectedIndex = options.findIndex((option) => option.value === value);
+
      return (
        <select
          ref={ref}
-         value={props.value}
-         onChange={(e) => props.onChange(e.target.value as T)}
+         value={selectedIndex}
+         onChange={(e) => onChange(options[Number(e.target.value)].value)}
        >
-         {props.options.map((opt) => (
-           <option key={String(opt.value)} value={opt.value}>
-             {opt.label}
+         {options.map((option, index) => (
+           <option key={option.label} value={index}>
+             {option.label}
            </option>
          ))}
        </select>
      );
    }
    \`\`\`
+4. **Использование**: \`<Select options={THEME_OPTIONS} value={theme} onChange={setTheme} />\` — \`T\` выводится как \`Theme\`, а опция со значением \`'blue'\` станет ошибкой компиляции.
 
-4. **Экспорт с явным приведением дженерик-сигнатуры**:
-   \`\`\`tsx
-   export const Select = forwardRef(SelectInner) as <T extends string | number>(
-     props: SelectProps<T> & { ref?: React.Ref<HTMLSelectElement> }
-   ) => React.ReactElement;
-   \`\`\`
+### Как это делали до React 19:
+\`\`\`tsx
+export const Select = forwardRef(SelectInner) as <T>(
+  props: SelectProps<T> & { ref?: React.Ref<HTMLSelectElement> }
+) => React.ReactElement;
+\`\`\`
+Приведение сигнатуры возвращало generic, но это обход типов. В React 19 он не нужен, однако в legacy-коде встречается часто.
 
 ### Ключевые выводы:
-- Приведение типа экспортируемой константы \`forwardRef(Component) as <T>(props: Props<T> & ...) => React.ReactElement\` — проверенный коммерческий паттерн создания обобщенных реф-компонентов.
-- Потребитель компонента получает полную типобезопасность: \`onChange={(val) => ...}\` автоматически знает точный тип выбранного значения (например, литеральный союз \`'light' | 'dark'\`).`,
+- В React 19 generic-компонент с ref — это просто generic-функция с \`ref\` в пропсах.
+- \`e.target.value\` всегда строка: не приводите её к \`T\`, а восстанавливайте значение из исходных данных.`,
 
   ts12: `### Суть задачи
-Разобрать различия между мутируемыми ссылками (\`MutableRefObject\`) и DOM-ссылками (\`RefObject\`) в хуке \`useRef\`, устранив ошибку изменения read-only ссылок таймеров.
+Исправить ошибки компиляции, которые появились после обновления на \`@types/react\` 19, и разобраться, что изменилось в типизации ref.
+
+### 🔍 Какие ошибки выдаёт TypeScript:
+1. \`useRef<HTMLInputElement>()\` и \`useRef<number>()\` — *Expected 1 arguments, but got 0*. В React 19 убрали перегрузку \`useRef\` без аргумента.
+2. \`ref={(node) => (panelRef.current = node)}\` — стрелка без фигурных скобок неявно возвращает узел. В React 19 ref callback может вернуть cleanup-функцию, поэтому любой другой возврат — ошибка типов.
+3. После исправления п. 1 появится \`inputRef.current.focus()\` — *'inputRef.current' is possibly 'null'*.
 
 ### Пошаговые этапы решения:
-
-1. **Два типа ссылок в \`useRef\`**:
-   - **DOM-ссылка (\`RefObject<T>\`)**: \`useRef<HTMLInputElement>(null)\`. Свойство \`.current\` имеет тип \`readonly HTMLInputElement | null\`. Значение устанавливается самим React при монтировании DOM-узла.
-   - **Мутируемое значение (\`MutableRefObject<T>\`)**: \`useRef<number | null>(null)\`. Свойство \`.current\` имеет тип \`number | null\` и может свободно перезаписываться в коде (например, для хранения ID интервалов или предыдущих значений).
-
-2. **Реализация компонента таймера с фокусом инпута**:
+1. **Явное начальное значение**:
    \`\`\`tsx
-   export function TimerWithFocus() {
-     const [seconds, setSeconds] = useState(0);
-
-     // 1. DOM-элемент: readonly .current
-     const inputRef = useRef<HTMLInputElement>(null);
-
-     // 2. Таймер: мутируемый .current благодаря <number | null>
-     const timerRef = useRef<number | null>(null);
-
-     const startTimer = () => {
-       if (timerRef.current !== null) return;
-       timerRef.current = window.setInterval(() => {
-         setSeconds((prev) => prev + 1);
-       }, 1000);
-     };
-
-     const stopTimer = () => {
-       if (timerRef.current !== null) {
-         clearInterval(timerRef.current);
-         timerRef.current = null;
-       }
-     };
-
-     return (
-       <div>
-         <input ref={inputRef} type="text" placeholder="Инпут для фокуса" />
-         <button onClick={() => inputRef.current?.focus()}>Сделать фокус</button>
-
-         <p>Прошло секунд: {seconds}</p>
-         <button onClick={startTimer}>Старт</button>
-         <button onClick={stopTimer}>Стоп</button>
-       </div>
-     );
-   }
+   const inputRef = useRef<HTMLInputElement>(null); // RefObject<HTMLInputElement | null>
+   const timerRef = useRef<number | null>(null);    // current можно перезаписывать
    \`\`\`
+   В React 19 \`RefObject.current\` больше не readonly, а \`MutableRefObject\` объявлен устаревшим.
+2. **Ref callback с cleanup**: подключаем \`ResizeObserver\` и возвращаем функцию отключения.
+   \`\`\`tsx
+   const measurePanel = useCallback((node: HTMLDivElement) => {
+     const observer = new ResizeObserver(([entry]) => {
+       setWidth(Math.round(entry.contentRect.width));
+     });
+     observer.observe(node);
+     return () => observer.disconnect();
+   }, []);
+
+   <div ref={measurePanel}>...</div>
+   \`\`\`
+   \`useCallback\` нужен, чтобы колбэк не пересоздавался: новая функция на каждом рендере заставит React вызывать cleanup и подключать наблюдатель заново.
+3. **Безопасный таймер**:
+   \`\`\`tsx
+   const startTimer = () => {
+     if (timerRef.current !== null) return;
+     timerRef.current = window.setInterval(() => setSeconds((prev) => prev + 1), 1000);
+   };
+
+   const stopTimer = () => {
+     if (timerRef.current === null) return;
+     clearInterval(timerRef.current);
+     timerRef.current = null;
+   };
+
+   useEffect(() => {
+     return () => {
+       if (timerRef.current !== null) clearInterval(timerRef.current);
+     };
+   }, []);
+   \`\`\`
+4. **Проверка на null**: \`inputRef.current?.focus()\`.
 
 ### Ключевые выводы:
-- \`useRef<HTMLInputElement>(null)\` сообщает TypeScript, что реф привязан к DOM-элементу, делая \`.current\` доступным только для чтения.
-- \`useRef<number | null>(null)\` с явным \`null\` в дженерике создаёт мутируемый контейнер, разрешающий прямое присвоение \`timerRef.current = ...\`.`,
+- В React 19 \`useRef\` всегда требует аргумент; для DOM-ссылок передаём \`null\`.
+- Одного \`RefObject\` достаточно и для DOM, и для мутируемых значений — разделение на \`MutableRefObject\` ушло в прошлое.
+- Ref callback может возвращать cleanup-функцию. Поэтому неявный возврат из стрелки (\`(n) => (ref.current = n)\`) теперь ошибка.`,
 
   tsp1: `### Суть задачи
 Загрузить данные из сетевого API при монтировании компонента, корректно обработать состояния загрузки и ошибки — на TypeScript, с полной типизацией данных, состояния и ошибок.
 
-### � Пошаговые этапы решения:
+### 🛠 Пошаговые этапы решения:
 
 1. **Типизация формы данных с сервера**:
 Описываем \`interface User\`, отражающий структуру объекта, который приходит из jsonplaceholder.typicode.com/users. Это даёт автокомплит на user.name / user.id и защищает от опечаток в полях на этапе компиляции, а не в рантайме.
@@ -3873,9 +3929,10 @@ interface User {
 В JS-версии status мог принять любую строку, включая опечатку вроде "succes", и TS про это ничего бы не сказал. В TS описываем допустимые значения явно:
 
 \`\`\`ts
-type Status = "idle" | "loading" | "success" | "error";
+type Status = "loading" | "success" | "error";
 
-const [status, setStatus] = useState<Status>("idle");
+// Запрос стартует при монтировании, поэтому начальный статус — "loading"
+const [status, setStatus] = useState<Status>("loading");
 \`\`\`
 
 Теперь setStatus("succes") — это ошибка компиляции, а не баг, который проявится только в рантайме на проде.
@@ -3916,66 +3973,784 @@ const [users, setUsers] = useState<User[]>([]);
 6. **Остальная логика — без изменений относительно JS-версии**:
 Внутренняя async-функция внутри useEffect, проброс ошибки из fetchUsers через throw вместо проглатывания, отдельный state для текста ошибки, отображение по status — все эти решения из предыдущего разбора остаются в силе, TS их не меняет, а только защищает типами.
 
-### � Ключевые выводы:
+### 💡 Ключевые выводы:
 - Типизируйте форму серверных данных через interface/type — это не бюрократия, а защита от опечаток в полях и от неожиданной формы ответа API.
-- Заменяйте свободную строку в status на union type ("idle" | "loading" | "success" | "error") — TS не даст присвоить туда опечатку или несуществующее значение.
+- Заменяйте свободную строку в status на union type ("loading" | "success" | "error") — TS не даст присвоить туда опечатку или несуществующее значение.
 - В catch (e) переменная имеет тип unknown, а не any — всегда проверяйте e instanceof Error перед обращением к .message.
 - Указывайте явный возвращаемый тип у async-функций (Promise<User[]>) — так TS ловит несоответствие формы данных ещё на этапе написания кода, а не после первого реального запроса.`,
 
   tsp2: `### Суть задачи
-Типизация компонента перезагрузки изображения с отслеживанием состояний, использованием Blob-URL и сбросом памяти через \`useRef\`.
+Перевести RefetchImage на TypeScript: типы пропсов и статусов, типизированные рефы и асинхронный обработчик без утечек памяти.
 
-### � Пошаговые этапы решения:
+### 🛠 Решение
+**1. Типы**
+\`\`\`ts
+export interface TGalleryImage {
+  src: string;
+  alt?: string;
+}
 
-1. **Типизация пропсов и Union Type статуса**:
-   \`\`\`ts
-   export interface TGalleryImage {
-     src: string;
-     alt?: string;
-   }
+export type TRefetchImageProps = TGalleryImage;
+export type TStatus = 'idle' | 'loading' | 'success' | 'error';
+\`\`\`
 
-   export type TRefetchImageProps = TGalleryImage;
-   export type TStatus = 'idle' | 'loading' | 'success' | 'error';
-   \`\`\`
+**2. Типизированные рефы для технических ресурсов**
+\`\`\`ts
+const objectUrlRef = useRef<string | null>(null);
+const controllerRef = useRef<AbortController | null>(null);
+\`\`\`
 
-2. **Типизация MutableRefObject для Blob-URL**:
-   Поскольку \`objectUrlRef\` изначально равен \`null\`, но в дальнейшем перезаписывается ссылкой-строкой, типизируем его с союзом типов:
-   \`\`\`ts
-   const objectUrlRef = useRef<string | null>(null);
-   \`\`\`
+**3. Обработчик**
+\`\`\`ts
+const handleRefetch = async (): Promise<void> => {
+  controllerRef.current?.abort();
+  const controller = new AbortController();
+  controllerRef.current = controller;
+  setStatus('loading');
 
-### � Ключевые выводы:
-- Добавление типов союза \`<string | null>\` делает реф мутабельным (\`MutableRefObject\`), позволяя перезаписывать \`ref.current\`.`,
+  try {
+    const response = await fetch(src, { cache: 'no-store', signal: controller.signal });
+    if (!response.ok) throw new Error(\`HTTP \${response.status}\`);
+    const blob: Blob = await response.blob();
+    if (controller.signal.aborted) return;
+
+    const nextUrl = URL.createObjectURL(blob);
+    if (objectUrlRef.current) URL.revokeObjectURL(objectUrlRef.current);
+    objectUrlRef.current = nextUrl;
+    setImageSrc(nextUrl);
+    setStatus('success');
+  } catch (error: unknown) {
+    if (controller.signal.aborted) return;
+    setStatus('error');
+  }
+};
+\`\`\`
+
+**4. Очистка при размонтировании**
+\`\`\`ts
+useEffect(() => {
+  return () => {
+    controllerRef.current?.abort();
+    if (objectUrlRef.current) URL.revokeObjectURL(objectUrlRef.current);
+  };
+}, []);
+\`\`\`
+Если компонент размонтировали во время загрузки, запрос отменяется, и новый blob-URL не создаётся — иначе его никто не освободил бы.
+
+### ⚠️ Частые ошибки
+- \`useRef()\` без аргумента — в @types/react 19 это ошибка компиляции.
+- Нет \`revokeObjectURL\` или нет отмены запроса при размонтировании.
+- \`catch (e)\` с обращением к \`e.message\` без проверки типа.
+
+### 💡 Ключевые выводы
+- TypeScript не защищает от утечек ресурсов — это зона ответственности логики очистки.
+- Типизация рефов с \`| null\` честно описывает «ресурса может не быть».`,
 
   tsp3: `### Суть задачи
-Типизация компонента управления постами: наследование интерфейсов, типизация списка постов, асинхронной загрузки и событий формы.
+Перевести PostsManager (загрузка постов, локальное добавление, удаление) на TypeScript: модели данных, пропсы, состояния и события.
 
-### � Пошаговые этапы решения:
+### 🛠 Решение
+**1. Модели данных**
+\`\`\`ts
+export interface Post {
+  id: number | string;
+  title: string;
+  body?: string;
+}
 
-1. **Наследование интерфейсов**:
-   \`\`\`ts
-   export interface Post {
-     id: number;
-     title: string;
-     body?: string;
-   }
+export interface LocalPost extends Post {
+  isLocal?: boolean;
+}
+\`\`\`
+Серверные посты приходят с числовым \`id\`, локальные получают UUID — тип отражает оба источника.
 
-   export interface LocalPost extends Post {
-     isLocal?: boolean;
-   }
-   \`\`\`
+**2. Пропсы и состояния**
+\`\`\`ts
+export interface PostsManagerProps {
+  url: string;
+}
 
-2. **Типизация событий формы**:
-   \`\`\`ts
-   const addPost = (e: React.FormEvent<HTMLFormElement>): void => {
-     e.preventDefault();
-     // ...
-   };
-   \`\`\`
+export type TStatus = 'loading' | 'success' | 'error';
+
+const [posts, setPosts] = useState<LocalPost[]>([]);
+const [status, setStatus] = useState<TStatus>('loading');
+const [error, setError] = useState<string | null>(null);
+\`\`\`
+Без дженерика \`useState([])\` вывел бы \`never[]\`.
+
+**3. Загрузка**
+\`\`\`ts
+useEffect(() => {
+  const controller = new AbortController();
+  const loadPosts = async (): Promise<void> => {
+    try {
+      const response = await fetch(url, { signal: controller.signal });
+      if (!response.ok) throw new Error(\`HTTP \${response.status}\`);
+      const data: Post[] = await response.json();
+      setPosts(data.slice(0, POSTS_LIMIT));
+      setStatus('success');
+    } catch (err: unknown) {
+      if (controller.signal.aborted) return;
+      setError(err instanceof Error ? err.message : 'Не удалось загрузить посты');
+      setStatus('error');
+    }
+  };
+  loadPosts();
+  return () => controller.abort();
+}, [url]);
+\`\`\`
+- \`response.json()\` возвращает \`any\`: аннотация \`Post[]\` — обещание компилятору, а не проверка. Для настоящей гарантии данные валидируют (Zod, Valibot).
+- Ошибка в \`catch\` имеет тип \`unknown\` — сначала \`instanceof Error\`.
+
+**4. События**
+\`\`\`ts
+const addPost = (e: React.SubmitEvent<HTMLFormElement>): void => {
+  e.preventDefault();
+  // ...
+};
+
+const deletePost = (id: LocalPost['id']): void => {
+  setPosts((prev) => prev.filter((post) => post.id !== id));
+};
+\`\`\`
+\`LocalPost['id']\` — индексный доступ к типу: при изменении модели параметр обновится сам.
+
+### ⚠️ Частые ошибки
+- \`useState([])\` без дженерика.
+- \`catch (e: any)\` и обращение к \`e.message\` без проверки.
+- \`React.FormEvent\` — в @types/react 19 устарел.
+
+### 💡 Ключевые выводы
+- Типы моделей, пропсов и состояний описываются один раз и переиспользуются через \`extends\` и индексный доступ.
+- Граница с сетью — место для рантайм-валидации, а не только аннотаций.`,
+
+  w32: `### Суть задачи
+Перенести логику счётчика с шагом из компонента в чистую функцию \`reducer\` и менять состояние только через \`dispatch\`.
+
+### Пошаговые этапы решения:
+1. **Начальное состояние** — один объект: \`{ count: 0, step: 1 }\`.
+2. **Reducer** описывает все переходы в одном месте:
+\`\`\`jsx
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "increment": return { ...state, count: state.count + state.step };
+    case "decrement": return { ...state, count: state.count - state.step };
+    case "setStep":   return { ...state, step: action.payload };
+    case "reset":     return initialState;
+    default: throw new Error(\`Неизвестное действие: \${action.type}\`);
+  }
+};
+\`\`\`
+3. **Компонент** только сообщает, что произошло: \`dispatch({ type: "increment" })\`.
 
 ### Ключевые выводы:
-- Расширение интерфейсов через \`extends\` позволяет накапливать типы без дублирования полей.
-- Событие отправки формы в React типизируется как \`React.FormEvent<HTMLFormElement>\`.`,
+- Reducer — чистая функция: никаких запросов, таймеров и мутаций.
+- Ошибка на неизвестный тип действия сразу показывает опечатку в \`dispatch\`.
+- useReducer удобен, когда переходов много или новое состояние зависит от нескольких полей.`,
+
+  w33: `### Суть задачи
+Передать тему оформления компонентам на разной глубине через Context, чтобы промежуточный \`Layout\` не пробрасывал пропсы.
+
+### Пошаговые этапы решения:
+1. Создаём контекст: \`export const ThemeContext = createContext(null);\`
+2. Оборачиваем дерево в провайдер (в React 19 контекст сам является провайдером):
+\`\`\`jsx
+<ThemeContext value={{ theme, toggleTheme }}>
+  <Layout />
+</ThemeContext>
+\`\`\`
+3. Читаем значение через хук-обёртку с понятной ошибкой:
+\`\`\`jsx
+const useTheme = () => {
+  const context = useContext(ThemeContext);
+  if (!context) throw new Error("useTheme должен вызываться внутри ThemeContext.Provider");
+  return context;
+};
+\`\`\`
+
+### Ключевые выводы:
+- Context решает prop drilling для данных, нужных многим компонентам: тема, локаль, пользователь.
+- Значение по умолчанию \`null\` плюс проверка в хуке ловит использование вне провайдера.
+- Все потребители перерисовываются при смене \`value\` — для часто меняющихся данных это важно (см. задачу про лишние ререндеры из-за Context).`,
+
+  w34: `### Суть задачи
+Сбросить черновик сообщения при смене собеседника без \`useEffect\`.
+
+### 🔍 Почему черновик «переезжает»:
+React хранит состояние по **позиции** компонента в дереве. \`<Chat>\` остаётся на том же месте и того же типа, поэтому React считает его тем же экземпляром: меняются пропсы, а \`useState\` сохраняет значение.
+
+### 🛠 Решение:
+\`\`\`jsx
+<Chat key={activeContact.id} contact={activeContact} />
+\`\`\`
+Новый \`key\` — это новый компонент с точки зрения React: старый экземпляр размонтируется, новый создаётся с чистым состоянием (включая все вложенные компоненты).
+
+### Почему не useEffect:
+\`\`\`jsx
+useEffect(() => setDraft(""), [contact]); // ❌
+\`\`\`
+Компонент сначала покажет старый черновик, затем сделает лишний рендер, и сбросить придётся каждое поле вручную.
+
+### Ключевые выводы:
+- Состояние привязано к позиции и \`key\` в дереве.
+- \`key\` работает не только в списках: это способ сказать React «это другая сущность».`,
+
+  w35: `### Суть задачи
+Написать хук \`useLocalStorage\`, который работает как \`useState\`, но сохраняет значение между перезагрузками страницы.
+
+### Пошаговые этапы решения:
+1. **Безопасное чтение** — битый JSON и недоступное хранилище не должны ронять приложение:
+\`\`\`jsx
+const readValue = (key, initialValue) => {
+  try {
+    const stored = localStorage.getItem(key);
+    return stored === null ? initialValue : JSON.parse(stored);
+  } catch {
+    return initialValue;
+  }
+};
+\`\`\`
+2. **Ленивая инициализация** — localStorage читается только при первом рендере:
+\`\`\`jsx
+const [value, setValue] = useState(() => readValue(key, initialValue));
+\`\`\`
+3. **Запись** — синхронизация с внешней системой в эффекте:
+\`\`\`jsx
+useEffect(() => {
+  localStorage.setItem(key, JSON.stringify(value));
+}, [key, value]);
+\`\`\`
+
+### Ключевые выводы:
+- \`useState(fn)\` вызывает \`fn\` один раз, а \`useState(fn())\` — на каждом рендере.
+- Хук повторяет API \`useState\` (\`[value, setValue]\`) — его легко подставить вместо обычного состояния.
+- Для синхронизации между вкладками можно подписаться на событие \`storage\`.`,
+
+  r18: `### Суть задачи
+Убрать лишние ререндеры: один контекст хранит и редкие (тема), и частые (уведомления) данные.
+
+### 🔍 Разбор проблемы:
+\`\`\`jsx
+<AppContext.Provider value={{ theme, toggleTheme, notifications }}>
+\`\`\`
+- Каждые 2 секунды меняется \`notifications\` → провайдер рендерится → \`value\` — новый объект.
+- Все потребители \`AppContext\` перерисовываются, даже \`ThemeButton\`, которому уведомления не нужны.
+- \`React.memo\` здесь не помогает: подписка на контекст обходит memo.
+
+### 🛠 Пошаговый рефакторинг:
+1. **Разделяем контекст** по частоте изменений: \`ThemeContext\` и \`NotificationsContext\`.
+2. **Стабилизируем value** темы:
+\`\`\`jsx
+const toggleTheme = useCallback(() => setTheme((t) => (t === "light" ? "dark" : "light")), []);
+const value = useMemo(() => ({ theme, toggleTheme }), [theme, toggleTheme]);
+\`\`\`
+3. **Передаём потребителей через children**: элементы создаются в \`App\`, поэтому ререндер \`NotificationsProvider\` их не задевает.
+
+### 💡 Ключевые выводы:
+- Потребитель перерисовывается при любой смене \`value\` по \`Object.is\`.
+- Разделяйте контексты по частоте изменений и мемоизируйте объект \`value\`.
+- Для большого часто меняющегося состояния нужен стор с селекторами (Zustand, Redux).`,
+
+  r19: `### Суть задачи
+Заменить два HOC на кастомные хуки и избавиться от конфликта пропсов.
+
+### 🔍 Разбор проблемы:
+\`\`\`jsx
+export default withOnlineStatus(withWindowSize(StatusBar));
+\`\`\`
+- Оба HOC передают проп \`data\` — внешний затирает внутренний, размеры окна теряются.
+- \`StatusBar\` получает пропсы «из ниоткуда»: по коду компонента не видно, откуда они.
+- В DevTools дерево обрастает обёртками (wrapper hell), усложняются типизация и проброс ref.
+
+### 🛠 Рефакторинг:
+\`\`\`jsx
+function useWindowSize() {
+  const [size, setSize] = useState(() => ({ width: window.innerWidth, height: window.innerHeight }));
+  useEffect(() => {
+    const handleResize = () => setSize({ width: window.innerWidth, height: window.innerHeight });
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  return size;
+}
+
+export default function StatusBar() {
+  const { width, height } = useWindowSize();
+  const isOnline = useOnlineStatus();
+  // ...
+}
+\`\`\`
+
+### 💡 Ключевые выводы:
+- Хуки переиспользуют логику без изменения дерева компонентов.
+- Компонент сам называет переменные — конфликт имён невозможен.
+- HOC остаются уместны там, где нужно обернуть компонент целиком: Error Boundary, проверка доступа.`,
+
+  r20: `### Суть задачи
+Сделать ввод в поиск мгновенным, пока тяжёлый список перерисовывается, — средствами конкурентного React, без debounce.
+
+### 🔍 Разбор проблемы:
+Каждое нажатие клавиши синхронно рендерит инпут **и** тысячи элементов списка. Пока рендер не закончится, браузер не может показать введённый символ — поле «залипает».
+
+### 🛠 Решение:
+\`\`\`jsx
+const deferredQuery = useDeferredValue(query);
+const isStale = query !== deferredQuery;
+
+<input value={query} onChange={(e) => setQuery(e.target.value)} />
+<div style={{ opacity: isStale ? 0.5 : 1 }}>
+  <ResultsList query={deferredQuery} />
+</div>
+\`\`\`
+\`ResultsList\` обязательно оборачиваем в \`memo\`: иначе он перерисуется вместе с инпутом в срочном рендере.
+
+### Как это работает:
+1. Срочный рендер: инпут получает новый \`query\`, а список — старый \`deferredQuery\` (memo пропускает его).
+2. Фоновый рендер: React рендерит список с новым значением. Если пользователь печатает дальше, рендер прерывается и начинается заново.
+
+### 💡 Ключевые выводы:
+- \`useDeferredValue\` — когда значение приходит извне; \`useTransition\` — когда вы сами вызываете \`setState\`.
+- В отличие от debounce, нет фиксированной задержки: на быстром устройстве список обновится почти сразу.`,
+
+  19: `### Суть задачи
+Реализовать форму регистрации с валидацией, удобной для пользователя и доступной для скринридеров.
+
+### Пошаговые этапы решения:
+1. **Ошибки вычисляются**, а не хранятся в state:
+\`\`\`jsx
+const errors = validate(values);
+const hasErrors = Object.keys(errors).length > 0;
+\`\`\`
+2. **Когда показывать ошибку** — после blur поля или попытки отправки:
+\`\`\`jsx
+showError: isSubmitted || touched[name]
+\`\`\`
+3. **Доступность** — \`useId\` связывает label, поле и текст ошибки:
+\`\`\`jsx
+const id = useId();
+<label htmlFor={id}>{label}</label>
+<input id={id} aria-invalid={isInvalid} aria-describedby={isInvalid ? \`\${id}-error\` : undefined} />
+{isInvalid && <p id={\`\${id}-error\`} role="alert">{error}</p>}
+\`\`\`
+4. **Отправка**: \`e.preventDefault()\`, отметка \`isSubmitted\` и выход при ошибках.
+
+### Ключевые выводы:
+- Значения — состояние, ошибки — производные данные.
+- Не ругайтесь на пустые поля при первом рендере: ошибка после blur — стандарт UX.
+- \`useId\` даёт уникальные id даже для нескольких экземпляров поля и не ломает SSR-гидратацию.`,
+
+  20: `### Суть задачи
+Сделать модальное окно, с которым удобно работать и мышью, и клавиатурой.
+
+### Пошаговые этапы решения:
+1. **Портал** выносит модалку из родителей с \`overflow: hidden\` и \`z-index\`:
+\`\`\`jsx
+return createPortal(<div style={overlayStyle}>...</div>, document.body);
+\`\`\`
+2. **Закрытие по клику на фон** — только если кликнули ровно по overlay:
+\`\`\`jsx
+onClick={(e) => e.target === e.currentTarget && onClose()}
+\`\`\`
+3. **Фокус**: при открытии запоминаем \`document.activeElement\` и переводим фокус на кнопку «Закрыть», при закрытии (в cleanup эффекта) возвращаем фокус обратно.
+4. **Focus trap**: на Tab с последнего элемента переходим на первый, на Shift+Tab с первого — на последний.
+5. **Escape** закрывает модалку; все подписки снимаются в cleanup.
+6. **ARIA**: \`role="dialog"\`, \`aria-modal="true"\`, \`aria-labelledby\` на заголовок.
+
+### Ключевые выводы:
+- Портал меняет место в DOM, но не в React-дереве: события и контекст работают как обычно.
+- Возврат фокуса на триггер — обязательная часть доступной модалки.
+- Нативный \`<dialog>\` с \`showModal()\` даёт focus trap и Escape из коробки — хороший ответ на вопрос «как сделать проще».`,
+
+  21: `### Суть задачи
+Отрисовать дерево папок любой глубины одним рекурсивным компонентом.
+
+### Пошаговые этапы решения:
+1. **Различаем узлы**: папка — это узел с массивом \`children\`.
+2. **Рекурсивный подсчёт файлов**:
+\`\`\`jsx
+const countFiles = (node) =>
+  isFolder(node) ? node.children.reduce((sum, child) => sum + countFiles(child), 0) : 1;
+\`\`\`
+3. **Компонент рендерит сам себя** для дочерних узлов:
+\`\`\`jsx
+{isOpen && (
+  <ul>
+    {node.children.map((child) => (
+      <TreeNode key={child.name} node={child} depth={depth + 1} />
+    ))}
+  </ul>
+)}
+\`\`\`
+4. **Состояние раскрытия** хранится в каждой папке (\`useState(false)\`).
+5. **База рекурсии** — файл или свёрнутая папка: дальше рендер не идёт.
+
+### Ключевые выводы:
+- Рекурсивные компоненты — стандартный ответ для деревьев, меню и вложенных комментариев.
+- Свёрнутые папки не рендерят детей — это бесплатная оптимизация для больших деревьев.
+- \`aria-expanded\` на кнопке папки сообщает скринридеру её состояние.`,
+
+  22: `### Суть задачи
+Подгружать посты постранично, когда пользователь докручивает до конца списка.
+
+### Пошаговые этапы решения:
+1. **Маячок** — пустой элемент в конце списка, за которым следит \`IntersectionObserver\`:
+\`\`\`jsx
+const observer = new IntersectionObserver(([entry]) => {
+  if (entry.isIntersecting) loadPage(page);
+});
+observer.observe(sentinelRef.current);
+return () => observer.disconnect();
+\`\`\`
+2. **Защита от дублей** — флаг загрузки в ref: он нужен синхронно и не должен вызывать рендер.
+\`\`\`jsx
+if (isLoadingRef.current) return;
+isLoadingRef.current = true;
+\`\`\`
+3. **Конец данных**: если пришло меньше \`PAGE_SIZE\` записей, \`hasMore = false\`, маячок убирается, наблюдение прекращается.
+4. **Ошибка** показывается с кнопкой «Повторить»; пока есть ошибка, observer не создаётся.
+
+### Ключевые выводы:
+- IntersectionObserver эффективнее обработчика scroll: браузер сам считает пересечения.
+- Эффект пересоздаёт наблюдатель при смене страницы — если маячок всё ещё виден, загрузится следующая страница, и экран заполнится.
+- В реальных проектах длинные списки дополняют виртуализацией.`,
+
+  23: `### Суть задачи
+Написать переиспользуемый хук загрузки данных с отменой устаревших запросов.
+
+### Пошаговые этапы решения:
+1. **Состояния**: \`data\`, \`error\`, \`isLoading\`.
+2. **AbortController** в эффекте: смена \`url\` или размонтирование отменяют текущий запрос.
+\`\`\`jsx
+useEffect(() => {
+  const controller = new AbortController();
+  // fetch(url, { signal: controller.signal }) ...
+  return () => controller.abort();
+}, [url, reloadKey]);
+\`\`\`
+3. **Отмена — не ошибка**:
+\`\`\`jsx
+if (err.name !== "AbortError") setError(err.message);
+\`\`\`
+4. **!res.ok** превращаем в ошибку: \`fetch\` не отклоняет промис на 404 и 500.
+5. **refetch** меняет служебный счётчик \`reloadKey\` — эффект перезапускается без смены url.
+
+### Ключевые выводы:
+- AbortController решает и race condition, и утечки после размонтирования.
+- Хук инкапсулирует механику, а компонент описывает только UI.
+- В продакшене для серверного состояния обычно берут TanStack Query: кеш, повторы, дедупликация.`,
+
+  24: `### Суть задачи
+Не дать ошибке в одном виджете уронить всё приложение.
+
+### Пошаговые этапы решения:
+1. **Классовый компонент** — у хуков нет аналога:
+\`\`\`jsx
+class ErrorBoundary extends Component {
+  state = { error: null };
+  static getDerivedStateFromError(error) {
+    return { error };
+  }
+  componentDidCatch(error, info) {
+    console.error(error, info.componentStack);
+  }
+  reset = () => this.setState({ error: null });
+  render() {
+    if (this.state.error) return <Fallback error={this.state.error} onReset={this.reset} />;
+    return this.props.children;
+  }
+}
+\`\`\`
+2. **Изоляция**: каждый виджет в своей границе — падение одного не трогает другие.
+3. **Сброс**: после \`reset\` поддерево монтируется заново с чистым состоянием.
+
+### Что Error Boundary НЕ ловит:
+- ошибки в обработчиках событий (они выполняются вне рендера — нужен try/catch);
+- асинхронный код: setTimeout, промисы вне рендера;
+- ошибки в самом Error Boundary и при SSR.
+
+### Ключевые выводы:
+- \`getDerivedStateFromError\` переключает UI на fallback, \`componentDidCatch\` логирует.
+- Ставьте границы вокруг независимых зон: виджетов, маршрутов, сторонних компонентов.
+- В проектах часто используют библиотеку \`react-error-boundary\`.`,
+
+  25: `### Суть задачи
+Загрузить тяжёлый компонент по требованию и прочитать данные через \`use()\` вместо \`useEffect\` + \`isLoading\`.
+
+### Пошаговые этапы решения:
+1. **Code splitting** через \`lazy\` на уровне модуля:
+\`\`\`jsx
+const LazyChart = lazy(() => import("./Chart")); // в задаче имитация: lazy(loadChartModule)
+\`\`\`
+2. **Suspense** показывает fallback, пока чанк загружается:
+\`\`\`jsx
+<Suspense fallback={<p>Загрузка графика...</p>}>
+  <LazyChart />
+</Suspense>
+\`\`\`
+3. **use()** читает промис. Пока он не выполнен, ближайший Suspense показывает fallback:
+\`\`\`jsx
+const profilePromise = fetchProfile(); // вне рендера!
+
+const Profile = ({ profilePromise }) => {
+  const profile = use(profilePromise);
+  return <p>{profile.name}</p>;
+};
+\`\`\`
+
+### Типичные ошибки:
+- \`lazy\` внутри компонента — новый тип на каждый рендер, потеря состояния.
+- \`use(fetchProfile())\` в теле компонента — новый промис на каждый рендер, бесконечная приостановка.
+
+### Ключевые выводы:
+- Suspense декларативно описывает состояние загрузки, а ошибки уходят в Error Boundary.
+- Промисы для \`use()\` создаются вне рендера: в роутере, фреймворке, Server Component или кеше.`,
+
+  26: `### Суть задачи
+Переписать форму комментария на Actions из React 19, убрав ручное управление \`isPending\` и \`error\`.
+
+### Пошаговые этапы решения:
+1. **useActionState** — action получает предыдущее состояние и \`FormData\`, возвращает новое:
+\`\`\`jsx
+const [state, formAction] = useActionState(async (prevState, formData) => {
+  const text = String(formData.get("text") ?? "").trim();
+  if (!text) return { ...prevState, error: "Комментарий не может быть пустым" };
+  addOptimistic({ id: \`temp-\${crypto.randomUUID()}\`, text, isSending: true });
+  try {
+    const comment = await postComment(text);
+    return { comments: [...prevState.comments, comment], error: null };
+  } catch (err) {
+    return { ...prevState, error: err.message };
+  }
+}, INITIAL_STATE);
+\`\`\`
+2. **useOptimistic** — комментарий виден сразу, пока action выполняется:
+\`\`\`jsx
+const [optimisticComments, addOptimistic] = useOptimistic(
+  state.comments,
+  (current, newComment) => [...current, newComment]
+);
+\`\`\`
+После завершения action React возвращает список к \`state.comments\`. При ошибке оптимистичный комментарий исчезает сам.
+3. **useFormStatus** — кнопка узнаёт статус родительской формы без пропсов:
+\`\`\`jsx
+const SubmitButton = () => {
+  const { pending } = useFormStatus();
+  return <button disabled={pending}>{pending ? "Отправка..." : "Отправить"}</button>;
+};
+\`\`\`
+4. **<form action={formAction}>** — после завершения action React сбрасывает неуправляемые поля.
+
+### Ключевые выводы:
+- Actions убирают шаблонный код: pending, ошибки и оптимистичные обновления.
+- \`useFormStatus\` работает только в дочернем компоненте формы.
+- Эта же модель используется для Server Actions в Next.js.`,
+
+  a6: `### Суть задачи
+Убрать prop drilling корзины, построив глобальное состояние на Context + useReducer.
+
+### Пошаговые этапы решения:
+1. **Reducer** с действиями \`add\` (с увеличением quantity), \`remove\`, \`clear\`.
+2. **Два контекста** — данные и dispatch:
+\`\`\`jsx
+const CartProvider = ({ children }) => {
+  const [items, dispatch] = useReducer(cartReducer, []);
+  return (
+    <CartDispatchContext value={dispatch}>
+      <CartStateContext value={items}>{children}</CartStateContext>
+    </CartDispatchContext>
+  );
+};
+\`\`\`
+3. **Хуки доступа** с проверкой провайдера: \`useCart()\` и \`useCartDispatch()\`.
+4. **Компоненты** читают только нужное: \`ProductList\` берёт лишь \`dispatch\` и не перерисовывается при изменении корзины.
+
+### Ключевые выводы:
+- \`dispatch\` стабилен — его отдельный контекст не вызывает ререндеров.
+- Это «Redux без библиотеки»: подходит для средних по размеру и частоте обновлений состояний.
+- При частых обновлениях большого состояния нужен стор с селекторами.`,
+
+  a7: `### Суть задачи
+Создать стор на Zustand и подписать компоненты через селекторы без лишних ререндеров.
+
+### Пошаговые этапы решения:
+1. **Стор** — состояние и действия в одном месте:
+\`\`\`jsx
+export const useTodoStore = create((set) => ({
+  todos: [],
+  filter: "all",
+  addTodo: (text) => set((state) => ({ todos: [...state.todos, { id: crypto.randomUUID(), text, done: false }] })),
+  toggleTodo: (id) => set((state) => ({
+    todos: state.todos.map((t) => (t.id === id ? { ...t, done: !t.done } : t)),
+  })),
+  setFilter: (filter) => set({ filter }),
+}));
+\`\`\`
+2. **Селекторы**: каждый компонент берёт только нужное.
+\`\`\`jsx
+const filter = useTodoStore((state) => state.filter);
+const activeCount = useTodoStore((state) => state.todos.filter((t) => !t.done).length);
+\`\`\`
+3. **Производные данные** (отфильтрованный список) вычисляются в компоненте.
+
+### Ключевые выводы:
+- Zustand сравнивает результат селектора через \`Object.is\`: примитив — ререндер только при изменении значения.
+- Селектор, возвращающий новый объект, вызывает лишние ререндеры — используйте \`useShallow\` или отдельные селекторы.
+- Провайдер не нужен, а действия в сторе стабильны.`,
+
+  a8: `### Суть задачи
+Безопасно подписаться на внешние источники данных через \`useSyncExternalStore\`.
+
+### Пошаговые этапы решения:
+1. **subscribe** вне компонента — стабильная ссылка:
+\`\`\`jsx
+const subscribeOnline = (callback) => {
+  window.addEventListener("online", callback);
+  window.addEventListener("offline", callback);
+  return () => {
+    window.removeEventListener("online", callback);
+    window.removeEventListener("offline", callback);
+  };
+};
+
+const useOnlineStatus = () => useSyncExternalStore(subscribeOnline, () => navigator.onLine, () => true);
+\`\`\`
+2. **Внешний стор** — значение, \`Set\` подписчиков и уведомление при изменении:
+\`\`\`jsx
+const createCounterStore = () => {
+  let count = 0;
+  const listeners = new Set();
+  return {
+    getState: () => count,
+    increment: () => { count += 1; listeners.forEach((l) => l()); },
+    subscribe: (l) => { listeners.add(l); return () => listeners.delete(l); },
+  };
+};
+\`\`\`
+3. **Хук**: \`useSyncExternalStore(store.subscribe, store.getState)\`.
+
+### Ключевые выводы:
+- Хук защищает от tearing — рассинхронизации UI в конкурентном рендере.
+- \`getSnapshot\` возвращает примитив или ту же ссылку, иначе получится бесконечный цикл ререндеров.
+- На этом хуке построены Zustand, Redux и другие библиотеки состояния.`,
+
+  a9: `### Суть задачи
+Предсказать логи, число рендеров и итоговое значение после клика.
+
+### Разбор по шагам:
+1. Монтирование: **render 0**.
+2. Обработчик клика: \`count\` — константа рендера, равная 0. Оба \`setCount(count + 1)\` ставят значение 1. \`console.log\` выводит **handler 0** — переменная не меняется сразу.
+3. Обработчик завершился, обновления объединены в один рендер: **render 1**.
+4. Срабатывает \`setTimeout\`: колбэк замкнул \`count = 0\`, поэтому **timeout 0**. Функциональные обновления берут актуальное значение из очереди: 1 → 2 → 3.
+5. В React 18+ батчинг автоматический и в таймерах: **render 3**.
+
+### Ответ:
+\`\`\`
+render 0
+handler 0
+render 1
+timeout 0
+render 3
+\`\`\`
+После клика — 2 рендера, на экране \`count: 3\`.
+
+### Ключевые выводы:
+- State — снимок рендера: \`setState\` не меняет переменную в текущем вызове.
+- \`setCount(count + 1)\` дважды подряд даёт +1, \`setCount(prev => prev + 1)\` — +2.
+- С React 18 батчинг работает в обработчиках, таймерах и промисах; в React 17 внутри setTimeout было бы два отдельных рендера.`,
+
+  a10: `### Суть задачи
+Определить, какие компоненты перерисуются после изменения состояния \`Wrapper\`.
+
+### Разбор:
+| Компонент | Рендер? | Причина |
+|---|---|---|
+| Wrapper | ✅ | изменилось его состояние |
+| Plain | ✅ | обычный ребёнок рендерится вместе с родителем |
+| Memoized | ❌ | memo, пропсы не изменились |
+| MemoizedWithProps | ✅ | \`["a", "b"]\` — новый массив на каждом рендере |
+| FromChildren | ❌ | элемент создан в \`App\`, который не рендерился |
+
+### Ответ:
+\`\`\`
+Wrapper
+Plain
+MemoizedWithProps
+\`\`\`
+
+### Ключевые выводы:
+- Компонент рендерится, если изменились его состояние или контекст либо перерисовался родитель, который его **создал**.
+- \`children\` — способ «поднять» поддерево выше и вывести его из-под ререндеров.
+- memo сравнивает пропсы поверхностно: inline-массивы и объекты его ломают.
+- React Compiler автоматически мемоизирует такие значения и JSX.`,
+
+  a11: `### Суть задачи
+Объяснить, почему отложенный \`alert\` показывает старое значение, и исправить это.
+
+### 🔍 Разбор:
+Каждый рендер — отдельный вызов функции \`DelayedAlert\` со своей константой \`count\`. Пользователь нажал «Показать» в рендере, где \`count = 0\`. Колбэк \`setTimeout\` замкнул именно этот \`count\`. Три клика «+1» создали новые рендеры и новые замыкания, но таймер держит старое. **Ответ: «Счётчик: 0».**
+
+### 🛠 Исправление — ref как «коробка», общая для всех рендеров:
+\`\`\`jsx
+const countRef = useRef(count);
+useEffect(() => {
+  countRef.current = count;
+}, [count]);
+
+const showLater = () => {
+  setTimeout(() => alert(\`Счётчик: \${countRef.current}\`), 3000);
+};
+\`\`\`
+
+### Ключевые выводы:
+- Устаревшее значение — не баг React, а свойство замыканий. Иногда это нужное поведение: например, отправить сообщение собеседнику, выбранному в момент клика.
+- Для обновления состояния достаточно \`setCount(prev => prev + 1)\`; для чтения актуального значения в отложенном коде — ref.
+- В эффектах ту же задачу решает \`useEffectEvent\` (React 19.2+).`,
+
+  a12: `### Суть задачи
+Перевести загрузку и изменение серверных данных с ручных \`useEffect\` + \`useState\` на TanStack Query.
+
+### 🔍 Проблемы исходного кода:
+- \`TodoList\` и \`TodoCount\` загружают одно и то же — два запроса вместо одного.
+- После добавления задачи \`TodoCount\` показывает устаревшее число: у каждого компонента своя копия данных.
+- Загрузку, ошибки, повторный запрос и блокировку кнопки приходится писать вручную.
+
+### Пошаговые этапы решения:
+1. **QueryClient на уровне модуля** и провайдер:
+\`\`\`jsx
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { staleTime: 30_000 } },
+});
+
+<QueryClientProvider client={queryClient}>
+  <TodoCount />
+  <TodoList />
+</QueryClientProvider>
+\`\`\`
+2. **Один хук — один ключ**: оба компонента читают общий кеш, запрос уходит один раз.
+\`\`\`jsx
+const useTodos = () => useQuery({ queryKey: ['todos'], queryFn: api.getTodos });
+\`\`\`
+3. **Мутация с инвалидацией**:
+\`\`\`jsx
+const queryClient = useQueryClient();
+const addTodo = useMutation({
+  mutationFn: api.addTodo,
+  onSuccess: () => queryClient.invalidateQueries({ queryKey: ['todos'] }),
+});
+
+<button disabled={addTodo.isPending}>Добавить</button>
+{addTodo.isError && <p role="alert">{addTodo.error.message}</p>}
+\`\`\`
+После инвалидации список перезапрашивается, и обновляются оба компонента.
+
+### staleTime и gcTime:
+- **staleTime** — сколько данные считаются свежими. Пока они свежие, новые подписчики получают кеш без запроса. По умолчанию 0: данные сразу устаревшие и перезапрашиваются при монтировании и фокусе окна.
+- **gcTime** — сколько неиспользуемые данные хранятся в кеше после размонтирования всех подписчиков (по умолчанию 5 минут).
+
+### 💡 Ключевые выводы:
+- Серверное состояние — это кеш, а не локальное состояние. Не копируйте его в \`useState\` или клиентские сторы.
+- \`queryKey\` — адрес данных в кеше: одинаковый ключ означает общие данные и дедупликацию запросов.
+- \`invalidateQueries\` — простой и надёжный способ синхронизации после мутаций. \`setQueryData\` нужен для ручных и оптимистичных обновлений.`,
 
   js_while_1: `### Суть задачи
 Изучение базовой конструкции цикла \`while\` в JavaScript, принципа проверки предусловия перед каждой итерацией и создание бесконечного цикла \`while (true) {}\`.

@@ -3,7 +3,7 @@
  * Complete GFM parser with custom code blocks, callouts, tables, and typography.
  */
 
-import { marked } from "marked";
+import { marked, type Token, type Tokens, type TokensList } from "marked";
 import { highlightCode } from "../code-editor/codeHighlighter";
 
 const escapeHtmlChar = (str: string): string =>
@@ -105,7 +105,8 @@ export function normalizeMarkdown(markdownText: string): string {
 
   return (
     markdownText
-      .replace(/\p{Extended_Pictographic}/gu, "")
+      // Эмодзи вместе с селектором варианта (U+FE0F), иначе в заголовке остаётся невидимый символ
+      .replace(/\p{Extended_Pictographic}\uFE0F?/gu, "")
       // Удаление битых юникод-символов и старых иконок
       .replace(/\uFFFD\uFE0F?|\uFFFD/g, "")
       .replace(/💡\s*/g, "")
@@ -138,11 +139,100 @@ export function normalizeMarkdown(markdownText: string): string {
   );
 }
 
+const toTokensList = (tokens: Token[], links: TokensList["links"]): TokensList =>
+  Object.assign(tokens, { links });
+
+const isList = (token: Token): token is Tokens.List => token.type === "list";
+
+const hasDirectCode = (item: Tokens.ListItem): boolean =>
+  item.tokens.some((token) => token.type === "code");
+
+/**
+ * Код внутри пункта списка рендерится отдельным блоком (CodeViewer), поэтому сам список
+ * приходится разрезать. Резать готовый HTML нельзя: получаются незакрытый <ol><li> и
+ * «осиротевшие» <li> без родителя — браузер рисует их маркером-точкой за пределами отступа.
+ * Режем на уровне токенов: каждый кусок — валидный список, нумерация сохраняется через start.
+ */
+const splitListWithCode = (
+  list: Tokens.List,
+  links: TokensList["links"],
+  pushHtml: (html: string) => void
+): void => {
+  const firstNumber = list.ordered && typeof list.start === "number" ? list.start : 1;
+  const renderList = (items: Tokens.ListItem[], start: number): string =>
+    marked.parser(toTokensList([{ ...list, start, items }], links));
+
+  let pendingItems: Tokens.ListItem[] = [];
+  let pendingStart = firstNumber;
+  const flushPendingItems = (): void => {
+    if (pendingItems.length > 0) pushHtml(renderList(pendingItems, pendingStart));
+    pendingItems = [];
+  };
+
+  list.items.forEach((item, index) => {
+    const itemNumber = firstNumber + index;
+
+    if (!hasDirectCode(item)) {
+      if (pendingItems.length === 0) pendingStart = itemNumber;
+      pendingItems.push(item);
+      return;
+    }
+
+    flushPendingItems();
+
+    // Пункт с кодом: текст до кода — пункт списка со своим номером, код — отдельный блок,
+    // текст после кода — продолжение пункта с тем же отступом, что у содержимого списка
+    let segment: Token[] = [];
+    let isFirstSegment = true;
+    const flushSegment = (): void => {
+      if (segment.length === 0) return;
+      pushHtml(
+        isFirstSegment
+          ? renderList([{ ...item, tokens: segment }], itemNumber)
+          : `<div class="md-list-continuation">${marked.parser(toTokensList(segment, links))}</div>`
+      );
+      segment = [];
+    };
+
+    item.tokens.forEach((token) => {
+      if (token.type !== "code") {
+        segment.push(token);
+        return;
+      }
+      flushSegment();
+      isFirstSegment = false;
+      pushHtml(marked.parser(toTokensList([token], links)));
+    });
+    flushSegment();
+  });
+
+  flushPendingItems();
+};
+
 export function parseMarkdownBlocks(markdownText: string): MarkdownBlock[] {
   if (!markdownText) return [];
 
   const normalizedText = normalizeMarkdown(markdownText);
-  const fullHtml = marked.parse(normalizedText) as string;
+  const tokens = marked.lexer(normalizedText);
+
+  const htmlParts: string[] = [];
+  let buffer: Token[] = [];
+  const flushBuffer = (): void => {
+    if (buffer.length > 0) htmlParts.push(marked.parser(toTokensList(buffer, tokens.links)));
+    buffer = [];
+  };
+
+  tokens.forEach((token) => {
+    if (isList(token) && token.items.some(hasDirectCode)) {
+      flushBuffer();
+      splitListWithCode(token, tokens.links, (html) => htmlParts.push(html));
+    } else {
+      buffer.push(token);
+    }
+  });
+  flushBuffer();
+
+  const fullHtml = htmlParts.join("");
 
   const blocks: MarkdownBlock[] = [];
   const parts = fullHtml.split("__MD_CODE_BLOCK_START__");

@@ -168,6 +168,12 @@
   line-height: inherit;
 }
 
+/* Продолжение пункта списка после блока кода: выравнивается по тексту пункта
+   (padding-left списка + padding-left пункта) */
+.markdownContainer :global(.md-list-continuation) {
+  padding-left: var(--space-7);
+}
+
 /* Blockquotes */
 .markdownContainer blockquote,
 :global(.quote-block) {

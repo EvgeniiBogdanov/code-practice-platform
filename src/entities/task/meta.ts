@@ -2,3 +2,5 @@
 export type { SectionType, Task, TaskDifficulty } from "./types";
 export * from "./model/curriculumManifest";
 export * from "./model/sectionsConfig";
+export * from "./model/reactGroups";
+export * from "./lib/getDifficultyTone";

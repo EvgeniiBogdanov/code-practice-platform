@@ -1,7 +1,7 @@
 {
   "name": "Code-Practice-Platform",
   "private": true,
-  "version": "2.4.23",
+  "version": "2.4.24",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -24,6 +24,7 @@
     "@nivo/core": "^0.99.0",
     "@nivo/pie": "^0.99.0",
     "@reduxjs/toolkit": "^2.13.0",
+    "@tanstack/react-query": "^5.104.1",
     "@tanstack/react-router": "^1.170.41",
     "@tanstack/react-router-devtools": "^1.167.2",
     "@xterm/addon-fit": "^0.11.0",

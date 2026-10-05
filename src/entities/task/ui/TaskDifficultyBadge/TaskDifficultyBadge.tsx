@@ -10,9 +10,9 @@ export interface TaskDifficultyBadgeProps {
 const DIFFICULTY_LABELS: Record<string, string> = {
   "warm-up": "Разминка",
   refactoring: "Рефакторинг",
+  junior: "Junior",
   middle: "Middle",
-  strong: "Strong",
-  ts: "TypeScript",
+  senior: "Senior",
   easy: "Лёгкая",
   medium: "Средняя",
   hard: "Сложная",
@@ -22,17 +22,16 @@ const getBadgeVariant = (diff: string): BadgeVariant => {
   switch (diff) {
     case "easy":
     case "warm-up":
-    case "middle":
+    case "junior":
       return "easy";
     case "medium":
+    case "middle":
       return "medium";
-    case "refactoring":
-    case "ts":
-      return "blue";
     case "hard":
+    case "senior":
       return "hard";
-    case "strong":
-      return "purple";
+    case "refactoring":
+      return "blue";
     default:
       return "gray";
   }
