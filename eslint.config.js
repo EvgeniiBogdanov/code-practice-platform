@@ -3,7 +3,7 @@ import tseslint from "typescript-eslint";
 import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 import reactRefreshPlugin from "eslint-plugin-react-refresh";
-import fsdPlugin from "@conarti/eslint-plugin-feature-sliced";
+import featureSliced from "@conarti/eslint-plugin-feature-sliced";
 import prettierConfig from "eslint-config-prettier";
 import globals from "globals";
 
@@ -44,7 +44,6 @@ export default tseslint.config(
       react: reactPlugin,
       "react-hooks": reactHooksPlugin,
       "react-refresh": reactRefreshPlugin,
-      "@conarti/feature-sliced": fsdPlugin,
     },
     languageOptions: {
       ecmaVersion: "latest",
@@ -87,22 +86,6 @@ export default tseslint.config(
       "@typescript-eslint/ban-ts-comment": "off",
       "@typescript-eslint/no-empty-object-type": "off",
 
-      // --- Feature-Sliced Design (FSD) Architectural Rules ---
-      "@conarti/feature-sliced/layers-slices": [
-        "error",
-        {
-          allowTypeImports: true,
-          ignoreInFilesPatterns: ["**/src/routes/**", "**/src/app/**"],
-        },
-      ],
-      "@conarti/feature-sliced/public-api": [
-        "error",
-        {
-          ignoreInFilesPatterns: ["**/src/app/**"],
-        },
-      ],
-      "@conarti/feature-sliced/absolute-relative": "error",
-
       // --- Project Size & Style Standards ---
       "max-lines": [
         "warn",
@@ -119,6 +102,22 @@ export default tseslint.config(
     },
   },
 
-  // 6. Prettier integration (turns off conflicting ESLint rules)
+  // 6. Feature-Sliced Design (FSD) Architectural Rules
+  {
+    ...featureSliced({
+      layersSlices: {
+        allowTypeImports: true,
+        ignoreFiles: ["**/src/routes/**", "**/src/app/**"],
+      },
+      publicApi: {
+        ignoreFiles: ["**/src/app/**"],
+      },
+      noCrossSegmentReexport: false,
+      sortImports: false,
+    }),
+    files: ["src/**/*.{ts,tsx,js,jsx}"],
+  },
+
+  // 7. Prettier integration (turns off conflicting ESLint rules)
   prettierConfig
 );
