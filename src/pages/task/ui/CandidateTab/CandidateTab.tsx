@@ -68,6 +68,17 @@ export const CandidateTab = memo(({ task, className }: CandidateTabProps): React
 
   const [viewMode, setViewMode] = useState<ViewMode>("code");
 
+  // Reference ("Эталон") interface the fullscreen preview can switch to
+  const solutionFiles = useMemo(() => getTaskFiles(task, "solution"), [task]);
+  const hasSolutionReference = solutionFiles.some((file) => Boolean(file.code?.trim()));
+  const [previewTarget, setPreviewTarget] = useState<"candidate" | "solution">("candidate");
+  const isReferencePreview = previewTarget === "solution";
+  const previewFiles = isReferencePreview ? solutionFiles : files;
+  const previewActiveFileIdx = Math.min(activeFileIdx, Math.max(0, previewFiles.length - 1));
+  const previewCode = isReferencePreview
+    ? solutionFiles[previewActiveFileIdx]?.code || ""
+    : activeFile.code;
+
   // JS Runner state
   const [consoleLogs, setConsoleLogs] = useState<NodeRunnerLogEntry[]>([]);
   const [isRunning, setIsRunning] = useState(false);
@@ -82,6 +93,7 @@ export const CandidateTab = memo(({ task, className }: CandidateTabProps): React
     setActiveFileIdx(0);
     setFiles(initialFiles);
     setViewMode("code");
+    setPreviewTarget("candidate");
     setConsoleLogs([]);
     setIsRunning(false);
     setLastExecution(null);
@@ -319,11 +331,14 @@ export const CandidateTab = memo(({ task, className }: CandidateTabProps): React
                       isFullscreen && hasVisualComponent ? (
                         <ReactLivePreview
                           task={task}
-                          files={files}
-                          activeFileIdx={activeFileIdx}
-                          currentCode={activeFile.code}
-                          storagePrefix="cand"
+                          files={previewFiles}
+                          activeFileIdx={previewActiveFileIdx}
+                          currentCode={previewCode}
+                          storagePrefix={isReferencePreview ? "sol" : "cand"}
                           fullHeight
+                          previewTarget={previewTarget}
+                          onPreviewTargetChange={setPreviewTarget}
+                          hasSolutionReference={hasSolutionReference}
                         />
                       ) : null
                     }

@@ -60,6 +60,7 @@
   user-select: none;
   gap: 12px;
   box-sizing: border-box;
+  container-type: inline-size;
 }
 
 .left {
@@ -114,7 +115,7 @@
   border: 1px solid var(--border-color);
   flex: 1;
   max-width: 440px;
-  min-width: 180px;
+  min-width: 0;
   box-sizing: border-box;
 }
 
@@ -165,6 +166,7 @@
 
 .right {
   min-width: 50px;
+  flex-shrink: 0;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -175,9 +177,26 @@
   align-self: center !important;
 }
 
-/* Body */
+/* Narrow preview pane: the reference toggle has priority over decorative header parts */
+@container (max-width: 460px) {
+  .dots {
+    display: none;
+  }
+
+  .left {
+    min-width: 0;
+  }
+}
+
+@container (max-width: 320px) {
+  .addressContent {
+    display: none;
+  }
+}
+
+/* Body: same background as the sandbox document, so a remounting iframe does not flash */
 .body {
-  background: var(--bg-card);
+  background: var(--bg-deep);
   color: var(--text-main);
   min-height: 260px;
   height: auto;
@@ -189,6 +208,10 @@
   box-sizing: border-box;
   padding: 0;
   overflow: visible;
+}
+
+[data-theme="light"] .body {
+  background: var(--bg-card);
 }
 
 .iframe {
