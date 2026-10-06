@@ -8,10 +8,10 @@ const FilteredList = () => {
 
   // Фильтрация 10 000 строк пересчитывается только при смене query.
   // Клик по теме вызывает рендер, но берёт результат из кеша
-  const filteredUsers = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase();
-    return USERS.filter((user) => user.toLowerCase().includes(normalizedQuery));
-  }, [query]);
+  const filteredUsers = useMemo(
+    () => USERS.filter((user) => user.toLowerCase().includes(query.toLowerCase())),
+    [query]
+  );
 
   return (
     <div>
