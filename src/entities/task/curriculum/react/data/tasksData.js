@@ -739,7 +739,7 @@ export const WARMUP_TASKS = [
     },
   {
       id: "w9",
-      title: "9. Отмена сабмита формы (preventDefault)",
+      title: "9. Отправка формы поиска",
       desc: "Исправьте форму поиска так, чтобы при сабмите или нажатии Enter не происходила перезагрузка страницы браузера.",
       candidate: WarmupCandidate9,
       rawCandidate: WarmupCandidate9Raw,
