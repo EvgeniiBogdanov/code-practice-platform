@@ -4,7 +4,7 @@ import "@testing-library/jest-dom/vitest";
 import { EditorToolbar } from "./EditorToolbar";
 
 describe("EditorToolbar", () => {
-  it("renders linter switch in disabled state when isLinterEnabled is false", () => {
+  it("renders linter button in inactive state when isLinterEnabled is false", () => {
     const handleToggle = vi.fn();
     render(
       <EditorToolbar
@@ -16,15 +16,15 @@ describe("EditorToolbar", () => {
       />
     );
 
-    const switchEl = screen.getByRole("switch", { name: "Проверка ошибок" });
-    expect(switchEl).toBeInTheDocument();
-    expect(switchEl).not.toBeChecked();
+    const linterBtn = screen.getByRole("button", { name: "Проверка ошибок" });
+    expect(linterBtn).toBeInTheDocument();
+    expect(linterBtn).toHaveAttribute("aria-pressed", "false");
 
-    fireEvent.click(switchEl);
+    fireEvent.click(linterBtn);
     expect(handleToggle).toHaveBeenCalledWith(true);
   });
 
-  it("renders linter switch in enabled state when isLinterEnabled is true", () => {
+  it("renders linter button in active state when isLinterEnabled is true", () => {
     const handleToggle = vi.fn();
     render(
       <EditorToolbar
@@ -36,11 +36,11 @@ describe("EditorToolbar", () => {
       />
     );
 
-    const switchEl = screen.getByRole("switch", { name: "Проверка ошибок" });
-    expect(switchEl).toBeInTheDocument();
-    expect(switchEl).toBeChecked();
+    const linterBtn = screen.getByRole("button", { name: "Проверка ошибок" });
+    expect(linterBtn).toBeInTheDocument();
+    expect(linterBtn).toHaveAttribute("aria-pressed", "true");
 
-    fireEvent.click(switchEl);
+    fireEvent.click(linterBtn);
     expect(handleToggle).toHaveBeenCalledWith(false);
   });
 

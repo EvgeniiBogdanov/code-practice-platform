@@ -14,7 +14,7 @@ import {
   FileCode,
 } from "lucide-react";
 import { clsx } from "clsx";
-import { Tooltip, CodeButton, Switch } from "@/shared/ui";
+import { Tooltip, CodeButton, LintIcon } from "@/shared/ui";
 import { TaskFile } from "@/shared/lib/code-editor";
 import { useCopy } from "@/shared/lib/hooks";
 import { getFileIconKind, type FileIconKind } from "../../lib/fileIcon";
@@ -147,14 +147,13 @@ export const EditorToolbar = memo(
               content={isLinterEnabled ? "Выключить проверку ошибок" : "Включить проверку ошибок"}
               side="bottom"
             >
-              <div className={styles.linterSwitchWrapper}>
-                <Switch
-                  size="sm"
-                  checked={isLinterEnabled}
-                  onChange={onToggleLinter}
-                  aria-label="Проверка ошибок"
-                />
-              </div>
+              <CodeButton
+                icon={<LintIcon size={14} />}
+                isActive={isLinterEnabled}
+                onClick={() => onToggleLinter(!isLinterEnabled)}
+                aria-label="Проверка ошибок"
+                aria-pressed={isLinterEnabled}
+              />
             </Tooltip>
           )}
 
