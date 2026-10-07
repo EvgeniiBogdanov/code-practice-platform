@@ -14,7 +14,6 @@
 
 [data-theme="light"] .accordionCard {
   background: var(--bg-card);
-  border: 1px solid var(--border-color);
   color: var(--text-main);
 }
 

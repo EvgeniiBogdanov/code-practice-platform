@@ -97,6 +97,7 @@
 [data-theme="light"] .accordionCard {
   background: var(--accent-green-bg);
   border-color: var(--accent-green-border);
+  border-left-color: var(--accent-green);
 }
 
 .accordionHeader {
@@ -149,6 +150,7 @@
 [data-theme="light"] .questionAccordionCard {
   background: var(--bg-subtle);
   border-color: var(--border-color, rgba(55, 53, 47, 0.12));
+  border-left-color: var(--accent-purple);
 }
 
 .questionAccordionHeader {
