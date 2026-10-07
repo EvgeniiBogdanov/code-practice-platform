@@ -32,6 +32,18 @@ import RemoveDuplicatesCandidateRaw from "../tasks/1_two_pointers/5_RemoveDuplic
 import RemoveDuplicatesSolutionRaw from "../solutions/1_two_pointers/5_RemoveDuplicates.js?raw";
 import RemoveDuplicatesExplanationRaw from "../explanations/1_two_pointers/5_RemoveDuplicates.md?raw";
 
+import MaximizeDistanceToClosestPersonCandidateRaw from "../tasks/1_two_pointers/8_MaximizeDistanceToClosestPerson.js?raw";
+import MaximizeDistanceToClosestPersonSolutionRaw from "../solutions/1_two_pointers/8_MaximizeDistanceToClosestPerson.js?raw";
+import MaximizeDistanceToClosestPersonExplanationRaw from "../explanations/1_two_pointers/8_MaximizeDistanceToClosestPerson.md?raw";
+
+import SymmetricDifferenceCandidateRaw from "../tasks/1_two_pointers/9_SymmetricDifference.js?raw";
+import SymmetricDifferenceSolutionRaw from "../solutions/1_two_pointers/9_SymmetricDifference.js?raw";
+import SymmetricDifferenceExplanationRaw from "../explanations/1_two_pointers/9_SymmetricDifference.md?raw";
+
+import LongestPalindromicSubstringCandidateRaw from "../tasks/1_two_pointers/10_LongestPalindromicSubstring.js?raw";
+import LongestPalindromicSubstringSolutionRaw from "../solutions/1_two_pointers/10_LongestPalindromicSubstring.js?raw";
+import LongestPalindromicSubstringExplanationRaw from "../explanations/1_two_pointers/10_LongestPalindromicSubstring.md?raw";
+
 import TwoSumCandidateRaw from "../tasks/2_hash_map/1_TwoSum.js?raw";
 import TwoSumSolutionRaw from "../solutions/2_hash_map/1_TwoSum.js?raw";
 import TwoSumExplanationRaw from "../explanations/2_hash_map/1_TwoSum.md?raw";
@@ -47,6 +59,9 @@ import ContainsDuplicateExplanationRaw from "../explanations/2_hash_map/3_Contai
 import GroupAnagramsCandidateRaw from "../tasks/2_hash_map/4_GroupAnagrams.js?raw";
 import GroupAnagramsSolutionRaw from "../solutions/2_hash_map/4_GroupAnagrams.js?raw";
 import GroupAnagramsExplanationRaw from "../explanations/2_hash_map/4_GroupAnagrams.md?raw";
+import FindDisappearedNumbersCandidateRaw from "../tasks/2_hash_map/5_FindDisappearedNumbers.js?raw";
+import FindDisappearedNumbersSolutionRaw from "../solutions/2_hash_map/5_FindDisappearedNumbers.js?raw";
+import FindDisappearedNumbersExplanationRaw from "../explanations/2_hash_map/5_FindDisappearedNumbers.md?raw";
 
 import LongestSubstringCandidateRaw from "../tasks/3_sliding_window/1_LongestSubstring.js?raw";
 import LongestSubstringSolutionRaw from "../solutions/3_sliding_window/1_LongestSubstring.js?raw";
@@ -99,6 +114,14 @@ import MinStackExplanationRaw from "../explanations/6_stack/2_MinStack.md?raw";
 import DailyTemperaturesCandidateRaw from "../tasks/6_stack/3_DailyTemperatures.js?raw";
 import DailyTemperaturesSolutionRaw from "../solutions/6_stack/3_DailyTemperatures.js?raw";
 import DailyTemperaturesExplanationRaw from "../explanations/6_stack/3_DailyTemperatures.md?raw";
+
+import SimplifyPathCandidateRaw from "../tasks/6_stack/5_SimplifyPath.js?raw";
+import SimplifyPathSolutionRaw from "../solutions/6_stack/5_SimplifyPath.js?raw";
+import SimplifyPathExplanationRaw from "../explanations/6_stack/5_SimplifyPath.md?raw";
+
+import DecodeStringCandidateRaw from "../tasks/6_stack/6_DecodeString.js?raw";
+import DecodeStringSolutionRaw from "../solutions/6_stack/6_DecodeString.js?raw";
+import DecodeStringExplanationRaw from "../explanations/6_stack/6_DecodeString.md?raw";
 
 import ReverseLinkedListCandidateRaw from "../tasks/7_linked_list/1_ReverseLinkedList.js?raw";
 import ReverseLinkedListSolutionRaw from "../solutions/7_linked_list/1_ReverseLinkedList.js?raw";
@@ -229,9 +252,44 @@ export const ALGO_TWO_POINTERS_TASKS = [
     checklist: ["Изменение массива на месте (in-place)", "Сохранение исходного порядка ненулевых чисел", "Линейная сложность O(n)", "Константная память O(1)"],
   },
   {
+    id: "algo47",
+    group: "Two Pointers",
+    title: "4. Symmetric Difference of Sorted Arrays",
+    desc: "Напишите функцию symmetricDifference(a, b), которая возвращает отсортированный массив значений, встречающихся ровно в одном из двух отсортированных массивов, без повторов и без Set.",
+    difficulty: "easy",
+    isRaw: true,
+    candidate: SymmetricDifferenceCandidateRaw,
+    rawCandidate: SymmetricDifferenceCandidateRaw,
+    solution: SymmetricDifferenceSolutionRaw,
+    rawSolution: SymmetricDifferenceSolutionRaw,
+    explanation: SymmetricDifferenceExplanationRaw,
+    filepath: "src/algorithms/tasks/1_two_pointers/9_SymmetricDifference.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение (Two Pointers: Merge)",
+        isRecommended: true,
+        badge: "O(n + m) время / O(1) память",
+        recommendationNote: "Слияние двумя указателями: общие значения пропускаются целиком, а меньший из двух элементов сразу попадает в ответ с проверкой на дубликат.",
+        rawSolution: SymmetricDifferenceSolutionRaw,
+        filepath: "src/algorithms/solutions/1_two_pointers/9_SymmetricDifference.js",
+      },
+    ],
+    articles: [
+      { title: "LeetCode #88", urlTitle: "LeetCode — Merge Sorted Array", url: "https://leetcode.com/problems/merge-sorted-array/" },
+      { title: "LeetCode #350", urlTitle: "LeetCode — Intersection of Two Arrays II", url: "https://leetcode.com/problems/intersection-of-two-arrays-ii/" },
+      { title: "Метод двух указателей (two pointers)", urlTitle: "SprintCode.pro — Руководство", url: "https://sprintcode.pro/ru/blog/two-pointers" },
+    ],
+    interviewerQuestions: [
+      { question: "Почему при равных значениях нужно пропускать все повторы в обоих массивах?", answer: "Значение есть в обоих массивах, поэтому в ответ не попадает. Если сдвинуть только по одному элементу, оставшиеся повторы одного массива сравнились бы со следующим значением другого и могли ошибочно попасть в ответ." },
+      { question: "Как избежать дубликатов в результате без Set?", answer: "Результат строится по возрастанию, поэтому дубликат всегда равен последнему элементу result. Достаточно сравнивать с ним перед push." },
+      { question: "Что изменится, если массивы не отсортированы?", answer: "Слияние двумя указателями станет невозможным. Придётся либо отсортировать оба массива за O(n log n), либо использовать Set за O(n) памяти." },
+    ],
+    checklist: ["Один указатель на каждый массив", "Пропуск всех повторов общего значения в обоих массивах", "Проверка последнего элемента result вместо Set", "Обработка хвостов после окончания одного из массивов"],
+  },
+  {
     id: "algo2",
     group: "Two Pointers",
-    title: "4. Valid Palindrome",
+    title: "5. Valid Palindrome",
     desc: "Проверьте, является ли строка палиндромом после приведения к нижнему регистру и отбрасывания всех не буквенно-цифровых символов.",
     difficulty: "easy",
     isRaw: true,
@@ -265,7 +323,7 @@ export const ALGO_TWO_POINTERS_TASKS = [
   {
     id: "algo37",
     group: "Two Pointers",
-    title: "5. Sort Array By Parity",
+    title: "6. Sort Array By Parity",
     desc: "Напишите функцию sortArrayByParity(nums), которая переставляет чётные числа перед нечётными на месте (in-place) за O(n) времени и O(1) памяти.",
     difficulty: "easy",
     isRaw: true,
@@ -305,7 +363,7 @@ export const ALGO_TWO_POINTERS_TASKS = [
   {
     id: "algo1",
     group: "Two Pointers",
-    title: "6. Two Sum II - Input Array Is Sorted",
+    title: "7. Two Sum II - Input Array Is Sorted",
     desc: "Напишите функцию twoSum(numbers, target), которая находит два числа в отсортированном массиве с суммой target и возвращает их 1-based индексы за O(1) памяти.",
     difficulty: "medium",
     isRaw: true,
@@ -340,7 +398,7 @@ export const ALGO_TWO_POINTERS_TASKS = [
   {
     id: "algo3",
     group: "Two Pointers",
-    title: "7. 3Sum",
+    title: "8. 3Sum",
     desc: "Найдите все уникальные тройки чисел в массиве, сумма которых равна 0, исключив дубликаты.",
     difficulty: "medium",
     isRaw: true,
@@ -371,6 +429,76 @@ export const ALGO_TWO_POINTERS_TASKS = [
       { question: "Зачем нужна предварительная сортировка?", answer: "Сортировка дает возможность двигать указатели по направлению суммы и эффективнее избегать повторов (дубликатов) в ответе." },
     ],
     checklist: ["Исключение дубликатов троек", "Сортировка входного массива", "Пропуск повторяющихся элементов"],
+  },
+  {
+    id: "algo46",
+    group: "Two Pointers",
+    title: "9. Maximize Distance to Closest Person",
+    desc: "Напишите функцию maxDistToClosest(seats), которая находит максимальное расстояние до ближайшего занятого места, если сесть на подходящее свободное место. Решите за один проход с указателем на последнее занятое место.",
+    difficulty: "medium",
+    isRaw: true,
+    candidate: MaximizeDistanceToClosestPersonCandidateRaw,
+    rawCandidate: MaximizeDistanceToClosestPersonCandidateRaw,
+    solution: MaximizeDistanceToClosestPersonSolutionRaw,
+    rawSolution: MaximizeDistanceToClosestPersonSolutionRaw,
+    explanation: MaximizeDistanceToClosestPersonExplanationRaw,
+    filepath: "src/algorithms/tasks/1_two_pointers/8_MaximizeDistanceToClosestPerson.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение (Two Pointers: Last Seen)",
+        isRecommended: true,
+        badge: "O(n) время / O(1) память",
+        recommendationNote: "Один проход с индексом предыдущего занятого места: между двумя занятыми садимся посередине, а на краях — в самый край.",
+        rawSolution: MaximizeDistanceToClosestPersonSolutionRaw,
+        filepath: "src/algorithms/solutions/1_two_pointers/8_MaximizeDistanceToClosestPerson.js",
+      },
+    ],
+    articles: [
+      { title: "LeetCode #849", urlTitle: "LeetCode — Maximize Distance to Closest Person", url: "https://leetcode.com/problems/maximize-distance-to-closest-person/" },
+      { title: "Метод двух указателей (two pointers)", urlTitle: "SprintCode.pro — Руководство", url: "https://sprintcode.pro/ru/blog/two-pointers" },
+      { title: "Сложность алгоритмов: O(n), O(n²) и другие", urlTitle: "Хабр — Оценка сложности", url: "https://habr.com/ru/articles/188010/" },
+    ],
+    interviewerQuestions: [
+      { question: "Почему для первого и последнего занятого места нельзя считать расстояние как (i - prev) / 2?", answer: "На краях массива с одной стороны нет соседа, поэтому выгоднее сесть в самый край. Расстояние равно количеству свободных мест до первого занятого (i) или после последнего (n - 1 - prev), без деления пополам." },
+      { question: "Почему для промежутка используется Math.floor((i - prev) / 2)?", answer: "Если между занятыми местами prev и i стоит нечётное число свободных мест, середина единственная, а при чётном их две. В обоих случаях расстояние до ближайшего соседа равно целой части (i - prev) / 2." },
+      { question: "Как решить задачу без указателя на предыдущее место?", answer: "Двумя проходами: слева направо считаем расстояние до ближайшего занятого слева, справа налево до занятого справа, берём минимум и затем максимум по всем позициям. Время O(n), но нужен дополнительный массив." },
+    ],
+    checklist: ["Расстояние на левом краю равно индексу первого занятого места", "Середина промежутка между двумя занятыми — floor((i - prev) / 2)", "Учёт свободного хвоста справа через seats.length - 1 - prev", "Один проход без вложенных циклов"],
+  },
+  {
+    id: "algo48",
+    group: "Two Pointers",
+    title: "10. Longest Palindromic Substring",
+    desc: "Напишите функцию longestPalindrome(s), которая находит самую длинную палиндромную подстроку, расширяя два указателя от каждого возможного центра за O(n²) времени.",
+    difficulty: "medium",
+    isRaw: true,
+    candidate: LongestPalindromicSubstringCandidateRaw,
+    rawCandidate: LongestPalindromicSubstringCandidateRaw,
+    solution: LongestPalindromicSubstringSolutionRaw,
+    rawSolution: LongestPalindromicSubstringSolutionRaw,
+    explanation: LongestPalindromicSubstringExplanationRaw,
+    filepath: "src/algorithms/tasks/1_two_pointers/10_LongestPalindromicSubstring.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение (Two Pointers: Expand From Center)",
+        isRecommended: true,
+        badge: "O(n²) время / O(1) память",
+        recommendationNote: "Для каждого из 2n - 1 центров два указателя расходятся в стороны, пока символы совпадают. Перебор подстрок за O(n³) заменяется расширением за O(n²).",
+        rawSolution: LongestPalindromicSubstringSolutionRaw,
+        filepath: "src/algorithms/solutions/1_two_pointers/10_LongestPalindromicSubstring.js",
+      },
+    ],
+    articles: [
+      { title: "LeetCode #5", urlTitle: "LeetCode — Longest Palindromic Substring", url: "https://leetcode.com/problems/longest-palindromic-substring/" },
+      { title: "Метод двух указателей (two pointers)", urlTitle: "SprintCode.pro — Руководство", url: "https://sprintcode.pro/ru/blog/two-pointers" },
+      { title: "Алгоритм Манакера", urlTitle: "Википедия — Поиск палиндромов за O(n)", url: "https://ru.wikipedia.org/wiki/Алгоритм_Манакера" },
+    ],
+    interviewerQuestions: [
+      { question: "Почему нужно проверять два типа центров?", answer: "Палиндром нечётной длины имеет центр в символе (expand(i, i)), а чётной длины — между двумя символами (expand(i, i + 1)). Без второго варианта «bb» в «cbbd» не найдётся." },
+      { question: "Почему сложность O(n²), если расширение — это while?", answer: "Центров 2n - 1, и расширение от каждого в худшем случае проходит O(n) шагов, например на строке из одинаковых символов." },
+      { question: "Какие есть решения лучше O(n²)?", answer: "Алгоритм Манакера находит все максимальные палиндромы за O(n), но на собеседованиях его почти не требуют. Динамическое программирование даёт O(n²) времени при O(n²) памяти." },
+    ],
+    checklist: ["Два типа центров: символ и промежуток между символами", "Длина палиндрома как right - left - 1 после выхода из while", "Вычисление начала через i - floor((length - 1) / 2)", "Корректная обработка строки из одного символа"],
   },
 ];
 
@@ -519,6 +647,41 @@ export const ALGO_HASH_MAP_TASKS = [
       { question: "Почему для сбора результата используется [...map.values()]?", answer: "Значениями Map являются массивы исходных слов, сгруппированных по общему ключу. map.values() возвращает итератор по этим группам, а спред-оператор превращает его в массив массивов." },
     ],
     checklist: ["Сортировка букв слова как канонический ключ", "Группировка в массивы по ключу Map", "Возврат массива групп через Array.from(map.values())", "Корректная обработка пустых строк и одиночных символов"],
+  },
+  {
+    id: "algo45",
+    group: "Hash Map",
+    title: "5. Find All Numbers Disappeared in an Array",
+    desc: "Напишите функцию findDisappearedNumbers(nums), которая находит все пропущенные числа из диапазона [1, n] за O(n) времени и O(1) памяти, используя сам массив как хеш-таблицу.",
+    difficulty: "easy",
+    isRaw: true,
+    candidate: FindDisappearedNumbersCandidateRaw,
+    rawCandidate: FindDisappearedNumbersCandidateRaw,
+    solution: FindDisappearedNumbersSolutionRaw,
+    rawSolution: FindDisappearedNumbersSolutionRaw,
+    explanation: FindDisappearedNumbersExplanationRaw,
+    filepath: "src/algorithms/tasks/2_hash_map/5_FindDisappearedNumbers.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение (Index as Key, пометка знаком)",
+        isRecommended: true,
+        badge: "O(n) время / O(1) память",
+        recommendationNote: "Значение x помечает ячейку x - 1 отрицательным знаком, а оставшиеся положительные ячейки указывают на пропущенные числа. Массив используется как хеш-таблица без доп. памяти.",
+        rawSolution: FindDisappearedNumbersSolutionRaw,
+        filepath: "src/algorithms/solutions/2_hash_map/5_FindDisappearedNumbers.js",
+      },
+    ],
+    articles: [
+      { title: "LeetCode #448", urlTitle: "LeetCode — Find All Numbers Disappeared in an Array", url: "https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array/" },
+      { title: "Хеш-таблицы: устройство и скорость", urlTitle: "Хабр — Подробный разбор", url: "https://habr.com/ru/articles/509510/" },
+      { title: "Сложность алгоритмов: O(n) и O(1)", urlTitle: "Хабр — Оценка", url: "https://habr.com/ru/articles/188010/" },
+    ],
+    interviewerQuestions: [
+      { question: "Почему при вычислении индекса используется Math.abs(num)?", answer: "К моменту чтения число в массиве могло быть уже помечено отрицательным знаком. Без модуля индекс получился бы отрицательным, и пометка ушла бы не в ту ячейку." },
+      { question: "Что делать, если нельзя мутировать входной массив?", answer: "Либо вторым проходом восстановить знаки через Math.abs, либо использовать Set за O(n) памяти. Ещё один вариант — cyclic sort, но он тоже переставляет элементы." },
+      { question: "Почему условие nums[index] > 0 обязательно перед сменой знака?", answer: "Если число встречается дважды, второй раз ячейка уже отрицательна. Без проверки знак вернулся бы в плюс, и число ошибочно попало бы в пропущенные." },
+    ],
+    checklist: ["Значение x как ключ ячейки x - 1", "Math.abs при вычислении индекса", "Смена знака только у положительных значений", "Сбор индексов с положительными значениями как i + 1", "Осознание цены: мутация входного массива"],
   },
 ];
 
@@ -935,9 +1098,44 @@ export const ALGO_STACK_TASKS = [
     checklist: ["Создание стека и объекта пар скобок", "Пуш ожидаемой закрывающей скобки при открывающей", "Проверка stack.pop() === char при закрывающей", "Проверка пустоты стека в конце: !stack.length"],
   },
   {
+    id: "algo49",
+    group: "Stack",
+    title: "3. Simplify Path",
+    desc: "Напишите функцию simplifyPath(path), которая приводит абсолютный Unix-путь к каноническому виду, используя стек сегментов для обработки \".\", \"..\" и повторяющихся слэшей.",
+    difficulty: "medium",
+    isRaw: true,
+    candidate: SimplifyPathCandidateRaw,
+    rawCandidate: SimplifyPathCandidateRaw,
+    solution: SimplifyPathSolutionRaw,
+    rawSolution: SimplifyPathSolutionRaw,
+    explanation: SimplifyPathExplanationRaw,
+    filepath: "src/algorithms/tasks/6_stack/5_SimplifyPath.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение (Stack: Path Stack)",
+        isRecommended: true,
+        badge: "O(n) время / O(n) память",
+        recommendationNote: "Сегменты пути кладутся в стек, \"..\" снимает верхний сегмент, а \".\" и пустые сегменты игнорируются. Путь собирается из стека через join.",
+        rawSolution: SimplifyPathSolutionRaw,
+        filepath: "src/algorithms/solutions/6_stack/5_SimplifyPath.js",
+      },
+    ],
+    articles: [
+      { title: "LeetCode #71", urlTitle: "LeetCode — Simplify Path", url: "https://leetcode.com/problems/simplify-path/" },
+      { title: "Структуры данных в JavaScript: стек, очередь и другие", urlTitle: "Дока — Руководство", url: "https://doka.guide/tools/structure-data-in-js/" },
+      { title: "Методы массивов и строк в JavaScript", urlTitle: "learn.javascript.ru — Учебник", url: "https://learn.javascript.ru/array-methods" },
+    ],
+    interviewerQuestions: [
+      { question: "Что делать с \"..\", если стек пуст?", answer: "Ничего. Подняться выше корня нельзя, а stack.pop() на пустом массиве в JS возвращает undefined без ошибки." },
+      { question: "Почему \"...\" не обрабатывается специально?", answer: "Это обычное имя директории, а не служебный сегмент. Служебными являются только \".\" и \"..\" ровно из одной и двух точек." },
+      { question: "Откуда берутся пустые сегменты после split?", answer: "От ведущего слэша, завершающего слэша и двойных слэшей. Все они означают «ничего не делать», поэтому пропускаются вместе с \".\"." },
+    ],
+    checklist: ["Разбиение пути через split(\"/\")", "Пропуск пустых сегментов и \".\"", "Откат через pop() на \"..\" без ошибки в корне", "Сборка результата как \"/\" + stack.join(\"/\")"],
+  },
+  {
     id: "algo19",
     group: "Stack",
-    title: "3. Min Stack",
+    title: "4. Min Stack",
     desc: "Спроектируйте функцию-фабрику createMinStack(), создающую стек с поддержкой push, pop, top и getMin за время O(1) с помощью вспомогательного стека.",
     difficulty: "medium",
     isRaw: true,
@@ -971,9 +1169,44 @@ export const ALGO_STACK_TASKS = [
     checklist: ["Инициализация stack и minStack", "Синхронный push значения и текущего минимума", "Синхронный pop из обоих стеков", "Возврат minStack[minStack.length - 1] в getMin() за O(1)"],
   },
   {
+    id: "algo50",
+    group: "Stack",
+    title: "5. Decode String",
+    desc: "Напишите функцию decodeString(s), которая раскодирует строку вида k[encoded_string] с вложенными скобками и многозначными множителями за один проход со стеком контекстов.",
+    difficulty: "medium",
+    isRaw: true,
+    candidate: DecodeStringCandidateRaw,
+    rawCandidate: DecodeStringCandidateRaw,
+    solution: DecodeStringSolutionRaw,
+    rawSolution: DecodeStringSolutionRaw,
+    explanation: DecodeStringExplanationRaw,
+    filepath: "src/algorithms/tasks/6_stack/6_DecodeString.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение (Stack: Nested Context)",
+        isRecommended: true,
+        badge: "O(L) время / O(n) память",
+        recommendationNote: "При \"[\" во внешний стек откладывается накопленная строка и множитель, а при \"]\" внутренняя строка повторяется и присоединяется к внешней.",
+        rawSolution: DecodeStringSolutionRaw,
+        filepath: "src/algorithms/solutions/6_stack/6_DecodeString.js",
+      },
+    ],
+    articles: [
+      { title: "LeetCode #394", urlTitle: "LeetCode — Decode String", url: "https://leetcode.com/problems/decode-string/" },
+      { title: "Структуры данных в JavaScript: стек, очередь и другие", urlTitle: "Дока — Руководство", url: "https://doka.guide/tools/structure-data-in-js/" },
+      { title: "Рекурсия и стек вызовов", urlTitle: "learn.javascript.ru — Учебник", url: "https://learn.javascript.ru/recursion" },
+    ],
+    interviewerQuestions: [
+      { question: "Зачем в стек кладётся пара [строка, множитель], а не только множитель?", answer: "При входе во вложенный блок нужно сохранить и уже собранную внешнюю строку, и число повторений будущего блока. При закрытии скобки обе части нужны, чтобы склеить результат." },
+      { question: "Как корректно разбирать многозначные числа, например 12[a]?", answer: "Накапливать множитель по цифрам: count = count * 10 + digit. Нельзя присваивать count = digit, иначе 12 превратится в 2." },
+      { question: "Как решить то же самое рекурсией?", answer: "Функция decode(i) разбирает всё до соответствующей \"]\" и вызывает себя при каждой вложенной \"[\". Это тот же стек, только неявный стек вызовов, и при очень глубокой вложенности он может переполниться." },
+    ],
+    checklist: ["Накопление многозначного множителя через count * 10 + digit", "Сохранение пары [current, count] при \"[\"", "Склейка previous + current.repeat(times) при \"]\"", "Корректная работа с вложенными скобками"],
+  },
+  {
     id: "algo20",
     group: "Stack",
-    title: "4. Daily Temperatures",
+    title: "6. Daily Temperatures",
     desc: "Напишите функцию dailyTemperatures(temperatures), вычисляющую количество дней ожидания более теплой температуры с использованием монотонного стека за O(n).",
     difficulty: "medium",
     isRaw: true,
