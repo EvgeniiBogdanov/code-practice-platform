@@ -50,7 +50,7 @@
 }
 
 .message {
-  font-size: 11.5px;
+  font-size: var(--fs-micro);
   color: var(--text-main);
   font-family: var(--font-sans);
   white-space: nowrap;

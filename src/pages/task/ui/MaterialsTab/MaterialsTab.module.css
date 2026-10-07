@@ -34,10 +34,6 @@
   letter-spacing: -0.02em;
 }
 
-[data-theme="light"] .title {
-  color: var(--text-main);
-}
-
 .divider {
   border: 0;
   height: 1px;
@@ -68,14 +64,14 @@
 .articleTopic {
   font-weight: 500;
   color: var(--text-main);
-  font-size: 13.5px;
+  font-size: var(--fs-label);
 }
 
 .articleLink {
   color: var(--accent-blue);
   text-decoration: underline;
   text-underline-offset: 3px;
-  font-size: 13.5px;
+  font-size: var(--fs-label);
 }
 
 .articleLink:hover {

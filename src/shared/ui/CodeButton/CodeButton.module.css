@@ -78,11 +78,6 @@
   color: var(--accent-blue);
 }
 
-[data-theme="light"] .variant_primary:hover:not(:disabled) {
-  background: var(--accent-blue-bg);
-  color: var(--accent-blue-hover);
-}
-
 /* Success / Run Variant */
 .variant_success {
   color: var(--color-success);

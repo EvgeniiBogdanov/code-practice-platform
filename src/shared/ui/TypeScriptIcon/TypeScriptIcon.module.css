@@ -13,10 +13,6 @@
   fill: var(--color-ts-contrast);
 }
 
-:global([data-theme="light"]) .icon {
-  color: var(--color-ts);
-}
-
 :global([data-theme="light"]) .bg {
   stroke: rgba(0, 0, 0, 0.08);
   stroke-width: 0.5px;

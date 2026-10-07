@@ -47,10 +47,6 @@
   white-space: nowrap;
 }
 
-[data-theme="light"] .fileTab {
-  color: var(--text-main);
-}
-
 .fileTabIcon {
   flex-shrink: 0;
 }
@@ -65,10 +61,6 @@
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
-}
-
-[data-theme="light"] .surface {
-  background: var(--bg-editor);
 }
 
 .gutter {
@@ -127,10 +119,6 @@
   overflow-x: var(--code-overflow-x, auto);
 }
 
-[data-theme="light"] .preOnly {
-  color: var(--text-main);
-}
-
 .preOnly code {
   font-family: var(--font-mono) !important;
   font-size: var(--code-font-size, 14px) !important;
@@ -139,10 +127,6 @@
   padding: 0 !important;
   border: none !important;
   border-radius: 0 !important;
-  color: var(--text-main);
-}
-
-[data-theme="light"] .preOnly code {
   color: var(--text-main);
 }
 

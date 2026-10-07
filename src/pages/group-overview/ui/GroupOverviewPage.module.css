@@ -47,17 +47,13 @@
 }
 
 .folderHeroTitle {
-  font-size: 30px;
+  font-size: var(--fs-h1);
   font-weight: 700;
   color: var(--text-main);
   line-height: 1.25;
   letter-spacing: -0.025em;
   font-family: var(--font-sans);
   margin: 0;
-}
-
-[data-theme="light"] .folderHeroTitle {
-  color: var(--text-main);
 }
 
 .folderHeroDesc {
@@ -393,12 +389,6 @@
   background-color: var(--bg-elevated);
 }
 
-[data-theme="light"] .galleryCard {
-  background: var(--bg-card);
-  border: none;
-  box-shadow: var(--shadow-sm);
-}
-
 [data-theme="light"] .galleryCard:hover {
   background-color: var(--bg-surface);
   box-shadow: var(--shadow-md);
@@ -628,10 +618,6 @@
   font-family: var(--font-sans);
 }
 
-[data-theme="light"] .h2Block {
-  color: var(--text-main);
-}
-
 .articleH2Icon {
   color: var(--accent-blue);
   flex-shrink: 0;
@@ -663,10 +649,6 @@
   font-weight: 600;
 }
 
-[data-theme="light"] .articleTopic {
-  color: var(--text-main);
-}
-
 .articleLink {
   color: var(--accent-blue);
   text-decoration: underline;
@@ -676,10 +658,6 @@
 
 .articleLink:hover {
   opacity: 0.8;
-}
-
-[data-theme="light"] .articleLink {
-  color: var(--accent-blue);
 }
 
 @media (max-width: 860px) {

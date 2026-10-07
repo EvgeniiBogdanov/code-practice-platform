@@ -58,7 +58,7 @@
 }
 
 .empty {
-  font-size: 13.5px;
+  font-size: var(--fs-label);
   color: var(--text-muted);
   font-style: italic;
   padding: 24px 0;

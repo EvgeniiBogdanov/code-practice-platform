@@ -27,7 +27,7 @@
 }
 
 .subtitle {
-  font-size: 14.5px;
+  font-size: var(--fs-body-sm);
   line-height: 1.6;
   color: var(--text-muted);
   margin: 0;
@@ -103,7 +103,7 @@
 }
 
 .groupsSectionCount {
-  font-size: 12.5px;
+  font-size: var(--fs-caption);
   color: var(--text-muted);
 }
 
@@ -150,7 +150,7 @@
 }
 
 .groupName {
-  font-size: 14.5px;
+  font-size: var(--fs-body-sm);
   font-weight: 600;
   color: var(--text-main);
   white-space: nowrap;
@@ -206,7 +206,7 @@
   border-radius: var(--radius-sm, 4px);
   color: var(--text-muted);
   text-decoration: none;
-  font-size: 12.5px;
+  font-size: var(--fs-caption);
   line-height: 1.4;
   transition:
     background var(--transition-fast),

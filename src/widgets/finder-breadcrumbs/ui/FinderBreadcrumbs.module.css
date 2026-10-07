@@ -6,7 +6,7 @@
   overflow: visible;
   user-select: none;
   font-family: var(--font-sans);
-  font-size: 14.5px;
+  font-size: var(--fs-body-sm);
 }
 
 .sidebarToggleBtn {
@@ -80,7 +80,7 @@
   border: none;
   border-radius: var(--radius-md);
   color: var(--text-muted);
-  font-size: 14.5px;
+  font-size: var(--fs-body-sm);
   font-weight: var(--fw-medium, 500);
   font-family: var(--font-sans);
   cursor: pointer;
@@ -239,7 +239,7 @@
   border: none;
   border-radius: var(--radius-md, 6px);
   color: var(--text-main);
-  font-size: 13.5px;
+  font-size: var(--fs-label);
   font-weight: 500;
   font-family: var(--font-sans);
   text-decoration: none;
@@ -257,10 +257,6 @@
 
 .dropdownItem.active {
   background: var(--state-selected);
-  color: var(--text-main);
-}
-
-:global([data-theme="light"]) .dropdownItem {
   color: var(--text-main);
 }
 
@@ -286,7 +282,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 0;
-  font-size: 13.5px;
+  font-size: var(--fs-label);
 }
 
 .sectionBadge {
@@ -369,18 +365,6 @@
 
 [data-theme="light"] .ratingHard {
   color: var(--color-rating-hard) !important;
-}
-
-[data-theme="light"] .ratingMedium {
-  color: var(--color-rating-medium) !important;
-}
-
-[data-theme="light"] .ratingEasy {
-  color: var(--color-rating-easy) !important;
-}
-
-[data-theme="light"] .ratingUnsolved {
-  color: var(--color-status-unsolved) !important;
 }
 
 /* Section / Icon Colors */

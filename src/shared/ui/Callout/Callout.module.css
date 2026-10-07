@@ -42,7 +42,7 @@
 
 /* Title */
 .title {
-  font-size: 14.5px;
+  font-size: var(--fs-body-sm);
   font-weight: 600;
   line-height: 1.4;
   margin: 0;
@@ -74,7 +74,7 @@
 }
 
 .body li {
-  font-size: 13.5px;
+  font-size: var(--fs-label);
   line-height: 1.6;
 }
 
@@ -211,7 +211,7 @@
 }
 
 .size-sm .body {
-  font-size: 12.5px;
+  font-size: var(--fs-caption);
   line-height: 1.45;
 }
 
@@ -223,7 +223,7 @@
 .size-xs {
   padding: 7px 10px;
   gap: 6px;
-  font-size: 11.5px;
+  font-size: var(--fs-micro);
   line-height: 1.4;
   border-radius: var(--radius-sm, 4px);
   border-left-width: 3px;
@@ -240,13 +240,13 @@
 }
 
 .size-xs .title {
-  font-size: 11.5px;
+  font-size: var(--fs-micro);
   font-weight: 600;
   line-height: 1.35;
 }
 
 .size-xs .body {
-  font-size: 11.5px;
+  font-size: var(--fs-micro);
   line-height: 1.4;
 }
 
@@ -261,6 +261,6 @@
 }
 
 .size-xs .body li {
-  font-size: 11.5px;
+  font-size: var(--fs-micro);
   line-height: 1.4;
 }

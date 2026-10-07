@@ -54,7 +54,7 @@
 }
 
 .rowTitle {
-  font-size: 13.5px;
+  font-size: var(--fs-label);
   font-weight: 500;
   color: var(--text-main);
   line-height: 1.35;
@@ -98,7 +98,7 @@
 }
 
 .charCounter {
-  font-size: 10.5px;
+  font-size: var(--fs-xs);
   color: var(--text-placeholder);
   font-family: var(--font-mono, monospace);
   user-select: none;

@@ -214,7 +214,7 @@
 /* Code block */
 .codeBlockWrapper {
   position: relative;
-  --code-font-size: 11.5px;
+  --code-font-size: var(--fs-micro);
   --code-line-height: 1.45;
   --code-padding-y: 8px;
   --code-padding-x: 10px;

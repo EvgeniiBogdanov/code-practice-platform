@@ -305,7 +305,7 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 11.5px;
+  font-size: var(--fs-micro);
   font-weight: 500;
   transition: color 0.2s ease;
   cursor: default;

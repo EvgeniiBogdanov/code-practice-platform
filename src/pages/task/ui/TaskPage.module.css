@@ -68,10 +68,6 @@
   top: -3px;
 }
 
-[data-theme="light"] .taskDetailTitle {
-  color: var(--text-main);
-}
-
 .taskStatusActions {
   display: inline-flex;
   align-items: center;
@@ -128,7 +124,7 @@
   border: none;
   color: var(--text-muted);
   font-family: inherit;
-  font-size: 14.6px;
+  font-size: var(--fs-lg);
   font-weight: 600;
   height: 100%;
   padding: 0 10px;
@@ -155,20 +151,6 @@
 }
 
 .tabLink.tabActive {
-  background: transparent;
-  color: var(--text-main);
-}
-
-[data-theme="light"] .tabLink {
-  color: var(--text-muted);
-}
-
-[data-theme="light"] .tabLink:hover {
-  color: var(--text-main);
-  background: var(--state-hover);
-}
-
-[data-theme="light"] .tabLink.tabActive {
   background: transparent;
   color: var(--text-main);
 }

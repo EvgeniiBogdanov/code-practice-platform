@@ -111,10 +111,6 @@
   background: var(--state-hover);
 }
 
-[data-theme="light"] .reviewItem:hover {
-  background: var(--state-hover);
-}
-
 .itemMain {
   display: flex;
   align-items: center;
@@ -243,10 +239,6 @@
 }
 
 .ratingUnsolved {
-  color: var(--color-error) !important;
-}
-
-[data-theme="light"] .ratingUnsolved {
   color: var(--color-error) !important;
 }
 

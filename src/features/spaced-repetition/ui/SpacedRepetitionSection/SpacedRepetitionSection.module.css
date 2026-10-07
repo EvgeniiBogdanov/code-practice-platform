@@ -68,7 +68,7 @@
 }
 
 .workspaceName {
-  font-size: 13.5px;
+  font-size: var(--fs-label);
   font-weight: 600;
   color: var(--text-main);
   line-height: 1.2;
@@ -189,7 +189,7 @@
 }
 
 .pageSubtitle {
-  font-size: 13.5px;
+  font-size: var(--fs-label);
   color: var(--fg-muted);
   margin: 0;
   line-height: 1.45;
@@ -496,7 +496,7 @@
 }
 
 .stageTitle {
-  font-size: 12.5px;
+  font-size: var(--fs-caption);
   font-weight: 600;
   color: var(--text-main);
   line-height: 1.2;
@@ -610,7 +610,7 @@
 }
 
 .dueCardStage {
-  font-size: 10.5px;
+  font-size: var(--fs-xs);
   font-family: var(--font-mono);
   color: var(--text-muted);
 }
@@ -643,7 +643,7 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 11.5px;
+  font-size: var(--fs-micro);
   font-weight: 600;
   color: var(--accent-blue);
 }
@@ -673,13 +673,13 @@
 }
 
 .emptyDueTitle {
-  font-size: 14.5px;
+  font-size: var(--fs-body-sm);
   font-weight: 600;
   color: var(--text-main);
 }
 
 .emptyDueDesc {
-  font-size: 12.5px;
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   max-width: 420px;
   line-height: 1.45;
@@ -715,14 +715,6 @@
   background: var(--state-hover);
   border: none;
   outline: none;
-}
-
-:global([data-theme="light"]) .upcomingRow {
-  background: transparent;
-}
-
-:global([data-theme="light"]) .upcomingRow:hover {
-  background: var(--state-hover);
 }
 
 .upcomingRowLeft {

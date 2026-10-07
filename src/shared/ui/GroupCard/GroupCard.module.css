@@ -9,12 +9,6 @@
   box-shadow: var(--shadow-sm);
 }
 
-[data-theme="light"] .groupCard {
-  background-color: var(--bg-card);
-  border: none;
-  box-shadow: var(--shadow-sm);
-}
-
 .header {
   display: flex;
   align-items: center;
@@ -37,7 +31,7 @@
 }
 
 .title {
-  font-size: 14.5px;
+  font-size: var(--fs-body-sm);
   font-weight: 600;
   color: var(--text-main);
   white-space: nowrap;

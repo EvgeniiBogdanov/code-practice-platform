@@ -412,8 +412,8 @@
 
   /* Quiet accents maintain AA text contrast on the light surfaces. */
   /* Text-safe Notion blue (AA on white and on the warm canvas); fills use --accent-primary */
-  --accent-blue: #0066c0;
-  --accent-blue-hover: #005bab;
+  --accent-blue: #0062b8;
+  --accent-blue-hover: #00559e;
   --accent-blue-bg: rgba(0, 117, 222, 0.1);
   --accent-blue-border: rgba(0, 117, 222, 0.23);
 
@@ -448,8 +448,8 @@
   --accent-red-bg: rgba(171, 61, 66, 0.1);
   --accent-red-border: rgba(171, 61, 66, 0.23);
 
-  --accent-yellow: #7b700d;
-  --accent-yellow-hover: #665c08;
+  --accent-yellow: #736909;
+  --accent-yellow-hover: #5f5707;
   --accent-yellow-bg: rgba(214, 190, 100, 0.12);
   --accent-yellow-border: rgba(214, 190, 100, 0.28);
   --accent-yellow-icon: #9a8710;

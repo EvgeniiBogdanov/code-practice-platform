@@ -75,5 +75,4 @@
 
 [data-theme="light"] .interactive:hover {
   background-color: var(--state-hover);
-  box-shadow: var(--shadow-md);
 }

@@ -129,7 +129,7 @@
   border: none;
   color: var(--text-muted);
   font-family: inherit;
-  font-size: 14.6px;
+  font-size: var(--fs-lg);
   font-weight: 600;
   height: 100%;
   padding: 0 10px;

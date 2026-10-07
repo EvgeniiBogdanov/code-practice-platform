@@ -47,7 +47,7 @@
   padding: 0 8px;
   height: 24px;
   font-family: var(--font-mono);
-  font-size: 11.5px;
+  font-size: var(--fs-micro);
   color: var(--text-main);
   user-select: none;
   white-space: nowrap;
@@ -62,7 +62,7 @@
   height: 22px;
   box-sizing: border-box;
   font-family: var(--font-mono);
-  font-size: 11.5px;
+  font-size: var(--fs-micro);
   font-weight: 500;
   line-height: 1;
   color: var(--text-muted);
@@ -160,7 +160,7 @@
 }
 
 .fontSizeLabel {
-  font-size: 9.5px;
+  font-size: var(--fs-xs);
   font-family: var(--font-mono);
   font-weight: 600;
   color: var(--fg-muted);

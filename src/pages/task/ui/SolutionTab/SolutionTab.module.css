@@ -105,7 +105,3 @@
   color: var(--text-main);
   line-height: 1.6;
 }
-
-[data-theme="light"] .recommendationText {
-  color: var(--text-main);
-}

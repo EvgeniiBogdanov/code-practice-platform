@@ -4,7 +4,7 @@
   border-left: 3px solid var(--border-color);
   border-radius: var(--radius-sm);
   color: var(--text-main);
-  font-size: 13.5px;
+  font-size: var(--fs-label);
   line-height: 1.55;
   box-sizing: border-box;
   width: 100%;
@@ -21,7 +21,7 @@
 /* Size Modifiers */
 .accordionCard.size-xs {
   border-radius: var(--radius-sm);
-  font-size: 12.5px;
+  font-size: var(--fs-caption);
   margin-bottom: 8px;
 }
 
@@ -122,16 +122,12 @@
 
 .size-xs .headerLeft {
   gap: 6px;
-  font-size: 12.5px;
+  font-size: var(--fs-caption);
 }
 
 .size-sm .headerLeft {
   gap: 7px;
   font-size: var(--fs-label);
-}
-
-[data-theme="light"] .headerLeft {
-  color: var(--text-main);
 }
 
 .icon {
@@ -205,7 +201,7 @@
 
 .contentBody {
   padding: 6px 10px 6px 10px;
-  font-size: 13.5px;
+  font-size: var(--fs-label);
   line-height: 1.6;
   color: var(--text-main);
   border-top: 1px dashed rgba(255, 255, 255, 0.08);
@@ -213,7 +209,7 @@
 
 .size-xs .contentBody {
   padding: 6px 10px 6px 10px;
-  font-size: 12.5px;
+  font-size: var(--fs-caption);
   line-height: 1.5;
 }
 

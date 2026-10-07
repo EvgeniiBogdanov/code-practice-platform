@@ -79,10 +79,6 @@
   background: var(--state-hover, rgba(255, 255, 255, 0.06));
 }
 
-[data-theme="light"] .optionItem {
-  color: var(--text-main);
-}
-
 [data-theme="light"] .optionItem:hover {
   background: var(--state-hover);
 }

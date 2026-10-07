@@ -24,7 +24,7 @@
   background: transparent;
   border: none;
   color: var(--text-main);
-  font-size: 14.5px;
+  font-size: var(--fs-body-sm);
   font-weight: var(--fw-semibold, 600);
   font-family: var(--font-sans);
   line-height: normal;
@@ -175,7 +175,7 @@
   border: none;
   border-radius: var(--radius-md, 6px);
   color: var(--text-main);
-  font-size: 13.5px;
+  font-size: var(--fs-label);
   font-weight: 500;
   font-family: var(--font-sans);
   text-decoration: none;
@@ -196,10 +196,6 @@
   color: var(--text-main);
 }
 
-:global([data-theme="light"]) .sectionDropdownItem {
-  color: var(--text-main);
-}
-
 :global([data-theme="light"]) .sectionDropdownItem:hover {
   background: var(--state-hover);
   color: var(--text-main);
@@ -216,7 +212,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 0;
-  font-size: 13.5px;
+  font-size: var(--fs-label);
 }
 
 .sectionBadge {

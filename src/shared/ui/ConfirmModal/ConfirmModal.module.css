@@ -5,7 +5,7 @@
 }
 
 .text {
-  font-size: 13.5px;
+  font-size: var(--fs-label);
   line-height: 1.55;
   color: var(--fg-muted);
   margin: 0;

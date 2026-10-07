@@ -71,7 +71,7 @@
 }
 
 .label {
-  font-size: 13.5px;
+  font-size: var(--fs-label);
   color: var(--text-main);
   line-height: 1.3;
 }
