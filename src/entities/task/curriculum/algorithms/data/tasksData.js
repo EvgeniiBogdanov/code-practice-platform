@@ -44,6 +44,14 @@ import LongestPalindromicSubstringCandidateRaw from "../tasks/1_two_pointers/10_
 import LongestPalindromicSubstringSolutionRaw from "../solutions/1_two_pointers/10_LongestPalindromicSubstring.js?raw";
 import LongestPalindromicSubstringExplanationRaw from "../explanations/1_two_pointers/10_LongestPalindromicSubstring.md?raw";
 
+import CommonElementInThreeSortedArraysCandidateRaw from "../tasks/1_two_pointers/11_CommonElementInThreeSortedArrays.js?raw";
+import CommonElementInThreeSortedArraysSolutionRaw from "../solutions/1_two_pointers/11_CommonElementInThreeSortedArrays.js?raw";
+import CommonElementInThreeSortedArraysExplanationRaw from "../explanations/1_two_pointers/11_CommonElementInThreeSortedArrays.md?raw";
+
+import ExpandNumberRangesCandidateRaw from "../tasks/1_two_pointers/12_ExpandNumberRanges.js?raw";
+import ExpandNumberRangesSolutionRaw from "../solutions/1_two_pointers/12_ExpandNumberRanges.js?raw";
+import ExpandNumberRangesExplanationRaw from "../explanations/1_two_pointers/12_ExpandNumberRanges.md?raw";
+
 import TwoSumCandidateRaw from "../tasks/2_hash_map/1_TwoSum.js?raw";
 import TwoSumSolutionRaw from "../solutions/2_hash_map/1_TwoSum.js?raw";
 import TwoSumExplanationRaw from "../explanations/2_hash_map/1_TwoSum.md?raw";
@@ -123,6 +131,10 @@ import DecodeStringCandidateRaw from "../tasks/6_stack/6_DecodeString.js?raw";
 import DecodeStringSolutionRaw from "../solutions/6_stack/6_DecodeString.js?raw";
 import DecodeStringExplanationRaw from "../explanations/6_stack/6_DecodeString.md?raw";
 
+import BasicCalculatorIICandidateRaw from "../tasks/6_stack/7_BasicCalculatorII.js?raw";
+import BasicCalculatorIISolutionRaw from "../solutions/6_stack/7_BasicCalculatorII.js?raw";
+import BasicCalculatorIIExplanationRaw from "../explanations/6_stack/7_BasicCalculatorII.md?raw";
+
 import ReverseLinkedListCandidateRaw from "../tasks/7_linked_list/1_ReverseLinkedList.js?raw";
 import ReverseLinkedListSolutionRaw from "../solutions/7_linked_list/1_ReverseLinkedList.js?raw";
 import ReverseLinkedListExplanationRaw from "../explanations/7_linked_list/1_ReverseLinkedList.md?raw";
@@ -163,6 +175,14 @@ import RottingOrangesCandidateRaw from "../tasks/9_bfs/3_RottingOranges.js?raw";
 import RottingOrangesSolutionRaw from "../solutions/9_bfs/3_RottingOranges.js?raw";
 import RottingOrangesExplanationRaw from "../explanations/9_bfs/3_RottingOranges.md?raw";
 
+import CourseScheduleCandidateRaw from "../tasks/9_bfs/6_CourseSchedule.js?raw";
+import CourseScheduleSolutionRaw from "../solutions/9_bfs/6_CourseSchedule.js?raw";
+import CourseScheduleExplanationRaw from "../explanations/9_bfs/6_CourseSchedule.md?raw";
+
+import ParallelCoursesIIICandidateRaw from "../tasks/9_bfs/7_ParallelCoursesIII.js?raw";
+import ParallelCoursesIIISolutionRaw from "../solutions/9_bfs/7_ParallelCoursesIII.js?raw";
+import ParallelCoursesIIIExplanationRaw from "../explanations/9_bfs/7_ParallelCoursesIII.md?raw";
+
 import SubsetsCandidateRaw from "../tasks/10_backtracking/1_Subsets.js?raw";
 import SubsetsSolutionRaw from "../solutions/10_backtracking/1_Subsets.js?raw";
 import SubsetsExplanationRaw from "../explanations/10_backtracking/1_Subsets.md?raw";
@@ -178,6 +198,18 @@ import CombinationSumExplanationRaw from "../explanations/10_backtracking/3_Comb
 import GenerateParenthesesCandidateRaw from "../tasks/10_backtracking/4_GenerateParentheses.js?raw";
 import GenerateParenthesesSolutionRaw from "../solutions/10_backtracking/4_GenerateParentheses.js?raw";
 import GenerateParenthesesExplanationRaw from "../explanations/10_backtracking/4_GenerateParentheses.md?raw";
+
+import ClimbingStairsCandidateRaw from "../tasks/11_dynamic_programming/1_ClimbingStairs.js?raw";
+import ClimbingStairsSolutionRaw from "../solutions/11_dynamic_programming/1_ClimbingStairs.js?raw";
+import ClimbingStairsExplanationRaw from "../explanations/11_dynamic_programming/1_ClimbingStairs.md?raw";
+
+import HouseRobberCandidateRaw from "../tasks/11_dynamic_programming/2_HouseRobber.js?raw";
+import HouseRobberSolutionRaw from "../solutions/11_dynamic_programming/2_HouseRobber.js?raw";
+import HouseRobberExplanationRaw from "../explanations/11_dynamic_programming/2_HouseRobber.md?raw";
+
+import CoinChangeCandidateRaw from "../tasks/11_dynamic_programming/3_CoinChange.js?raw";
+import CoinChangeSolutionRaw from "../solutions/11_dynamic_programming/3_CoinChange.js?raw";
+import CoinChangeExplanationRaw from "../explanations/11_dynamic_programming/3_CoinChange.md?raw";
 
 export const ALGO_TWO_POINTERS_TASKS = [
   REMOVE_ELEMENT_ENTRY_TASK,
@@ -287,9 +319,79 @@ export const ALGO_TWO_POINTERS_TASKS = [
     checklist: ["Один указатель на каждый массив", "Пропуск всех повторов общего значения в обоих массивах", "Проверка последнего элемента result вместо Set", "Обработка хвостов после окончания одного из массивов"],
   },
   {
+    id: "algo51",
+    group: "Two Pointers",
+    title: "5. Common Element in Three Sorted Arrays",
+    desc: "Напишите функцию findCommonElement(a, b, c), которая находит наименьшее число, присутствующее во всех трёх неубывающих массивах, за O(p + q + r) времени и O(1) памяти.",
+    difficulty: "easy",
+    isRaw: true,
+    candidate: CommonElementInThreeSortedArraysCandidateRaw,
+    rawCandidate: CommonElementInThreeSortedArraysCandidateRaw,
+    solution: CommonElementInThreeSortedArraysSolutionRaw,
+    rawSolution: CommonElementInThreeSortedArraysSolutionRaw,
+    explanation: CommonElementInThreeSortedArraysExplanationRaw,
+    filepath: "src/algorithms/tasks/1_two_pointers/11_CommonElementInThreeSortedArrays.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение (Two Pointers: Merge)",
+        isRecommended: true,
+        badge: "O(p + q + r) время / O(1) память",
+        recommendationNote: "Три указателя идут вперёд: значения меньше текущего максимума не могут быть общими, поэтому только их указатели сдвигаются. Дополнительная память не нужна.",
+        rawSolution: CommonElementInThreeSortedArraysSolutionRaw,
+        filepath: "src/algorithms/solutions/1_two_pointers/11_CommonElementInThreeSortedArrays.js",
+      },
+    ],
+    articles: [
+      { title: "Секция программирования в Т-Банке (официальный репозиторий)", urlTitle: "GitHub — Tinkoff/career", url: "https://github.com/Tinkoff/career/blob/main/interview/sections/programming.md" },
+      { title: "LeetCode #1213", urlTitle: "LeetCode — Intersection of Three Sorted Arrays", url: "https://leetcode.com/problems/intersection-of-three-sorted-arrays/" },
+      { title: "Метод двух указателей (two pointers)", urlTitle: "SprintCode.pro — Руководство", url: "https://sprintcode.pro/ru/blog/two-pointers" },
+    ],
+    interviewerQuestions: [
+      { question: "Почему можно сдвигать указатели, у которых значение меньше максимума?", answer: "Массивы отсортированы, поэтому в двух других массивах правее текущих позиций нет значений меньше максимума. Значение, меньшее максимума, не может быть общим для всех трёх и больше не понадобится." },
+      { question: "Что изменится, если массивы не отсортированы?", answer: "Слияние указателями станет невозможным. Придётся отсортировать массивы за O(n log n) или использовать Set за O(n) памяти." },
+      { question: "Как найти все общие значения, а не одно?", answer: "Вместо return записывать значение в результат и сдвигать все три указателя. Чтобы не дублировать повторы, нужно сдвигать указатели за пределы блока одинаковых значений." },
+    ],
+    checklist: ["Три независимых указателя i, j, k", "Сдвиг только тех указателей, значения которых меньше максимума", "Возврат первого совпадения как наименьшего (массивы неубывающие)", "Возврат null, когда один из массивов закончился"],
+  },
+  {
+    id: "algo57",
+    group: "Two Pointers",
+    title: "6. Expand Number Ranges",
+    desc: "Напишите функцию expandRanges(ranges), которая разворачивает строку вида \"1-6,8-9,11\" в массив всех чисел по возрастанию. Учтите одиночные числа и пустую строку.",
+    difficulty: "easy",
+    isRaw: true,
+    candidate: ExpandNumberRangesCandidateRaw,
+    rawCandidate: ExpandNumberRangesCandidateRaw,
+    solution: ExpandNumberRangesSolutionRaw,
+    rawSolution: ExpandNumberRangesSolutionRaw,
+    explanation: ExpandNumberRangesExplanationRaw,
+    filepath: "src/algorithms/tasks/1_two_pointers/12_ExpandNumberRanges.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение (Split → Map → Expand)",
+        isRecommended: true,
+        badge: "O(n + k) время / O(k) память",
+        recommendationNote: "Строка делится по запятым, каждый токен по дефису превращается в [start, end = start], затем диапазон разворачивается в числа.",
+        rawSolution: ExpandNumberRangesSolutionRaw,
+        filepath: "src/algorithms/solutions/1_two_pointers/12_ExpandNumberRanges.js",
+      },
+    ],
+    articles: [
+      { title: "Нейросети против Тинькоф-контеста (отчёт участника)", urlTitle: "Хабр — Разбор задач контеста", url: "https://habr.com/ru/articles/850926/" },
+      { title: "LeetCode #228", urlTitle: "LeetCode — Summary Ranges (обратная задача)", url: "https://leetcode.com/problems/summary-ranges/" },
+      { title: "Строки в JavaScript: split, join, slice", urlTitle: "learn.javascript.ru — Учебник", url: "https://learn.javascript.ru/string" },
+    ],
+    interviewerQuestions: [
+      { question: "Почему регулярка /(\\d+)-(\\d+)/ ломается на этой задаче?", answer: "Она не срабатывает на одиночных числах без дефиса, и они молча теряются. Корректный разбор должен обрабатывать оба вида токенов." },
+      { question: "Что вернёт \"\".split(\",\") и почему это важно?", answer: "Массив [\"\"] с одной пустой строкой, а Number(\"\") равен 0. Без проверки пустого входа функция вернула бы [0] вместо []." },
+      { question: "Как изменится решение для отрицательных чисел?", answer: "Дефис становится неоднозначным: он может быть знаком или разделителем диапазона. Нужен посимвольный разбор или другой разделитель, например \"..\"." },
+    ],
+    checklist: ["Одиночное число обрабатывается как диапазон из одного элемента", "Обработка пустой строки", "Диапазон включает оба конца", "Нулевые значения (\"0-2\") не теряются"],
+  },
+  {
     id: "algo2",
     group: "Two Pointers",
-    title: "5. Valid Palindrome",
+    title: "7. Valid Palindrome",
     desc: "Проверьте, является ли строка палиндромом после приведения к нижнему регистру и отбрасывания всех не буквенно-цифровых символов.",
     difficulty: "easy",
     isRaw: true,
@@ -323,7 +425,7 @@ export const ALGO_TWO_POINTERS_TASKS = [
   {
     id: "algo37",
     group: "Two Pointers",
-    title: "6. Sort Array By Parity",
+    title: "8. Sort Array By Parity",
     desc: "Напишите функцию sortArrayByParity(nums), которая переставляет чётные числа перед нечётными на месте (in-place) за O(n) времени и O(1) памяти.",
     difficulty: "easy",
     isRaw: true,
@@ -363,7 +465,7 @@ export const ALGO_TWO_POINTERS_TASKS = [
   {
     id: "algo1",
     group: "Two Pointers",
-    title: "7. Two Sum II - Input Array Is Sorted",
+    title: "9. Two Sum II - Input Array Is Sorted",
     desc: "Напишите функцию twoSum(numbers, target), которая находит два числа в отсортированном массиве с суммой target и возвращает их 1-based индексы за O(1) памяти.",
     difficulty: "medium",
     isRaw: true,
@@ -398,7 +500,7 @@ export const ALGO_TWO_POINTERS_TASKS = [
   {
     id: "algo3",
     group: "Two Pointers",
-    title: "8. 3Sum",
+    title: "10. 3Sum",
     desc: "Найдите все уникальные тройки чисел в массиве, сумма которых равна 0, исключив дубликаты.",
     difficulty: "medium",
     isRaw: true,
@@ -433,7 +535,7 @@ export const ALGO_TWO_POINTERS_TASKS = [
   {
     id: "algo46",
     group: "Two Pointers",
-    title: "9. Maximize Distance to Closest Person",
+    title: "11. Maximize Distance to Closest Person",
     desc: "Напишите функцию maxDistToClosest(seats), которая находит максимальное расстояние до ближайшего занятого места, если сесть на подходящее свободное место. Решите за один проход с указателем на последнее занятое место.",
     difficulty: "medium",
     isRaw: true,
@@ -468,7 +570,7 @@ export const ALGO_TWO_POINTERS_TASKS = [
   {
     id: "algo48",
     group: "Two Pointers",
-    title: "10. Longest Palindromic Substring",
+    title: "12. Longest Palindromic Substring",
     desc: "Напишите функцию longestPalindrome(s), которая находит самую длинную палиндромную подстроку, расширяя два указателя от каждого возможного центра за O(n²) времени.",
     difficulty: "medium",
     isRaw: true,
@@ -1204,9 +1306,44 @@ export const ALGO_STACK_TASKS = [
     checklist: ["Накопление многозначного множителя через count * 10 + digit", "Сохранение пары [current, count] при \"[\"", "Склейка previous + current.repeat(times) при \"]\"", "Корректная работа с вложенными скобками"],
   },
   {
+    id: "algo58",
+    group: "Stack",
+    title: "6. Basic Calculator II",
+    desc: "Напишите функцию calculate(s), которая вычисляет значение выражения с неотрицательными числами, операторами + - * / и пробелами без eval, используя стек слагаемых.",
+    difficulty: "medium",
+    isRaw: true,
+    candidate: BasicCalculatorIICandidateRaw,
+    rawCandidate: BasicCalculatorIICandidateRaw,
+    solution: BasicCalculatorIISolutionRaw,
+    rawSolution: BasicCalculatorIISolutionRaw,
+    explanation: BasicCalculatorIIExplanationRaw,
+    filepath: "src/algorithms/tasks/6_stack/7_BasicCalculatorII.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение (Stack: Expression Parsing)",
+        isRecommended: true,
+        badge: "O(n) время / O(n) память",
+        recommendationNote: "Стек хранит слагаемые со знаком: * и / сразу применяются к верхнему слагаемому, а + и - добавляют новое. Ответ — сумма стека.",
+        rawSolution: BasicCalculatorIISolutionRaw,
+        filepath: "src/algorithms/solutions/6_stack/7_BasicCalculatorII.js",
+      },
+    ],
+    articles: [
+      { title: "LeetCode #227", urlTitle: "LeetCode — Basic Calculator II", url: "https://leetcode.com/problems/basic-calculator-ii/" },
+      { title: "Структуры данных в JavaScript: стек, очередь и другие", urlTitle: "Дока — Руководство", url: "https://doka.guide/tools/structure-data-in-js/" },
+      { title: "Сложность алгоритмов: O(n), O(n²) и другие", urlTitle: "Хабр — Оценка сложности", url: "https://habr.com/ru/articles/188010/" },
+    ],
+    interviewerQuestions: [
+      { question: "Почему оператор применяется не сразу, а при следующем операторе?", answer: "Нужно сначала прочитать число после оператора. Поэтому хранится предыдущий оператор, и он применяется, когда число закончилось: на следующем операторе или в конце строки." },
+      { question: "Как обойтись без стека?", answer: "Хранить только последнее слагаемое lastTerm и сумму закрытых слагаемых sum. При + и - переносить lastTerm в sum, а * и / применять к lastTerm. Память O(1)." },
+      { question: "Почему для деления используется Math.trunc, а не Math.floor?", answer: "Задача требует округления к нулю. Для отрицательных результатов Math.floor округляет вниз (-1.5 → -2), а Math.trunc к нулю (-1.5 → -1)." },
+    ],
+    checklist: ["Накопление многозначного числа через number * 10 + digit", "Применение предыдущего оператора, а не текущего", "Обработка последнего числа на i === s.length", "Деление с округлением к нулю через Math.trunc"],
+  },
+  {
     id: "algo20",
     group: "Stack",
-    title: "6. Daily Temperatures",
+    title: "7. Daily Temperatures",
     desc: "Напишите функцию dailyTemperatures(temperatures), вычисляющую количество дней ожидания более теплой температуры с использованием монотонного стека за O(n).",
     difficulty: "medium",
     isRaw: true,
@@ -1611,6 +1748,76 @@ export const ALGO_BFS_TASKS = [
     ],
     checklist: ["Первичный проход: сбор всех 2 в queue и подсчет свежих 1 в freshCount", "Цикл while (queue.length > 0 && freshCount > 0)", "Поуровневый обход по levelSize", "Заражение соседей: grid[r][c] = 2, freshCount -= 1, queue.push", "Инкремент minutes += 1 после каждого уровня", "Возврат freshCount > 0 ? -1 : minutes"],
   },
+  {
+    id: "algo52",
+    group: "Breadth-First Search",
+    title: "6. Course Schedule",
+    desc: "Напишите функцию canFinish(numCourses, prerequisites), которая определяет, можно ли пройти все курсы с учётом зависимостей, то есть нет ли цикла в графе. Используйте алгоритм Кана.",
+    difficulty: "medium",
+    isRaw: true,
+    candidate: CourseScheduleCandidateRaw,
+    rawCandidate: CourseScheduleCandidateRaw,
+    solution: CourseScheduleSolutionRaw,
+    rawSolution: CourseScheduleSolutionRaw,
+    explanation: CourseScheduleExplanationRaw,
+    filepath: "src/algorithms/tasks/9_bfs/6_CourseSchedule.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение (BFS: Topological Sort, алгоритм Кана)",
+        isRecommended: true,
+        badge: "O(V + E) время / O(V + E) память",
+        recommendationNote: "Очередь курсов с нулевой степенью входа: после обработки курса степень входа зависимых уменьшается. Если обработаны не все курсы, в графе есть цикл.",
+        rawSolution: CourseScheduleSolutionRaw,
+        filepath: "src/algorithms/solutions/9_bfs/6_CourseSchedule.js",
+      },
+    ],
+    articles: [
+      { title: "LeetCode #207", urlTitle: "LeetCode — Course Schedule", url: "https://leetcode.com/problems/course-schedule/" },
+      { title: "Топологическая сортировка", urlTitle: "Algorithmica — Теория", url: "https://ru.algorithmica.org/cs/graph-traversals/topological-sort/" },
+      { title: "Сложность алгоритмов: O(n), O(n²) и другие", urlTitle: "Хабр — Оценка сложности", url: "https://habr.com/ru/articles/188010/" },
+    ],
+    interviewerQuestions: [
+      { question: "Почему вершины цикла остаются необработанными?", answer: "Каждая вершина цикла ждёт другую вершину цикла, поэтому её степень входа никогда не станет нулём и она не попадёт в очередь." },
+      { question: "Зачем в очереди индекс head вместо shift()?", answer: "shift() сдвигает весь массив, это O(n) на каждую операцию. Индекс head делает извлечение O(1), и общая сложность остаётся O(V + E)." },
+      { question: "Как получить сам порядок прохождения курсов?", answer: "Записывать курсы в массив в порядке извлечения из очереди. Если длина массива меньше numCourses, порядка не существует (LeetCode «Course Schedule II», #210)." },
+    ],
+    checklist: ["Список смежности и массив степеней входа", "Старт с вершин, у которых indegree равен 0", "Счётчик обработанных вершин для обнаружения цикла", "Очередь с индексом head вместо shift()"],
+  },
+  {
+    id: "algo53",
+    group: "Breadth-First Search",
+    title: "7. Parallel Courses III",
+    desc: "Напишите функцию minimumTime(n, relations, time), которая находит минимальное число месяцев для прохождения всех курсов с зависимостями при параллельном обучении: топологическая сортировка и самое раннее время начала.",
+    difficulty: "hard",
+    isRaw: true,
+    candidate: ParallelCoursesIIICandidateRaw,
+    rawCandidate: ParallelCoursesIIICandidateRaw,
+    solution: ParallelCoursesIIISolutionRaw,
+    rawSolution: ParallelCoursesIIISolutionRaw,
+    explanation: ParallelCoursesIIIExplanationRaw,
+    filepath: "src/algorithms/tasks/9_bfs/7_ParallelCoursesIII.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение (BFS: Topological Sort + DP)",
+        isRecommended: true,
+        badge: "O(n + E) время / O(n + E) память",
+        recommendationNote: "Алгоритм Кана с массивом start: курс стартует после самой долгой зависимости. Ответ — максимальное время завершения, то есть длина критического пути.",
+        rawSolution: ParallelCoursesIIISolutionRaw,
+        filepath: "src/algorithms/solutions/9_bfs/7_ParallelCoursesIII.js",
+      },
+    ],
+    articles: [
+      { title: "LeetCode #2050", urlTitle: "LeetCode — Parallel Courses III", url: "https://leetcode.com/problems/parallel-courses-iii/" },
+      { title: "Топологическая сортировка", urlTitle: "Algorithmica — Теория", url: "https://ru.algorithmica.org/cs/graph-traversals/topological-sort/" },
+      { title: "Нейросети против Тинькоф-контеста (отчёт участника)", urlTitle: "Хабр — Разбор задач контеста", url: "https://habr.com/ru/articles/850926/" },
+    ],
+    interviewerQuestions: [
+      { question: "Почему start[next] обновляется через максимум, а не присваиванием?", answer: "Курс стартует только после завершения всех зависимостей, то есть после самой долгой из них. Присваивание перезаписало бы время более долгой зависимости результатом зависимости, обработанной позже." },
+      { question: "Почему ответ — это максимум по всем курсам, а не время последнего курса в очереди?", answer: "Курсы идут параллельно, поэтому курс с самым поздним завершением не обязательно обработан последним. Нужен максимум finish по всем курсам." },
+      { question: "Что такое критический путь и как его восстановить?", answer: "Это самая долгая цепочка зависимых курсов, она определяет минимальное время. Чтобы восстановить её, нужно хранить для каждого курса зависимость, давшую максимум в start." },
+    ],
+    checklist: ["Список смежности и степени входа", "start[next] как максимум finish зависимостей", "Ответ как максимум finish по всем курсам", "Смещение индексов: курсы с 1, time с 0"],
+  },
 ];
 
 export const ALGO_BACKTRACKING_TASKS = [
@@ -1761,6 +1968,114 @@ export const ALGO_BACKTRACKING_TASKS = [
   },
 ];
 
+export const ALGO_DP_TASKS = [
+  {
+    id: "algo54",
+    group: "Dynamic Programming",
+    title: "1. Climbing Stairs",
+    desc: "Напишите функцию climbStairs(n), которая считает количество способов подняться на лестницу из n ступенек шагами по 1 или 2. Решите динамическим программированием за O(n) времени и O(1) памяти.",
+    difficulty: "easy",
+    isRaw: true,
+    candidate: ClimbingStairsCandidateRaw,
+    rawCandidate: ClimbingStairsCandidateRaw,
+    solution: ClimbingStairsSolutionRaw,
+    rawSolution: ClimbingStairsSolutionRaw,
+    explanation: ClimbingStairsExplanationRaw,
+    filepath: "src/algorithms/tasks/11_dynamic_programming/1_ClimbingStairs.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение (DP: Rolling Variables)",
+        isRecommended: true,
+        badge: "O(n) время / O(1) память",
+        recommendationNote: "ways(n) = ways(n - 1) + ways(n - 2): хранятся только два последних значения, поэтому массив dp не нужен.",
+        rawSolution: ClimbingStairsSolutionRaw,
+        filepath: "src/algorithms/solutions/11_dynamic_programming/1_ClimbingStairs.js",
+      },
+    ],
+    articles: [
+      { title: "LeetCode #70", urlTitle: "LeetCode — Climbing Stairs", url: "https://leetcode.com/problems/climbing-stairs/" },
+      { title: "Динамическое программирование", urlTitle: "Algorithmica — Теория", url: "https://ru.algorithmica.org/cs/dynamic-programming/" },
+      { title: "Список задач с тегом \"Dynamic Programming\"", urlTitle: "LeetCode — Tag List", url: "https://leetcode.com/tag/dynamic-programming/" },
+    ],
+    interviewerQuestions: [
+      { question: "Почему наивная рекурсия работает за O(2ⁿ)?", answer: "Одни и те же подзадачи вычисляются многократно: climbStairs(3) считается внутри и climbStairs(4), и climbStairs(5). Мемоизация или цикл убирают повторы." },
+      { question: "Как связана задача с числами Фибоначчи?", answer: "Рекуррента та же: каждое значение равно сумме двух предыдущих. Отличается только база: для лестницы ways(0) = ways(1) = 1." },
+      { question: "Как изменится решение, если можно шагать на 1, 2 или 3 ступеньки?", answer: "Рекуррента станет ways(n) = ways(n - 1) + ways(n - 2) + ways(n - 3), а в памяти придётся держать три последних значения." },
+    ],
+    checklist: ["Рекуррента ways(n) = ways(n - 1) + ways(n - 2)", "Базовые значения для ступенек 0 и 1", "Хранение только двух последних значений", "Корректный ответ для n = 1"],
+  },
+  {
+    id: "algo55",
+    group: "Dynamic Programming",
+    title: "2. House Robber",
+    desc: "Напишите функцию rob(nums), которая находит максимальную сумму, которую можно унести из домов, не грабя соседние. Решите динамическим программированием за O(n) времени и O(1) памяти.",
+    difficulty: "medium",
+    isRaw: true,
+    candidate: HouseRobberCandidateRaw,
+    rawCandidate: HouseRobberCandidateRaw,
+    solution: HouseRobberSolutionRaw,
+    rawSolution: HouseRobberSolutionRaw,
+    explanation: HouseRobberExplanationRaw,
+    filepath: "src/algorithms/tasks/11_dynamic_programming/2_HouseRobber.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение (DP: Take / Skip)",
+        isRecommended: true,
+        badge: "O(n) время / O(1) память",
+        recommendationNote: "Для каждого дома выбираем максимум из двух вариантов: пропустить его (лучшее на предыдущем шаге) или взять (лучшее на два шага назад плюс его деньги).",
+        rawSolution: HouseRobberSolutionRaw,
+        filepath: "src/algorithms/solutions/11_dynamic_programming/2_HouseRobber.js",
+      },
+    ],
+    articles: [
+      { title: "LeetCode #198", urlTitle: "LeetCode — House Robber", url: "https://leetcode.com/problems/house-robber/" },
+      { title: "Динамическое программирование", urlTitle: "Algorithmica — Теория", url: "https://ru.algorithmica.org/cs/dynamic-programming/" },
+      { title: "Список задач с тегом \"Dynamic Programming\"", urlTitle: "LeetCode — Tag List", url: "https://leetcode.com/tag/dynamic-programming/" },
+    ],
+    interviewerQuestions: [
+      { question: "Почему жадный выбор «самый богатый дом» не работает?", answer: "Локально лучший выбор может заблокировать два соседних дома, которые вместе дали бы больше. Пример: [2, 1, 1, 2] даёт 4 (первый и последний), а жадность может дать 3." },
+      { question: "Как сформулировать состояние dp?", answer: "dp[i] — максимальная сумма, которую можно унести из первых i + 1 домов. Тогда dp[i] = max(dp[i - 1], dp[i - 2] + nums[i])." },
+      { question: "Как решить вариант с домами по кругу?", answer: "Запустить тот же алгоритм дважды: без первого дома и без последнего, и взять максимум (LeetCode «House Robber II», #213)." },
+    ],
+    checklist: ["Выбор между «пропустить» и «взять» на каждом доме", "Хранение двух значений вместо массива dp", "Одновременное обновление пары через деструктуризацию", "Корректная работа для пустого массива и одного дома"],
+  },
+  {
+    id: "algo56",
+    group: "Dynamic Programming",
+    title: "3. Coin Change",
+    desc: "Напишите функцию coinChange(coins, amount), которая находит минимальное число монет для набора суммы при неограниченном запасе каждого номинала или возвращает -1. Решите динамическим программированием.",
+    difficulty: "medium",
+    isRaw: true,
+    candidate: CoinChangeCandidateRaw,
+    rawCandidate: CoinChangeCandidateRaw,
+    solution: CoinChangeSolutionRaw,
+    rawSolution: CoinChangeSolutionRaw,
+    explanation: CoinChangeExplanationRaw,
+    filepath: "src/algorithms/tasks/11_dynamic_programming/3_CoinChange.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение (DP: Unbounded Knapsack)",
+        isRecommended: true,
+        badge: "O(amount · n) время / O(amount) память",
+        recommendationNote: "dp[sum] — минимум монет для суммы sum. Для каждой монеты, не превышающей сумму, пробуем добавить её к лучшему решению для sum - coin.",
+        rawSolution: CoinChangeSolutionRaw,
+        filepath: "src/algorithms/solutions/11_dynamic_programming/3_CoinChange.js",
+      },
+    ],
+    articles: [
+      { title: "LeetCode #322", urlTitle: "LeetCode — Coin Change", url: "https://leetcode.com/problems/coin-change/" },
+      { title: "Динамическое программирование", urlTitle: "Algorithmica — Теория", url: "https://ru.algorithmica.org/cs/dynamic-programming/" },
+      { title: "Список задач с тегом \"Dynamic Programming\"", urlTitle: "LeetCode — Tag List", url: "https://leetcode.com/tag/dynamic-programming/" },
+    ],
+    interviewerQuestions: [
+      { question: "Почему жадный алгоритм здесь не работает?", answer: "Для coins = [1, 3, 4] и суммы 6 жадность берёт 4 + 1 + 1 (три монеты), а оптимально 3 + 3 (две монеты). Нужно рассматривать все варианты последней монеты." },
+      { question: "Зачем dp заполняется значением Infinity, а не 0?", answer: "Infinity означает, что сумма пока недостижима, и min с ним работает корректно. Значение 0 выглядело бы как «ноль монет» и давало бы неверный ответ." },
+      { question: "Как изменить решение, чтобы посчитать число способов набрать сумму?", answer: "Заменить min на сложение и поменять порядок циклов: монеты снаружи, суммы внутри. Тогда комбинации с разным порядком монет не считаются повторно (LeetCode «Coin Change II», #518)." },
+    ],
+    checklist: ["Массив dp размера amount + 1 со значением Infinity", "База dp[0] = 0", "Переход через dp[sum - coin] + 1 для каждой подходящей монеты", "Преобразование Infinity в -1 в конце"],
+  },
+];
+
 export const ALGO_TASKS = [
   ...ALGO_HASH_MAP_TASKS,
   ...ALGO_TWO_POINTERS_TASKS,
@@ -1772,6 +2087,7 @@ export const ALGO_TASKS = [
   ...ALGO_DFS_TASKS,
   ...ALGO_BFS_TASKS,
   ...ALGO_BACKTRACKING_TASKS,
+  ...ALGO_DP_TASKS,
 ];
 
 export const ALL_ALGO_TASKS = [...ALGO_TASKS];

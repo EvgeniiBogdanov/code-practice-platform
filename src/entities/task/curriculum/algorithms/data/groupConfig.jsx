@@ -1,5 +1,5 @@
 import React from "react";
-import { GitMerge, Hash, Folder, SlidersHorizontal, Sigma, Search, Layers, Link2, GitBranch, Compass, RotateCcw } from "lucide-react";
+import { GitMerge, Hash, Folder, SlidersHorizontal, Sigma, Search, Layers, Link2, GitBranch, Compass, RotateCcw, Grid3x3 } from "lucide-react";
 import TwoPointersInfoRaw from "../explanations/1_two_pointers/_info.md?raw";
 import HashMapInfoRaw from "../explanations/2_hash_map/_info.md?raw";
 import SlidingWindowInfoRaw from "../explanations/3_sliding_window/_info.md?raw";
@@ -10,6 +10,7 @@ import LinkedListInfoRaw from "../explanations/7_linked_list/_info.md?raw";
 import DfsInfoRaw from "../explanations/8_dfs/_info.md?raw";
 import BfsInfoRaw from "../explanations/9_bfs/_info.md?raw";
 import BacktrackingInfoRaw from "../explanations/10_backtracking/_info.md?raw";
+import DynamicProgrammingInfoRaw from "../explanations/11_dynamic_programming/_info.md?raw";
 
 export const ALGO_GROUP_CONFIG = {
   "Hash Map": {
@@ -58,7 +59,9 @@ export const ALGO_GROUP_CONFIG = {
       { id: "algo36", title: "Remove Duplicates from Sorted Array (LeetCode #26)", desc: "удаление дубликатов на месте (slow / fast)", isInternal: true },
       { id: "algo35", title: "Move Zeroes (LeetCode #283)", desc: "сдвиг нулей в конец массива на месте (slow / fast)", isInternal: true },
       { id: "algo47", title: "Symmetric Difference of Sorted Arrays", desc: "слияние двух отсортированных массивов: значения, встречающиеся ровно в одном из них", isInternal: true },
+      { id: "algo51", title: "Common Element in Three Sorted Arrays", desc: "общий элемент трёх неубывающих массивов за O(p + q + r) и O(1) памяти", isInternal: true },
       { id: "algo9_ext", title: "Merge Sorted Array (LeetCode #88)", desc: "два указателя по двум массивам", url: "https://leetcode.com/problems/merge-sorted-array/", isInternal: false },
+      { id: "algo57", title: "Expand Number Ranges", desc: "разбор строки с диапазонами \"1-6,8-9,11\": split, одиночные числа и пустой вход", isInternal: true },
       { id: "algo8_ext", title: "Linked List Cycle (LeetCode #141)", desc: "вариант slow/fast для связного списка", url: "https://leetcode.com/problems/linked-list-cycle/", isInternal: false },
       { id: "algo4_ext", title: "Reverse String", desc: "разворот массива на месте", url: "https://leetcode.com/problems/reverse-string/", isInternal: false },
       { id: "algo2", title: "Valid Palindrome (LeetCode #125)", desc: "проверка палиндрома с помощью двух указателей", isInternal: true },
@@ -181,6 +184,7 @@ export const ALGO_GROUP_CONFIG = {
       { id: "algo49", title: "Simplify Path (LeetCode #71)", desc: "приведение Unix-пути к каноническому виду через стек сегментов", isInternal: true },
       { id: "algo19", title: "Min Stack (LeetCode #155)", desc: "стек с операцией получения минимума getMin() за константное время O(1)", isInternal: true },
       { id: "algo50", title: "Decode String (LeetCode #394)", desc: "вложенные скобки и множители: стек контекстов (строка, счётчик)", isInternal: true },
+      { id: "algo58", title: "Basic Calculator II (LeetCode #227)", desc: "вычисление выражения со стеком слагаемых с учётом приоритета * и /", isInternal: true },
       { id: "algo_lc22", title: "Generate Parentheses (LeetCode #22)", desc: "генерация всех правильных скобочных последовательностей (Backtracking + Stack)", url: "https://leetcode.com/problems/generate-parentheses/", isInternal: false },
       { id: "algo20", title: "Daily Temperatures (LeetCode #739)", desc: "поиск следующего большего элемента через монотонный стек за линейное время O(n)", isInternal: true },
       { id: "algo_lc84", title: "Largest Rectangle in Histogram (LeetCode #84)", desc: "поиск наибольшего прямоугольника в гистограмме с монотонным стеком за O(n)", url: "https://leetcode.com/problems/largest-rectangle-in-histogram/", isInternal: false },
@@ -276,6 +280,8 @@ export const ALGO_GROUP_CONFIG = {
       { id: "algo_lc127", title: "Word Ladder (LeetCode #127)", desc: "поиск кратчайшей цепочки трансформации слов на графе", url: "https://leetcode.com/problems/word-ladder/", isInternal: false },
       { id: "algo30", title: "Rotting Oranges (LeetCode #994)", desc: "моделирование одновременного распространения заражения через Multi-Source BFS", isInternal: true },
       { id: "algo_lc542", title: "01 Matrix (LeetCode #542)", desc: "вычисление расстояния до ближайшего 0 для каждой клетки через Multi-Source BFS", url: "https://leetcode.com/problems/01-matrix/", isInternal: false },
+      { id: "algo52", title: "Course Schedule (LeetCode #207)", desc: "поиск цикла в графе зависимостей: топологическая сортировка (алгоритм Кана)", isInternal: true },
+      { id: "algo53", title: "Parallel Courses III (LeetCode #2050)", desc: "минимальное время прохождения курсов с зависимостями: топологическая сортировка и критический путь", isInternal: true },
     ],
     articleLinksList: [
       { title: "Поиск в ширину (Breadth-First Search) на практике", urlTitle: "Хабр — Руководство", url: "https://habr.com/ru/articles/504374/" },
@@ -316,6 +322,34 @@ export const ALGO_GROUP_CONFIG = {
       { title: "Рекурсия и стек вызовов в JavaScript", urlTitle: "learn.javascript.ru — Учебник", url: "https://learn.javascript.ru/recursion" },
       { title: "Поиск с возвратом", urlTitle: "Википедия — Теория", url: "https://ru.wikipedia.org/wiki/%D0%9F%D0%BE%D0%B8%D1%81%D0%BA_%D1%81_%D0%B2%D0%BE%D0%B7%D0%B2%D1%80%D0%B0%D1%82%D0%BE%D0%BC" },
       { title: "Список задач с тегом \"Backtracking\"", urlTitle: "LeetCode — Tag List", url: "https://leetcode.com/tag/backtracking/" },
+    ],
+  },
+  "Dynamic Programming": {
+    name: "Dynamic Programming",
+    title: "Dynamic Programming",
+    iconEmoji: "🧮",
+    icon: Grid3x3,
+    color: "var(--accent-orange)",
+    bg: "var(--accent-orange-bg)",
+    infoId: "group-dynamic-programming",
+    infoRaw: DynamicProgrammingInfoRaw,
+    desc: "Полное руководство по динамическому программированию: оптимальная подструктура, мемоизация и табуляция, рекуррентные формулы, оптимизация памяти и типовые задачи (лестница, рюкзак, подпоследовательности).",
+    guideTitle: "Полное руководство по Dynamic Programming (динамическое программирование)",
+    practiceTasksList: [
+      { id: "algo54", title: "Climbing Stairs (LeetCode #70)", desc: "число способов подняться по лестнице: рекуррента как у чисел Фибоначчи и O(1) памяти", isInternal: true },
+      { id: "algo_lc746", title: "Min Cost Climbing Stairs (LeetCode #746)", desc: "минимальная стоимость подъёма: выбор лучшего из двух предыдущих состояний", url: "https://leetcode.com/problems/min-cost-climbing-stairs/", isInternal: false },
+      { id: "algo55", title: "House Robber (LeetCode #198)", desc: "максимальная сумма без соседних элементов: выбор взять или пропустить", isInternal: true },
+      { id: "algo_lc62", title: "Unique Paths (LeetCode #62)", desc: "число путей по сетке: двумерная таблица dp", url: "https://leetcode.com/problems/unique-paths/", isInternal: false },
+      { id: "algo56", title: "Coin Change (LeetCode #322)", desc: "минимальное число монет для суммы: рюкзак с неограниченным запасом", isInternal: true },
+      { id: "algo_lc139", title: "Word Break (LeetCode #139)", desc: "разбиение строки на слова из словаря: dp по префиксам", url: "https://leetcode.com/problems/word-break/", isInternal: false },
+      { id: "algo_lc300", title: "Longest Increasing Subsequence (LeetCode #300)", desc: "самая длинная возрастающая подпоследовательность: dp по концу подпоследовательности", url: "https://leetcode.com/problems/longest-increasing-subsequence/", isInternal: false },
+    ],
+    articleLinksList: [
+      { title: "Динамическое программирование", urlTitle: "Algorithmica — Теория", url: "https://ru.algorithmica.org/cs/dynamic-programming/" },
+      { title: "Динамическое программирование", urlTitle: "Википедия — Теория", url: "https://ru.wikipedia.org/wiki/%D0%94%D0%B8%D0%BD%D0%B0%D0%BC%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5_%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5" },
+      { title: "Сложность алгоритмов: O(n), O(n²) и другие", urlTitle: "Хабр — Оценка сложности", url: "https://habr.com/ru/articles/188010/" },
+      { title: "Рекурсия и стек вызовов в JavaScript", urlTitle: "learn.javascript.ru — Учебник", url: "https://learn.javascript.ru/recursion" },
+      { title: "Список задач с тегом \"Dynamic Programming\"", urlTitle: "LeetCode — Tag List", url: "https://leetcode.com/tag/dynamic-programming/" },
     ],
   },
 };

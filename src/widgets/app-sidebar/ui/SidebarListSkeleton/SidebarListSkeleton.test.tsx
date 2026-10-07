@@ -8,19 +8,19 @@ import { getReactCategories } from "../../lib/getReactCategories";
 import { SidebarListSkeleton } from "./SidebarListSkeleton";
 
 describe("SidebarListSkeleton", () => {
-  it("renders progress card, quick actions, and default 10 folders when no section is passed", () => {
+  it("renders progress card, quick actions, and default 11 folders when no section is passed", () => {
     render(<SidebarListSkeleton />);
     expect(screen.getByLabelText("Загрузка списка тем...")).toBeInTheDocument();
     expect(screen.getByLabelText("Быстрые действия")).toBeInTheDocument();
 
     const folders = screen.getAllByTestId("sidebar-folder-skeleton");
-    expect(folders).toHaveLength(10);
+    expect(folders).toHaveLength(11);
   });
 
-  it("renders 10 folders for algorithms section", () => {
+  it("renders 11 folders for algorithms section", () => {
     render(<SidebarListSkeleton section="algorithms" />);
     const folders = screen.getAllByTestId("sidebar-folder-skeleton");
-    expect(folders).toHaveLength(10);
+    expect(folders).toHaveLength(11);
   });
 
   it("renders 14 folders for javascript section", () => {
@@ -44,7 +44,7 @@ describe("SidebarListSkeleton", () => {
   it("matches real section category counts from catalog", async () => {
     const algoTasks = await loadTaskSection("algorithms");
     const { groupedTasks: algoGroups } = groupAlgoTasks(algoTasks);
-    expect(Object.keys(algoGroups)).toHaveLength(10);
+    expect(Object.keys(algoGroups)).toHaveLength(11);
 
     const jsTasks = await loadTaskSection("javascript");
     const { groupedTasks: jsGroups } = groupJsTasks(jsTasks);

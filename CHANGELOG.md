@@ -6,21 +6,29 @@
 
 ### Добавлено
 
-- **6 задач раздела «Алгоритмы»** (LeetCode-аналоги, у каждой эталонное решение, разбор с трассировкой, вопросы интервьюера и чеклист):
-  - **Hash Map:** Find All Numbers Disappeared in an Array (#448): поиск пропущенных чисел за O(1) памяти, массив как хеш-таблица.
+- **Новая группа «Dynamic Programming»** с руководством по теме и тремя задачами: Climbing Stairs (#70), House Robber (#198), Coin Change (#322).
+- **11 задач в существующих группах** (у каждой эталонное решение, разбор с трассировкой, вопросы интервьюера и чеклист):
   - **Two Pointers:**
+    - Common Element in Three Sorted Arrays: задача из официальных материалов Т-Банка.
     - Symmetric Difference of Sorted Arrays: слияние двух отсортированных массивов.
-    - Maximize Distance to Closest Person (#849): один проход с указателем на последнее занятое место.
-    - Longest Palindromic Substring (#5): расширение указателей от центра.
+    - Expand Number Ranges: разбор строки с диапазонами (по отчёту участника контеста).
+    - Maximize Distance to Closest Person (#849).
+    - Longest Palindromic Substring (#5).
+  - **Breadth-First Search:**
+    - Course Schedule (#207): топологическая сортировка, алгоритм Кана.
+    - Parallel Courses III (#2050): критический путь на графе зависимостей.
   - **Stack:**
-    - Simplify Path (#71): стек сегментов пути.
-    - Decode String (#394): стек контекстов для вложенных скобок.
-- Новые задачи включены в рекомендуемые для практики списки своих групп.
+    - Simplify Path (#71).
+    - Decode String (#394).
+    - Basic Calculator II (#227).
+  - **Hash Map:** Find All Numbers Disappeared in an Array (#448), массив как хеш-таблица за O(1) памяти.
+- Новые задачи включены в списки практики своих групп; у DP-группы добавлены внешние ссылки на Min Cost Climbing Stairs, Unique Paths, Word Break и Longest Increasing Subsequence.
+- Подписи паттернов в бейджах новых задач (например, «BFS: Topological Sort», «DP: Take / Skip»).
 
 ### Изменено
 
 - Нумерация задач в группах **Two Pointers** и **Stack** сдвинута: новые задачи вставлены по возрастанию сложности и темы, а не в конец.
-- Счётчик задач раздела «Алгоритмы» в манифесте и README: 44 → 50.
+- Число задач раздела «Алгоритмы» в манифесте, README и тестах: 44 → 58; число групп в сайдбаре: 10 → 11.
 
 ## <a id="v2-4-24"></a> [2.4.24] — 2026-10-06
 

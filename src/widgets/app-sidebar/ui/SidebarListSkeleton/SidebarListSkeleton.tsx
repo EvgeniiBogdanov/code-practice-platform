@@ -12,7 +12,7 @@ export interface SidebarListSkeletonProps {
 
 const SECTION_FOLDER_WIDTHS: Record<SectionType, readonly string[]> = {
   typescript: ["55%", "82%", "62%", "72%", "75%"],
-  algorithms: ["55%", "70%", "45%", "65%", "50%", "80%", "60%", "75%", "40%", "68%"],
+  algorithms: ["55%", "70%", "45%", "65%", "50%", "80%", "60%", "75%", "40%", "68%", "58%"],
   javascript: [
     "72%",
     "55%",

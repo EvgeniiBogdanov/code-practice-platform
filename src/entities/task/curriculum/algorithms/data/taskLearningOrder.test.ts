@@ -7,7 +7,8 @@ const EXPECTED_INTERNAL_CHAINS = {
   "Hash Map": [["algo6"], ["algo4"], ["algo5", "algo7"], ["algo45"]],
   "Two Pointers": [
     ["algo38", "algo36", "algo35"],
-    ["algo47"],
+    ["algo47", "algo51"],
+    ["algo57"],
     ["algo2", "algo37", "algo1", "algo3"],
     ["algo46"],
     ["algo48"],
@@ -15,15 +16,17 @@ const EXPECTED_INTERNAL_CHAINS = {
   "Sliding Window": [["algo9"], ["algo10", "algo8"]],
   "Prefix Sum": [["algo39", "algo11"], ["algo13"], ["algo12"]],
   "Binary Search": [["algo14", "algo15", "algo16"], ["algo17"]],
-  Stack: [["algo40", "algo18", "algo49"], ["algo19"], ["algo50"], ["algo20"]],
+  Stack: [["algo40", "algo18", "algo49"], ["algo19"], ["algo50", "algo58"], ["algo20"]],
   "Linked List": [["algo21"], ["algo22"], ["algo23"]],
   "Depth-First Search": [["algo41"], ["algo24", "algo27"], ["algo25"], ["algo26"]],
   "Breadth-First Search": [
     ["algo42", "algo28"],
     ["algo43", "algo29"],
     ["algo30"],
+    ["algo52", "algo53"],
   ],
   Backtracking: [["algo44", "algo31"], ["algo32"], ["algo33", "algo34"]],
+  "Dynamic Programming": [["algo54", "algo55"], ["algo56"]],
 } as const;
 
 const EXPECTED_PRACTICE_CHAINS = {
@@ -35,7 +38,8 @@ const EXPECTED_PRACTICE_CHAINS = {
   ],
   "Two Pointers": [
     ["algo38", "algo36", "algo35"], // Same-direction read/write.
-    ["algo47", "algo9_ext"], // Parallel inputs.
+    ["algo47", "algo51", "algo9_ext"], // Parallel inputs.
+    ["algo57"], // String parsing with split/map.
     ["algo8_ext"], // Different-speed runners.
     ["algo4_ext", "algo2", "algo37", "algo1", "algo7_ext", "algo3"], // Opposite ends and composition.
     ["algo46"], // Last-seen marker between gaps.
@@ -60,7 +64,7 @@ const EXPECTED_PRACTICE_CHAINS = {
   Stack: [
     ["algo40", "algo18", "algo_lc150", "algo49"], // Basic LIFO applications.
     ["algo19"], // Augmented stack state.
-    ["algo50"], // Nested contexts.
+    ["algo50", "algo58"], // Nested contexts and expression parsing.
     ["algo_lc22"], // Backtracking/stack hybrid.
     ["algo20", "algo_lc84"], // Monotonic stack.
   ],
@@ -81,6 +85,7 @@ const EXPECTED_PRACTICE_CHAINS = {
     ["algo43", "algo29", "algo_lc130"], // Flood fill and components.
     ["algo_lc1091", "algo_lc127"], // Single-source shortest paths.
     ["algo30", "algo_lc542"], // Multi-source BFS.
+    ["algo52", "algo53"], // Topological sort on dependency graphs.
   ],
   Backtracking: [
     ["algo44", "algo31", "algo_lc17", "algo32"], // Basic combinatorial generation.
@@ -88,6 +93,13 @@ const EXPECTED_PRACTICE_CHAINS = {
     ["algo_lc79"], // Grid path search.
     ["algo_lc131"], // Partitioning.
     ["algo_lc51", "algo_lc37"], // Constraint-satisfaction boards.
+  ],
+  "Dynamic Programming": [
+    ["algo54", "algo_lc746"], // 1D recurrences over the previous states.
+    ["algo55"], // Take / skip choice.
+    ["algo_lc62"], // 2D grid table.
+    ["algo56", "algo_lc139"], // Unbounded knapsack and prefix DP.
+    ["algo_lc300"], // Subsequence DP.
   ],
 } as const;
 

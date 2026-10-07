@@ -17,7 +17,7 @@ describe("useGroupOverview - algorithms section", () => {
 
     expect(result.current.section).toBe("algorithms");
     expect(result.current.hasSubgroups).toBe(false);
-    expect(result.current.filteredTasks.length).toBe(10);
+    expect(result.current.filteredTasks.length).toBe(12);
 
     const taskIds = result.current.filteredTasks.map((t) => t.id);
     expect(taskIds).toEqual([
@@ -25,6 +25,8 @@ describe("useGroupOverview - algorithms section", () => {
       "algo36",
       "algo35",
       "algo47",
+      "algo51",
+      "algo57",
       "algo2",
       "algo37",
       "algo1",

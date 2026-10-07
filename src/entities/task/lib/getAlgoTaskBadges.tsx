@@ -11,6 +11,7 @@ import {
   GitBranch,
   Compass,
   RotateCcw,
+  Grid3x3,
   Brain,
 } from "lucide-react";
 import { GaugeIndicator, type MetaBadgeVariant } from "@/shared/ui";
@@ -82,6 +83,21 @@ const ALGO_SUB_LABELS: Record<string, string> = {
   algo33: "Backtracking: Combinations",
   algo34: "Backtracking: Constraints",
   algo44: "Backtracking: Binary Choice",
+  // Added in 2.4.25
+  algo45: "Hash Map: Index as Key",
+  algo46: "Two Pointers: Last Seen",
+  algo47: "Two Pointers: Merge",
+  algo48: "Two Pointers: Expand From Center",
+  algo49: "Stack: Path Stack",
+  algo50: "Stack: Nested Context",
+  algo51: "Two Pointers: Merge",
+  algo52: "BFS: Topological Sort",
+  algo53: "BFS: Topological Sort",
+  algo54: "DP: Rolling Variables",
+  algo55: "DP: Take / Skip",
+  algo56: "DP: Knapsack",
+  algo57: "Two Pointers: String Parsing",
+  algo58: "Stack: Expression Parsing",
 };
 
 /**
@@ -161,6 +177,13 @@ const getAlgoGroupBadge = (group: string, task?: Task): AlgoTaskBadge => {
         label: subLabel || "Backtracking",
         variant: "yellow",
         icon: <RotateCcw size={ICON_SIZE} />,
+      };
+    case "Dynamic Programming":
+      return {
+        id: "algo-dynamic-programming",
+        label: subLabel || "Dynamic Programming",
+        variant: "orange",
+        icon: <Grid3x3 size={ICON_SIZE} />,
       };
     default:
       return {
