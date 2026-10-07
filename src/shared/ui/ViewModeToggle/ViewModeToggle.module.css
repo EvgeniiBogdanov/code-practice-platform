@@ -36,7 +36,7 @@
 }
 
 .viewModeBtn:hover {
-  color: var(--text-main, #ffffff);
+  color: var(--text-main);
   background: rgba(255, 255, 255, 0.05);
 }
 
@@ -50,7 +50,7 @@
 }
 
 .viewModeBtn.active {
-  color: var(--text-main, #ffffff);
+  color: var(--text-main);
   background: rgba(145, 145, 145, 0.09);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }

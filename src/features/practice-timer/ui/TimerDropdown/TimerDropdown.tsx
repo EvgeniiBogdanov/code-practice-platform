@@ -66,7 +66,7 @@ export const TimerDropdown = memo(({ className, disabled = false }: TimerDropdow
       {isOpen && (
         <div className={styles.menu} role="menu">
           <div className={styles.header}>
-            <Clock size={13} style={{ color: "var(--text-muted)" }} />
+            <Clock size={13} />
             <span>Таймер собеседования</span>
           </div>
           <div className={styles.optionsList}>

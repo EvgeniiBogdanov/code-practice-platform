@@ -55,7 +55,7 @@
   align-items: center;
   justify-content: center;
   font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
-  font-size: 14px;
+  font-size: var(--fs-body-sm);
   font-weight: 500;
   color: var(--text-muted);
   background: var(--bg-card);
@@ -94,7 +94,7 @@
 }
 
 .blockTitle {
-  font-size: 20px;
+  font-size: var(--fs-h3);
   font-weight: 600;
   line-height: 1.2;
   color: var(--text-main);

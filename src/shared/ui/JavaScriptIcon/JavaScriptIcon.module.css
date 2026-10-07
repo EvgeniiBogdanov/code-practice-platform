@@ -2,7 +2,7 @@
   display: inline-block;
   vertical-align: middle;
   flex-shrink: 0;
-  color: var(--color-js, #f59e0b);
+  color: var(--color-js);
 }
 
 .bg {
@@ -10,7 +10,7 @@
 }
 
 .letters {
-  fill: #000000;
+  fill: var(--black);
 }
 
 :global([data-theme="light"]) .icon {

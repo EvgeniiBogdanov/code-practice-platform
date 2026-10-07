@@ -23,7 +23,7 @@
 }
 
 .sectionTitle {
-  font-size: 16px;
+  font-size: var(--fs-body);
   font-weight: 600;
   color: var(--text-main);
   margin: 0;
@@ -62,7 +62,7 @@
 }
 
 .rowDesc {
-  font-size: 12px;
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   line-height: 1.45;
   font-family: var(--font-sans);

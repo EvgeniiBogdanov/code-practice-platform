@@ -15,7 +15,7 @@
   top: calc(100% + 8px);
   right: 0;
   width: 175px;
-  background: var(--bg-card, #1c1c1c);
+  background: var(--bg-card);
   border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
   border-radius: var(--radius-lg, 8px);
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
@@ -38,7 +38,7 @@
   align-items: center;
   gap: 6px;
   padding: 6px 8px;
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 600;
   color: var(--text-muted, rgba(255, 255, 255, 0.5));
   border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.06));
@@ -66,10 +66,10 @@
   border-radius: 6px;
   background: transparent;
   border: none;
-  font-size: 13px;
+  font-size: var(--fs-label);
   font-weight: 500;
   font-family: var(--font-sans);
-  color: var(--text-main, #ffffff);
+  color: var(--text-main);
   cursor: pointer;
   transition: background var(--transition-fast, 0.12s ease);
   text-align: left;
@@ -80,7 +80,7 @@
 }
 
 [data-theme="light"] .optionItem {
-  color: var(--text-main, #37352f);
+  color: var(--text-main);
 }
 
 [data-theme="light"] .optionItem:hover {

@@ -59,8 +59,8 @@
   min-width: 16px;
   height: 16px;
   padding: 0 4px;
-  border-radius: 9999px;
-  font-size: 10px;
+  border-radius: var(--radius-full);
+  font-size: var(--fs-xs);
   font-weight: 600;
   background: var(--state-hover);
   color: var(--text-muted);
@@ -80,7 +80,7 @@
   gap: 4px;
   padding: 1px 6px;
   border-radius: 3px;
-  font-size: 10px;
+  font-size: var(--fs-xs);
   font-weight: 500;
   user-select: none;
   background: var(--accent-blue-bg);

@@ -7,12 +7,12 @@
   width: 100%;
   box-sizing: border-box;
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: var(--fs-body-sm);
   line-height: 1.6;
   text-align: left;
   border: 1px solid var(--border-color);
   border-left: 4px solid var(--border-strong);
-  background: var(--bg-card, #252525);
+  background: var(--bg-card);
   color: var(--text-main);
   transition:
     background-color var(--transition-fast, 0.15s ease),
@@ -24,7 +24,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: var(--fs-2xl);
   line-height: 1;
   flex-shrink: 0;
   margin-top: 2px;
@@ -51,7 +51,7 @@
 
 /* Body text / children */
 .body {
-  font-size: 14px;
+  font-size: var(--fs-body-sm);
   line-height: 1.6;
   color: inherit;
 }
@@ -126,28 +126,28 @@
 /* Yellow & Amber (Warm Tips / Highlights / Lifehacks) */
 .color-yellow,
 .color-amber {
-  border-left-color: var(--accent-amber, #f59e0b);
+  border-left-color: var(--accent-amber);
 }
 
 .color-yellow .icon,
 .color-amber .icon,
 .color-yellow .title,
 .color-amber .title {
-  color: var(--accent-amber-hover, #fbbf24);
+  color: var(--accent-amber-hover);
 }
 
 [data-theme="light"] .color-yellow,
 [data-theme="light"] .color-amber {
   background: var(--accent-amber-bg, rgba(141, 79, 0, 0.08));
   border-color: var(--accent-amber-border, rgba(141, 79, 0, 0.2));
-  border-left-color: var(--accent-amber, #8d4f00);
+  border-left-color: var(--accent-amber);
 }
 
 [data-theme="light"] .color-yellow .icon,
 [data-theme="light"] .color-amber .icon,
 [data-theme="light"] .color-yellow .title,
 [data-theme="light"] .color-amber .title {
-  color: var(--accent-amber, #8d4f00);
+  color: var(--accent-amber);
 }
 
 /* Orange (Practice / Actions) */
@@ -189,14 +189,14 @@
 .size-sm {
   padding: 10px 12px;
   gap: 8px;
-  font-size: 13px;
+  font-size: var(--fs-label);
   line-height: 1.5;
   border-radius: var(--radius-md, 6px);
   border-left-width: 3px;
 }
 
 .size-sm .icon {
-  font-size: 15px;
+  font-size: var(--fs-lg);
   min-width: 16px;
   margin-top: 2px;
 }
@@ -206,7 +206,7 @@
 }
 
 .size-sm .title {
-  font-size: 13px;
+  font-size: var(--fs-label);
   line-height: 1.35;
 }
 
@@ -230,7 +230,7 @@
 }
 
 .size-xs .icon {
-  font-size: 13px;
+  font-size: var(--fs-label);
   min-width: 14px;
   margin-top: 1px;
 }

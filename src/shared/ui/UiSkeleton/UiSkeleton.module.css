@@ -1,12 +1,12 @@
 .skeleton {
   display: block;
-  background-color: var(--bg-card, #252525);
+  background-color: var(--bg-card);
   position: relative;
   overflow: hidden;
 }
 
 [data-theme="light"] .skeleton {
-  background-color: var(--bg-subtle, #f4f4f2);
+  background-color: var(--bg-subtle);
 }
 
 /* Animations */

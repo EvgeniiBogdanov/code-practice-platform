@@ -1,14 +1,14 @@
 .folderIcon {
-  color: var(--color-js, #f59e0b);
+  color: var(--color-js);
   opacity: 0.85;
 }
 
 .folder_algo {
-  color: var(--color-algo, #a855f7);
+  color: var(--color-algo);
 }
 
 .folder_react {
-  color: var(--color-react, #3b82f6);
+  color: var(--color-react);
 }
 
 .nodeTitle {

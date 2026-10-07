@@ -82,3 +82,11 @@
 .codePlaceholder {
   margin-top: 4px;
 }
+
+.closeButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-1);
+  color: var(--text-muted);
+}

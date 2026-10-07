@@ -62,3 +62,7 @@
 .icon_typescript {
   color: var(--color-ts);
 }
+
+.homeOverviewSkeletonItem {
+  pointer-events: none;
+}

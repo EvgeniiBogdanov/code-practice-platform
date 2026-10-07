@@ -1,6 +1,6 @@
 .timerDisplay {
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: var(--fs-body-sm);
   color: var(--accent-blue);
   background: var(--accent-blue-bg);
   border: none;

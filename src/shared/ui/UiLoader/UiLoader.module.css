@@ -117,15 +117,15 @@
 }
 
 .variant_blue {
-  color: var(--accent-blue, #2383e2);
+  color: var(--accent-blue);
 }
 
 .variant_accent {
-  color: var(--accent-blue, #2383e2);
+  color: var(--accent-blue);
 }
 
 .variant_white {
-  color: #ffffff;
+  color: var(--white);
 }
 
 .label {

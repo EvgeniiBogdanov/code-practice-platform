@@ -78,7 +78,7 @@
 }
 
 .workspaceType {
-  font-size: 11px;
+  font-size: var(--fs-micro);
   color: var(--text-muted);
   line-height: 1.2;
   white-space: nowrap;
@@ -93,7 +93,7 @@
 }
 
 .sidebarSectionTitle {
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 500;
   letter-spacing: 0.01em;
   color: var(--fg-muted);
@@ -237,7 +237,7 @@
 }
 
 .kpiHeader {
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 600;
   text-transform: uppercase;
 
@@ -283,7 +283,7 @@
 }
 
 .kpiVal {
-  font-size: 18px;
+  font-size: var(--fs-2xl);
   font-weight: 700;
   font-family: var(--font-mono);
   color: var(--text-main);
@@ -308,7 +308,7 @@
 }
 
 .kpiSub {
-  font-size: 11px;
+  font-size: var(--fs-micro);
   color: var(--text-muted);
   font-family: var(--font-mono);
   white-space: nowrap;
@@ -367,7 +367,7 @@
   background: transparent;
   border: none;
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: var(--fs-label);
   font-weight: 500;
   padding: 7px 10px;
   border-radius: var(--radius-md, 6px);
@@ -442,7 +442,7 @@
 }
 
 .legendHeader {
-  font-size: 12px;
+  font-size: var(--fs-caption);
   font-weight: 600;
   color: var(--text-muted);
   margin-bottom: 2px;
@@ -503,7 +503,7 @@
 }
 
 .stageDesc {
-  font-size: 11px;
+  font-size: var(--fs-micro);
   color: var(--fg-muted);
   white-space: nowrap;
   overflow: hidden;
@@ -574,7 +574,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 600;
 }
 
@@ -616,7 +616,7 @@
 }
 
 .dueCardTitle {
-  font-size: 13px;
+  font-size: var(--fs-label);
   font-weight: 600;
   line-height: 1.35;
   color: var(--text-main);
@@ -634,7 +634,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 600;
   color: var(--color-status-due);
 }
@@ -734,7 +734,7 @@
 }
 
 .upcomingRowTitle {
-  font-size: 13px;
+  font-size: var(--fs-label);
   font-weight: 500;
   color: var(--text-main);
   white-space: nowrap;

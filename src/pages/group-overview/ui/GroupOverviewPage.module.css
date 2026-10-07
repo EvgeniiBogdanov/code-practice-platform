@@ -49,7 +49,7 @@
 .folderHeroTitle {
   font-size: 30px;
   font-weight: 700;
-  color: var(--text-main, #ffffff);
+  color: var(--text-main);
   line-height: 1.25;
   letter-spacing: -0.025em;
   font-family: var(--font-sans);
@@ -57,13 +57,13 @@
 }
 
 [data-theme="light"] .folderHeroTitle {
-  color: #0f172a;
+  color: var(--text-main);
 }
 
 .folderHeroDesc {
-  font-size: 13px;
+  font-size: var(--fs-label);
   line-height: 1.5;
-  color: var(--text-muted, #94a3b8);
+  color: var(--text-muted);
   margin: 0;
   max-width: 680px;
 }
@@ -99,7 +99,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 8px 10px;
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -270,7 +270,7 @@
 
 .nodeFileIcon {
   flex-shrink: 0;
-  color: var(--icon-file, #94a3b8);
+  color: var(--icon-file);
 }
 
 .taskBtnText {
@@ -314,21 +314,21 @@
 }
 
 .statusSolved {
-  color: var(--color-status-solved, #10b981);
+  color: var(--color-status-solved);
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
 .statusUnsolved {
-  color: var(--color-status-unsolved, #ef4444);
+  color: var(--color-status-unsolved);
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
 .statusDue {
-  color: #f59e0b;
+  color: var(--color-status-due);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -343,19 +343,19 @@
 
 /* Rating gradient difficulty text colors */
 .ratingGradientEasy .taskBtnText {
-  color: #10b981;
+  color: var(--color-rating-easy);
 }
 
 .ratingGradientMedium .taskBtnText {
-  color: #eab308;
+  color: var(--color-rating-medium);
 }
 
 .ratingGradientHard .taskBtnText {
-  color: #f97316;
+  color: var(--color-rating-hard);
 }
 
 .ratingGradientUnsolved .taskBtnText {
-  color: #ef4444;
+  color: var(--color-status-unsolved);
 }
 
 /* Gallery Grid & Cards */
@@ -368,7 +368,7 @@
 }
 
 .galleryCard {
-  background: var(--bg-card, #252525);
+  background: var(--bg-card);
   border: none;
   border-left: 3px solid rgba(255, 255, 255, 0.35);
   border-radius: var(--radius-lg);
@@ -377,7 +377,7 @@
   flex-direction: column;
   justify-content: space-between;
   text-decoration: none;
-  color: var(--text-main, #ffffff);
+  color: var(--text-main);
   position: relative;
   overflow: hidden;
   height: 180px;
@@ -390,7 +390,7 @@
 }
 
 .galleryCard:hover {
-  background-color: var(--bg-elevated, #2f2f2f);
+  background-color: var(--bg-elevated);
 }
 
 [data-theme="light"] .galleryCard {
@@ -410,19 +410,19 @@
 }
 
 .galleryCard.ratingGradientHard {
-  border-left-color: var(--color-rating-hard, #f97316);
+  border-left-color: var(--color-rating-hard);
 }
 
 .galleryCard.ratingGradientMedium {
-  border-left-color: var(--color-rating-medium, #eab308);
+  border-left-color: var(--color-rating-medium);
 }
 
 .galleryCard.ratingGradientEasy {
-  border-left-color: var(--color-rating-easy, #10b981);
+  border-left-color: var(--color-rating-easy);
 }
 
 .galleryCard.ratingGradientUnsolved {
-  border-left-color: var(--color-status-unsolved, #ef4444);
+  border-left-color: var(--color-status-unsolved);
 }
 
 /* Card Header Row */
@@ -442,7 +442,7 @@
 }
 
 .galleryCardSubgroup {
-  font-size: 11px;
+  font-size: var(--fs-micro);
   color: var(--text-muted);
   font-weight: 500;
   white-space: nowrap;
@@ -459,16 +459,16 @@
 }
 
 .galleryCardStatusText {
-  font-size: 12px;
+  font-size: var(--fs-caption);
   font-weight: 500;
 }
 
 .statusSolved {
-  color: var(--color-status-solved, #10b981);
+  color: var(--color-status-solved);
 }
 
 .statusUnsolved {
-  color: var(--color-status-unsolved, #ef4444);
+  color: var(--color-status-unsolved);
 }
 
 .statusUnstarted {
@@ -476,17 +476,17 @@
 }
 
 .statusIconSolved {
-  color: var(--color-status-solved, #10b981);
+  color: var(--color-status-solved);
   display: inline-flex;
 }
 
 .statusIconUnsolved {
-  color: var(--color-status-unsolved, #ef4444);
+  color: var(--color-status-unsolved);
   display: inline-flex;
 }
 
 .statusIconDue {
-  color: var(--color-status-due, #f59e0b);
+  color: var(--color-status-due);
   display: inline-flex;
 }
 
@@ -495,7 +495,7 @@
   align-items: flex-start;
   gap: 8px;
   font-weight: 600;
-  font-size: 14px;
+  font-size: var(--fs-body-sm);
   color: var(--text-main);
   line-height: 1.35;
   margin-bottom: 6px;
@@ -518,12 +518,12 @@
 }
 
 .galleryCardTitleExcluded {
-  color: var(--text-muted, #787774) !important;
+  color: var(--text-muted) !important;
   opacity: 0.7;
 }
 
 .galleryCardDesc {
-  font-size: 12px;
+  font-size: var(--fs-caption);
   color: var(--text-muted);
   line-height: 1.45;
   display: -webkit-box;
@@ -571,7 +571,7 @@
   gap: 4px;
   padding: 4px 6px;
   border-radius: var(--radius-md, 6px);
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 500;
   line-height: 1.2;
   box-sizing: border-box;
@@ -596,13 +596,13 @@
 }
 
 .badgeNextDue {
-  color: var(--color-status-due, #f59e0b);
+  color: var(--color-status-due);
   background: rgba(245, 158, 11, 0.12);
   font-weight: 600;
 }
 
 .badgeNextScheduled {
-  color: var(--accent-blue, #60a5fa);
+  color: var(--accent-blue);
   background: rgba(96, 165, 250, 0.12);
 }
 
@@ -624,16 +624,16 @@
   font-weight: var(--fw-semibold, 600);
   line-height: var(--lh-heading, 1.3);
   letter-spacing: var(--ls-h2, -0.01em);
-  color: var(--text-main, #ffffff);
+  color: var(--text-main);
   font-family: var(--font-sans);
 }
 
 [data-theme="light"] .h2Block {
-  color: #191919;
+  color: var(--text-main);
 }
 
 .articleH2Icon {
-  color: var(--accent-blue, #3b82f6);
+  color: var(--accent-blue);
   flex-shrink: 0;
 }
 
@@ -664,11 +664,11 @@
 }
 
 [data-theme="light"] .articleTopic {
-  color: #191919;
+  color: var(--text-main);
 }
 
 .articleLink {
-  color: var(--accent-blue, #2383e2);
+  color: var(--accent-blue);
   text-decoration: underline;
   text-underline-offset: 3px;
   transition: opacity var(--transition-fast, 0.15s ease);
@@ -679,7 +679,7 @@
 }
 
 [data-theme="light"] .articleLink {
-  color: #0066cc;
+  color: var(--accent-blue);
 }
 
 @media (max-width: 860px) {
@@ -692,4 +692,25 @@
   .dbColNextReview {
     display: none;
   }
+}
+
+.skeletonCard {
+  pointer-events: none;
+  cursor: default;
+}
+
+.skeletonTitle {
+  margin-top: var(--space-3);
+}
+
+.skeletonText {
+  margin-top: var(--space-2);
+}
+
+.skeletonTextTail {
+  margin-top: var(--space-1);
+}
+
+.skeletonFooter {
+  margin-top: var(--space-4);
 }

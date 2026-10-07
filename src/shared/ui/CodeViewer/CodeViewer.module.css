@@ -2,12 +2,12 @@
   width: 100%;
   max-width: 100%;
   margin: 8px 0;
-  background: var(--bg-editor, #1e1e1e);
+  background: var(--bg-editor);
   border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
   border-radius: var(--radius-md, 8px);
   overflow: hidden;
   position: relative;
-  font-size: 14px;
+  font-size: var(--fs-body-sm);
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -23,7 +23,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 10px;
-  background: var(--bg-sidebar, #202020);
+  background: var(--bg-sidebar);
   border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
   height: 32px;
   min-height: 32px;
@@ -32,7 +32,7 @@
 }
 
 [data-theme="light"] .header {
-  background: var(--bg-sidebar, #f7f6f3);
+  background: var(--bg-sidebar);
   border-bottom-color: var(--border-color, rgba(55, 53, 47, 0.12));
 }
 
@@ -41,14 +41,14 @@
   align-items: center;
   gap: 6px;
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: var(--fs-label);
   font-weight: 500;
-  color: var(--text-main, #ffffff);
+  color: var(--text-main);
   white-space: nowrap;
 }
 
 [data-theme="light"] .fileTab {
-  color: var(--text-main, #37352f);
+  color: var(--text-main);
 }
 
 .fileTabIcon {
@@ -58,7 +58,7 @@
 .surface {
   display: flex;
   position: relative;
-  background: var(--bg-editor, #1e1e1e);
+  background: var(--bg-editor);
   min-height: auto;
   height: auto;
   overflow: hidden;
@@ -73,10 +73,10 @@
 
 .gutter {
   padding: var(--code-padding-y, 14px) 8px var(--code-padding-y, 14px) 0;
-  background: var(--bg-editor, #1e1e1e);
+  background: var(--bg-editor);
   border-right: 1px solid var(--border-color, rgba(255, 255, 255, 0.05));
   user-select: none;
-  color: var(--text-dimmed, #858585);
+  color: var(--text-dimmed);
   font-family: var(--font-mono);
   font-size: var(--code-font-size, 14px);
   line-height: var(--code-line-height, 1.6);
@@ -88,7 +88,7 @@
 }
 
 [data-theme="light"] .gutter {
-  background: var(--bg-sidebar, #f7f6f3);
+  background: var(--bg-sidebar);
   border-right-color: var(--border-color, rgba(55, 53, 47, 0.12));
   color: var(--fg-muted, rgba(55, 53, 47, 0.45));
 }
@@ -118,7 +118,7 @@
   font-family: var(--font-mono);
   font-size: var(--code-font-size, 14px);
   line-height: var(--code-line-height, 1.6);
-  color: var(--text-main, #d4d4d4);
+  color: var(--text-main);
   white-space: var(--code-white-space, pre);
   word-break: var(--code-word-break, normal);
   overflow-wrap: var(--code-overflow-wrap, normal);
@@ -128,7 +128,7 @@
 }
 
 [data-theme="light"] .preOnly {
-  color: var(--text-main, #37352f);
+  color: var(--text-main);
 }
 
 .preOnly code {
@@ -139,11 +139,11 @@
   padding: 0 !important;
   border: none !important;
   border-radius: 0 !important;
-  color: var(--text-main, #d4d4d4);
+  color: var(--text-main);
 }
 
 [data-theme="light"] .preOnly code {
-  color: var(--text-main, #37352f);
+  color: var(--text-main);
 }
 
 .preOnly code * {
@@ -186,7 +186,7 @@
 
 .copyBtn:hover {
   background: rgba(255, 255, 255, 0.12);
-  color: #ffffff;
+  color: var(--white);
 }
 
 [data-theme="light"] .copyBtn {
@@ -200,13 +200,8 @@
 }
 
 .copied {
-  color: #34d399 !important;
-  background: rgba(16, 185, 129, 0.2) !important;
+  color: var(--color-success) !important;
+  background: var(--accent-green-bg) !important;
   opacity: 1 !important;
   pointer-events: auto !important;
-}
-
-[data-theme="light"] .copied {
-  color: #059669 !important;
-  background: rgba(16, 185, 129, 0.15) !important;
 }

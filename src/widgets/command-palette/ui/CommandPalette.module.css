@@ -136,7 +136,7 @@
 }
 
 .paletteItemTitle {
-  font-size: 13px;
+  font-size: var(--fs-label);
   font-weight: 500;
   color: var(--text-main);
   white-space: nowrap;
@@ -162,7 +162,7 @@
   gap: 4px;
   min-width: 44px;
   justify-content: flex-end;
-  font-size: 12px;
+  font-size: var(--fs-caption);
   font-variant-numeric: tabular-nums;
   color: var(--fg-muted);
 }
@@ -171,7 +171,7 @@
   padding: 32px 16px;
   text-align: center;
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: var(--fs-label);
 }
 
 .iconTs {

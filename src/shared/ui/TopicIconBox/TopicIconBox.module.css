@@ -25,21 +25,21 @@
 .size_sm {
   width: 32px;
   height: 32px;
-  border-radius: 8px;
-  font-size: 16px;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-body);
 }
 
 .size_md {
   width: 40px;
   height: 40px;
   border-radius: 10px;
-  font-size: 20px;
+  font-size: var(--fs-h3);
 }
 
 .size_lg {
   width: 56px;
   height: 56px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   font-size: 28px;
 }
 

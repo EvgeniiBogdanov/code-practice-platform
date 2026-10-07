@@ -46,7 +46,7 @@
   left: 2px;
   width: 14px;
   height: 14px;
-  background-color: #ffffff;
+  background-color: var(--white);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   border-radius: 50%;
   transition:
@@ -56,17 +56,17 @@
 
 /* Checked state */
 .nativeInput:checked + .track {
-  background-color: var(--accent-primary, #2383e2);
+  background-color: var(--accent-primary);
 }
 
 .nativeInput:checked + .track .thumb {
   transform: translateX(14px);
-  background-color: #ffffff;
+  background-color: var(--white);
 }
 
 /* Focus visible state */
 .nativeInput:focus-visible + .track {
-  outline: 2px solid var(--accent-primary, #58a6ff);
+  outline: 2px solid var(--accent-primary);
   outline-offset: 2px;
 }
 

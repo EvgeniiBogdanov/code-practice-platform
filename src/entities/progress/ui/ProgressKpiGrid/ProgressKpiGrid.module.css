@@ -31,7 +31,7 @@
 }
 
 .kpiLabel {
-  font-size: 12px;
+  font-size: var(--fs-caption);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -39,7 +39,7 @@
 }
 
 .kpiValue {
-  font-size: 24px;
+  font-size: var(--fs-h2);
   font-weight: 700;
   color: var(--text-main);
   font-feature-settings: "tnum";

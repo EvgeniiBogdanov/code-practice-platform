@@ -29,10 +29,10 @@
   border-radius: 50%;
   background: linear-gradient(
     135deg,
-    color-mix(in srgb, var(--accent-blue) 72%, #000000) 0%,
-    color-mix(in srgb, var(--accent-blue) 52%, #000000) 100%
+    color-mix(in srgb, var(--accent-blue) 72%, var(--black)) 0%,
+    color-mix(in srgb, var(--accent-blue) 52%, var(--black)) 100%
   );
-  color: #ffffff;
+  color: var(--white);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -46,34 +46,25 @@
   background: linear-gradient(
     135deg,
     var(--accent-blue) 0%,
-    color-mix(in srgb, var(--accent-blue) 75%, #000000) 100%
+    color-mix(in srgb, var(--accent-blue) 75%, var(--black)) 100%
   );
 }
 
 .avatarUnsolved {
   background: linear-gradient(
     135deg,
-    color-mix(in srgb, var(--accent-red) 72%, #000000) 0%,
-    color-mix(in srgb, var(--accent-red) 60%, #000000) 100%
+    color-mix(in srgb, var(--accent-red) 72%, var(--black)) 0%,
+    color-mix(in srgb, var(--accent-red) 60%, var(--black)) 100%
   );
-}
-
-[data-theme="light"] .avatarUnsolved {
-  background: linear-gradient(135deg, #c53030 0%, #991b1b 100%);
 }
 
 .avatarDue {
   background: linear-gradient(
     135deg,
-    color-mix(in srgb, var(--accent-yellow) 72%, #000000) 0%,
-    color-mix(in srgb, var(--accent-yellow) 48%, #000000) 100%
+    color-mix(in srgb, var(--accent-yellow) 72%, var(--black)) 0%,
+    color-mix(in srgb, var(--accent-yellow) 48%, var(--black)) 100%
   );
-  color: #ffffff;
-}
-
-[data-theme="light"] .avatarDue {
-  background: linear-gradient(135deg, #a16207 0%, #713f12 100%);
-  color: #ffffff;
+  color: var(--white);
 }
 
 .avatar svg {
@@ -106,12 +97,12 @@
 }
 
 [data-theme="light"] .taskReviewTexts {
-  background: #ffffff;
+  background: var(--bg-card);
   box-shadow: 0 1px 3px rgba(55, 53, 47, 0.08);
 }
 
 [data-theme="light"] .taskReviewTexts::before {
-  border-right-color: #ffffff;
+  border-right-color: var(--white);
 }
 
 .taskReviewTitle {
@@ -144,7 +135,7 @@
   height: 18px;
   padding: 0 6px;
   border-radius: 6px;
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 500;
   line-height: 1;
   background: var(--accent-blue-bg);
@@ -162,7 +153,7 @@
   height: 18px;
   padding: 0 6px;
   border-radius: 6px;
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 500;
   line-height: 1;
   background: var(--accent-blue-bg);
@@ -204,7 +195,7 @@
 .descHint {
   display: block;
   margin-top: 2px;
-  font-size: 12px;
+  font-size: var(--fs-caption);
   color: var(--text-muted);
 }
 
@@ -242,7 +233,7 @@
 }
 
 [data-theme="light"] .reviewRateBtn {
-  background: #ffffff;
+  background: var(--bg-card);
   box-shadow: 0 1px 3px rgba(55, 53, 47, 0.06);
   color: var(--text-main);
 }
@@ -268,7 +259,7 @@
 }
 
 .rateLabel {
-  font-size: 12px;
+  font-size: var(--fs-caption);
   font-weight: 500;
   color: var(--text-main);
   line-height: 1.2;
@@ -306,7 +297,7 @@
   border-radius: 50%;
   background: var(--state-active);
   color: var(--text-main);
-  font-size: 10px;
+  font-size: var(--fs-xs);
 }
 
 /* Rate Easy Button States */
@@ -380,27 +371,27 @@
 
 /* Excluded task assistant styles */
 .avatarExcluded {
-  background: var(--bg-surface, #2d3139);
-  color: var(--text-muted, #787774);
+  background: var(--bg-surface);
+  color: var(--text-muted);
   border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
 }
 
 [data-theme="light"] .avatarExcluded {
-  background: var(--bg-surface, #e5e5e5);
-  color: var(--text-muted, #787774);
-  border: 1px solid var(--border-color, #d4d4d4);
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
 }
 
 .authorNameExcluded {
-  color: var(--text-muted, #787774);
+  color: var(--text-muted);
 }
 
 .messageTextExcluded {
-  color: var(--text-muted, #787774);
+  color: var(--text-muted);
 }
 
 .badgeExcluded {
-  color: var(--text-muted, #787774);
+  color: var(--text-muted);
   background: rgba(120, 119, 116, 0.15);
   border: 1px solid rgba(120, 119, 116, 0.25);
 }

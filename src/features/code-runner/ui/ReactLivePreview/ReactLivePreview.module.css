@@ -85,17 +85,17 @@
 }
 
 .dotClose {
-  background: #ff5f57;
+  background: var(--dot-close);
   box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.2);
 }
 
 .dotMin {
-  background: #febc2e;
+  background: var(--dot-minimize);
   box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.2);
 }
 
 .dotMax {
-  background: #28c840;
+  background: var(--dot-maximize);
   box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.2);
 }
 
@@ -254,14 +254,14 @@
 .errorMessage {
   white-space: pre-wrap;
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: var(--fs-label);
   line-height: 1.5;
   color: var(--text-main);
 }
 
 .errorHint {
   margin: 8px 0 0 0;
-  font-size: 12px;
+  font-size: var(--fs-caption);
   color: var(--text-muted);
 }
 
@@ -271,6 +271,6 @@
   text-align: center;
   color: var(--text-muted);
   width: 100%;
-  font-size: 14px;
+  font-size: var(--fs-body-sm);
   box-sizing: border-box;
 }

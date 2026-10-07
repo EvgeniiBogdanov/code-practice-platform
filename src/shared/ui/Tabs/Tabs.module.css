@@ -41,23 +41,23 @@
 }
 
 .tab.activeCandidate {
-  border-bottom-color: #10b981;
+  border-bottom-color: var(--tab-candidate);
 }
 
 .tab.activeSolution {
-  border-bottom-color: #3b82f6;
+  border-bottom-color: var(--tab-solution);
 }
 
 .tab.activeMaterials {
-  border-bottom-color: #f59e0b;
+  border-bottom-color: var(--tab-materials);
 }
 
 .tab.activeChecklist {
-  border-bottom-color: #06b6d4;
+  border-bottom-color: var(--tab-checklist);
 }
 
 .tab.activeQuestions {
-  border-bottom-color: #a855f7;
+  border-bottom-color: var(--tab-questions);
 }
 
 .tab:disabled {
@@ -79,10 +79,10 @@
   min-width: 18px;
   height: 18px;
   padding: 0 5px;
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 600;
   line-height: 18px;
-  border-radius: 9999px;
+  border-radius: var(--radius-full);
   background-color: var(--state-active);
   color: var(--text-muted);
 }
@@ -98,7 +98,7 @@
   padding: 6px 12px;
   border-radius: var(--radius-lg);
   border-bottom: none;
-  font-size: 13px;
+  font-size: var(--fs-label);
   font-weight: 500;
   margin-bottom: 0;
 }
@@ -111,12 +111,12 @@
 
 .size_sm .tab {
   padding: 6px 10px;
-  font-size: 12px;
+  font-size: var(--fs-caption);
 }
 
 .size_sm.variant_pills .tab {
   padding: 4px 10px;
-  font-size: 12px;
+  font-size: var(--fs-caption);
 }
 
 .tabLabel {
@@ -147,7 +147,7 @@
   border: none;
   outline: none;
   border-bottom: none;
-  font-size: 13px;
+  font-size: var(--fs-label);
   font-weight: 500;
   color: var(--text-muted);
   background: transparent;

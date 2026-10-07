@@ -85,7 +85,7 @@
   background: transparent;
   color: var(--text-main);
   text-decoration: none;
-  font-size: 13px;
+  font-size: var(--fs-label);
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -98,6 +98,6 @@
 
 .actionBtn:hover {
   background: var(--state-hover);
-  color: var(--accent-blue, #60a5fa);
+  color: var(--accent-blue);
   border: none;
 }

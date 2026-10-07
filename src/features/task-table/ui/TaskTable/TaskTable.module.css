@@ -126,7 +126,7 @@
 }
 
 .tone_excluded .taskTitleText {
-  color: var(--text-muted, #787774) !important;
+  color: var(--text-muted) !important;
   opacity: 0.65;
 }
 
