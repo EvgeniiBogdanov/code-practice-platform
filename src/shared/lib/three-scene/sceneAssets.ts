@@ -64,6 +64,23 @@ export const makeLabel = (
 };
 
 /**
+ * Ширина текста, нарисованного `makeLabel`, в мировых единицах. Холст 512 px растягивается
+ * на `width`, а текст длиннее 496 px сжимается, поэтому результат ограничен этой же шириной.
+ * Нужна для раскладки подписей без наложений: ширину спрайта использовать нельзя, он шире текста.
+ */
+export const measureLabelWidth = (
+  text: string,
+  font: string,
+  width = 1.1,
+  fontSize = 56
+): number => {
+  const context = document.createElement("canvas").getContext("2d");
+  if (!context) return width;
+  context.font = `500 ${fontSize}px ${font}`;
+  return (Math.min(context.measureText(text).width, 496) / 512) * width;
+};
+
+/**
  * Text sprite whose glyphs keep a fixed world height: the texture is sized to
  * the text itself (no horizontal squeeze) and the sprite grows with the string,
  * clamped to `maxWidth` so long labels shrink to fit their container instead of

@@ -43,6 +43,20 @@ export const VISUALIZED_ALGORITHM_IDS = [
   "algo33",
   "algo34",
   "algo44",
+  "algo45",
+  "algo46",
+  "algo47",
+  "algo48",
+  "algo49",
+  "algo50",
+  "algo51",
+  "algo52",
+  "algo53",
+  "algo54",
+  "algo55",
+  "algo56",
+  "algo57",
+  "algo58",
 ] as const;
 export type VisualizedAlgorithmId = (typeof VISUALIZED_ALGORITHM_IDS)[number];
 

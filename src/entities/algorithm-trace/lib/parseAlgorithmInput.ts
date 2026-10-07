@@ -1,3 +1,4 @@
+import { parseExtendedInput } from "./parseExtendedInput";
 import { parseStructureInput } from "./parseStructureInput";
 import type { AlgorithmDefinition, ParsedAlgorithmInput } from "../model/algorithmTrace";
 
@@ -12,6 +13,8 @@ export const parseAlgorithmInput = (
   raw: string,
   parameter: string
 ): ParsedAlgorithmInput => {
+  const extended = parseExtendedInput(definition, raw, parameter);
+  if (extended) return extended;
   const structured = parseStructureInput(definition, raw, parameter);
   if (structured) return structured;
   if (definition.inputKind === "text") {

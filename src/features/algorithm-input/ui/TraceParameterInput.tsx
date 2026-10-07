@@ -11,7 +11,11 @@ export const TraceParameterInput = ({
   if (!props.definition.parameter) return null;
   return (
     <label
-      className={clsx(styles.parameter, props.definition.parameter === "t" && styles.textParameter)}
+      className={clsx(
+        styles.parameter,
+        (props.definition.parameter === "t" || props.definition.parameter === "time") &&
+          styles.textParameter
+      )}
     >
       <span className={styles.labelText}>{props.definition.parameter}</span>
       <Input
@@ -19,6 +23,7 @@ export const TraceParameterInput = ({
         size="md"
         inputMode={
           props.definition.parameter === "t" ||
+          props.definition.parameter === "time" ||
           props.definition.parameter === "left, right" ||
           props.definition.parameter === "sr, sc, color"
             ? "text"
@@ -28,7 +33,9 @@ export const TraceParameterInput = ({
         onChange={(event) => props.onParameter(event.target.value)}
         aria-invalid={Boolean(props.error)}
         aria-describedby={props.error ? errorId : undefined}
-        maxLength={props.definition.parameter === "t" ? 32 : 16}
+        maxLength={
+          props.definition.parameter === "t" || props.definition.parameter === "time" ? 32 : 16
+        }
       />
     </label>
   );

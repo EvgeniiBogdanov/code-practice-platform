@@ -10,6 +10,9 @@ import type { NumberSceneProps } from "../model/numberScene";
 import type { SceneContent } from "./sceneContent";
 import { TILE_PITCH } from "./sceneObjects";
 
+// Высота видимой области в мировых единицах: хватает на плитки и два уровня подписей указателей.
+const VIEW_HEIGHT_UNITS = 4.8;
+
 export interface SceneRuntime {
   renderer: WebGLRenderer;
   scene: Scene;
@@ -62,7 +65,7 @@ export const applyCameraTransform = (
   ) {
     runtime.renderer.setSize(width, height, false);
   }
-  const worldWidth = Math.max(7, count * TILE_PITCH + 2, (width / height) * 3.8);
+  const worldWidth = Math.max(7, count * TILE_PITCH + 2, (width / height) * VIEW_HEIGHT_UNITS);
   const { camera, zoom, pan } = runtime;
   camera.zoom = zoom;
   camera.left = -worldWidth / 2;
@@ -85,7 +88,7 @@ export const getWorldUnitsPerPixel = (
 ): number => {
   const width = Math.max(host.clientWidth, count * 58 + 96);
   const height = host.clientHeight || 248;
-  const worldWidth = Math.max(7, count * TILE_PITCH + 2, (width / height) * 3.8);
+  const worldWidth = Math.max(7, count * TILE_PITCH + 2, (width / height) * VIEW_HEIGHT_UNITS);
   return worldWidth / (width * (runtime.zoom || 1));
 };
 

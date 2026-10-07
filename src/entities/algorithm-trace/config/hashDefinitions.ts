@@ -1,4 +1,5 @@
 import type { AlgorithmDefinition } from "../model/algorithmTrace";
+import { buildDisappearedTrace } from "../model/indexMarkTraces";
 import {
   buildAnagramTrace,
   buildDuplicateTrace,
@@ -104,6 +105,32 @@ export const hashDefinitions = {
       { id: "count", label: 'Разные частоты: "aab", "abb"', input: "aab", parameter: "abb" },
       { id: "length", label: 'Разные длины: "ab", "a"', input: "ab", parameter: "a" },
       { id: "empty", label: "Пустые строки", input: "", parameter: "" },
+    ],
+  },
+  algo45: {
+    pattern: "Hash Map · индекс как ключ",
+    invariant:
+      "Число x указывает на ячейку x − 1. Отрицательный знак в ячейке — «число уже встречалось». Положительные ячейки — пропущенные числа.",
+    complexity: "O(n) время · O(1) память",
+    inputKind: "indexed",
+    inputLabel: "nums — n чисел от 1 до n",
+    inputHint: "n чисел, каждое от 1 до n (n от 1 до 12). Массив меняется на месте.",
+    build: buildDisappearedTrace,
+    examples: [
+      {
+        id: "task-1",
+        label: "Пример 1: [4, 3, 2, 7, 8, 2, 3, 1]",
+        input: "4, 3, 2, 7, 8, 2, 3, 1",
+        isTask: true,
+      },
+      { id: "task-2", label: "Пример 2: [1, 1]", input: "1, 1", isTask: true },
+      {
+        id: "task-3",
+        label: "Пример 3: [1, 2, 3] (нет пропусков)",
+        input: "1, 2, 3",
+        isTask: true,
+      },
+      { id: "repeat", label: "Один повтор: [3, 3, 3]", input: "3, 3, 3" },
     ],
   },
   algo7: {

@@ -4,10 +4,10 @@ import {
   parseAlgorithmInput,
   VISUALIZED_ALGORITHM_IDS,
 } from "@/entities/algorithm-trace";
-import { getActiveCodeLine, getSolutionCode } from "./activeCodeLine";
+import { getActiveCodeLine, getSolutionCode, stripComments } from "./activeCodeLine";
 
 const sources = import.meta.glob<string>(
-  "/src/entities/task/curriculum/algorithms/solutions/{1_two_pointers,2_hash_map,3_sliding_window,4_prefix_sum,5_binary_search,6_stack,7_linked_list,8_dfs,9_bfs,10_backtracking}/*.js",
+  "/src/entities/task/curriculum/algorithms/solutions/{1_two_pointers,2_hash_map,3_sliding_window,4_prefix_sum,5_binary_search,6_stack,7_linked_list,8_dfs,9_bfs,10_backtracking,11_dynamic_programming}/*.js",
   { query: "?raw", import: "default", eager: true }
 );
 const files: Record<string, string> = {
@@ -55,6 +55,20 @@ const files: Record<string, string> = {
   algo43: "5_FloodFill.js",
   algo44: "5_GenerateBinaryStrings.js",
   algo39: "4_RunningSum.js",
+  algo45: "5_FindDisappearedNumbers.js",
+  algo46: "8_MaximizeDistanceToClosestPerson.js",
+  algo47: "9_SymmetricDifference.js",
+  algo48: "10_LongestPalindromicSubstring.js",
+  algo49: "5_SimplifyPath.js",
+  algo50: "6_DecodeString.js",
+  algo51: "11_CommonElementInThreeSortedArrays.js",
+  algo52: "6_CourseSchedule.js",
+  algo53: "7_ParallelCoursesIII.js",
+  algo54: "1_ClimbingStairs.js",
+  algo55: "2_HouseRobber.js",
+  algo56: "3_CoinChange.js",
+  algo57: "12_ExpandNumberRanges.js",
+  algo58: "7_BasicCalculatorII.js",
 };
 
 describe("trace to recommended solution mapping", () => {
@@ -97,4 +111,32 @@ describe("trace to recommended solution mapping", () => {
       expect(code).not.toContain("console.log");
     }
   );
+});
+
+describe("stripComments", () => {
+  it("removes full-line and trailing comments but keeps code and blank separators", () => {
+    const code = [
+      "const f = (a) => {",
+      "  // объяснение",
+      "  let x = 1; // хвост",
+      "",
+      "  // ещё",
+      "  return x;",
+      "};",
+    ].join("\n");
+    expect(stripComments(code)).toBe(
+      ["const f = (a) => {", "  let x = 1;", "", "  return x;", "};"].join("\n")
+    );
+  });
+
+  it("does not cut // inside string literals", () => {
+    const code = "const url = \"https://example.com\"; // ссылка\nconst re = 'a//b';";
+    expect(stripComments(code)).toBe("const url = \"https://example.com\";\nconst re = 'a//b';");
+  });
+
+  it("shows recommended solutions without any comments", () => {
+    Object.values(sources).forEach((source) => {
+      expect(getSolutionCode(source)).not.toMatch(/(^|[^:"'])\/\/\s*\S/m);
+    });
+  });
 });

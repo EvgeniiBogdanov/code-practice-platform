@@ -9,6 +9,12 @@ export const pointerPair = (
   { label: labels[1], index: second, tone: "secondary" },
 ];
 
+export const marker = (label: string, index: number, tone: TracePointer["tone"]): TracePointer => ({
+  label,
+  index,
+  tone,
+});
+
 export const indices = (length: number, start = 0): number[] =>
   Array.from({ length: Math.max(0, length) }, (_, offset) => start + offset);
 

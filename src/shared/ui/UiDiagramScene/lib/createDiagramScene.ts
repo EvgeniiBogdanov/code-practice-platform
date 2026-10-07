@@ -21,7 +21,14 @@ import {
   syncBackdropGrid,
 } from "../../../lib/three-scene";
 import type { UiDiagramSceneProps } from "../diagramScene";
-import { makeDiagramNode, nodePosition, type DiagramObject } from "./diagramObjects";
+import {
+  BODY_RADIUS,
+  CAPTION_GAP,
+  makeDiagramNode,
+  nodePosition,
+  RING_RADIUS,
+  type DiagramObject,
+} from "./diagramObjects";
 import { makeConnection, type DiagramConnection } from "./diagramConnections";
 
 const BACKDROP_GRID_OFFSET = -0.42;
@@ -197,7 +204,23 @@ export const createDiagramScene = (
     } else if (!active) target.copy(center);
     activeId = active?.id;
     props.nodes.forEach((node) => {
-      const group = makeDiagramNode(node, palette, props.compact);
+      const origin = positions.get(node.id)!;
+      // Место справа от узла до корпуса (или кольца) ближайшего соседа в том же ряду.
+      const room = Math.min(
+        Infinity,
+        ...props.nodes.flatMap((other) => {
+          const point = positions.get(other.id)!;
+          return other.id !== node.id && point.y === origin.y && point.x > origin.x
+            ? [
+                point.x -
+                  origin.x -
+                  (other.state === "active" ? RING_RADIUS : BODY_RADIUS) -
+                  CAPTION_GAP,
+              ]
+            : [];
+        })
+      );
+      const group = makeDiagramNode(node, palette, props.compact, room);
       const destination = positions.get(node.id)!;
       group.position.copy(previous.get(node.id)?.group.position ?? destination);
       if (!previous.has(node.id) && !reduced()) group.scale.setScalar(0.75);

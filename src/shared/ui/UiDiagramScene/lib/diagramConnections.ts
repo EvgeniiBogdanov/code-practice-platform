@@ -80,10 +80,10 @@ export const makeConnection = (
       edge.label,
       highlighted ? palette.primary : palette.muted,
       palette.font,
-      1.5,
-      110
+      1.2,
+      96
     );
-    label.position.copy(curve.getPoint(0.5)).add(new Vector3(0, 0.26, 0.1));
+    label.position.copy(curve.getPoint(0.5)).add(new Vector3(0, 0.3, 0.1));
     group.add(label);
   }
   const pulse = highlighted
@@ -108,7 +108,7 @@ export const makeConnection = (
     tube.geometry = new TubeGeometry(curve, 28, highlighted ? 0.032 : 0.023, 6, false);
     arrow.position.copy(curve.getPoint(1));
     arrow.quaternion.setFromUnitVectors(new Vector3(0, 1, 0), curve.getTangent(1));
-    label?.position.copy(curve.getPoint(0.5)).add(new Vector3(0, 0.26, 0.1));
+    label?.position.copy(curve.getPoint(0.5)).add(new Vector3(0, 0.3, 0.1));
   };
   return { group, curve, pulse, from: edge.from, to: edge.to, update };
 };

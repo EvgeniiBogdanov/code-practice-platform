@@ -1,4 +1,4 @@
-import { disposeSceneObject } from "../../../lib/three-scene";
+import { disposeSceneObject, measureLabelWidth } from "../../../lib/three-scene";
 export { disposeSceneObject } from "../../../lib/three-scene";
 import { BoxGeometry, ConeGeometry, Group, Mesh, MeshBasicMaterial, Scene } from "three";
 import type {
@@ -8,6 +8,7 @@ import type {
   SceneTile,
 } from "../model/numberScene";
 import { makeLabel, makeTile, readScenePalette, tileX, TILE_PITCH } from "./sceneObjects";
+import { assignMarkerLevels } from "./markerLevels";
 import { updateSceneTile } from "./updateSceneTile";
 
 export interface SceneContent {
@@ -20,25 +21,34 @@ interface MarkerAnimation {
   targetX: number;
 }
 
+const LABEL_WIDTH_UNITS = 2.2;
+const LABEL_HEIGHT = LABEL_WIDTH_UNITS / 4;
+const LABEL_FONT_SIZE = 56;
+
+const markerX = (marker: NumberSceneMarker, count: number): number =>
+  tileX(Math.max(-0.55, Math.min(count - 0.45, marker.index)), count);
+const markerText = (marker: NumberSceneMarker, count: number): string =>
+  `${marker.label} · ${marker.index}${marker.index < 0 || marker.index >= count ? " ∅" : ""}`;
+
 const makeMarker = (
   marker: NumberSceneMarker,
   count: number,
   palette: ScenePalette,
+  level: number,
   start?: number
 ): MarkerAnimation => {
-  const x = tileX(Math.max(-0.55, Math.min(count - 0.45, marker.index)), count);
+  const x = markerX(marker, count);
   const below = marker.tone === "secondary";
-  const outside = marker.index < 0 || marker.index >= count;
   const label = makeLabel(
-    `${marker.label} · ${marker.index}${outside ? " ∅" : ""}`,
+    markerText(marker, count),
     palette[marker.tone],
     palette.font,
-    2.2
+    LABEL_WIDTH_UNITS
   );
   const group = new Group();
   group.name = marker.label;
   group.position.x = start ?? x;
-  label.position.set(0, below ? -1.35 : 1.4, 0);
+  label.position.set(0, (below ? -1.35 : 1.4) + (below ? -level : level) * LABEL_HEIGHT, 0);
   group.add(label);
   const arrow = new Mesh(
     new ConeGeometry(0.075, 0.16, 3),
@@ -79,11 +89,24 @@ export const createSceneContent = (scene: Scene, host: HTMLElement): SceneConten
     tiles.forEach((tile, index) =>
       decorations.add(updateSceneTile(tile, index, props, palette, previous))
     );
-    markers = props.markers.map((marker) =>
+    const levels = assignMarkerLevels(
+      props.markers.map((marker) => ({
+        x: markerX(marker, tiles.length),
+        width: measureLabelWidth(
+          markerText(marker, tiles.length),
+          palette.font,
+          LABEL_WIDTH_UNITS,
+          LABEL_FONT_SIZE
+        ),
+        below: marker.tone === "secondary",
+      }))
+    );
+    markers = props.markers.map((marker, index) =>
       makeMarker(
         marker,
         tiles.length,
         palette,
+        levels[index],
         props.reducedMotion ? undefined : positions.get(marker.label)
       )
     );

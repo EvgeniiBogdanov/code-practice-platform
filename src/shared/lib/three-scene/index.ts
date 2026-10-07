@@ -1,6 +1,7 @@
 export {
   readScenePalette,
   makeLabel,
+  measureLabelWidth,
   makeFittedLabel,
   makeFaceLabel,
   disposeLabel,

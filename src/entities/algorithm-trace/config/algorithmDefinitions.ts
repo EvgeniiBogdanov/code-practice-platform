@@ -7,6 +7,10 @@ import { hashDefinitions } from "./hashDefinitions";
 import { windowDefinitions } from "./windowDefinitions";
 import { prefixDefinitions } from "./prefixDefinitions";
 import { searchDefinitions } from "./searchDefinitions";
+import { pointerDefinitions } from "./pointerDefinitions";
+import { parsingStackDefinitions } from "./parsingStackDefinitions";
+import { graphDefinitions } from "./graphDefinitions";
+import { dpDefinitions } from "./dpDefinitions";
 import {
   buildMoveZeroesTrace,
   buildRemoveDuplicatesTrace,
@@ -31,6 +35,10 @@ const definitions: Record<VisualizedAlgorithmId, AlgorithmDefinition> = /* @__PU
   ...windowDefinitions,
   ...prefixDefinitions,
   ...searchDefinitions,
+  ...pointerDefinitions,
+  ...parsingStackDefinitions,
+  ...graphDefinitions,
+  ...dpDefinitions,
   algo38: {
     pattern: "Чтение → запись",
     invariant: "До write — только оставленные числа. read проверяет каждый элемент.",

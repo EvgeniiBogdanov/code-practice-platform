@@ -27,11 +27,15 @@ export interface TraceStackAction {
   readonly before: readonly TraceStackLane[];
   readonly items: readonly { readonly lane: number; readonly value: TraceValue }[];
 }
+export type TraceNodeState = "active" | "frontier" | "done" | "rejected" | "muted";
+export type TraceStateLabels = Partial<Record<TraceNodeState, string>>;
+
 export interface TraceStructure {
   readonly stacks?: readonly TraceStackLane[];
   readonly stackAction?: TraceStackAction;
-  readonly kind: "stack" | "list" | "tree" | "grid" | "decisions";
+  readonly kind: "stack" | "list" | "tree" | "grid" | "decisions" | "graph" | "lanes";
   readonly label: string;
+  readonly compact?: boolean;
   readonly nodes: readonly {
     readonly id: string;
     readonly value: TraceValue;
@@ -39,7 +43,7 @@ export interface TraceStructure {
     readonly row: number;
     readonly caption?: string;
     readonly shape?: "circle" | "box" | "diamond";
-    readonly state?: "active" | "frontier" | "done" | "rejected" | "muted";
+    readonly state?: TraceNodeState;
   }[];
   readonly edges: readonly {
     readonly from: string;
@@ -91,6 +95,9 @@ export interface AlgorithmInput {
   readonly tree?: readonly (number | null)[];
   readonly secondTree?: readonly (number | null)[];
   readonly secondValues?: readonly number[];
+  readonly thirdValues?: readonly number[];
+  readonly pairs?: readonly (readonly [number, number])[];
+  readonly times?: readonly number[];
   readonly grid?: readonly (readonly number[])[];
   readonly cell?: readonly [number, number];
   readonly operations?: readonly StackOperation[];
@@ -133,11 +140,35 @@ export interface AlgorithmDefinition {
     | "permutations"
     | "combinations"
     | "binary"
-    | "parentheses";
+    | "parentheses"
+    | "indexed"
+    | "seats"
+    | "triple"
+    | "ranges"
+    | "shortText"
+    | "path"
+    | "decode"
+    | "calc"
+    | "graph"
+    | "courses"
+    | "count"
+    | "amounts"
+    | "coins";
   readonly inputLabel?: string;
   readonly inputHint?: string;
   readonly parameter?:
-    "target" | "val" | "k" | "t" | "left, right" | "firstBad" | "pos" | "sr, sc, color";
+    | "target"
+    | "val"
+    | "k"
+    | "t"
+    | "left, right"
+    | "firstBad"
+    | "pos"
+    | "sr, sc, color"
+    | "numCourses"
+    | "time"
+    | "amount";
+  readonly stateLabels?: TraceStateLabels;
   readonly examples: readonly AlgorithmExample[];
   readonly build: (input: AlgorithmInput) => readonly TraceStep[];
 }

@@ -27,7 +27,7 @@ const arrays = (length: number): number[][] =>
 
 describe("algorithm traces", () => {
   it("registers all supported tasks and excludes unrelated routes", () => {
-    expect(VISUALIZED_ALGORITHM_IDS).toHaveLength(44);
+    expect(VISUALIZED_ALGORITHM_IDS).toHaveLength(58);
     expect(hasAlgorithmVisualization("algo1", "algorithms")).toBe(true);
     expect(hasAlgorithmVisualization("algo1", "react")).toBe(false);
     expect(getAlgorithmDefinition("toString")).toBeUndefined();
@@ -46,9 +46,11 @@ describe("algorithm traces", () => {
         expect(trace.length).toBeGreaterThan(1);
         expect(last(trace).result).not.toBeUndefined();
         expect(new Set(trace.map((step) => step.id)).size).toBe(trace.length);
-        if (!trace[0].structure)
+        // Таблицы DP показывают производные значения (ступеньки, суммы), а не сам ввод.
+        const derivedFrame = ["count", "coins"].includes(definition.inputKind);
+        if (!trace[0].structure && !derivedFrame)
           expect(trace[0].values).toEqual(
-            definition.inputKind === "text"
+            ["text", "shortText", "ranges"].includes(definition.inputKind)
               ? parsed.input.text.split("")
               : (parsed.input.words ?? parsed.input.values)
           );

@@ -41,10 +41,11 @@ export const AlgorithmTraceScene = ({
           stateLabels={{
             done: step.structure.kind === "decisions" ? "Ответ" : "Обработан",
             rejected: definition?.inputKind === "oranges" ? "Гнилой" : "Отсечён",
+            ...definition?.stateLabels,
           }}
           nodes={step.structure.nodes}
           edges={step.structure.edges}
-          compact={step.structure.kind === "grid"}
+          compact={step.structure.compact ?? step.structure.kind === "grid"}
           reducedMotion={reducedMotion}
           zoom={zoom}
           onZoomChange={onZoomChange}
