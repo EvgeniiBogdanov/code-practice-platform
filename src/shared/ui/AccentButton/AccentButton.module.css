@@ -85,12 +85,12 @@
 
 .color_blue {
   background-color: var(--accent-primary-bg);
-  color: var(--accent-blue);
+  color: var(--accent-primary);
 }
 
 .color_blue:hover:not(:disabled) {
   background-color: var(--accent-primary-border);
-  color: var(--accent-blue-hover);
+  color: var(--accent-primary-hover);
 }
 
 .color_emerald {

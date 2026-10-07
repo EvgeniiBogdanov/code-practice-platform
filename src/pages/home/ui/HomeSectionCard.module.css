@@ -1,6 +1,6 @@
 /* Same card language as the landing catalog: flat white card, icon box, topic chips, tinted action */
 .card {
-  --section-color: var(--accent-blue);
+  --section-color: var(--accent-primary);
   --section-tint: var(--accent-primary-bg);
 
   display: flex;
