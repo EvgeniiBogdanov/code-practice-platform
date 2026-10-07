@@ -58,6 +58,7 @@ import ThrottleExplanation from "../explanations/19_control_flow/2_ThrottleFunct
 import PipeAndComposeExplanation from "../explanations/19_control_flow/3_PipeAndCompose.md?raw";
 import EventEmitterExplanation from "../explanations/21_design_patterns/1_EventEmitterPubSub.md?raw";
 import ObservableSignalExplanation from "../explanations/21_design_patterns/3_ObservableSignal.md?raw";
+import EventEmitterChainingExplanation from "../explanations/21_design_patterns/5_EventEmitterChaining.md?raw";
 import JsObjects_DeepFreezeExplanation from "../explanations/25_objects/16_DeepFreezeObject.md?raw";
 import StringTemplateExplanation from "../explanations/23_string_dom_utils/1_StringTemplateEngine.md?raw";
 import QueryStringExplanation from "../explanations/23_string_dom_utils/2_QueryStringParser.md?raw";
@@ -340,4 +341,5 @@ export const DETAILED_JAVASCRIPT_EXPLANATIONS = Object.freeze({
   js293: EventLoopAsyncAwaitOrderExplanation,
   js291: MyPromiseImplementationExplanation,
   js294: SingletonExplanation,
+  js295: EventEmitterChainingExplanation,
 });

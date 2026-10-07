@@ -347,8 +347,8 @@ describe("JavaScript task explanations", () => {
     expect(TASK_EXPLANATIONS.js248).toContain("camelCase");
   });
 
-  it("provides deep interview explanations for all curriculum expansion tasks (js249-js294)", () => {
-    const expansionTaskIds = Array.from({ length: 46 }, (_, index) => `js${249 + index}`);
+  it("provides deep interview explanations for all curriculum expansion tasks (js249-js295)", () => {
+    const expansionTaskIds = Array.from({ length: 47 }, (_, index) => `js${249 + index}`);
 
     for (const taskId of expansionTaskIds) {
       expect(TASK_EXPLANATIONS[taskId], `Explanation for ${taskId} must exist`).toBeDefined();
@@ -364,5 +364,6 @@ describe("JavaScript task explanations", () => {
     expect(TASK_EXPLANATIONS.js279).toContain("new.target");
     expect(TASK_EXPLANATIONS.js291).toContain("thenable");
     expect(TASK_EXPLANATIONS.js293).toContain("микрозадач");
+    expect(TASK_EXPLANATIONS.js295).toContain("wrapper.listener");
   });
 });

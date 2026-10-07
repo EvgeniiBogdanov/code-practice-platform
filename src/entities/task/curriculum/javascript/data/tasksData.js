@@ -574,6 +574,9 @@ import PipeAndComposeSolutionRaw from "../solutions/19_control_flow/3_PipeAndCom
 import EventEmitterPubSubCandidateRaw from "../tasks/21_design_patterns/1_EventEmitterPubSub.js?raw";
 import EventEmitterPubSubSolutionRaw from "../solutions/21_design_patterns/1_EventEmitterPubSub.js?raw";
 
+import EventEmitterChainingCandidateRaw from "../tasks/21_design_patterns/5_EventEmitterChaining.js?raw";
+import EventEmitterChainingSolutionRaw from "../solutions/21_design_patterns/5_EventEmitterChaining.js?raw";
+
 import ObservableSignalCandidateRaw from "../tasks/21_design_patterns/3_ObservableSignal.js?raw";
 import ObservableSignalSolutionRaw from "../solutions/21_design_patterns/3_ObservableSignal.js?raw";
 
@@ -12007,6 +12010,41 @@ export const JS_DESIGN_PATTERNS_TASKS = [
       { question: "Как предотвратить утечку памяти при использовании EventEmitter?", answer: "Всегда отписывать слушатели через .off() при уничтожении компонентов." },
     ],
     checklist: ["Методы on, off, once, emit", "Поддержка отписки"],
+  },
+
+  {
+    id: "js295",
+    group: "Паттерны проектирования",
+    subgroup: "Паттерн Наблюдатель",
+    difficulty: "medium",
+    title: "2. EventEmitter с chaining и once",
+    desc: "Реализуйте класс EventEmitter, в котором on, once и off возвращают this для цепочек вызовов, once снимается через off по исходной функции, а emit возвращает true или false в зависимости от наличия подписчиков.",
+    isRaw: true,
+    candidate: EventEmitterChainingCandidateRaw,
+    rawCandidate: EventEmitterChainingCandidateRaw,
+    solution: EventEmitterChainingSolutionRaw,
+    rawSolution: EventEmitterChainingSolutionRaw,
+    filepath: "src/javascript/tasks/21_design_patterns/5_EventEmitterChaining.js",
+    solutions: [
+      {
+        title: "Рекомендуемое решение (Map + обёртка для once)",
+        isRecommended: true,
+        badge: "O(1) подписка / O(k) emit",
+        recommendationNote: "Слушатели хранятся в Map, once оборачивает слушатель и хранит исходную функцию в wrapper.listener, а emit обходит копию списка.",
+        rawSolution: EventEmitterChainingSolutionRaw,
+        filepath: "src/javascript/solutions/21_design_patterns/5_EventEmitterChaining.js",
+      },
+    ],
+    articles: [
+      { title: "EventEmitter (Node.js)", urlTitle: "Node.js Events — EventEmitter", url: "https://nodejs.org/api/events.html#class-eventemitter" },
+      { title: "Наблюдатель (Refactoring.Guru)", urlTitle: "Refactoring.Guru — Observer", url: "https://refactoring.guru/ru/design-patterns/observer" },
+    ],
+    interviewerQuestions: [
+      { question: "Как сделать, чтобы off(event, listener) удалял подписку, созданную через once?", answer: "Хранить исходную функцию в свойстве обёртки (wrapper.listener) и в off сравнивать и саму подписку, и это свойство." },
+      { question: "Почему emit обходит копию массива слушателей?", answer: "Слушатель может подписаться или отписаться во время emit. Обход живого массива сделал бы порядок вызовов непредсказуемым, а копия фиксирует набор слушателей на момент вызова." },
+      { question: "Что возвращает emit и зачем?", answer: "true, если у события были подписчики, и false в противном случае, как в Node.js. Так вызывающий код может узнать, что событие никто не обработал." },
+    ],
+    checklist: ["on, once и off возвращают this", "once отписывается до вызова слушателя", "off работает по исходной функции из once", "emit возвращает boolean и обходит копию списка"],
   },
 
   {

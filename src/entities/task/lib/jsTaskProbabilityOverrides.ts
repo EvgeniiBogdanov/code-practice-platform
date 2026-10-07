@@ -257,6 +257,7 @@ export const TASK_PROBABILITY_OVERRIDES: Readonly<Record<string, number>> = {
   // === Паттерны и утилиты ===
   js294: 70, // Singleton
   js171: 98, // EventEmitter / PubSub
+  js295: 98, // EventEmitter with chaining and once (variant of js171)
   js173: 85, // Observable / reactive signal
   js178: 90, // classnames
   js177: 88, // Query string parser

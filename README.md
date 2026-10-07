@@ -35,7 +35,7 @@
 
 | Раздел         | Задач | Что внутри                                                              |
 | :------------- | ----: | :---------------------------------------------------------------------- |
-| **JavaScript** |   256 | От var/let/const и типов до this, классов, Event Loop и MyPromise       |
+| **JavaScript** |   257 | От var/let/const и типов до this, классов, Event Loop и MyPromise       |
 | **TypeScript** |    54 | От аннотаций и сужения типов до infer, вариантности и рекурсивных типов |
 | **React**      |   101 | Хуки и Actions React 19, перерендеры, Zustand, Redux и TanStack Query   |
 | **Алгоритмы**  |    58 | Two Pointers, Sliding Window, графы и деревья с визуализацией O(N)/O(1) |
