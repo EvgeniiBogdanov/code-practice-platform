@@ -6,11 +6,16 @@
 }
 
 :global(html[data-landing]) {
-  /* Surfaces and the black accent come from the shared light theme; the landing goes fully monochrome */
-  --accent-blue: var(--accent-primary);
-  --accent-blue-hover: var(--accent-primary-hover);
-  --accent-blue-bg: var(--accent-primary-bg);
-  --accent-blue-border: var(--accent-primary-border);
+  --bg-canvas: var(--bg-app);
+  /* Surfaces and the ink accent come from the shared light theme; the landing goes fully monochrome */
+  --accent-primary: var(--accent-ink);
+  --accent-primary-hover: var(--accent-ink-hover);
+  --accent-primary-bg: var(--accent-ink-bg);
+  --accent-primary-border: var(--accent-ink-border);
+  --accent-blue: var(--accent-ink);
+  --accent-blue-hover: var(--accent-ink-hover);
+  --accent-blue-bg: var(--accent-ink-bg);
+  --accent-blue-border: var(--accent-ink-border);
   --artifact-shadow:
     0 0 0 1px rgba(4, 23, 43, 0.05), 0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 8px 10px -6px rgba(0, 0, 0, 0.1);

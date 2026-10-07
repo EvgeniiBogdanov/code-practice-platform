@@ -6,11 +6,11 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: var(--bg-app);
+  background-color: var(--bg-canvas);
   color: var(--text-main);
   font-family: var(--font-sans);
   font-size-adjust: from-font;
-  font-size: 14px;
+  font-size: var(--fs-body-sm);
   line-height: 1.5;
   letter-spacing: -0.003em;
   -webkit-font-smoothing: antialiased;
@@ -266,7 +266,7 @@ body.is-resizing-sidebar iframe {
   background: var(--code-inline-bg);
   color: var(--code-inline-text);
   padding: 2px 6px;
-  border-radius: 4px;
+  border-radius: var(--radius-xs);
   white-space: pre-wrap;
   word-break: break-word;
 }

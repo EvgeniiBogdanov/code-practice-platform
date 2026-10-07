@@ -9,7 +9,7 @@
   flex-shrink: 0;
   z-index: 100;
   user-select: none;
-  background-color: var(--bg-app);
+  background-color: var(--bg-canvas);
 }
 
 .left {
