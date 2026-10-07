@@ -4,15 +4,18 @@ import { getAlgoGroupMeta } from "@/entities/task/groups";
 import type { Task } from "@/entities/task/meta";
 
 const EXPECTED_INTERNAL_CHAINS = {
-  "Hash Map": [["algo6"], ["algo4"], ["algo5", "algo7"]],
+  "Hash Map": [["algo6"], ["algo4"], ["algo5", "algo7"], ["algo45"]],
   "Two Pointers": [
     ["algo38", "algo36", "algo35"],
+    ["algo47"],
     ["algo2", "algo37", "algo1", "algo3"],
+    ["algo46"],
+    ["algo48"],
   ],
   "Sliding Window": [["algo9"], ["algo10", "algo8"]],
   "Prefix Sum": [["algo39", "algo11"], ["algo13"], ["algo12"]],
   "Binary Search": [["algo14", "algo15", "algo16"], ["algo17"]],
-  Stack: [["algo40", "algo18"], ["algo19"], ["algo20"]],
+  Stack: [["algo40", "algo18", "algo49"], ["algo19"], ["algo50"], ["algo20"]],
   "Linked List": [["algo21"], ["algo22"], ["algo23"]],
   "Depth-First Search": [["algo41"], ["algo24", "algo27"], ["algo25"], ["algo26"]],
   "Breadth-First Search": [
@@ -28,12 +31,15 @@ const EXPECTED_PRACTICE_CHAINS = {
     ["algo6", "algo_lc128"], // Set membership and sequence expansion.
     ["algo4"], // Complement lookup.
     ["algo5", "algo_lc387", "algo7", "algo_lc347"], // Frequency maps.
+    ["algo45"], // Array as an in-place hash table.
   ],
   "Two Pointers": [
     ["algo38", "algo36", "algo35"], // Same-direction read/write.
-    ["algo9_ext"], // Parallel inputs.
+    ["algo47", "algo9_ext"], // Parallel inputs.
     ["algo8_ext"], // Different-speed runners.
     ["algo4_ext", "algo2", "algo37", "algo1", "algo7_ext", "algo3"], // Opposite ends and composition.
+    ["algo46"], // Last-seen marker between gaps.
+    ["algo48"], // Expanding from the center.
   ],
   "Sliding Window": [
     ["algo9", "algo_lc438"], // Fixed windows.
@@ -52,8 +58,9 @@ const EXPECTED_PRACTICE_CHAINS = {
     ["algo_lc875"], // Search over the answer space.
   ],
   Stack: [
-    ["algo40", "algo18", "algo_lc150"], // Basic LIFO applications.
+    ["algo40", "algo18", "algo_lc150", "algo49"], // Basic LIFO applications.
     ["algo19"], // Augmented stack state.
+    ["algo50"], // Nested contexts.
     ["algo_lc22"], // Backtracking/stack hybrid.
     ["algo20", "algo_lc84"], // Monotonic stack.
   ],
@@ -92,6 +99,7 @@ const ENTRY_TASK_EXPECTATIONS = [
   { id: "algo42", group: "Breadth-First Search", functionName: "minDepth" },
   { id: "algo43", group: "Breadth-First Search", functionName: "floodFill" },
   { id: "algo44", group: "Backtracking", functionName: "generateBinaryStrings" },
+  { id: "algo45", group: "Hash Map", functionName: "findDisappearedNumbers" },
 ] as const;
 
 const getTasksByGroup = (tasks: readonly Task[], groupName: string): Task[] =>

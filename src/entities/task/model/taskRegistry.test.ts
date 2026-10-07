@@ -542,6 +542,6 @@ describe("taskRegistry", () => {
     expect(task37?.checklist?.length).toBeGreaterThanOrEqual(4);
 
     const algoTasks = await getTasksBySection("algorithms");
-    expect(algoTasks).toHaveLength(44);
+    expect(algoTasks).toHaveLength(50);
   });
 });
