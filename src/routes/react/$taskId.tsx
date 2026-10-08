@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { preloadTaskHints } from "@/entities/task";
 import { loadTaskSection } from "@/entities/task/catalog";
 import { UiLoader } from "@/shared/ui";
 
@@ -43,7 +44,9 @@ export const Route = createFileRoute("/react/$taskId")({
     );
     const [tasks] = await Promise.all([
       loadTaskSection("react"),
-      isGroup ? import("@/pages/group-overview") : import("@/pages/task"),
+      isGroup
+        ? import("@/pages/group-overview")
+        : Promise.all([import("@/pages/task"), preloadTaskHints("react")]),
     ]);
     return tasks;
   },

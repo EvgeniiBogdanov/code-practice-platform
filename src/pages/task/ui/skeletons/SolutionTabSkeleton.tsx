@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import { clsx } from "clsx";
 import { Task, TaskSolution, getTaskFiles, hasTaskVisualComponent } from "@/entities/task";
-import { Accordion, ViewModeToggle, UiSkeleton } from "@/shared/ui";
+import { Accordion, ViewModeFrame, UiSkeleton } from "@/shared/ui";
 import { CodeEditor } from "@/features/code-editor";
 import { SolutionVariantsRow } from "../SolutionTab/SolutionVariantsRow";
 import { RecommendationIcon } from "../SolutionTab/RecommendationIcon";
@@ -61,17 +61,17 @@ export const SolutionTabSkeleton = memo(
           </Accordion>
         )}
 
-        {/* View Mode Toggle for React preview components */}
-        {hasVisualComponent && <ViewModeToggle mode="code" onChange={() => {}} />}
-
-        {/* Real CodeEditor in readOnly mode */}
-        <CodeEditor
-          code={initialCode}
-          onChange={() => {}}
-          readOnly
-          filepath={initialFileName}
-          files={files}
-        />
+        {/* The same floating code/interface switch as the real tab */}
+        <ViewModeFrame mode="code" onChange={() => {}} hasToggle={hasVisualComponent}>
+          {/* Real CodeEditor in readOnly mode */}
+          <CodeEditor
+            code={initialCode}
+            onChange={() => {}}
+            readOnly
+            filepath={initialFileName}
+            files={files}
+          />
+        </ViewModeFrame>
       </div>
     );
   }

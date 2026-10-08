@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useDeferredValue, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import {
   Play,
@@ -22,6 +22,7 @@ import { activateCodeHistoryTask } from "@/features/code-editor";
 import { preloadTaskVisualization } from "@/widgets/task-visualization";
 import { hasAlgorithmVisualization } from "@/entities/algorithm-trace";
 import {
+  KeepAlivePane,
   TaskButton,
   NotificationBadge,
   NotificationBadgeVariant,
@@ -43,8 +44,13 @@ export interface TaskPageProps {
   initialTab?: string;
 }
 
-export const TaskPage = React.memo<TaskPageProps>(
-  ({ taskId, section, initialTab }: TaskPageProps): React.JSX.Element => {
+interface TaskPageViewProps extends TaskPageProps {
+  /** A newer task is being prepared; this one is still on screen. */
+  isPending: boolean;
+}
+
+const TaskPageView = React.memo<TaskPageViewProps>(
+  ({ taskId, section, initialTab, isPending }: TaskPageViewProps): React.JSX.Element => {
     const navigate = useNavigate();
     const { task, isLoading } = useTaskById(taskId, section);
     const [requestedTab, setActiveTab] = useState(initialTab || "candidate");
@@ -63,7 +69,10 @@ export const TaskPage = React.memo<TaskPageProps>(
     }
     const renderKeptTab = (tab: string, content: React.ReactNode): React.ReactNode =>
       (tab === activeTab || (visited.taskId === taskId && visited.tabs.has(tab))) && (
-        <div className={clsx(tab !== activeTab && styles.inactiveTab)}>{content}</div>
+        // Keyed by task: a tab always starts from its own task's state, never from the previous one's.
+        <KeepAlivePane key={`${taskId}:${tab}`} isActive={tab === activeTab}>
+          {content}
+        </KeepAlivePane>
       );
 
     const completedTasks = useProgressStore((state) => state.completedTasks);
@@ -72,11 +81,13 @@ export const TaskPage = React.memo<TaskPageProps>(
     const removeReview = useReviewStore((state) => state.removeReview);
     const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
 
-    useEffect(() => {
-      if (initialTab) {
-        setActiveTab(initialTab);
-      }
-    }, [initialTab, taskId]);
+    // The URL decides the tab whenever it or the task changes: adjusted while rendering, so the
+    // new task never paints once with the previous task's tab.
+    const [syncedRoute, setSyncedRoute] = useState({ taskId, initialTab });
+    if (syncedRoute.taskId !== taskId || syncedRoute.initialTab !== initialTab) {
+      setSyncedRoute({ taskId, initialTab });
+      if (initialTab) setActiveTab(initialTab);
+    }
 
     useEffect(() => {
       activateCodeHistoryTask(`${section}:${taskId}`);
@@ -204,7 +215,7 @@ export const TaskPage = React.memo<TaskPageProps>(
 
     return (
       <div className={styles.pageContainer}>
-        <div className={styles.taskDetailCard}>
+        <div className={styles.taskDetailCard} data-pending={isPending || undefined}>
           {/* Заголовок задачи и кнопки статуса */}
           <div className={styles.taskHeaderRow}>
             {task ? (
@@ -375,5 +386,27 @@ export const TaskPage = React.memo<TaskPageProps>(
     );
   }
 );
+
+TaskPageView.displayName = "TaskPageView";
+
+/**
+ * While another task is being prepared the current one stays on screen, whole and unchanged,
+ * and is replaced in one step once the next is ready. Showing the new title over empty or stale
+ * content (or a skeleton for a few milliseconds) is what made quick switching flicker.
+ * The sidebar reacts at once, so the click is acknowledged before the page swaps; a slow swap
+ * also dims the old page (see `data-pending` in the styles).
+ */
+export const TaskPage = ({ taskId, section, initialTab }: TaskPageProps): React.JSX.Element => {
+  const readyTaskId = useDeferredValue(taskId);
+  const readyTab = useDeferredValue(initialTab);
+  return (
+    <TaskPageView
+      taskId={readyTaskId}
+      section={section}
+      initialTab={readyTab}
+      isPending={readyTaskId !== taskId}
+    />
+  );
+};
 
 TaskPage.displayName = "TaskPage";

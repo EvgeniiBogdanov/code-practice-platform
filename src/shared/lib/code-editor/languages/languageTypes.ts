@@ -13,6 +13,7 @@ export type LanguageId =
   | "html"
   | "json"
   | "sql"
+  | "shellscript"
   | "markdown"
   | "plaintext";
 

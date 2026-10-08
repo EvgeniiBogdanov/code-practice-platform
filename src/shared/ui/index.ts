@@ -58,3 +58,5 @@ export * from "./UiFullscreenPanel";
 export * from "./UiReveal";
 export * from "./UiScaledCanvas";
 export * from "./UiKbd";
+export * from "./KeepAlivePane";
+export * from "./ViewModeFrame";

@@ -39,6 +39,13 @@ body {
   text-shadow: none !important;
 }
 
+/* While the theme changes nothing animates: elements must not fade between the two palettes. */
+:root[data-theme-switching] *,
+:root[data-theme-switching] *::before,
+:root[data-theme-switching] *::after {
+  transition: none !important;
+}
+
 /* Custom Notion-style Scrollbars */
 ::-webkit-scrollbar {
   width: 8px;

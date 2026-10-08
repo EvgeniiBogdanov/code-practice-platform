@@ -1,7 +1,12 @@
 import { useEffect, useState, type JSX, type ReactNode } from "react";
 import { clsx } from "clsx";
 import { ChevronDown, Compass, Lightbulb, TriangleAlert } from "lucide-react";
-import { loadTaskHints, type SectionType, type TaskHints as TaskHintsData } from "@/entities/task";
+import {
+  loadTaskHints,
+  peekTaskHints,
+  type SectionType,
+  type TaskHints as TaskHintsData,
+} from "@/entities/task";
 import { Accordion, Button, Callout, MarkdownView, type CalloutColor } from "@/shared/ui";
 import styles from "./TaskHints.module.css";
 
@@ -36,10 +41,14 @@ export interface TaskHintsProps {
 
 /** Progressive hints for one task. Mount it with `key={taskId}` so the revealed level resets. */
 export const TaskHints = ({ section, taskId, className }: TaskHintsProps): JSX.Element | null => {
-  const [hints, setHints] = useState<TaskHintsData | null>(null);
+  // Already-loaded hints are there in the first frame, so the editor below is never pushed down.
+  const [hints, setHints] = useState<TaskHintsData | null>(
+    () => peekTaskHints(section, taskId) ?? null
+  );
   const [revealed, setRevealed] = useState(0);
 
   useEffect(() => {
+    if (peekTaskHints(section, taskId) !== undefined) return undefined;
     let isMounted = true;
     loadTaskHints(section, taskId).then((loaded) => {
       if (isMounted) setHints(loaded);

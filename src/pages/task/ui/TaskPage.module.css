@@ -11,10 +11,19 @@
 
 .taskDetailCard {
   flex-shrink: 0;
+  transition: opacity var(--transition-fast);
   margin-top: 28px;
   display: flex;
   flex-direction: column;
   gap: 14px;
+}
+
+/* A task switch that outlasts the delay dims the old page, so a slow swap never looks frozen;
+   a fast one finishes before the delay and nothing flickers. */
+.taskDetailCard[data-pending] {
+  opacity: 0.6;
+  transition-duration: var(--duration-medium, 200ms);
+  transition-delay: 150ms;
 }
 
 .taskHeaderRow {
@@ -287,10 +296,4 @@
   .tabLink {
     flex-shrink: 0;
   }
-}
-
-/* Kept-alive tab: skipped like display:none, but the browser keeps its layout, so showing it
-   again does not re-layout the whole editor. */
-.inactiveTab {
-  content-visibility: hidden;
 }

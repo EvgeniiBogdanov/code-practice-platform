@@ -14,7 +14,7 @@
 <br />
 
 [![CI](https://img.shields.io/github/actions/workflow/status/EvgeniiBogdanov/code-practice-platform/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/EvgeniiBogdanov/code-practice-platform/actions/workflows/ci.yml)
-[![Version](https://img.shields.io/badge/version-2.4.26-black?style=flat-square)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.4.27-black?style=flat-square)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-source--available-black?style=flat-square)](LICENSE.md)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=white)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?style=flat-square&logo=typescript&logoColor=white)](tsconfig.json)
@@ -23,7 +23,7 @@
 
 <br />
 
-<img width="1536" height="1024" alt="Code Practice Platform — превью" src="https://github.com/user-attachments/assets/4f39e3d7-39f5-4053-8f5d-16c8d3189df2" />
+<img width="3456" height="1826" alt="Code Practice Platform" src="https://github.com/user-attachments/assets/7a0e2ac9-bdbd-4ab7-aa28-ec12f0d76b96" />
 
 </div>
 

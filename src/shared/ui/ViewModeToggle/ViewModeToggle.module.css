@@ -49,14 +49,12 @@
   background: var(--state-hover);
 }
 
+/* Between the old, nearly invisible tint and a full "selected" fill */
 .viewModeBtn.active {
   color: var(--text-main);
-  background: rgba(145, 145, 145, 0.09);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  background: color-mix(in srgb, var(--text-main) 11%, transparent);
 }
 
 [data-theme="light"] .viewModeBtn.active {
-  color: var(--text-main);
-  background: var(--bg-card);
-  box-shadow: var(--shadow-sm);
+  background: color-mix(in srgb, var(--text-main) 8%, transparent);
 }

@@ -2,7 +2,8 @@
  * SQL Syntax Highlighter
  */
 
-import { HighlightOptions, escapeHtml, getProblemClass } from "./types";
+import type { HighlightOptions } from "./types";
+import { highlightWithRules, type TokenRule } from "./tokenHighlighter";
 import { SQL_KEYWORDS, SQL_TYPES } from "../languages/sqlKnowledge";
 
 const words = (entries: readonly string[]): Set<string> =>
@@ -11,7 +12,7 @@ const words = (entries: readonly string[]): Set<string> =>
 const KEYWORDS = words(SQL_KEYWORDS);
 const TYPES = words(SQL_TYPES);
 
-const RULES: Array<{ className: string; regex: RegExp }> = [
+const RULES: TokenRule[] = [
   { className: "hl-cm", regex: /--.*|\/\*[\s\S]*?(?:\*\/|$)/y },
   { className: "hl-str", regex: /'(?:''|[^'])*'?/y },
   { className: "hl-prop", regex: /"(?:""|[^"])*"?|`[^`]*`?/y },
@@ -29,33 +30,7 @@ const classifyWord = (word: string, next: string): string => {
 };
 
 export function highlightSQL(code: string, options: HighlightOptions = {}): string {
-  const { problems = [], multiSelections = [] } = options;
-  const selectedClass = (start: number, length: number): string =>
-    multiSelections.some((s) => start < s.end && start + length > s.start)
-      ? " hl-multi-selected"
-      : "";
-
-  let html = "";
-  let index = 0;
-  while (index < code.length) {
-    let className = "";
-    let text = "";
-    for (const rule of RULES) {
-      rule.regex.lastIndex = index;
-      const match = rule.regex.exec(code);
-      if (!match?.[0]) continue;
-      text = match[0];
-      className =
-        rule.className === "word"
-          ? classifyWord(text, code.slice(index + text.length).trimStart()[0] ?? "")
-          : rule.className;
-      break;
-    }
-    if (!text) text = code[index];
-    const classes =
-      `${className}${getProblemClass(problems, index, text.length)}${selectedClass(index, text.length)}`.trim();
-    html += classes ? `<span class="${classes}">${escapeHtml(text)}</span>` : escapeHtml(text);
-    index += text.length;
-  }
-  return html;
+  return highlightWithRules(code, RULES, options, (rule, text, rest) =>
+    rule.className === "word" ? classifyWord(text, rest.trimStart()[0] ?? "") : rule.className
+  );
 }

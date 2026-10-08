@@ -8,6 +8,8 @@ import { highlightJS, highlightTemplateLiteral } from "./jsHighlighter";
 import { highlightCSS } from "./cssHighlighter";
 import { highlightHTML } from "./htmlHighlighter";
 import { highlightSQL } from "./sqlHighlighter";
+import { highlightJSON } from "./jsonHighlighter";
+import { highlightShell } from "./shellHighlighter";
 import { findMatchingBracketPair } from "../bracketMatcher";
 import { getLanguageCapabilities, getLanguageId } from "../languages/languageDetector";
 import { getMarkupContext } from "../markupContext";
@@ -17,6 +19,8 @@ export {
   highlightCSS,
   highlightHTML,
   highlightSQL,
+  highlightJSON,
+  highlightShell,
   highlightTemplateLiteral,
   findMatchingBracketPair,
   escapeHtml,
@@ -60,11 +64,14 @@ export function highlightCode(
       return highlightPlainText(code, options.multiSelections);
     case "sql":
       return highlightSQL(code, options);
+    case "json":
+      return highlightJSON(code, options);
+    case "shellscript":
+      return highlightShell(code, options);
     case "javascript":
     case "javascriptreact":
     case "typescript":
     case "typescriptreact":
-    case "json":
     default: {
       const { supportsJsx, supportsTypeScript } = getLanguageCapabilities(lang);
       return highlightJS(code, {

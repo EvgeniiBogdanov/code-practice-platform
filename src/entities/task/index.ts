@@ -26,7 +26,7 @@ export {
   getAlgoGroupMeta,
   getAlgoGroupMetaByInfoId,
 } from "./curriculum/algorithms/data/groupConfig";
-export { loadTaskHints } from "./model/taskHints";
+export { loadTaskHints, peekTaskHints, preloadTaskHints } from "./model/taskHints";
 export { loadTaskExplanations, getCachedTaskExplanation } from "./model/taskExplanations";
 
 export { getTaskSolutionSource } from "./lib/getTaskSolutionSource";

@@ -1,0 +1,72 @@
+/* Note colours: one palette for the page text and for the swatches of the colour menu. */
+.palette [data-color="gray"] {
+  color: var(--accent-gray);
+}
+
+.palette [data-color="orange"] {
+  color: var(--accent-orange);
+}
+
+.palette [data-color="yellow"] {
+  color: var(--accent-yellow);
+}
+
+.palette [data-color="green"] {
+  color: var(--accent-green);
+}
+
+.palette [data-color="blue"] {
+  color: var(--accent-blue);
+}
+
+.palette [data-color="purple"] {
+  color: var(--accent-purple);
+}
+
+.palette [data-color="pink"] {
+  color: var(--accent-pink);
+}
+
+.palette [data-color="red"] {
+  color: var(--accent-red);
+}
+
+.palette [data-background="gray"] {
+  background: color-mix(in srgb, var(--accent-gray) 24%, transparent);
+  border-radius: var(--radius-xs);
+}
+
+.palette [data-background="orange"] {
+  background: color-mix(in srgb, var(--accent-orange) 24%, transparent);
+  border-radius: var(--radius-xs);
+}
+
+.palette [data-background="yellow"] {
+  background: color-mix(in srgb, var(--accent-yellow) 24%, transparent);
+  border-radius: var(--radius-xs);
+}
+
+.palette [data-background="green"] {
+  background: color-mix(in srgb, var(--accent-green) 24%, transparent);
+  border-radius: var(--radius-xs);
+}
+
+.palette [data-background="blue"] {
+  background: color-mix(in srgb, var(--accent-blue) 24%, transparent);
+  border-radius: var(--radius-xs);
+}
+
+.palette [data-background="purple"] {
+  background: color-mix(in srgb, var(--accent-purple) 24%, transparent);
+  border-radius: var(--radius-xs);
+}
+
+.palette [data-background="pink"] {
+  background: color-mix(in srgb, var(--accent-pink) 24%, transparent);
+  border-radius: var(--radius-xs);
+}
+
+.palette [data-background="red"] {
+  background: color-mix(in srgb, var(--accent-red) 24%, transparent);
+  border-radius: var(--radius-xs);
+}

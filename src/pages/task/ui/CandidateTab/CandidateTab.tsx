@@ -18,7 +18,7 @@ import {
 } from "@/shared/lib/code-runners";
 import {
   ErrorBoundary,
-  ViewModeToggle,
+  ViewModeFrame,
   ViewMode,
   UiFullscreenPanel,
   UiSkeleton,
@@ -270,90 +270,90 @@ export const CandidateTab = memo(({ task, className }: CandidateTabProps): React
     <div ref={tabRef} className={clsx(styles.container, className)}>
       {task && <TaskHints key={task.id} section={task.section} taskId={task.id} />}
 
-      {hasVisualComponent && <ViewModeToggle mode={viewMode} onChange={setViewMode} />}
-
-      <ErrorBoundary>
-        {hasVisualComponent && viewMode === "preview" ? (
-          <ReactLivePreview
-            task={task}
-            files={files}
-            activeFileIdx={activeFileIdx}
-            currentCode={activeFile?.code || ""}
-            storagePrefix="cand"
-          />
-        ) : (
-          <>
-            {isSavedReady ? (
-              <UiFullscreenPanel label="Редактор кода">
-                {({ isFullscreen, isTransitioning, toggleFullscreen }) => (
-                  <ResizableSplitPane
-                    layout={isFullscreen ? (hasVisualComponent ? "split" : "single") : "stack"}
-                    className={clsx(
-                      styles.editorWorkspace,
-                      isFullscreen && styles.fullscreenWorkspace
-                    )}
-                    left={
-                      <CodeEditor
-                        key={`cand_${task?.section ?? "none"}_${task?.id ?? "none"}_${activeFileIdx}`}
-                        code={activeFile?.code || ""}
-                        onChange={handleCodeChange}
-                        onFilesChange={handleFilesChange}
-                        onRun={() => handleRunCode()}
-                        onReset={handleResetCode}
-                        files={files}
-                        activeFileIdx={activeFileIdx}
-                        onFileSelect={setActiveFileIdx}
-                        filepath={activeFile.name}
-                        historyScope={
-                          task
-                            ? {
-                                taskKey: `${task.section}:${task.id}`,
-                                documentKey: `candidate:${activeFileIdx}`,
-                              }
-                            : undefined
-                        }
-                        readOnly={!task}
-                        isFullscreen={isFullscreen}
-                        fillHeight={isFullscreen}
-                        onToggleFullscreen={toggleFullscreen}
-                        isFullscreenTransitioning={isTransitioning}
-                        bottomConsole={
-                          <JsConsole
-                            logs={consoleLogs}
-                            isRunning={isRunning}
-                            lastExecution={lastExecution}
-                            filename={activeFile.name}
-                            onRun={() => handleRunCode()}
-                            onStop={handleStopCode}
-                            onClear={handleClearConsole}
-                          />
-                        }
-                      />
-                    }
-                    right={
-                      isFullscreen && hasVisualComponent ? (
-                        <ReactLivePreview
-                          task={task}
-                          files={previewFiles}
-                          activeFileIdx={previewActiveFileIdx}
-                          currentCode={previewCode}
-                          storagePrefix={isReferencePreview ? "sol" : "cand"}
-                          fullHeight
-                          previewTarget={previewTarget}
-                          onPreviewTargetChange={setPreviewTarget}
-                          hasSolutionReference={hasSolutionReference}
+      <ViewModeFrame mode={viewMode} onChange={setViewMode} hasToggle={hasVisualComponent}>
+        <ErrorBoundary>
+          {hasVisualComponent && viewMode === "preview" ? (
+            <ReactLivePreview
+              task={task}
+              files={files}
+              activeFileIdx={activeFileIdx}
+              currentCode={activeFile?.code || ""}
+              storagePrefix="cand"
+            />
+          ) : (
+            <>
+              {isSavedReady ? (
+                <UiFullscreenPanel label="Редактор кода">
+                  {({ isFullscreen, isTransitioning, toggleFullscreen }) => (
+                    <ResizableSplitPane
+                      layout={isFullscreen ? (hasVisualComponent ? "split" : "single") : "stack"}
+                      className={clsx(
+                        styles.editorWorkspace,
+                        isFullscreen && styles.fullscreenWorkspace
+                      )}
+                      left={
+                        <CodeEditor
+                          key={`cand_${task?.section ?? "none"}_${task?.id ?? "none"}_${activeFileIdx}`}
+                          code={activeFile?.code || ""}
+                          onChange={handleCodeChange}
+                          onFilesChange={handleFilesChange}
+                          onRun={() => handleRunCode()}
+                          onReset={handleResetCode}
+                          files={files}
+                          activeFileIdx={activeFileIdx}
+                          onFileSelect={setActiveFileIdx}
+                          filepath={activeFile.name}
+                          historyScope={
+                            task
+                              ? {
+                                  taskKey: `${task.section}:${task.id}`,
+                                  documentKey: `candidate:${activeFileIdx}`,
+                                }
+                              : undefined
+                          }
+                          readOnly={!task}
+                          isFullscreen={isFullscreen}
+                          fillHeight={isFullscreen}
+                          onToggleFullscreen={toggleFullscreen}
+                          isFullscreenTransitioning={isTransitioning}
+                          bottomConsole={
+                            <JsConsole
+                              logs={consoleLogs}
+                              isRunning={isRunning}
+                              lastExecution={lastExecution}
+                              filename={activeFile.name}
+                              onRun={() => handleRunCode()}
+                              onStop={handleStopCode}
+                              onClear={handleClearConsole}
+                            />
+                          }
                         />
-                      ) : null
-                    }
-                  />
-                )}
-              </UiFullscreenPanel>
-            ) : (
-              <UiSkeleton height={EDITOR_PLACEHOLDER_HEIGHT} />
-            )}
-          </>
-        )}
-      </ErrorBoundary>
+                      }
+                      right={
+                        isFullscreen && hasVisualComponent ? (
+                          <ReactLivePreview
+                            task={task}
+                            files={previewFiles}
+                            activeFileIdx={previewActiveFileIdx}
+                            currentCode={previewCode}
+                            storagePrefix={isReferencePreview ? "sol" : "cand"}
+                            fullHeight
+                            previewTarget={previewTarget}
+                            onPreviewTargetChange={setPreviewTarget}
+                            hasSolutionReference={hasSolutionReference}
+                          />
+                        ) : null
+                      }
+                    />
+                  )}
+                </UiFullscreenPanel>
+              ) : (
+                <UiSkeleton height={EDITOR_PLACEHOLDER_HEIGHT} />
+              )}
+            </>
+          )}
+        </ErrorBoundary>
+      </ViewModeFrame>
     </div>
   );
 });

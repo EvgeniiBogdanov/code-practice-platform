@@ -1,0 +1,26 @@
+.frame {
+  position: relative;
+  width: 100%;
+}
+
+/* Below the 34px title bar of the editor and of the browser mock-up (+ 1px border) */
+.frame > .toggle {
+  position: absolute;
+  top: calc(var(--space-8) + var(--space-3));
+  right: var(--space-4);
+  margin: 0;
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+  z-index: var(--z-base);
+}
+
+/* Out of the way until the pointer or the keyboard comes to it */
+.frame > .toggle {
+  opacity: 0.45;
+  transition: opacity var(--transition-fast);
+}
+
+.frame > .toggle:hover,
+.frame > .toggle:focus-within {
+  opacity: 1;
+}
