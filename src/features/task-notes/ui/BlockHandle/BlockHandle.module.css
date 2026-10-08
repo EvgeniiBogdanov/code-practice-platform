@@ -1,0 +1,75 @@
+/* Fixed width with the grip on the right: showing or hiding the "+" must not move the grip. */
+.bar {
+  position: absolute;
+  top: var(--handle-top, 0);
+  left: var(--handle-left, 0);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-0-5);
+  width: calc(2 * var(--space-6) + var(--space-0-5));
+  visibility: hidden;
+  z-index: var(--z-base);
+}
+
+.visible {
+  visibility: visible;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--space-6);
+  height: var(--space-6);
+  padding: 0;
+  color: var(--text-placeholder);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.grip {
+  cursor: grab;
+  touch-action: none;
+}
+
+.button:hover {
+  color: var(--text-main);
+  background: var(--state-hover);
+}
+
+/* Where the dragged block will land */
+.dropLine {
+  position: absolute;
+  top: var(--line-top, 0);
+  left: var(--line-left, 0);
+  width: var(--line-width, 0);
+  height: 3px;
+  margin-top: -2px;
+  background: var(--accent-blue);
+  border-radius: var(--radius-full);
+  pointer-events: none;
+  z-index: var(--z-base);
+}
+
+.preview {
+  box-sizing: border-box;
+  width: max-content;
+  min-width: 160px;
+  max-width: 480px;
+  max-height: 160px;
+  padding: var(--space-2) var(--space-4);
+  overflow: hidden;
+  background: var(--bg-popover);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-popover);
+  cursor: grabbing;
+  opacity: 0.92;
+}

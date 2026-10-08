@@ -1,0 +1,102 @@
+/* The floating element itself, positioned by Tiptap; the toolbar that dims is drawn inside it */
+.anchor {
+  z-index: var(--z-dropdown);
+}
+
+.toolbar {
+  composes: idle from "../menuIdle.module.css";
+  display: flex;
+  align-items: center;
+  gap: var(--space-0-5);
+  padding: var(--space-1);
+  background: var(--bg-popover);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-popover);
+}
+
+.button {
+  composes: content from "../menuIdle.module.css";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast),
+    opacity var(--transition-fast);
+}
+
+.button:hover {
+  color: var(--text-main);
+  background: var(--state-hover);
+}
+
+.active {
+  color: var(--accent-blue);
+  background: var(--state-active);
+}
+
+.linkInput {
+  composes: content from "../menuIdle.module.css";
+  box-sizing: border-box;
+  width: 260px;
+  height: 28px;
+  padding: 0 var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--fs-label);
+  color: var(--text-main);
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xs);
+  outline: none;
+}
+
+.linkInput:focus {
+  border-color: var(--accent-blue);
+}
+
+.separator {
+  composes: content from "../menuIdle.module.css";
+  align-self: stretch;
+  width: 1px;
+  margin: var(--space-1) var(--space-0-5);
+  background: var(--border-color);
+}
+
+.colorAnchor {
+  position: relative;
+}
+
+.colorButton {
+  width: auto;
+  gap: var(--space-0-5);
+  padding: 0 var(--space-1-5);
+}
+
+.colorFace {
+  display: grid;
+  place-items: center;
+  width: var(--space-5);
+  height: var(--space-5);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-medium);
+  line-height: 1;
+  text-box: trim-both cap alphabetic;
+  border-radius: var(--radius-xs);
+}
+
+/* Drops down from the colour button, over the selected text */
+.colorMenu {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  left: 0;
+  z-index: var(--z-dropdown);
+}

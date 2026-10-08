@@ -1,0 +1,12 @@
+/* Skipped like display:none, but the browser keeps the layout, so showing the pane again does not
+   lay out its whole content from scratch. */
+.inactive {
+  content-visibility: hidden;
+}
+
+.pane[data-revealing],
+.pane[data-revealing] *,
+.pane[data-revealing] *::before,
+.pane[data-revealing] *::after {
+  transition: none !important;
+}

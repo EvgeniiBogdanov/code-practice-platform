@@ -9,6 +9,7 @@ export const CodeViewerHeader = ({
   color,
   isNotepad,
   className,
+  children,
 }: CodeViewerHeaderProps): React.JSX.Element => {
   const Icon = isNotepad ? FileText : FileCode;
   const headerClasses = clsx(styles.header, className);
@@ -19,6 +20,7 @@ export const CodeViewerHeader = ({
         <Icon size={13} color={color} className={styles.fileTabIcon} />
         <span>{langName}</span>
       </div>
+      {children}
     </div>
   );
 };

@@ -1,0 +1,118 @@
+.page {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100%;
+  /* Room on the left for the "+" and drag handles. */
+  padding: var(--space-4) var(--space-6) var(--space-12) var(--space-14);
+}
+
+.editor {
+  width: 100%;
+}
+
+.content {
+  min-height: 50vh;
+  outline: none;
+  caret-color: var(--text-main);
+}
+
+/* Placeholder on the focused empty line */
+.content :global(p.is-empty::before),
+.content :global(h1.is-empty::before),
+.content :global(h2.is-empty::before),
+.content :global(h3.is-empty::before) {
+  float: left;
+  height: 0;
+  color: var(--text-placeholder);
+  pointer-events: none;
+  content: attr(data-placeholder);
+}
+
+.content :global(.is-editor-empty:first-child::before) {
+  float: left;
+  height: 0;
+  color: var(--text-placeholder);
+  pointer-events: none;
+  content: attr(data-placeholder);
+}
+
+.content :global(.ProseMirror-selectednode) {
+  background: color-mix(in srgb, var(--accent-blue) 16%, transparent);
+  border-radius: var(--radius-xs);
+  outline: none;
+}
+
+.content :global(.selectedCell) {
+  background: var(--state-selected);
+}
+
+/* Task list: checkbox + text instead of bullets */
+.content ul[data-type="taskList"] {
+  padding-left: 0 !important;
+  list-style: none;
+}
+
+.content ul[data-type="taskList"] > li {
+  display: flex !important;
+  align-items: flex-start;
+  gap: var(--space-2);
+  list-style: none !important;
+  padding-left: 0;
+}
+
+.content ul[data-type="taskList"] > li > label {
+  flex-shrink: 0;
+  margin-top: var(--space-0-5);
+  user-select: none;
+}
+
+.content ul[data-type="taskList"] > li > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.content ul[data-type="taskList"] > li[data-checked="true"] > div {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.content ul[data-type="taskList"] input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--accent-blue);
+  cursor: pointer;
+}
+
+/* Tables fill the page width and keep their wrapper scrollable */
+.content :global(.tableWrapper) {
+  width: 100%;
+  margin: var(--space-3) 0;
+  overflow-x: auto;
+}
+
+.content table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.content table p {
+  margin: 0;
+}
+
+/* The block being dragged */
+.content :global(.note-drag-source) {
+  opacity: 0.35;
+}
+
+/* While the block menu is open the "/" and what follows it work as its search box: marked as
+   such, and no blinking caret that suggests ordinary typing */
+.content :global(.suggestion) {
+  background: var(--state-hover);
+  border-radius: var(--radius-xs);
+}
+
+.content:has(:global(.suggestion)) {
+  caret-color: transparent;
+}

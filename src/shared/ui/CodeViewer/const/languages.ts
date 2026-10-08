@@ -30,3 +30,29 @@ export const DEFAULT_LANGUAGE_META: LanguageMeta = {
   color: "var(--icon-file, #94a3b8)",
   isNotepad: false,
 };
+
+/** Languages offered when a person picks one by hand, in the order they are listed. */
+const PICKABLE_LANGUAGES = [
+  "notepad",
+  "js",
+  "ts",
+  "jsx",
+  "tsx",
+  "html",
+  "css",
+  "scss",
+  "less",
+  "json",
+  "sql",
+  "bash",
+] as const;
+
+export interface CodeLanguageOption {
+  /** The key the viewer is given as `language`. */
+  value: string;
+  name: string;
+}
+
+export const CODE_LANGUAGE_OPTIONS: readonly CodeLanguageOption[] = PICKABLE_LANGUAGES.map(
+  (value) => ({ value, name: LANGUAGE_MAP[value].name })
+);

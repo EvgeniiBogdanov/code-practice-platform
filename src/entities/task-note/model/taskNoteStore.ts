@@ -2,24 +2,21 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import type { TaskNote, TaskNoteState } from "../types";
 
-const EMPTY_NOTE: TaskNote = { text: "", mistakes: [] };
+const EMPTY_NOTE: TaskNote = { text: "" };
 
-const createMistakeId = (): string =>
-  `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`;
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null;
 
-const isEmptyNote = (note: TaskNote): boolean => note.text.trim() === "" && !note.mistakes.length;
-
-/** Applies `update` to the task's note and drops the record once nothing is left in it. */
-const updateNote = (
-  notes: Record<string, TaskNote>,
-  taskId: string | number,
-  update: (note: TaskNote) => TaskNote
-): Record<string, TaskNote> => {
-  const key = String(taskId);
-  const next = update(notes[key] ?? EMPTY_NOTE);
-  const result = { ...notes, [key]: next };
-  if (isEmptyNote(next)) delete result[key];
-  return result;
+/** v1 notes also carried a mistake journal; keep only the text of each note. */
+const migrateNotes = (persisted: unknown): Pick<TaskNoteState, "notes"> => {
+  const notes: Record<string, TaskNote> = {};
+  const stored = isRecord(persisted) && isRecord(persisted.notes) ? persisted.notes : {};
+  for (const [taskId, note] of Object.entries(stored)) {
+    if (isRecord(note) && typeof note.text === "string" && note.text.trim()) {
+      notes[taskId] = { text: note.text };
+    }
+  }
+  return { notes };
 };
 
 export const useTaskNoteStore = create<TaskNoteState>()(
@@ -27,40 +24,20 @@ export const useTaskNoteStore = create<TaskNoteState>()(
     (set) => ({
       notes: {},
       setNoteText: (taskId, text): void => {
-        set((state) => ({
-          notes: updateNote(state.notes, taskId, (note) => ({ ...note, text })),
-        }));
-      },
-      addMistake: (taskId, reasonId, comment = ""): void => {
-        set((state) => ({
-          notes: updateNote(state.notes, taskId, (note) => ({
-            ...note,
-            mistakes: [
-              {
-                id: createMistakeId(),
-                reasonId,
-                comment: comment.trim(),
-                createdAt: Date.now(),
-              },
-              ...note.mistakes,
-            ],
-          })),
-        }));
-      },
-      removeMistake: (taskId, mistakeId): void => {
-        set((state) => ({
-          notes: updateNote(state.notes, taskId, (note) => ({
-            ...note,
-            mistakes: note.mistakes.filter((mistake) => mistake.id !== mistakeId),
-          })),
-        }));
+        set((state) => {
+          const notes = { ...state.notes };
+          if (text.trim()) notes[String(taskId)] = { text };
+          else delete notes[String(taskId)];
+          return { notes };
+        });
       },
     }),
     {
       name: "playground_task_notes",
-      version: 1,
+      version: 2,
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({ notes: state.notes }),
+      migrate: migrateNotes,
     }
   )
 );

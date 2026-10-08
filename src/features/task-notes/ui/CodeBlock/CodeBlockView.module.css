@@ -1,0 +1,4 @@
+/* The handle centres itself on the first line of the block: here, the 32px window header */
+.block {
+  line-height: var(--space-8);
+}

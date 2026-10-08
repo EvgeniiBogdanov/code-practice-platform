@@ -127,6 +127,12 @@ export const LANGUAGES: Record<LanguageId, LanguageDefinition> = {
     comment: { line: { prefix: "-- " }, block: { start: "/* ", end: " */" } },
     capabilities: { ...NO_FEATURES, supportsSql: true },
   },
+  shellscript: {
+    label: "Shell",
+    extensions: ["sh", "bash", "zsh", "shell"],
+    comment: { line: { prefix: "# " }, block: { start: "# ", end: "" } },
+    capabilities: NO_FEATURES,
+  },
   markdown: {
     label: "Markdown",
     extensions: ["md", "markdown"],

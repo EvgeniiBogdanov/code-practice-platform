@@ -1,0 +1,28 @@
+/*
+ * Dropdown menus of the notes look inactive while the pointer is elsewhere: the surface stays
+ * solid (the text under a menu never shows through, in either theme) and what is written on it
+ * fades. Each menu sets the level for its own content, so a submenu is inactive on its own
+ * until the pointer is on it, even while the menu it hangs from is in use.
+ */
+.idle,
+.idleByPointer {
+  --menu-content-opacity: 0.5;
+}
+
+.idle:hover,
+.idle:focus-within,
+.idleByPointer:hover,
+.idleByPointer[data-keyboard] {
+  --menu-content-opacity: 1;
+}
+
+/* The faded part of a menu: its items, headings, icons and buttons */
+.content {
+  opacity: var(--menu-content-opacity, 1);
+  transition: opacity var(--transition-fast);
+}
+
+/*
+ * `.idleByPointer` is for a menu that takes keyboard focus the moment it opens (the block menu):
+ * focus alone says nothing about whether it is being used, so only the pointer or a key press does.
+ */

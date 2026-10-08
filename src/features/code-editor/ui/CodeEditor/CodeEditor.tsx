@@ -32,6 +32,7 @@ const LANGUAGE_ICON_CLASSES: Record<LanguageId, string> = {
   html: styles.langIconHtml,
   json: styles.langIconJson,
   sql: styles.langIconSql,
+  shellscript: styles.langIconOther,
   markdown: styles.langIconOther,
   plaintext: styles.langIconOther,
 };

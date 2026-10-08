@@ -4,7 +4,7 @@ import { Task } from "@/entities/task";
 import {
   Accordion,
   ErrorBoundary,
-  ViewModeToggle,
+  ViewModeFrame,
   UiFullscreenPanel,
   UiSkeleton,
   ResizableSplitPane,
@@ -74,84 +74,84 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
         </Accordion>
       )}
 
-      {hasVisualComponent && <ViewModeToggle mode={viewMode} onChange={setViewMode} />}
-
-      <ErrorBoundary>
-        {hasVisualComponent && viewMode === "preview" ? (
-          <ReactLivePreview
-            task={task}
-            files={files}
-            activeFileIdx={activeFileIdx}
-            currentCode={activeFile.code}
-            storagePrefix="sol"
-            variantIdx={selectedSolutionIdx}
-          />
-        ) : (
-          <>
-            {isFilesReady ? (
-              <UiFullscreenPanel label="Редактор решения">
-                {({ isFullscreen, isTransitioning, toggleFullscreen }) => (
-                  <ResizableSplitPane
-                    layout={isFullscreen ? (hasVisualComponent ? "split" : "single") : "stack"}
-                    className={clsx(
-                      styles.editorWorkspace,
-                      isFullscreen && styles.fullscreenWorkspace
-                    )}
-                    left={
-                      <CodeEditor
-                        key={`sol_${task.section}_${task.id}_${selectedSolutionIdx}_${activeFileIdx}`}
-                        code={activeFile?.code || ""}
-                        onChange={handleCodeChange}
-                        onFilesChange={handleFilesChange}
-                        onRun={() => handleRunCode()}
-                        onReset={handleResetCode}
-                        files={files}
-                        activeFileIdx={activeFileIdx}
-                        onFileSelect={setActiveFileIdx}
-                        filepath={activeFile.name}
-                        historyScope={{
-                          taskKey: `${task.section}:${task.id}`,
-                          documentKey: `solution:${selectedSolutionIdx}:${activeFileIdx}`,
-                        }}
-                        isFullscreen={isFullscreen}
-                        fillHeight={isFullscreen}
-                        onToggleFullscreen={toggleFullscreen}
-                        isFullscreenTransitioning={isTransitioning}
-                        bottomConsole={
-                          <JsConsole
-                            logs={consoleLogs}
-                            isRunning={isRunning}
-                            lastExecution={lastExecution}
-                            filename={activeFile.name}
-                            onRun={() => handleRunCode()}
-                            onStop={handleStopCode}
-                            onClear={handleClearConsole}
-                          />
-                        }
-                      />
-                    }
-                    right={
-                      isFullscreen && hasVisualComponent ? (
-                        <ReactLivePreview
-                          task={task}
+      <ViewModeFrame mode={viewMode} onChange={setViewMode} hasToggle={hasVisualComponent}>
+        <ErrorBoundary>
+          {hasVisualComponent && viewMode === "preview" ? (
+            <ReactLivePreview
+              task={task}
+              files={files}
+              activeFileIdx={activeFileIdx}
+              currentCode={activeFile.code}
+              storagePrefix="sol"
+              variantIdx={selectedSolutionIdx}
+            />
+          ) : (
+            <>
+              {isFilesReady ? (
+                <UiFullscreenPanel label="Редактор решения">
+                  {({ isFullscreen, isTransitioning, toggleFullscreen }) => (
+                    <ResizableSplitPane
+                      layout={isFullscreen ? (hasVisualComponent ? "split" : "single") : "stack"}
+                      className={clsx(
+                        styles.editorWorkspace,
+                        isFullscreen && styles.fullscreenWorkspace
+                      )}
+                      left={
+                        <CodeEditor
+                          key={`sol_${task.section}_${task.id}_${selectedSolutionIdx}_${activeFileIdx}`}
+                          code={activeFile?.code || ""}
+                          onChange={handleCodeChange}
+                          onFilesChange={handleFilesChange}
+                          onRun={() => handleRunCode()}
+                          onReset={handleResetCode}
                           files={files}
                           activeFileIdx={activeFileIdx}
-                          currentCode={activeFile.code}
-                          storagePrefix="sol"
-                          variantIdx={selectedSolutionIdx}
-                          fullHeight
+                          onFileSelect={setActiveFileIdx}
+                          filepath={activeFile.name}
+                          historyScope={{
+                            taskKey: `${task.section}:${task.id}`,
+                            documentKey: `solution:${selectedSolutionIdx}:${activeFileIdx}`,
+                          }}
+                          isFullscreen={isFullscreen}
+                          fillHeight={isFullscreen}
+                          onToggleFullscreen={toggleFullscreen}
+                          isFullscreenTransitioning={isTransitioning}
+                          bottomConsole={
+                            <JsConsole
+                              logs={consoleLogs}
+                              isRunning={isRunning}
+                              lastExecution={lastExecution}
+                              filename={activeFile.name}
+                              onRun={() => handleRunCode()}
+                              onStop={handleStopCode}
+                              onClear={handleClearConsole}
+                            />
+                          }
                         />
-                      ) : null
-                    }
-                  />
-                )}
-              </UiFullscreenPanel>
-            ) : (
-              <UiSkeleton height={EDITOR_PLACEHOLDER_HEIGHT} />
-            )}
-          </>
-        )}
-      </ErrorBoundary>
+                      }
+                      right={
+                        isFullscreen && hasVisualComponent ? (
+                          <ReactLivePreview
+                            task={task}
+                            files={files}
+                            activeFileIdx={activeFileIdx}
+                            currentCode={activeFile.code}
+                            storagePrefix="sol"
+                            variantIdx={selectedSolutionIdx}
+                            fullHeight
+                          />
+                        ) : null
+                      }
+                    />
+                  )}
+                </UiFullscreenPanel>
+              ) : (
+                <UiSkeleton height={EDITOR_PLACEHOLDER_HEIGHT} />
+              )}
+            </>
+          )}
+        </ErrorBoundary>
+      </ViewModeFrame>
     </div>
   );
 });
