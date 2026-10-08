@@ -4,6 +4,7 @@ import { Task, TaskSolution, getTaskFiles, hasTaskVisualComponent } from "@/enti
 import { Accordion, ViewModeToggle, UiSkeleton } from "@/shared/ui";
 import { CodeEditor } from "@/features/code-editor";
 import { SolutionVariantsRow } from "../SolutionTab/SolutionVariantsRow";
+import { RecommendationIcon } from "../SolutionTab/RecommendationIcon";
 import solutionStyles from "../SolutionTab/SolutionTab.module.css";
 import styles from "./TaskTabSkeleton.module.css";
 
@@ -51,7 +52,7 @@ export const SolutionTabSkeleton = memo(
           <Accordion
             size="xs"
             color={isRecommended ? "green" : hasWarning ? "orange" : "orange"}
-            icon={<span>{isRecommended ? "💡" : hasWarning ? "⚠️" : "📌"}</span>}
+            icon={<RecommendationIcon isRecommended={isRecommended} hasWarning={hasWarning} />}
             title={<strong>{badgeText}:</strong>}
             isOpen={false}
             onToggle={() => {}}

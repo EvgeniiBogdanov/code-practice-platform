@@ -35,7 +35,7 @@
 }
 
 :global([data-theme="light"]) .modal {
-  background-color: var(--bg-card, #ffffff);
+  background-color: var(--bg-card);
   border-color: var(--border-color);
   box-shadow:
     0 14px 34px rgba(15, 15, 15, 0.12),
@@ -81,7 +81,7 @@
 }
 
 :global([data-theme="light"]) .header {
-  background-color: var(--bg-card, #ffffff);
+  background-color: var(--bg-card);
 }
 
 .titleGroup {
@@ -116,7 +116,7 @@
 }
 
 .title {
-  font-size: 15px;
+  font-size: var(--fs-lg);
   font-weight: 600;
   color: var(--text-main);
   margin: 0;
@@ -126,7 +126,7 @@
 }
 
 .description {
-  font-size: 12.5px;
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   line-height: 1.45;
   margin-top: 2px;
@@ -183,7 +183,7 @@
   flex: 1;
   font-family: var(--font-sans);
   color: var(--text-main);
-  font-size: 13.5px;
+  font-size: var(--fs-label);
   line-height: 1.55;
   box-sizing: border-box;
 }
@@ -195,13 +195,13 @@
   gap: 8px;
   padding: 12px 20px;
   border-top: 1px solid var(--border-color);
-  background-color: var(--bg-card, #252525);
+  background-color: var(--bg-card);
   flex-shrink: 0;
   box-sizing: border-box;
 }
 
 :global([data-theme="light"]) .footer {
-  background-color: var(--bg-card, #ffffff);
+  background-color: var(--bg-card);
   border-top-color: var(--border-color);
 }
 

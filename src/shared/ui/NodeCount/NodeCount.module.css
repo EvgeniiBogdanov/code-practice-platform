@@ -3,12 +3,12 @@
   align-items: center;
   justify-content: center;
   line-height: normal;
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-family: var(--font-sans);
   font-variant-numeric: tabular-nums lining-nums;
   letter-spacing: 0;
   text-align: center;
-  color: var(--text-dimmed, #9ca3af);
+  color: var(--text-dimmed);
   padding: 0 6px;
   height: 18px;
   min-height: 18px;
@@ -25,7 +25,7 @@
 
 .nodeCount.completed,
 .nodeCount.completedGreen {
-  color: var(--color-status-solved, #10b981);
+  color: var(--color-status-solved);
   background: rgba(16, 185, 129, 0.12);
   font-weight: 600;
   opacity: 1;
@@ -33,7 +33,7 @@
 
 .nodeCount.completedYellow,
 .nodeCount.completedMedium {
-  color: var(--color-status-due, #f59e0b);
+  color: var(--color-status-due);
   background: rgba(245, 158, 11, 0.12);
   font-weight: 600;
   opacity: 1;
@@ -41,17 +41,17 @@
 
 [data-theme="light"] .nodeCount {
   background: transparent;
-  color: var(--text-muted, #5c5b56);
+  color: var(--text-muted);
 }
 
 [data-theme="light"] .nodeCount.completed,
 [data-theme="light"] .nodeCount.completedGreen {
-  color: #16a34a;
-  background: rgba(22, 163, 74, 0.12);
+  color: var(--color-success);
+  background: var(--accent-green-bg);
 }
 
 [data-theme="light"] .nodeCount.completedYellow,
 [data-theme="light"] .nodeCount.completedMedium {
-  color: #ca8a04;
-  background: rgba(202, 138, 4, 0.14);
+  color: var(--accent-yellow);
+  background: var(--accent-yellow-bg);
 }

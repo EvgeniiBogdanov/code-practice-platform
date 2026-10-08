@@ -16,7 +16,7 @@
 }
 
 .title {
-  font-size: 15px;
+  font-size: var(--fs-lg);
   font-weight: 600;
   color: var(--text-main);
   margin: 0;
@@ -31,13 +31,13 @@
 }
 
 .questionIcon {
-  color: #a855f7;
+  color: var(--accent-purple);
   flex-shrink: 0;
   display: inline-flex;
 }
 
 .empty {
-  font-size: 13.5px;
+  font-size: var(--fs-label);
   color: var(--text-muted);
   font-style: italic;
   padding: 24px 0;

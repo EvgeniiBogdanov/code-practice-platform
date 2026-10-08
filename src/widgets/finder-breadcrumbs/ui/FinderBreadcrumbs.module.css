@@ -6,7 +6,7 @@
   overflow: visible;
   user-select: none;
   font-family: var(--font-sans);
-  font-size: 14.5px;
+  font-size: var(--fs-body-sm);
 }
 
 .sidebarToggleBtn {
@@ -80,7 +80,7 @@
   border: none;
   border-radius: var(--radius-md);
   color: var(--text-muted);
-  font-size: 14.5px;
+  font-size: var(--fs-body-sm);
   font-weight: var(--fw-medium, 500);
   font-family: var(--font-sans);
   cursor: pointer;
@@ -135,7 +135,7 @@
 .separator {
   color: var(--text-muted);
   opacity: 0.4;
-  font-size: 12px;
+  font-size: var(--fs-caption);
   margin: 0 1px;
   flex-shrink: 0;
   user-select: none;
@@ -150,8 +150,8 @@
   max-width: 360px;
   width: max-content;
   max-height: 380px;
-  background: var(--bg-card, #252525);
-  border: 1px solid var(--border-color, #383837);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-md, 8px);
   box-shadow:
     0 12px 32px rgba(0, 0, 0, 0.45),
@@ -164,7 +164,7 @@
 }
 
 :global([data-theme="light"]) .dropdownMenu {
-  background: var(--bg-card, #ffffff);
+  background: var(--bg-card);
   border-color: var(--border-color, rgba(55, 53, 47, 0.12));
   box-shadow:
     0 12px 32px rgba(15, 15, 15, 0.12),
@@ -190,19 +190,19 @@
   font-weight: var(--fw-semibold, 600);
   text-transform: uppercase;
   letter-spacing: var(--ls-section, 0.04em);
-  color: var(--fg-muted, #75726e);
+  color: var(--fg-muted);
   padding: 8px 10px 6px 10px;
   user-select: none;
   background: rgba(255, 255, 255, 0.02);
-  border-bottom: 1px solid var(--border-color, #383837);
+  border-bottom: 1px solid var(--border-color);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 :global([data-theme="light"]) .dropdownHeader {
-  background: var(--bg-sidebar, #f7f6f3);
-  color: var(--fg-muted, #787774);
+  background: var(--bg-sidebar);
+  color: var(--fg-muted);
   border-bottom-color: var(--border-color, rgba(55, 53, 47, 0.12));
 }
 
@@ -238,8 +238,8 @@
   background: transparent;
   border: none;
   border-radius: var(--radius-md, 6px);
-  color: var(--text-main, #efefed);
-  font-size: 13.5px;
+  color: var(--text-main);
+  font-size: var(--fs-label);
   font-weight: 500;
   font-family: var(--font-sans);
   text-decoration: none;
@@ -252,26 +252,22 @@
 
 .dropdownItem:hover {
   background: var(--state-hover, rgba(255, 255, 255, 0.055));
-  color: var(--text-main, #ffffff);
+  color: var(--text-main);
 }
 
 .dropdownItem.active {
-  background: #333333;
-  color: #ffffff;
-}
-
-:global([data-theme="light"]) .dropdownItem {
-  color: var(--text-main, #37352f);
+  background: var(--state-selected);
+  color: var(--text-main);
 }
 
 :global([data-theme="light"]) .dropdownItem:hover {
   background: var(--state-hover);
-  color: var(--text-main, #37352f);
+  color: var(--text-main);
 }
 
 :global([data-theme="light"]) .dropdownItem.active {
   background: rgba(55, 53, 47, 0.08);
-  color: var(--text-main, #37352f);
+  color: var(--text-main);
 }
 
 .dropdownItemIcon {
@@ -286,35 +282,35 @@
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 0;
-  font-size: 13.5px;
+  font-size: var(--fs-label);
 }
 
 .sectionBadge {
   margin-left: auto;
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 500;
   font-family: var(--font-sans);
   padding: 2px 8px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   flex-shrink: 0;
-  color: var(--fg-muted, #8e8d8c);
+  color: var(--fg-muted);
 }
 
 :global([data-theme="light"]) .sectionBadge {
   background: rgba(55, 53, 47, 0.06);
-  color: var(--fg-muted, #787774);
+  color: var(--fg-muted);
   border-color: rgba(55, 53, 47, 0.08);
 }
 
 .fileIcon {
-  color: var(--icon-file, #94a3b8);
+  color: var(--icon-file);
   flex-shrink: 0;
 }
 
 /* Status Icons */
 .statusSolved {
-  color: #10b981;
-  font-size: 12px;
+  color: var(--color-status-solved);
+  font-size: var(--fs-caption);
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -324,8 +320,8 @@
 }
 
 .statusUnsolved {
-  color: #ef4444;
-  font-size: 12px;
+  color: var(--color-status-unsolved);
+  font-size: var(--fs-caption);
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -335,8 +331,8 @@
 }
 
 .statusDue {
-  color: #eab308;
-  font-size: 12px;
+  color: var(--color-status-due);
+  font-size: var(--fs-caption);
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -347,40 +343,28 @@
 
 /* Rating Colors */
 .ratingHard {
-  color: #f97316 !important;
+  color: var(--color-rating-hard) !important;
 }
 
 .ratingMedium {
-  color: #eab308 !important;
+  color: var(--color-rating-medium) !important;
 }
 
 .ratingEasy {
-  color: #10b981 !important;
+  color: var(--color-rating-easy) !important;
 }
 
 .ratingUnsolved {
-  color: #ef4444 !important;
+  color: var(--color-status-unsolved) !important;
 }
 
 .ratingExcluded {
-  color: var(--text-muted, #787774) !important;
+  color: var(--text-muted) !important;
   opacity: 0.65;
 }
 
 [data-theme="light"] .ratingHard {
   color: var(--color-rating-hard) !important;
-}
-
-[data-theme="light"] .ratingMedium {
-  color: var(--color-rating-medium) !important;
-}
-
-[data-theme="light"] .ratingEasy {
-  color: var(--color-rating-easy) !important;
-}
-
-[data-theme="light"] .ratingUnsolved {
-  color: var(--color-status-unsolved) !important;
 }
 
 /* Section / Icon Colors */
@@ -391,19 +375,19 @@
 
 .icon_javascript,
 .iconJs {
-  color: var(--color-js, #f59e0b);
+  color: var(--color-js);
   flex-shrink: 0;
 }
 
 .icon_react,
 .iconReact {
-  color: var(--color-react, #61dafb);
+  color: var(--color-react);
   flex-shrink: 0;
 }
 
 .icon_algorithms,
 .iconAlgo {
-  color: var(--color-algo, #a855f7);
+  color: var(--color-algo);
   flex-shrink: 0;
 }
 
@@ -413,22 +397,22 @@
 }
 
 .iconFlame {
-  color: #ff6b6b;
+  color: var(--accent-red);
   flex-shrink: 0;
 }
 
 .iconWrench {
-  color: #3b82f6;
+  color: var(--accent-blue);
   flex-shrink: 0;
 }
 
 .iconRocket {
-  color: #10b981;
+  color: var(--accent-green);
   flex-shrink: 0;
 }
 
 .iconBrain {
-  color: #a855f7;
+  color: var(--accent-purple);
   flex-shrink: 0;
 }
 

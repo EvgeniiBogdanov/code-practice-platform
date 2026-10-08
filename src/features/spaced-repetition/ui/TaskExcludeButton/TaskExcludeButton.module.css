@@ -1,5 +1,5 @@
 .excludeIcon {
-  color: var(--text-muted, #787774);
+  color: var(--text-muted);
   transition:
     color var(--transition-fast, 0.15s ease),
     transform var(--transition-fast, 0.15s ease);

@@ -9,12 +9,6 @@
   box-shadow: var(--shadow-sm);
 }
 
-[data-theme="light"] .groupCard {
-  background-color: var(--bg-card);
-  border: none;
-  box-shadow: var(--shadow-sm);
-}
-
 .header {
   display: flex;
   align-items: center;
@@ -37,7 +31,7 @@
 }
 
 .title {
-  font-size: 14.5px;
+  font-size: var(--fs-body-sm);
   font-weight: 600;
   color: var(--text-main);
   white-space: nowrap;
@@ -85,7 +79,7 @@
   background: transparent;
   color: var(--text-main);
   text-decoration: none;
-  font-size: 13px;
+  font-size: var(--fs-label);
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -98,6 +92,6 @@
 
 .actionBtn:hover {
   background: var(--state-hover);
-  color: var(--accent-blue, #60a5fa);
+  color: var(--accent-blue);
   border: none;
 }

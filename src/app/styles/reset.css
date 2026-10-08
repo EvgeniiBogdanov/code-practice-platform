@@ -45,8 +45,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--text-main);
-  background-color: var(--bg-app);
-  font-size: 14px;
+  background-color: var(--bg-canvas);
+  font-size: var(--fs-body-sm);
 }
 
 /* Heading Text Wrapping & Balancing */

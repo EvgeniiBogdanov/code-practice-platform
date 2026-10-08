@@ -25,6 +25,7 @@ import {
   ResizableSplitPane,
 } from "@/shared/ui";
 import { CodeEditor } from "@/features/code-editor";
+import { TaskHints } from "@/features/task-hints";
 import { JsConsole, ReactLivePreview } from "@/features/code-runner";
 import { EDITOR_PLACEHOLDER_HEIGHT } from "../../model/editorPlaceholder";
 import styles from "./CandidateTab.module.css";
@@ -267,6 +268,8 @@ export const CandidateTab = memo(({ task, className }: CandidateTabProps): React
 
   return (
     <div ref={tabRef} className={clsx(styles.container, className)}>
+      {task && <TaskHints key={task.id} section={task.section} taskId={task.id} />}
+
       {hasVisualComponent && <ViewModeToggle mode={viewMode} onChange={setViewMode} />}
 
       <ErrorBoundary>

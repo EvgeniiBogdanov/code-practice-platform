@@ -10,23 +10,23 @@
 }
 
 .iconFlame {
-  color: #ff6b6b;
+  color: var(--accent-red);
 }
 
 .iconWrench {
-  color: #3b82f6;
+  color: var(--accent-blue);
 }
 
 .iconRocket {
-  color: #10b981;
+  color: var(--accent-green);
 }
 
 .iconBrain {
-  color: #a855f7;
+  color: var(--accent-purple);
 }
 
 .iconRotateCcw {
-  color: var(--accent-orange, #f97316);
+  color: var(--accent-orange);
 }
 
 [data-theme="light"] .iconFlame {

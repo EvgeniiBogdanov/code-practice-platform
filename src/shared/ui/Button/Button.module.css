@@ -47,14 +47,14 @@
   outline: none;
   box-shadow:
     0 0 0 2px var(--bg-surface),
-    0 0 0 4px var(--accent-primary, #3b82f6);
+    0 0 0 4px var(--accent-primary);
 }
 
 /* Sizes */
 .size-sm {
   padding: 0 12px;
   height: 28px;
-  font-size: 12px;
+  font-size: var(--fs-caption);
 }
 
 .size-md {
@@ -87,6 +87,19 @@
   padding: 0;
   width: 26px;
   height: 26px;
+}
+
+/* Marketing CTAs: fully rounded, with a brief press scale */
+.shape-pill {
+  border-radius: var(--radius-full);
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.shape-pill:active:not(:disabled) {
+  transform: scale(0.96);
 }
 
 .icon-left {

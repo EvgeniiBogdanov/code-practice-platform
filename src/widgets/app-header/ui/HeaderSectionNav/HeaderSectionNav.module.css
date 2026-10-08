@@ -33,7 +33,7 @@
 }
 
 .iconReact {
-  color: #38bdf8;
+  color: var(--accent-cyan);
 }
 
 [data-theme="light"] .iconReact {
@@ -41,15 +41,15 @@
 }
 
 .iconJs {
-  color: #fbbf24;
+  color: var(--color-js);
 }
 
 .iconAlgo {
-  color: #c084fc;
+  color: var(--color-algo);
 }
 
 .iconEditor {
-  color: #34d399;
+  color: var(--accent-green);
 }
 
 .iconTs {

@@ -82,7 +82,7 @@
 }
 
 [data-theme="light"] .tabsHeader {
-  background: var(--bg-subtle);
+  background: var(--bg-card);
   border-bottom-color: var(--border-color);
 }
 
@@ -129,7 +129,7 @@
   border: none;
   color: var(--text-muted);
   font-family: inherit;
-  font-size: 14.6px;
+  font-size: var(--fs-lg);
   font-weight: 600;
   height: 100%;
   padding: 0 10px;
@@ -155,38 +155,38 @@
 }
 
 .tab_candidate .tabIcon {
-  color: #10b981;
+  color: var(--tab-candidate);
 }
 .tab_candidate.tabActive {
-  border-bottom-color: #10b981;
+  border-bottom-color: var(--tab-candidate);
 }
 
 .tab_solution .tabIcon {
-  color: #3b82f6;
+  color: var(--tab-solution);
 }
 .tab_solution.tabActive {
-  border-bottom-color: #3b82f6;
+  border-bottom-color: var(--tab-solution);
 }
 
 .tab_materials .tabIcon {
-  color: #f59e0b;
+  color: var(--tab-materials);
 }
 .tab_materials.tabActive {
-  border-bottom-color: #f59e0b;
+  border-bottom-color: var(--tab-materials);
 }
 
 .tab_questions .tabIcon {
-  color: #a855f7;
+  color: var(--tab-questions);
 }
 .tab_questions.tabActive {
-  border-bottom-color: #a855f7;
+  border-bottom-color: var(--tab-questions);
 }
 
 .tab_checklist .tabIcon {
-  color: #06b6d4;
+  color: var(--tab-checklist);
 }
 .tab_checklist.tabActive {
-  border-bottom-color: #06b6d4;
+  border-bottom-color: var(--tab-checklist);
 }
 
 .tabLabel {

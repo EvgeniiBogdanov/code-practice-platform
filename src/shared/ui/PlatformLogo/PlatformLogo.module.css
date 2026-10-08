@@ -6,7 +6,7 @@
 }
 
 .bgRect {
-  fill: #ffffff;
+  fill: var(--white);
   stroke: transparent;
   stroke-width: 0;
 }
@@ -19,16 +19,16 @@
 }
 
 .logoStroke {
-  stroke: #191919;
+  stroke: var(--bg-app);
 }
 
 :global([data-theme="light"]) .logoStroke,
 [data-theme="light"] .logoStroke {
-  stroke: #ffffff;
+  stroke: var(--white);
 }
 
 .noBackground .logoStroke {
-  stroke: #ffffff;
+  stroke: var(--white);
 }
 
 :global([data-theme="light"]) .noBackground .logoStroke,

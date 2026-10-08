@@ -9,7 +9,7 @@
   text-align: center;
   color: var(--text-muted);
   padding: 20px 0;
-  font-size: 13px;
+  font-size: var(--fs-label);
 }
 
 .categoryList {
@@ -38,7 +38,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 13px;
+  font-size: var(--fs-label);
   font-weight: 500;
   color: var(--text-main);
   min-width: 0;
@@ -58,12 +58,12 @@
 }
 
 .catCount {
-  font-size: 11px;
+  font-size: var(--fs-micro);
   color: var(--fg-muted);
 }
 
 .pctBadge {
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 600;
   padding: 1px 6px;
   border-radius: var(--radius-sm);

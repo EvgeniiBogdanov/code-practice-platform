@@ -92,7 +92,7 @@
 
 /* Label text */
 .label {
-  font-size: 14px;
+  font-size: var(--fs-body-sm);
   line-height: 1.5;
   color: var(--text-main);
   font-family: var(--font-sans);
@@ -125,7 +125,7 @@
 }
 
 .size-sm .label {
-  font-size: 13px;
+  font-size: var(--fs-label);
 }
 
 @keyframes popIn {

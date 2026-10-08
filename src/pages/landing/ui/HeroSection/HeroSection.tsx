@@ -95,13 +95,14 @@ export const HeroSection = (): React.JSX.Element => {
               <Button
                 variant="primary"
                 size="xl"
+                shape="pill"
                 rightIcon={<ArrowRight size={18} />}
                 onClick={() => openDialog()}
               >
                 Создать локальный аккаунт
               </Button>
               <a
-                className={buttonClassName({ variant: "outline", size: "xl" })}
+                className={buttonClassName({ variant: "outline", size: "xl", shape: "pill" })}
                 href={REPOSITORY_URL}
                 target="_blank"
                 rel="noopener noreferrer"

@@ -14,6 +14,7 @@ import { JsConsole, ReactLivePreview } from "@/features/code-runner";
 import { useSolutionTab } from "../../model/useSolutionTab";
 import { EDITOR_PLACEHOLDER_HEIGHT } from "../../model/editorPlaceholder";
 import { SolutionVariantsRow } from "./SolutionVariantsRow";
+import { RecommendationIcon } from "./RecommendationIcon";
 import styles from "./SolutionTab.module.css";
 
 export interface SolutionTabProps {
@@ -64,7 +65,7 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
         <Accordion
           size="xs"
           color={isRecommended ? "green" : hasWarning ? "orange" : "orange"}
-          icon={<span>{isRecommended ? "💡" : hasWarning ? "⚠️" : "📌"}</span>}
+          icon={<RecommendationIcon isRecommended={isRecommended} hasWarning={hasWarning} />}
           title={<strong>{badgeText}:</strong>}
           isOpen={isHintExpanded}
           onToggle={() => setIsHintExpanded((prev) => !prev)}

@@ -47,19 +47,19 @@
 .size-sm {
   height: 20px;
   padding: 0 7px;
-  font-size: 11px;
+  font-size: var(--fs-micro);
 }
 
 .size-md {
   height: 22px;
   padding: 0 9px;
-  font-size: 11px;
+  font-size: var(--fs-micro);
 }
 
 .size-lg {
   height: 24px;
   padding: 0 11px;
-  font-size: 12px;
+  font-size: var(--fs-caption);
 }
 
 /* Variants */

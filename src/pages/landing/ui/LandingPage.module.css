@@ -6,6 +6,7 @@
 }
 
 :global(html[data-landing]) {
+  --bg-canvas: var(--bg-app);
   /* Surfaces and the black accent come from the shared light theme; the landing goes fully monochrome */
   --accent-blue: var(--accent-primary);
   --accent-blue-hover: var(--accent-primary-hover);

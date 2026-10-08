@@ -22,7 +22,7 @@ export const SidebarHomeSkeleton = memo(
         {/* Placeholder for the overall progress card */}
         <UiSkeleton width="100%" height={46} radius={6} />
         {HOME_ITEMS.map((item, idx) => (
-          <div key={idx} className={styles.homeOverviewItem} style={{ pointerEvents: "none" }}>
+          <div key={idx} className={clsx(styles.homeOverviewItem, styles.homeOverviewSkeletonItem)}>
             <UiSkeleton width={17} height={17} radius={4} />
             <span className={styles.homeItemTitle}>
               <UiSkeleton width={item.titleWidth} height={14} radius={3} />

@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import { CircleQuestionMark } from "lucide-react";
 import { clsx } from "clsx";
 import { Task, TaskQuestion } from "@/entities/task";
 import { Accordion, UiSkeleton } from "@/shared/ui";
@@ -29,7 +30,7 @@ export const QuestionsTabSkeleton = memo(
                   key={`${q.question || idx}-${idx}`}
                   size="md"
                   color="purple"
-                  icon={<span className={questionsStyles.questionIcon}>❓</span>}
+                  icon={<CircleQuestionMark size={16} className={questionsStyles.questionIcon} />}
                   title={
                     <span>
                       <strong>Вопрос {idx + 1}:</strong> {q.question || q.title}
@@ -43,7 +44,7 @@ export const QuestionsTabSkeleton = memo(
                 <div key={idx} className={styles.questionAccordionCard}>
                   <div className={styles.questionAccordionHeader}>
                     <div className={styles.questionAccordionHeaderLeft}>
-                      <span className={questionsStyles.questionIcon}>❓</span>
+                      <CircleQuestionMark size={16} className={questionsStyles.questionIcon} />
                       <UiSkeleton width={`${50 + (idx % 4) * 12}%`} height={15} radius={3} />
                     </div>
                     <UiSkeleton width={14} height={14} radius={3} />

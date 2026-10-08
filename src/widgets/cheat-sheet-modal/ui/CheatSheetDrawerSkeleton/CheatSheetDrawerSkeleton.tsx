@@ -27,13 +27,7 @@ export const CheatSheetDrawerSkeleton = memo(
               type="button"
               onClick={onClose}
               aria-label="Закрыть шпаргалку"
-              style={{
-                background: "transparent",
-                border: "none",
-                cursor: "pointer",
-                padding: "4px",
-                color: "var(--text-muted)",
-              }}
+              className={styles.closeButton}
             >
               <X size={16} />
             </button>

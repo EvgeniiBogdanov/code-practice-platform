@@ -47,11 +47,11 @@
 
 /* Border under background color (Cutout Ring matching app background) */
 .ring {
-  box-shadow: 0 0 0 1.5px var(--notification-badge-ring, var(--bg-app, #191919));
+  box-shadow: 0 0 0 1.5px var(--notification-badge-ring, var(--bg-app));
 }
 
 [data-theme="light"] .ring {
-  box-shadow: 0 0 0 1.5px var(--notification-badge-ring, var(--bg-app, #fbfbfa));
+  box-shadow: 0 0 0 1.5px var(--notification-badge-ring, var(--bg-app));
 }
 
 /* Sizes */
@@ -60,7 +60,7 @@
   height: 14px;
   line-height: 14px;
   padding: 0 4px;
-  font-size: 9px;
+  font-size: var(--fs-2xs);
   font-weight: 700;
 }
 
@@ -69,7 +69,7 @@
   height: 16px;
   line-height: 16px;
   padding: 0 5px;
-  font-size: 10px;
+  font-size: var(--fs-xs);
   font-weight: 700;
 }
 
@@ -78,7 +78,7 @@
   height: 18px;
   line-height: 18px;
   padding: 0 5px;
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 600;
 }
 
@@ -87,7 +87,7 @@
   height: 18px;
   line-height: 18px;
   padding: 0 5px;
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 700;
 }
 
@@ -96,7 +96,7 @@
   height: 22px;
   line-height: 22px;
   padding: 0 7px;
-  font-size: 12px;
+  font-size: var(--fs-caption);
   font-weight: 700;
 }
 
@@ -105,7 +105,7 @@
   height: 26px;
   line-height: 26px;
   padding: 0 9px;
-  font-size: 13px;
+  font-size: var(--fs-label);
   font-weight: 700;
 }
 
@@ -154,51 +154,26 @@
 
 /* Color Variants - Tinted Glass Pills with High Contrast */
 .variant_yellow {
-  background: rgba(245, 158, 11, 0.18);
-  color: #fbbf24;
-}
-
-[data-theme="light"] .variant_yellow {
   background: var(--accent-yellow-bg);
   color: var(--accent-yellow);
 }
 
 .variant_blue {
-  background: rgba(59, 130, 246, 0.18);
-  color: #60a5fa;
-}
-
-[data-theme="light"] .variant_blue {
   background: var(--accent-blue-bg);
   color: var(--accent-blue);
 }
 
 .variant_red {
-  background: rgba(239, 68, 68, 0.18);
-  color: #f87171;
-}
-
-[data-theme="light"] .variant_red {
   background: var(--accent-red-bg);
   color: var(--accent-red);
 }
 
 .variant_green {
-  background: rgba(16, 185, 129, 0.18);
-  color: #34d399;
-}
-
-[data-theme="light"] .variant_green {
   background: var(--accent-green-bg);
   color: var(--accent-green);
 }
 
 .variant_purple {
-  background: rgba(168, 85, 247, 0.18);
-  color: #c084fc;
-}
-
-[data-theme="light"] .variant_purple {
   background: var(--accent-purple-bg);
   color: var(--accent-purple);
 }
@@ -226,65 +201,35 @@
 /* Pinned solid badges & indicator dots */
 .dot.variant_yellow,
 .pinned.variant_yellow {
-  background: #f59e0b;
-  color: #000000;
+  background: var(--accent-yellow);
+  color: var(--text-on-accent);
   border: none;
 }
 
 .dot.variant_blue,
 .pinned.variant_blue {
-  background: var(--accent-blue, #2383e2);
-  color: #ffffff;
+  background: var(--accent-blue);
+  color: var(--text-on-accent);
   border: none;
 }
 
 .dot.variant_red,
 .pinned.variant_red {
-  background: #ef4444;
-  color: #ffffff;
+  background: var(--accent-red);
+  color: var(--text-on-accent);
   border: none;
 }
 
 .dot.variant_green,
 .pinned.variant_green {
-  background: #10b981;
-  color: #ffffff;
+  background: var(--accent-green);
+  color: var(--text-on-accent);
   border: none;
 }
 
 .dot.variant_purple,
 .pinned.variant_purple {
-  background: #a855f7;
-  color: #ffffff;
-  border: none;
-}
-
-[data-theme="light"] .dot.variant_blue,
-[data-theme="light"] .pinned.variant_blue {
-  background: var(--accent-blue);
-  color: var(--text-on-accent);
-}
-
-[data-theme="light"] .dot.variant_yellow,
-[data-theme="light"] .pinned.variant_yellow {
-  background: var(--color-js-logo);
-  color: var(--text-main);
-}
-
-[data-theme="light"] .dot.variant_red,
-[data-theme="light"] .pinned.variant_red {
-  background: var(--accent-red);
-  color: var(--text-on-accent);
-}
-
-[data-theme="light"] .dot.variant_green,
-[data-theme="light"] .pinned.variant_green {
-  background: var(--accent-green);
-  color: var(--text-on-accent);
-}
-
-[data-theme="light"] .dot.variant_purple,
-[data-theme="light"] .pinned.variant_purple {
   background: var(--accent-purple);
   color: var(--text-on-accent);
+  border: none;
 }

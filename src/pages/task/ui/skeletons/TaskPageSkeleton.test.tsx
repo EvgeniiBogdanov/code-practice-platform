@@ -32,7 +32,7 @@ describe("TaskPageSkeleton", () => {
     render(<TaskPageSkeleton task={mockTask} initialTab="checklist" />);
 
     expect(screen.getByText("Реализация функции debounce")).toBeInTheDocument();
-    expect(screen.getByText("📋 Самопроверка")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Самопроверка" })).toBeInTheDocument();
     expect(screen.getByText("Проверка таймаута")).toBeInTheDocument();
     expect(screen.getByText("Проверка контекста")).toBeInTheDocument();
     expect(screen.getByText("Разбор и теория")).toBeInTheDocument();

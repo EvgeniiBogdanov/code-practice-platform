@@ -23,7 +23,7 @@
   height: 28px;
   padding: 0 10px;
   border-radius: var(--radius-md, 6px);
-  background: var(--bg-card, #262626);
+  background: var(--bg-card);
   box-sizing: border-box;
 }
 
@@ -42,15 +42,15 @@
 }
 
 .variantBtnActive {
-  background: var(--bg-card, #2b2b2c);
+  background: var(--bg-card);
   color: var(--text-main);
   border: 1px solid var(--border-color);
-  font-size: 13px;
+  font-size: var(--fs-label);
   font-weight: 600;
 }
 
 .questionTitle {
-  font-size: 15px;
+  font-size: var(--fs-lg);
   font-weight: 600;
   margin: 0;
   color: var(--text-main);
@@ -58,7 +58,7 @@
 }
 
 .checklistTitle {
-  font-size: 15px;
+  font-size: var(--fs-lg);
   font-weight: 600;
   margin: 0;
   color: var(--text-main);
@@ -66,7 +66,7 @@
 }
 
 .checklistSubtitle {
-  font-size: 12.5px;
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   margin: 2px 0 0 0;
   line-height: 1.4;
@@ -75,7 +75,7 @@
 .scoreBadgePlaceholder {
   height: 24px;
   padding: 0 10px;
-  border-radius: 9999px;
+  border-radius: var(--radius-full);
   background: var(--bg-subtle, rgba(255, 255, 255, 0.05));
   border: 1px solid var(--border-color);
   display: flex;
@@ -86,7 +86,7 @@
 .accordionCard {
   background: var(--bg-subtle, rgba(255, 255, 255, 0.03));
   border: 1px solid var(--border-color);
-  border-left: 3px solid #10b981;
+  border-left: 3px solid var(--accent-green);
   border-radius: var(--radius-md, 6px);
   margin-bottom: 8px;
   width: 100%;
@@ -95,9 +95,9 @@
 }
 
 [data-theme="light"] .accordionCard {
-  background: rgba(16, 185, 129, 0.08);
-  border-color: rgba(16, 185, 129, 0.25);
-  border-left-color: #059669;
+  background: var(--accent-green-bg);
+  border-color: var(--accent-green-border);
+  border-left-color: var(--accent-green);
 }
 
 .accordionHeader {
@@ -140,7 +140,7 @@
 .questionAccordionCard {
   background: var(--bg-subtle, rgba(255, 255, 255, 0.03));
   border: 1px solid var(--border-color);
-  border-left: 3px solid #a855f7;
+  border-left: 3px solid var(--accent-purple);
   border-radius: var(--radius-md, 8px);
   width: 100%;
   box-sizing: border-box;
@@ -148,9 +148,9 @@
 }
 
 [data-theme="light"] .questionAccordionCard {
-  background: var(--bg-subtle, #f4f4f2);
+  background: var(--bg-subtle);
   border-color: var(--border-color, rgba(55, 53, 47, 0.12));
-  border-left-color: #9333ea;
+  border-left-color: var(--accent-purple);
 }
 
 .questionAccordionHeader {
@@ -173,7 +173,7 @@
 }
 
 .questionIcon {
-  color: #a855f7;
+  color: var(--accent-purple);
   flex-shrink: 0;
   display: inline-flex;
 }
@@ -229,14 +229,14 @@
 }
 
 .checklistLabelReal {
-  font-size: 13.5px;
+  font-size: var(--fs-label);
   line-height: 1.4;
   color: var(--text-main);
   flex: 1;
 }
 
 .fileTabName {
-  font-size: 12px;
+  font-size: var(--fs-caption);
   color: var(--text-main);
   font-family: var(--font-mono, monospace);
   font-weight: 500;

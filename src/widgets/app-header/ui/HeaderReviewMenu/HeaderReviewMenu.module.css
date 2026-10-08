@@ -10,7 +10,7 @@
   width: 380px;
   max-width: 90vw;
   border-radius: 10px;
-  background: var(--bg-card, #1c1c1c);
+  background: var(--bg-card);
   border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
   box-shadow:
     0 12px 32px rgba(0, 0, 0, 0.4),
@@ -57,7 +57,7 @@
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 12px;
+  font-size: var(--fs-caption);
   font-weight: 600;
   color: var(--text-main);
   text-transform: uppercase;
@@ -65,7 +65,7 @@
 }
 
 .iconDueYellow {
-  color: #eab308;
+  color: var(--color-status-due);
   flex-shrink: 0;
 }
 
@@ -75,12 +75,12 @@
 }
 
 .headerTitle {
-  font-size: 12px;
+  font-size: var(--fs-caption);
   font-weight: 600;
 }
 
 .headerCount {
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 600;
   color: var(--text-muted);
   font-family: var(--font-sans);
@@ -111,10 +111,6 @@
   background: var(--state-hover);
 }
 
-[data-theme="light"] .reviewItem:hover {
-  background: var(--state-hover);
-}
-
 .itemMain {
   display: flex;
   align-items: center;
@@ -124,7 +120,7 @@
 }
 
 .itemFileIcon {
-  color: var(--icon-file, #94a3b8);
+  color: var(--icon-file);
   flex-shrink: 0;
 }
 
@@ -132,7 +128,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 13px;
+  font-size: var(--fs-label);
   font-weight: 500;
   color: var(--text-main);
 }
@@ -145,7 +141,7 @@
 }
 
 .sectionTag {
-  font-size: 10px;
+  font-size: var(--fs-xs);
   font-weight: 600;
   padding: 1px 5px;
   border-radius: var(--radius-lg);
@@ -154,21 +150,21 @@
 
 .tag_javascript {
   background: rgba(245, 158, 11, 0.12);
-  color: #f59e0b;
+  color: var(--color-js);
 }
 
 .tag_algorithms {
   background: rgba(168, 85, 247, 0.12);
-  color: #a855f7;
+  color: var(--color-algo);
 }
 
 .tag_react {
   background: rgba(97, 218, 251, 0.12);
-  color: #61dafb;
+  color: var(--color-react);
 }
 
 .difficultyBadge {
-  font-size: 10px;
+  font-size: var(--fs-xs);
   font-weight: 600;
   padding: 1px 6px;
   border-radius: 10px;
@@ -176,12 +172,12 @@
 
 .diff_due {
   background: rgba(234, 179, 8, 0.15);
-  color: #eab308;
+  color: var(--color-status-due);
 }
 
 .diff_master {
   background: rgba(16, 185, 129, 0.15);
-  color: #10b981;
+  color: var(--color-mastery-mastered);
 }
 
 .diff_level {
@@ -195,7 +191,7 @@
 }
 
 [data-theme="light"] .diff_unsolved {
-  background: #fee2e2;
+  background: var(--color-status-unsolved-bg);
   color: var(--color-error);
 }
 
@@ -212,53 +208,37 @@
 }
 
 .emptyIconSuccess {
-  color: #10b981;
+  color: var(--color-success);
 }
 
 .emptyText {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  font-size: 12px;
+  font-size: var(--fs-caption);
   color: var(--text-muted);
   line-height: 1.35;
 }
 
 .emptyText strong {
   color: var(--text-main);
-  font-size: 13px;
+  font-size: var(--fs-label);
 }
 
 /* Rating Text Colors */
 .ratingHard {
-  color: #f97316 !important;
+  color: var(--color-rating-hard) !important;
 }
 
 .ratingMedium {
-  color: #eab308 !important;
+  color: var(--color-rating-medium) !important;
 }
 
 .ratingEasy {
-  color: #10b981 !important;
-}
-
-[data-theme="light"] .ratingHard {
-  color: #ea580c !important;
-}
-
-[data-theme="light"] .ratingMedium {
-  color: #ca8a04 !important;
-}
-
-[data-theme="light"] .ratingEasy {
-  color: #16a34a !important;
+  color: var(--color-rating-easy) !important;
 }
 
 .ratingUnsolved {
-  color: var(--color-error) !important;
-}
-
-[data-theme="light"] .ratingUnsolved {
   color: var(--color-error) !important;
 }
 

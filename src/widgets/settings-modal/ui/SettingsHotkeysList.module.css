@@ -12,7 +12,7 @@
 .groupTitle {
   margin: 0 0 6px;
   font-family: var(--font-sans);
-  font-size: 12px;
+  font-size: var(--fs-caption);
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -43,7 +43,7 @@
 .description {
   min-width: 0;
   font-family: var(--font-sans);
-  font-size: 13px;
+  font-size: var(--fs-label);
   line-height: 1.45;
   color: var(--text-main);
 }

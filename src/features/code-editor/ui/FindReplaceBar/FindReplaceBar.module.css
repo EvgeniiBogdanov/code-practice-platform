@@ -15,7 +15,7 @@
   backdrop-filter: var(--popup-blur, none);
   animation: barIn 150ms cubic-bezier(0.2, 0.8, 0.2, 1);
   font-family: var(--font-sans);
-  font-size: 12px;
+  font-size: var(--fs-caption);
   color: var(--text-main);
   max-width: calc(100% - 36px);
 }
@@ -53,7 +53,7 @@
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: var(--fs-caption);
   outline: none;
   transition:
     border-color var(--transition-fast),

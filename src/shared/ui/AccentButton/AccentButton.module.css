@@ -47,21 +47,21 @@
   height: 28px;
   padding: 0 12px;
   gap: 5px;
-  font-size: 12.5px;
+  font-size: var(--fs-caption);
 }
 
 .size_md {
   height: 36px;
   padding: 0 16px;
   gap: 7px;
-  font-size: 13.5px;
+  font-size: var(--fs-label);
 }
 
 .size_lg {
   height: 44px;
   padding: 0 20px;
   gap: 8px;
-  font-size: 14.5px;
+  font-size: var(--fs-body-sm);
 }
 
 /* Color Variants */

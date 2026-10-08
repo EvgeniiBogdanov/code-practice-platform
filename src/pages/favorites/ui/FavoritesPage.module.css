@@ -216,22 +216,22 @@
 
 .galleryCard.tone_hard,
 .galleryCard.ratingGradientHard {
-  border-left-color: var(--color-rating-hard, #f97316);
+  border-left-color: var(--color-rating-hard);
 }
 
 .galleryCard.tone_medium,
 .galleryCard.ratingGradientMedium {
-  border-left-color: var(--color-rating-medium, #eab308);
+  border-left-color: var(--color-rating-medium);
 }
 
 .galleryCard.tone_easy,
 .galleryCard.ratingGradientEasy {
-  border-left-color: var(--color-rating-easy, #10b981);
+  border-left-color: var(--color-rating-easy);
 }
 
 .galleryCard.tone_unsolved,
 .galleryCard.ratingGradientUnsolved {
-  border-left-color: var(--color-status-unsolved, #ef4444);
+  border-left-color: var(--color-status-unsolved);
 }
 
 .galleryCard.tone_excluded,
@@ -293,7 +293,7 @@
 }
 
 .galleryTitleTextExcluded {
-  color: var(--text-muted, #787774) !important;
+  color: var(--text-muted) !important;
   opacity: 0.7;
 }
 

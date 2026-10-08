@@ -30,7 +30,7 @@
 
   /* Theme tokens - Dark Mode (Default) */
   background: var(--bg-card);
-  color: var(--text-main, #ffffff);
+  color: var(--text-main);
   border: 1px solid var(--border-color);
 
   font-family: var(--font-sans);
@@ -40,8 +40,8 @@
 }
 
 [data-theme="light"] .content {
-  background: var(--bg-popover, #ffffff);
-  color: var(--text-main, #37352f);
+  background: var(--bg-popover);
+  color: var(--text-main);
   border: 1px solid var(--border-strong, rgba(55, 53, 47, 0.16));
 }
 

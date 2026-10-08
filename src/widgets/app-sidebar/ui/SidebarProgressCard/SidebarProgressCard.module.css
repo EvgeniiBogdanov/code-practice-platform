@@ -56,15 +56,15 @@
 }
 
 .javascript .countBadge {
-  color: var(--color-js, #f59e0b);
+  color: var(--color-js);
 }
 
 .algorithms .countBadge {
-  color: var(--color-algo, #a855f7);
+  color: var(--color-algo);
 }
 
 .react .countBadge {
-  color: var(--color-react, #3b82f6);
+  color: var(--color-react);
 }
 
 .barTrack {
@@ -85,11 +85,11 @@
 }
 
 .algorithms .barFill {
-  background: var(--color-algo, #a855f7);
+  background: var(--color-algo);
 }
 
 .react .barFill {
-  background: var(--color-react, #3b82f6);
+  background: var(--color-react);
 }
 
 .typescript .countBadge {

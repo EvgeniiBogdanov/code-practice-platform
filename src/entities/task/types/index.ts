@@ -80,6 +80,9 @@ export interface Task {
   isRaw?: boolean;
 }
 
+/** Progressive hints: idea → pitfalls and edge cases → step-by-step plan (markdown, no code). */
+export type TaskHints = readonly [idea: string, pitfalls: string, plan: string];
+
 export interface TaskGroup {
   id: string;
   title: string;

@@ -10,7 +10,7 @@
   background: var(--bg-surface);
   color: var(--text-muted);
   font-family: var(--font-sans);
-  font-size: 13px;
+  font-size: var(--fs-label);
   font-weight: 500;
   line-height: var(--lh-tight, 1.25);
   cursor: pointer;

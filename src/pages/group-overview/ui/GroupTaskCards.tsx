@@ -56,23 +56,23 @@ interface GroupTaskCardItemProps {
 
 export const GroupTaskCardSkeleton = memo(() => {
   return (
-    <Card className={styles.galleryCard} style={{ pointerEvents: "none", cursor: "default" }}>
+    <Card className={clsx(styles.galleryCard, styles.skeletonCard)}>
       <div>
         <div className={styles.galleryCardHeaderRow}>
           <UiSkeleton width="40%" height={14} />
           <UiSkeleton width="20%" height={14} />
         </div>
-        <div style={{ marginTop: 12 }}>
+        <div className={styles.skeletonTitle}>
           <UiSkeleton width="85%" height={20} />
         </div>
-        <div style={{ marginTop: 8 }}>
+        <div className={styles.skeletonText}>
           <UiSkeleton width="100%" height={14} />
-          <div style={{ marginTop: 4 }}>
+          <div className={styles.skeletonTextTail}>
             <UiSkeleton width="60%" height={14} />
           </div>
         </div>
       </div>
-      <div style={{ marginTop: 16 }}>
+      <div className={styles.skeletonFooter}>
         <UiSkeleton width="100%" height={22} />
       </div>
     </Card>

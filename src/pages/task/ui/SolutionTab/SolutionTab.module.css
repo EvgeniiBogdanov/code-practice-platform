@@ -41,7 +41,7 @@
   border: none;
   border-radius: var(--radius-sm);
   color: var(--fg-muted, rgba(255, 255, 255, 0.55));
-  font-size: 12px;
+  font-size: var(--fs-caption);
   font-weight: 500;
   font-family: var(--font-sans);
   cursor: pointer;
@@ -60,8 +60,8 @@
 }
 
 .variantBtn.activeVariant {
-  background: var(--bg-card, #262626);
-  color: var(--text-main, #ffffff);
+  background: var(--bg-card);
+  color: var(--text-main);
   opacity: 1;
   border: none;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
@@ -87,25 +87,21 @@
 }
 
 .recommendedCheck {
-  color: var(--color-status-solved, #10b981);
+  color: var(--color-status-solved);
   flex-shrink: 0;
 }
 
 .warningIcon {
-  color: var(--accent-yellow, #facc15);
+  color: var(--accent-yellow);
   flex-shrink: 0;
 }
 
 [data-theme="light"] .warningIcon {
-  color: var(--color-warning, #d97706);
+  color: var(--color-warning);
 }
 
 .recommendationText {
-  font-size: 13px;
+  font-size: var(--fs-label);
   color: var(--text-main);
   line-height: 1.6;
-}
-
-[data-theme="light"] .recommendationText {
-  color: #191919;
 }

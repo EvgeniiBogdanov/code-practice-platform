@@ -1,10 +1,16 @@
 import React, { forwardRef, ButtonHTMLAttributes } from "react";
-import { buttonClassName, type ButtonSize, type ButtonVariant } from "./buttonClassName";
+import {
+  buttonClassName,
+  type ButtonShape,
+  type ButtonSize,
+  type ButtonVariant,
+} from "./buttonClassName";
 import styles from "./Button.module.css";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
+  shape?: ButtonShape;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   isActive?: boolean;
@@ -15,6 +21,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     {
       variant = "secondary",
       size = "md",
+      shape = "default",
       leftIcon,
       rightIcon,
       isActive = false,
@@ -30,7 +37,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         type={type}
-        className={buttonClassName({ variant, size, isActive, className })}
+        className={buttonClassName({ variant, size, shape, isActive, className })}
         disabled={disabled}
         aria-pressed={isActive ? true : undefined}
         {...props}

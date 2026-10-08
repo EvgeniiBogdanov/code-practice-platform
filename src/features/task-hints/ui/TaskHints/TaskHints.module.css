@@ -1,0 +1,48 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.counter {
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-semibold);
+  color: var(--text-muted);
+  line-height: var(--lh-none);
+  font-variant-numeric: tabular-nums;
+}
+
+.revealButton {
+  align-self: flex-start;
+}
+
+/* The button takes the colour of the hint level it reveals */
+.body .reveal-yellow:not(:disabled) {
+  color: var(--accent-yellow);
+  background: var(--accent-yellow-bg);
+}
+
+.body .reveal-yellow:hover:not(:disabled) {
+  color: var(--accent-yellow-hover);
+  background: var(--accent-yellow-border);
+}
+
+.body .reveal-orange:not(:disabled) {
+  color: var(--accent-orange);
+  background: var(--accent-orange-bg);
+}
+
+.body .reveal-orange:hover:not(:disabled) {
+  color: var(--accent-orange-hover);
+  background: var(--accent-orange-border);
+}
+
+.body .reveal-green:not(:disabled) {
+  color: var(--accent-green);
+  background: var(--accent-green-bg);
+}
+
+.body .reveal-green:hover:not(:disabled) {
+  color: var(--accent-green-hover);
+  background: var(--accent-green-border);
+}

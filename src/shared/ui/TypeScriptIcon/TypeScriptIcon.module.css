@@ -2,7 +2,7 @@
   display: inline-block;
   vertical-align: middle;
   flex-shrink: 0;
-  color: var(--color-ts, #3178c6);
+  color: var(--color-ts);
 }
 
 .bg {
@@ -10,11 +10,7 @@
 }
 
 .letters {
-  fill: var(--color-ts-contrast, #ffffff);
-}
-
-:global([data-theme="light"]) .icon {
-  color: var(--color-ts, #3178c6);
+  fill: var(--color-ts-contrast);
 }
 
 :global([data-theme="light"]) .bg {

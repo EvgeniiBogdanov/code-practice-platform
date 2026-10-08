@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { Link } from "@tanstack/react-router";
+import { clsx } from "clsx";
 import { ArrowRight, Check, X, RotateCcw, FileText } from "lucide-react";
 import { SectionType, Task } from "@/entities/task";
 import { ReviewItem } from "@/entities/review";
@@ -89,8 +90,7 @@ const GroupItem = memo(
             ? visibleTasks.map((t, idx) => (
                 <div
                   key={t.id}
-                  className={styles.previewTaskItem}
-                  style={{ pointerEvents: "none" }}
+                  className={clsx(styles.previewTaskItem, styles.previewTaskSkeleton)}
                 >
                   <UiSkeleton width={13} height={13} radius={3} />
                   <UiSkeleton

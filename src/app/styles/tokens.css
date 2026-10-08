@@ -30,6 +30,8 @@
   --fs-sidebar-tooltip: 12px;
 
   --fs-2xs: 9px;
+  --fs-micro: 11px;
+  --fs-label: 13px;
   --fs-xs: 10px;
   --fs-sm: var(--fs-sidebar-badge);
   --fs-base-sm: var(--fs-caption);
@@ -75,6 +77,7 @@
      2. COLOR TOKENS (DARK THEME - DEFAULT)
      ========================================== */
   --bg-app: #191919;
+  --bg-canvas: var(--bg-app);
   --bg-sidebar: #202020;
   --bg-card: #252525;
   --bg-popover: #252525;
@@ -166,6 +169,10 @@
   --accent-gray-bg: rgba(164, 164, 162, 0.14);
   --accent-gray-border: rgba(164, 164, 162, 0.28);
 
+  /* Constant primitives for surfaces that never follow the theme (thumbs, loaders, scrims) */
+  --white: #ffffff;
+  --black: #000000;
+
   /* Section Colors */
   --color-ts: #3178c6;
   --color-ts-bg: rgba(49, 120, 198, 0.14);
@@ -226,6 +233,7 @@
   --tab-materials: var(--accent-yellow);
   --tab-questions: var(--accent-purple);
   --tab-checklist: var(--accent-cyan);
+  --tab-notes: var(--accent-orange);
 
   --color-success: var(--accent-green);
   --color-success-hover: var(--accent-green-hover);
@@ -369,6 +377,8 @@
 [data-theme="light"] {
   color-scheme: light;
   --bg-app: #ffffff;
+  /* Page background sits darker than white surfaces so cards stay distinct */
+  --bg-canvas: #eeeef0;
   --bg-sidebar: #f4f4f5;
   --bg-card: #ffffff;
   --bg-popover: #ffffff;
@@ -432,8 +442,8 @@
   --accent-red-bg: rgba(171, 61, 66, 0.1);
   --accent-red-border: rgba(171, 61, 66, 0.23);
 
-  --accent-yellow: #7b700d;
-  --accent-yellow-hover: #665c08;
+  --accent-yellow: #736909;
+  --accent-yellow-hover: #5f5707;
   --accent-yellow-bg: rgba(214, 190, 100, 0.12);
   --accent-yellow-border: rgba(214, 190, 100, 0.28);
   --accent-yellow-icon: #9a8710;
@@ -520,6 +530,7 @@
   --tab-materials: var(--accent-yellow);
   --tab-questions: var(--accent-purple);
   --tab-checklist: var(--accent-cyan);
+  --tab-notes: var(--accent-orange);
 
   --color-success: var(--accent-green);
   --color-success-hover: var(--accent-green-hover);
@@ -549,7 +560,8 @@
   --gauge-seg-3: var(--accent-yellow);
   --gauge-seg-4: var(--accent-green);
 
-  --shadow-sm: 0 2px 8px rgba(47, 40, 34, 0.07);
+  /* Containers are flat in both themes: separation comes from surface contrast and borders */
+  --shadow-sm: none;
   --shadow-md: 0 8px 24px rgba(47, 40, 34, 0.09);
   --shadow-lg: 0 14px 36px rgba(47, 40, 34, 0.12);
   --shadow-popover: 0 14px 36px rgba(47, 40, 34, 0.14);

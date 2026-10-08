@@ -18,15 +18,23 @@
 }
 
 .title {
-  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-lg);
   font-weight: 600;
   color: var(--text-main);
   margin: 0 0 4px 0;
   font-family: var(--font-sans);
 }
 
+.titleIcon {
+  flex-shrink: 0;
+  color: var(--tab-checklist);
+}
+
 .subtitle {
-  font-size: 13px;
+  font-size: var(--fs-label);
   color: var(--text-muted);
   margin: 0;
   font-family: var(--font-sans);
@@ -38,7 +46,7 @@
   align-items: center;
   padding: 5px 12px;
   border-radius: var(--radius-full, 100px);
-  font-size: 12px;
+  font-size: var(--fs-caption);
   font-weight: 600;
   background-color: var(--accent-green-bg);
   color: var(--accent-green);
@@ -58,7 +66,7 @@
 }
 
 .empty {
-  font-size: 13.5px;
+  font-size: var(--fs-label);
   color: var(--text-muted);
   font-style: italic;
   padding: 24px 0;

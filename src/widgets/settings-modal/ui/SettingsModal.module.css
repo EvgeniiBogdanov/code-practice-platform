@@ -81,7 +81,7 @@
 }
 
 .workspaceName {
-  font-size: 13.5px;
+  font-size: var(--fs-label);
   font-weight: 600;
   color: var(--text-main);
   line-height: 1.2;
@@ -91,7 +91,7 @@
 }
 
 .workspaceType {
-  font-size: 11px;
+  font-size: var(--fs-micro);
   color: var(--text-muted);
   line-height: 1.2;
   white-space: nowrap;
@@ -106,7 +106,7 @@
 }
 
 .sidebarSectionTitle {
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 500;
   letter-spacing: 0.01em;
   color: var(--fg-muted);
@@ -125,7 +125,7 @@
   border: none;
   outline: none;
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: var(--fs-label);
   font-weight: 500;
   height: 32px;
   padding: 0 10px;
@@ -275,7 +275,7 @@
 }
 
 .pageSubtitle {
-  font-size: 13.5px;
+  font-size: var(--fs-label);
   color: var(--fg-muted);
   margin: 0;
   line-height: 1.45;
@@ -308,7 +308,7 @@
 }
 
 .sectionTitle {
-  font-size: 16px;
+  font-size: var(--fs-body);
   font-weight: 600;
   color: var(--text-main);
   margin: 0;
@@ -339,7 +339,7 @@
 }
 
 .settingsRowTitle {
-  font-size: 13.5px;
+  font-size: var(--fs-label);
   font-weight: 500;
   color: var(--text-main);
   line-height: 1.35;
@@ -347,7 +347,7 @@
 }
 
 .settingsRowDesc {
-  font-size: 12px;
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   line-height: 1.45;
   font-family: var(--font-sans);
@@ -366,7 +366,7 @@
   gap: 6px;
   height: 28px;
   padding: 0 10px;
-  font-size: 11.5px;
+  font-size: var(--fs-micro);
   font-weight: 500;
   line-height: 1;
   color: var(--accent-green);
@@ -395,7 +395,7 @@
 
 .resetConfirmText {
   margin: 0;
-  font-size: 13.5px;
+  font-size: var(--fs-label);
   line-height: 1.55;
   color: var(--text-main);
   font-family: var(--font-sans);
@@ -536,7 +536,7 @@
   justify-self: end;
   padding: 0 10px;
   font-family: var(--font-sans);
-  font-size: 12px;
+  font-size: var(--fs-caption);
   line-height: 1.45;
   color: var(--fg-muted);
 }

@@ -68,10 +68,6 @@
   top: -3px;
 }
 
-[data-theme="light"] .taskDetailTitle {
-  color: var(--text-main, #37352f);
-}
-
 .taskStatusActions {
   display: inline-flex;
   align-items: center;
@@ -116,7 +112,7 @@
 }
 
 [data-theme="light"] .tabsHeader {
-  background: var(--bg-subtle);
+  background: var(--bg-card);
   border-bottom-color: var(--border-color);
 }
 
@@ -128,7 +124,7 @@
   border: none;
   color: var(--text-muted);
   font-family: inherit;
-  font-size: 14.6px;
+  font-size: var(--fs-lg);
   font-weight: 600;
   height: 100%;
   padding: 0 10px;
@@ -149,26 +145,17 @@
   flex-shrink: 0;
 }
 
+.tabsHeaderStretch .tabLink {
+  flex: 1 0 auto;
+  justify-content: center;
+}
+
 .tabLink:hover {
   background: var(--state-hover);
   color: var(--text-main);
 }
 
 .tabLink.tabActive {
-  background: transparent;
-  color: var(--text-main);
-}
-
-[data-theme="light"] .tabLink {
-  color: var(--text-muted);
-}
-
-[data-theme="light"] .tabLink:hover {
-  color: var(--text-main);
-  background: var(--state-hover);
-}
-
-[data-theme="light"] .tabLink.tabActive {
   background: transparent;
   color: var(--text-main);
 }
@@ -180,38 +167,45 @@
 
 /* Individual tab accent colors */
 .tab_candidate .tabIcon {
-  color: #10b981;
+  color: var(--tab-candidate);
 }
 .tab_candidate.tabActive {
-  border-bottom-color: #10b981;
+  border-bottom-color: var(--tab-candidate);
 }
 
 .tab_solution .tabIcon {
-  color: #3b82f6;
+  color: var(--tab-solution);
 }
 .tab_solution.tabActive {
-  border-bottom-color: #3b82f6;
+  border-bottom-color: var(--tab-solution);
 }
 
 .tab_materials .tabIcon {
-  color: #f59e0b;
+  color: var(--tab-materials);
 }
 .tab_materials.tabActive {
-  border-bottom-color: #f59e0b;
+  border-bottom-color: var(--tab-materials);
 }
 
 .tab_questions .tabIcon {
-  color: #a855f7;
+  color: var(--tab-questions);
 }
 .tab_questions.tabActive {
-  border-bottom-color: #a855f7;
+  border-bottom-color: var(--tab-questions);
 }
 
 .tab_checklist .tabIcon {
-  color: #06b6d4;
+  color: var(--tab-checklist);
 }
 .tab_checklist.tabActive {
-  border-bottom-color: #06b6d4;
+  border-bottom-color: var(--tab-checklist);
+}
+
+.tab_notes .tabIcon {
+  color: var(--tab-notes);
+}
+.tab_notes.tabActive {
+  border-bottom-color: var(--tab-notes);
 }
 
 .tab_visualization .tabIcon {
@@ -239,6 +233,10 @@
 
 [data-theme="light"] .tab_checklist {
   --task-tab-accent: var(--tab-checklist);
+}
+
+[data-theme="light"] .tab_notes {
+  --task-tab-accent: var(--tab-notes);
 }
 
 [data-theme="light"] .tab_visualization {
