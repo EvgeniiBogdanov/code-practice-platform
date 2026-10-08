@@ -233,6 +233,7 @@
   --tab-materials: var(--accent-yellow);
   --tab-questions: var(--accent-purple);
   --tab-checklist: var(--accent-cyan);
+  --tab-notes: var(--accent-orange);
 
   --color-success: var(--accent-green);
   --color-success-hover: var(--accent-green-hover);
@@ -529,6 +530,7 @@
   --tab-materials: var(--accent-yellow);
   --tab-questions: var(--accent-purple);
   --tab-checklist: var(--accent-cyan);
+  --tab-notes: var(--accent-orange);
 
   --color-success: var(--accent-green);
   --color-success-hover: var(--accent-green-hover);

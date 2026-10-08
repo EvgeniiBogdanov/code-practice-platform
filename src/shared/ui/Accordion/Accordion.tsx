@@ -5,7 +5,7 @@ import { AccordionHeader } from "./AccordionHeader";
 import { AccordionContent } from "./AccordionContent";
 import styles from "./Accordion.module.css";
 
-export type AccordionColor = "purple" | "orange" | "green" | "blue" | "default" | "gray";
+export type AccordionColor = "purple" | "orange" | "yellow" | "green" | "blue" | "default" | "gray";
 export type AccordionSize = "xs" | "sm" | "md";
 
 export interface AccordionProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {

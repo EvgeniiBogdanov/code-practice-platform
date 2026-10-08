@@ -25,6 +25,7 @@ export const TaskTabSkeleton = memo(
       case "questions":
         return <QuestionsTabSkeleton task={task} className={className} />;
       case "checklist":
+      case "notes":
         return <ChecklistTabSkeleton task={task} className={className} />;
       case "candidate":
       default:

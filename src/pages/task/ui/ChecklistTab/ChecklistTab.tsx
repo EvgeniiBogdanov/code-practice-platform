@@ -1,5 +1,6 @@
 import React from "react";
 import { clsx } from "clsx";
+import { ClipboardList } from "lucide-react";
 import { Task } from "@/entities/task";
 import { useProgressStore } from "@/entities/progress";
 import { Checkbox } from "@/shared/ui";
@@ -25,7 +26,10 @@ export const ChecklistTab = React.memo(
       <div className={clsx(styles.container, className)}>
         <div className={styles.header}>
           <div>
-            <h3 className={styles.title}>📋 Самопроверка</h3>
+            <h3 className={styles.title}>
+              <ClipboardList size={16} className={styles.titleIcon} />
+              Самопроверка
+            </h3>
             <p className={styles.subtitle}>
               Убедитесь, что ваше решение соответствует ключевым требованиям задачи и современным
               лучшим практикам.

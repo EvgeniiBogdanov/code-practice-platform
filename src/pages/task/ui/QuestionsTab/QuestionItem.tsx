@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import { CircleQuestionMark } from "lucide-react";
 import { Accordion, MarkdownView } from "@/shared/ui";
 import { TaskQuestion } from "@/entities/task";
 import styles from "./QuestionsTab.module.css";
@@ -18,7 +19,7 @@ export const QuestionItem = memo(
       <Accordion
         size="md"
         color="purple"
-        icon={<span className={styles.questionIcon}>❓</span>}
+        icon={<CircleQuestionMark size={16} className={styles.questionIcon} />}
         title={
           <span>
             <strong>Вопрос {index + 1}:</strong> {question.question || question.title}

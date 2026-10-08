@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import { clsx } from "clsx";
+import { ClipboardList } from "lucide-react";
 import { Task } from "@/entities/task";
 import { UiSkeleton } from "@/shared/ui";
 import { ChecklistTab } from "../ChecklistTab";
@@ -20,7 +21,10 @@ export const ChecklistTabSkeleton = memo(
       <div className={clsx(checklistStyles.container, className)}>
         <div className={checklistStyles.header}>
           <div>
-            <h3 className={checklistStyles.title}>📋 Самопроверка</h3>
+            <h3 className={checklistStyles.title}>
+              <ClipboardList size={16} className={checklistStyles.titleIcon} />
+              Самопроверка
+            </h3>
             <p className={checklistStyles.subtitle}>
               Убедитесь, что ваше решение соответствует ключевым требованиям задачи и современным
               лучшим практикам.

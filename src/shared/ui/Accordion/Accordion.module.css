@@ -46,6 +46,14 @@
   color: var(--accent-orange);
 }
 
+.color-yellow {
+  border-left-color: var(--accent-yellow);
+}
+
+.color-yellow .icon {
+  color: var(--accent-yellow);
+}
+
 .color-green {
   border-left-color: var(--accent-green);
 }

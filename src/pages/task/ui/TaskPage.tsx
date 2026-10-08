@@ -1,6 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Play, CheckCircle, BookOpen, HelpCircle, ListChecks, Box } from "lucide-react";
+import {
+  Play,
+  CheckCircle,
+  BookOpen,
+  HelpCircle,
+  ListChecks,
+  Box,
+  NotebookPen,
+} from "lucide-react";
 import { clsx } from "clsx";
 import { TaskDifficultyBadge, TaskMetaBadges } from "@/entities/task";
 import type { SectionType } from "@/entities/task/meta";
@@ -9,6 +17,7 @@ import { useProgressStore, isTaskCompleted } from "@/entities/progress";
 import { useReviewStore } from "@/entities/review";
 import { TaskReviewRatingBar, TaskExcludeButton } from "@/features/spaced-repetition";
 import { TaskFavoriteButton } from "@/features/task-favorite";
+import { TaskNotes } from "@/features/task-notes";
 import { activateCodeHistoryTask } from "@/features/code-editor";
 import { preloadTaskVisualization } from "@/widgets/task-visualization";
 import { hasAlgorithmVisualization } from "@/entities/algorithm-trace";
@@ -180,6 +189,11 @@ export const TaskPage = React.memo<TaskPageProps>(
         badge: checklistCount > 0 ? checklistCount : undefined,
         badgeVariant: "neutral",
       },
+      {
+        id: "notes",
+        label: "Заметки",
+        icon: <NotebookPen size={14} className={styles.tabIcon} />,
+      },
     ];
     if (hasVisualization)
       tabs.splice(2, 0, {
@@ -286,7 +300,14 @@ export const TaskPage = React.memo<TaskPageProps>(
 
           {/* Единый контейнер вкладок и содержимого: ВСЕГДА СТАТИЧНЫЙ, НИКАКИХ ПЕРЕРИСОВОК ИЛИ СКЕЛЕТОНОВ */}
           <div className={styles.tabsContainer}>
-            <div className={styles.tabsHeader} role="tablist" aria-label="Разделы задачи">
+            <div
+              className={clsx(
+                styles.tabsHeader,
+                section === "algorithms" && styles.tabsHeaderStretch
+              )}
+              role="tablist"
+              aria-label="Разделы задачи"
+            >
               {tabs.map((tab) => {
                 const isActive = activeTab === tab.id;
                 const tabModifier = styles[`tab_${tab.id}`];
@@ -344,6 +365,7 @@ export const TaskPage = React.memo<TaskPageProps>(
                   {renderKeptTab("materials", <MaterialsTab task={task} />)}
                   {renderKeptTab("questions", <QuestionsTab task={task} />)}
                   {renderKeptTab("checklist", <ChecklistTab task={task} />)}
+                  {renderKeptTab("notes", <TaskNotes key={task.id} taskId={task.id} />)}
                 </React.Suspense>
               )}
             </div>

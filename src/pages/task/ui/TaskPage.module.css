@@ -145,6 +145,11 @@
   flex-shrink: 0;
 }
 
+.tabsHeaderStretch .tabLink {
+  flex: 1 0 auto;
+  justify-content: center;
+}
+
 .tabLink:hover {
   background: var(--state-hover);
   color: var(--text-main);
@@ -196,6 +201,13 @@
   border-bottom-color: var(--tab-checklist);
 }
 
+.tab_notes .tabIcon {
+  color: var(--tab-notes);
+}
+.tab_notes.tabActive {
+  border-bottom-color: var(--tab-notes);
+}
+
 .tab_visualization .tabIcon {
   color: var(--accent-blue);
 }
@@ -221,6 +233,10 @@
 
 [data-theme="light"] .tab_checklist {
   --task-tab-accent: var(--tab-checklist);
+}
+
+[data-theme="light"] .tab_notes {
+  --task-tab-accent: var(--tab-notes);
 }
 
 [data-theme="light"] .tab_visualization {
