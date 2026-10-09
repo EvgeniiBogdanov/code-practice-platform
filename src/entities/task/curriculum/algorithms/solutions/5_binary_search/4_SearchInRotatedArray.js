@@ -24,6 +24,7 @@ const search = (nums, target) => {
 };
 
 // Пример вызова:
-console.log(search([4, 5, 6, 7, 0, 1, 2], 0)); // 4
-console.log(search([4, 5, 6, 7, 0, 1, 2], 3)); // -1
-console.log(search([1], 0));                   // -1
+console.log(search([30, 40, 50, 10, 20], 10)); // 3
+console.log(search([30, 40, 50, 10, 20], 35)); // -1
+console.log(search([6, 7, 1, 2, 3, 4, 5], 7)); // 1
+console.log(search([2], 2));                   // 0

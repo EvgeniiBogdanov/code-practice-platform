@@ -32,7 +32,7 @@ const calculate = (s) => {
 };
 
 // Пример вызова:
-console.log(calculate("3+2*2"));     // 7
-console.log(calculate(" 3/2 "));     // 1
-console.log(calculate(" 3+5 / 2 ")); // 5
-console.log(calculate("14-3/2"));    // 13
+console.log(calculate("8-2*3"));      // 2
+console.log(calculate(" 7 / 2 "));    // 3
+console.log(calculate("1 + 10/3*2")); // 7
+console.log(calculate("20-15/4"));    // 17

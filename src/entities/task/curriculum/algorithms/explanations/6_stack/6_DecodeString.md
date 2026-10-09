@@ -41,9 +41,9 @@ const nestedTemplate = (s) => {
 Скобки могут быть вложенными, а `k` многозначным.
 
 ```
-"3[a]2[bc]"     -> "aaabcbc"
-"3[a2[c]]"      -> "accaccacc"
-"2[abc]3[cd]ef" -> "abcabccdcdcdef"
+"2[ab]3[c]" -> "ababccc"
+"2[x3[y]]"  -> "xyyyxyyy"
+"a2[bc]d"   -> "abcbcd"
 ```
 
 ## 3. Наивное решение (для понимания)

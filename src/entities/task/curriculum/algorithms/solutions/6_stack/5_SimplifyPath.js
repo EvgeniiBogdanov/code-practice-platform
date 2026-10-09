@@ -19,8 +19,8 @@ const simplifyPath = (path) => {
 };
 
 // Пример вызова:
-console.log(simplifyPath("/home/"));                // "/home"
-console.log(simplifyPath("/home//foo/"));           // "/home/foo"
-console.log(simplifyPath("/../"));                  // "/"
-console.log(simplifyPath("/a/./b/../../c/"));       // "/c"
-console.log(simplifyPath("/.../a/../b/c/../d/./")); // "/.../b/d"
+console.log(simplifyPath("/usr/./local/"));   // "/usr/local"
+console.log(simplifyPath("/a//b////c"));      // "/a/b/c"
+console.log(simplifyPath("/../../x"));        // "/x"
+console.log(simplifyPath("/docs/../tmp/./")); // "/tmp"
+console.log(simplifyPath("/.../x/.."));       // "/..."

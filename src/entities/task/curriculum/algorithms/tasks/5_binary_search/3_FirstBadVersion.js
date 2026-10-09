@@ -1,17 +1,10 @@
-// Напишите функцию solution(isBadVersion), которая возвращает функцию,
-// принимающую общее количество версий (n) и возвращающую номер первой испорченной версии.
+// Сборки проекта пронумерованы от 1 до n. С какой-то версии в код попала ошибка,
+// и все сборки начиная с неё падают. Проверка сборки дорогая, поэтому вызывайте
+// её как можно реже.
 //
-// Вам доступна функция isBadVersion(version), которая возвращает true,
-// если версия является испорченной (бракованной), и false, если с ней всё в порядке.
-// Если версия испорчена, то и все последующие версии за ней также являются испорченными.
-//
-// Главное условие:
-// Функция должна находить первую испорченную версию за время O(log n),
-// используя бинарный поиск для минимизации количества вызовов isBadVersion.
-//
-// Примеры:
-// n = 5, первая испорченная = 4 -> solution(isBadVersion)(5) -> 4
-// n = 1, первая испорченная = 1 -> solution(isBadVersion)(1) -> 1
+// Напишите функцию solution(isBadVersion): она получает функцию-проверку
+// isBadVersion(version) (true — сборка падает) и возвращает функцию от n,
+// которая находит номер первой падающей сборки за O(log n) вызовов проверки.
 
 const solution = (isBadVersion) => {
   return (n) => {
@@ -20,8 +13,11 @@ const solution = (isBadVersion) => {
 };
 
 // Пример вызова:
-const isBadVersion1 = (version) => version >= 4;
-console.log(solution(isBadVersion1)(5)); // 4
+const isBadVersion1 = (version) => version >= 6;
+console.log(solution(isBadVersion1)(10));         // 6
 
 const isBadVersion2 = (version) => version >= 1;
-console.log(solution(isBadVersion2)(1)); // 1
+console.log(solution(isBadVersion2)(3));          // 1
+
+const isBadVersion3 = (version) => version >= 999999999;
+console.log(solution(isBadVersion3)(2000000000)); // 999999999
