@@ -22,30 +22,23 @@ export const graphDefinitions = {
     examples: [
       {
         id: "task-1",
-        label: "Пример 1: 2 курса, [[1,0]]",
-        input: "[[1,0]]",
-        parameter: "2",
+        label: "Пример 1: 3 курса, [[1,0],[2,0]]",
+        input: "[[1,0],[2,0]]",
+        parameter: "3",
         isTask: true,
       },
       {
         id: "task-2",
-        label: "Пример 2: цикл [[1,0],[0,1]]",
-        input: "[[1,0],[0,1]]",
-        parameter: "2",
+        label: "Пример 2: цикл из 3 курсов",
+        input: "[[0,1],[1,2],[2,0]]",
+        parameter: "3",
         isTask: true,
       },
       {
         id: "task-3",
-        label: "Пример 3: цепочка из 4 курсов",
-        input: "[[1,0],[2,1],[3,2]]",
+        label: "Пример 3: цикл в середине цепочки",
+        input: "[[1,0],[2,1],[3,2],[1,3]]",
         parameter: "4",
-        isTask: true,
-      },
-      {
-        id: "task-4",
-        label: "Пример 4: нет зависимостей",
-        input: "[]",
-        parameter: "3",
         isTask: true,
       },
       {
@@ -77,23 +70,16 @@ export const graphDefinitions = {
     examples: [
       {
         id: "task-1",
-        label: "Пример 1: [[1,3],[2,3]], time = [3,2,5]",
-        input: "[[1,3],[2,3]]",
-        parameter: "3, 2, 5",
+        label: "Пример 1: [[1,2],[1,3],[2,4],[3,4]], time = [2,3,1,4]",
+        input: "[[1,2],[1,3],[2,4],[3,4]]",
+        parameter: "2, 3, 1, 4",
         isTask: true,
       },
       {
         id: "task-2",
-        label: "Пример 2: 5 курсов, ответ 12",
-        input: "[[1,5],[2,5],[3,5],[3,4],[4,5]]",
-        parameter: "1, 2, 3, 4, 5",
-        isTask: true,
-      },
-      {
-        id: "task-3",
-        label: "Пример 3: без зависимостей",
-        input: "[]",
-        parameter: "4, 7",
+        label: "Пример 2: цепочка из 3 курсов, ответ 15",
+        input: "[[1,2],[2,3]]",
+        parameter: "5, 5, 5",
         isTask: true,
       },
       {
