@@ -37,7 +37,6 @@ export const FavoriteTaskList = ({
           favoriteMarker={
             <TaskFavoriteButton
               taskId={task.id}
-              taskTitle={task.title}
               size="sm"
               iconSize={13}
               className={styles.taskFavoriteQuickAction}

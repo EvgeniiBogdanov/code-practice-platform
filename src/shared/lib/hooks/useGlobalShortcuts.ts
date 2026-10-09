@@ -8,7 +8,8 @@ export interface UseGlobalShortcutsOptions {
   navigate?: (opts: {
     to: string;
     params?: Record<string, string>;
-    search?: (prev: any) => any;
+    /** `true` keeps the current search params. */
+    search?: true;
   }) => void;
   setActiveTab?: (tab: string) => void;
   setPaletteOpen?: (open: boolean | ((prev: boolean) => boolean)) => void;
@@ -79,7 +80,7 @@ export function useGlobalShortcuts({
           navigate({
             to: `/${section}/$taskId`,
             params: { taskId: String(nextTask.id) },
-            search: (prev) => prev,
+            search: true,
           });
         } else if (e.key === "ArrowUp" && currentIdx > 0) {
           e.preventDefault();
@@ -88,7 +89,7 @@ export function useGlobalShortcuts({
           navigate({
             to: `/${section}/$taskId`,
             params: { taskId: String(prevTask.id) },
-            search: (prev) => prev,
+            search: true,
           });
         } else if (
           e.key === "ArrowRight" &&

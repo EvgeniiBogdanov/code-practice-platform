@@ -167,7 +167,7 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
     return () => {
       isMounted = false;
     };
-  }, [task.id, activeFileIdx, selectedSolutionIdx]);
+  }, [task.id, task.section, activeFileIdx, selectedSolutionIdx]);
 
   // Listen for solution clearing (e.g. from settings reset)
   useEffect(() => {

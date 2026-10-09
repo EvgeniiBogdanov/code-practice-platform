@@ -79,7 +79,6 @@ export const FavoriteTaskGallery = ({
           </Link>
           <TaskFavoriteButton
             taskId={task.id}
-            taskTitle={task.title}
             size="sm"
             iconSize={13}
             className={styles.galleryFavoriteAction}

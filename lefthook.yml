@@ -1,0 +1,21 @@
+# Local mirror of the fast CI checks (CI stays the source of truth).
+# Hooks install on `npm install`. Skip once: `LEFTHOOK=0 git commit ...`.
+
+pre-commit:
+  # Sequential: Prettier formats first, then ESLint checks the formatted files.
+  piped: true
+  jobs:
+    - name: prettier
+      glob: "*.{js,jsx,mjs,ts,tsx,json,css}"
+      run: npx --no -- prettier --write --ignore-unknown {staged_files}
+      stage_fixed: true
+
+    - name: eslint
+      glob: "*.{js,jsx,mjs,ts,tsx}"
+      run: npx --no -- eslint --fix --max-warnings 0 --cache --no-warn-ignored {staged_files}
+      stage_fixed: true
+
+pre-push:
+  jobs:
+    - name: typecheck
+      run: npm run typecheck

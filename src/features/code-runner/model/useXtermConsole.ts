@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useEffectEvent, useRef } from "react";
 import { Terminal } from "@xterm/xterm";
 import { FitAddon } from "@xterm/addon-fit";
 import { NodeRunnerLogEntry } from "@/shared/lib/code-runners";
@@ -75,13 +75,16 @@ export function useXtermConsole({
   const lastRenderedCount = useRef(0);
   const cleanFilename = (filename || "main.js").replace(/^.*[\\/]/, "");
 
+  // Font size changes are applied in place below; creation only reads the latest value.
+  const getInitialFontSize = useEffectEvent((): number => fontSize);
+
   // Initialize terminal instance
   useEffect(() => {
     if (isCollapsed || !terminalRef.current) return;
 
     const term = new Terminal({
       theme: getTerminalTheme(theme),
-      fontSize,
+      fontSize: getInitialFontSize(),
       fontFamily: "'Fira Code', 'Cascadia Code', 'JetBrains Mono', Consolas, monospace",
       lineHeight: 1.25,
       cursorBlink: false,

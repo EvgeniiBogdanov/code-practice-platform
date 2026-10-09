@@ -2,18 +2,30 @@
  * Data Structure and Algorithm Helpers for WebWorker Runtime
  */
 
+export interface TreeNode {
+  val: unknown;
+  left: TreeNode | null;
+  right: TreeNode | null;
+}
+
+export interface ListNode {
+  val: unknown;
+  next: ListNode | null;
+}
+
 export const sandboxHelpers = {
   createNode: (val = 0, left = null, right = null) => ({ val, left, right }),
   createTreeNode: (val = 0, left = null, right = null) => ({ val, left, right }),
   createListNode: (val = 0, next = null) => ({ val, next }),
 
-  buildTree: (values: any[]) => {
+  buildTree: (values: unknown[]): TreeNode | null => {
     if (!values || values.length === 0) return null;
-    const root = { val: values[0], left: null as any, right: null as any };
-    const queue = [root];
+    const root: TreeNode = { val: values[0], left: null, right: null };
+    const queue: TreeNode[] = [root];
     let i = 1;
     while (i < values.length) {
-      const current = queue.shift()!;
+      const current = queue.shift();
+      if (!current) break;
       const leftVal = values[i++];
       if (leftVal !== null && leftVal !== undefined) {
         current.left = { val: leftVal, left: null, right: null };
@@ -30,10 +42,10 @@ export const sandboxHelpers = {
     return root;
   },
 
-  treeToArray: (root: any) => {
+  treeToArray: (root: TreeNode | null): unknown[] => {
     if (root === null) return [];
-    const result: any[] = [];
-    const queue = [root];
+    const result: unknown[] = [];
+    const queue: Array<TreeNode | null> = [root];
     while (queue.length > 0) {
       const node = queue.shift();
       if (node) {
@@ -50,14 +62,14 @@ export const sandboxHelpers = {
     return result;
   },
 
-  createLinkedList: (arr: any[]) => {
+  createLinkedList: (arr: unknown[]): ListNode | null => {
     if (!arr || arr.length === 0) return null;
-    return arr.reduceRight((acc, val) => ({ val, next: acc }), null);
+    return arr.reduceRight<ListNode | null>((next, val) => ({ val, next }), null);
   },
 
-  linkedListToArray: (head: any) => {
-    const res: any[] = [];
-    const visited = new Set();
+  linkedListToArray: (head: ListNode | null): unknown[] => {
+    const res: unknown[] = [];
+    const visited = new Set<ListNode>();
     let curr = head;
     while (curr) {
       if (visited.has(curr)) {
@@ -71,8 +83,8 @@ export const sandboxHelpers = {
     return res;
   },
 
-  printLinkedList: (head: any) => {
-    const res: any[] = [];
+  printLinkedList: (head: ListNode | null): unknown[] => {
+    const res: unknown[] = [];
     let curr = head;
     while (curr) {
       res.push(curr.val);
@@ -81,9 +93,9 @@ export const sandboxHelpers = {
     return res;
   },
 
-  createLinkedListWithCycle: (arr: any[], pos: number) => {
+  createLinkedListWithCycle: (arr: unknown[], pos: number): ListNode | null => {
     if (!arr || arr.length === 0) return null;
-    const nodes = arr.map((val) => ({ val, next: null as any }));
+    const nodes: ListNode[] = arr.map((val) => ({ val, next: null }));
     for (let i = 0; i < nodes.length - 1; i++) {
       nodes[i].next = nodes[i + 1];
     }
@@ -93,19 +105,19 @@ export const sandboxHelpers = {
     return nodes[0];
   },
 
-  createListWithCycle: (arr: any[], pos: number) => {
+  createListWithCycle: (arr: unknown[], pos: number): ListNode | null => {
     return sandboxHelpers.createLinkedListWithCycle(arr, pos);
   },
 
-  buildList: (values: any[]) => {
+  buildList: (values: unknown[]): ListNode | null => {
     return sandboxHelpers.createLinkedList(values);
   },
 
-  listToArray: (head: any) => {
+  listToArray: (head: ListNode | null): unknown[] => {
     return sandboxHelpers.linkedListToArray(head);
   },
 
-  cloneDeep: (val: any) => {
+  cloneDeep: <T>(val: T): T => {
     try {
       return structuredClone(val);
     } catch {

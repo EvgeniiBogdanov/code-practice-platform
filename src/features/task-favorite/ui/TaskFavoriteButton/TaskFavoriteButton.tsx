@@ -7,7 +7,6 @@ import styles from "./TaskFavoriteButton.module.css";
 
 export interface TaskFavoriteButtonProps {
   taskId: string | number;
-  taskTitle: string;
   size?: SquareButtonSize;
   iconSize?: 13 | 18;
   className?: string;
@@ -16,7 +15,6 @@ export interface TaskFavoriteButtonProps {
 export const TaskFavoriteButton = React.memo(
   ({
     taskId,
-    taskTitle,
     size = "md",
     iconSize = 18,
     className,

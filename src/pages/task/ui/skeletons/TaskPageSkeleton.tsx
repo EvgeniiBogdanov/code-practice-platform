@@ -111,8 +111,8 @@ export const TaskPageSkeleton = memo(
 
             {resolvedTask ? (
               <div className={styles.taskStatusActions}>
-                <TaskFavoriteButton taskId={resolvedTask.id} taskTitle={resolvedTask.title} />
-                <TaskExcludeButton taskId={resolvedTask.id} taskTitle={resolvedTask.title} />
+                <TaskFavoriteButton taskId={resolvedTask.id} />
+                <TaskExcludeButton taskId={resolvedTask.id} />
                 <TaskButton statusVariant="solved" isActive={isCompleted} disabled>
                   Решено
                 </TaskButton>

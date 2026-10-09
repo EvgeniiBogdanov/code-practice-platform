@@ -2,7 +2,7 @@
  * Sucrase JSX / TypeScript Transpiler with Loop Protection
  */
 
-import { transform } from "sucrase";
+import { transform, type Transform } from "sucrase";
 
 export function normalizeAndProtectLoops(code: string): string {
   if (!code || typeof code !== "string") return code;
@@ -37,7 +37,7 @@ export function transpileCode(
   try {
     const protectedCode = normalizeAndProtectLoops(code);
     const isTs = filename.endsWith(".ts") || filename.endsWith(".tsx");
-    const transforms: any[] = ["jsx", "imports"];
+    const transforms: Transform[] = ["jsx", "imports"];
     if (isTs) {
       transforms.push("typescript");
     }
@@ -50,7 +50,7 @@ export function transpileCode(
 
     const safeCode = (output.code || "").replace(/\n(\s*)\(\s*\{/g, "\n$1;({");
     return { code: safeCode, error: null };
-  } catch (err: any) {
-    return { code: null, error: err };
+  } catch (err) {
+    return { code: null, error: err instanceof Error ? err : new Error(String(err)) };
   }
 }

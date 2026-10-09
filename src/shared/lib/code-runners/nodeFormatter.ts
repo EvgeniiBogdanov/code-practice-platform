@@ -159,7 +159,11 @@ export function formatNodeValue(
             : /^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(k)
               ? k
               : `'${k}'`;
-        const valFormatted = formatNodeValue((obj as any)[k], depth + 1, seen).text;
+        const valFormatted = formatNodeValue(
+          (obj as Record<PropertyKey, unknown>)[k],
+          depth + 1,
+          seen
+        ).text;
         return `${keyStr}: ${valFormatted}`;
       });
 
