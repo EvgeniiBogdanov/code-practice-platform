@@ -11,6 +11,6 @@ const runningSum = (nums) => {
 };
 
 // Пример вызова:
-console.log(runningSum([1, 2, 3, 4])); // [1, 3, 6, 10]
-console.log(runningSum([1, 1, 1, 1, 1])); // [1, 2, 3, 4, 5]
-console.log(runningSum([])); // []
+console.log(runningSum([5, -2, 4])); // [5, 3, 7]
+console.log(runningSum([0, 0, 1]));  // [0, 0, 1]
+console.log(runningSum([]));         // []
