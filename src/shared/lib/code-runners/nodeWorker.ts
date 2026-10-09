@@ -15,6 +15,8 @@ const _nativeSetInterval =
   typeof self !== "undefined" && self.setInterval ? self.setInterval.bind(self) : setInterval;
 const _nativeClearInterval =
   typeof self !== "undefined" && self.clearInterval ? self.clearInterval.bind(self) : clearInterval;
+type NativeTimerId = ReturnType<typeof _nativeSetTimeout>;
+
 const _nativeQueueMicrotask =
   typeof self !== "undefined" && self.queueMicrotask
     ? self.queueMicrotask.bind(self)
@@ -150,11 +152,11 @@ if (typeof self !== "undefined") {
     };
 
     let timerCounter = 1;
-    const pendingTimeouts = new Map<number, { nativeId: any }>();
-    const activeIntervals = new Map<number, { nativeId: any; runCount: number }>();
+    const pendingTimeouts = new Map<number, { nativeId: NativeTimerId }>();
+    const activeIntervals = new Map<number, { nativeId: NativeTimerId; runCount: number }>();
     const MAX_INTERVAL_RUNS = 200;
 
-    const sandboxSetTimeout = (fn: any, delay = 0, ...args: unknown[]) => {
+    const sandboxSetTimeout = (fn: unknown, delay = 0, ...args: unknown[]) => {
       const virtualId = timerCounter++;
       const numDelay = Math.max(0, Number(delay) || 0);
 
@@ -189,7 +191,7 @@ if (typeof self !== "undefined") {
       }
     };
 
-    const sandboxSetInterval = (fn: any, delay = 0, ...args: unknown[]) => {
+    const sandboxSetInterval = (fn: unknown, delay = 0, ...args: unknown[]) => {
       const virtualId = timerCounter++;
       const numDelay = Math.max(10, Number(delay) || 0);
 
@@ -251,12 +253,14 @@ if (typeof self !== "undefined") {
 
     // Override global sandbox APIs in worker scope for async callbacks
     try {
-      (self as any).console = sandboxConsole;
-      (self as any).setTimeout = sandboxSetTimeout;
-      (self as any).clearTimeout = sandboxClearTimeout;
-      (self as any).setInterval = sandboxSetInterval;
-      (self as any).clearInterval = sandboxClearInterval;
-      (self as any).queueMicrotask = sandboxQueueMicrotask;
+      Object.assign(self, {
+        console: sandboxConsole,
+        setTimeout: sandboxSetTimeout,
+        clearTimeout: sandboxClearTimeout,
+        setInterval: sandboxSetInterval,
+        clearInterval: sandboxClearInterval,
+        queueMicrotask: sandboxQueueMicrotask,
+      });
     } catch {
       // ignore
     }
@@ -337,7 +341,7 @@ if (typeof self !== "undefined") {
     let isCompletePosted = false;
     let syncResult: unknown = undefined;
     let syncError: { name: string; message: string; stack?: string } | null = null;
-    let completeTimeoutId: any = null;
+    let completeTimeoutId: NativeTimerId | null = null;
 
     const checkAndNotifyComplete = () => {
       if (!syncFinished || isCompletePosted) return;
@@ -435,12 +439,15 @@ if (typeof self !== "undefined") {
       );
 
       syncResult = await execPromise;
-    } catch (err: any) {
-      syncError = {
-        name: err?.name || "Error",
-        message: err?.message || String(err),
-        stack: err?.stack || "",
-      };
+    } catch (err) {
+      syncError =
+        err instanceof Error
+          ? {
+              name: err.name || "Error",
+              message: err.message || String(err),
+              stack: err.stack ?? "",
+            }
+          : { name: "Error", message: String(err), stack: "" };
       pushLog("error", [err instanceof Error ? `${err.name}: ${err.message}` : String(err)]);
     } finally {
       syncFinished = true;

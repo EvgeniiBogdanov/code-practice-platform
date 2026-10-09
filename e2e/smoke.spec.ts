@@ -41,6 +41,17 @@ test.describe("workspace", () => {
     await expect(page.locator(".xterm-rows")).toContainText("e2e-42");
   });
 
+  test("React task compiles user code and renders it in the sandbox", async ({ page }) => {
+    await page.goto("react/w1");
+    await page
+      .getByRole("textbox", { name: "Редактор кода" })
+      .fill("export default function App() {\n  return <h1>e2e-react-{40 + 2}</h1>;\n}");
+    await page.getByRole("button", { name: "Просмотр UI песочницы" }).click();
+    await expect(
+      page.frameLocator('iframe[title^="Preview"]').getByRole("heading", { name: "e2e-react-42" })
+    ).toBeVisible();
+  });
+
   test("theme toggle switches and persists across reloads", async ({ page }) => {
     await page.goto("home");
     const root = page.locator("html");

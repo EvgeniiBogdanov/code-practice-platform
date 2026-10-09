@@ -16,7 +16,7 @@ const JS_SCRIPT_TYPE =
 export function highlightHTML(code: string, options: HighlightOptions = {}): string {
   if (!code) return "";
 
-  const { bracketPair = null, problems = [], multiSelections = [] } = options;
+  const { bracketPair = null, multiSelections = [] } = options;
 
   const isBracketMatch = (idx: number): boolean =>
     Boolean(bracketPair && (idx === bracketPair[0] || idx === bracketPair[1]));
@@ -38,8 +38,6 @@ export function highlightHTML(code: string, options: HighlightOptions = {}): str
   let html = "";
   let rest = code;
   let currentIndex = 0;
-  let currentLine = 1;
-  let currentCol = 1;
 
   while (rest.length > 0) {
     // 1. HTML Comments
@@ -53,13 +51,6 @@ export function highlightHTML(code: string, options: HighlightOptions = {}): str
       const len = commentText.length;
       currentIndex += len;
       rest = rest.slice(len);
-      const newlines = commentText.split("\n").length - 1;
-      if (newlines > 0) {
-        currentLine += newlines;
-        currentCol = commentText.length - commentText.lastIndexOf("\n");
-      } else {
-        currentCol += len;
-      }
       continue;
     }
 
@@ -73,7 +64,6 @@ export function highlightHTML(code: string, options: HighlightOptions = {}): str
       html += `<span class="hl-doctype${multiSelectClass}">${escapeHtml(text)}</span>`;
       currentIndex += text.length;
       rest = rest.slice(text.length);
-      currentCol += text.length;
       continue;
     }
 
@@ -227,12 +217,6 @@ export function highlightHTML(code: string, options: HighlightOptions = {}): str
       html += escapeHtml(rest[0]);
     }
     currentIndex += 1;
-    if (rest[0] === "\n") {
-      currentLine += 1;
-      currentCol = 1;
-    } else {
-      currentCol += 1;
-    }
     rest = rest.slice(1);
   }
 

@@ -8,7 +8,7 @@ import "./styles/tokens.css";
 import "./styles/trace-tokens.css";
 import "./styles/global.css";
 
-export const router = createRouter({
+const router = createRouter({
   routeTree,
   basepath: import.meta.env.BASE_URL,
   defaultPreload: "intent",

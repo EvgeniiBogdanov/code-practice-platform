@@ -44,7 +44,10 @@ export const useReactLiveSandbox = ({
 
   const activeFile = files[activeFileIdx] || files[0] || { name: "index.jsx", code: "" };
 
+  // Saved files live in localStorage, an external store React cannot track: `reloadKey` is the
+  // snapshot version, bumped by the manual reload to pick up code saved from another window.
   const filesMap = useMemo(() => {
+    void reloadKey;
     return buildFilesMap(files, storagePrefix, task?.id, activeFileIdx, currentCode, variantIdx);
   }, [files, storagePrefix, task?.id, activeFileIdx, currentCode, variantIdx, reloadKey]);
 

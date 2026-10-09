@@ -1,4 +1,4 @@
-import { ReviewItem, ReviewRating, ReviewHistoryEntry, MasteryStats } from "../types";
+import { ReviewItem, ReviewRating, ReviewHistoryEntry } from "../types";
 
 export const STAGE_INTERVALS = [0, 1, 3, 7, 14, 30, 60];
 export const MAX_STAGE = 6;

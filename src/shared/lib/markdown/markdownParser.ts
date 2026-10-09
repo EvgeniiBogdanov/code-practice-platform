@@ -48,20 +48,22 @@ marked.use({
       }
       return text;
     },
-    heading({ tokens, depth }: { tokens: any[]; depth: number }) {
-      const text = (this as any).parser.parseInline(tokens);
-      const rawText = tokens.map((t: any) => t.text || "").join("");
+    heading({ tokens, depth }) {
+      const text = this.parser.parseInline(tokens);
+      const rawText = tokens
+        .map((t) => ("text" in t && typeof t.text === "string" ? t.text : ""))
+        .join("");
       const slug = generateHeadingSlug(rawText);
       return `<h${depth} id="${slug}">${text}</h${depth}>`;
     },
-    table(token: any) {
-      const renderCell = (cell: any) => {
-        const rawHtml = (this as any).parser.parseInline(cell.tokens);
+    table(token) {
+      const renderCell = (cell: Tokens.TableCell): string => {
+        const rawHtml = this.parser.parseInline(cell.tokens);
         return rawHtml.replace(/<\/?code[^>]*>/gi, "");
       };
 
       const header = token.header
-        .map((cell: any, i: number) => {
+        .map((cell, i) => {
           const align =
             token.align && token.align[i] ? ` style="text-align: ${token.align[i]}"` : "";
           return `<th${align}>${renderCell(cell)}</th>`;
@@ -69,9 +71,9 @@ marked.use({
         .join("");
 
       const rows = token.rows
-        .map((row: any) => {
+        .map((row) => {
           const cells = row
-            .map((cell: any, i: number) => {
+            .map((cell, i) => {
               const align =
                 token.align && token.align[i] ? ` style="text-align: ${token.align[i]}"` : "";
               return `<td${align}>${renderCell(cell)}</td>`;
@@ -83,7 +85,7 @@ marked.use({
 
       return `<div class="table-wrapper"><table class="markdown-table"><thead><tr>${header}</tr></thead><tbody>${rows}</tbody></table></div>`;
     },
-    blockquote(token: any) {
+    blockquote(token) {
       const text = (token.text || "").trim();
       const match = text.match(/^(⚠️|📌|🚀|🎯|🛠️|ℹ️|🔥)\s*(.*)/s);
       if (match) {
@@ -95,7 +97,7 @@ marked.use({
         if (icon === "🚀" || icon === "🔥") alertClass = "important";
         return `<div class="callout-box callout-${alertClass}"><span class="callout-icon">${icon}</span><div class="callout-text"><p>${content}</p></div></div>`;
       }
-      return `<blockquote>${(this as any).parser.parse(token.tokens)}</blockquote>`;
+      return `<blockquote>${this.parser.parse(token.tokens)}</blockquote>`;
     },
   },
 });

@@ -13,7 +13,7 @@ describe("TaskFavoriteButton", () => {
   it("toggles the task and exposes its state accessibly", () => {
     render(
       <Tooltip.Provider>
-        <TaskFavoriteButton taskId="task-1" taskTitle="Тестовая задача" />
+        <TaskFavoriteButton taskId="task-1" />
       </Tooltip.Provider>
     );
 
@@ -41,7 +41,7 @@ describe("TaskFavoriteButton", () => {
     render(
       <Tooltip.Provider>
         <div onClick={handleRowClick}>
-          <TaskFavoriteButton taskId="task-1" taskTitle="Тестовая задача" />
+          <TaskFavoriteButton taskId="task-1" />
         </div>
       </Tooltip.Provider>
     );
@@ -55,7 +55,7 @@ describe("TaskFavoriteButton", () => {
   it("supports the compact icon used in task lists", () => {
     render(
       <Tooltip.Provider>
-        <TaskFavoriteButton taskId="task-1" taskTitle="Тестовая задача" iconSize={13} />
+        <TaskFavoriteButton taskId="task-1" iconSize={13} />
       </Tooltip.Provider>
     );
 

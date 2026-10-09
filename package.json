@@ -13,8 +13,8 @@
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
     "test": "vitest",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "eslint . --max-warnings 0 --cache",
+    "lint:fix": "eslint . --fix --cache",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css}\" \"e2e/**/*.ts\" \"*.{ts,js,json}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css}\" \"e2e/**/*.ts\" \"*.{ts,js,json}\"",
     "generate:editor-tags": "node scripts/generate-editor-tags.mjs"

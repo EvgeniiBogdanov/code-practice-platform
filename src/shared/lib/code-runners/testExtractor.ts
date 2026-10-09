@@ -46,7 +46,7 @@ export function extractTestCasesFromTask(task: {
     const comment = m[3]?.trim();
 
     if (rawArgs !== undefined) {
-      let parsedArgs: any[] = [];
+      let parsedArgs: unknown[] = [];
       try {
         parsedArgs = new Function(
           "require",
