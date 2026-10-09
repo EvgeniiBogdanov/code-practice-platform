@@ -2,6 +2,7 @@
   "name": "Code-Practice-Platform",
   "private": true,
   "version": "2.4.30",
+  "license": "AGPL-3.0-only AND CC-BY-NC-SA-4.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
