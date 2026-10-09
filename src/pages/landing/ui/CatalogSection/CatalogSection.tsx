@@ -66,7 +66,8 @@ export const CatalogSection = (): React.JSX.Element => {
           lead="От разминки до уровня Senior: каждая тема - это группа задач с теорией, материалами и собственным прогрессом."
         />
 
-        <div className={styles.gallery}>
+        {/* Focusable so keyboard users can pause the loop and scroll the reduced-motion row. */}
+        <div className={styles.gallery} role="region" aria-label="Разделы каталога" tabIndex={0}>
           <div className={styles.track}>
             {GROUP_INDEXES.map((group) => {
               // Only the first group is real content; the rest exist for the endless loop.

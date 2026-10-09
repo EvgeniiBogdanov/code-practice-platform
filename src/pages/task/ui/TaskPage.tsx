@@ -284,8 +284,8 @@ const TaskPageView = React.memo<TaskPageViewProps>(
             <div className={styles.taskStatusActions}>
               {task ? (
                 <>
-                  <TaskFavoriteButton taskId={task.id} taskTitle={task.title} />
-                  <TaskExcludeButton taskId={task.id} taskTitle={task.title} />
+                  <TaskFavoriteButton taskId={task.id} />
+                  <TaskExcludeButton taskId={task.id} />
 
                   <Tooltip
                     content={

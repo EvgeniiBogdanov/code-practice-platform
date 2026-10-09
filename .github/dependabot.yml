@@ -6,6 +6,10 @@ updates:
       interval: weekly
       day: monday
     open-pull-requests-limit: 5
+    # Fresh releases are the window for hijacked-package attacks: let the registry catch them first.
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
     ignore:
       # eslint-plugin-react does not support eslint 10 yet (peer: ^9.7)
       - dependency-name: eslint
@@ -15,17 +19,25 @@ updates:
         update-types:
           - version-update:semver-major
     groups:
+      e2e-tooling:
+        patterns:
+          - "@playwright/*"
+          - "@axe-core/*"
       npm-minor-and-patch:
         update-types:
           - minor
           - patch
 
   - package-ecosystem: github-actions
-    directory: /
+    directories:
+      - /
+      - /.github/actions/*
     schedule:
       interval: weekly
       day: monday
     open-pull-requests-limit: 5
+    cooldown:
+      default-days: 7
     groups:
       actions-minor-and-patch:
         update-types:

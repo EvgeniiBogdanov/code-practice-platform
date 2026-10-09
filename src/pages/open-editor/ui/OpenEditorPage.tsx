@@ -77,7 +77,7 @@ export const OpenEditorPage = ({
         code: defaultCode,
       },
     ];
-  }, [task, tab, isReact, defaultCode]);
+  }, [task, tab, isReact, section, defaultCode]);
 
   const [files, setFiles] = useState<TaskSourceFile[]>(initialFiles);
   const activeFile = files[activeFileIdx] || files[0] || { name: "index.jsx", code: "" };

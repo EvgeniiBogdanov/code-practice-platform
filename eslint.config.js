@@ -18,6 +18,10 @@ export default tseslint.config(
       "**/scratch/**",
       "**/src/entities/task/curriculum/**",
       "**/src/shared/data/**",
+      "**/coverage/**",
+      "**/playwright-report/**",
+      "**/test-results/**",
+      ".claude/**",
     ],
   },
 
@@ -29,7 +33,7 @@ export default tseslint.config(
 
   // 4. Configuration for Node / Build files
   {
-    files: ["*.config.{js,ts}", "vite.config.js", "scripts/**/*.mjs"],
+    files: ["*.config.{js,ts}", "vite.config.js", "scripts/**/*.mjs", "e2e/**/*.ts"],
     languageOptions: {
       globals: {
         ...globals.node,
@@ -71,24 +75,28 @@ export default tseslint.config(
       "react/prop-types": "off",
       "react/display-name": "off",
       "react/no-unescaped-entities": "off",
-      "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
+      "react-refresh/only-export-components": ["error", { allowConstantExport: true }],
+      "react-hooks/exhaustive-deps": "error",
 
       // --- TypeScript Rules ---
-      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/no-unused-vars": [
-        "warn",
+        "error",
         {
           argsIgnorePattern: "^_",
           varsIgnorePattern: "^_",
           caughtErrorsIgnorePattern: "^_",
         },
       ],
-      "@typescript-eslint/ban-ts-comment": "off",
+      "@typescript-eslint/ban-ts-comment": [
+        "error",
+        { "ts-expect-error": "allow-with-description", minimumDescriptionLength: 5 },
+      ],
       "@typescript-eslint/no-empty-object-type": "off",
 
       // --- Project Size & Style Standards ---
       "max-lines": [
-        "warn",
+        "error",
         {
           max: 300,
           skipBlankLines: true,
@@ -96,13 +104,50 @@ export default tseslint.config(
         },
       ],
       "max-lines-per-function": "off",
-      "prefer-arrow-callback": "warn",
-      "prefer-const": "warn",
+      "prefer-arrow-callback": "error",
+      "prefer-const": "error",
       "no-var": "error",
     },
   },
 
-  // 6. Feature-Sliced Design (FSD) Architectural Rules
+  // 6. Exceptions
+  {
+    // main.tsx is the entry, not a Fast Refresh boundary. File routes keep their components next
+    // to the exported `Route`; with autoCodeSplitting the router plugin owns their HMR.
+    files: ["src/main.tsx", "src/routes/**"],
+    rules: { "react-refresh/only-export-components": "off" },
+  },
+  {
+    // Test suites group many scenarios per module; size limits target production code.
+    files: ["src/**/*.{test,spec}.{ts,tsx}"],
+    rules: { "max-lines": "off" },
+  },
+  {
+    // Tech debt: files that already exceed 300 lines. Split them and remove from this list;
+    // never add new entries.
+    files: [
+      "src/entities/algorithm-trace/model/graphTraces.ts",
+      "src/entities/algorithm-trace/model/mergeTraces.ts",
+      "src/entities/algorithm-trace/model/parsingStackTraces.ts",
+      "src/entities/ui-state/model/uiStore.ts",
+      "src/features/code-editor/model/useCodeEditor.ts",
+      "src/features/code-editor/model/useIntelliSense.ts",
+      "src/features/code-editor/ui/CodeEditor/CodeEditor.tsx",
+      "src/pages/group-overview/model/useGroupOverview.ts",
+      "src/pages/open-editor/ui/OpenEditorPage.tsx",
+      "src/pages/task/ui/CandidateTab/CandidateTab.tsx",
+      "src/pages/task/ui/TaskPage.tsx",
+      "src/shared/lib/code-editor/languages/reactKnowledge.ts",
+      "src/shared/lib/code-editor/typescriptDiagnostics.ts",
+      "src/shared/lib/code-runners/nodeWorker.ts",
+      "src/shared/lib/code-runners/sandboxHtmlBuilder.ts",
+      "src/shared/lib/storage/solutionsService.ts",
+      "src/shared/ui/UiDiagramScene/lib/createDiagramScene.ts",
+    ],
+    rules: { "max-lines": "off" },
+  },
+
+  // 7. Feature-Sliced Design (FSD) Architectural Rules
   {
     ...featureSliced({
       layersSlices: {
@@ -118,6 +163,6 @@ export default tseslint.config(
     files: ["src/**/*.{ts,tsx,js,jsx}"],
   },
 
-  // 7. Prettier integration (turns off conflicting ESLint rules)
+  // 8. Prettier integration (turns off conflicting ESLint rules)
   prettierConfig
 );

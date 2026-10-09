@@ -42,7 +42,6 @@ const NodeTasks = ({
         favoriteMarker={
           <TaskFavoriteButton
             taskId={task.id}
-            taskTitle={task.title}
             size="sm"
             iconSize={13}
             className={styles.taskFavoriteQuickAction}

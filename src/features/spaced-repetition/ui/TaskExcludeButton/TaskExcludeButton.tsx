@@ -7,7 +7,6 @@ import styles from "./TaskExcludeButton.module.css";
 
 export interface TaskExcludeButtonProps {
   taskId: string | number;
-  taskTitle?: string;
   size?: SquareButtonSize;
   iconSize?: 13 | 18;
   className?: string;
@@ -16,7 +15,6 @@ export interface TaskExcludeButtonProps {
 export const TaskExcludeButton = React.memo(
   ({
     taskId,
-    taskTitle,
     size = "md",
     iconSize = 18,
     className,

@@ -52,7 +52,7 @@ describe("TaskExcludeButton", () => {
   it("toggles task exclusion state accessibly", () => {
     render(
       <Tooltip.Provider>
-        <TaskExcludeButton taskId="task-1" taskTitle="Тестовая задача" />
+        <TaskExcludeButton taskId="task-1" />
       </Tooltip.Provider>
     );
 
@@ -77,7 +77,7 @@ describe("TaskExcludeButton", () => {
     render(
       <Tooltip.Provider>
         <div onClick={handleParentClick}>
-          <TaskExcludeButton taskId="task-1" taskTitle="Тестовая задача" />
+          <TaskExcludeButton taskId="task-1" />
         </div>
       </Tooltip.Provider>
     );
@@ -113,7 +113,7 @@ describe("TaskExcludeButton", () => {
 
     render(
       <Tooltip.Provider>
-        <TaskExcludeButton taskId="task-1" taskTitle="Тестовая задача" />
+        <TaskExcludeButton taskId="task-1" />
       </Tooltip.Provider>
     );
 

@@ -92,8 +92,9 @@ export function runNodeJsCode(
     try {
       worker = new NodeWorker();
       activeWorker = worker;
-    } catch (err: any) {
-      console.error("[NodeRunner] Failed to spawn Web Worker:", err);
+    } catch (cause) {
+      console.error("[NodeRunner] Failed to spawn Web Worker:", cause);
+      const err = cause instanceof Error ? cause : new Error(String(cause));
       resolve({
         logs: [
           {

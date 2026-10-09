@@ -44,14 +44,18 @@ export const SidebarListSkeleton = memo(
   ({ className, section, foldersCount }: SidebarListSkeletonProps): React.JSX.Element => {
     const widths = getFolderWidths(section, foldersCount);
     return (
-      <div className={clsx(styles.container, className)}>
+      <div
+        className={clsx(styles.container, className)}
+        role="status"
+        aria-label="Загрузка списка тем..."
+      >
         {/* Sticky wrapper matching SidebarProgressCard layout */}
         <div className={styles.stickyWrapper}>
           {/* Same placeholder as the home skeleton for the progress card */}
           <UiSkeleton width="100%" height={46} radius={6} />
 
           {/* Quick actions row matching SidebarQuickActions 4 buttons */}
-          <div className={styles.quickActions} aria-label="Быстрые действия">
+          <div className={styles.quickActions}>
             <UiSkeleton width={32} height={30} radius={8} />
             <UiSkeleton width={32} height={30} radius={8} />
             <UiSkeleton width={32} height={30} radius={8} />
@@ -60,7 +64,7 @@ export const SidebarListSkeleton = memo(
         </div>
 
         {/* Folder skeletons matching SidebarGroupHeader */}
-        <div className={styles.foldersList} aria-label="Загрузка списка тем...">
+        <div className={styles.foldersList}>
           {widths.map((width, idx) => (
             <div key={idx} className={styles.folderRow} data-testid="sidebar-folder-skeleton">
               <div className={styles.folderLeft}>

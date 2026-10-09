@@ -14,85 +14,111 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  lint:
-    name: Lint
+  quality:
+    name: Lint · Types · Format
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          node-version-file: .nvmrc
-          cache: npm
+          persist-credentials: false
 
-      - name: Install dependencies
-        run: npm ci
+      - uses: ./.github/actions/setup-node-deps
 
       - name: ESLint
         run: npm run lint
 
-  typecheck:
-    name: Typecheck
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
       - name: TypeScript
         run: npm run typecheck
-
-  format:
-    name: Format
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
 
       - name: Prettier
         run: npm run format:check
 
   test:
-    name: Unit tests
+    name: Unit tests (${{ matrix.shard }}/3)
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3]
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          node-version-file: .nvmrc
-          cache: npm
+          persist-credentials: false
 
-      - name: Install dependencies
-        run: npm ci
+      - uses: ./.github/actions/setup-node-deps
 
-      - name: Vitest with coverage
-        run: npm run test:coverage
+      # Thresholds are enforced once on the merged report: a single shard only sees part of the code.
+      - name: Vitest shard
+        env:
+          SHARD: ${{ matrix.shard }}
+        run: npx vitest run --coverage --coverage.thresholds=false --reporter=blob --shard="$SHARD/3"
 
-      - name: Coverage summary
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: blob-report-${{ matrix.shard }}
+          path: .vitest-reports/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 1
+
+  coverage:
+    name: Coverage
+    needs: test
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-node-deps
+
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: blob-report-*
+          path: .vitest-reports
+          merge-multiple: true
+
+      - name: Merge shards and enforce coverage thresholds
+        run: npx vitest run --merge-reports --coverage
+
+      - name: Download coverage baseline from main
+        id: baseline
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          run_id="$(gh run list --workflow ci.yml --branch main --event push --status success \
+            --limit 1 --json databaseId --jq '.[0].databaseId')"
+          gh run download "$run_id" --name coverage-summary --dir coverage-main
+          echo "path=coverage-main/coverage-summary.json" >> "$GITHUB_OUTPUT"
+
+      - name: Coverage report
         if: always()
-        run: npm run coverage:summary >> "$GITHUB_STEP_SUMMARY"
+        uses: davelosert/vitest-coverage-report-action@c4bbc33a89b7ace0e63d35f1f7d4bcee31155a73 # v2.13.0
+        with:
+          json-summary-compare-path: ${{ steps.baseline.outputs.path }}
+          file-coverage-mode: changes
 
-      - name: Upload coverage report
+      - name: Store coverage baseline
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: coverage-summary
+          path: coverage/coverage-summary.json
+          retention-days: 90
+
+      - name: Upload HTML coverage report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: coverage-report
           path: coverage
@@ -100,51 +126,157 @@ jobs:
           if-no-files-found: ignore
 
   build:
-    name: Build
+    name: Build · Bundle budget
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    permissions:
-      contents: read
-      pull-requests: write
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          node-version-file: .nvmrc
-          cache: npm
+          persist-credentials: false
 
-      - name: Install dependencies
-        run: npm ci
+      - uses: ./.github/actions/setup-node-deps
 
       - name: Vite build
         run: npm run build
 
-      - name: Bundle size report
-        run: npm run bundle:report
+      - name: Bundle budget (size-limit)
+        run: npm run size
 
-      - name: Append bundle report to job summary
-        run: cat bundle-report.md >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Upload dist artifact
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: dist
           path: dist
           retention-days: 7
 
-      - name: Comment bundle size on PR
-        if: github.event_name == 'pull_request'
-        uses: marocchino/sticky-pull-request-comment@v3
-        continue-on-error: true
+  bundle-diff:
+    # Informational: the hard budget is enforced in `build`; this only comments the delta vs main.
+    name: Bundle diff vs main
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    continue-on-error: true
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          header: bundle-size
-          path: bundle-report.md
+          persist-credentials: false
 
-  deploy:
+      - uses: ./.github/actions/setup-node-deps
+
+      - uses: andresz1/size-limit-action@94bc357df29c36c8f8d50ea497c3e225c3c95d1d # v1.8.0
+        with:
+          github_token: ${{ github.token }}
+          skip_step: install
+          build_script: build
+
+  e2e:
+    name: E2E · a11y
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-node-deps
+
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: dist
+          path: dist
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Playwright (smoke + axe)
+        run: npm run test:e2e
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results
+          retention-days: 7
+
+  lighthouse:
+    name: Lighthouse
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-node-deps
+
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: dist
+          path: dist
+
+      - uses: treosh/lighthouse-ci-action@3e7e23fb74242897f95c0ba9cabad3d0227b9b18 # 12.6.2
+        with:
+          configPath: ./lighthouserc.json
+          runs: 3
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+  version-guard:
+    name: Version consistency
+    if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # The PR merge commit's first parent is the base branch tip.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+
+      - name: package.json ↔ CHANGELOG ↔ README
+        run: node scripts/check-release-notes.mjs HEAD^1
+
+  dependency-review:
+    name: Dependency review
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
+        with:
+          fail-on-severity: high
+          comment-summary-in-pr: on-failure
+
+  # Single required status check for the main ruleset: stays valid when jobs are renamed or sharded.
+  ci-ok:
+    name: CI OK
+    if: always()
+    needs: [quality, test, coverage, build, e2e, lighthouse, version-guard, dependency-review]
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: All required jobs passed
+        if: ${{ !(contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')) }}
+        run: echo "All required jobs passed."
+
+      - name: Some required job failed
+        if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+        run: exit 1
+
+  deploy-pages:
     name: Deploy to GitHub Pages
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [lint, typecheck, format, test, build]
+    needs: ci-ok
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -157,63 +289,67 @@ jobs:
     concurrency:
       group: pages
       cancel-in-progress: false
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: dist
           path: dist
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: dist
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+
+  pages-smoke:
+    name: Smoke test GitHub Pages
+    needs: deploy-pages
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-node-deps
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Playwright smoke against the deployed mirror
+        env:
+          BASE_URL: ${{ needs.deploy-pages.outputs.page_url }}
+        run: npx playwright test smoke
 
   release:
     name: Release (tag + GitHub Release)
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [lint, typecheck, format, test, build]
+    needs: pages-smoke
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          fetch-depth: 0
+          persist-credentials: false
 
-      - name: Read version from package.json
-        id: version
+      - name: Create tag and GitHub Release for milestone versions (X.Y.0)
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          version=$(node -p "require('./package.json').version")
-          milestone=$(node -p "require('./package.json').version.split('.')[2] === '0'")
-          echo "version=$version" >> "$GITHUB_OUTPUT"
-          echo "milestone=$milestone" >> "$GITHUB_OUTPUT"
-
-      - name: Check if tag already exists
-        id: check
-        run: |
-          if git rev-parse "v${{ steps.version.outputs.version }}" >/dev/null 2>&1; then
-            echo "exists=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "exists=false" >> "$GITHUB_OUTPUT"
+          version="$(node -p "require('./package.json').version")"
+          if [[ "$version" != *.0 ]]; then
+            echo "Релиз пропущен: версия $version не является milestone-версией (X.Y.0)."
+            exit 0
           fi
-
-      - name: Create tag and GitHub Release
-        if: steps.check.outputs.exists == 'false' && steps.version.outputs.milestone == 'true'
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: v${{ steps.version.outputs.version }}
-          generate_release_notes: true
-
-      - name: Skip reason
-        if: steps.check.outputs.exists == 'true' || steps.version.outputs.milestone != 'true'
-        run: |
-          echo "Релиз пропущен: версия ${{ steps.version.outputs.version }} не является milestone-версией (X.Y.0) или тег уже существует."
+          if gh release view "v$version" >/dev/null 2>&1; then
+            echo "Релиз v$version уже существует."
+            exit 0
+          fi
+          gh release create "v$version" --target "$GITHUB_SHA" --generate-notes

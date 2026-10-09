@@ -24,7 +24,6 @@
 
 .page {
   position: relative;
-  animation: pageIn 600ms var(--ease-soft) backwards;
   min-height: 100vh;
   min-height: 100dvh;
   overflow-x: clip;
@@ -65,15 +64,5 @@
   }
 }
 
-/* The landing eases in after a full navigation (e.g. signing out of the workspace) */
-@keyframes pageIn {
-  from {
-    opacity: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .page {
-    animation: none;
-  }
-}
+/* No page-level fade-in: it hid the whole first frame from LCP. Cross-document navigations
+   (e.g. signing out of the workspace) already cross-fade via `@view-transition` in index.html. */

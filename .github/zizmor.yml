@@ -1,0 +1,5 @@
+rules:
+  # `uses: $/...` (self-repository syntax, GitHub, July 2026) is not yet understood by
+  # actionlint 1.7.x, which rejects it. Re-enable once actionlint supports it.
+  self-repository:
+    disable: true

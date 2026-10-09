@@ -108,10 +108,13 @@ export default defineConfig(({ mode }) => ({
             }
             return;
           }
-          if (id.includes("cheatSheetData")) {
+          // Match the data modules exactly: a substring check also caught the tiny
+          // `model/taskExplanations.ts` loader, which made the 1.3 MB explanations chunk
+          // a static dependency of the entry (modulepreloaded on every first paint).
+          if (id.endsWith("/src/shared/data/cheatSheetData.js")) {
             return "data-cheatsheet";
           }
-          if (id.includes("taskExplanations")) {
+          if (id.endsWith("/src/entities/task/curriculum/taskExplanations.js")) {
             return "task-explanations";
           }
         },

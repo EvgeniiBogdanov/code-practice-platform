@@ -25,8 +25,20 @@ const ZustandModule = {
   default: createZustandStore,
 };
 
+declare global {
+  interface Window {
+    /** Read by the sandbox iframe (see sandboxHtmlBuilder) to share the host's React runtime. */
+    __SANDBOX_RUNTIME__?: Record<string, unknown>;
+  }
+}
+
+/** CommonJS-style exports object of a sandbox module. */
+type ModuleExports = Record<string, unknown>;
+type TimerId = ReturnType<typeof setTimeout>;
+type IntervalId = ReturnType<typeof setInterval>;
+
 if (typeof window !== "undefined") {
-  (window as any).__SANDBOX_RUNTIME__ = {
+  window.__SANDBOX_RUNTIME__ = {
     React,
     ReactHooks,
     ReactDOM,
@@ -42,8 +54,8 @@ if (typeof window !== "undefined") {
   };
 }
 
-const activeTimerIds = new Set<any>();
-const activeIntervalIds = new Set<any>();
+const activeTimerIds = new Set<TimerId>();
+const activeIntervalIds = new Set<IntervalId>();
 
 export function clearLiveSandboxTimers(): void {
   activeTimerIds.forEach((id) => clearTimeout(id));
@@ -65,9 +77,9 @@ const sandboxSetTimeout = (
   return id;
 };
 
-const sandboxClearTimeout = (id: unknown) => {
+const sandboxClearTimeout = (id: TimerId) => {
   activeTimerIds.delete(id);
-  clearTimeout(id as number);
+  clearTimeout(id);
 };
 
 const sandboxSetInterval = (
@@ -80,7 +92,7 @@ const sandboxSetInterval = (
   return id;
 };
 
-const sandboxClearInterval = (id: any) => {
+const sandboxClearInterval = (id: IntervalId) => {
   activeIntervalIds.delete(id);
   clearInterval(id);
 };
@@ -135,6 +147,15 @@ export function buildFilesMap(
   return map;
 }
 
+const isComponent = (value: unknown): value is React.ComponentType => typeof value === "function";
+
+/** Default export first, then the module itself, then any exported function. */
+const findComponent = (mod: unknown): React.ComponentType | null => {
+  if (mod === null || (typeof mod !== "object" && typeof mod !== "function")) return null;
+  const exported: ModuleExports = { ...mod };
+  return [exported.default, mod, ...Object.values(exported)].find(isComponent) ?? null;
+};
+
 export function compileReactProject(
   filesMap: Record<string, { name: string; code: string }>,
   entryFileName?: string
@@ -151,9 +172,9 @@ export function compileReactProject(
     fileKeys.find((k) => /\.(jsx|tsx)$/i.test(k)) ||
     fileKeys[0];
 
-  const moduleCache = new Map<string, { exports: any }>();
+  const moduleCache = new Map<string, { exports: ModuleExports }>();
 
-  function requireModule(modulePath: string): any {
+  function requireModule(modulePath: string): unknown {
     if (modulePath === "react") {
       return { ...React, ...ReactHooks, default: React };
     }
@@ -208,14 +229,15 @@ export function compileReactProject(
     });
 
     if (!matchedKey) {
-      if ((LucideIcons as any)[modulePath]) {
-        return (LucideIcons as any)[modulePath];
+      const icon = (LucideIcons as ModuleExports)[modulePath];
+      if (icon) {
+        return icon;
       }
       throw new Error(`Модуль не найден: "${modulePath}"`);
     }
 
     if (moduleCache.has(matchedKey)) {
-      return moduleCache.get(matchedKey)!.exports;
+      return moduleCache.get(matchedKey)?.exports;
     }
 
     const targetFile = filesMap[matchedKey];
@@ -228,7 +250,7 @@ export function compileReactProject(
       throw transpileErr;
     }
 
-    const exports: any = {};
+    const exports: ModuleExports = {};
     const module = { exports };
     moduleCache.set(matchedKey, module);
 
@@ -277,15 +299,8 @@ export function compileReactProject(
   }
 
   try {
-    const entryModule = requireModule(`./${entryKey}`);
-    const FoundComponent =
-      entryModule?.default ||
-      (typeof entryModule === "function" ? entryModule : null) ||
-      Object.values(entryModule || {}).find((v) => typeof v === "function") ||
-      null;
-
-    return { Component: FoundComponent, error: null };
-  } catch (err: any) {
-    return { Component: null, error: err };
+    return { Component: findComponent(requireModule(`./${entryKey}`)), error: null };
+  } catch (err) {
+    return { Component: null, error: err instanceof Error ? err : new Error(String(err)) };
   }
 }
