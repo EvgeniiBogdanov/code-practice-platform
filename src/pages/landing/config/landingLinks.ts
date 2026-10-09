@@ -3,7 +3,7 @@ import { REPOSITORY_URL } from "@/shared/config";
 export { REPOSITORY_URL };
 export const TELEGRAM_URL = "https://t.me/johnbeelow";
 export const CHANGELOG_URL = `${REPOSITORY_URL}/blob/main/CHANGELOG.md`;
-export const LICENSE_URL = `${REPOSITORY_URL}/blob/main/LICENSE.md`;
+export const LICENSE_URL = `${REPOSITORY_URL}/blob/main/LICENSE`;
 export const HOTKEYS_URL = `${REPOSITORY_URL}#️-горячие-клавиши`;
 
 /** Anchor ids of the landing sections. */

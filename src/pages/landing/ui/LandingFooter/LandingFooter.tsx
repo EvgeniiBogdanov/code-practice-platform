@@ -68,7 +68,7 @@ export const LandingFooter = (): React.JSX.Element => (
         <p>
           © {new Date().getFullYear()} Code Practice Platform · v{APP_VERSION}
         </p>
-        <p>Source-Available Non-Commercial License</p>
+        <p>Код — AGPL-3.0 · Контент — CC BY-NC-SA 4.0</p>
       </div>
     </div>
   </footer>
