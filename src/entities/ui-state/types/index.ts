@@ -16,6 +16,8 @@ export interface UIState {
   visualizerZoom: number;
   visualizerCodeFontSize: number;
   consoleFontSize: number;
+  /** Text size of the type-tests panel. */
+  testsFontSize: number;
   consoleCollapsed: boolean;
 
   statsModalOpen: boolean;
@@ -84,6 +86,9 @@ export interface UIState {
   setConsoleFontSize: (size: number) => void;
   increaseConsoleFontSize: () => void;
   decreaseConsoleFontSize: () => void;
+  setTestsFontSize: (size: number) => void;
+  increaseTestsFontSize: () => void;
+  decreaseTestsFontSize: () => void;
   setConsoleCollapsed: (consoleCollapsed: boolean | ((prev: boolean) => boolean)) => void;
   toggleConsoleCollapsed: () => void;
 

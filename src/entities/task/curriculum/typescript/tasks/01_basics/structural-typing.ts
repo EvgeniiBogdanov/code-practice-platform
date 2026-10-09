@@ -6,7 +6,8 @@
 //
 // 2. saveCelsius принимает температуру в Фаренгейтах, потому что
 //    оба интерфейса описывают объект { value: number }. Измените
-//    модели так, чтобы такой вызов стал ошибкой типизации.
+//    модели так, чтобы вызов saveCelsius(outside) стал ошибкой типизации
+//    (проверка — во вкладке tests.ts), не переименовывая переменные.
 
 interface Point {
   x: number;
@@ -34,4 +35,5 @@ const saveCelsius = (temperature: Celsius): void => {
 };
 
 const outside: Fahrenheit = { value: 451 };
-saveCelsius(outside); // должно быть ошибкой
+const inside: Celsius = { value: 21 };
+saveCelsius(inside);

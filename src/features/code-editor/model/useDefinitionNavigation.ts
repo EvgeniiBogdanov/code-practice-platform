@@ -1,5 +1,10 @@
 import { useCallback, useEffect } from "react";
-import type { TaskFile, TypeScriptLocation } from "@/shared/lib/code-editor";
+import {
+  pendingReveal,
+  revealers,
+  type TaskFile,
+  type TypeScriptLocation,
+} from "@/shared/lib/code-editor";
 
 interface DefinitionNavigationOptions {
   filepath: string;
@@ -8,9 +13,6 @@ interface DefinitionNavigationOptions {
   requestDefinition: (position: number) => Promise<TypeScriptLocation | null>;
   reveal: (start: number, end: number) => void;
 }
-
-// Switching tabs remounts the editor, so the target travels to the new instance here.
-const pendingReveal: { current: TypeScriptLocation | null } = { current: null };
 
 /** F12 / Cmd+Click: jump to a declaration, opening its task file when needed. */
 export const useDefinitionNavigation = ({
@@ -22,9 +24,19 @@ export const useDefinitionNavigation = ({
 }: DefinitionNavigationOptions): ((position: number) => Promise<void>) => {
   useEffect(() => {
     const target = pendingReveal.current;
-    if (!target || target.filepath !== filepath) return;
-    pendingReveal.current = null;
-    reveal(target.start, target.end);
+    if (target && target.filepath === filepath) {
+      pendingReveal.current = null;
+      reveal(target.start, target.end);
+    }
+    const handler = (location: TypeScriptLocation): boolean => {
+      if (location.filepath !== filepath) return false;
+      reveal(location.start, location.end);
+      return true;
+    };
+    revealers.add(handler);
+    return (): void => {
+      revealers.delete(handler);
+    };
   }, [filepath, reveal]);
 
   return useCallback(

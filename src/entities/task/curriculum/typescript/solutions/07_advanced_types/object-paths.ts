@@ -41,4 +41,4 @@ const settings: Settings = {
 const city = get(settings, "user.address.city"); // string
 const zip = get(settings, "user.address.zip"); // number
 const theme = get(settings, "theme"); // "light" | "dark"
-// get(settings, "user.phone"); // Ошибка: такого пути нет
+// get(settings, "user.phone") — ошибка: такого пути нет (проверяется в tests.ts)

@@ -1,4 +1,4 @@
-import { NO_SUPPRESSION_CHECK, type TypeScriptTaskGroup } from "../taskMeta";
+import { NO_SUPPRESSION_CHECK, linked, type TypeScriptTaskGroup } from "../taskMeta";
 
 export const NARROWING_GROUP: TypeScriptTaskGroup = {
   name: "Type Narrowing",
@@ -11,7 +11,7 @@ export const NARROWING_GROUP: TypeScriptTaskGroup = {
       tags: ["typeof", "narrowing", "union"],
       filepath: "02_narrowing/typeof-narrowing.ts",
       checklist: [
-        "Обрабатываются строковый и числовой аргументы.",
+        linked("Обрабатываются строковый и числовой аргументы.", "formatId принимает строку и возвращает строку", "formatId принимает число и возвращает строку"),
         "Методы вызываются только после сужения типа.",
         NO_SUPPRESSION_CHECK,
       ],
@@ -95,7 +95,7 @@ export const NARROWING_GROUP: TypeScriptTaskGroup = {
       tags: ["discriminated-union", "narrowing"],
       filepath: "02_narrowing/discriminated-events.ts",
       checklist: [
-        "click требует координаты, keypress требует key.",
+        linked("click требует координаты, keypress требует key.", "handleEvent принимает клик с координатами", "handleEvent принимает нажатие клавиши", "поля событий разных видов не смешиваются"),
         "В обработчике поля доступны после проверки type.",
         NO_SUPPRESSION_CHECK,
       ],
@@ -138,7 +138,7 @@ export const NARROWING_GROUP: TypeScriptTaskGroup = {
       filepath: "02_narrowing/exhaustive-never.ts",
       checklist: [
         "В ветке default значение передаётся в функцию с параметром never.",
-        "Добавлен вариант triangle, и его площадь вычисляется.",
+        linked("Добавлен вариант triangle, и его площадь вычисляется.", "треугольник — допустимая фигура"),
         "Удаление любого case приводит к ошибке компиляции в getArea.",
         NO_SUPPRESSION_CHECK,
       ],
@@ -180,9 +180,9 @@ export const NARROWING_GROUP: TypeScriptTaskGroup = {
       tags: ["type-predicate", "unknown", "filter"],
       filepath: "02_narrowing/type-predicates.ts",
       checklist: [
-        "isUser принимает unknown и возвращает value is User.",
+        linked("isUser принимает unknown и возвращает value is User.", "isUser сужает unknown до User"),
         "Проверяются наличие и типы всех полей User.",
-        "admins имеет тип Admin[] без приведения типов.",
+        linked("admins имеет тип Admin[] без приведения типов.", "фильтрация администраторов даёт Admin[]"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -223,9 +223,9 @@ export const NARROWING_GROUP: TypeScriptTaskGroup = {
       tags: ["asserts", "narrowing", "control-flow"],
       filepath: "02_narrowing/assertion-functions.ts",
       checklist: [
-        "assert объявлена с типом asserts condition, assertIsString — с asserts value is string.",
+        linked("assert объявлена с типом asserts condition, assertIsString — с asserts value is string.", "сужает тип значения после вызова", "сужает unknown до string после вызова"),
         "Функции объявлены так, чтобы анализ потока управления учитывал вызов.",
-        "getApiUrl и shout компилируются без дополнительных проверок и приведений.",
+        linked("getApiUrl и shout компилируются без дополнительных проверок и приведений.", "getApiUrl и shout возвращают строки"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [

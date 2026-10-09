@@ -6,6 +6,7 @@ import { getTaskFiles, hasTaskVisualComponent } from "@/entities/task";
 import type { SectionType } from "@/entities/task/meta";
 import { useTaskById } from "@/entities/task/catalog";
 import { CodeEditor, activateCodeHistoryTask } from "@/features/code-editor";
+import { TypeTestsPanel, useTypeTests, useTypeTestsNavigation } from "@/features/type-tests";
 import { JsConsole, ReactLivePreview } from "@/features/code-runner";
 import {
   runNodeJsCode,
@@ -273,6 +274,7 @@ export const OpenEditorPage = ({
   };
 
   const handleResetCode = async () => {
+    typeTests.reset();
     const baseFiles = getTaskFiles(task, tab === "solution" ? "solution" : "candidate");
     const originalCode = baseFiles[activeFileIdx]?.code || "";
     setFiles((prev) => {
@@ -332,6 +334,21 @@ export const OpenEditorPage = ({
     setConsoleLogs([]);
     setLastExecution(null);
   };
+
+  const hasTypeTests = tab !== "visualization" && Boolean(task?.rawTests);
+  const isReferenceTab = tab === "solution";
+  const typeTests = useTypeTests({
+    enabled: hasTypeTests,
+    autoRun: isReferenceTab,
+    taskId: String(task?.id ?? ""),
+    code: activeFile.code ?? "",
+    filepath: activeFile.name ?? "solution.ts",
+    tests: task?.rawTests ?? "",
+    testsHash: task?.testsHash ?? "",
+    updatesChecklist: !isReferenceTab,
+    checklistTests: task?.checklistTests,
+  });
+  const { showCompileProblem } = useTypeTestsNavigation(activeFile.name ?? "");
 
   const navigateToTask = useCallback((): Promise<void> => {
     if (task) {
@@ -451,6 +468,20 @@ export const OpenEditorPage = ({
       onClear={handleClearConsole}
     />
   );
+  const bottomConsole =
+    hasTypeTests && task?.rawTests ? (
+      <TypeTestsPanel
+        taskId={String(task.id)}
+        controller={typeTests}
+        mode={isReferenceTab ? "reference" : "practice"}
+        tests={task.rawTests}
+        testsHash={task.testsHash ?? ""}
+        onBackToTask={handleExit}
+        onShowCompileProblem={showCompileProblem}
+      />
+    ) : (
+      consoleNode
+    );
 
   return (
     <div className={styles.container}>
@@ -522,7 +553,7 @@ export const OpenEditorPage = ({
                 code={activeFile?.code || ""}
                 onChange={handleCodeChange}
                 onFilesChange={handleFilesChange}
-                onRun={() => handleRunCode()}
+                onRun={() => (hasTypeTests ? typeTests.run() : handleRunCode())}
                 onReset={handleResetCode}
                 files={files}
                 activeFileIdx={activeFileIdx}
@@ -540,7 +571,7 @@ export const OpenEditorPage = ({
                 isFullscreen={true}
                 onToggleFullscreen={handleExit}
                 isFullscreenTransitioning={isFullscreenExiting}
-                bottomConsole={consoleNode}
+                bottomConsole={bottomConsole}
               />
             </>
           )}

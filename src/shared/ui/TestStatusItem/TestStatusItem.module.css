@@ -1,0 +1,113 @@
+.item {
+  list-style: none;
+  border-radius: var(--radius-md);
+  transition: opacity var(--transition-fast);
+}
+
+.stale {
+  opacity: var(--opacity-stale);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-1-5) var(--space-2);
+  border: none;
+  border-radius: inherit;
+  background: transparent;
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  font-size: var(--test-status-font-size, var(--fs-body-sm));
+  line-height: 1.4;
+  text-align: left;
+}
+
+button.header {
+  cursor: pointer;
+}
+
+button.header:hover {
+  background: var(--bg-subtle);
+}
+
+button.header:focus-visible {
+  outline: 2px solid var(--color-info);
+  outline-offset: -2px;
+}
+
+.icon {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.status_idle,
+.status_skipped {
+  color: var(--text-muted);
+}
+
+.status_running {
+  color: var(--color-info);
+}
+
+.status_passed {
+  color: var(--color-status-solved);
+}
+
+.status_failed {
+  color: var(--color-error);
+}
+
+.title {
+  flex: 1;
+  min-width: 0;
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  transition: transform var(--transition-fast);
+}
+
+.chevronOpen {
+  transform: rotate(90deg);
+}
+
+.details {
+  padding: var(--space-1) var(--space-2) var(--space-3) var(--space-7);
+  color: var(--text-secondary);
+  font-size: var(--test-status-font-size, var(--fs-body-sm));
+}
+
+.spinner {
+  animation: testStatusSpin 0.9s linear infinite;
+}
+
+@keyframes testStatusSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation-duration: 3s;
+  }
+
+  .chevron {
+    transition: none;
+  }
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

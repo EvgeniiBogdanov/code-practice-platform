@@ -3,7 +3,7 @@ import { clsx } from "clsx";
 import { ClipboardList } from "lucide-react";
 import { Task } from "@/entities/task";
 import { useProgressStore } from "@/entities/progress";
-import { Checkbox } from "@/shared/ui";
+import { Checkbox, MetaBadge, Tooltip } from "@/shared/ui";
 import styles from "./ChecklistTab.module.css";
 
 export interface ChecklistTabProps {
@@ -43,13 +43,28 @@ export const ChecklistTab = React.memo(
             {checklistItems.map((item, i) => {
               const itemKey = `check-${task.id}-${i}`;
               const isChecked = Boolean(checklistState[itemKey]);
+              const linkedTests = task.checklistTests?.[i];
 
               return (
                 <Checkbox
                   key={itemKey}
                   checked={isChecked}
                   onChange={() => toggleChecklistItem(itemKey)}
-                  label={item}
+                  label={
+                    linkedTests?.length ? (
+                      <>
+                        {item}{" "}
+                        <Tooltip
+                          content={`Отмечается автоматически при успешной сдаче тестов: ${linkedTests.join("; ")}`}
+                          side="top"
+                        >
+                          <MetaBadge variant="blue">авто</MetaBadge>
+                        </Tooltip>
+                      </>
+                    ) : (
+                      item
+                    )
+                  }
                   strikethrough
                   color="blue"
                 />

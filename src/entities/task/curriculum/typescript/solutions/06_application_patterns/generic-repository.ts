@@ -41,5 +41,5 @@ console.log(user.id, user.name);
 
 const products = new InMemoryRepository<ProductData>();
 products.create({ title: "Книга", price: 500 });
-// products.create({ name: "Alice" }); // Ошибка: это не данные товара
-// users.#items; // Ошибка: приватное поле недоступно снаружи
+// products.create({ name: "Alice" }) — ошибка: это не данные товара;
+// внутреннее хранилище снаружи недоступно (проверяется в tests.ts).

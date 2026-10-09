@@ -13,5 +13,5 @@ const routes = {
 } satisfies Routes;
 
 const profilePath = routes.profile.path; // string
-// const typo = routes.profle; // Ошибка: свойства profle нет
+// routes.profle — ошибка: такого свойства нет (проверяется в tests.ts)
 // Лишнее поле внутри маршрута, например role: "admin", тоже будет ошибкой satisfies.

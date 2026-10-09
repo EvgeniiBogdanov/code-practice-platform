@@ -19,7 +19,7 @@ type Credentials = MyPick<User, "name" | "password">;
 type PublicUser = MyOmit<User, "password">;
 // { readonly id: number; name: string; email?: string }
 
-// type Broken = MyPick<User, "age">; // Ошибка: "age" не входит в keyof User
-// type Typo = StrictOmit<User, "pasword">; // Ошибка: опечатка в ключе
+// MyPick<User, "age"> и StrictOmit<User, "pasword"> — ошибки: ключа нет в keyof User
+// (проверяются в tests.ts).
 
 const publicUser: PublicUser = { id: 1, name: "Alice" };

@@ -1,4 +1,4 @@
-import { NO_SUPPRESSION_CHECK, type TypeScriptTaskGroup } from "../taskMeta";
+import { NO_SUPPRESSION_CHECK, linked, type TypeScriptTaskGroup } from "../taskMeta";
 
 export const UTILITY_TYPES_GROUP: TypeScriptTaskGroup = {
   name: "Utility Types",
@@ -11,8 +11,8 @@ export const UTILITY_TYPES_GROUP: TypeScriptTaskGroup = {
       tags: ["Pick", "Omit"],
       filepath: "04_utility_types/pick-and-omit.ts",
       checklist: [
-        "PublicUser не содержит password в контракте.",
-        "RegistrationForm содержит только name и password.",
+        linked("PublicUser не содержит password в контракте.", "PublicUser — все поля, кроме пароля"),
+        linked("RegistrationForm содержит только name и password.", "RegistrationForm — только имя и пароль"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -53,7 +53,7 @@ export const UTILITY_TYPES_GROUP: TypeScriptTaskGroup = {
       tags: ["Record", "index-signature"],
       filepath: "04_utility_types/stock-record.ts",
       checklist: [
-        "Склад имеет строковые ключи и числовые значения.",
+        linked("Склад имеет строковые ключи и числовые значения.", "Stock хранит числа по строковым артикулам", "значения Stock — только числа"),
         "Новый артикул начинается с нуля, существующий увеличивается.",
         NO_SUPPRESSION_CHECK,
       ],
@@ -100,8 +100,8 @@ export const UTILITY_TYPES_GROUP: TypeScriptTaskGroup = {
       tags: ["Exclude", "Extract", "union"],
       filepath: "04_utility_types/exclude-and-extract.ts",
       checklist: [
-        "ActivePermission не допускает banned.",
-        "WritePermission допускает только create и update.",
+        linked("ActivePermission не допускает banned.", "ActivePermission — все права, кроме banned"),
+        linked("WritePermission допускает только create и update.", "WritePermission — только create и update"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -141,10 +141,10 @@ export const UTILITY_TYPES_GROUP: TypeScriptTaskGroup = {
       tags: ["Partial", "Required", "Readonly", "NonNullable"],
       filepath: "04_utility_types/partial-required-readonly.ts",
       checklist: [
-        "resolveOptions принимает Partial<Options>.",
-        "Результат имеет тип Readonly<Options>, и его поля нельзя изменять.",
-        "LegacyOptions превращён в тип со всеми обязательными полями через Required.",
-        "CacheKey получен через NonNullable.",
+        linked("resolveOptions принимает Partial<Options>.", "принимает любой набор полей Options, в том числе пустой", "не принимает чужие поля и неверные типы"),
+        linked("Результат имеет тип Readonly<Options>, и его поля нельзя изменять.", "результат содержит все поля и защищён от изменений"),
+        linked("LegacyOptions превращён в тип со всеми обязательными полями через Required.", "StrictLegacyOptions делает все поля обязательными"),
+        linked("CacheKey получен через NonNullable.", "CacheKey исключает null и undefined"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -187,7 +187,7 @@ export const UTILITY_TYPES_GROUP: TypeScriptTaskGroup = {
       checklist: [
         "Результат описан дискриминируемым объединением по полю ok.",
         "Ошибки описаны как Partial<Record<keyof User, string>>.",
-        "user доступен только в ветке ok: true, errors — только в ветке ok: false.",
+        linked("user доступен только в ветке ok: true, errors — только в ветке ok: false.", "user доступен только после проверки успеха", "errors доступны только после проверки неудачи"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -228,8 +228,8 @@ export const UTILITY_TYPES_GROUP: TypeScriptTaskGroup = {
       tags: ["ReturnType", "Parameters", "typeof"],
       filepath: "04_utility_types/function-introspection.ts",
       checklist: [
-        "Возвращаемый тип получен через ReturnType.",
-        "Тип второго параметра получен из Parameters по индексу 1.",
+        linked("Возвращаемый тип получен через ReturnType.", "LogReturnType — тип результата log"),
+        linked("Тип второго параметра получен из Parameters по индексу 1.", "LogSecondParam — тип второго параметра log"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -270,9 +270,9 @@ export const UTILITY_TYPES_GROUP: TypeScriptTaskGroup = {
       tags: ["Awaited", "ReturnType", "ConstructorParameters", "Promise.all"],
       filepath: "04_utility_types/awaited-results.ts",
       checklist: [
-        "User выведен через Awaited<ReturnType<typeof fetchUser>>.",
-        "Dashboard — кортеж из пользователя и массива заказов.",
-        "ClientOptions получен через ConstructorParameters.",
+        linked("User выведен через Awaited<ReturnType<typeof fetchUser>>.", "User — результат fetchUser после await"),
+        linked("Dashboard — кортеж из пользователя и массива заказов.", "Dashboard — пользователь и список его заказов"),
+        linked("ClientOptions получен через ConstructorParameters.", "ClientOptions — первый аргумент конструктора ApiClient"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [

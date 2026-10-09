@@ -22,4 +22,4 @@ const raw: ApiResponse = { status: 200, data: "ok" }; // data: unknown
 const typed: ApiResponse<string[]> = { status: 200, data: ["a", "b"] };
 
 const longer = longest([1, 2], [1, 2, 3]); // number[]
-// longest(10, 100); // Ошибка: у number нет поля length
+// longest(10, 100) — ошибка: у number нет поля length (проверяется в tests.ts)

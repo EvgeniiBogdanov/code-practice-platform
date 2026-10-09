@@ -1,4 +1,4 @@
-import { NO_SUPPRESSION_CHECK, type TypeScriptTaskGroup } from "../taskMeta";
+import { NO_SUPPRESSION_CHECK, linked, type TypeScriptTaskGroup } from "../taskMeta";
 
 export const APPLICATION_PATTERNS_GROUP: TypeScriptTaskGroup = {
   name: "Практические паттерны",
@@ -11,7 +11,7 @@ export const APPLICATION_PATTERNS_GROUP: TypeScriptTaskGroup = {
       tags: ["Promise", "async", "unknown", "type-guard"],
       filepath: "06_application_patterns/fetch-comments.ts",
       checklist: [
-        "Функция возвращает Promise<ApiComment[]>.",
+        linked("Функция возвращает Promise<ApiComment[]>.", "getData возвращает промис с id и email"),
         "Проверяется response.ok.",
         "Результат response.json() сохраняется как unknown и проверяется type guard'ом перед возвратом.",
         "Каждый комментарий выводится в формате ID: id, Email: email.",
@@ -60,7 +60,7 @@ export const APPLICATION_PATTERNS_GROUP: TypeScriptTaskGroup = {
       tags: ["abstract", "protected", "class"],
       filepath: "06_application_patterns/employee-hierarchy.ts",
       checklist: [
-        "Базовый класс абстрактный, salary защищено.",
+        linked("Базовый класс абстрактный, salary защищено.", "базовый класс Employee нельзя создать напрямую", "зарплата недоступна снаружи класса"),
         "Manager рассчитывает премию в размере 20% зарплаты.",
         NO_SUPPRESSION_CHECK,
       ],
@@ -102,7 +102,7 @@ export const APPLICATION_PATTERNS_GROUP: TypeScriptTaskGroup = {
       tags: ["class", "generics", "implements", "private-fields"],
       filepath: "06_application_patterns/generic-repository.ts",
       checklist: [
-        "Интерфейс Repository<T> описывает create, findById и findAll.",
+        linked("Интерфейс Repository<T> описывает create, findById и findAll.", "Repository — контракт, который реализует InMemoryRepository"),
         "InMemoryRepository<T> реализует его через implements.",
         "Хранилище и счётчик — приватные поля JavaScript (#).",
         "create возвращает сущность с id без утверждений типа.",
@@ -189,7 +189,7 @@ export const APPLICATION_PATTERNS_GROUP: TypeScriptTaskGroup = {
       tags: ["overloads", "literal"],
       filepath: "06_application_patterns/element-overloads.ts",
       checklist: [
-        "img возвращает тип с src, a — с href.",
+        linked("img возвращает тип с src, a — с href.", "img даёт объект с полем src", "a даёт объект с полем href"),
         "Общий тег возвращает базовый объект; реализация совместима со всеми перегрузками.",
         NO_SUPPRESSION_CHECK,
       ],
@@ -231,8 +231,8 @@ export const APPLICATION_PATTERNS_GROUP: TypeScriptTaskGroup = {
       tags: ["generics", "mapped-types", "keyof", "events"],
       filepath: "06_application_patterns/typed-event-emitter.ts",
       checklist: [
-        "Неизвестное событие и неверный payload не проходят типизацию.",
-        "Подписчик получает точный тип данных своего события.",
+        linked("Неизвестное событие и неверный payload не проходят типизацию.", "подписаться на несуществующее событие нельзя", "emit проверяет данные события", "обработчик с неверным типом аргумента отклоняется"),
+        linked("Подписчик получает точный тип данных своего события.", "подписчик получает данные своего события"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -273,7 +273,7 @@ export const APPLICATION_PATTERNS_GROUP: TypeScriptTaskGroup = {
       tags: ["recursive-types", "DeepPartial", "merge"],
       filepath: "06_application_patterns/deep-partial-config.ts",
       checklist: [
-        "Можно передать частичное обновление на любой глубине.",
+        linked("Можно передать частичное обновление на любой глубине.", "принимает частичные поля верхнего уровня", "принимает частичные поля на любой глубине"),
         "Неуказанные вложенные поля остаются в итоговой конфигурации.",
         NO_SUPPRESSION_CHECK,
       ],
@@ -320,8 +320,8 @@ export const APPLICATION_PATTERNS_GROUP: TypeScriptTaskGroup = {
       tags: ["brand", "intersection", "nominal"],
       filepath: "06_application_patterns/branded-identifiers.ts",
       checklist: [
-        "UserId и OrderId имеют разные бренды.",
-        "Функции принимают только идентификатор нужного вида.",
+        linked("UserId и OrderId имеют разные бренды.", "идентификатор заказа нельзя передать как идентификатор пользователя", "идентификатор пользователя нельзя передать как идентификатор заказа"),
+        linked("Функции принимают только идентификатор нужного вида.", "идентификатор подходит своей функции", "обычная строка не является идентификатором"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -363,8 +363,8 @@ export const APPLICATION_PATTERNS_GROUP: TypeScriptTaskGroup = {
       filepath: "06_application_patterns/typed-builder.ts",
       checklist: [
         "Каждый вызов field расширяет тип накопленных полей.",
-        "build() возвращает объект с точными типами всех полей.",
-        "Повторное имя поля — ошибка типизации.",
+        linked("build() возвращает объект с точными типами всех полей.", "build возвращает объект со всеми добавленными полями", "поля сохраняют типы значений"),
+        linked("Повторное имя поля — ошибка типизации.", "повторное добавление поля — ошибка"),
         "Утверждение типа используется только там, где TypeScript не может вывести тип вычисляемого ключа, и это объяснено.",
         NO_SUPPRESSION_CHECK,
       ],

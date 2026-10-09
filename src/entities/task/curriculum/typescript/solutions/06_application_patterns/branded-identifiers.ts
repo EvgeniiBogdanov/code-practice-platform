@@ -23,4 +23,4 @@ const userId = toUserId("user-1");
 const orderId = toOrderId("order-1");
 
 getUserById(userId); // ок
-// getUserById(orderId); // Ошибка типов: OrderId нельзя передать как UserId
+// getUserById(orderId) — ошибка типов: OrderId нельзя передать как UserId (проверяется в tests.ts)

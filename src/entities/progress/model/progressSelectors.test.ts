@@ -20,6 +20,7 @@ describe("progressSelectors", () => {
     initProgress: async () => {},
     setTaskStatus: async () => {},
     toggleChecklistItem: async () => {},
+    checkChecklistItems: async () => {},
     handleCopyCode: () => {},
     handleFullReset: async () => {},
   };

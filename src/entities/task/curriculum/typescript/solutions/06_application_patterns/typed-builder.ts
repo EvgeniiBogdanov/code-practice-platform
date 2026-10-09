@@ -31,5 +31,5 @@ const form = FormBuilder.create()
 // { email: string; age: number; subscribe: boolean }
 
 console.log(form.email.trim(), form.age.toFixed(0), form.subscribe);
-// form.phone; // Ошибка: такого поля нет
-// FormBuilder.create().field("email", "").field("email", ""); // Ошибка: поле уже добавлено
+// form.phone — ошибка: такого поля нет; повторное field("email", "") — ошибка: поле уже
+// добавлено (проверяется в tests.ts).

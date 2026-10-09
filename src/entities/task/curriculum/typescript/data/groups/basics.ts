@@ -1,4 +1,4 @@
-import { NO_SUPPRESSION_CHECK, type TypeScriptTaskGroup } from "../taskMeta";
+import { NO_SUPPRESSION_CHECK, linked, type TypeScriptTaskGroup } from "../taskMeta";
 
 export const BASICS_GROUP: TypeScriptTaskGroup = {
   name: "Основы TypeScript",
@@ -11,8 +11,8 @@ export const BASICS_GROUP: TypeScriptTaskGroup = {
       tags: ["string", "number", "boolean", "array"],
       filepath: "01_basics/first-annotations.ts",
       checklist: [
-        "Переменные имеют типы string, number и boolean.",
-        "scores принимает только числовые элементы; userName не принимает число.",
+        linked("Переменные имеют типы string, number и boolean.", "userName хранит только строки", "userAge хранит только числа", "isActive хранит только логические значения"),
+        linked("scores принимает только числовые элементы; userName не принимает число.", "scores — массив чисел", "userName хранит только строки"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -54,7 +54,7 @@ export const BASICS_GROUP: TypeScriptTaskGroup = {
       filepath: "01_basics/function-signatures.ts",
       checklist: [
         "greeting необязателен и по умолчанию равен «Привет».",
-        "sum принимает любое количество чисел через rest-параметр.",
+        linked("sum принимает любое количество чисел через rest-параметр.", "принимает любое количество чисел и возвращает число"),
         "Колбэк applyToAll описан типом функции, logMessage возвращает void.",
         NO_SUPPRESSION_CHECK,
       ],
@@ -96,8 +96,8 @@ export const BASICS_GROUP: TypeScriptTaskGroup = {
       tags: ["tuple", "void"],
       filepath: "01_basics/tuple-values.ts",
       checklist: [
-        "Пара описана кортежем [string, number].",
-        "Переставленные элементы и лишние значения не подходят под тип Entry.",
+        linked("Пара описана кортежем [string, number].", "entry — пара «имя, возраст»"),
+        linked("Переставленные элементы и лишние значения не подходят под тип Entry.", "printEntry не принимает лишние элементы и неверный порядок"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -143,8 +143,8 @@ export const BASICS_GROUP: TypeScriptTaskGroup = {
       tags: ["interface", "readonly", "optional"],
       filepath: "01_basics/optional-readonly-fields.ts",
       checklist: [
-        "middleName можно пропустить при создании Person.",
-        "Присваивание нового id вызывает ошибку типов.",
+        linked("middleName можно пропустить при создании Person.", "middleName необязательно"),
+        linked("Присваивание нового id вызывает ошибку типов.", "id нельзя изменить после создания"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -185,9 +185,9 @@ export const BASICS_GROUP: TypeScriptTaskGroup = {
       tags: ["any", "unknown", "never"],
       filepath: "01_basics/any-unknown-never.ts",
       checklist: [
-        "parseJson возвращает unknown, а не any.",
+        linked("parseJson возвращает unknown, а не any.", "результат parseJson нельзя использовать без проверки"),
         "Поле name используется только после проверки структуры значения.",
-        "fail объявлена с возвращаемым типом never так, что после её вызова функция компилируется без return.",
+        linked("fail объявлена с возвращаемым типом never так, что после её вызова функция компилируется без return.", "после вызова fail выполнение не продолжается"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -276,7 +276,7 @@ export const BASICS_GROUP: TypeScriptTaskGroup = {
       filepath: "01_basics/user-role.ts",
       checklist: [
         "UserWithRole переиспользует поля User.",
-        "role принимает только admin или user.",
+        linked("role принимает только admin или user.", "role принимает только допустимые значения"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -317,9 +317,9 @@ export const BASICS_GROUP: TypeScriptTaskGroup = {
       tags: ["type", "interface", "declaration-merging", "union"],
       filepath: "01_basics/type-vs-interface.ts",
       checklist: [
-        "Shape — объединение через type: interface не умеет описывать объединения.",
-        "Theme расширена повторным объявлением интерфейса (declaration merging).",
-        "ColoredShape построен из Shape без дублирования полей.",
+        linked("Shape — объединение через type: interface не умеет описывать объединения.", "фигура — круг с radius или квадрат с side", "поля круга и квадрата не смешиваются"),
+        linked("Theme расширена повторным объявлением интерфейса (declaration merging).", "Theme получает brandColor без изменения исходного объявления"),
+        linked("ColoredShape построен из Shape без дублирования полей.", "любая фигура с полем color", "без color фигура не подходит"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -360,8 +360,8 @@ export const BASICS_GROUP: TypeScriptTaskGroup = {
       tags: ["structural-typing", "excess-property-check", "discriminant"],
       filepath: "01_basics/structural-typing.ts",
       checklist: [
-        "printPoint принимает и переменные, и литералы точек с дополнительными полями, не ослабляя типы x и y.",
-        "Celsius и Fahrenheit структурно различаются, и saveCelsius не принимает Fahrenheit.",
+        linked("printPoint принимает и переменные, и литералы точек с дополнительными полями, не ослабляя типы x и y.", "принимает объект с дополнительными полями", "по-прежнему требует числа в x и y"),
+        linked("Celsius и Fahrenheit структурно различаются, и saveCelsius не принимает Fahrenheit.", "принимает температуру в Цельсиях", "не принимает температуру в Фаренгейтах"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -402,8 +402,8 @@ export const BASICS_GROUP: TypeScriptTaskGroup = {
       tags: ["literal", "widening", "as const", "typeof"],
       filepath: "01_basics/literal-widening.ts",
       checklist: [
-        "Оба вызова request компилируются без as HttpMethod.",
-        "Route выводится из массива routes и равен \"/home\" | \"/about\".",
+        linked("Оба вызова request компилируются без as HttpMethod.", "переменная method подходит для request", "поля options подходят для request"),
+        linked("Route выводится из массива routes и равен \"/home\" | \"/about\".", "Route — один из путей массива routes", "неизвестный путь не является Route"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -451,7 +451,7 @@ export const BASICS_GROUP: TypeScriptTaskGroup = {
       checklist: [
         "Статусы описаны один раз и доступны как объект во время выполнения.",
         "Тип OrderStatus выводится из объекта, а не дублируется вручную.",
-        "changeStatus принимает и OrderStatus.Pending, и строку \"shipped\", но не \"lost\".",
+        linked("changeStatus принимает и OrderStatus.Pending, и строку \"shipped\", но не \"lost\".", "changeStatus принимает значение из объекта OrderStatus", "changeStatus принимает строковый литерал из API", "changeStatus отклоняет неизвестный статус"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [

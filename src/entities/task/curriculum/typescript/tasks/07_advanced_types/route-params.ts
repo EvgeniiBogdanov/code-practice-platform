@@ -11,6 +11,5 @@ const buildUrl = (path, params) => {
 };
 
 buildUrl("/users/:userId/posts/:postId", { userId: "1", postId: "42" });
-buildUrl("/users/:userId/posts/:postId", { userId: "1" }); // должно быть ошибкой
-buildUrl("/users/:userId", { userId: "1", extra: "x" }); // должно быть ошибкой
 buildUrl("/about", {});
+// Пропущенный или лишний параметр должен быть ошибкой (проверка во вкладке tests.ts).

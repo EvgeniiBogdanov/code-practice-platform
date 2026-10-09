@@ -18,7 +18,7 @@ const resolveOptions = (options: Partial<Options>): ResolvedOptions => {
 };
 
 const resolved = resolveOptions({ retries: 5 });
-// resolved.retries = 10; // Ошибка: поле доступно только для чтения
+// resolved.retries = 10 — ошибка: поле доступно только для чтения (проверяется в tests.ts)
 
 type StrictLegacyOptions = Required<LegacyOptions>; // { host: string; port: number }
 

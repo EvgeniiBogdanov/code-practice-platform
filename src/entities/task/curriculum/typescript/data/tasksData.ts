@@ -1,5 +1,6 @@
 import type { Task } from "../../../types";
-import type { TypeScriptTaskGroup } from "./taskMeta";
+import { hashString } from "@/shared/lib/hash";
+import type { LinkedChecklistItem, TypeScriptTaskGroup } from "./taskMeta";
 import { BASICS_GROUP } from "./groups/basics";
 import { NARROWING_GROUP } from "./groups/narrowing";
 import { GENERICS_GROUP } from "./groups/generics";
@@ -9,7 +10,7 @@ import { APPLICATION_PATTERNS_GROUP } from "./groups/applicationPatterns";
 import { ADVANCED_TYPES_GROUP } from "./groups/advancedTypes";
 
 const sources = import.meta.glob<string>(
-  ["../tasks/**/*.ts", "../solutions/**/*.ts", "../explanations/**/*.md"],
+  ["../tasks/**/*.ts", "../solutions/**/*.ts", "../tests/**/*.ts", "../explanations/**/*.md"],
   { query: "?raw", import: "default", eager: true }
 );
 
@@ -30,14 +31,26 @@ export const TYPESCRIPT_GROUPS: readonly TypeScriptTaskGroup[] = [
   ADVANCED_TYPES_GROUP,
 ];
 
+const isLinked = (item: string | LinkedChecklistItem): item is LinkedChecklistItem =>
+  typeof item !== "string";
+
 export const TYPESCRIPT_TASKS: Task[] = TYPESCRIPT_GROUPS.flatMap(({ name, tasks }) =>
   tasks.map((task) => ({ ...task, group: name }))
-).map((task, index) => ({
-  ...task,
-  title: `${index + 1}. ${task.title}`,
-  section: "typescript",
-  isRaw: true,
-  explanation: readSource(`../explanations/${task.filepath.replace(/\.ts$/, ".md")}`),
-  rawCandidate: readSource(`../tasks/${task.filepath}`),
-  rawSolution: readSource(`../solutions/${task.filepath}`),
-}));
+).map(({ checklist, ...task }, index) => {
+  const rawTests = readSource(`../tests/${task.filepath}`);
+  return {
+    ...task,
+    title: `${index + 1}. ${task.title}`,
+    section: "typescript",
+    isRaw: true,
+    checklist: checklist.map((item) => (isLinked(item) ? item.text : item)),
+    checklistTests: Object.fromEntries(
+      checklist.flatMap((item, i) => (isLinked(item) ? [[i, item.tests]] : []))
+    ),
+    explanation: readSource(`../explanations/${task.filepath.replace(/\.ts$/, ".md")}`),
+    rawCandidate: readSource(`../tasks/${task.filepath}`),
+    rawSolution: readSource(`../solutions/${task.filepath}`),
+    rawTests,
+    testsHash: hashString(rawTests),
+  };
+});

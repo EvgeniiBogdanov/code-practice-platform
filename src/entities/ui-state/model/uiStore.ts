@@ -7,6 +7,9 @@ export const MIN_FONT_SIZE = 14;
 export const MAX_FONT_SIZE = 24;
 export const MIN_CODE_FONT_SIZE = 12;
 export const MAX_CODE_FONT_SIZE = 24;
+export const MIN_TESTS_FONT_SIZE = 11;
+export const MAX_TESTS_FONT_SIZE = 20;
+export const DEFAULT_TESTS_FONT_SIZE = 12;
 
 const getInitialUISettings = () => {
   if (typeof window === "undefined") {
@@ -167,6 +170,7 @@ export const useUIStore = create<UIState>()(
       visualizerZoom: initialUI.visualizerZoom,
       visualizerCodeFontSize: initialUI.visualizerCodeFontSize,
       consoleFontSize: 14,
+      testsFontSize: DEFAULT_TESTS_FONT_SIZE,
       consoleCollapsed: true,
 
       statsModalOpen: false,
@@ -414,6 +418,21 @@ export const useUIStore = create<UIState>()(
       decreaseConsoleFontSize: () => {
         set((state) => ({
           consoleFontSize: Math.max(MIN_FONT_SIZE, (state.consoleFontSize || MIN_FONT_SIZE) - 1),
+        }));
+      },
+
+      setTestsFontSize: (size) => {
+        const clamped = Math.min(MAX_TESTS_FONT_SIZE, Math.max(MIN_TESTS_FONT_SIZE, size));
+        set({ testsFontSize: clamped });
+      },
+      increaseTestsFontSize: () => {
+        set((state) => ({
+          testsFontSize: Math.min(MAX_TESTS_FONT_SIZE, state.testsFontSize + 1),
+        }));
+      },
+      decreaseTestsFontSize: () => {
+        set((state) => ({
+          testsFontSize: Math.max(MIN_TESTS_FONT_SIZE, state.testsFontSize - 1),
         }));
       },
 
@@ -757,6 +776,7 @@ export const useUIStore = create<UIState>()(
           visualizerZoom: 1,
           visualizerCodeFontSize: 14,
           consoleFontSize: 14,
+          testsFontSize: DEFAULT_TESTS_FONT_SIZE,
           consoleCollapsed: true,
           warmupExpanded: false,
           refactoringExpanded: false,
@@ -793,6 +813,7 @@ export const useUIStore = create<UIState>()(
         visualizerZoom: state.visualizerZoom,
         visualizerCodeFontSize: state.visualizerCodeFontSize,
         consoleFontSize: state.consoleFontSize,
+        testsFontSize: state.testsFontSize,
         consoleCollapsed: state.consoleCollapsed,
         warmupExpanded: state.warmupExpanded,
         refactoringExpanded: state.refactoringExpanded,
@@ -825,6 +846,13 @@ export const useUIStore = create<UIState>()(
           }
           if (typeof state.consoleFontSize === "number" && state.consoleFontSize < MIN_FONT_SIZE) {
             state.consoleFontSize = MIN_FONT_SIZE;
+          }
+          if (
+            typeof state.testsFontSize !== "number" ||
+            state.testsFontSize < MIN_TESTS_FONT_SIZE ||
+            state.testsFontSize > MAX_TESTS_FONT_SIZE
+          ) {
+            state.testsFontSize = DEFAULT_TESTS_FONT_SIZE;
           }
         }
       },

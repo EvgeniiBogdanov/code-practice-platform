@@ -2,7 +2,7 @@
 // у каждого маршрута есть path и необязательный флаг auth.
 // При этом нужно сохранить точные ключи объекта, чтобы:
 // - routes.profile.path был доступен как существующее поле;
-// - опечатка routes.profle была ошибкой;
+// - опечатка в ключе (routes.profle) была ошибкой — проверка во вкладке tests.ts;
 // - лишнее поле или неверный тип в описании маршрута тоже были ошибкой.
 
 interface Route {
@@ -20,4 +20,3 @@ const routes: Routes = {
 };
 
 const profilePath = routes.profile.path;
-const typo = routes.profle; // сейчас это не ошибка

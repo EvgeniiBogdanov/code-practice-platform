@@ -22,8 +22,7 @@ const createMachine = <S extends string>(
 
 const machine = createMachine(["idle", "loading", "success", "error"], "idle");
 machine.transition("loading");
-// machine.transition("done"); // Ошибка: "done" не входит в состояния
-// createMachine(["idle", "loading"], "idel"); // Ошибка: "idel" не входит в "idle" | "loading"
+// machine.transition("done") и createMachine([...], "idel") — ошибки типов (проверяются в tests.ts)
 
 // const-параметр выводит тип аргумента так, будто вызов записан с as const.
 const defineConfig = <const T extends object>(config: T): T => config;

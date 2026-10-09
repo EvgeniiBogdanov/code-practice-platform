@@ -13,6 +13,8 @@ export interface ProgressState {
   initProgress: () => Promise<void>;
   setTaskStatus: (taskId: string | number, status: TaskCompletionStatus) => Promise<void>;
   toggleChecklistItem: (key: string) => Promise<void>;
+  /** Idempotent: ticks the items and never unticks one that is already ticked. */
+  checkChecklistItems: (keys: readonly string[]) => Promise<void>;
   handleCopyCode: (id: string, codeText: string) => void;
   handleFullReset: (scope?: "section" | "all", taskIds?: Array<string | number>) => Promise<void>;
 }

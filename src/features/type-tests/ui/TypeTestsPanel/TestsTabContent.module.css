@@ -1,0 +1,77 @@
+.items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-3);
+}
+
+/* The progress bar stays at the top of the scrolling panel while the cases scroll under it. */
+.pin {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: var(--space-3);
+  background: var(--bg-deep);
+}
+
+/* The pin already provides the space above the first item. */
+.pin + .items {
+  padding-top: 0;
+}
+
+.note {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: inherit;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.link {
+  color: var(--color-info);
+  font-size: inherit;
+}
+
+.stale {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: inherit;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-0-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-0-5);
+  list-style: none;
+}
+
+.groupName {
+  padding: var(--space-2) var(--space-2) var(--space-0-5);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+}
+
+.group > .list {
+  padding-left: var(--space-3);
+}

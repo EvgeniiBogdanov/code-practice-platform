@@ -1,4 +1,6 @@
-export const REPOSITORY_URL = "https://github.com/EvgeniiBogdanov/code-practice-platform";
+import { REPOSITORY_URL } from "@/shared/config";
+
+export { REPOSITORY_URL };
 export const TELEGRAM_URL = "https://t.me/johnbeelow";
 export const CHANGELOG_URL = `${REPOSITORY_URL}/blob/main/CHANGELOG.md`;
 export const LICENSE_URL = `${REPOSITORY_URL}/blob/main/LICENSE.md`;

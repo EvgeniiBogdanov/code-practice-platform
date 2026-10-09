@@ -35,5 +35,5 @@ const form = FormBuilder.create()
   .field("subscribe", false)
   .build();
 
-form.phone; // должно быть ошибкой
-FormBuilder.create().field("email", "").field("email", ""); // должно быть ошибкой
+// form.phone и повторное field("email", "") должны быть ошибками
+// (проверка во вкладке tests.ts).

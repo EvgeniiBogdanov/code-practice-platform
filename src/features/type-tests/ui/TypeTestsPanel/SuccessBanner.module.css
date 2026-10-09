@@ -1,0 +1,27 @@
+.banner {
+  outline: none;
+}
+
+.animated {
+  animation: bannerIn var(--duration-medium) ease-out;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+@keyframes bannerIn {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-1));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated {
+    animation: none;
+  }
+}

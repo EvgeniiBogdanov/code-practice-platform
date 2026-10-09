@@ -25,6 +25,7 @@ import {
   ResizableSplitPane,
 } from "@/shared/ui";
 import { CodeEditor } from "@/features/code-editor";
+import { TypeTestsPanel, useTypeTests, useTypeTestsNavigation } from "@/features/type-tests";
 import { TaskHints } from "@/features/task-hints";
 import { JsConsole, ReactLivePreview } from "@/features/code-runner";
 import { EDITOR_PLACEHOLDER_HEIGHT } from "../../model/editorPlaceholder";
@@ -35,327 +36,386 @@ const MAX_CONSOLE_LOGS = 500;
 export interface CandidateTabProps {
   task?: Task;
   className?: string;
+  /** TypeScript tasks: the learner already marked the task as solved. */
+  isSolved?: boolean;
+  onMarkSolved?: () => void;
+  onNextTask?: () => void;
+  onShowReference?: () => void;
 }
 
-export const CandidateTab = memo(({ task, className }: CandidateTabProps): React.JSX.Element => {
-  const tabRef = useRef<HTMLDivElement>(null);
-  const initialFiles: TaskSourceFile[] = useMemo(() => {
-    if (!task) return [{ name: "main.js", code: "" }];
-    const rawFiles = getTaskFiles(task, "candidate");
-    return rawFiles.map((file, idx) => {
-      const cached = getUserSolutionSync(task.id, "cand", idx);
-      if (typeof cached === "string") {
-        return { ...file, code: cached };
-      }
-      return file;
-    });
-  }, [task]);
+export const CandidateTab = memo(
+  ({
+    task,
+    className,
+    isSolved,
+    onMarkSolved,
+    onNextTask,
+    onShowReference,
+  }: CandidateTabProps): React.JSX.Element => {
+    const tabRef = useRef<HTMLDivElement>(null);
+    const initialFiles: TaskSourceFile[] = useMemo(() => {
+      if (!task) return [{ name: "main.js", code: "" }];
+      const rawFiles = getTaskFiles(task, "candidate");
+      return rawFiles.map((file, idx) => {
+        const cached = getUserSolutionSync(task.id, "cand", idx);
+        if (typeof cached === "string") {
+          return { ...file, code: cached };
+        }
+        return file;
+      });
+    }, [task]);
 
-  const [activeFileIdx, setActiveFileIdx] = useState(0);
-  const [files, setFiles] = useState<TaskSourceFile[]>(initialFiles);
-  // The editor waits for the stored code: rendering defaults first made it jump once the
-  // async read finished (and flipped the quick-scroll button) whenever the sync cache missed.
-  const savedScope = `${task?.id ?? "none"}:${activeFileIdx}`;
-  const [loadedScope, setLoadedScope] = useState<string | null>(() =>
-    !task || canReadUserSolutionSync(task.id, "cand", activeFileIdx) ? savedScope : null
-  );
-  const isSavedReady = loadedScope === savedScope;
-  const activeFile = files[activeFileIdx] || files[0] || { name: "main.js", code: "" };
+    const [activeFileIdx, setActiveFileIdx] = useState(0);
+    const [files, setFiles] = useState<TaskSourceFile[]>(initialFiles);
+    // The editor waits for the stored code: rendering defaults first made it jump once the
+    // async read finished (and flipped the quick-scroll button) whenever the sync cache missed.
+    const savedScope = `${task?.id ?? "none"}:${activeFileIdx}`;
+    const [loadedScope, setLoadedScope] = useState<string | null>(() =>
+      !task || canReadUserSolutionSync(task.id, "cand", activeFileIdx) ? savedScope : null
+    );
+    const isSavedReady = loadedScope === savedScope;
+    const activeFile = files[activeFileIdx] || files[0] || { name: "main.js", code: "" };
 
-  const hasVisualComponent = useMemo(
-    () => (task ? hasTaskVisualComponent(task, files) : false),
-    [task, files]
-  );
+    const hasVisualComponent = useMemo(
+      () => (task ? hasTaskVisualComponent(task, files) : false),
+      [task, files]
+    );
 
-  const [viewMode, setViewMode] = useState<ViewMode>("code");
+    const [viewMode, setViewMode] = useState<ViewMode>("code");
 
-  // Reference ("Эталон") interface the fullscreen preview can switch to
-  const solutionFiles = useMemo(() => getTaskFiles(task, "solution"), [task]);
-  const hasSolutionReference = solutionFiles.some((file) => Boolean(file.code?.trim()));
-  const [previewTarget, setPreviewTarget] = useState<"candidate" | "solution">("candidate");
-  const isReferencePreview = previewTarget === "solution";
-  const previewFiles = isReferencePreview ? solutionFiles : files;
-  const previewActiveFileIdx = Math.min(activeFileIdx, Math.max(0, previewFiles.length - 1));
-  const previewCode = isReferencePreview
-    ? solutionFiles[previewActiveFileIdx]?.code || ""
-    : activeFile.code;
+    // Reference ("Эталон") interface the fullscreen preview can switch to
+    const solutionFiles = useMemo(() => getTaskFiles(task, "solution"), [task]);
+    const hasSolutionReference = solutionFiles.some((file) => Boolean(file.code?.trim()));
+    const [previewTarget, setPreviewTarget] = useState<"candidate" | "solution">("candidate");
+    const isReferencePreview = previewTarget === "solution";
+    const previewFiles = isReferencePreview ? solutionFiles : files;
+    const previewActiveFileIdx = Math.min(activeFileIdx, Math.max(0, previewFiles.length - 1));
+    const previewCode = isReferencePreview
+      ? solutionFiles[previewActiveFileIdx]?.code || ""
+      : activeFile.code;
 
-  // JS Runner state
-  const [consoleLogs, setConsoleLogs] = useState<NodeRunnerLogEntry[]>([]);
-  const [isRunning, setIsRunning] = useState(false);
-  const [lastExecution, setLastExecution] = useState<{
-    durationMs?: number;
-    exitCode?: number;
-  } | null>(null);
+    // JS Runner state
+    const [consoleLogs, setConsoleLogs] = useState<NodeRunnerLogEntry[]>([]);
+    const [isRunning, setIsRunning] = useState(false);
+    const [lastExecution, setLastExecution] = useState<{
+      durationMs?: number;
+      exitCode?: number;
+    } | null>(null);
 
-  // Reset when task changes
-  useEffect(() => {
-    if (!task) return;
-    setActiveFileIdx(0);
-    setFiles(initialFiles);
-    setViewMode("code");
-    setPreviewTarget("candidate");
-    setConsoleLogs([]);
-    setIsRunning(false);
-    setLastExecution(null);
-    clearRunningTimers();
-  }, [task?.id, initialFiles, task]);
+    // Reset when task changes
+    useEffect(() => {
+      if (!task) return;
+      setActiveFileIdx(0);
+      setFiles(initialFiles);
+      setViewMode("code");
+      setPreviewTarget("candidate");
+      setConsoleLogs([]);
+      setIsRunning(false);
+      setLastExecution(null);
+      clearRunningTimers();
+    }, [task?.id, initialFiles, task]);
 
-  // Load saved solution from storage on task mount / file select / window focus
-  useEffect(() => {
-    if (!task) return;
-    const currentTaskId = task.id;
-    let isMounted = true;
-    async function loadSaved(): Promise<void> {
-      const saved = await getUserSolution(currentTaskId, "cand", activeFileIdx);
-      if (!isMounted) return;
-      setLoadedScope(`${currentTaskId}:${activeFileIdx}`);
-      if (typeof saved === "string") {
-        setFiles((prev) => {
-          const next = [...prev];
-          if (next[activeFileIdx]) {
-            next[activeFileIdx] = { ...next[activeFileIdx], code: saved };
-          }
-          return next;
-        });
-      } else {
-        const defaults = getTaskFiles(task, "candidate");
-        const defaultCode = defaults[activeFileIdx]?.code || "";
-        setFiles((prev) => {
-          if (prev[activeFileIdx]?.code === defaultCode) return prev;
-          const next = [...prev];
-          if (next[activeFileIdx]) {
-            next[activeFileIdx] = { ...next[activeFileIdx], code: defaultCode };
-          }
-          return next;
-        });
-      }
-    }
-    loadSaved();
-
-    const handleVisibilityOrFocus = () => {
-      if (typeof document !== "undefined" && document.visibilityState === "visible") {
-        loadSaved();
-      }
-    };
-
-    window.addEventListener("focus", handleVisibilityOrFocus);
-    document.addEventListener("visibilitychange", handleVisibilityOrFocus);
-
-    return () => {
-      isMounted = false;
-      window.removeEventListener("focus", handleVisibilityOrFocus);
-      document.removeEventListener("visibilitychange", handleVisibilityOrFocus);
-    };
-  }, [task, activeFileIdx]);
-
-  // Listen for solution clearing (e.g. from settings reset)
-  useEffect(() => {
-    if (!task) return;
-    const unsubscribe = subscribeToSyncEvents((event) => {
-      if (event.type === "SOLUTIONS_CLEARED") {
-        const isCurrentTaskCleared =
-          event.all || (Array.isArray(event.taskIds) && event.taskIds.includes(String(task.id)));
-        if (isCurrentTaskCleared) {
+    // Load saved solution from storage on task mount / file select / window focus
+    useEffect(() => {
+      if (!task) return;
+      const currentTaskId = task.id;
+      let isMounted = true;
+      async function loadSaved(): Promise<void> {
+        const saved = await getUserSolution(currentTaskId, "cand", activeFileIdx);
+        if (!isMounted) return;
+        setLoadedScope(`${currentTaskId}:${activeFileIdx}`);
+        if (typeof saved === "string") {
+          setFiles((prev) => {
+            const next = [...prev];
+            if (next[activeFileIdx]) {
+              next[activeFileIdx] = { ...next[activeFileIdx], code: saved };
+            }
+            return next;
+          });
+        } else {
           const defaults = getTaskFiles(task, "candidate");
-          setFiles(defaults);
-          setConsoleLogs([]);
-          setIsRunning(false);
-          setLastExecution(null);
-          clearRunningTimers();
+          const defaultCode = defaults[activeFileIdx]?.code || "";
+          setFiles((prev) => {
+            if (prev[activeFileIdx]?.code === defaultCode) return prev;
+            const next = [...prev];
+            if (next[activeFileIdx]) {
+              next[activeFileIdx] = { ...next[activeFileIdx], code: defaultCode };
+            }
+            return next;
+          });
         }
       }
-    });
-    return () => {
-      unsubscribe();
-    };
-  }, [task]);
+      loadSaved();
 
-  // Listen for console logs from sandbox iframe
-  useEffect(() => {
-    const handleMessage = (e: MessageEvent) => {
-      // Both editor tabs stay mounted: only logs of this tab's own sandbox belong here.
-      if (!isMessageFromFrameIn(tabRef.current, e)) return;
-      if (e.data && e.data.type === "SANDBOX_CONSOLE") {
-        const text = String(e.data.text ?? "");
-        const logType =
-          e.data.level === "error" ? "error" : e.data.level === "warn" ? "warn" : "stdout";
-        setConsoleLogs((prev) => [
-          ...prev.slice(-(MAX_CONSOLE_LOGS - 1)),
-          {
-            id: Date.now() + Math.random(),
-            type: logType,
-            text,
-            args: [{ type: "string", text }],
-            timestamp: Date.now(),
-          },
-        ]);
-      }
-    };
-    window.addEventListener("message", handleMessage);
-    return () => window.removeEventListener("message", handleMessage);
-  }, []);
+      const handleVisibilityOrFocus = () => {
+        if (typeof document !== "undefined" && document.visibilityState === "visible") {
+          loadSaved();
+        }
+      };
 
-  const handleCodeChange = (newCode: string) => {
-    setFiles((prev) => {
-      const next = [...prev];
-      if (next[activeFileIdx]) {
-        next[activeFileIdx] = { ...next[activeFileIdx], code: newCode };
-      }
-      return next;
-    });
-    if (task) {
-      saveUserSolution(task.id, "cand", activeFileIdx, newCode);
-    }
-  };
+      window.addEventListener("focus", handleVisibilityOrFocus);
+      document.addEventListener("visibilitychange", handleVisibilityOrFocus);
 
-  const handleFilesChange = (renamed: Array<{ name: string; code: string }>): void => {
-    setFiles((prev) =>
-      prev.map((file, index) => ({ ...file, code: renamed[index]?.code ?? file.code }))
-    );
-    if (task) {
-      renamed.forEach((file, index) => {
-        if (file.code !== files[index]?.code) saveUserSolution(task.id, "cand", index, file.code);
+      return () => {
+        isMounted = false;
+        window.removeEventListener("focus", handleVisibilityOrFocus);
+        document.removeEventListener("visibilitychange", handleVisibilityOrFocus);
+      };
+    }, [task, activeFileIdx]);
+
+    // Listen for solution clearing (e.g. from settings reset)
+    useEffect(() => {
+      if (!task) return;
+      const unsubscribe = subscribeToSyncEvents((event) => {
+        if (event.type === "SOLUTIONS_CLEARED") {
+          const isCurrentTaskCleared =
+            event.all || (Array.isArray(event.taskIds) && event.taskIds.includes(String(task.id)));
+          if (isCurrentTaskCleared) {
+            const defaults = getTaskFiles(task, "candidate");
+            setFiles(defaults);
+            setConsoleLogs([]);
+            setIsRunning(false);
+            setLastExecution(null);
+            clearRunningTimers();
+          }
+        }
       });
-    }
-  };
+      return () => {
+        unsubscribe();
+      };
+    }, [task]);
 
-  const handleResetCode = async (): Promise<void> => {
-    if (!task) return;
-    await deleteUserSolution(task.id, "cand", activeFileIdx);
-    const defaults = getTaskFiles(task, "candidate");
-    handleCodeChange(defaults[activeFileIdx]?.code || "");
-  };
+    // Listen for console logs from sandbox iframe
+    useEffect(() => {
+      const handleMessage = (e: MessageEvent) => {
+        // Both editor tabs stay mounted: only logs of this tab's own sandbox belong here.
+        if (!isMessageFromFrameIn(tabRef.current, e)) return;
+        if (e.data && e.data.type === "SANDBOX_CONSOLE") {
+          const text = String(e.data.text ?? "");
+          const logType =
+            e.data.level === "error" ? "error" : e.data.level === "warn" ? "warn" : "stdout";
+          setConsoleLogs((prev) => [
+            ...prev.slice(-(MAX_CONSOLE_LOGS - 1)),
+            {
+              id: Date.now() + Math.random(),
+              type: logType,
+              text,
+              args: [{ type: "string", text }],
+              timestamp: Date.now(),
+            },
+          ]);
+        }
+      };
+      window.addEventListener("message", handleMessage);
+      return () => window.removeEventListener("message", handleMessage);
+    }, []);
 
-  const handleRunCode = async (codeToExecute?: string): Promise<void> => {
-    if (isRunning) return;
-    setIsRunning(true);
-    setConsoleLogs([]);
-
-    const codeToRun = codeToExecute !== undefined ? codeToExecute : activeFile?.code || "";
-    const result = await runNodeJsCode(codeToRun, {
-      filename: activeFile.name,
-      onLog: (_newLog, allLogs) => setConsoleLogs(allLogs),
-    });
-
-    setConsoleLogs(result.logs);
-    setLastExecution({ durationMs: result.durationMs, exitCode: result.exitCode });
-    setIsRunning(false);
-  };
-
-  const handleStopCode = (): void => {
-    clearRunningTimers();
-    setIsRunning(false);
-    setLastExecution({
-      durationMs: 0,
-      exitCode: 130,
-    });
-  };
-
-  const handleClearConsole = (): void => {
-    setConsoleLogs([]);
-    setLastExecution(null);
-    clearRunningTimers();
-    setIsRunning(false);
-  };
-
-  // Cleanup timers on unmount
-  useEffect(() => {
-    return () => {
-      clearRunningTimers();
+    const handleCodeChange = (newCode: string) => {
+      setFiles((prev) => {
+        const next = [...prev];
+        if (next[activeFileIdx]) {
+          next[activeFileIdx] = { ...next[activeFileIdx], code: newCode };
+        }
+        return next;
+      });
+      if (task) {
+        saveUserSolution(task.id, "cand", activeFileIdx, newCode);
+      }
     };
-  }, []);
 
-  return (
-    <div ref={tabRef} className={clsx(styles.container, className)}>
-      {task && <TaskHints key={task.id} section={task.section} taskId={task.id} />}
+    const handleFilesChange = (renamed: Array<{ name: string; code: string }>): void => {
+      setFiles((prev) =>
+        prev.map((file, index) => ({ ...file, code: renamed[index]?.code ?? file.code }))
+      );
+      if (task) {
+        renamed.forEach((file, index) => {
+          if (file.code !== files[index]?.code) saveUserSolution(task.id, "cand", index, file.code);
+        });
+      }
+    };
 
-      <ViewModeFrame mode={viewMode} onChange={setViewMode} hasToggle={hasVisualComponent}>
-        <ErrorBoundary>
-          {hasVisualComponent && viewMode === "preview" ? (
-            <ReactLivePreview
-              task={task}
-              files={files}
-              activeFileIdx={activeFileIdx}
-              currentCode={activeFile?.code || ""}
-              storagePrefix="cand"
-            />
-          ) : (
-            <>
-              {isSavedReady ? (
-                <UiFullscreenPanel label="Редактор кода">
-                  {({ isFullscreen, isTransitioning, toggleFullscreen }) => (
-                    <ResizableSplitPane
-                      layout={isFullscreen ? (hasVisualComponent ? "split" : "single") : "stack"}
-                      className={clsx(
-                        styles.editorWorkspace,
-                        isFullscreen && styles.fullscreenWorkspace
-                      )}
-                      left={
-                        <CodeEditor
-                          key={`cand_${task?.section ?? "none"}_${task?.id ?? "none"}_${activeFileIdx}`}
-                          code={activeFile?.code || ""}
-                          onChange={handleCodeChange}
-                          onFilesChange={handleFilesChange}
-                          onRun={() => handleRunCode()}
-                          onReset={handleResetCode}
-                          files={files}
-                          activeFileIdx={activeFileIdx}
-                          onFileSelect={setActiveFileIdx}
-                          filepath={activeFile.name}
-                          historyScope={
-                            task
-                              ? {
-                                  taskKey: `${task.section}:${task.id}`,
-                                  documentKey: `candidate:${activeFileIdx}`,
-                                }
-                              : undefined
-                          }
-                          readOnly={!task}
-                          isFullscreen={isFullscreen}
-                          fillHeight={isFullscreen}
-                          onToggleFullscreen={toggleFullscreen}
-                          isFullscreenTransitioning={isTransitioning}
-                          bottomConsole={
-                            <JsConsole
-                              logs={consoleLogs}
-                              isRunning={isRunning}
-                              lastExecution={lastExecution}
-                              filename={activeFile.name}
-                              onRun={() => handleRunCode()}
-                              onStop={handleStopCode}
-                              onClear={handleClearConsole}
-                            />
-                          }
-                        />
-                      }
-                      right={
-                        isFullscreen && hasVisualComponent ? (
-                          <ReactLivePreview
-                            task={task}
-                            files={previewFiles}
-                            activeFileIdx={previewActiveFileIdx}
-                            currentCode={previewCode}
-                            storagePrefix={isReferencePreview ? "sol" : "cand"}
-                            fullHeight
-                            previewTarget={previewTarget}
-                            onPreviewTargetChange={setPreviewTarget}
-                            hasSolutionReference={hasSolutionReference}
+    const handleResetCode = async (): Promise<void> => {
+      if (!task) return;
+      await deleteUserSolution(task.id, "cand", activeFileIdx);
+      const defaults = getTaskFiles(task, "candidate");
+      handleCodeChange(defaults[activeFileIdx]?.code || "");
+      typeTests.reset();
+    };
+
+    const handleRunCode = async (codeToExecute?: string): Promise<void> => {
+      if (isRunning) return;
+      setIsRunning(true);
+      setConsoleLogs([]);
+
+      const codeToRun = codeToExecute !== undefined ? codeToExecute : activeFile?.code || "";
+      const result = await runNodeJsCode(codeToRun, {
+        filename: activeFile.name,
+        onLog: (_newLog, allLogs) => setConsoleLogs(allLogs),
+      });
+
+      setConsoleLogs(result.logs);
+      setLastExecution({ durationMs: result.durationMs, exitCode: result.exitCode });
+      setIsRunning(false);
+    };
+
+    const handleStopCode = (): void => {
+      clearRunningTimers();
+      setIsRunning(false);
+      setLastExecution({
+        durationMs: 0,
+        exitCode: 130,
+      });
+    };
+
+    const handleClearConsole = (): void => {
+      setConsoleLogs([]);
+      setLastExecution(null);
+      clearRunningTimers();
+      setIsRunning(false);
+    };
+
+    // Cleanup timers on unmount
+    useEffect(() => {
+      return () => {
+        clearRunningTimers();
+      };
+    }, []);
+
+    const hasTypeTests = Boolean(task?.rawTests);
+    const typeTests = useTypeTests({
+      enabled: hasTypeTests,
+      taskId: String(task?.id ?? ""),
+      code: activeFile.code ?? "",
+      filepath: activeFile.name ?? "solution.ts",
+      tests: task?.rawTests ?? "",
+      testsHash: task?.testsHash ?? "",
+      updatesChecklist: true,
+      checklistTests: task?.checklistTests,
+    });
+    const { showCompileProblem } = useTypeTestsNavigation(activeFile.name ?? "");
+    const hintsRef = useRef<HTMLDivElement>(null);
+    const handleRequestHint = (): void => {
+      const hints = hintsRef.current;
+      if (!hints) return;
+      const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+      hints.scrollIntoView?.({ block: "center", behavior: reduceMotion ? "auto" : "smooth" });
+      hints.querySelector<HTMLElement>("button")?.focus({ preventScroll: true });
+    };
+
+    const consoleNode = (
+      <JsConsole
+        logs={consoleLogs}
+        isRunning={isRunning}
+        lastExecution={lastExecution}
+        filename={activeFile.name}
+        onRun={() => handleRunCode()}
+        onStop={handleStopCode}
+        onClear={handleClearConsole}
+      />
+    );
+
+    return (
+      <div ref={tabRef} className={clsx(styles.container, className)}>
+        {task && (
+          <div ref={hintsRef}>
+            <TaskHints key={task.id} section={task.section} taskId={task.id} />
+          </div>
+        )}
+
+        <ViewModeFrame mode={viewMode} onChange={setViewMode} hasToggle={hasVisualComponent}>
+          <ErrorBoundary>
+            {hasVisualComponent && viewMode === "preview" ? (
+              <ReactLivePreview
+                task={task}
+                files={files}
+                activeFileIdx={activeFileIdx}
+                currentCode={activeFile?.code || ""}
+                storagePrefix="cand"
+              />
+            ) : (
+              <>
+                {isSavedReady ? (
+                  <UiFullscreenPanel label="Редактор кода">
+                    {({ isFullscreen, isTransitioning, toggleFullscreen }) => (
+                      <ResizableSplitPane
+                        layout={isFullscreen ? (hasVisualComponent ? "split" : "single") : "stack"}
+                        className={clsx(
+                          styles.editorWorkspace,
+                          isFullscreen && styles.fullscreenWorkspace
+                        )}
+                        left={
+                          <CodeEditor
+                            key={`cand_${task?.section ?? "none"}_${task?.id ?? "none"}_${activeFileIdx}`}
+                            code={activeFile?.code || ""}
+                            onChange={handleCodeChange}
+                            onFilesChange={handleFilesChange}
+                            onRun={() => (hasTypeTests ? typeTests.run() : handleRunCode())}
+                            onReset={handleResetCode}
+                            files={files}
+                            activeFileIdx={activeFileIdx}
+                            onFileSelect={setActiveFileIdx}
+                            filepath={activeFile.name}
+                            historyScope={
+                              task
+                                ? {
+                                    taskKey: `${task.section}:${task.id}`,
+                                    documentKey: `candidate:${activeFileIdx}`,
+                                  }
+                                : undefined
+                            }
+                            readOnly={!task}
+                            isFullscreen={isFullscreen}
+                            fillHeight={isFullscreen}
+                            onToggleFullscreen={toggleFullscreen}
+                            isFullscreenTransitioning={isTransitioning}
+                            bottomConsole={
+                              hasTypeTests && task?.rawTests ? (
+                                <TypeTestsPanel
+                                  taskId={String(task.id)}
+                                  controller={typeTests}
+                                  tests={task.rawTests}
+                                  testsHash={task.testsHash ?? ""}
+                                  isSolved={isSolved}
+                                  onMarkSolved={onMarkSolved}
+                                  onShowReference={onShowReference}
+                                  onNextTask={onNextTask}
+                                  onRequestHint={handleRequestHint}
+                                  onShowCompileProblem={showCompileProblem}
+                                />
+                              ) : (
+                                consoleNode
+                              )
+                            }
                           />
-                        ) : null
-                      }
-                    />
-                  )}
-                </UiFullscreenPanel>
-              ) : (
-                <UiSkeleton height={EDITOR_PLACEHOLDER_HEIGHT} />
-              )}
-            </>
-          )}
-        </ErrorBoundary>
-      </ViewModeFrame>
-    </div>
-  );
-});
+                        }
+                        right={
+                          isFullscreen && hasVisualComponent ? (
+                            <ReactLivePreview
+                              task={task}
+                              files={previewFiles}
+                              activeFileIdx={previewActiveFileIdx}
+                              currentCode={previewCode}
+                              storagePrefix={isReferencePreview ? "sol" : "cand"}
+                              fullHeight
+                              previewTarget={previewTarget}
+                              onPreviewTargetChange={setPreviewTarget}
+                              hasSolutionReference={hasSolutionReference}
+                            />
+                          ) : null
+                        }
+                      />
+                    )}
+                  </UiFullscreenPanel>
+                ) : (
+                  <UiSkeleton height={EDITOR_PLACEHOLDER_HEIGHT} />
+                )}
+              </>
+            )}
+          </ErrorBoundary>
+        </ViewModeFrame>
+      </div>
+    );
+  }
+);
 
 CandidateTab.displayName = "CandidateTab";
