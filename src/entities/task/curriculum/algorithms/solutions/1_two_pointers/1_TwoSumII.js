@@ -22,6 +22,6 @@ const twoSum = (numbers, target) => {
 };
 
 // Пример вызова:
-console.log(twoSum([2, 7, 11, 15], 9)); // [1, 2]
-console.log(twoSum([2, 3, 4], 6));      // [1, 3]
-console.log(twoSum([-1, 0], -1));       // [1, 2]
+console.log(twoSum([1, 3, 4, 6, 9], 13));  // [3, 5]
+console.log(twoSum([-5, -2, 0, 3, 8], 1)); // [2, 4]
+console.log(twoSum([2, 2, 5], 4));         // [1, 2]

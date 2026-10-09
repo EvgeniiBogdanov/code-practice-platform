@@ -25,6 +25,7 @@ const longestPalindrome = (s) => {
 };
 
 // Пример вызова:
-console.log(longestPalindrome("babad")); // "bab"
-console.log(longestPalindrome("cbbd"));  // "bb"
-console.log(longestPalindrome("a"));     // "a"
+console.log(longestPalindrome("bananas")); // "anana"
+console.log(longestPalindrome("xyzzyq"));  // "yzzy"
+console.log(longestPalindrome("noon"));    // "noon"
+console.log(longestPalindrome("abcd"));    // "a"

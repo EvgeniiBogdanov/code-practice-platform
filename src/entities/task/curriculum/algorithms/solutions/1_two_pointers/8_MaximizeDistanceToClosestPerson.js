@@ -17,6 +17,7 @@ const maxDistToClosest = (seats) => {
 };
 
 // Пример вызова:
-console.log(maxDistToClosest([1, 0, 0, 0, 1, 0, 1])); // 2
-console.log(maxDistToClosest([1, 0, 0, 0]));          // 3
-console.log(maxDistToClosest([0, 1]));                // 1
+console.log(maxDistToClosest([1, 0, 0, 0, 0, 0, 1])); // 3
+console.log(maxDistToClosest([0, 0, 0, 1, 0]));       // 3
+console.log(maxDistToClosest([1, 0, 1, 0, 0]));       // 2
+console.log(maxDistToClosest([1, 0]));                // 1

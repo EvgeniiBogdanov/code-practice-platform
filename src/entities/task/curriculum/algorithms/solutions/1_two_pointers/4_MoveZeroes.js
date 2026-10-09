@@ -14,7 +14,7 @@ const moveZeroes = (nums) => {
 };
 
 // Пример вызова:
-console.log(moveZeroes([0, 1, 0, 3, 12])); // [1, 3, 12, 0, 0]
-console.log(moveZeroes([0])); // [0]
-console.log(moveZeroes([1, 2, 3])); // [1, 2, 3]
-console.log(moveZeroes([0, 0, 1])); // [1, 0, 0]
+console.log(moveZeroes([4, 0, 5, 0, 0, 7])); // [4, 5, 7, 0, 0, 0]
+console.log(moveZeroes([0, 0, 9]));          // [9, 0, 0]
+console.log(moveZeroes([2, 8]));             // [2, 8]
+console.log(moveZeroes([0]));                // [0]

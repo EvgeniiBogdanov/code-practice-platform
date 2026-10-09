@@ -30,8 +30,8 @@ const expandTemplate = (s, left, right) => {
 и справа налево.
 
 ```
-"babad" -> "bab"   (или "aba")
-"cbbd"  -> "bb"
+"bananas" -> "anana"
+"xyzzyq"  -> "yzzy"
 ```
 
 ## 3. Наивное решение (для понимания)
