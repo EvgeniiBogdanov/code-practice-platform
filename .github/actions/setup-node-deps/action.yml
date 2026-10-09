@@ -1,0 +1,14 @@
+name: Setup Node and dependencies
+description: Installs the Node version from .nvmrc with the npm cache and runs `npm ci`.
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      with:
+        node-version-file: .nvmrc
+        cache: npm
+
+    - name: Install dependencies
+      shell: bash
+      run: npm ci

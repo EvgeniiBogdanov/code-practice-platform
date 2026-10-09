@@ -14,6 +14,7 @@
 <br />
 
 [![CI](https://img.shields.io/github/actions/workflow/status/EvgeniiBogdanov/code-practice-platform/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/EvgeniiBogdanov/code-practice-platform/actions/workflows/ci.yml)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/EvgeniiBogdanov/code-practice-platform/badge?style=flat-square)](https://scorecard.dev/viewer/?uri=github.com/EvgeniiBogdanov/code-practice-platform)
 [![Version](https://img.shields.io/badge/version-2.4.28-black?style=flat-square)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-source--available-black?style=flat-square)](LICENSE.md)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=white)](https://react.dev)
@@ -75,6 +76,8 @@ npm run dev
 | `npm run format:check`  | Проверка форматирования Prettier |
 | `npm run test:unit`     | Все тесты (Vitest)               |
 | `npm run test:coverage` | Тесты с отчётом о покрытии       |
+| `npm run test:e2e`      | E2E и a11y (Playwright + axe)    |
+| `npm run size`          | Бюджет бандла (после `build`)    |
 
 ## Технологии
 
@@ -126,6 +129,8 @@ Issues и pull request'ы приветствуются. Перед отправ�
 ```bash
 npm run typecheck && npm run lint && npm run format:check && npm run test:unit
 ```
+
+CI в PR дополнительно проверяет порог покрытия, бюджет бандла (`size-limit`), E2E и доступность на собранном приложении (Playwright + axe), Lighthouse и новые зависимости. В `main` попадают только squash-merge'ем PR с зелёным `CI OK`; заголовок PR должен следовать [Conventional Commits](https://www.conventionalcommits.org/ru/v1.0.0/) — он становится сообщением коммита.
 
 Шаблон описания PR лежит в [`.github/PULL_REQUEST_TEMPLATE.md`](.github/PULL_REQUEST_TEMPLATE.md). История изменений — в [CHANGELOG.md](CHANGELOG.md).
 

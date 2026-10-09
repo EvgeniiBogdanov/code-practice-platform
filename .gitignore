@@ -79,3 +79,11 @@ _plan/
 # LLM
 .claude/
 CLAUDE.md
+
+# E2E / Lighthouse / Vitest shard reports
+playwright-report/
+test-results/
+blob-report/
+e2e/.auth/
+.vitest-reports/
+.lighthouseci/

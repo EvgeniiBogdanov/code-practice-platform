@@ -1,0 +1,56 @@
+[
+  {
+    "name": "App shell JS (entry + runtime + React)",
+    "path": [
+      "dist/assets/index-*.js",
+      "dist/assets/rolldown-runtime-*.js",
+      "dist/assets/vendor-framework-*.js"
+    ],
+    "limit": "63 KB"
+  },
+  {
+    "name": "Task explanations (preloaded on first paint)",
+    "path": "dist/assets/task-explanations-*.js",
+    "limit": "240 KB"
+  },
+  {
+    "name": "Router",
+    "path": "dist/assets/vendor-router-*.js",
+    "limit": "36 KB"
+  },
+  {
+    "name": "All CSS",
+    "path": "dist/assets/*.css",
+    "limit": "74 KB"
+  },
+  {
+    "name": "All JS",
+    "path": "dist/assets/*.js",
+    "limit": "4130 KB"
+  },
+  {
+    "name": "Lazy: Three.js",
+    "path": "dist/assets/vendor-three-*.js",
+    "limit": "120 KB"
+  },
+  {
+    "name": "Lazy: Prettier",
+    "path": "dist/assets/vendor-prettier-*.js",
+    "limit": "420 KB"
+  },
+  {
+    "name": "Lazy: Sucrase",
+    "path": "dist/assets/vendor-compiler-*.js",
+    "limit": "40 KB"
+  },
+  {
+    "name": "Lazy: xterm",
+    "path": "dist/assets/vendor-xterm-*.js",
+    "limit": "72 KB"
+  },
+  {
+    "name": "Lazy: Markdown",
+    "path": "dist/assets/vendor-markdown-*.js",
+    "limit": "25 KB"
+  }
+]

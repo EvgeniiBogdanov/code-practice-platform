@@ -18,6 +18,10 @@ export default tseslint.config(
       "**/scratch/**",
       "**/src/entities/task/curriculum/**",
       "**/src/shared/data/**",
+      "**/coverage/**",
+      "**/playwright-report/**",
+      "**/test-results/**",
+      ".claude/**",
     ],
   },
 
@@ -29,7 +33,7 @@ export default tseslint.config(
 
   // 4. Configuration for Node / Build files
   {
-    files: ["*.config.{js,ts}", "vite.config.js", "scripts/**/*.mjs"],
+    files: ["*.config.{js,ts}", "vite.config.js", "scripts/**/*.mjs", "e2e/**/*.ts"],
     languageOptions: {
       globals: {
         ...globals.node,

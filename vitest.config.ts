@@ -23,7 +23,15 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       reportsDirectory: "./coverage",
-      reporter: ["text", "html", "json-summary"],
+      reporter: ["text", "html", "json-summary", "json"],
+      reportOnFailure: true,
+      // Floor at the current level: raise when coverage grows, never lower.
+      thresholds: {
+        lines: 64,
+        statements: 63,
+        functions: 61,
+        branches: 57,
+      },
       include: ["src/**"],
       exclude: [
         "src/routeTree.gen.ts",
