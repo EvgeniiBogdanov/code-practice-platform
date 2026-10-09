@@ -21,16 +21,16 @@ class LRUCache {
 }
 
 // Пример вызова:
-const cache = new LRUCache(2);
-cache.put(1, "один");
-cache.put(2, "два");
-console.log(cache.get(1)); // "один" — теперь ключ 1 самый свежий
-cache.put(3, "три"); // вытесняет ключ 2
-console.log(cache.get(2)); // -1
-cache.put(4, "четыре"); // вытесняет ключ 1
-console.log(cache.get(1)); // -1
-console.log(cache.get(3)); // "три"
-console.log(cache.get(4)); // "четыре"
-cache.put(3, "три!"); // обновление существующего ключа не вытесняет другие
-console.log(cache.get(3)); // "три!"
-console.log(cache.get(4)); // "четыре"
+const cache = new LRUCache(3);
+cache.put("a", 1);
+cache.put("b", 2);
+cache.put("c", 3);
+console.log(cache.get("a")); // 1
+cache.put("d", 4); // вытесняет "b" — к нему дольше всего не обращались
+console.log(cache.get("b")); // -1
+cache.put("c", 30); // обновление существующего ключа ничего не вытесняет
+cache.put("e", 5); // вытесняет "a"
+console.log(cache.get("a")); // -1
+console.log(cache.get("c")); // 30
+console.log(cache.get("d")); // 4
+console.log(cache.get("e")); // 5

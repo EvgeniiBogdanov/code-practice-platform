@@ -15,8 +15,7 @@ export const treeDefinitions = {
     complexity: "O(n) время · O(h) стек вызовов",
     inputKind: "tree",
     inputLabel: "Дерево JSON",
-    inputHint:
-      "Level-order: [3,9,20,null,null,15,7]. null — отсутствующий потомок; до 31 значения.",
+    inputHint: "Level-order: [6,2,9,1,4,7,12]. null — отсутствующий потомок; до 31 значения.",
     examples: [
       {
         id: "task-1",
@@ -39,8 +38,7 @@ export const treeDefinitions = {
     complexity: "O(n) время · O(h) стек вызовов",
     inputKind: "tree",
     inputLabel: "Дерево JSON",
-    inputHint:
-      "Level-order: [3,9,20,null,null,15,7]. null — отсутствующий потомок; до 31 значения.",
+    inputHint: "Level-order: [6,2,9,1,4,7,12]. null — отсутствующий потомок; до 31 значения.",
     examples: [
       { id: "task-1", label: "Пример 1: [5, 3, 8, 1, 4]", input: "[5,3,8,1,4]", isTask: true },
       {
@@ -51,8 +49,8 @@ export const treeDefinitions = {
       },
       {
         id: "branching",
-        label: "Ветвящееся дерево [3, 9, 20, null, null, 15, 7]",
-        input: "[3,9,20,null,null,15,7]",
+        label: "Ветвящееся дерево [6, 2, 9, 1, 4, 7, 12]",
+        input: "[6,2,9,1,4,7,12]",
       },
       {
         id: "chain",
@@ -69,8 +67,7 @@ export const treeDefinitions = {
     complexity: "O(n) время · O(h) стек вызовов",
     inputKind: "tree",
     inputLabel: "Дерево JSON",
-    inputHint:
-      "Level-order: [3,9,20,null,null,15,7]. null — отсутствующий потомок; до 31 значения.",
+    inputHint: "Level-order: [6,2,9,1,4,7,12]. null — отсутствующий потомок; до 31 значения.",
     examples: [
       {
         id: "task-1",
@@ -81,8 +78,8 @@ export const treeDefinitions = {
       { id: "task-2", label: "Пример 2: [7, 3] (диаметр 1)", input: "[7,3]", isTask: true },
       {
         id: "branching",
-        label: "Ветвящееся дерево [3, 9, 20, null, null, 15, 7]",
-        input: "[3,9,20,null,null,15,7]",
+        label: "Ветвящееся дерево [6, 2, 9, 1, 4, 7, 12]",
+        input: "[6,2,9,1,4,7,12]",
       },
     ],
     build: buildDiameterTrace,
@@ -93,8 +90,7 @@ export const treeDefinitions = {
     complexity: "O(n) время · O(h) стек вызовов",
     inputKind: "tree",
     inputLabel: "Дерево JSON",
-    inputHint:
-      "Level-order: [3,9,20,null,null,15,7]. null — отсутствующий потомок; до 31 значения.",
+    inputHint: "Level-order: [6,2,9,1,4,7,12]. null — отсутствующий потомок; до 31 значения.",
     examples: [
       {
         id: "task-1",
@@ -110,8 +106,8 @@ export const treeDefinitions = {
       },
       {
         id: "branching",
-        label: "Ветвящееся дерево [3, 9, 20, null, null, 15, 7]",
-        input: "[3,9,20,null,null,15,7]",
+        label: "Ветвящееся дерево [6, 2, 9, 1, 4, 7, 12]",
+        input: "[6,2,9,1,4,7,12]",
       },
     ],
     build: buildPreorderTrace,
@@ -157,8 +153,7 @@ export const treeDefinitions = {
     complexity: "O(n) время · O(w) очередь",
     inputKind: "tree",
     inputLabel: "Дерево JSON",
-    inputHint:
-      "Level-order: [3,9,20,null,null,15,7]. null — отсутствующий потомок; до 31 значения.",
+    inputHint: "Level-order: [6,2,9,1,4,7,12]. null — отсутствующий потомок; до 31 значения.",
     examples: [
       {
         id: "task-1",
@@ -188,8 +183,7 @@ export const treeDefinitions = {
     complexity: "O(n) время · O(w) очередь",
     inputKind: "tree",
     inputLabel: "Дерево JSON",
-    inputHint:
-      "Level-order: [3,9,20,null,null,15,7]. null — отсутствующий потомок; до 31 значения.",
+    inputHint: "Level-order: [6,2,9,1,4,7,12]. null — отсутствующий потомок; до 31 значения.",
     examples: [
       {
         id: "task-1",

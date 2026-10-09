@@ -8,7 +8,7 @@
 4. [Fixed Size Window (окно фиксированного размера)](#fixed-size-window-окно-фиксированного-размера)
 5. [Dynamic Size Window (окно переменного размера)](#dynamic-size-window-окно-переменного-размера)
 6. [Универсальный шаблон кода](#универсальный-шаблон-кода)
-7. [Разбор реальной задачи с LeetCode](#разбор-реальной-задачи-с-leetcode)
+7. [Разбор задачи: подстрока без повторов](#разбор-задачи-подстрока-без-повторов)
 8. [Подводные камни и типичные ошибки](#подводные-камни-и-типичные-ошибки)
 9. [Как понять, что перед вами задача на Sliding Window](#как-понять-что-перед-вами-задача-на-sliding-window)
 10. [Сложность алгоритма](#сложность-алгоритма)
@@ -262,16 +262,13 @@ const slidingWindowTemplate = (arr) => {
 `windowState` (сумма, счётчик символов в `Map`, набор уникальных символов
 в `Set`, и т.д.) и какое условие проверяем в `while`.
 
-## Разбор реальной задачи с LeetCode
+## Разбор задачи: подстрока без повторов
 
-**Задача:** [3. Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
-— найти длину самой длинной подстроки без повторяющихся символов.
+**Задача:** найти длину самого длинного непрерывного фрагмента строки, в котором
+ни один символ не повторяется (похожая задача на LeetCode —
+[Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)).
 
-```
-Вход: s = "abcabcbb"
-Выход: 3
-Объяснение: самая длинная подстрока без повторов — "abc", её длина 3.
-```
+Например, для `"abcbda"` ответ `4`: фрагмент `"cbda"`.
 
 ### Пошаговое решение
 
@@ -308,25 +305,24 @@ const lengthOfLongestSubstring = (s) => {
   return maxLength;
 };
 
-console.log(lengthOfLongestSubstring("abcabcbb")); // 3
-console.log(lengthOfLongestSubstring("bbbbb"));    // 1
-console.log(lengthOfLongestSubstring("pwwkew"));   // 3
+console.log(lengthOfLongestSubstring("abcbda"));     // 4
+console.log(lengthOfLongestSubstring("aaaa"));       // 1
+console.log(lengthOfLongestSubstring("pizzaparty")); // 5
 ```
 
-### Трассировка на примере `s = "abcabcbb"`
+### Трассировка на примере `s = "abcbda"`
 
 | right | s[right] | Действие | Окно [left, right] | maxLength |
 |---|---|---|---|---|
 | 0 | a | добавляем "a" | "a" | 1 |
 | 1 | b | добавляем "b" | "ab" | 2 |
 | 2 | c | добавляем "c" | "abc" | 3 |
-| 3 | a | "a" уже в окне → удаляем "a", left=1; добавляем "a" | "bca" | 3 |
-| 4 | b | "b" уже в окне → удаляем "b", left=2; добавляем "b" | "cab" | 3 |
-| 5 | c | "c" уже в окне → удаляем "c", left=3; добавляем "c" | "abc" | 3 |
-| 6 | b | "b" уже в окне → удаляем "a" (left=3→4), "b" всё ещё в окне → удаляем "b" (left=4→5); добавляем "b" | "cb" | 3 |
-| 7 | b | "b" уже в окне → удаляем "c" (left=5→6), "b" всё ещё в окне → удаляем "b" (left=6→7); добавляем "b" | "b" | 3 |
+| 3 | b | "b" уже в окне → удаляем "a" (left=0→1), "b" всё ещё в окне → удаляем "b" (left=1→2); добавляем "b" | "cb" | 3 |
+| 4 | d | добавляем "d" | "cbd" | 3 |
+| 5 | a | добавляем "a" | "cbda" | 4 |
 
-Итоговый ответ: `3`.
+Итоговый ответ: `4`. На шаге `right = 3` видно, зачем нужен `while`: чтобы
+выкинуть повтор, пришлось убрать из окна два символа подряд.
 
 ## Подводные камни и типичные ошибки
 

@@ -8,7 +8,7 @@ const twoSum = (nums, target) => {
 };
 
 // Пример вызова:
-console.log(twoSum([2, 7, 11, 15], 9)); // [0, 1]
-console.log(twoSum([3, 2, 4], 6)); // [1, 2]
-console.log(twoSum([3, 3], 6)); // [0, 1]
-console.log(twoSum([1, 2, 3], 100)); // []
+console.log(twoSum([5, 12, 3, 8], 11)); // [2, 3]
+console.log(twoSum([4, -1, 7, 10], 3)); // [0, 1]
+console.log(twoSum([6, 6, 1], 12));     // [0, 1]
+console.log(twoSum([1, 2, 3], 100));    // []
