@@ -10,24 +10,8 @@ export const listDefinitions = {
     inputLabel: "Значения списка",
     inputHint: "До 16 чисел. # — постоянный идентификатор узла; стрелка обозначает next.",
     examples: [
-      {
-        id: "task1",
-        label: "Пример 1: [1, 2, 3, 4, 5]",
-        input: "1,2,3,4,5",
-        isTask: true,
-      },
-      {
-        id: "task2",
-        label: "Пример 2: [1, 2]",
-        input: "1,2",
-        isTask: true,
-      },
-      {
-        id: "task3",
-        label: "Пример 3: [] (пустой список)",
-        input: "[]",
-        isTask: true,
-      },
+      { id: "task-1", label: "Пример 1: [10, 20, 30]", input: "10,20,30", isTask: true },
+      { id: "task-2", label: "Пример 2: [7] (один узел)", input: "7", isTask: true },
       {
         id: "single",
         label: "Один узел (7)",
@@ -46,21 +30,16 @@ export const listDefinitions = {
     inputHint: "[[1,2,4],[1,3,4]]: два отсортированных массива, до 16 чисел в каждом.",
     examples: [
       {
-        id: "task1",
-        label: "Пример 1: [1, 2, 4] и [1, 3, 4]",
-        input: "[[1,2,4],[1,3,4]]",
+        id: "task-1",
+        label: "Пример 1: [1, 5, 9] и [2, 5, 6, 10]",
+        input: "[[1,5,9],[2,5,6,10]]",
         isTask: true,
       },
+      { id: "task-2", label: "Пример 2: [] и [3] (первый пуст)", input: "[[],[3]]", isTask: true },
       {
-        id: "task2",
-        label: "Пример 2: [] и [] (оба пусты)",
-        input: "[[],[]]",
-        isTask: true,
-      },
-      {
-        id: "task3",
-        label: "Пример 3: [] и [0] (первый пуст)",
-        input: "[[],[0]]",
+        id: "task-3",
+        label: "Пример 3: [4, 8] и [] (второй пуст)",
+        input: "[[4,8],[]]",
         isTask: true,
       },
       {
@@ -85,23 +64,23 @@ export const listDefinitions = {
     inputHint: "До 16 чисел. pos — индекс замыкания хвоста; −1 — без цикла.",
     examples: [
       {
-        id: "task1",
-        label: "Пример 1: [3, 2, 0, -4], pos = 1",
-        input: "3,2,0,-4",
+        id: "task-1",
+        label: "Пример 1: [5, 8, 1, 7], pos = 2",
+        input: "5,8,1,7",
+        parameter: "2",
+        isTask: true,
+      },
+      {
+        id: "task-2",
+        label: "Пример 2: [9, 4], pos = 1 (петля на себя)",
+        input: "9,4",
         parameter: "1",
         isTask: true,
       },
       {
-        id: "task2",
-        label: "Пример 2: [1, 2], pos = 0",
-        input: "1,2",
-        parameter: "0",
-        isTask: true,
-      },
-      {
-        id: "task3",
-        label: "Пример 3: [1], pos = -1 (без цикла)",
-        input: "1",
+        id: "task-3",
+        label: "Пример 3: [6, 2, 3], pos = -1 (без цикла)",
+        input: "6,2,3",
         parameter: "-1",
         isTask: true,
       },

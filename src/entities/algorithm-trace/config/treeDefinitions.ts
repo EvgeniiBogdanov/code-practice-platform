@@ -19,23 +19,12 @@ export const treeDefinitions = {
       "Level-order: [3,9,20,null,null,15,7]. null — отсутствующий потомок; до 31 значения.",
     examples: [
       {
-        id: "task1",
-        label: "Пример 1: [3, 9, 20, null, null, 15, 7] (сбалансированное)",
-        input: "[3,9,20,null,null,15,7]",
+        id: "task-1",
+        label: "Пример 1: [8, 4, 12, null, 6, 10, null, 5]",
+        input: "[8,4,12,null,6,10,null,5]",
         isTask: true,
       },
-      {
-        id: "task2",
-        label: "Пример 2: [1, null, 2] (цепочка)",
-        input: "[1,null,2]",
-        isTask: true,
-      },
-      {
-        id: "task3",
-        label: "Пример 3: [] (пустое дерево)",
-        input: "[]",
-        isTask: true,
-      },
+      { id: "task-2", label: "Пример 2: [1, 2] (два уровня)", input: "[1,2]", isTask: true },
       {
         id: "chain",
         label: "Односторонняя цепочка [1, null, 2, 3]",
@@ -53,22 +42,11 @@ export const treeDefinitions = {
     inputHint:
       "Level-order: [3,9,20,null,null,15,7]. null — отсутствующий потомок; до 31 значения.",
     examples: [
+      { id: "task-1", label: "Пример 1: [5, 3, 8, 1, 4]", input: "[5,3,8,1,4]", isTask: true },
       {
-        id: "task1",
-        label: "Пример 1: [4, 2, 7, 1, 3, 6, 9] (полное дерево)",
-        input: "[4,2,7,1,3,6,9]",
-        isTask: true,
-      },
-      {
-        id: "task2",
-        label: "Пример 2: [2, 1, 3] (3 узла)",
-        input: "[2,1,3]",
-        isTask: true,
-      },
-      {
-        id: "task3",
-        label: "Пример 3: [] (пустое дерево)",
-        input: "[]",
+        id: "task-2",
+        label: "Пример 2: [1, null, 2] (только правый потомок)",
+        input: "[1,null,2]",
         isTask: true,
       },
       {
@@ -95,23 +73,12 @@ export const treeDefinitions = {
       "Level-order: [3,9,20,null,null,15,7]. null — отсутствующий потомок; до 31 значения.",
     examples: [
       {
-        id: "task1",
-        label: "Пример 1: [1, 2, 3, 4, 5] (диаметр 3)",
-        input: "[1,2,3,4,5]",
+        id: "task-1",
+        label: "Пример 1: [1, 2, null, 3, 4, 5, null, null, 6] (путь не через корень)",
+        input: "[1,2,null,3,4,5,null,null,6]",
         isTask: true,
       },
-      {
-        id: "task2",
-        label: "Пример 2: [1, 2] (диаметр 1)",
-        input: "[1,2]",
-        isTask: true,
-      },
-      {
-        id: "task3",
-        label: "Пример 3: [] (пустое дерево)",
-        input: "[]",
-        isTask: true,
-      },
+      { id: "task-2", label: "Пример 2: [7, 3] (диаметр 1)", input: "[7,3]", isTask: true },
       {
         id: "branching",
         label: "Ветвящееся дерево [3, 9, 20, null, null, 15, 7]",
@@ -130,21 +97,15 @@ export const treeDefinitions = {
       "Level-order: [3,9,20,null,null,15,7]. null — отсутствующий потомок; до 31 значения.",
     examples: [
       {
-        id: "task1",
-        label: "Пример 1: [1, null, 2, 3] (цепочка)",
-        input: "[1,null,2,3]",
+        id: "task-1",
+        label: "Пример 1: [6, 2, 8, 1, 4] (сбалансированное)",
+        input: "[6,2,8,1,4]",
         isTask: true,
       },
       {
-        id: "task2",
-        label: "Пример 2: [1, 2, 3, 4, 5] (сбалансированное)",
-        input: "[1,2,3,4,5]",
-        isTask: true,
-      },
-      {
-        id: "task3",
-        label: "Пример 3: [] (пустое дерево)",
-        input: "[]",
+        id: "task-2",
+        label: "Пример 2: [3, null, 5, 4] (правая ветка)",
+        input: "[3,null,5,4]",
         isTask: true,
       },
       {
@@ -165,21 +126,21 @@ export const treeDefinitions = {
     inputHint: "Два массива level-order: [[1,2,3],[1,null,3]]. До 31 значения на дерево.",
     examples: [
       {
-        id: "task1",
-        label: "Пример 1: [1, 2, 3] и [1, 2, 3] (одинаковые)",
-        input: "[[1,2,3],[1,2,3]]",
+        id: "task-1",
+        label: "Пример 1: [4, 2, 6] и [4, 2, 6] (одинаковые)",
+        input: "[[4,2,6],[4,2,6]]",
         isTask: true,
       },
       {
-        id: "task2",
-        label: "Пример 2: [1, 2] и [1, null, 2] (разная структура)",
-        input: "[[1,2],[1,null,2]]",
+        id: "task-2",
+        label: "Пример 2: [4, 2] и [4, null, 2] (разная форма)",
+        input: "[[4,2],[4,null,2]]",
         isTask: true,
       },
       {
-        id: "task3",
-        label: "Пример 3: [1, 2, 1] и [1, 1, 2] (разные значения)",
-        input: "[[1,2,1],[1,1,2]]",
+        id: "task-3",
+        label: "Пример 3: [4, 2, 6] и [4, 6, 2] (разные значения)",
+        input: "[[4,2,6],[4,6,2]]",
         isTask: true,
       },
       {

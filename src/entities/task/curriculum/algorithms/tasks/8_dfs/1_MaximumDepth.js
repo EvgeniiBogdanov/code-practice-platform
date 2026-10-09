@@ -1,3 +1,9 @@
+// Напишите функцию maxDepth(root), которая возвращает глубину бинарного дерева —
+// число узлов на самом длинном пути от корня до листа. У пустого дерева глубина 0.
+//
+// В примерах дерево собирает buildTree из массива значений по уровням
+// (null — отсутствующий узел).
+
 const { buildTree } = require('./helpers');
 
 // Напишите функцию maxDepth(root), которая принимает корень бинарного дерева (root)
@@ -11,10 +17,10 @@ const maxDepth = (root) => {
 };
 
 // Пример вызова:
-const tree1 = buildTree([3, 9, 20, null, null, 15, 7]);
-console.log(maxDepth(tree1)); // 3
+const tree1 = buildTree([8, 4, 12, null, 6, 10, null, 5]);
+console.log(maxDepth(tree1)); // 4
 
-const tree2 = buildTree([1, null, 2]);
+const tree2 = buildTree([1, 2]);
 console.log(maxDepth(tree2)); // 2
 
 const tree3 = buildTree([]);
