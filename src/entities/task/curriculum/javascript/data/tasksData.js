@@ -377,7 +377,6 @@ import MemoizeBasicSolutionRaw from "../solutions/12_collections_map/level3/19_M
 
 import CreateCategoryTreeCandidateRaw from "../tasks/12_collections_map/level3/22_CreateCategoryTree.js?raw";
 import CreateCategoryTreeSolutionRaw from "../solutions/12_collections_map/level3/22_CreateCategoryTree.js?raw";
-import CreateCategoryTreeExplanationRaw from "../explanations/12_collections_map/22_CreateCategoryTree.md?raw";
 
 // Level 1
 import CreatePromiseCandidateRaw from "../tasks/13_promises/level1/5_CreatePromise.js?raw";
@@ -7669,7 +7668,6 @@ export const JS_COLLECTIONS_MAP_TASKS = [
     rawCandidate: CreateCategoryTreeCandidateRaw,
     solution: CreateCategoryTreeSolutionRaw,
     rawSolution: CreateCategoryTreeSolutionRaw,
-    explanation: CreateCategoryTreeExplanationRaw,
     filepath: "src/javascript/tasks/12_collections_map/level3/22_CreateCategoryTree.js",
     solutions: [
       {

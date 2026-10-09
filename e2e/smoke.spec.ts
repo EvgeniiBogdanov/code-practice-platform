@@ -1,4 +1,16 @@
+import type { Page } from "@playwright/test";
 import { expect, test } from "./fixtures";
+
+/** ~230 kB brotli of markdown: must load only when the explanation tab is opened. */
+const EXPLANATIONS_CHUNK = /\/assets\/task-explanations-[^/]+\.js$/;
+
+const trackRequests = (page: Page, pattern: RegExp): string[] => {
+  const urls: string[] = [];
+  page.on("request", (request) => {
+    if (pattern.test(request.url())) urls.push(request.url());
+  });
+  return urls;
+};
 
 test.describe("guest", () => {
   test.use({ storageState: { cookies: [], origins: [] } });
@@ -9,6 +21,13 @@ test.describe("guest", () => {
     await expect(
       page.getByRole("button", { name: "Создать локальный аккаунт" }).first()
     ).toBeVisible();
+  });
+
+  test("landing does not download task explanations", async ({ page }) => {
+    const requests = trackRequests(page, EXPLANATIONS_CHUNK);
+    await page.goto("./");
+    await page.waitForLoadState("networkidle");
+    expect(requests).toEqual([]);
   });
 });
 
@@ -31,6 +50,18 @@ test.describe("workspace", () => {
       "aria-selected",
       "true"
     );
+  });
+
+  test("task explanations load lazily on their tab", async ({ page }) => {
+    const requests = trackRequests(page, EXPLANATIONS_CHUNK);
+    await page.goto("javascript/js1");
+    await expect(page.getByRole("tab", { name: "Задача" })).toBeVisible();
+    await page.waitForLoadState("networkidle");
+    expect(requests).toEqual([]);
+
+    await page.getByRole("tab", { name: "Разбор и теория" }).click();
+    await expect(page.getByRole("tabpanel", { name: "Разбор и теория" })).toContainText("for");
+    expect(requests).toHaveLength(1);
   });
 
   test("deep link opens a task and runs user code", async ({ page }) => {
