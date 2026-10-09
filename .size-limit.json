@@ -9,11 +9,6 @@
     "limit": "63 KB"
   },
   {
-    "name": "Task explanations (preloaded on first paint)",
-    "path": "dist/assets/task-explanations-*.js",
-    "limit": "240 KB"
-  },
-  {
     "name": "Router",
     "path": "dist/assets/vendor-router-*.js",
     "limit": "36 KB"
@@ -27,6 +22,11 @@
     "name": "All JS",
     "path": "dist/assets/*.js",
     "limit": "4130 KB"
+  },
+  {
+    "name": "Lazy: Task explanations",
+    "path": "dist/assets/task-explanations-*.js",
+    "limit": "240 KB"
   },
   {
     "name": "Lazy: Three.js",

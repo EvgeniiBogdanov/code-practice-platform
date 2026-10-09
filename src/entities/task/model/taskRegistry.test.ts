@@ -30,8 +30,8 @@ describe("taskRegistry", () => {
     expect(task?.solution).toContain("nodeMap = new Map()");
     expect(task?.solution).toContain("const createCategoryTree = (list) =>");
 
-    // Explanation
-    expect(task?.explanation).toBeDefined();
+    // Explanation lives only in the lazily loaded TASK_EXPLANATIONS chunk, never in task data.
+    expect(task?.explanation).toBeUndefined();
     expect(TASK_EXPLANATIONS.js196).toBeDefined();
     expect(TASK_EXPLANATIONS.js196).toContain("const createCategoryTree = (list) =>");
 

@@ -101,6 +101,8 @@
   display: block;
 }
 
+/* Headline and lead are the LCP candidates: they animate transform only and are painted
+   from the first frame. Chrome ignores elements revealed from opacity 0 as LCP. */
 .chunk {
   display: inline-block;
   animation: chunkRise 1.2s var(--ease-out-expo) both;
@@ -129,7 +131,7 @@
   line-height: var(--lh-body);
   color: var(--text-muted);
   text-wrap: pretty;
-  animation: fadeUp 1.1s var(--ease-out-expo) 0.75s both;
+  animation: settleUp 1.1s var(--ease-out-expo) 0.2s both;
 }
 
 .actions {
@@ -287,14 +289,19 @@
 /* ---------- Keyframes ---------- */
 @keyframes chunkRise {
   from {
-    opacity: 0;
-    transform: translate3d(0, 0.6em, 0) rotate(1.5deg);
-    filter: blur(var(--space-2-5));
+    transform: translate3d(0, 0.35em, 0) rotate(1.5deg);
   }
   to {
-    opacity: 1;
     transform: none;
-    filter: none;
+  }
+}
+
+@keyframes settleUp {
+  from {
+    transform: translate3d(0, var(--space-3), 0);
+  }
+  to {
+    transform: none;
   }
 }
 
