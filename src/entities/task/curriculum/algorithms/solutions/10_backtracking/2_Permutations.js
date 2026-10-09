@@ -27,6 +27,6 @@ const permute = (nums) => {
 };
 
 // Пример вызова:
-console.log(permute([1, 2, 3])); // [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]
-console.log(permute([0, 1]));    // [[0, 1], [1, 0]]
-console.log(permute([1]));       // [[1]]
+console.log(permute([7, 8]));    // [[7, 8], [8, 7]]
+console.log(permute([4, 5, 6])); // [[4, 5, 6], [4, 6, 5], [5, 4, 6], [5, 6, 4], [6, 4, 5], [6, 5, 4]]
+console.log(permute([9]));       // [[9]]
