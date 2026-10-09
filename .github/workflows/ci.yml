@@ -273,9 +273,11 @@ jobs:
         if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
         run: exit 1
 
+  # PR-only jobs are skipped on push, and an implicit success() treats a skipped ancestor as
+  # "not successful": every job after `ci-ok` must test the result of its direct `needs` explicitly.
   deploy-pages:
     name: Deploy to GitHub Pages
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: ${{ !cancelled() && needs.ci-ok.result == 'success' && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     needs: ci-ok
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -309,6 +311,7 @@ jobs:
 
   pages-smoke:
     name: Smoke test GitHub Pages
+    if: ${{ !cancelled() && needs.deploy-pages.result == 'success' }}
     needs: deploy-pages
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -329,6 +332,7 @@ jobs:
 
   release:
     name: Release (tag + GitHub Release)
+    if: ${{ !cancelled() && needs.pages-smoke.result == 'success' }}
     needs: pages-smoke
     runs-on: ubuntu-latest
     timeout-minutes: 5
