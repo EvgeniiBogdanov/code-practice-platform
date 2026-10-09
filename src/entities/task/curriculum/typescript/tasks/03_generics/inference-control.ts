@@ -22,8 +22,8 @@ const createMachine = (states, initial) => {
 
 const machine = createMachine(["idle", "loading", "success", "error"], "idle");
 machine.transition("loading");
-machine.transition("done"); // должно быть ошибкой
-createMachine(["idle", "loading"], "idel"); // должно быть ошибкой
+// Неизвестное состояние ("done") и опечатка в initial ("idel") должны быть
+// ошибками типов (проверка — во вкладке tests.ts).
 
 const defineConfig = (config) => config;
 

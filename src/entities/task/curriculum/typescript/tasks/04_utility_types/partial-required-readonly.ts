@@ -1,7 +1,8 @@
 // 1. resolveOptions принимает любой набор полей Options (можно ни одного)
 //    и дополняет их значениями по умолчанию.
 // 2. Результат должен гарантировать наличие всех полей,
-//    а изменить его после создания должно быть нельзя.
+//    а изменить его после создания должно быть нельзя
+//    (resolved.retries = 10 — ошибка; проверка во вкладке tests.ts).
 // 3. Старая библиотека описывает LegacyOptions с необязательными полями.
 //    Опишите StrictLegacyOptions, в котором все эти поля обязательны.
 // 4. CacheKey должен исключать null и undefined из исходного RawKey.
@@ -24,7 +25,6 @@ const resolveOptions = (options) => {
 };
 
 const resolved = resolveOptions({ retries: 5 });
-resolved.retries = 10; // должно быть ошибкой
 
 type StrictLegacyOptions = LegacyOptions;
 

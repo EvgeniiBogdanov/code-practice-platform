@@ -4,7 +4,8 @@
 // 2. ApiResponse описывает ответ сервера. Если тип данных не указан,
 //    data должна иметь тип unknown.
 // 3. longest возвращает более длинное из двух значений, у которых
-//    есть поле length (массивы, строки). Числа передавать нельзя.
+//    есть поле length (массивы, строки). Числа передавать нельзя
+//    (проверка — во вкладке tests.ts).
 
 const findById = (items, id) => items.find((item) => item.id === id);
 
@@ -22,4 +23,3 @@ const raw: ApiResponse = { status: 200, data: "ok" };
 const typed: ApiResponse<string[]> = { status: 200, data: ["a", "b"] };
 
 const longer = longest([1, 2], [1, 2, 3]);
-longest(10, 100); // должно быть ошибкой

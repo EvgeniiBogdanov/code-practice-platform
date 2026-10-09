@@ -6,10 +6,25 @@ export interface TypeScriptSourceInput {
   files: ReadonlyArray<{ name?: string; code?: string }>;
 }
 
+/** Source of the type tests; `code` of the request is the learner's solution. */
+export interface TypeTestsInput extends TypeScriptSourceInput {
+  tests: string;
+}
+
 export interface TypeScriptDiagnosticRequest extends TypeScriptSourceInput {
   id: number;
-  kind: "diagnostics" | "completions" | "hover" | "signature" | "rename" | "codefix" | "definition";
+  kind:
+    | "diagnostics"
+    | "completions"
+    | "hover"
+    | "signature"
+    | "rename"
+    | "codefix"
+    | "definition"
+    | "tests";
   position?: number;
+  /** Source of the type tests for the `tests` kind. */
+  tests?: string;
   /** Range and error code of the diagnostic to fix (`codefix`). */
   end?: number;
   errorCode?: number;
@@ -25,6 +40,7 @@ export interface TypeScriptDiagnosticResponse {
   rename?: TypeScriptRenameEdit[];
   codefixes?: TypeScriptCodeFix[];
   definition?: TypeScriptLocation | null;
+  report?: TypeTestReport;
 }
 
 export interface EditorDiagnostic {
@@ -84,4 +100,50 @@ export interface TypeScriptTextChange extends TypeScriptLocation {
 export interface TypeScriptCodeFix {
   description: string;
   changes: TypeScriptTextChange[];
+}
+
+/** One `test()` call of the tests source. Offsets and lines are relative to that source. */
+export interface TypeTestCase {
+  /** Stable key: `${describe}/${name}`. */
+  id: string;
+  name: string;
+  describe: string | null;
+  line: number;
+  start: number;
+  end: number;
+}
+
+export type TypeTestFailure =
+  | { kind: "mismatch"; expected: string; actual: string; message: string }
+  | { kind: "expected-error"; snippet: string }
+  | { kind: "diagnostic"; message: string; code: number };
+
+/** `skipped`: the solution could not be analysed (syntax error), so nothing was checked. */
+export type TypeTestStatus = "passed" | "failed" | "skipped";
+
+export interface TypeTestResult {
+  case: TypeTestCase;
+  status: TypeTestStatus;
+  failure: TypeTestFailure | null;
+}
+
+export type TypeTestCompileReason = "errors" | "syntax" | "nocheck" | "reserved";
+
+export interface TypeTestCompileResult {
+  passed: boolean;
+  problems: EditorDiagnostic[];
+  reason: TypeTestCompileReason | null;
+  /** Human-readable explanation for `syntax`, `nocheck` and `reserved`. */
+  message: string | null;
+}
+
+export interface TypeTestReport {
+  compile: TypeTestCompileResult;
+  results: TypeTestResult[];
+  /** Broken tests source (content bug), shown as "tests are damaged". */
+  fileError: string | null;
+  /** Includes the compile case. */
+  passed: number;
+  total: number;
+  durationMs: number;
 }

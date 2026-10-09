@@ -1,0 +1,28 @@
+.bar {
+  display: flex;
+  gap: var(--space-1);
+  width: 100%;
+}
+
+.segment {
+  flex: 1 1 0;
+  min-width: 0;
+  height: var(--space-1-5);
+  border-radius: var(--radius-full);
+  background: var(--bg-subtle);
+  transition: background-color var(--duration-medium) ease-out;
+}
+
+.success {
+  background: var(--color-status-solved);
+}
+
+.danger {
+  background: var(--color-error);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .segment {
+    transition: none;
+  }
+}

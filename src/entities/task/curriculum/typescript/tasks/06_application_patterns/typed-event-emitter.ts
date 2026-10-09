@@ -4,6 +4,11 @@
 // Попытка подписаться на несуществующее событие или использовать
 // в обработчике аргумент неверного типа должна быть ошибкой типизации.
 
+interface EventMap {
+  userCreated: { id: number; name: string };
+  userDeleted: { id: number };
+}
+
 class EventEmitter {
   listeners = {};
 

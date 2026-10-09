@@ -12,6 +12,8 @@ export * from "./snippetsData";
 export * from "./snippetsEngine";
 export * from "./codeFormatter";
 export * from "./typescriptClient";
+export * from "./editorReveal";
+export { parseTestOutline, type TestOutlineItem } from "./typeTests/parseTestOutline";
 
 export * from "./markupContext";
 export * from "./linkedTagEdit";

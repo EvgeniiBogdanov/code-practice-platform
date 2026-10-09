@@ -10,7 +10,12 @@ import {
   NotebookPen,
 } from "lucide-react";
 import { clsx } from "clsx";
-import { TaskDifficultyBadge, TaskMetaBadges } from "@/entities/task";
+import {
+  TaskDifficultyBadge,
+  TaskMetaBadges,
+  getAdjacentTasks,
+  getTasksBySection,
+} from "@/entities/task";
 import type { SectionType } from "@/entities/task/meta";
 import { useTaskById } from "@/entities/task/catalog";
 import { useProgressStore, isTaskCompleted } from "@/entities/progress";
@@ -103,6 +108,21 @@ const TaskPageView = React.memo<TaskPageViewProps>(
       [taskId]
     );
 
+    const [nextTask, setNextTask] = useState<{ id: string; section: SectionType } | null>(null);
+    const taskSection = task?.section;
+    const currentTaskId = task?.id;
+    useEffect(() => {
+      if (taskSection !== "typescript" || currentTaskId === undefined) return;
+      let isCurrent = true;
+      void getTasksBySection(taskSection).then((tasks) => {
+        const next = getAdjacentTasks(currentTaskId, tasks).nextTask;
+        if (isCurrent) setNextTask(next ? { id: String(next.id), section: next.section } : null);
+      });
+      return () => {
+        isCurrent = false;
+      };
+    }, [taskSection, currentTaskId]);
+
     if (!isLoading && !task) {
       return (
         <div className={styles.notFound}>
@@ -156,6 +176,22 @@ const TaskPageView = React.memo<TaskPageViewProps>(
       } else {
         await removeReview(task.id);
       }
+    };
+
+    // Marking from the tests panel only ever sets the status: unlike the toggle, it cannot
+    // clear a mark that another tab has just set.
+    const handleMarkSolved = async () => {
+      if (!task || isExcluded) return;
+      await setTaskStatus(task.id, "solved");
+    };
+
+    const handleOpenNextTask = (): void => {
+      if (!nextTask) return;
+      void navigate({
+        to: `/${nextTask.section}/$taskId`,
+        params: { taskId: nextTask.id },
+        search: (prev: Record<string, unknown>) => ({ ...prev, tab: "candidate" }),
+      });
     };
 
     const questionsCount =
@@ -364,7 +400,16 @@ const TaskPageView = React.memo<TaskPageViewProps>(
                 <TaskTabSkeleton tab={activeTab} />
               ) : (
                 <React.Suspense fallback={<TaskTabSkeleton tab={activeTab} task={task} />}>
-                  {renderKeptTab("candidate", <CandidateTab task={task} />)}
+                  {renderKeptTab(
+                    "candidate",
+                    <CandidateTab
+                      task={task}
+                      isSolved={isCompleted}
+                      onMarkSolved={isExcluded ? undefined : handleMarkSolved}
+                      onNextTask={nextTask ? handleOpenNextTask : undefined}
+                      onShowReference={() => handleTabChange("solution")}
+                    />
+                  )}
                   {renderKeptTab("solution", <SolutionTab task={task} />)}
                   {hasVisualization && (
                     <TaskVisualizationTab

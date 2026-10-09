@@ -18,4 +18,4 @@ const log = (data: string[], count: number): boolean => data.length > count;
 // MyParameters<typeof log>                → [data: string[], count: number]
 // MyAwaited<Promise<Promise<number>>>     → number
 // FirstArg<typeof log>                    → string[]
-// MyReturnType<string>                    → должно быть ошибкой
+// MyReturnType<string>                    → ошибка (проверка во вкладке tests.ts)

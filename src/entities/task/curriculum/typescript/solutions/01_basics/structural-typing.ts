@@ -29,5 +29,6 @@ const saveCelsius = (temperature: Celsius): void => {
 };
 
 const outside: Fahrenheit = { unit: "F", value: 451 };
-// saveCelsius(outside); // Ошибка: "F" нельзя присвоить "C"
-saveCelsius({ unit: "C", value: 21 });
+const inside: Celsius = { unit: "C", value: 21 };
+saveCelsius(inside);
+// saveCelsius(outside) — ошибка: "F" нельзя присвоить "C" (проверяется в tests.ts)

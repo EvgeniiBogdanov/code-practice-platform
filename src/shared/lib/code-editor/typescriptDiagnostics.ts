@@ -9,7 +9,11 @@ import type {
   TypeScriptLocation,
   TypeScriptRenameEdit,
   TypeScriptCodeFix,
+  TypeTestReport,
+  TypeTestsInput,
 } from "./typescriptTypes";
+import { TEST_DOCUMENT_PATH } from "./typeTests/buildTestDocument";
+import { runTypeTests, type TypeTestsHost } from "./typeTests/runTypeTests";
 import {
   DEFAULT_OPTIONS,
   EDITOR_GLOBALS_FILE,
@@ -21,6 +25,8 @@ import {
   isUnresolvedPackage,
 } from "./typescriptOptions";
 import { fuzzyScore } from "./fuzzyMatcher";
+
+type TypeTestsHostAnalyze = TypeTestsHost["analyzeDocument"];
 
 export const createTypeScriptEditorService = (
   libraries: ReadonlyMap<string, string>
@@ -37,6 +43,7 @@ export const createTypeScriptEditorService = (
     errorCode: number
   ) => TypeScriptCodeFix[];
   definition: (input: TypeScriptSourceInput, position: number) => TypeScriptLocation | null;
+  typeTests: (input: TypeTestsInput) => TypeTestReport;
 } => {
   const parseOptions = (content: string): ts.CompilerOptions => {
     const parsed = ts.parseConfigFileTextToJson("tsconfig.json", content);
@@ -328,7 +335,36 @@ export const createTypeScriptEditorService = (
       : null;
   };
 
-  return { diagnose, complete, hover, signature, rename, codefix, definition };
+  const analyzeDocument = (text: string): ReturnType<TypeTestsHostAnalyze> => {
+    const path = update({ code: text, filepath: TEST_DOCUMENT_PATH, files: [] });
+    const program = service.getProgram();
+    if (!program) throw new Error("TypeScript program is unavailable");
+    return {
+      program,
+      diagnostics: [
+        ...service.getSyntacticDiagnostics(path),
+        ...service.getSemanticDiagnostics(path),
+      ],
+    };
+  };
+
+  const typeTests = (input: TypeTestsInput): TypeTestReport =>
+    runTypeTests(input, {
+      diagnoseSolution: (solution) =>
+        diagnose({ code: solution.code, filepath: solution.filepath, files: [] }),
+      analyzeDocument,
+    });
+
+  return {
+    diagnose,
+    complete,
+    hover,
+    signature,
+    rename,
+    codefix,
+    definition,
+    typeTests,
+  };
 };
 
 /** Errors and warnings only, for callers that do not render unused-code hints. */

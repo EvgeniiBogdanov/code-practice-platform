@@ -121,6 +121,19 @@ export const useProgressStore = create<ProgressState>((set, get) => ({
     broadcastSyncEvent("CHECKLIST_CHANGED", { key, checked: nextChecked });
   },
 
+  checkChecklistItems: async (keys: readonly string[]): Promise<void> => {
+    const pendingKeys = keys.filter((key) => !get().checklistState[key]);
+    if (pendingKeys.length === 0) return;
+    set((state) => ({
+      checklistState: {
+        ...state.checklistState,
+        ...Object.fromEntries(pendingKeys.map((key) => [key, true])),
+      },
+    }));
+    await Promise.all(pendingKeys.map((key) => saveChecklistItemToDB(key, true)));
+    for (const key of pendingKeys) broadcastSyncEvent("CHECKLIST_CHANGED", { key, checked: true });
+  },
+
   handleCopyCode: (id: string, codeText: string): void => {
     if (!codeText) return;
     try {

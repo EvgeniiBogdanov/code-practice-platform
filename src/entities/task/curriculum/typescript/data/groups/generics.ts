@@ -1,4 +1,4 @@
-import { NO_SUPPRESSION_CHECK, type TypeScriptTaskGroup } from "../taskMeta";
+import { NO_SUPPRESSION_CHECK, linked, type TypeScriptTaskGroup } from "../taskMeta";
 
 export const GENERICS_GROUP: TypeScriptTaskGroup = {
   name: "Generics",
@@ -11,8 +11,8 @@ export const GENERICS_GROUP: TypeScriptTaskGroup = {
       tags: ["generics", "inference", "readonly"],
       filepath: "03_generics/first-generic.ts",
       checklist: [
-        "first и last возвращают T | undefined для массива T[].",
-        "wrapInArray сохраняет тип переданного значения.",
+        linked("first и last возвращают T | undefined для массива T[].", "first сохраняет тип элементов", "last сохраняет тип элементов"),
+        linked("wrapInArray сохраняет тип переданного значения.", "wrapInArray оборачивает значение с сохранением типа"),
         "Функции принимают и обычные, и readonly-массивы.",
         NO_SUPPRESSION_CHECK,
       ],
@@ -54,8 +54,8 @@ export const GENERICS_GROUP: TypeScriptTaskGroup = {
       tags: ["generics", "keyof", "indexed-access"],
       filepath: "03_generics/indexed-value.ts",
       checklist: [
-        "Несуществующий ключ нельзя передать в getValue.",
-        "Для разных ключей сохраняется точный тип результата.",
+        linked("Несуществующий ключ нельзя передать в getValue.", "getValue принимает только существующие ключи"),
+        linked("Для разных ключей сохраняется точный тип результата.", "getValue возвращает тип поля по ключу", "getValue не подменяет тип поля другим"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -96,9 +96,9 @@ export const GENERICS_GROUP: TypeScriptTaskGroup = {
       tags: ["generics", "constraints", "default-type-parameter"],
       filepath: "03_generics/generic-constraints.ts",
       checklist: [
-        "findById ограничивает T сущностями с id и возвращает исходный тип элемента.",
-        "ApiResponse без параметра имеет data: unknown.",
-        "longest принимает массивы и строки, но не числа.",
+        linked("findById ограничивает T сущностями с id и возвращает исходный тип элемента.", "возвращает элемент исходного типа со всеми полями", "не принимает сущности без числового id"),
+        linked("ApiResponse без параметра имеет data: unknown.", "без параметра data имеет тип unknown"),
+        linked("longest принимает массивы и строки, но не числа.", "возвращает тип переданных значений", "не принимает значения без length"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -139,7 +139,7 @@ export const GENERICS_GROUP: TypeScriptTaskGroup = {
       tags: ["intersection", "interface"],
       filepath: "03_generics/intersection-capabilities.ts",
       checklist: [
-        "Итоговый тип построен пересечением интерфейсов.",
+        linked("Итоговый тип построен пересечением интерфейсов.", "SerializableAndLoggable требует обе возможности"),
         "Объект реализует оба метода с указанными результатами.",
         NO_SUPPRESSION_CHECK,
       ],
@@ -182,7 +182,7 @@ export const GENERICS_GROUP: TypeScriptTaskGroup = {
       filepath: "03_generics/satisfies-config.ts",
       checklist: [
         "Объект routes проверяется на соответствие Routes.",
-        "routes.profile.path доступен, а routes.profle — ошибка.",
+        linked("routes.profile.path доступен, а routes.profle — ошибка.", "маршруты доступны по своим ключам", "опечатка в ключе маршрута — ошибка"),
         "Лишнее поле или неверный тип в описании маршрута — ошибка.",
         NO_SUPPRESSION_CHECK,
       ],
@@ -224,9 +224,9 @@ export const GENERICS_GROUP: TypeScriptTaskGroup = {
       tags: ["inference", "const-type-parameter", "NoInfer"],
       filepath: "03_generics/inference-control.ts",
       checklist: [
-        "Тип состояния выводится как объединение литералов из массива states.",
-        "Опечатка в initial — ошибка, а не новое состояние.",
-        "defineConfig сохраняет литеральные типы значений.",
+        linked("Тип состояния выводится как объединение литералов из массива states.", "состояния выводятся из переданного массива"),
+        linked("Опечатка в initial — ошибка, а не новое состояние.", "начальное состояние проверяется по списку"),
+        linked("defineConfig сохраняет литеральные типы значений.", "defineConfig сохраняет точные литеральные типы"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [

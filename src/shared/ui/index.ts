@@ -1,5 +1,7 @@
 export * from "./Button";
+export * from "./InlineCodeText";
 export * from "./Input";
+export * from "./SegmentedProgress";
 export * from "./Textarea";
 export * from "./Modal";
 export * from "./Tabs";
@@ -58,5 +60,6 @@ export * from "./UiFullscreenPanel";
 export * from "./UiReveal";
 export * from "./UiScaledCanvas";
 export * from "./UiKbd";
+export * from "./TestStatusItem";
 export * from "./KeepAlivePane";
 export * from "./ViewModeFrame";

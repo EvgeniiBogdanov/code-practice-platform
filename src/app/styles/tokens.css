@@ -355,6 +355,9 @@
   --z-portal: 999999;
   --z-tooltip: 1000000;
 
+  /* Results that no longer match the code on screen (type tests after an edit). */
+  --opacity-stale: 0.45;
+
   /* ==========================================
      7. TRANSITION TOKENS
      ========================================== */
@@ -605,6 +608,20 @@
   --code-step-font-22: 22px;
   --code-step-font-23: 23px;
   --code-step-font-24: 24px;
+}
+
+/* Text sizes of the type-tests panel (user-adjustable, 11–20px). */
+:root {
+  --tests-font-11: 11px;
+  --tests-font-12: 12px;
+  --tests-font-13: 13px;
+  --tests-font-14: 14px;
+  --tests-font-15: 15px;
+  --tests-font-16: 16px;
+  --tests-font-17: 17px;
+  --tests-font-18: 18px;
+  --tests-font-19: 19px;
+  --tests-font-20: 20px;
 }
 
 /* ==========================================

@@ -68,4 +68,43 @@ describe("typescript worker client", () => {
     await expect(response).resolves.toBeNull();
     expect(worker.terminated).toBe(false);
   });
+
+  it("abandons an overrunning request, restarts the worker and resends the others", async () => {
+    const client = (await load())();
+    const onTimeout = vi.fn();
+    const slow = client.request(
+      { kind: "tests", code: "", filepath: "a.ts", files: [], tests: "" },
+      { timeoutMs: 5000, onTimeout }
+    );
+    const other = client.request({ kind: "hover", code: "", filepath: "a.ts", files: [] });
+    const first = FakeWorker.instances[0];
+
+    vi.advanceTimersByTime(5000);
+    await expect(slow).resolves.toBeNull();
+    expect(onTimeout).toHaveBeenCalledOnce();
+    expect(first.terminated).toBe(true);
+
+    // The other request survives on a fresh worker; the timeout is not counted as a crash.
+    const second = FakeWorker.instances[1];
+    const { id } = second.posted[0] as { id: number };
+    second.onmessage?.({ data: { id, kind: "hover", hover: null } } as MessageEvent);
+    await expect(other).resolves.toMatchObject({ id });
+    expect(FakeWorker.instances).toHaveLength(2);
+  });
+
+  it("does not time out a request that was answered in time", async () => {
+    const client = (await load())();
+    const onTimeout = vi.fn();
+    const response = client.request(
+      { kind: "tests", code: "", filepath: "a.ts", files: [], tests: "" },
+      { timeoutMs: 5000, onTimeout }
+    );
+    const worker = FakeWorker.instances[0];
+    const { id } = worker.posted[0] as { id: number };
+    worker.onmessage?.({ data: { id, kind: "tests" } } as MessageEvent);
+    await expect(response).resolves.toMatchObject({ id });
+    vi.advanceTimersByTime(10_000);
+    expect(onTimeout).not.toHaveBeenCalled();
+    expect(worker.terminated).toBe(false);
+  });
 });

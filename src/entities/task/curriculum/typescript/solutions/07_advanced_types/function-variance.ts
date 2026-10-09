@@ -20,7 +20,8 @@ const handleAnimal = (animal: Animal): void => {
   console.log(animal.name);
 };
 
-// const animalHandler: AnimalHandler = { onEvent: handleDog }; // Ошибка: Animal нельзя передать как Dog
+// { onEvent: handleDog } не подходит под AnimalHandler: Animal нельзя передать как Dog
+// (проверяется в tests.ts).
 const animalHandler: AnimalHandler = { onEvent: handleAnimal };
 animalHandler.onEvent({ name: "Кот" });
 
@@ -31,4 +32,4 @@ interface Box<out T> {
 
 const dogBox: Box<Dog> = { value: { name: "Рекс", bark: () => console.log("Гав") } };
 const animalBox: Box<Animal> = dogBox; // можно: каждая собака — животное
-// const anotherDogBox: Box<Dog> = animalBox; // Ошибка: не каждое животное — собака
+// Обратное присваивание Box<Animal> в Box<Dog> невозможно: не каждое животное — собака.

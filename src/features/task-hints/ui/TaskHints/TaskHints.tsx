@@ -60,7 +60,9 @@ export const TaskHints = ({ section, taskId, className }: TaskHintsProps): JSX.E
 
   if (!hints) return null;
 
-  const nextLevel = HINT_LEVELS[revealed];
+  const isAllRevealed = revealed >= HINT_LEVELS.length;
+  // After the last level the button stays mounted (collapsed) so that it leaves smoothly.
+  const nextLevel = HINT_LEVELS[Math.min(revealed, HINT_LEVELS.length - 1)];
 
   return (
     <Accordion
@@ -77,27 +79,31 @@ export const TaskHints = ({ section, taskId, className }: TaskHintsProps): JSX.E
     >
       <div className={styles.body}>
         {HINT_LEVELS.slice(0, revealed).map((level, index) => (
-          <Callout
-            key={level.title}
-            size="sm"
-            color={level.color}
-            icon={level.icon}
-            title={level.title}
-          >
-            <MarkdownView content={hints[index]} compact />
-          </Callout>
+          <div key={level.title} className={styles.level}>
+            <div className={styles.levelInner}>
+              <Callout size="sm" color={level.color} icon={level.icon} title={level.title}>
+                <MarkdownView content={hints[index]} compact />
+              </Callout>
+            </div>
+          </div>
         ))}
-        {nextLevel ? (
-          <Button
-            variant="ghost"
-            size="sm"
-            rightIcon={<ChevronDown size={14} />}
-            className={clsx(styles.revealButton, styles[`reveal-${nextLevel.color}`])}
-            onClick={(): void => setRevealed((count) => count + 1)}
-          >
-            {nextLevel.nextLabel}
-          </Button>
-        ) : null}
+        <div
+          className={clsx(styles.revealRow, isAllRevealed && styles.revealRowHidden)}
+          aria-hidden={isAllRevealed}
+          inert={isAllRevealed}
+        >
+          <div className={clsx(styles.revealInner, revealed > 0 && styles.revealInnerSpaced)}>
+            <Button
+              variant="ghost"
+              size="sm"
+              rightIcon={<ChevronDown size={14} />}
+              className={clsx(styles.revealButton, styles[`reveal-${nextLevel.color}`])}
+              onClick={(): void => setRevealed((count) => count + 1)}
+            >
+              {nextLevel.nextLabel}
+            </Button>
+          </div>
+        </div>
       </div>
     </Accordion>
   );

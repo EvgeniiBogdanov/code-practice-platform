@@ -14,6 +14,6 @@ const changeStatus = (newStatus: OrderStatus): void => {
 
 changeStatus(OrderStatus.Pending);
 changeStatus("shipped");
-// changeStatus("lost"); // Ошибка: "lost" не входит в OrderStatus
+// changeStatus("lost"); // "lost" не входит в OrderStatus (проверяется в tests.ts)
 
 const statusOptions: OrderStatus[] = Object.values(OrderStatus);

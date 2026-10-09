@@ -20,4 +20,4 @@ const format = curry((count: number, unit: string, approx: boolean): string => {
 });
 
 const result = format(3)("кг")(true); // должно быть string
-format("3"); // должно быть ошибкой
+// format("3") и другие неверные аргументы должны быть ошибками (проверка во вкладке tests.ts).

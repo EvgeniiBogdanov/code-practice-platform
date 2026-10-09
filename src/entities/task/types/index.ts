@@ -61,6 +61,12 @@ export interface Task {
   solution?: React.ComponentType | string;
   rawCandidate?: string;
   rawSolution?: string;
+  /** TypeScript tasks: source of the read-only type tests (`tests.ts`). */
+  rawTests?: string;
+  /** Hash of `rawTests`; goes into the report of a broken test. */
+  testsHash?: string;
+  /** Checklist item index → names of the tests that tick it after a run in which they all pass. */
+  checklistTests?: Record<number, readonly string[]>;
   solutions?: TaskSolution[];
   variants?: TaskSolution[];
   materials?: string[];

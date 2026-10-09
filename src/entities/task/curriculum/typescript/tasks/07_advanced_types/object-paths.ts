@@ -31,4 +31,4 @@ const settings: Settings = {
 
 const city = get(settings, "user.address.city"); // должно быть string
 const zip = get(settings, "user.address.zip"); // должно быть number
-get(settings, "user.phone"); // должно быть ошибкой
+// get(settings, "user.phone") должно быть ошибкой (проверка во вкладке tests.ts).

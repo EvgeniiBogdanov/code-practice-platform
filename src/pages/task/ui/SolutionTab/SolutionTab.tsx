@@ -10,6 +10,7 @@ import {
   ResizableSplitPane,
 } from "@/shared/ui";
 import { CodeEditor } from "@/features/code-editor";
+import { TypeTestsPanel, useTypeTests, useTypeTestsNavigation } from "@/features/type-tests";
 import { JsConsole, ReactLivePreview } from "@/features/code-runner";
 import { useSolutionTab } from "../../model/useSolutionTab";
 import { EDITOR_PLACEHOLDER_HEIGHT } from "../../model/editorPlaceholder";
@@ -52,6 +53,31 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
     handleStopCode,
     handleClearConsole,
   } = useSolutionTab(task);
+
+  // The reference only shows that it passes: it runs on its own and ticks nothing.
+  const hasTypeTests = Boolean(task.rawTests);
+  const typeTests = useTypeTests({
+    enabled: hasTypeTests,
+    autoRun: isFilesReady,
+    taskId: String(task.id),
+    code: activeFile.code ?? "",
+    filepath: activeFile.name ?? "solution.ts",
+    tests: task.rawTests ?? "",
+    testsHash: task.testsHash ?? "",
+    updatesChecklist: false,
+  });
+  const { showCompileProblem } = useTypeTestsNavigation(activeFile.name ?? "");
+  const consoleNode = (
+    <JsConsole
+      logs={consoleLogs}
+      isRunning={isRunning}
+      lastExecution={lastExecution}
+      filename={activeFile.name}
+      onRun={() => handleRunCode()}
+      onStop={handleStopCode}
+      onClear={handleClearConsole}
+    />
+  );
 
   return (
     <div ref={tabRef} className={clsx(styles.container, className)}>
@@ -102,7 +128,7 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
                           code={activeFile?.code || ""}
                           onChange={handleCodeChange}
                           onFilesChange={handleFilesChange}
-                          onRun={() => handleRunCode()}
+                          onRun={() => (hasTypeTests ? typeTests.run() : handleRunCode())}
                           onReset={handleResetCode}
                           files={files}
                           activeFileIdx={activeFileIdx}
@@ -117,15 +143,18 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
                           onToggleFullscreen={toggleFullscreen}
                           isFullscreenTransitioning={isTransitioning}
                           bottomConsole={
-                            <JsConsole
-                              logs={consoleLogs}
-                              isRunning={isRunning}
-                              lastExecution={lastExecution}
-                              filename={activeFile.name}
-                              onRun={() => handleRunCode()}
-                              onStop={handleStopCode}
-                              onClear={handleClearConsole}
-                            />
+                            hasTypeTests && task.rawTests ? (
+                              <TypeTestsPanel
+                                taskId={String(task.id)}
+                                controller={typeTests}
+                                mode="reference"
+                                tests={task.rawTests}
+                                testsHash={task.testsHash ?? ""}
+                                onShowCompileProblem={showCompileProblem}
+                              />
+                            ) : (
+                              consoleNode
+                            )
                           }
                         />
                       }

@@ -18,5 +18,5 @@ type StrictOmit<T, K> = unknown;
 type Credentials = MyPick<User, "name" | "password">;
 type PublicUser = MyOmit<User, "password">;
 
-type Broken = MyPick<User, "age">; // должно быть ошибкой
-type Typo = StrictOmit<User, "pasword">; // должно быть ошибкой
+// MyPick<User, "age"> и StrictOmit<User, "pasword"> должны быть ошибками
+// (проверка во вкладке tests.ts).

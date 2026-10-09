@@ -44,4 +44,4 @@ const reportObject = defineApi({
 });
 
 reportObject.endpoints.getReports.method; // HttpMethod
-// reportObject.endpoints.getVtemplates; // Ошибка: такого endpoint нет у reportObject
+// reportObject.endpoints.getVtemplates — ошибка: такого endpoint нет (проверяется в tests.ts)

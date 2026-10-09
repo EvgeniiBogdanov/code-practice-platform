@@ -16,6 +16,5 @@ type UserPostParams = RouteParams<"/users/:userId/posts/:postId">;
 // { userId: string; postId: string }
 
 buildUrl("/users/:userId/posts/:postId", { userId: "1", postId: "42" }); // "/users/1/posts/42"
-// buildUrl("/users/:userId/posts/:postId", { userId: "1" }); // Ошибка: нет postId
-// buildUrl("/users/:userId", { userId: "1", extra: "x" }); // Ошибка: лишний параметр
 buildUrl("/about", {});
+// Пропущенный (postId) или лишний (extra) параметр — ошибка типов (проверяется в tests.ts).

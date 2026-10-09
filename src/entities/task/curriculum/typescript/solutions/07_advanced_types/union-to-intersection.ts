@@ -23,4 +23,4 @@ const api = combine(
 
 api.log("Старт");
 const timestamp = api.now(); // number
-// api.random("10"); // Ошибка: ожидается number
+// api.random("10") — ошибка: ожидается number (проверяется в tests.ts)

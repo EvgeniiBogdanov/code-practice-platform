@@ -6,12 +6,12 @@
 // changeStatus должна принимать и значение из этого объекта,
 // и строковый литерал, пришедший из API (например, "shipped").
 // Для выпадающего списка нужен массив всех статусов.
+// Произвольные строки вроде "lost" принимать нельзя (проверка — во вкладке tests.ts).
 
 const changeStatus = (newStatus) => {
   console.log(`Статус изменён на ${newStatus}`);
 };
 
 changeStatus("shipped");
-changeStatus("lost"); // должно быть ошибкой
 
 const statusOptions = []; // все статусы

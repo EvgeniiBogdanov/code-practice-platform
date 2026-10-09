@@ -18,4 +18,4 @@ type R = MyReturnType<typeof log>; // boolean
 type P = MyParameters<typeof log>; // [data: string[], count: number]
 type W = MyAwaited<Promise<Promise<number>>>; // number
 type A = FirstArg<typeof log>; // string[]
-// type Bad = MyReturnType<string>; // Ошибка: string не является функцией
+// MyReturnType<string> — ошибка: string не является функцией (проверяется в tests.ts)

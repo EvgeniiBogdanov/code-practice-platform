@@ -17,6 +17,7 @@ describe("useUIStore - resetUISettings", () => {
       editorLinterEnabled: true,
       editorSplitRatio: 50,
       consoleFontSize: 16,
+      testsFontSize: 18,
       consoleCollapsed: false,
       warmupExpanded: true,
       expandedJsGroups: { "group-1": true },
@@ -46,6 +47,7 @@ describe("useUIStore - resetUISettings", () => {
     expect(state.visualizerCodeFontSize).toBe(14);
     expect(state.visualizerSplitRatio).toBe(70);
     expect(state.consoleFontSize).toBe(14);
+    expect(state.testsFontSize).toBe(12);
     expect(state.consoleCollapsed).toBe(true);
     expect(state.warmupExpanded).toBe(false);
     expect(state.expandedJsGroups).toEqual({});
@@ -134,6 +136,26 @@ describe("useUIStore - resetUISettings", () => {
     store.resetVisualizerZoom();
     expect(useUIStore.getState().visualizerZoom).toBe(1);
     expect(localStorage.getItem("playground_visualizer_zoom")).toBe("1");
+  });
+
+  it("changes testsFontSize within its range and keeps it in localStorage", () => {
+    useUIStore.setState({ testsFontSize: 12 });
+    useUIStore.getState().increaseTestsFontSize();
+    expect(useUIStore.getState().testsFontSize).toBe(13);
+    useUIStore.getState().decreaseTestsFontSize();
+    useUIStore.getState().decreaseTestsFontSize();
+    expect(useUIStore.getState().testsFontSize).toBe(11);
+
+    useUIStore.getState().decreaseTestsFontSize();
+    expect(useUIStore.getState().testsFontSize).toBe(11);
+    useUIStore.getState().setTestsFontSize(99);
+    expect(useUIStore.getState().testsFontSize).toBe(20);
+    useUIStore.getState().increaseTestsFontSize();
+    expect(useUIStore.getState().testsFontSize).toBe(20);
+
+    expect(
+      JSON.parse(localStorage.getItem("playground_ui_settings") ?? "{}").state.testsFontSize
+    ).toBe(20);
   });
 
   it("updates, clamps and resets visualizerCodeFontSize with localStorage persistence", () => {

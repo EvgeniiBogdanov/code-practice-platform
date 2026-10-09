@@ -1,4 +1,4 @@
-import { NO_SUPPRESSION_CHECK, type TypeScriptTaskGroup } from "../taskMeta";
+import { NO_SUPPRESSION_CHECK, linked, type TypeScriptTaskGroup } from "../taskMeta";
 
 export const TYPE_TRANSFORMATIONS_GROUP: TypeScriptTaskGroup = {
   name: "Mapped и Conditional Types",
@@ -12,7 +12,7 @@ export const TYPE_TRANSFORMATIONS_GROUP: TypeScriptTaskGroup = {
       filepath: "05_type_transformations/mapped-modifiers.ts",
       checklist: [
         "Все четыре типа построены через отображаемый тип [K in keyof T].",
-        "MyRequired использует -?, Mutable использует -readonly.",
+        linked("MyRequired использует -?, Mutable использует -readonly.", "делает все поля обязательными", "Mutable снимает readonly со всех полей"),
         "Встроенные Readonly, Partial и Required не используются.",
         NO_SUPPRESSION_CHECK,
       ],
@@ -54,9 +54,9 @@ export const TYPE_TRANSFORMATIONS_GROUP: TypeScriptTaskGroup = {
       tags: ["mapped-types", "keyof", "Pick", "Omit"],
       filepath: "05_type_transformations/pick-omit-implementation.ts",
       checklist: [
-        "MyPick ограничивает ключи через K extends keyof T.",
-        "MyOmit исключает ключи и сохраняет модификаторы полей.",
-        "StrictOmit с несуществующим ключом — ошибка.",
+        linked("MyPick ограничивает ключи через K extends keyof T.", "принимает только существующие ключи"),
+        linked("MyOmit исключает ключи и сохраняет модификаторы полей.", "убирает перечисленные ключи и сохраняет модификаторы"),
+        linked("StrictOmit с несуществующим ключом — ошибка.", "отклоняет несуществующие ключи"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -97,8 +97,8 @@ export const TYPE_TRANSFORMATIONS_GROUP: TypeScriptTaskGroup = {
       tags: ["mapped-types", "generics", "inference", "literal"],
       filepath: "05_type_transformations/typed-api-template.ts",
       checklist: [
-        "Для каждого API задан свой точный набор ключей.",
-        "method ограничен допустимыми HTTP-методами.",
+        linked("Для каждого API задан свой точный набор ключей.", "ключи endpoints выводятся из объекта", "у каждого объекта только свои endpoint"),
+        linked("method ограничен допустимыми HTTP-методами.", "method — не произвольная строка"),
         "Имена операций не дублируются вручную в типах.",
         NO_SUPPRESSION_CHECK,
       ],
@@ -140,9 +140,9 @@ export const TYPE_TRANSFORMATIONS_GROUP: TypeScriptTaskGroup = {
       tags: ["conditional-types", "extends"],
       filepath: "05_type_transformations/conditional-types.ts",
       checklist: [
-        "IsString возвращает литералы true или false.",
-        "MyNonNullable убирает null и undefined без встроенного NonNullable.",
-        "TypeName различает строки, числа, логические значения, функции и объекты.",
+        linked("IsString возвращает литералы true или false.", "true для строк, false для остальных типов"),
+        linked("MyNonNullable убирает null и undefined без встроенного NonNullable.", "убирает null и undefined", "не трогает остальные типы"),
+        linked("TypeName различает строки, числа, логические значения, функции и объекты.", "называет примитивы и функции", "массивы и объекты — object"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -183,8 +183,8 @@ export const TYPE_TRANSFORMATIONS_GROUP: TypeScriptTaskGroup = {
       tags: ["conditional-types", "infer"],
       filepath: "05_type_transformations/conditional-element-type.ts",
       checklist: [
-        "Из number[] извлекается number.",
-        "Не являющийся массивом тип string остаётся string.",
+        linked("Из number[] извлекается number.", "извлекает тип элемента массива"),
+        linked("Не являющийся массивом тип string остаётся string.", "не массив возвращается без изменений"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -225,9 +225,9 @@ export const TYPE_TRANSFORMATIONS_GROUP: TypeScriptTaskGroup = {
       tags: ["infer", "conditional-types", "recursion"],
       filepath: "05_type_transformations/infer-utilities.ts",
       checklist: [
-        "MyReturnType и MyParameters принимают только функции.",
-        "MyAwaited рекурсивно снимает вложенные Promise.",
-        "FirstArg возвращает тип первого параметра.",
+        linked("MyReturnType и MyParameters принимают только функции.", "принимает только функции"),
+        linked("MyAwaited рекурсивно снимает вложенные Promise.", "MyAwaited разворачивает вложенные Promise"),
+        linked("FirstArg возвращает тип первого параметра.", "FirstArg возвращает тип первого параметра"),
         "Встроенные утилиты и any не используются.",
         NO_SUPPRESSION_CHECK,
       ],
@@ -269,9 +269,9 @@ export const TYPE_TRANSFORMATIONS_GROUP: TypeScriptTaskGroup = {
       tags: ["distributive-conditional-types", "never", "union"],
       filepath: "05_type_transformations/distributive-conditionals.ts",
       checklist: [
-        "ToArrayNonDist<string | number> — (string | number)[].",
-        "IsNever<never> — true, IsNever<string> — false.",
-        "IsUnion<string | number> — true, IsUnion<string> и IsUnion<never> — false.",
+        linked("ToArrayNonDist<string | number> — (string | number)[].", "не распределяется по объединению"),
+        linked("IsNever<never> — true, IsNever<string> — false.", "true только для never", "false для остальных типов"),
+        linked("IsUnion<string | number> — true, IsUnion<string> и IsUnion<never> — false.", "true для объединения нескольких типов", "false для одного типа и для never"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -312,8 +312,8 @@ export const TYPE_TRANSFORMATIONS_GROUP: TypeScriptTaskGroup = {
       tags: ["template-literal", "Capitalize"],
       filepath: "05_type_transformations/template-event-names.ts",
       checklist: [
-        "Имена обработчиков выводятся из EventName.",
-        "Неверный регистр и неизвестные события отвергаются.",
+        linked("Имена обработчиков выводятся из EventName.", "EventHandlerName — onИмяСобытия для каждого события"),
+        linked("Неверный регистр и неизвестные события отвергаются.", "остальные строки отклоняются"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -354,8 +354,8 @@ export const TYPE_TRANSFORMATIONS_GROUP: TypeScriptTaskGroup = {
       tags: ["mapped-types", "key-remapping", "template-literal"],
       filepath: "05_type_transformations/key-remapping.ts",
       checklist: [
-        "Getters и ChangeHandlers строят имена ключей через as и шаблонные строки.",
-        "PickByValue отбрасывает ключи через as never.",
+        linked("Getters и ChangeHandlers строят имена ключей через as и шаблонные строки.", "Getters добавляет get и делает имя поля заглавным", "ChangeHandlers создаёт onИмяChange с типом значения поля"),
+        linked("PickByValue отбрасывает ключи через as never.", "PickByValue оставляет только поля с подходящим значением"),
         "Нестроковые ключи не ломают Capitalize.",
         NO_SUPPRESSION_CHECK,
       ],

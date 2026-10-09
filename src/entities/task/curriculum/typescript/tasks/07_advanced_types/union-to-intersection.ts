@@ -20,4 +20,4 @@ const api = combine(
 
 api.log("Старт");
 const timestamp = api.now(); // должно быть number
-api.random("10"); // должно быть ошибкой
+// api.random("10") должно быть ошибкой (проверка во вкладке tests.ts).

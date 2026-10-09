@@ -1,4 +1,4 @@
-import { NO_SUPPRESSION_CHECK, type TypeScriptTaskGroup } from "../taskMeta";
+import { NO_SUPPRESSION_CHECK, linked, type TypeScriptTaskGroup } from "../taskMeta";
 
 export const ADVANCED_TYPES_GROUP: TypeScriptTaskGroup = {
   name: "Advanced Types",
@@ -11,9 +11,9 @@ export const ADVANCED_TYPES_GROUP: TypeScriptTaskGroup = {
       tags: ["recursive-types", "template-literal", "infer"],
       filepath: "07_advanced_types/object-paths.ts",
       checklist: [
-        "Paths<Settings> содержит все промежуточные и конечные пути.",
-        "PathValue разбирает путь рекурсивно через шаблон с infer.",
-        "get с несуществующим путём — ошибка, результат имеет точный тип.",
+        linked("Paths<Settings> содержит все промежуточные и конечные пути.", "перечисляет все пути к полям через точку"),
+        linked("PathValue разбирает путь рекурсивно через шаблон с infer.", "возвращает тип значения по пути"),
+        linked("get с несуществующим путём — ошибка, результат имеет точный тип.", "возвращает значение точного типа", "принимает только существующие пути"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -55,8 +55,8 @@ export const ADVANCED_TYPES_GROUP: TypeScriptTaskGroup = {
       filepath: "07_advanced_types/route-params.ts",
       checklist: [
         "ParamNames извлекает имена параметров из шаблона рекурсивно.",
-        "Пропущенный параметр — ошибка, лишний — ошибка.",
-        "Маршрут без параметров принимает пустой объект.",
+        linked("Пропущенный параметр — ошибка, лишний — ошибка.", "пропущенный параметр — ошибка", "лишний параметр или значение не строка — ошибка"),
+        linked("Маршрут без параметров принимает пустой объект.", "принимает ровно те параметры, что указаны в шаблоне"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -97,9 +97,9 @@ export const ADVANCED_TYPES_GROUP: TypeScriptTaskGroup = {
       tags: ["tuple", "variadic-tuple", "infer", "recursion"],
       filepath: "07_advanced_types/tuple-operations.ts",
       checklist: [
-        "First и Last используют infer в шаблоне кортежа, для пустого кортежа — never.",
-        "Length возвращает числовой литерал.",
-        "Reverse реализован рекурсивно.",
+        linked("First и Last используют infer в шаблоне кортежа, для пустого кортежа — never.", "возвращают крайние элементы кортежа", "для пустого кортежа дают never"),
+        linked("Length возвращает числовой литерал.", "Length возвращает длину кортежа как литерал"),
+        linked("Reverse реализован рекурсивно.", "Reverse разворачивает кортеж"),
         "concat возвращает [...A, ...B] без утверждений типа.",
         NO_SUPPRESSION_CHECK,
       ],
@@ -142,8 +142,8 @@ export const ADVANCED_TYPES_GROUP: TypeScriptTaskGroup = {
       filepath: "07_advanced_types/curry.ts",
       checklist: [
         "Curried рекурсивно строит цепочку функций по кортежу аргументов.",
-        "Тип каждого шага совпадает с типом соответствующего параметра.",
-        "Неверный тип аргумента на любом шаге — ошибка.",
+        linked("Тип каждого шага совпадает с типом соответствующего параметра.", "каждый шаг принимает один аргумент", "итог имеет тип результата исходной функции"),
+        linked("Неверный тип аргумента на любом шаге — ошибка.", "неверный тип аргумента на любом шаге — ошибка"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [
@@ -184,7 +184,7 @@ export const ADVANCED_TYPES_GROUP: TypeScriptTaskGroup = {
       tags: ["variance", "covariance", "contravariance", "strictFunctionTypes"],
       filepath: "07_advanced_types/function-variance.ts",
       checklist: [
-        "AnimalHandler описывает onEvent как свойство-функцию, и небезопасное присваивание — ошибка.",
+        linked("AnimalHandler описывает onEvent как свойство-функцию, и небезопасное присваивание — ошибка.", "обработчик собак нельзя использовать как обработчик животных"),
         "Box объявлен с аннотацией out T.",
         "Box<Dog> присваивается в Box<Animal>, обратное — ошибка.",
         NO_SUPPRESSION_CHECK,
@@ -233,8 +233,8 @@ export const ADVANCED_TYPES_GROUP: TypeScriptTaskGroup = {
       filepath: "07_advanced_types/union-to-intersection.ts",
       checklist: [
         "UnionToIntersection реализован через вывод из контравариантной позиции.",
-        "combine возвращает пересечение типов всех плагинов.",
-        "Методы каждого плагина доступны с точными сигнатурами.",
+        linked("combine возвращает пересечение типов всех плагинов.", "результат содержит методы всех плагинов с их типами"),
+        linked("Методы каждого плагина доступны с точными сигнатурами.", "методы вызываются только с аргументами своего типа"),
         NO_SUPPRESSION_CHECK,
       ],
       questions: [

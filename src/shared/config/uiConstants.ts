@@ -6,6 +6,8 @@ declare const __APP_VERSION__: string | undefined;
 
 export const APP_VERSION = typeof __APP_VERSION__ !== "undefined" ? __APP_VERSION__ : "error";
 
+export const REPOSITORY_URL = "https://github.com/EvgeniiBogdanov/code-practice-platform";
+
 export const MIN_FONT_SIZE = 14;
 export const MAX_FONT_SIZE = 24;
 

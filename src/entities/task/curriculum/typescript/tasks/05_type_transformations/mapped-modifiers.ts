@@ -15,12 +15,11 @@ type MyPartial<T> = unknown;
 type MyRequired<T> = unknown;
 type Mutable<T> = unknown;
 
+// Примеры недопустимых присваиваний (frozen.title = "...", отсутствие done у
+// MyRequired<Todo>) проверяются во вкладке tests.ts.
 const frozen: MyReadonly<Todo> = { id: 1, title: "Купить хлеб" };
-frozen.title = "Изменить"; // должно быть ошибкой
 
 const draft: MyPartial<Todo> = {};
 
-const complete: MyRequired<Todo> = { id: 1, title: "Купить хлеб" }; // должно быть ошибкой: нет done
-
 const editable: Mutable<Todo> = { id: 1, title: "Купить хлеб" };
-editable.id = 2; // должно быть разрешено
+editable.id = 2; // разрешено: readonly снят

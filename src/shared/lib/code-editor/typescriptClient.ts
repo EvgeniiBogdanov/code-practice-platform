@@ -13,13 +13,33 @@ export type {
   TypeScriptTextChange,
   TypeScriptLocation,
   EditorDiagnostic,
+  TypeTestCase,
+  TypeTestCompileResult,
+  TypeTestFailure,
+  TypeTestReport,
+  TypeTestResult,
+  TypeTestStatus,
+  TypeTestsInput,
 } from "./typescriptTypes";
 
 export type TypeScriptRequest = Omit<TypeScriptDiagnosticRequest, "id">;
 
+export interface TypeScriptRequestOptions {
+  /**
+   * A request that overruns is abandoned and the worker is restarted (a type that never
+   * finishes would otherwise block every later request). A restart is not a crash: it does not
+   * count towards the crash-loop guard, and the other pending requests are sent again.
+   */
+  timeoutMs?: number;
+  onTimeout?: () => void;
+}
+
 export interface TypeScriptClient {
-  /** Resolves with null when the worker fails or was shut down. */
-  request: (message: TypeScriptRequest) => Promise<TypeScriptDiagnosticResponse | null>;
+  /** Resolves with null when the worker fails, was shut down or the request timed out. */
+  request: (
+    message: TypeScriptRequest,
+    options?: TypeScriptRequestOptions
+  ) => Promise<TypeScriptDiagnosticResponse | null>;
   release: () => void;
 }
 
@@ -38,13 +58,21 @@ let worker: Worker | null = null;
 let users = 0;
 let nextId = 0;
 let shutdownTimer: ReturnType<typeof setTimeout> | null = null;
-const pending = new Map<number, (response: TypeScriptDiagnosticResponse | null) => void>();
+interface PendingRequest {
+  message: TypeScriptRequest & { id: number };
+  resolve: (response: TypeScriptDiagnosticResponse | null) => void;
+}
+const pending = new Map<number, PendingRequest>();
+
+const resolveAll = (): void => {
+  for (const { resolve } of pending.values()) resolve(null);
+  pending.clear();
+};
 
 const shutdown = (): void => {
   worker?.terminate();
   worker = null;
-  for (const resolve of pending.values()) resolve(null);
-  pending.clear();
+  resolveAll();
 };
 
 const recordCrash = (): void => {
@@ -60,18 +88,25 @@ const getWorker = (): Worker => {
   if (worker) return worker;
   const created = new TypeScriptWorker();
   created.onmessage = ({ data }: MessageEvent<TypeScriptDiagnosticResponse>): void => {
-    const resolve = pending.get(data.id);
+    const request = pending.get(data.id);
     pending.delete(data.id);
-    resolve?.(data);
+    request?.resolve(data);
   };
   created.onerror = recordCrash;
   // A message that cannot be cloned or read is lost: fail that request, not the worker.
-  created.onmessageerror = (): void => {
-    for (const resolve of pending.values()) resolve(null);
-    pending.clear();
-  };
+  created.onmessageerror = resolveAll;
   worker = created;
   return created;
+};
+
+/** Replaces a stuck worker with a fresh one and resends everything that is still waiting. */
+const restart = (abandoned: number): void => {
+  pending.delete(abandoned);
+  worker?.terminate();
+  worker = null;
+  if (pending.size === 0) return;
+  const next = getWorker();
+  for (const { message } of pending.values()) next.postMessage(message);
 };
 
 /** Shares one TypeScript worker between all mounted editors. */
@@ -81,12 +116,28 @@ export const acquireTypeScriptClient = (): TypeScriptClient => {
   shutdownTimer = null;
   let released = false;
   return {
-    request: (message) => {
+    request: (message, options = {}) => {
       if (released || isCrashLooping()) return Promise.resolve(null);
       const id = ++nextId;
       return new Promise((resolve) => {
-        pending.set(id, resolve);
-        getWorker().postMessage({ ...message, id });
+        const timer =
+          options.timeoutMs === undefined
+            ? undefined
+            : setTimeout(() => {
+                if (!pending.has(id)) return;
+                restart(id);
+                options.onTimeout?.();
+                resolve(null);
+              }, options.timeoutMs);
+        const request = { ...message, id };
+        pending.set(id, {
+          message: request,
+          resolve: (response) => {
+            clearTimeout(timer);
+            resolve(response);
+          },
+        });
+        getWorker().postMessage(request);
       });
     },
     release: () => {

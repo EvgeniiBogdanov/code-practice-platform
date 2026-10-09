@@ -1,7 +1,68 @@
 .body {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+}
+
+/*
+ * Everything that appears (a hint level, the next-level button) grows from zero height and fades in,
+ * so the elements below slide down instead of jumping. The spacing lives inside the animated box.
+ */
+.level {
+  display: grid;
+  grid-template-rows: 1fr;
+  animation: levelIn var(--duration-medium) ease-out;
+}
+
+.levelInner {
+  min-height: 0;
+  overflow: hidden;
+  padding-top: var(--space-2);
+}
+
+.level:first-child .levelInner {
+  padding-top: 0;
+}
+
+@keyframes levelIn {
+  from {
+    grid-template-rows: 0fr;
+    opacity: 0;
+  }
+}
+
+.revealRow {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition:
+    grid-template-rows var(--transition-medium),
+    opacity var(--transition-medium);
+}
+
+.revealRowHidden {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+
+.revealInner {
+  min-height: 0;
+  overflow: hidden;
+  padding-top: 0;
+  transition: padding-top var(--transition-medium);
+}
+
+.revealInnerSpaced {
+  padding-top: var(--space-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .level {
+    animation: none;
+  }
+
+  .revealRow,
+  .revealInner {
+    transition: none;
+  }
 }
 
 .counter {
