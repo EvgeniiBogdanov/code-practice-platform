@@ -8,10 +8,9 @@ import { getReactCategories } from "../../lib/getReactCategories";
 import { SidebarListSkeleton } from "./SidebarListSkeleton";
 
 describe("SidebarListSkeleton", () => {
-  it("renders progress card, quick actions, and default 11 folders when no section is passed", () => {
+  it("announces loading as a single status and renders default 11 folders", () => {
     render(<SidebarListSkeleton />);
-    expect(screen.getByLabelText("Загрузка списка тем...")).toBeInTheDocument();
-    expect(screen.getByLabelText("Быстрые действия")).toBeInTheDocument();
+    expect(screen.getByRole("status", { name: "Загрузка списка тем..." })).toBeInTheDocument();
 
     const folders = screen.getAllByTestId("sidebar-folder-skeleton");
     expect(folders).toHaveLength(11);

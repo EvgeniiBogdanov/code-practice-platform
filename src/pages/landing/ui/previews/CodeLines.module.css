@@ -24,13 +24,11 @@
   padding-right: var(--space-3);
   text-align: right;
   color: var(--fg-muted);
-  opacity: 0.6;
   user-select: none;
 }
 
 .activeLine .gutter {
   color: var(--text-main);
-  opacity: 1;
 }
 
 .content {
