@@ -130,6 +130,8 @@ Issues и pull request'ы приветствуются. Перед отправ�
 npm run typecheck && npm run lint && npm run format:check && npm run test:unit
 ```
 
+После `npm install` [Lefthook](https://lefthook.dev) ставит git-хуки: перед коммитом Prettier и ESLint (`--max-warnings 0`) прогоняются по staged-файлам, перед push — `npm run typecheck`. Пропустить разово: `LEFTHOOK=0 git commit ...`.
+
 CI в PR дополнительно проверяет порог покрытия, бюджет бандла (`size-limit`), E2E и доступность на собранном приложении (Playwright + axe), Lighthouse и новые зависимости. В `main` попадают только squash-merge'ем PR с зелёным `CI OK`; заголовок PR должен следовать [Conventional Commits](https://www.conventionalcommits.org/ru/v1.0.0/) — он становится сообщением коммита.
 
 Шаблон описания PR лежит в [`.github/PULL_REQUEST_TEMPLATE.md`](.github/PULL_REQUEST_TEMPLATE.md). История изменений — в [CHANGELOG.md](CHANGELOG.md).
