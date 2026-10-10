@@ -11,6 +11,6 @@ const climbStairs = (n) => {
 };
 
 // Пример вызова:
-console.log(climbStairs(2)); // 2
-console.log(climbStairs(3)); // 3
-console.log(climbStairs(5)); // 8
+console.log(climbStairs(4));  // 5
+console.log(climbStairs(6));  // 13
+console.log(climbStairs(10)); // 89

@@ -24,6 +24,7 @@ const isPalindrome = (s) => {
 };
 
 // Пример вызова:
-console.log(isPalindrome("A man, a plan, a canal: Panama")); // true
-console.log(isPalindrome("race a car"));                     // false
-console.log(isPalindrome(" "));                               // true
+console.log(isPalindrome("Was it a car or a cat I saw?")); // true
+console.log(isPalindrome("Step on no pets!"));             // true
+console.log(isPalindrome("Hello, world"));                 // false
+console.log(isPalindrome("?!"));                           // true

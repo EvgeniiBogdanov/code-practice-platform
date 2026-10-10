@@ -17,11 +17,11 @@ const hasCycle = (head) => {
 };
 
 // Пример вызова:
-const list1 = createLinkedListWithCycle([3, 2, 0, -4], 1);
+const list1 = createLinkedListWithCycle([5, 8, 1, 7], 2);
 console.log(hasCycle(list1)); // true
 
-const list2 = createLinkedListWithCycle([1, 2], 0);
+const list2 = createLinkedListWithCycle([9, 4], 1);
 console.log(hasCycle(list2)); // true
 
-const list3 = createLinkedListWithCycle([1], -1);
+const list3 = createLinkedListWithCycle([6, 2, 3], -1);
 console.log(hasCycle(list3)); // false

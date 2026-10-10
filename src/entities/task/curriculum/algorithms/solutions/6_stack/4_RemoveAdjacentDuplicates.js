@@ -13,6 +13,7 @@ const removeAdjacentDuplicates = (s) => {
 };
 
 // Пример вызова:
-console.log(removeAdjacentDuplicates("abbaca")); // "ca"
-console.log(removeAdjacentDuplicates("azxxzy")); // "ay"
-console.log(removeAdjacentDuplicates("a")); // "a"
+console.log(removeAdjacentDuplicates("baab"));  // ""
+console.log(removeAdjacentDuplicates("xyyxz")); // "z"
+console.log(removeAdjacentDuplicates("hello")); // "heo"
+console.log(removeAdjacentDuplicates("q"));     // "q"

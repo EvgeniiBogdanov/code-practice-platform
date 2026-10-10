@@ -12,6 +12,7 @@ const rob = (nums) => {
 };
 
 // Пример вызова:
-console.log(rob([1, 2, 3, 1]));    // 4
-console.log(rob([2, 7, 9, 3, 1])); // 12
-console.log(rob([5]));             // 5
+console.log(rob([5, 1, 1, 5]));          // 10
+console.log(rob([3, 10, 3, 1, 2]));      // 12
+console.log(rob([6, 7, 1, 3, 8, 2, 4])); // 19
+console.log(rob([10]));                  // 10

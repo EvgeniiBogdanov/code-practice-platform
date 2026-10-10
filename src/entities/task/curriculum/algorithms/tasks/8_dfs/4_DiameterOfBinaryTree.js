@@ -1,22 +1,22 @@
-const { buildTree } = require('./helpers');
-
-// Напишите функцию diameterOfBinaryTree(root), которая принимает корень бинарного дерева (root)
-// и возвращает диаметр этого дерева.
+// Напишите функцию diameterOfBinaryTree(root), которая возвращает диаметр бинарного
+// дерева — число рёбер на самом длинном пути между любыми двумя узлами.
+// Такой путь не обязан проходить через корень. У пустого дерева и дерева
+// из одного узла диаметр 0.
 //
-// Диаметр бинарного дерева — это длина самого длинного пути между любыми двумя узлами дерева.
-// Этот путь может проходить через корень, а может и не проходить через него.
-// Длина пути определяется количеством рёбер между узлами.
+// В примерах деревья задаются массивами значений по уровням (null — нет узла).
+
+const { buildTree } = require('./helpers');
 
 const diameterOfBinaryTree = (root) => {
   // Решение тут
 };
 
 // Пример вызова:
-const tree1 = buildTree([1, 2, 3, 4, 5]);
-console.log(diameterOfBinaryTree(tree1)); // 3
+const tree1 = buildTree([1, 2, null, 3, 4, 5, null, null, 6]);
+console.log(diameterOfBinaryTree(tree1)); // 4
 
-const tree2 = buildTree([1, 2]);
+const tree2 = buildTree([7, 3]);
 console.log(diameterOfBinaryTree(tree2)); // 1
 
-const tree3 = buildTree([]);
+const tree3 = buildTree([9]);
 console.log(diameterOfBinaryTree(tree3)); // 0

@@ -26,7 +26,7 @@ const decodeString = (s) => {
 };
 
 // Пример вызова:
-console.log(decodeString("3[a]2[bc]"));     // "aaabcbc"
-console.log(decodeString("3[a2[c]]"));      // "accaccacc"
-console.log(decodeString("2[abc]3[cd]ef")); // "abcabccdcdcdef"
-console.log(decodeString("10[a]"));         // "aaaaaaaaaa"
+console.log(decodeString("2[ab]3[c]")); // "ababccc"
+console.log(decodeString("2[x3[y]]"));  // "xyyyxyyy"
+console.log(decodeString("a2[bc]d"));   // "abcbcd"
+console.log(decodeString("12[z]"));     // "zzzzzzzzzzzz"

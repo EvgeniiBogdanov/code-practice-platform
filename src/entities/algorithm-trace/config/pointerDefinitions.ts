@@ -16,12 +16,13 @@ export const pointerDefinitions = {
     examples: [
       {
         id: "task-1",
-        label: "Пример 1: [1, 0, 0, 0, 1, 0, 1]",
-        input: "1, 0, 0, 0, 1, 0, 1",
+        label: "Пример 1: [1, 0, 0, 0, 0, 0, 1]",
+        input: "1, 0, 0, 0, 0, 0, 1",
         isTask: true,
       },
-      { id: "task-2", label: "Пример 2: [1, 0, 0, 0]", input: "1, 0, 0, 0", isTask: true },
-      { id: "task-3", label: "Пример 3: [0, 1]", input: "0, 1", isTask: true },
+      { id: "task-2", label: "Пример 2: [0, 0, 0, 1, 0]", input: "0, 0, 0, 1, 0", isTask: true },
+      { id: "task-3", label: "Пример 3: [1, 0, 1, 0, 0]", input: "1, 0, 1, 0, 0", isTask: true },
+      { id: "task-4", label: "Пример 4: [1, 0]", input: "1, 0", isTask: true },
       { id: "left", label: "Левый край лучше: [0, 0, 0, 1, 0, 1]", input: "0, 0, 0, 1, 0, 1" },
       {
         id: "gap",
@@ -72,9 +73,10 @@ export const pointerDefinitions = {
     inputHint: "От 1 до 14 символов ASCII без пробелов.",
     build: buildPalindromeCenterTrace,
     examples: [
-      { id: "task-1", label: 'Пример 1: "babad"', input: "babad", isTask: true },
-      { id: "task-2", label: 'Пример 2: "cbbd"', input: "cbbd", isTask: true },
-      { id: "task-3", label: 'Пример 3: "a"', input: "a", isTask: true },
+      { id: "task-1", label: 'Пример 1: "bananas"', input: "bananas", isTask: true },
+      { id: "task-2", label: 'Пример 2: "xyzzyq"', input: "xyzzyq", isTask: true },
+      { id: "task-3", label: 'Пример 3: "noon"', input: "noon", isTask: true },
+      { id: "task-4", label: 'Пример 4: "abcd"', input: "abcd", isTask: true },
       { id: "odd", label: 'Нечётный палиндром: "racecar"', input: "racecar" },
       { id: "same", label: 'Одинаковые символы: "aaaa"', input: "aaaa" },
     ],

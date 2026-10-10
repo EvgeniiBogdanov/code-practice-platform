@@ -39,17 +39,15 @@ const floodFill = (image, sr, sc, color) => {
 };
 
 // Пример вызова:
-console.log(
-  floodFill(
-    [
-      [1, 1, 1],
-      [1, 1, 0],
-      [1, 0, 1],
-    ],
-    1,
-    1,
-    2
-  )
-); // [[2, 2, 2], [2, 2, 0], [2, 0, 1]]
+const image1 = [
+  [0, 0, 1],
+  [0, 1, 1],
+  [1, 1, 0],
+];
+console.log(floodFill(image1, 2, 1, 5)); // [[0, 0, 5], [0, 5, 5], [5, 5, 0]]
 
-console.log(floodFill([[0, 0, 0]], 0, 0, 0)); // [[0, 0, 0]]
+const image2 = [
+  [3, 3],
+  [3, 3],
+];
+console.log(floodFill(image2, 0, 0, 3)); // [[3, 3], [3, 3]]

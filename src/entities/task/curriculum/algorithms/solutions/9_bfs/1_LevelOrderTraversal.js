@@ -32,6 +32,6 @@ const levelOrder = (root) => {
 };
 
 // Пример вызова:
-console.log(levelOrder(buildTree([3, 9, 20, null, null, 15, 7]))); // [[3], [9, 20], [15, 7]]
-console.log(levelOrder(buildTree([1])));                             // [[1]]
-console.log(levelOrder(buildTree([])));                              // []
+console.log(levelOrder(buildTree([10, 6, 15, 3, 8, null, 20]))); // [[10], [6, 15], [3, 8, 20]]
+console.log(levelOrder(buildTree([5, null, 7])));                // [[5], [7]]
+console.log(levelOrder(buildTree([])));                          // []

@@ -1,11 +1,12 @@
-// Напишите функцию runningSum(nums), которая возвращает массив префиксных сумм.
-// В позиции i должна находиться сумма nums[0] + nums[1] + ... + nums[i].
+// В массиве nums — операции по счёту. Напишите функцию runningSum(nums), которая
+// возвращает баланс после каждой операции: в позиции i — сумма nums[0..i].
+// Исходный баланс равен 0.
 
 const runningSum = (nums) => {
   // Решение тут
 };
 
 // Пример вызова:
-console.log(runningSum([1, 2, 3, 4])); // [1, 3, 6, 10]
-console.log(runningSum([1, 1, 1, 1, 1])); // [1, 2, 3, 4, 5]
-console.log(runningSum([])); // []
+console.log(runningSum([5, -2, 4])); // [5, 3, 7]
+console.log(runningSum([0, 0, 1]));  // [0, 0, 1]
+console.log(runningSum([]));         // []

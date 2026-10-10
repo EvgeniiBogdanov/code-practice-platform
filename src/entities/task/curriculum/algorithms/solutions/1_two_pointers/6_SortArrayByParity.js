@@ -22,8 +22,8 @@ const sortArrayByParity = (nums) => {
 };
 
 // Пример вызова:
-console.log(sortArrayByParity([3, 1, 2, 4])); // [4, 2, 1, 3]
-console.log(sortArrayByParity([0])); // [0]
-console.log(sortArrayByParity([1, 2])); // [2, 1]
-console.log(sortArrayByParity([2, 4, 6])); // [2, 4, 6]
-console.log(sortArrayByParity([1, 3, 5])); // [1, 3, 5]
+console.log(sortArrayByParity([5, 8, 1, 6])); // [6, 8, 1, 5]
+console.log(sortArrayByParity([7, 2]));       // [2, 7]
+console.log(sortArrayByParity([4, 10]));      // [4, 10]
+console.log(sortArrayByParity([9, 3, 11]));   // [9, 3, 11]
+console.log(sortArrayByParity([0]));          // [0]

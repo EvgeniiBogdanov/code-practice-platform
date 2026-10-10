@@ -1,14 +1,16 @@
-// Напишите функцию isPalindrome(s), которая принимает строку s и возвращает true,
-// если строка является палиндромом, и false в противном случае.
+// Напишите функцию isPalindrome(s), которая проверяет, читается ли фраза s
+// одинаково в обе стороны.
 //
-// Палиндром — это строка, которая читается одинаково слева направо и справа налево
-// после приведения всех букв к нижнему регистру и удаления всех небуквенно-цифровых символов.
+// Сравниваются только латинские буквы и цифры, регистр не важен: пробелы,
+// знаки препинания и прочие символы пропускаются. Если после этого
+// не осталось ни одного символа, фраза считается палиндромом.
 
 const isPalindrome = (s) => {
   // Решение тут
 };
 
 // Пример вызова:
-console.log(isPalindrome("A man, a plan, a canal: Panama")); // true
-console.log(isPalindrome("race a car"));                     // false
-console.log(isPalindrome(" "));                               // true
+console.log(isPalindrome("Was it a car or a cat I saw?")); // true
+console.log(isPalindrome("Step on no pets!"));             // true
+console.log(isPalindrome("Hello, world"));                 // false
+console.log(isPalindrome("?!"));                           // true

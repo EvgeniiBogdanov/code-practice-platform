@@ -24,6 +24,6 @@ const combinationSum = (candidates, target) => {
 };
 
 // Пример вызова:
-console.log(combinationSum([2, 3, 6, 7], 7)); // [[2, 2, 3], [7]]
-console.log(combinationSum([2, 3, 5], 8));    // [[2, 2, 2, 2], [2, 3, 3], [3, 5]]
-console.log(combinationSum([2], 1));          // []
+console.log(combinationSum([3, 4, 5], 8)); // [[3, 5], [4, 4]]
+console.log(combinationSum([2, 5], 9));    // [[2, 2, 5]]
+console.log(combinationSum([4, 6], 5));    // []

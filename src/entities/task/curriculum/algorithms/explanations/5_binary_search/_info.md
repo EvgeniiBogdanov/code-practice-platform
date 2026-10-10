@@ -231,9 +231,8 @@ console.log(mySqrt(8)); // 2 (так как 2^2 = 4 <= 8, а 3^2 = 9 > 8)
 
 ### 1. Search Insert Position (LeetCode 35) — куда вставить элемент
 
-Дан отсортированный массив и число `target`. Если оно есть в массиве —
-вернуть его индекс. Если нет — вернуть индекс, куда его нужно было бы
-вставить, чтобы массив остался отсортированным.
+В отсортированном массиве нужно найти `target`, а если его нет — позицию,
+куда его вставить, чтобы порядок не нарушился.
 
 ```js
 const searchInsert = (nums, target) => {
@@ -251,10 +250,10 @@ const searchInsert = (nums, target) => {
   return left;
 };
 
-console.log(searchInsert([1, 3, 5, 6], 5)); // 2
-console.log(searchInsert([1, 3, 5, 6], 2)); // 1
-console.log(searchInsert([1, 3, 5, 6], 7)); // 4
-console.log(searchInsert([1, 3, 5, 6], 0)); // 0
+console.log(searchInsert([10, 20, 30, 40], 30)); // 2
+console.log(searchInsert([10, 20, 30, 40], 25)); // 2
+console.log(searchInsert([10, 20, 30, 40], 50)); // 4
+console.log(searchInsert([10, 20, 30, 40], 5));  // 0
 ```
 
 ### 2. Поиск первого вхождения (Lower Bound) — работа с дубликатами

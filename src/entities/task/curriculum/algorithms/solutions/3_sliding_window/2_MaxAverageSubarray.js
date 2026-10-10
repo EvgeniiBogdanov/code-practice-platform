@@ -16,5 +16,6 @@ const findMaxAverage = (nums, k) => {
 };
 
 // Пример вызова:
-console.log(findMaxAverage([1, 12, -5, -6, 50, 3], 4)); // 12.75
-console.log(findMaxAverage([5], 1));                   // 5
+console.log(findMaxAverage([2, 9, -4, 7, 5, 1], 2)); // 6
+console.log(findMaxAverage([-3, -1, -7], 1));        // -1
+console.log(findMaxAverage([6, 2, 4, 8], 4));        // 5

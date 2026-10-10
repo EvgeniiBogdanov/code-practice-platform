@@ -18,6 +18,6 @@ const preorderTraversal = (root) => {
 };
 
 // Пример вызова:
-console.log(preorderTraversal(buildTree([1, null, 2, 3]))); // [1, 2, 3]
-console.log(preorderTraversal(buildTree([1, 2, 3, 4, 5]))); // [1, 2, 4, 5, 3]
-console.log(preorderTraversal(buildTree([]))); // []
+console.log(preorderTraversal(buildTree([6, 2, 8, 1, 4]))); // [6, 2, 1, 4, 8]
+console.log(preorderTraversal(buildTree([3, null, 5, 4]))); // [3, 5, 4]
+console.log(preorderTraversal(buildTree([])));              // []

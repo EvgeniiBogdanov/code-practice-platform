@@ -16,18 +16,8 @@ export const backtrackingDefinitions = {
     inputLabel: "Уникальные числа",
     inputHint: "До 5 уникальных чисел. Каждый узел дерева даёт отдельное подмножество.",
     examples: [
-      {
-        id: "task1",
-        label: "Пример 1: [1, 2, 3] (8 подмножеств)",
-        input: "1,2,3",
-        isTask: true,
-      },
-      {
-        id: "task2",
-        label: "Пример 2: [0] (2 подмножества)",
-        input: "0",
-        isTask: true,
-      },
+      { id: "task-1", label: "Пример 1: [4, 7] (4 подмножества)", input: "4,7", isTask: true },
+      { id: "task-2", label: "Пример 2: [1, 5, 9] (8 подмножеств)", input: "1,5,9", isTask: true },
       {
         id: "empty",
         label: "Пустое множество []",
@@ -44,24 +34,8 @@ export const backtrackingDefinitions = {
     inputLabel: "Уникальные числа",
     inputHint: "До 4 уникальных чисел; ограничение защищает от факториального роста трассы.",
     examples: [
-      {
-        id: "task1",
-        label: "Пример 1: [1, 2, 3] (6 перестановок)",
-        input: "1,2,3",
-        isTask: true,
-      },
-      {
-        id: "task2",
-        label: "Пример 2: [0, 1] (2 перестановки)",
-        input: "0,1",
-        isTask: true,
-      },
-      {
-        id: "task3",
-        label: "Пример 3: [1] (один элемент)",
-        input: "1",
-        isTask: true,
-      },
+      { id: "task-1", label: "Пример 1: [7, 8] (2 перестановки)", input: "7,8", isTask: true },
+      { id: "task-2", label: "Пример 2: [4, 5, 6] (6 перестановок)", input: "4,5,6", isTask: true },
       {
         id: "empty",
         label: "Пустая перестановка []",
@@ -79,24 +53,24 @@ export const backtrackingDefinitions = {
     inputHint: "До 4 уникальных положительных чисел; target от 1 до 10. Повторный выбор разрешён.",
     examples: [
       {
-        id: "task1",
-        label: "Пример 1: [2, 3, 6, 7], target = 7",
-        input: "2,3,6,7",
-        parameter: "7",
-        isTask: true,
-      },
-      {
-        id: "task2",
-        label: "Пример 2: [2, 3, 5], target = 8",
-        input: "2,3,5",
+        id: "task-1",
+        label: "Пример 1: [3, 4, 5], target = 8",
+        input: "3,4,5",
         parameter: "8",
         isTask: true,
       },
       {
-        id: "task3",
-        label: "Пример 3: [2], target = 1 (нет решений)",
-        input: "2",
-        parameter: "1",
+        id: "task-2",
+        label: "Пример 2: [2, 5], target = 9",
+        input: "2,5",
+        parameter: "9",
+        isTask: true,
+      },
+      {
+        id: "task-3",
+        label: "Пример 3: [4, 6], target = 5 (нет наборов)",
+        input: "4,6",
+        parameter: "5",
         isTask: true,
       },
     ],
@@ -111,18 +85,8 @@ export const backtrackingDefinitions = {
     inputLabel: "Число пар n",
     inputHint: "n от 0 до 3. Ветви: добавить открывающую или допустимую закрывающую скобку.",
     examples: [
-      {
-        id: "task1",
-        label: "Пример 1: n = 3 (5 комбинаций)",
-        input: "3",
-        isTask: true,
-      },
-      {
-        id: "task2",
-        label: "Пример 2: n = 1 (одна пара)",
-        input: "1",
-        isTask: true,
-      },
+      { id: "task-1", label: "Пример 1: n = 2 (2 комбинации)", input: "2", isTask: true },
+      { id: "task-2", label: "Пример 2: n = 3 (5 комбинаций)", input: "3", isTask: true },
       {
         id: "zero",
         label: "Ноль пар (n = 0)",

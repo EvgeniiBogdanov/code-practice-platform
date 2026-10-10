@@ -1,13 +1,16 @@
-// Напишите функцию removeAdjacentDuplicates(s), которая повторно удаляет пары
-// одинаковых соседних символов, пока таких пар не останется.
+// В игре-«схлопывании» две одинаковые соседние буквы исчезают, а строка
+// смыкается — и могут появиться новые пары. Напишите функцию
+// removeAdjacentDuplicates(s), которая убирает такие пары, пока это возможно,
+// и возвращает итоговую строку.
 //
-// Верните итоговую строку. Решение должно работать за O(n).
+// Условие: O(n).
 
 const removeAdjacentDuplicates = (s) => {
   // Решение тут
 };
 
 // Пример вызова:
-console.log(removeAdjacentDuplicates("abbaca")); // "ca"
-console.log(removeAdjacentDuplicates("azxxzy")); // "ay"
-console.log(removeAdjacentDuplicates("a")); // "a"
+console.log(removeAdjacentDuplicates("baab"));  // ""
+console.log(removeAdjacentDuplicates("xyyxz")); // "z"
+console.log(removeAdjacentDuplicates("hello")); // "heo"
+console.log(removeAdjacentDuplicates("q"));     // "q"

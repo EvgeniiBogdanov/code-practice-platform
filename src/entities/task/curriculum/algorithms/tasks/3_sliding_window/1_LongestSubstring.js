@@ -1,18 +1,13 @@
-// Напишите функцию lengthOfLongestSubstring(s), которая принимает строку (s)
-// и возвращает длину самой длинной подстроки, не содержащей повторяющихся символов.
-//
-// Подстрока — это непрерывная последовательность символов внутри строки.
-//
-// Примеры:
-// lengthOfLongestSubstring("abcabcbb") -> 3 ("abc")
-// lengthOfLongestSubstring("bbbbb") -> 1 ("b")
-// lengthOfLongestSubstring("pwwkew") -> 3 ("wke")
+// Напишите функцию lengthOfLongestSubstring(s), которая находит в строке s
+// самый длинный непрерывный фрагмент, где ни один символ не повторяется,
+// и возвращает его длину. Для пустой строки ответ — 0.
 
 const lengthOfLongestSubstring = (s) => {
   // Решение тут
 };
 
 // Пример вызова:
-console.log(lengthOfLongestSubstring("abcabcbb")); // 3
-console.log(lengthOfLongestSubstring("bbbbb"));    // 1
-console.log(lengthOfLongestSubstring("pwwkew"));   // 3
+console.log(lengthOfLongestSubstring("pizzaparty")); // 5
+console.log(lengthOfLongestSubstring("aaaa"));       // 1
+console.log(lengthOfLongestSubstring("abba"));       // 2
+console.log(lengthOfLongestSubstring("qwerty"));     // 6

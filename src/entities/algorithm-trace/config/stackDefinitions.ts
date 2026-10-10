@@ -15,30 +15,10 @@ export const stackDefinitions = {
     inputLabel: "Скобки",
     inputHint: "До 32 символов () [] {}. Стек хранит ожидаемые закрытия.",
     examples: [
-      {
-        id: "task1",
-        label: 'Пример 1: "()" (пара круглых)',
-        input: "()",
-        isTask: true,
-      },
-      {
-        id: "task2",
-        label: 'Пример 2: "()[]{}" (три пары подряд)',
-        input: "()[]{}",
-        isTask: true,
-      },
-      {
-        id: "task3",
-        label: 'Пример 3: "(]" (несоответствие типов)',
-        input: "(]",
-        isTask: true,
-      },
-      {
-        id: "task4",
-        label: 'Пример 4: "([])" (вложенная пара)',
-        input: "([])",
-        isTask: true,
-      },
+      { id: "task-1", label: 'Пример 1: "{[()]}" (вложенные)', input: "{[()]}", isTask: true },
+      { id: "task-2", label: 'Пример 2: "([)]" (перекрёст)', input: "([)]", isTask: true },
+      { id: "task-3", label: 'Пример 3: "((" (не закрыты)', input: "((", isTask: true },
+      { id: "task-4", label: 'Пример 4: "[]{}()" (пары подряд)', input: "[]{}()", isTask: true },
       {
         id: "nested",
         label: "Вложенные пары ({[()]})",
@@ -65,24 +45,10 @@ export const stackDefinitions = {
     inputLabel: "Строка",
     inputHint: "До 32 символов ASCII; одинаковые соседние символы сокращаются.",
     examples: [
-      {
-        id: "task1",
-        label: 'Пример 1: "abbaca" (каскадное удаление)',
-        input: "abbaca",
-        isTask: true,
-      },
-      {
-        id: "task2",
-        label: 'Пример 2: "azxxzy" (схлопывание к центру)',
-        input: "azxxzy",
-        isTask: true,
-      },
-      {
-        id: "task3",
-        label: 'Пример 3: "a" (один символ)',
-        input: "a",
-        isTask: true,
-      },
+      { id: "task-1", label: 'Пример 1: "baab" (исчезает целиком)', input: "baab", isTask: true },
+      { id: "task-2", label: 'Пример 2: "xyyxz" (каскад)', input: "xyyxz", isTask: true },
+      { id: "task-3", label: 'Пример 3: "hello"', input: "hello", isTask: true },
+      { id: "task-4", label: 'Пример 4: "q"', input: "q", isTask: true },
       {
         id: "all",
         label: "Полное удаление (abba)",
@@ -106,9 +72,9 @@ export const stackDefinitions = {
       'До 24 операций: ["push", число], ["pop"], ["top"], ["getMin"]. Чтение и pop требуют непустой стек.',
     examples: [
       {
-        id: "task1",
-        label: "Пример 1: push(-2, 0, -3), getMin, pop, top, getMin",
-        input: '[["push",-2],["push",0],["push",-3],["getMin"],["pop"],["top"],["getMin"]]',
+        id: "task-1",
+        label: "Пример 1: push(5, 2, 7), getMin, pop, top, pop, getMin",
+        input: '[["push",5],["push",2],["push",7],["getMin"],["pop"],["top"],["pop"],["getMin"]]',
         isTask: true,
       },
       {
@@ -133,23 +99,18 @@ export const stackDefinitions = {
     inputHint: "До 16 целых чисел. На плитке стека: индекс и температура.",
     examples: [
       {
-        id: "task1",
-        label: "Пример 1: [73, 74, 75, 71, 69, 72, 76, 73]",
-        input: "73,74,75,71,69,72,76,73",
+        id: "task-1",
+        label: "Пример 1: [18, 16, 20, 15, 17, 21]",
+        input: "18,16,20,15,17,21",
         isTask: true,
       },
       {
-        id: "task2",
-        label: "Пример 2: [30, 40, 50, 60] (возрастающие)",
-        input: "30,40,50,60",
+        id: "task-2",
+        label: "Пример 2: [25, 24, 23] (убывающие)",
+        input: "25,24,23",
         isTask: true,
       },
-      {
-        id: "task3",
-        label: "Пример 3: [30, 60, 90]",
-        input: "30,60,90",
-        isTask: true,
-      },
+      { id: "task-3", label: "Пример 3: [10, 12]", input: "10,12", isTask: true },
       {
         id: "cooling",
         label: "Похолодание (90, 80, 70)",

@@ -9,12 +9,12 @@ const multiplyNumeric = (obj) => {
 };
 
 // Пример вызова:
-const menu = {
-  width: 200,
-  height: 300,
-  title: "My menu",
-  isDefault: true,
+const card = {
+  price: 150,
+  stock: 12,
+  name: "Notebook",
+  inStock: true,
 };
 
-console.log(multiplyNumeric(menu));
-// { width: 400, height: 600, title: "My menu", isDefault: true }
+console.log(multiplyNumeric(card));
+// { price: 300, stock: 24, name: "Notebook", inStock: true }
