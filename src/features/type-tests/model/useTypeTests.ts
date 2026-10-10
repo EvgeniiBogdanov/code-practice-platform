@@ -41,6 +41,8 @@ interface State {
   expandedIds: ReadonlySet<string>;
   /** Runs started by the user (button, shortcut), unlike the automatic first check. */
   manualRuns: number;
+  /** The results were reset: a remembered verdict must not reappear until the next run. */
+  isCleared: boolean;
 }
 
 type Action =
@@ -59,6 +61,7 @@ const INITIAL_STATE: State = {
   failedRuns: 0,
   expandedIds: new Set(),
   manualRuns: 0,
+  isCleared: false,
 };
 
 const reduce = (state: State, action: Action): State => {
@@ -67,6 +70,7 @@ const reduce = (state: State, action: Action): State => {
       return {
         ...state,
         phase: "running",
+        isCleared: false,
         manualRuns: state.manualRuns + (action.isManual ? 1 : 0),
       };
     case "finish": {
@@ -100,7 +104,7 @@ const reduce = (state: State, action: Action): State => {
       return { ...state, expandedIds };
     }
     case "reset":
-      return INITIAL_STATE;
+      return { ...INITIAL_STATE, isCleared: true };
   }
 };
 
@@ -124,7 +128,7 @@ export const useTypeTests = (options: UseTypeTestsOptions): TypeTestsController 
   const [state, dispatch] = useReducer(reduce, INITIAL_STATE);
   // This exact code was already checked against these tests: show that verdict in the first frame.
   const cached = enabled ? getCachedReport(taskId, testsHash, code) : null;
-  if (cached && state.checkedCode !== code && state.phase !== "running") {
+  if (cached && !state.isCleared && state.checkedCode !== code && state.phase !== "running") {
     dispatch({ type: "restore", report: cached, code });
   }
   const latest = useLatest(options);

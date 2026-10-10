@@ -177,6 +177,20 @@ describe("useTypeTests", () => {
     expect(mocks.request).not.toHaveBeenCalled();
   });
 
+  it("does not bring a remembered verdict back after the results were reset", async () => {
+    mocks.request.mockResolvedValue({ report: report(1) });
+    const { result } = renderHook(() => useTypeTests(options));
+    await act(async () => result.current.run());
+    await waitFor(() => expect(result.current.phase).toBe("done"));
+
+    act(() => result.current.reset());
+    expect(result.current.phase).toBe("idle");
+    expect(result.current.report).toBeNull();
+
+    await act(async () => result.current.run());
+    await waitFor(() => expect(result.current.phase).toBe("done"));
+  });
+
   it("checks again when the code or the tests differ from the remembered ones", async () => {
     mocks.request.mockResolvedValue({ report: report(3) });
     const first = renderHook(() => useTypeTests({ ...options, autoRun: true }));
