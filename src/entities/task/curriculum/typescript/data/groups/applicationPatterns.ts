@@ -160,7 +160,7 @@ export const APPLICATION_PATTERNS_GROUP: TypeScriptTaskGroup = {
         {
           question: "Как расширить типы сторонней библиотеки?",
           answer:
-            "Аугментацией модуля: declare module \"express\" { interface Request { user?: User } }. Модуль должен существовать, а расширяемый интерфейс — экспортироваться из него.",
+            "Аугментацией модуля: declare module \"express-serve-static-core\" { interface Request { user?: User } }. Модуль должен существовать, а расширяемый интерфейс — экспортироваться из него.",
         },
         {
           question: "Как типизировать import.meta.env в Vite?",
