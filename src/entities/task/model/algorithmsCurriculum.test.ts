@@ -86,4 +86,13 @@ describe("algorithms curriculum", async () => {
       expect(exampleLines(task.rawCandidate ?? "")).toEqual(exampleLines(task.rawSolution ?? ""));
     }
   );
+
+  it.each(tasks.map((task) => [task.id, task] as const))(
+    "%s: the starter code has a single statement above the helpers import",
+    (_id, task) => {
+      const [, afterRequire = ""] = (task.rawCandidate ?? "").split(/^.*require\(.*$/m);
+      const [beforeFunction = ""] = afterRequire.split(/^const \w+ = /m);
+      expect(beforeFunction.trim(), "a second statement is left below require()").toBe("");
+    }
+  );
 });
