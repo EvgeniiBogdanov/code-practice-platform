@@ -6,9 +6,6 @@
 
 const { buildTree } = require("./helpers");
 
-// Напишите функцию preorderTraversal(root), которая возвращает значения узлов
-// бинарного дерева в порядке preorder: корень -> левое поддерево -> правое поддерево.
-
 const preorderTraversal = (root) => {
   // Решение тут
 };

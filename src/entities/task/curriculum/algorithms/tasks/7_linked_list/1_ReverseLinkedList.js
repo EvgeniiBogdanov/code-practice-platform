@@ -4,10 +4,6 @@
 
 const { createLinkedList, linkedListToArray } = require('./helpers');
 
-// Напишите функцию reverseList(head), которая принимает голову односвязного списка (head)
-// и разворачивает список задом наперёд.
-// Функция должна вернуть новую голову развёрнутого списка.
-
 const reverseList = (head) => {
   // Решение тут
 };

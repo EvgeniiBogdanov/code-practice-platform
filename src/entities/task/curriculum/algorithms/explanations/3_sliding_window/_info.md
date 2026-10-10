@@ -173,7 +173,7 @@ const findMaxAverage = (nums, k) => {
   return maxSum / k;
 };
 
-console.log(findMaxAverage([1, 12, -5, -6, 50, 3], 4)); // 12.75
+console.log(findMaxAverage([2, 9, -4, 7, 5, 1], 2)); // 6
 ```
 
 Здесь `windowSum` — это "состояние" окна, которое мы поддерживаем
@@ -220,7 +220,7 @@ const minSubArrayLen = (target, nums) => {
   return minLength === Infinity ? 0 : minLength;
 };
 
-console.log(minSubArrayLen(7, [2, 3, 1, 2, 4, 3])); // 2 (подмассив [4,3])
+console.log(minSubArrayLen(9, [1, 4, 2, 5, 3, 1])); // 3 (например, отрезок [4, 2, 5])
 ```
 
 Обратите внимание: `right` **никогда не двигается назад** — окно всегда
