@@ -10,6 +10,21 @@ describe("TS_HINTS", () => {
     expect(Object.keys(TS_HINTS).sort()).toEqual(taskIds);
   });
 
+  it("names only the types the reference solution declares", async () => {
+    const tasks = await loadTaskSection("typescript");
+    for (const task of tasks) {
+      const solution = task.rawSolution ?? "";
+      const named = TS_HINTS[String(task.id)].flatMap((hint) =>
+        [...hint.matchAll(/`(?:type|interface|class) (\w+)/g)].map(([, name]) => name)
+      );
+      for (const name of named) {
+        expect(solution, `${task.id}: ${name}`).toMatch(
+          new RegExp(`\\b(?:type|interface|class) ${name}\\b`)
+        );
+      }
+    }
+  });
+
   it("gives every task three non-empty hints without code blocks", () => {
     for (const [taskId, hints] of Object.entries(TS_HINTS)) {
       expect(hints, taskId).toHaveLength(3);

@@ -30,7 +30,7 @@ export const ADVANCED_TYPES_GROUP: TypeScriptTaskGroup = {
         {
           question: "Почему в реализации get допустимо утверждение типа?",
           answer:
-            "Обход пути во время выполнения работает с unknown, и компилятор не может связать split(\".\") с типом PathValue. Типобезопасен публичный фасад, а утверждение изолировано в одной точке реализации. Так устроены lodash.get и Path в react-hook-form.",
+            "Обход пути во время выполнения работает с unknown, и компилятор не может связать split(\".\") с типом PathValue. Типобезопасен публичный фасад, а утверждение изолировано в одной точке реализации. Похожим образом типизированы Path и get в react-hook-form.",
         },
       ],
       articles: [
@@ -73,7 +73,7 @@ export const ADVANCED_TYPES_GROUP: TypeScriptTaskGroup = {
         {
           question: "Где это используется в реальных библиотеках?",
           answer:
-            "React Router, Hono, Express 5 и tRPC выводят типы параметров маршрутов из строковых шаблонов тем же приёмом.",
+            "React Router (PathParam), Hono и типы Express (RouteParameters) выводят типы параметров маршрутов из строковых шаблонов тем же приёмом.",
         },
       ],
       articles: [

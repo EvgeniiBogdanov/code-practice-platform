@@ -58,8 +58,8 @@ export const TS_HINTS: Readonly<Record<string, TaskHints>> = {
   ],
   "typescript-29": [
     "TypeScript сравнивает типы **по структуре**, а не по имени. Ошибка с литералом — это отдельная проверка лишних полей (excess property check): она действует только на «свежие» литералы.",
-    "- Через переменную `point3d` проверка лишних полей не срабатывает, поэтому вызов проходит.\n- Чтобы явно разрешить дополнительные поля, добавьте в `Point` индексную сигнатуру `[key: string]: unknown`; поля `x` и `y` останутся строгими.\n- Два интерфейса с одинаковой формой взаимозаменяемы; чтобы их различать, нужен «бренд» — уникальное поле-метка.",
-    "1. В `Point` добавьте индексную сигнатуру с типом `unknown`.\n2. В `Celsius` и `Fahrenheit` добавьте по обязательному полю-метке с разными литеральными типами (например, единицу измерения).\n3. Исправьте создание объектов так, чтобы они содержали метку.\n4. Проверьте, что `saveCelsius(outside)` теперь ошибка.",
+    "- Через переменную `point3d` проверка лишних полей не срабатывает, поэтому вызов проходит.\n- Проверка лишних полей не применяется к параметру типа: если `printPoint` принимает `T extends Point`, литерал с `z` пройдёт, а `x` и `y` останутся строгими. Индексная сигнатура в самом `Point` изменила бы модель точки для всего кода.\n- Два интерфейса с одинаковой формой взаимозаменяемы; чтобы их различать, нужен «бренд» — уникальное поле-метка.",
+    "1. Сделайте `printPoint` обобщённой: параметр типа `T extends Point` и аргумент `point: T`.\n2. В `Celsius` и `Fahrenheit` добавьте по обязательному полю-метке с разными литеральными типами (например, единицу измерения).\n3. Исправьте создание объектов так, чтобы они содержали метку.\n4. Проверьте, что `saveCelsius(outside)` теперь ошибка.",
   ],
   "typescript-30": [
     "Для `let` и свойств объекта TypeScript **расширяет** литерал до `string`. Нужно либо зафиксировать тип, либо запретить расширение через `as const`.",
@@ -91,7 +91,7 @@ export const TS_HINTS: Readonly<Record<string, TaskHints>> = {
   "typescript-18": [
     "События с общим полем-дискриминантом (`type`) образуют **размеченное объединение**: по значению `type` компилятор знает остальные поля.",
     "- Поле `type` должно быть **литералом** (`\"click\"`), а не `string`, иначе сужение не сработает.\n- У каждого варианта свои поля: `x`/`y` у клика, `key` у нажатия.\n- Параметр `event` нужно типизировать общим объединением.",
-    "1. Опишите `ClickEvent` с `type: \"click\"`, `x`, `y`.\n2. Опишите `KeypressEvent` с `type: \"keypress\"` и `key`.\n3. Объявите `type AppEvent = ClickEvent | KeypressEvent`.\n4. Укажите `event: AppEvent` в `handleEvent`: ветки `if` теперь сужают тип.",
+    "1. Опишите `ClickEvent` с `type: \"click\"`, `x`, `y`.\n2. Опишите `KeyPressEvent` с `type: \"keypress\"` и `key`.\n3. Объявите `type AppEvent = ClickEvent | KeyPressEvent`.\n4. Укажите `event: AppEvent` в `handleEvent`: ветки `if` теперь сужают тип.",
   ],
 
   // ── Дженерики ──
@@ -112,8 +112,8 @@ export const TS_HINTS: Readonly<Record<string, TaskHints>> = {
   ],
   "typescript-9": [
     "Два независимых набора возможностей объединяются **пересечением** `A & B`: в результате объект обязан удовлетворять обоим.",
-    "- Не копируйте поля вручную в новый интерфейс: пересечение не дублирует код.\n- Если у двух типов совпадают поля с несовместимыми типами, поле превратится в `never`.\n- Альтернатива — `interface X extends A, B`, но пересечение подходит и для псевдонимов.",
-    "1. Объявите `type Entity = Serializable & Loggable`.\n2. Укажите его у переменной `entity`.\n3. Проверьте, что удаление любого из методов даёт ошибку.",
+    "- Не копируйте поля вручную в новый интерфейс: пересечение не дублирует код.\n- Если у двух типов совпадают поля с несовместимыми типами, поле превратится в `never`.\n- Альтернатива — интерфейс, расширяющий оба: `extends Serializable, Loggable`. Пересечение короче и подходит и для псевдонимов типов.",
+    "1. Объявите `type SerializableAndLoggable = Serializable & Loggable`.\n2. Укажите его у переменной `entity`.\n3. Проверьте, что удаление любого из методов даёт ошибку.",
   ],
   "typescript-36": [
     "`satisfies` проверяет значение на соответствие типу, **не меняя** выведенный тип. Так объект проверяется на лишние/неверные поля, а точные ключи сохраняются.",
@@ -130,7 +130,7 @@ export const TS_HINTS: Readonly<Record<string, TaskHints>> = {
   "typescript-10": [
     "Не переписывайте интерфейс заново: из готового типа «вырезайте» нужное встроенными `Omit` (убрать поля) и `Pick` (оставить поля).",
     "- `Omit<User, \"password\">` — всё, кроме пароля.\n- `Pick<User, \"name\" | \"password\">` — только перечисленные поля.\n- Ключи передаются **объединением литералов**, а не массивом.\n- `Omit` не проверяет, что ключ существует, а `Pick` проверяет.",
-    "1. `type PublicUser = Omit<User, \"password\">`.\n2. `type SignUpForm = Pick<User, \"name\" | \"password\">`.\n3. Проверьте, что в `PublicUser` нет `password`, а в `SignUpForm` нет `email`.",
+    "1. `type PublicUser = Omit<User, \"password\">`.\n2. `type RegistrationForm = Pick<User, \"name\" | \"password\">`.\n3. Проверьте, что в `PublicUser` нет `password`, а в `RegistrationForm` нет `email`.",
   ],
   "typescript-11": [
     "Объект с произвольным набором строковых ключей и однотипными значениями описывается типом `Record<string, number>` (или индексной сигнатурой).",
@@ -155,7 +155,7 @@ export const TS_HINTS: Readonly<Record<string, TaskHints>> = {
   "typescript-14": [
     "Типы результата и параметров функции берутся из самой функции: `ReturnType<typeof fn>` и `Parameters<typeof fn>`.",
     "- Функция — это **значение**, поэтому в тип её нужно превратить через `typeof`.\n- `Parameters` возвращает **кортеж**: второй параметр — это `Parameters<typeof log>[1]`.\n- Тип результата не нужно записывать вручную: при изменении функции он обновится сам.",
-    "1. `type LogResult = ReturnType<typeof log>`.\n2. `type LogArgs = Parameters<typeof log>`.\n3. `type SecondArg = LogArgs[1]` (или сразу `Parameters<typeof log>[1]`).",
+    "1. `type LogReturnType = ReturnType<typeof log>`.\n2. `Parameters<typeof log>` даёт кортеж всех параметров.\n3. `type LogSecondParam = Parameters<typeof log>[1]`.",
   ],
   "typescript-39": [
     "Типы можно выводить из существующего кода, а не дублировать: `Awaited` разворачивает `Promise`, `ReturnType` берёт результат функции, `ConstructorParameters` — параметры конструктора.",
@@ -172,7 +172,7 @@ export const TS_HINTS: Readonly<Record<string, TaskHints>> = {
   "typescript-41": [
     "`Pick` и `Omit` — это отображаемые типы. `MyPick` обходит только указанные ключи, а `MyOmit` обходит все ключи и **пропускает** лишние через переименование ключа в `never`.",
     "- Для `MyPick` ограничение `K extends keyof T` отсекает несуществующие ключи.\n- Для `MyOmit` ключи исключаются условием в `as`: `P extends K ? never : P`.\n- Модификаторы `readonly` и `?` сохраняются, когда обход идёт по `keyof T`.\n- `StrictOmit` отличается ограничением `K extends keyof T`.",
-    "1. `MyPick<T, K extends keyof T> = { [P in K]: T[P] }`.\n2. `MyOmit<T, K extends PropertyKey>`: обход `keyof T` с `as P extends K ? never : P`.\n3. `StrictOmit<T, K extends keyof T>` — то же, что `MyOmit`, но с жёстким ограничением.\n4. Проверьте обе ошибки в конце файла.",
+    "1. `MyPick<T, K extends keyof T> = { [P in K]: T[P] }`.\n2. `MyOmit<T, K extends PropertyKey>`: обход `keyof T` с `as P extends K ? never : P`.\n3. `StrictOmit<T, K extends keyof T>` — то же, что `MyOmit`, но с жёстким ограничением.\n4. Проверьте во вкладке tests.ts, что `MyPick<User, \"age\">` и `StrictOmit<User, \"pasword\">` — ошибки.",
   ],
   "typescript-15": [
     "Нужно, чтобы набор ключей `endpoints` выводился из самого объекта. Это работает, если ключи — **параметр типа**, а тип `endpoints` строится из него.",
@@ -213,8 +213,8 @@ export const TS_HINTS: Readonly<Record<string, TaskHints>> = {
   // ── Прикладные паттерны ──
   "typescript-19": [
     "Ответ сервера — внешние данные. Типизировать `fetch` через приведение `as` — значит поверить на слово. Сначала получите `unknown`, затем **проверьте форму** type guard-ом.",
-    "- `res.json()` возвращает `any`: присвойте результат `unknown`.\n- Проверьте `res.ok` до разбора тела ответа.\n- Guard для списка: массив, и каждый элемент — объект с числовым `id` и строковым `email`.\n- Функция асинхронная: её результат — `Promise<Comment[]>`.",
-    "1. Опишите `interface Comment { id: number; email: string }`.\n2. Напишите `isComment(value: unknown): value is Comment` и проверку массива.\n3. `getData` делает `fetch`, проверяет `res.ok`, читает JSON как `unknown`, проверяет форму, иначе бросает ошибку.\n4. В `then` выведите строку в формате `ID: id, Email: email` для каждого комментария.",
+    "- `res.json()` возвращает `any`: присвойте результат `unknown`.\n- Проверьте `res.ok` до разбора тела ответа.\n- Guard для списка: массив, и каждый элемент — объект с числовым `id` и строковым `email`.\n- Функция асинхронная: её результат — `Promise<ApiComment[]>`.\n- Не называйте тип `Comment`: так уже называется глобальный DOM-тип узла комментария.",
+    "1. Опишите `interface ApiComment { id: number; email: string }`.\n2. Напишите `isApiComment(value: unknown): value is ApiComment` и проверку массива.\n3. `getData` делает `fetch`, проверяет `res.ok`, читает JSON как `unknown`, проверяет форму, иначе бросает ошибку.\n4. В `then` выведите строку в формате `ID: id, Email: email` для каждого комментария.",
   ],
   "typescript-20": [
     "Нужен **абстрактный** класс: его нельзя создать напрямую, а метод расчёта премии обязателен для каждого наследника. Зарплата — `protected`: видна классу и потомкам, но не снаружи.",
@@ -239,7 +239,7 @@ export const TS_HINTS: Readonly<Record<string, TaskHints>> = {
   "typescript-22": [
     "Карта «событие → тип данных» превращается в параметр типа класса. Дальше всё выводится из неё: допустимые имена событий и тип аргумента обработчика.",
     "- Ключ события должен быть `K extends keyof Events`.\n- Тип обработчика зависит от ключа: `(payload: Events[K]) => void`.\n- Хранилище подписчиков — отображаемый тип «событие → массив обработчиков».\n- Подписка на несуществующее событие должна быть ошибкой компиляции.",
-    "1. `class EventEmitter<Events extends Record<string, unknown>>`.\n2. Опишите `listeners` как `{ [K in keyof Events]?: Array<(payload: Events[K]) => void> }`.\n3. Типизируйте `on` и `emit` с общим `K extends keyof Events`.\n4. Создайте эмиттер с картой, где есть `userCreated: { id: number; name: string }`.",
+    "1. `class EventEmitter<Events extends object>`: с `Record<string, unknown>` интерфейс `EventMap` не подойдёт, у него нет индексной сигнатуры.\n2. Опишите `listeners` как `{ [K in keyof Events]?: Array<(payload: Events[K]) => void> }`.\n3. Типизируйте `on` и `emit` с общим `K extends keyof Events`.\n4. Создайте эмиттер с картой, где есть `userCreated: { id: number; name: string }`.",
   ],
   "typescript-23": [
     "Нужен рекурсивный отображаемый тип `DeepPartial<T>`: на каждом уровне все поля необязательны, а вложенные объекты обрабатываются тем же типом.",
@@ -266,7 +266,7 @@ export const TS_HINTS: Readonly<Record<string, TaskHints>> = {
   "typescript-50": [
     "Параметры маршрута вытаскиваются из строки-шаблона **рекурсивным разбором шаблонного литерала**: ищем `:имя`, берём его до следующего `/`, продолжаем с остатком.",
     "- Тип пути должен быть литералом: параметр типа `P extends string`.\n- Для сегмента не последнего параметра шаблон `` `${string}:${infer Name}/${infer Rest}` ``, для последнего — без `/`.\n- Результат — объединение имён; объект параметров — `Record<Имена, string>`.\n- Для маршрута без параметров имена — `never`, и `{}` должен проходить.",
-    "1. Напишите `ExtractParams<S extends string>`: рекурсивно собирает имена после двоеточия.\n2. `buildUrl = <P extends string>(path: P, params: Record<ExtractParams<P>, string>): string`.\n3. Проверьте три ошибочных вызова из задания и корректный `buildUrl(\"/about\", {})`.",
+    "1. Напишите `ParamNames<Path extends string>`: рекурсивно собирает имена после двоеточия.\n2. Объявите `RouteParams<Path> = Record<ParamNames<Path>, string>` и `buildUrl = <P extends string>(path: P, params: RouteParams<P>): string`.\n3. Внутри реализации присвойте `params` переменной типа `Record<string, string>`: имя из регулярного выражения — обычная `string`.\n4. Проверьте во вкладке tests.ts пропущенный и лишний параметр, а также корректный `buildUrl(\"/about\", {})`.",
   ],
   "typescript-51": [
     "Кортежи разбираются так же, как списки: паттерн `[infer Head, ...infer Tail]` отделяет голову от хвоста, а рекурсия обрабатывает хвост.",

@@ -8,7 +8,7 @@ Builder с цепочкой вызовов `field(...)`. В JavaScript он ра
 
 | Шаг | Тип builder'а |
 | --- | --- |
-| `FormBuilder.create()` | `FormBuilder<{}>` |
+| `FormBuilder.create()` | `FormBuilder<Record<never, never>>` — пустой объект |
 | `.field("email", "")` | `FormBuilder<{ email: string }>` |
 | `.field("age", 18)` | `FormBuilder<{ email: string } & { age: number }>` |
 | `.build()` | `{ email: string; age: number; ... }` |
