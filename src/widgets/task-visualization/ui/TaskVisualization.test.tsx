@@ -56,7 +56,7 @@ describe("TaskVisualization public widget", () => {
       target: { value: "[0, 7]" },
     });
     expect(within(players[1]).getByRole("textbox", { name: "Строка" })).toHaveValue(
-      "A man, a plan, a canal: Panama"
+      "Was it a car or a cat I saw?"
     );
   });
 

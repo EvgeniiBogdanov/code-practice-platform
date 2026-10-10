@@ -6,5 +6,4 @@ const groupAnagrams = (words) => {
 };
 
 // Пример вызова:
-console.log(groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"]));
-// [ [ 'eat', 'tea', 'ate' ], [ 'tan', 'nat' ], [ 'bat' ] ]
+console.log(groupAnagrams(["stop", "pots", "melon", "tops", "lemon", "pear"])); // [["stop", "pots", "tops"], ["melon", "lemon"], ["pear"]]

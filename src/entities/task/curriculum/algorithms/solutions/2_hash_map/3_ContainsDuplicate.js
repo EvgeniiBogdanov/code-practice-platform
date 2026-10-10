@@ -10,6 +10,7 @@ const containsDuplicate = (nums) => {
 };
 
 // Пример вызова:
-console.log(containsDuplicate([1, 2, 3, 1]));                   // true
-console.log(containsDuplicate([1, 2, 3, 4]));                   // false
-console.log(containsDuplicate([1, 1, 1, 3, 3, 4, 3, 2, 4, 2])); // true
+console.log(containsDuplicate([7, 3, 9, 3])); // true
+console.log(containsDuplicate([10, 20, 30])); // false
+console.log(containsDuplicate([5, 5]));       // true
+console.log(containsDuplicate([]));           // false

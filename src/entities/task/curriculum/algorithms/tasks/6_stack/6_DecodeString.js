@@ -1,23 +1,15 @@
-// Напишите функцию decodeString(s), которая раскодирует строку по правилу
-// k[encoded_string]: подстрока encoded_string внутри квадратных скобок
-// повторяется ровно k раз.
+// Напишите функцию decodeString(s), которая разворачивает сжатую запись:
+// k[текст] означает, что текст в скобках повторяется k раз.
 //
-// Гарантии: входная строка корректна, скобки сбалансированы, k — положительное целое
-// (может быть многозначным), цифры встречаются только как числа-множители.
-// Скобки могут быть вложенными.
-//
-// Примеры:
-// decodeString("3[a]2[bc]")      -> "aaabcbc"
-// decodeString("3[a2[c]]")       -> "accaccacc"
-// decodeString("2[abc]3[cd]ef")  -> "abcabccdcdcdef"
-// decodeString("10[a]")          -> "aaaaaaaaaa"
+// Гарантии: запись корректна, скобки сбалансированы и могут быть вложенными,
+// k — положительное целое (возможно, из нескольких цифр), других цифр в строке нет.
 
 const decodeString = (s) => {
   // Решение тут
 };
 
 // Пример вызова:
-console.log(decodeString("3[a]2[bc]"));     // "aaabcbc"
-console.log(decodeString("3[a2[c]]"));      // "accaccacc"
-console.log(decodeString("2[abc]3[cd]ef")); // "abcabccdcdcdef"
-console.log(decodeString("10[a]"));         // "aaaaaaaaaa"
+console.log(decodeString("2[ab]3[c]")); // "ababccc"
+console.log(decodeString("2[x3[y]]"));  // "xyyyxyyy"
+console.log(decodeString("a2[bc]d"));   // "abcbcd"
+console.log(decodeString("12[z]"));     // "zzzzzzzzzzzz"

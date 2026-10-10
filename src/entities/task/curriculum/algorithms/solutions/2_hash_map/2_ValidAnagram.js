@@ -20,6 +20,7 @@ const isAnagram = (s, t) => {
 };
 
 // Пример вызова:
-console.log(isAnagram("anagram", "nagaram")); // true
-console.log(isAnagram("rat", "car"));         // false
-console.log(isAnagram("listen", "silent"));   // true
+console.log(isAnagram("dusty", "study")); // true
+console.log(isAnagram("night", "thing")); // true
+console.log(isAnagram("hello", "world")); // false
+console.log(isAnagram("aab", "abb"));     // false

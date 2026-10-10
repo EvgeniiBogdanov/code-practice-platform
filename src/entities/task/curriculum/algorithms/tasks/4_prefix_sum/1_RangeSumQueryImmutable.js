@@ -1,24 +1,17 @@
-// Напишите функцию createNumArray(nums), которая принимает массив целых чисел (nums)
-// и возвращает объект с методом sumRange(left, right).
-// Метод sumRange должен возвращать сумму элементов массива nums между индексами
-// left и right включительно (left <= right).
+// В массиве nums — изменения баланса счёта по дням. Аналитикам нужно много раз
+// узнавать, на сколько изменился баланс за период.
 //
-// Ограничение:
-// Метод sumRange может вызываться очень часто (тысячи раз), поэтому
-// он должен вычислять сумму максимально быстро — за фиксированное время O(1).
-//
-// Примеры:
-// const numArray = createNumArray([-2, 0, 3, -5, 2, -1]);
-// numArray.sumRange(0, 2); // 1  (так как -2 + 0 + 3 = 1)
-// numArray.sumRange(2, 5); // -1 (так как 3 + (-5) + 2 + (-1) = -1)
-// numArray.sumRange(0, 5); // -3 (так как -2 + 0 + 3 + (-5) + 2 + (-1) = -3)
+// Напишите функцию createNumArray(nums), которая один раз подготавливает данные
+// за O(n) и возвращает объект с методом sumRange(left, right): сумма элементов
+// nums с индекса left по right включительно (left <= right).
+// Каждый вызов sumRange должен работать за O(1).
 
 const createNumArray = (nums) => {
   // Решение тут
 };
 
 // Пример вызова:
-const numArray = createNumArray([-2, 0, 3, -5, 2, -1]);
-console.log(numArray.sumRange(0, 2)); // 1
-console.log(numArray.sumRange(2, 5)); // -1
-console.log(numArray.sumRange(0, 5)); // -3
+const balance = createNumArray([4, -1, 3, 0, 5, -2]);
+console.log(balance.sumRange(1, 3)); // 2
+console.log(balance.sumRange(0, 5)); // 9
+console.log(balance.sumRange(4, 4)); // 5

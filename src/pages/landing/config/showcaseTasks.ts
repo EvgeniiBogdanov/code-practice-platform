@@ -33,7 +33,7 @@ export const SHOWCASE_TASKS: readonly ShowcaseTask[] = [
     group: "Паттерны проектирования",
     subgroup: "Паттерн Наблюдатель",
   },
-  { id: "algo4", section: "algorithms", title: "Two Sum (LeetCode #1)", group: "Hash Map" },
+  { id: "algo4", section: "algorithms", title: "Two Sum", group: "Hash Map" },
   {
     id: "js116",
     section: "javascript",
@@ -48,7 +48,7 @@ export const SHOWCASE_TASKS: readonly ShowcaseTask[] = [
     group: "Асинхронность",
     subgroup: "Контроль частоты",
   },
-  { id: "algo3", section: "algorithms", title: "3Sum (LeetCode #15)", group: "Two Pointers" },
+  { id: "algo3", section: "algorithms", title: "3Sum", group: "Two Pointers" },
   {
     id: "typescript-22",
     section: "typescript",

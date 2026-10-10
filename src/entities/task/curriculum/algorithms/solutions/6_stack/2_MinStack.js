@@ -21,11 +21,12 @@ const createMinStack = () => {
 };
 
 // Пример вызова:
-const minStack = createMinStack();
-minStack.push(-2);
-minStack.push(0);
-minStack.push(-3);
-console.log(minStack.getMin()); // -3
-minStack.pop();
-console.log(minStack.top());    // 0
-console.log(minStack.getMin()); // -2
+const stack = createMinStack();
+stack.push(5);
+stack.push(2);
+stack.push(7);
+console.log(stack.getMin()); // 2
+stack.pop();
+console.log(stack.top());    // 2
+stack.pop();
+console.log(stack.getMin()); // 5

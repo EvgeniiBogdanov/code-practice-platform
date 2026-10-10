@@ -242,8 +242,8 @@ const pivotIndex = (nums) => {
   return -1;
 };
 
-console.log(pivotIndex([1, 7, 3, 6, 5, 6])); // 3
-console.log(pivotIndex([1, 2, 3]));          // -1 (такого индекса нет)
+console.log(pivotIndex([3, 5, 1, 7, 1])); // 2
+console.log(pivotIndex([1, 2]));          // -1 (такого индекса нет)
 ```
 
 ### 3. Subarray Sum Equals K (LeetCode 560) — Prefix Sum + Map (продвинутый уровень)
@@ -279,9 +279,9 @@ const subarraySum = (nums, k) => {
   return count;
 };
 
-console.log(subarraySum([1, 1, 1], 2));  // 2
-console.log(subarraySum([1, 2, 3], 3));  // 2
-console.log(subarraySum([1, -1, 0], 0)); // 3
+console.log(subarraySum([2, -1, 1, 2], 2)); // 4
+console.log(subarraySum([3, 0, 3], 3));     // 4
+console.log(subarraySum([1, 2, 1], 5));     // 0
 ```
 
 Эта задача — хороший следующий шаг после базовых префиксных сумм: она

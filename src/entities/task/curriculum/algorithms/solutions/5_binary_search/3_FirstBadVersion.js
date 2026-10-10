@@ -20,11 +20,11 @@ const solution = (isBadVersion) => {
 };
 
 // Пример вызова:
-const isBadVersion1 = (version) => version >= 4;
-console.log(solution(isBadVersion1)(5)); // 4
+const isBadVersion1 = (version) => version >= 6;
+console.log(solution(isBadVersion1)(10));         // 6
 
 const isBadVersion2 = (version) => version >= 1;
-console.log(solution(isBadVersion2)(1)); // 1
+console.log(solution(isBadVersion2)(3));          // 1
 
-const isBadVersion3 = (version) => version >= 1702766719;
-console.log(solution(isBadVersion3)(2126753390)); // 1702766719
+const isBadVersion3 = (version) => version >= 999999999;
+console.log(solution(isBadVersion3)(2000000000)); // 999999999

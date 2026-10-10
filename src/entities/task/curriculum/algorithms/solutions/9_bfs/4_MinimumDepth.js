@@ -29,6 +29,7 @@ const minDepth = (root) => {
 };
 
 // Пример вызова:
-console.log(minDepth(buildTree([3, 9, 20, null, null, 15, 7]))); // 2
-console.log(minDepth(buildTree([2, null, 3, null, 4]))); // 3
-console.log(minDepth(buildTree([]))); // 0
+console.log(minDepth(buildTree([7, 3, 9, 1, null, 8])));          // 3
+console.log(minDepth(buildTree([4, 2, 6, null, null, 5])));       // 2
+console.log(minDepth(buildTree([1, null, 2, null, 3, null, 4]))); // 4
+console.log(minDepth(buildTree([])));                             // 0

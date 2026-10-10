@@ -1,35 +1,23 @@
-// Спроектируйте функцию-фабрику createMinStack(), которая создает и возвращает
-// объект структуры данных "Стек" с поддержкой получения минимального элемента за O(1).
+// Напишите функцию-фабрику createMinStack(), которая возвращает стек с методами:
+// - push(val) — положить val на вершину;
+// - pop() — снять элемент с вершины;
+// - top() — вернуть элемент на вершине, не снимая его;
+// - getMin() — вернуть наименьший элемент среди лежащих в стеке.
 //
-// Возвращаемый объект должен содержать следующие методы:
-// - push(val) — добавляет элемент val на вершину стека.
-// - pop() — удаляет элемент с вершины стека.
-// - top() — возвращает элемент, находящийся на вершине стека, не удаляя его.
-// - getMin() — возвращает минимальный элемент, находящийся в стеке.
-//
-// Главное условие:
-// Все методы (push, pop, top, getMin) должны выполняться за время O(1).
-//
-// Примеры:
-// const minStack = createMinStack();
-// minStack.push(-2);
-// minStack.push(0);
-// minStack.push(-3);
-// minStack.getMin(); // -3
-// minStack.pop();
-// minStack.top();    // 0
-// minStack.getMin(); // -2
+// Все четыре метода должны работать за O(1). Методы pop, top и getMin
+// не вызываются на пустом стеке.
 
 const createMinStack = () => {
   // Решение тут
 };
 
 // Пример вызова:
-const minStack = createMinStack();
-minStack.push(-2);
-minStack.push(0);
-minStack.push(-3);
-console.log(minStack.getMin()); // -3
-minStack.pop();
-console.log(minStack.top());    // 0
-console.log(minStack.getMin()); // -2
+const stack = createMinStack();
+stack.push(5);
+stack.push(2);
+stack.push(7);
+console.log(stack.getMin()); // 2
+stack.pop();
+console.log(stack.top());    // 2
+stack.pop();
+console.log(stack.getMin()); // 5

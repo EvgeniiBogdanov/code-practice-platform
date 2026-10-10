@@ -19,6 +19,6 @@ const subarraySum = (nums, k) => {
 };
 
 // Пример вызова:
-console.log(subarraySum([1, 1, 1], 2));  // 2
-console.log(subarraySum([1, 2, 3], 3));  // 2
-console.log(subarraySum([1, -1, 0], 0)); // 3
+console.log(subarraySum([2, -1, 1, 2], 2)); // 4
+console.log(subarraySum([3, 0, 3], 3));     // 4
+console.log(subarraySum([1, 2, 1], 5));     // 0

@@ -12,10 +12,10 @@ const maxDepth = (root) => {
 };
 
 // Пример вызова:
-const tree1 = buildTree([3, 9, 20, null, null, 15, 7]);
-console.log(maxDepth(tree1)); // 3
+const tree1 = buildTree([8, 4, 12, null, 6, 10, null, 5]);
+console.log(maxDepth(tree1)); // 4
 
-const tree2 = buildTree([1, null, 2]);
+const tree2 = buildTree([1, 2]);
 console.log(maxDepth(tree2)); // 2
 
 const tree3 = buildTree([]);

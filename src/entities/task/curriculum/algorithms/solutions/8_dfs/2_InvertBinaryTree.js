@@ -15,6 +15,6 @@ const invertTree = (root) => {
 };
 
 // Пример вызова:
-console.log(treeToArray(invertTree(buildTree([4, 2, 7, 1, 3, 6, 9])))); // [4, 7, 2, 9, 6, 3, 1]
-console.log(treeToArray(invertTree(buildTree([2, 1, 3]))));             // [2, 3, 1]
-console.log(treeToArray(invertTree(buildTree([]))));                     // []
+console.log(treeToArray(invertTree(buildTree([5, 3, 8, 1, 4])))); // [5, 8, 3, null, null, 4, 1]
+console.log(treeToArray(invertTree(buildTree([1, null, 2]))));    // [1, 2]
+console.log(treeToArray(invertTree(buildTree([]))));              // []

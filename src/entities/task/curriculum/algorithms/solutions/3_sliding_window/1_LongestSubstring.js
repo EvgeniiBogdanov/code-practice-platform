@@ -17,6 +17,7 @@ const lengthOfLongestSubstring = (s) => {
 };
 
 // Пример вызова:
-console.log(lengthOfLongestSubstring("abcabcbb")); // 3
-console.log(lengthOfLongestSubstring("bbbbb"));    // 1
-console.log(lengthOfLongestSubstring("pwwkew"));   // 3
+console.log(lengthOfLongestSubstring("pizzaparty")); // 5
+console.log(lengthOfLongestSubstring("aaaa"));       // 1
+console.log(lengthOfLongestSubstring("abba"));       // 2
+console.log(lengthOfLongestSubstring("qwerty"));     // 6

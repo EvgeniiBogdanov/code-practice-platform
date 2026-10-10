@@ -15,6 +15,6 @@ const coinChange = (coins, amount) => {
 };
 
 // Пример вызова:
-console.log(coinChange([1, 2, 5], 11)); // 3
-console.log(coinChange([2], 3));        // -1
-console.log(coinChange([1], 0));        // 0
+console.log(coinChange([1, 3, 4], 6)); // 2
+console.log(coinChange([5, 10], 3));   // -1
+console.log(coinChange([2, 7], 0));    // 0

@@ -50,19 +50,18 @@ const orangesRotting = (grid) => {
 };
 
 // Пример вызова:
-const grid1 = [
-  [2, 1, 1],
-  [1, 1, 0],
-  [0, 1, 1],
+const box1 = [
+  [2, 1, 0],
+  [1, 1, 1],
+  [0, 0, 1],
 ];
-console.log(orangesRotting(grid1)); // 4
+console.log(orangesRotting(box1)); // 4
 
-const grid2 = [
-  [2, 1, 1],
-  [0, 1, 1],
+const box2 = [
+  [2, 0, 1],
   [1, 0, 1],
 ];
-console.log(orangesRotting(grid2)); // -1
+console.log(orangesRotting(box2)); // -1
 
-const grid3 = [[0, 2]];
-console.log(orangesRotting(grid3)); // 0
+const box3 = [[0, 0, 0]];
+console.log(orangesRotting(box3)); // 0

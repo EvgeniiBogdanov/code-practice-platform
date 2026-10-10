@@ -16,7 +16,7 @@ const firstUniqueChar = (str) => {
 };
 
 // Пример вызова:
-console.log(firstUniqueChar("leetcode")); // "l"
-console.log(firstUniqueChar("loveleetcode")); // "v"
-console.log(firstUniqueChar("aabb")); // null
-console.log(firstUniqueChar("")); // null
+console.log(firstUniqueChar("swiss"));   // "w"
+console.log(firstUniqueChar("racecar")); // "e"
+console.log(firstUniqueChar("aabb"));    // null
+console.log(firstUniqueChar(""));        // null

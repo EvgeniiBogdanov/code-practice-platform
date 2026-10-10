@@ -11,7 +11,7 @@ const createNumArray = (nums) => {
 };
 
 // Пример вызова:
-const numArray = createNumArray([-2, 0, 3, -5, 2, -1]);
-console.log(numArray.sumRange(0, 2)); // 1
-console.log(numArray.sumRange(2, 5)); // -1
-console.log(numArray.sumRange(0, 5)); // -3
+const balance = createNumArray([4, -1, 3, 0, 5, -2]);
+console.log(balance.sumRange(1, 3)); // 2
+console.log(balance.sumRange(0, 5)); // 9
+console.log(balance.sumRange(4, 4)); // 5

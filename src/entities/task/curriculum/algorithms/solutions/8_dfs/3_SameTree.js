@@ -17,6 +17,6 @@ const isSameTree = (p, q) => {
 };
 
 // Пример вызова:
-console.log(isSameTree(buildTree([1, 2, 3]), buildTree([1, 2, 3]))); // true
-console.log(isSameTree(buildTree([1, 2]), buildTree([1, null, 2]))); // false
-console.log(isSameTree(buildTree([1, 2, 1]), buildTree([1, 1, 2]))); // false
+console.log(isSameTree(buildTree([4, 2, 6]), buildTree([4, 2, 6]))); // true
+console.log(isSameTree(buildTree([4, 2]), buildTree([4, null, 2]))); // false
+console.log(isSameTree(buildTree([4, 2, 6]), buildTree([4, 6, 2]))); // false

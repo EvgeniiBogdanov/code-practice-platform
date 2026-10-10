@@ -1,18 +1,14 @@
-// Напишите функцию longestPalindrome(s), которая принимает строку s и возвращает
-// самую длинную палиндромную подстроку в s.
+// Напишите функцию longestPalindrome(s), которая возвращает самый длинный
+// непрерывный фрагмент строки s, читающийся одинаково в обе стороны.
 //
-// Если подходящих подстрок несколько, верните любую из них (в примерах — первую).
-//
-// Примеры:
-// longestPalindrome("babad") -> "bab" (также корректен "aba")
-// longestPalindrome("cbbd")  -> "bb"
-// longestPalindrome("a")     -> "a"
+// Если таких фрагментов несколько, верните тот, что начинается раньше.
 
 const longestPalindrome = (s) => {
   // Решение тут
 };
 
 // Пример вызова:
-console.log(longestPalindrome("babad")); // "bab"
-console.log(longestPalindrome("cbbd"));  // "bb"
-console.log(longestPalindrome("a"));     // "a"
+console.log(longestPalindrome("bananas")); // "anana"
+console.log(longestPalindrome("xyzzyq"));  // "yzzy"
+console.log(longestPalindrome("noon"));    // "noon"
+console.log(longestPalindrome("abcd"));    // "a"

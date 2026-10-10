@@ -4,10 +4,10 @@ const sumSalaries = (salaries) => {
 
 // Пример вызова:
 const salaries = {
-  John: 1000,
-  Ann: 1600,
-  Pete: 1300,
+  Olga: 1200,
+  Timur: 950,
+  Lena: 1450,
 };
 
-console.log(sumSalaries(salaries)); // 3900
+console.log(sumSalaries(salaries)); // 3600
 console.log(sumSalaries({}));         // 0

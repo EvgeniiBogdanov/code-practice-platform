@@ -21,6 +21,16 @@ Everything else in this repository (the platform source code) is licensed under 
 Всё остальное в репозитории (исходный код платформы) распространяется по лицензии
 [GNU AGPL v3.0](LICENSE).
 
+## Third-party platforms / Сторонние платформы
+
+Algorithm tasks are original formulations of classic computer-science problems.
+Links to similar problems on LeetCode and other platforms are provided for reference only.
+This project is not affiliated with or endorsed by LeetCode; LeetCode is a trademark of its owner.
+
+Алгоритмические задачи — оригинальные формулировки классических задач информатики.
+Ссылки на похожие задачи LeetCode и других платформ даны только для справки.
+Проект не связан с LeetCode и не одобрен им; LeetCode — товарный знак его владельца.
+
 ## In short / Кратко
 
 You may share and adapt the content, provided that you:

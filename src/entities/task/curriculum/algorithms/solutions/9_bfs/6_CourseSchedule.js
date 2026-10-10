@@ -36,7 +36,7 @@ const canFinish = (numCourses, prerequisites) => {
 };
 
 // Пример вызова:
-console.log(canFinish(2, [[1, 0]]));                 // true
-console.log(canFinish(2, [[1, 0], [0, 1]]));         // false
-console.log(canFinish(4, [[1, 0], [2, 1], [3, 2]])); // true
-console.log(canFinish(3, []));                       // true
+console.log(canFinish(3, [[1, 0], [2, 0]]));                 // true
+console.log(canFinish(3, [[0, 1], [1, 2], [2, 0]]));         // false
+console.log(canFinish(4, [[1, 0], [2, 1], [3, 2], [1, 3]])); // false
+console.log(canFinish(2, []));                               // true

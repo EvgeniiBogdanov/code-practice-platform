@@ -237,7 +237,7 @@ export const ALGO_TWO_POINTERS_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #26", urlTitle: "LeetCode — Remove Duplicates from Sorted Array", url: "https://leetcode.com/problems/remove-duplicates-from-sorted-array/" },
+      { title: "Похожая задача: LeetCode #26", urlTitle: "LeetCode — Remove Duplicates from Sorted Array", url: "https://leetcode.com/problems/remove-duplicates-from-sorted-array/" },
       { title: "Метод двух указателей (Two Pointers)", urlTitle: "Habr — Обзор техники", url: "https://habr.com/ru/articles/" },
       { title: "Two Pointers для начинающих", urlTitle: "SprintCode — Статья и разбор", url: "https://sprintcode.pro/ru/blog/two-pointers" },
       { title: "Паттерн Slow / Fast", urlTitle: "Habr — Паттерны алгоритмов", url: "https://habr.com/ru/articles/1020222" },
@@ -272,7 +272,7 @@ export const ALGO_TWO_POINTERS_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #283", urlTitle: "LeetCode — Move Zeroes", url: "https://leetcode.com/problems/move-zeroes/" },
+      { title: "Похожая задача: LeetCode #283", urlTitle: "LeetCode — Move Zeroes", url: "https://leetcode.com/problems/move-zeroes/" },
       { title: "Метод двух указателей (Two Pointers)", urlTitle: "Habr — Обзор техники", url: "https://habr.com/ru/articles/" },
       { title: "Slow & Fast Pointer Pattern", urlTitle: "LeetCode Discuss — Паттерны указателей", url: "https://leetcode.com/discuss/" },
       { title: "In-place алгоритмы в JavaScript", urlTitle: "MDN Web Docs", url: "https://developer.mozilla.org/" },
@@ -307,8 +307,8 @@ export const ALGO_TWO_POINTERS_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #88", urlTitle: "LeetCode — Merge Sorted Array", url: "https://leetcode.com/problems/merge-sorted-array/" },
-      { title: "LeetCode #350", urlTitle: "LeetCode — Intersection of Two Arrays II", url: "https://leetcode.com/problems/intersection-of-two-arrays-ii/" },
+      { title: "Похожая задача: LeetCode #88", urlTitle: "LeetCode — Merge Sorted Array", url: "https://leetcode.com/problems/merge-sorted-array/" },
+      { title: "Похожая задача: LeetCode #350", urlTitle: "LeetCode — Intersection of Two Arrays II", url: "https://leetcode.com/problems/intersection-of-two-arrays-ii/" },
       { title: "Метод двух указателей (two pointers)", urlTitle: "SprintCode.pro — Руководство", url: "https://sprintcode.pro/ru/blog/two-pointers" },
     ],
     interviewerQuestions: [
@@ -343,7 +343,7 @@ export const ALGO_TWO_POINTERS_TASKS = [
     ],
     articles: [
       { title: "Секция программирования в Т-Банке (официальный репозиторий)", urlTitle: "GitHub — Tinkoff/career", url: "https://github.com/Tinkoff/career/blob/main/interview/sections/programming.md" },
-      { title: "LeetCode #1213", urlTitle: "LeetCode — Intersection of Three Sorted Arrays", url: "https://leetcode.com/problems/intersection-of-three-sorted-arrays/" },
+      { title: "Похожая задача: LeetCode #1213", urlTitle: "LeetCode — Intersection of Three Sorted Arrays", url: "https://leetcode.com/problems/intersection-of-three-sorted-arrays/" },
       { title: "Метод двух указателей (two pointers)", urlTitle: "SprintCode.pro — Руководство", url: "https://sprintcode.pro/ru/blog/two-pointers" },
     ],
     interviewerQuestions: [
@@ -378,7 +378,7 @@ export const ALGO_TWO_POINTERS_TASKS = [
     ],
     articles: [
       { title: "Нейросети против Тинькоф-контеста (отчёт участника)", urlTitle: "Хабр — Разбор задач контеста", url: "https://habr.com/ru/articles/850926/" },
-      { title: "LeetCode #228", urlTitle: "LeetCode — Summary Ranges (обратная задача)", url: "https://leetcode.com/problems/summary-ranges/" },
+      { title: "Похожая задача: LeetCode #228", urlTitle: "LeetCode — Summary Ranges (обратная задача)", url: "https://leetcode.com/problems/summary-ranges/" },
       { title: "Строки в JavaScript: split, join, slice", urlTitle: "learn.javascript.ru — Учебник", url: "https://learn.javascript.ru/string" },
     ],
     interviewerQuestions: [
@@ -412,7 +412,7 @@ export const ALGO_TWO_POINTERS_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #125", urlTitle: "LeetCode — Valid Palindrome", url: "https://leetcode.com/problems/valid-palindrome/" },
+      { title: "Похожая задача: LeetCode #125", urlTitle: "LeetCode — Valid Palindrome", url: "https://leetcode.com/problems/valid-palindrome/" },
       { title: "Метод двух указателей (Two Pointers)", urlTitle: "Habr — Обзор техники", url: "https://habr.com/ru/articles/" },
       { title: "Работа со строками в JS", urlTitle: "MDN Web Docs", url: "https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/String" },
       { title: "Регулярные выражения в JS", urlTitle: "Learn JavaScript", url: "https://learn.javascript.ru/regular-expressions" },
@@ -446,7 +446,7 @@ export const ALGO_TWO_POINTERS_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #905", urlTitle: "LeetCode — Sort Array By Parity", url: "https://leetcode.com/problems/sort-array-by-parity/" },
+      { title: "Похожая задача: LeetCode #905", urlTitle: "LeetCode — Sort Array By Parity", url: "https://leetcode.com/problems/sort-array-by-parity/" },
       { title: "Метод двух указателей (Two Pointers)", urlTitle: "Habr — Обзор техники", url: "https://habr.com/ru/articles/" },
       { title: "Two Pointers In-Place Partitioning", urlTitle: "LeetCode Discuss — Разбор алгоритма", url: "https://leetcode.com/discuss/" },
     ],
@@ -486,7 +486,7 @@ export const ALGO_TWO_POINTERS_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #167", urlTitle: "LeetCode — Two Sum II", url: "https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/" },
+      { title: "Похожая задача: LeetCode #167", urlTitle: "LeetCode — Two Sum II", url: "https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/" },
       { title: "Метод двух указателей (Two Pointers)", urlTitle: "Habr — Обзор техники", url: "https://habr.com/ru/articles/" },
       { title: "Алгоритм «два указателя»", urlTitle: "Metanit — Объяснение с примерами", url: "https://metanit.com/" },
       { title: "Two Sum — разбор задачи", urlTitle: "LeetCode — Русскоязычное сообщество", url: "https://leetcode.com/problemset/" },
@@ -521,7 +521,7 @@ export const ALGO_TWO_POINTERS_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #15", urlTitle: "LeetCode — 3Sum", url: "https://leetcode.com/problems/3sum/" },
+      { title: "Похожая задача: LeetCode #15", urlTitle: "LeetCode — 3Sum", url: "https://leetcode.com/problems/3sum/" },
       { title: "Что такое метод двух указателей?", urlTitle: "CodeChick — Разбор метода", url: "https://codechick.io/community/330" },
       { title: "Two Pointers для начинающих", urlTitle: "SprintCode — Статья и разбор", url: "https://sprintcode.pro/ru/blog/two-pointers" },
       { title: "Two Pointers — паттерн", urlTitle: "Habr — Паттерны алгоритмов", url: "https://habr.com/ru/articles/1020222" },
@@ -556,7 +556,7 @@ export const ALGO_TWO_POINTERS_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #849", urlTitle: "LeetCode — Maximize Distance to Closest Person", url: "https://leetcode.com/problems/maximize-distance-to-closest-person/" },
+      { title: "Похожая задача: LeetCode #849", urlTitle: "LeetCode — Maximize Distance to Closest Person", url: "https://leetcode.com/problems/maximize-distance-to-closest-person/" },
       { title: "Метод двух указателей (two pointers)", urlTitle: "SprintCode.pro — Руководство", url: "https://sprintcode.pro/ru/blog/two-pointers" },
       { title: "Сложность алгоритмов: O(n), O(n²) и другие", urlTitle: "Хабр — Оценка сложности", url: "https://habr.com/ru/articles/188010/" },
     ],
@@ -591,7 +591,7 @@ export const ALGO_TWO_POINTERS_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #5", urlTitle: "LeetCode — Longest Palindromic Substring", url: "https://leetcode.com/problems/longest-palindromic-substring/" },
+      { title: "Похожая задача: LeetCode #5", urlTitle: "LeetCode — Longest Palindromic Substring", url: "https://leetcode.com/problems/longest-palindromic-substring/" },
       { title: "Метод двух указателей (two pointers)", urlTitle: "SprintCode.pro — Руководство", url: "https://sprintcode.pro/ru/blog/two-pointers" },
       { title: "Алгоритм Манакера", urlTitle: "Википедия — Поиск палиндромов за O(n)", url: "https://ru.wikipedia.org/wiki/Алгоритм_Манакера" },
     ],
@@ -629,7 +629,7 @@ export const ALGO_HASH_MAP_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #217", urlTitle: "LeetCode — Contains Duplicate", url: "https://leetcode.com/problems/contains-duplicate/" },
+      { title: "Похожая задача: LeetCode #217", urlTitle: "LeetCode — Contains Duplicate", url: "https://leetcode.com/problems/contains-duplicate/" },
       { title: "Структура данных Set в JavaScript", urlTitle: "learn.javascript.ru — Учебник", url: "https://learn.javascript.ru/map-set" },
       { title: "Структуры данных Set и Map на практике", urlTitle: "Хабр (Otus) — Руководство", url: "https://habr.com/ru/companies/otus/articles/549814/" },
       { title: "Хеш-таблицы и хеш-множества", urlTitle: "Хабр — Принцип работы", url: "https://habr.com/ru/articles/509510/" },
@@ -665,7 +665,7 @@ export const ALGO_HASH_MAP_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #1", urlTitle: "LeetCode — Two Sum", url: "https://leetcode.com/problems/two-sum/" },
+      { title: "Похожая задача: LeetCode #1", urlTitle: "LeetCode — Two Sum", url: "https://leetcode.com/problems/two-sum/" },
       { title: "Хеш-таблицы: устройство и сложность", urlTitle: "Хабр — Полный разбор", url: "https://habr.com/ru/articles/509510/" },
       { title: "Map и Set в JavaScript", urlTitle: "learn.javascript.ru — Учебник", url: "https://learn.javascript.ru/map-set" },
       { title: "Задача Two Sum: разбор нескольких подходов", urlTitle: "Хабр — Разбор подходов", url: "https://habr.com/ru/articles/704088/" },
@@ -702,7 +702,7 @@ export const ALGO_HASH_MAP_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #242", urlTitle: "LeetCode — Valid Anagram", url: "https://leetcode.com/problems/valid-anagram/" },
+      { title: "Похожая задача: LeetCode #242", urlTitle: "LeetCode — Valid Anagram", url: "https://leetcode.com/problems/valid-anagram/" },
       { title: "Map и Set в JavaScript", urlTitle: "learn.javascript.ru — Учебник", url: "https://learn.javascript.ru/map-set" },
       { title: "Хеш-таблицы: устройство и скорость", urlTitle: "Хабр — Обзор структуры", url: "https://habr.com/ru/articles/509510/" },
       { title: "Методы работы со строками в JS", urlTitle: "learn.javascript.ru — Справочник", url: "https://learn.javascript.ru/string" },
@@ -738,7 +738,7 @@ export const ALGO_HASH_MAP_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #49", urlTitle: "LeetCode — Group Anagrams", url: "https://leetcode.com/problems/group-anagrams/" },
+      { title: "Похожая задача: LeetCode #49", urlTitle: "LeetCode — Group Anagrams", url: "https://leetcode.com/problems/group-anagrams/" },
       { title: "Map и Set в JavaScript", urlTitle: "learn.javascript.ru — Учебник", url: "https://learn.javascript.ru/map-set" },
       { title: "Методы массивов в JavaScript (sort, split, join)", urlTitle: "learn.javascript.ru — Справочник", url: "https://learn.javascript.ru/array-methods" },
       { title: "Хеш-таблицы: устройство и скорость", urlTitle: "Хабр — Подробный разбор", url: "https://habr.com/ru/articles/509510/" },
@@ -774,7 +774,7 @@ export const ALGO_HASH_MAP_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #448", urlTitle: "LeetCode — Find All Numbers Disappeared in an Array", url: "https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array/" },
+      { title: "Похожая задача: LeetCode #448", urlTitle: "LeetCode — Find All Numbers Disappeared in an Array", url: "https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array/" },
       { title: "Хеш-таблицы: устройство и скорость", urlTitle: "Хабр — Подробный разбор", url: "https://habr.com/ru/articles/509510/" },
       { title: "Сложность алгоритмов: O(n) и O(1)", urlTitle: "Хабр — Оценка", url: "https://habr.com/ru/articles/188010/" },
     ],
@@ -812,7 +812,7 @@ export const ALGO_SLIDING_WINDOW_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #643", urlTitle: "LeetCode — Maximum Average Subarray I", url: "https://leetcode.com/problems/maximum-average-subarray-i/" },
+      { title: "Похожая задача: LeetCode #643", urlTitle: "LeetCode — Maximum Average Subarray I", url: "https://leetcode.com/problems/maximum-average-subarray-i/" },
       { title: "Алгоритм «Скользящее окно» — вопросы с собеседований", urlTitle: "AppTractor — Статья", url: "https://apptractor.ru/info/techhype/sliding-window.html" },
       { title: "Алгосы от Влада: Скользящее окно", urlTitle: "Блог Влада Крыловского", url: "https://krilovskiy.com/posts/algo-patterns-sliding-window/" },
       { title: "Sliding Window Technique", urlTitle: "GeeksforGeeks — Гайд", url: "https://www.geeksforgeeks.org/dsa/window-sliding-technique/" },
@@ -848,7 +848,7 @@ export const ALGO_SLIDING_WINDOW_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #209", urlTitle: "LeetCode — Minimum Size Subarray Sum", url: "https://leetcode.com/problems/minimum-size-subarray-sum/" },
+      { title: "Похожая задача: LeetCode #209", urlTitle: "LeetCode — Minimum Size Subarray Sum", url: "https://leetcode.com/problems/minimum-size-subarray-sum/" },
       { title: "Скользящее окно (Sliding Window) — объяснение с примерами", urlTitle: "Хабр — Руководство", url: "https://habr.com/ru/articles/489496/" },
       { title: "Метод двух указателей (Two Pointers)", urlTitle: "Хабр (Otus) — Практика", url: "https://habr.com/ru/companies/otus/articles/562746/" },
       { title: "Числа и математические методы в JavaScript", urlTitle: "learn.javascript.ru — Учебник", url: "https://learn.javascript.ru/number" },
@@ -884,7 +884,7 @@ export const ALGO_SLIDING_WINDOW_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #3", urlTitle: "LeetCode — Longest Substring", url: "https://leetcode.com/problems/longest-substring-without-repeating-characters/" },
+      { title: "Похожая задача: LeetCode #3", urlTitle: "LeetCode — Longest Substring", url: "https://leetcode.com/problems/longest-substring-without-repeating-characters/" },
       { title: "Решение задачи с собеседования через Sliding Window", urlTitle: "Хабр — Подробный разбор", url: "https://habr.com/ru/articles/1007886/" },
       { title: "Set и Map в JavaScript", urlTitle: "learn.javascript.ru — Учебник", url: "https://learn.javascript.ru/map-set" },
       { title: "Алгоритм «Скользящее окно» — вопросы с собеседований", urlTitle: "AppTractor — Вопросы и примеры", url: "https://apptractor.ru/info/techhype/sliding-window.html" },
@@ -925,7 +925,7 @@ export const ALGO_PREFIX_SUM_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #303", urlTitle: "LeetCode — Range Sum Query - Immutable", url: "https://leetcode.com/problems/range-sum-query-immutable/" },
+      { title: "Похожая задача: LeetCode #303", urlTitle: "LeetCode — Range Sum Query - Immutable", url: "https://leetcode.com/problems/range-sum-query-immutable/" },
       { title: "Префиксные суммы — разбор с картинками и 2D", urlTitle: "Алгоритмика — Руководство", url: "https://ru.algorithmica.org/cs/range-queries/prefix-sum/" },
       { title: "Префиксная сумма — математическая база и свойства", urlTitle: "Википедия — Статья", url: "https://ru.wikipedia.org/wiki/%D0%9F%D1%80%D0%B5%D1%84%D0%B8%D0%BA%D1%81%D0%BD%D0%B0%D1%8F_%D1%81%D1%83%D0%BC%D0%BC%D0%B0" },
       { title: "Разбор задачи с префиксными суммами на практике", urlTitle: "Хабр — Разбор задачи", url: "https://habr.com/ru/articles/901190/" },
@@ -961,7 +961,7 @@ export const ALGO_PREFIX_SUM_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #724", urlTitle: "LeetCode — Find Pivot Index", url: "https://leetcode.com/problems/find-pivot-index/" },
+      { title: "Похожая задача: LeetCode #724", urlTitle: "LeetCode — Find Pivot Index", url: "https://leetcode.com/problems/find-pivot-index/" },
       { title: "Префиксные суммы — разбор с картинками", urlTitle: "Алгоритмика — Руководство", url: "https://ru.algorithmica.org/cs/range-queries/prefix-sum/" },
       { title: "Методы массивов (reduce) в JavaScript", urlTitle: "learn.javascript.ru — Справочник", url: "https://learn.javascript.ru/array-methods" },
       { title: "Разбор задачи с префиксными суммами на практике", urlTitle: "Хабр — Разбор задачи", url: "https://habr.com/ru/articles/901190/" },
@@ -997,7 +997,7 @@ export const ALGO_PREFIX_SUM_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #560", urlTitle: "LeetCode — Subarray Sum Equals K", url: "https://leetcode.com/problems/subarray-sum-equals-k/" },
+      { title: "Похожая задача: LeetCode #560", urlTitle: "LeetCode — Subarray Sum Equals K", url: "https://leetcode.com/problems/subarray-sum-equals-k/" },
       { title: "Префиксные суммы — разбор с картинками и 2D", urlTitle: "Алгоритмика — Руководство", url: "https://ru.algorithmica.org/cs/range-queries/prefix-sum/" },
       { title: "Map и Set в JavaScript", urlTitle: "learn.javascript.ru — Учебник", url: "https://learn.javascript.ru/map-set" },
       { title: "Хеш-таблицы: как они устроены и почему быстрые", urlTitle: "Хабр — Подробный разбор", url: "https://habr.com/ru/articles/509510/" },
@@ -1036,7 +1036,7 @@ export const ALGO_BINARY_SEARCH_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #704", urlTitle: "LeetCode — Binary Search", url: "https://leetcode.com/problems/binary-search/" },
+      { title: "Похожая задача: LeetCode #704", urlTitle: "LeetCode — Binary Search", url: "https://leetcode.com/problems/binary-search/" },
       { title: "Бинарный поиск в JavaScript: основы и реализация", urlTitle: "Хабр — Руководство", url: "https://habr.com/ru/articles/783848/" },
       { title: "Бинарный поиск: сравнение с линейным поиском", urlTitle: "Хабр — Практический пример", url: "https://habr.com/ru/articles/335750/" },
       { title: "Бинарный поиск: алгоритм «Разделяй и властвуй»", urlTitle: "DevGang — Статья", url: "https://dev-gang.ru/article/binarnyi-poisk-v-javascript-v8n3upwuib/" },
@@ -1073,7 +1073,7 @@ export const ALGO_BINARY_SEARCH_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #35", urlTitle: "LeetCode — Search Insert Position", url: "https://leetcode.com/problems/search-insert-position/" },
+      { title: "Похожая задача: LeetCode #35", urlTitle: "LeetCode — Search Insert Position", url: "https://leetcode.com/problems/search-insert-position/" },
       { title: "Бинарный поиск в JavaScript: основы и реализация", urlTitle: "Хабр — Руководство", url: "https://habr.com/ru/articles/783848/" },
       { title: "Бинарный поиск в JS: разбор с примерами", urlTitle: "MyRusakov — Разбор", url: "https://myrusakov.ru/js-binary-search-algorithm.html" },
       { title: "Бинарный поиск: алгоритм «Разделяй и властвуй»", urlTitle: "DevGang — Статья", url: "https://dev-gang.ru/article/binarnyi-poisk-v-javascript-v8n3upwuib/" },
@@ -1109,7 +1109,7 @@ export const ALGO_BINARY_SEARCH_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #278", urlTitle: "LeetCode — First Bad Version", url: "https://leetcode.com/problems/first-bad-version/" },
+      { title: "Похожая задача: LeetCode #278", urlTitle: "LeetCode — First Bad Version", url: "https://leetcode.com/problems/first-bad-version/" },
       { title: "Каррирование и частичное применение в JavaScript", urlTitle: "learn.javascript.ru — Учебник", url: "https://learn.javascript.ru/currying-partials" },
       { title: "Бинарный поиск: поиск границы", urlTitle: "Хабр — Статья", url: "https://habr.com/ru/articles/908032/" },
       { title: "Алгоритм бинарного поиска с примерами", urlTitle: "Metanit — Статья", url: "https://metanit.com/sharp/algorithm/2.1.php" },
@@ -1145,7 +1145,7 @@ export const ALGO_BINARY_SEARCH_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #33", urlTitle: "LeetCode — Search in Rotated Sorted Array", url: "https://leetcode.com/problems/search-in-rotated-sorted-array/" },
+      { title: "Похожая задача: LeetCode #33", urlTitle: "LeetCode — Search in Rotated Sorted Array", url: "https://leetcode.com/problems/search-in-rotated-sorted-array/" },
       { title: "Поиск в повернутом отсортированном массиве", urlTitle: "Хабр — Разбор задачи", url: "https://habr.com/ru/articles/331848/" },
       { title: "Бинарный поиск в JavaScript: основы и реализация", urlTitle: "Хабр — Руководство", url: "https://habr.com/ru/articles/783848/" },
       { title: "Бинарный поиск: алгоритм «Разделяй и властвуй»", urlTitle: "DevGang — Статья", url: "https://dev-gang.ru/article/binarnyi-poisk-v-javascript-v8n3upwuib/" },
@@ -1185,7 +1185,7 @@ export const ALGO_STACK_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #20", urlTitle: "LeetCode — Valid Parentheses", url: "https://leetcode.com/problems/valid-parentheses/" },
+      { title: "Похожая задача: LeetCode #20", urlTitle: "LeetCode — Valid Parentheses", url: "https://leetcode.com/problems/valid-parentheses/" },
       { title: "Структуры данных в JavaScript: стек, очередь и другие", urlTitle: "Дока — Руководство", url: "https://doka.guide/tools/structure-data-in-js/" },
       { title: "Стек — глава из книги \"Структуры данных на JS\"", urlTitle: "GitBook — Учебник", url: "https://verkholantsev.gitbooks.io/data-structures/docs/Stack.html" },
       { title: "Стеки, очереди и связные списки в JavaScript", urlTitle: "ProgLib — Статья", url: "https://proglib.io/p/rasprostranennye-algoritmy-i-struktury-dannyh-v-javascript-steki-ocheredi-i-svyaznye-spiski-2021-10-13" },
@@ -1223,7 +1223,7 @@ export const ALGO_STACK_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #71", urlTitle: "LeetCode — Simplify Path", url: "https://leetcode.com/problems/simplify-path/" },
+      { title: "Похожая задача: LeetCode #71", urlTitle: "LeetCode — Simplify Path", url: "https://leetcode.com/problems/simplify-path/" },
       { title: "Структуры данных в JavaScript: стек, очередь и другие", urlTitle: "Дока — Руководство", url: "https://doka.guide/tools/structure-data-in-js/" },
       { title: "Методы массивов и строк в JavaScript", urlTitle: "learn.javascript.ru — Учебник", url: "https://learn.javascript.ru/array-methods" },
     ],
@@ -1258,7 +1258,7 @@ export const ALGO_STACK_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #155", urlTitle: "LeetCode — Min Stack", url: "https://leetcode.com/problems/min-stack/" },
+      { title: "Похожая задача: LeetCode #155", urlTitle: "LeetCode — Min Stack", url: "https://leetcode.com/problems/min-stack/" },
       { title: "Структуры данных в JavaScript: стек и очереди", urlTitle: "Дока — Руководство", url: "https://doka.guide/tools/structure-data-in-js/" },
       { title: "Замыкания и области видимости в JavaScript", urlTitle: "learn.javascript.ru — Учебник", url: "https://learn.javascript.ru/closure" },
       { title: "Стек — глава из книги \"Структуры данных на JS\"", urlTitle: "GitBook — Учебник", url: "https://verkholantsev.gitbooks.io/data-structures/docs/Stack.html" },
@@ -1294,7 +1294,7 @@ export const ALGO_STACK_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #394", urlTitle: "LeetCode — Decode String", url: "https://leetcode.com/problems/decode-string/" },
+      { title: "Похожая задача: LeetCode #394", urlTitle: "LeetCode — Decode String", url: "https://leetcode.com/problems/decode-string/" },
       { title: "Структуры данных в JavaScript: стек, очередь и другие", urlTitle: "Дока — Руководство", url: "https://doka.guide/tools/structure-data-in-js/" },
       { title: "Рекурсия и стек вызовов", urlTitle: "learn.javascript.ru — Учебник", url: "https://learn.javascript.ru/recursion" },
     ],
@@ -1329,7 +1329,7 @@ export const ALGO_STACK_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #227", urlTitle: "LeetCode — Basic Calculator II", url: "https://leetcode.com/problems/basic-calculator-ii/" },
+      { title: "Похожая задача: LeetCode #227", urlTitle: "LeetCode — Basic Calculator II", url: "https://leetcode.com/problems/basic-calculator-ii/" },
       { title: "Структуры данных в JavaScript: стек, очередь и другие", urlTitle: "Дока — Руководство", url: "https://doka.guide/tools/structure-data-in-js/" },
       { title: "Сложность алгоритмов: O(n), O(n²) и другие", urlTitle: "Хабр — Оценка сложности", url: "https://habr.com/ru/articles/188010/" },
     ],
@@ -1364,7 +1364,7 @@ export const ALGO_STACK_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #739", urlTitle: "LeetCode — Daily Temperatures", url: "https://leetcode.com/problems/daily-temperatures/" },
+      { title: "Похожая задача: LeetCode #739", urlTitle: "LeetCode — Daily Temperatures", url: "https://leetcode.com/problems/daily-temperatures/" },
       { title: "Структуры данных в JavaScript: стек и его применение", urlTitle: "Дока — Руководство", url: "https://doka.guide/tools/structure-data-in-js/" },
       { title: "Стеки, очереди и связные списки в JavaScript", urlTitle: "ProgLib — Статья", url: "https://proglib.io/p/rasprostranennye-algoritmy-i-struktury-dannyh-v-javascript-steki-ocheredi-i-svyaznye-spiski-2021-10-13" },
       { title: "Стек — глава из книги \"Структуры данных на JS\"", urlTitle: "GitBook — Учебник", url: "https://verkholantsev.gitbooks.io/data-structures/docs/Stack.html" },
@@ -1403,7 +1403,7 @@ export const ALGO_LINKED_LIST_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #206", urlTitle: "LeetCode — Reverse Linked List", url: "https://leetcode.com/problems/reverse-linked-list/" },
+      { title: "Похожая задача: LeetCode #206", urlTitle: "LeetCode — Reverse Linked List", url: "https://leetcode.com/problems/reverse-linked-list/" },
       { title: "Структуры данных: связный список", urlTitle: "Хабр — Подробное введение", url: "https://habr.com/ru/articles/717572/" },
       { title: "Связный список в учебнике JavaScript", urlTitle: "learn.javascript.ru — Учебник", url: "https://learn.javascript.ru/recursion#svyazannyy-spisok" },
       { title: "Разворот связного списка: итеративный и рекурсивный подход", urlTitle: "Хабр — Разбор алгоритма", url: "https://habr.com/ru/articles/455842/" },
@@ -1439,7 +1439,7 @@ export const ALGO_LINKED_LIST_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #21", urlTitle: "LeetCode — Merge Two Sorted Lists", url: "https://leetcode.com/problems/merge-two-sorted-lists/" },
+      { title: "Похожая задача: LeetCode #21", urlTitle: "LeetCode — Merge Two Sorted Lists", url: "https://leetcode.com/problems/merge-two-sorted-lists/" },
       { title: "Методы слияния отсортированных списков", urlTitle: "Хабр — Разбор подходов", url: "https://habr.com/ru/post/510970" },
       { title: "Структуры данных: связный список", urlTitle: "Хабр — Введение", url: "https://habr.com/ru/articles/717572/" },
       { title: "Сортировка слиянием и слияние подсписков", urlTitle: "Хабр — Merge Pattern", url: "https://habr.com/ru/articles/281675/" },
@@ -1475,7 +1475,7 @@ export const ALGO_LINKED_LIST_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #141", urlTitle: "LeetCode — Linked List Cycle", url: "https://leetcode.com/problems/linked-list-cycle/" },
+      { title: "Похожая задача: LeetCode #141", urlTitle: "LeetCode — Linked List Cycle", url: "https://leetcode.com/problems/linked-list-cycle/" },
       { title: "Нахождение цикла: алгоритм Флойда", urlTitle: "Википедия — Теория", url: "https://ru.wikipedia.org/wiki/%D0%9D%D0%B0%D1%85%D0%BE%D0%B6%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5_%D1%86%D0%B8%D0%BA%D0%BB%D0%B0" },
       { title: "Алгоритм «черепахи и зайца» на практике", urlTitle: "Хабр — Разбор паттерна", url: "https://habr.com/ru/post/990110" },
       { title: "Обнаружение цикла в связном списке", urlTitle: "Techie Delight — Разбор", url: "https://www.techiedelight.com/ru/detect-cycle-linked-list-floyds-cycle-detection-algorithm/" },
@@ -1515,7 +1515,7 @@ export const ALGO_DFS_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #104", urlTitle: "LeetCode — Maximum Depth", url: "https://leetcode.com/problems/maximum-depth-of-binary-tree/" },
+      { title: "Похожая задача: LeetCode #104", urlTitle: "LeetCode — Maximum Depth", url: "https://leetcode.com/problems/maximum-depth-of-binary-tree/" },
       { title: "Бинарные деревья: вычисление глубины", urlTitle: "Хабр — Руководство", url: "https://habr.com/ru/articles/835706/" },
       { title: "Рекурсивный стек вызовов в JavaScript", urlTitle: "learn.javascript.ru — Учебник", url: "https://learn.javascript.ru/recursion" },
       { title: "Обход бинарных деревьев: рекурсия и стек", urlTitle: "Хабр — Статья", url: "https://habr.com/ru/articles/144850/" },
@@ -1551,7 +1551,7 @@ export const ALGO_DFS_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #543", urlTitle: "LeetCode — Diameter of Binary Tree", url: "https://leetcode.com/problems/diameter-of-binary-tree/" },
+      { title: "Похожая задача: LeetCode #543", urlTitle: "LeetCode — Diameter of Binary Tree", url: "https://leetcode.com/problems/diameter-of-binary-tree/" },
       { title: "Бинарные деревья: расчет высоты и диаметра", urlTitle: "Хабр — Руководство", url: "https://habr.com/ru/articles/835706/" },
       { title: "Бинарные деревья поиска и рекурсия — это просто", urlTitle: "Хабр — Разбор", url: "https://habr.com/ru/articles/267855/" },
       { title: "Обход бинарных деревьев", urlTitle: "Хабр — Статья", url: "https://habr.com/ru/articles/144850/" },
@@ -1587,7 +1587,7 @@ export const ALGO_DFS_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #226", urlTitle: "LeetCode — Invert Binary Tree", url: "https://leetcode.com/problems/invert-binary-tree/" },
+      { title: "Похожая задача: LeetCode #226", urlTitle: "LeetCode — Invert Binary Tree", url: "https://leetcode.com/problems/invert-binary-tree/" },
       { title: "Бинарные деревья — решение алгоритмических задач", urlTitle: "Хабр — Разбор", url: "https://habr.com/ru/articles/835706/" },
       { title: "Двоичное (бинарное) дерево: создание и обход", urlTitle: "Tproger — Руководство", url: "https://tproger.ru/articles/dvoichnoe-binarnoe-derevo-sozdanie-i-obhod" },
       { title: "Обход дерева: виды и применение", urlTitle: "Википедия — Теория", url: "https://ru.wikipedia.org/wiki/%D0%9E%D0%B1%D1%85%D0%BE%D0%B4_%D0%B4%D0%B5%D1%80%D0%B5%D0%B2%D0%B0" },
@@ -1623,7 +1623,7 @@ export const ALGO_DFS_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #100", urlTitle: "LeetCode — Same Tree", url: "https://leetcode.com/problems/same-tree/" },
+      { title: "Похожая задача: LeetCode #100", urlTitle: "LeetCode — Same Tree", url: "https://leetcode.com/problems/same-tree/" },
       { title: "Бинарные деревья поиска и рекурсия", urlTitle: "Хабр — Руководство", url: "https://habr.com/ru/articles/267855/" },
       { title: "Обход бинарных деревьев: рекурсия и стек", urlTitle: "Хабр — Анализ", url: "https://habr.com/ru/articles/144850/" },
       { title: "Двоичное дерево: основы", urlTitle: "Википедия — Терминология", url: "https://ru.wikipedia.org/wiki/%D0%94%D0%B2%D0%BE%D0%B8%D1%87%D0%BD%D0%BE%D0%B5_%D0%B4%D0%B5%D1%80%D0%B5%D0%B2%D0%BE" },
@@ -1663,7 +1663,7 @@ export const ALGO_BFS_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #102", urlTitle: "LeetCode — Level Order Traversal", url: "https://leetcode.com/problems/binary-tree-level-order-traversal/" },
+      { title: "Похожая задача: LeetCode #102", urlTitle: "LeetCode — Level Order Traversal", url: "https://leetcode.com/problems/binary-tree-level-order-traversal/" },
       { title: "Бинарные деревья — поуровневый обход BFS", urlTitle: "Хабр — Руководство", url: "https://habr.com/ru/articles/835706/" },
       { title: "Поиск в ширину (BFS) на практике", urlTitle: "Хабр — Анализ", url: "https://habr.com/ru/articles/504374/" },
       { title: "Обход бинарных деревьев: очередь и стек", urlTitle: "Хабр — Статья", url: "https://habr.com/ru/articles/144850/" },
@@ -1700,7 +1700,7 @@ export const ALGO_BFS_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #200", urlTitle: "LeetCode — Number of Islands", url: "https://leetcode.com/problems/number-of-islands/" },
+      { title: "Похожая задача: LeetCode #200", urlTitle: "LeetCode — Number of Islands", url: "https://leetcode.com/problems/number-of-islands/" },
       { title: "Поиск компонент связности и заливка (Flood Fill)", urlTitle: "Хабр — Руководство", url: "https://habr.com/ru/articles/504374/" },
       { title: "Обход матриц и графов: BFS и DFS", urlTitle: "Хабр — Статья", url: "https://habr.com/ru/articles/835706/" },
       { title: "Алгоритмы на графах: обход в ширину", urlTitle: "ProgLib — Руководство", url: "https://proglib.io/p/algoritmy-na-grafah-obhod-v-shirinu-i-glubinu-2021-08-16" },
@@ -1736,7 +1736,7 @@ export const ALGO_BFS_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #994", urlTitle: "LeetCode — Rotting Oranges", url: "https://leetcode.com/problems/rotting-oranges/" },
+      { title: "Похожая задача: LeetCode #994", urlTitle: "LeetCode — Rotting Oranges", url: "https://leetcode.com/problems/rotting-oranges/" },
       { title: "Многоисточниковый поиск в ширину (Multi-Source BFS)", urlTitle: "Хабр — Разбор паттерна", url: "https://habr.com/ru/articles/504374/" },
       { title: "Распространение волны в 2D-сетках", urlTitle: "Хабр — Алгоритмы", url: "https://habr.com/ru/articles/835706/" },
       { title: "Структуры данных: очереди и графы", urlTitle: "Дока — Руководство", url: "https://doka.guide/tools/structure-data-in-js/" },
@@ -1772,7 +1772,7 @@ export const ALGO_BFS_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #207", urlTitle: "LeetCode — Course Schedule", url: "https://leetcode.com/problems/course-schedule/" },
+      { title: "Похожая задача: LeetCode #207", urlTitle: "LeetCode — Course Schedule", url: "https://leetcode.com/problems/course-schedule/" },
       { title: "Топологическая сортировка", urlTitle: "Algorithmica — Теория", url: "https://ru.algorithmica.org/cs/graph-traversals/topological-sort/" },
       { title: "Сложность алгоритмов: O(n), O(n²) и другие", urlTitle: "Хабр — Оценка сложности", url: "https://habr.com/ru/articles/188010/" },
     ],
@@ -1807,7 +1807,7 @@ export const ALGO_BFS_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #2050", urlTitle: "LeetCode — Parallel Courses III", url: "https://leetcode.com/problems/parallel-courses-iii/" },
+      { title: "Похожая задача: LeetCode #2050", urlTitle: "LeetCode — Parallel Courses III", url: "https://leetcode.com/problems/parallel-courses-iii/" },
       { title: "Топологическая сортировка", urlTitle: "Algorithmica — Теория", url: "https://ru.algorithmica.org/cs/graph-traversals/topological-sort/" },
       { title: "Нейросети против Тинькоф-контеста (отчёт участника)", urlTitle: "Хабр — Разбор задач контеста", url: "https://habr.com/ru/articles/850926/" },
     ],
@@ -1846,7 +1846,7 @@ export const ALGO_BACKTRACKING_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #78", urlTitle: "LeetCode — Subsets", url: "https://leetcode.com/problems/subsets/" },
+      { title: "Похожая задача: LeetCode #78", urlTitle: "LeetCode — Subsets", url: "https://leetcode.com/problems/subsets/" },
       { title: "Генерация подмножеств через Backtracking", urlTitle: "Хабр — Руководство", url: "https://habr.com/ru/articles/580644/" },
       { title: "Основы бэктрекинга: дерево решений", urlTitle: "The Code — Статья", url: "https://thecode.media/backtracking/" },
       { title: "Рекурсивный перебор комбинаций", urlTitle: "learn.javascript.ru — Учебник", url: "https://learn.javascript.ru/recursion" },
@@ -1882,7 +1882,7 @@ export const ALGO_BACKTRACKING_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #46", urlTitle: "LeetCode — Permutations", url: "https://leetcode.com/problems/permutations/" },
+      { title: "Похожая задача: LeetCode #46", urlTitle: "LeetCode — Permutations", url: "https://leetcode.com/problems/permutations/" },
       { title: "Генерация перестановок и массив used", urlTitle: "Хабр — Разбор", url: "https://habr.com/ru/articles/191418/" },
       { title: "Разбор задачи Permutations на JavaScript", urlTitle: "Хабр — Практика", url: "https://habr.com/ru/articles/580644/" },
       { title: "Рекурсия и стек вызовов", urlTitle: "learn.javascript.ru — Учебник", url: "https://learn.javascript.ru/recursion" },
@@ -1918,7 +1918,7 @@ export const ALGO_BACKTRACKING_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #39", urlTitle: "LeetCode — Combination Sum", url: "https://leetcode.com/problems/combination-sum/" },
+      { title: "Похожая задача: LeetCode #39", urlTitle: "LeetCode — Combination Sum", url: "https://leetcode.com/problems/combination-sum/" },
       { title: "Поиск комбинаций с заданной суммой и отсечением (Pruning)", urlTitle: "Хабр — Руководство", url: "https://habr.com/ru/articles/580644/" },
       { title: "Отсечение невалидных ветвей в Backtracking", urlTitle: "The Code — Статья", url: "https://thecode.media/backtracking/" },
       { title: "Управление рекурсивным состоянием", urlTitle: "learn.javascript.ru — Учебник", url: "https://learn.javascript.ru/recursion" },
@@ -1954,7 +1954,7 @@ export const ALGO_BACKTRACKING_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #22", urlTitle: "LeetCode — Generate Parentheses", url: "https://leetcode.com/problems/generate-parentheses/" },
+      { title: "Похожая задача: LeetCode #22", urlTitle: "LeetCode — Generate Parentheses", url: "https://leetcode.com/problems/generate-parentheses/" },
       { title: "Генерация правильных скобочных последовательностей", urlTitle: "Хабр — Руководство", url: "https://habr.com/ru/articles/580644/" },
       { title: "Условия валидности и баланс скобок в рекурсии", urlTitle: "Хабр — Анализ", url: "https://habr.com/ru/articles/191418/" },
       { title: "Числа Каталана и комбинаторика скобок", urlTitle: "Википедия — Теория", url: "https://ru.wikipedia.org/wiki/%D0%A7%D0%B8%D1%81%D0%BB%D0%B0_%D0%9A%D0%B0%D1%82%D0%B0%D0%BB%D0%B0%D0%BD%D0%B0" },
@@ -1993,7 +1993,7 @@ export const ALGO_DP_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #70", urlTitle: "LeetCode — Climbing Stairs", url: "https://leetcode.com/problems/climbing-stairs/" },
+      { title: "Похожая задача: LeetCode #70", urlTitle: "LeetCode — Climbing Stairs", url: "https://leetcode.com/problems/climbing-stairs/" },
       { title: "Динамическое программирование", urlTitle: "Algorithmica — Теория", url: "https://ru.algorithmica.org/cs/dynamic-programming/" },
       { title: "Список задач с тегом \"Dynamic Programming\"", urlTitle: "LeetCode — Tag List", url: "https://leetcode.com/tag/dynamic-programming/" },
     ],
@@ -2028,7 +2028,7 @@ export const ALGO_DP_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #198", urlTitle: "LeetCode — House Robber", url: "https://leetcode.com/problems/house-robber/" },
+      { title: "Похожая задача: LeetCode #198", urlTitle: "LeetCode — House Robber", url: "https://leetcode.com/problems/house-robber/" },
       { title: "Динамическое программирование", urlTitle: "Algorithmica — Теория", url: "https://ru.algorithmica.org/cs/dynamic-programming/" },
       { title: "Список задач с тегом \"Dynamic Programming\"", urlTitle: "LeetCode — Tag List", url: "https://leetcode.com/tag/dynamic-programming/" },
     ],
@@ -2063,7 +2063,7 @@ export const ALGO_DP_TASKS = [
       },
     ],
     articles: [
-      { title: "LeetCode #322", urlTitle: "LeetCode — Coin Change", url: "https://leetcode.com/problems/coin-change/" },
+      { title: "Похожая задача: LeetCode #322", urlTitle: "LeetCode — Coin Change", url: "https://leetcode.com/problems/coin-change/" },
       { title: "Динамическое программирование", urlTitle: "Algorithmica — Теория", url: "https://ru.algorithmica.org/cs/dynamic-programming/" },
       { title: "Список задач с тегом \"Dynamic Programming\"", urlTitle: "LeetCode — Tag List", url: "https://leetcode.com/tag/dynamic-programming/" },
     ],

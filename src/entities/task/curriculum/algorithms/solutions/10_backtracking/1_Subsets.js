@@ -17,5 +17,6 @@ const subsets = (nums) => {
 };
 
 // Пример вызова:
-console.log(subsets([1, 2, 3])); // [[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]]
-console.log(subsets([0]));       // [[], [0]]
+console.log(subsets([4, 7]));    // [[], [4], [4, 7], [7]]
+console.log(subsets([1, 5, 9])); // [[], [1], [1, 5], [1, 5, 9], [1, 9], [5], [5, 9], [9]]
+console.log(subsets([]));        // [[]]

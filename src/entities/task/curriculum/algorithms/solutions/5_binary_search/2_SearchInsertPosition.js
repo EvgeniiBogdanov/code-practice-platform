@@ -21,6 +21,7 @@ const searchInsert = (nums, target) => {
 };
 
 // Пример вызова:
-console.log(searchInsert([1, 3, 5, 6], 5)); // 2
-console.log(searchInsert([1, 3, 5, 6], 2)); // 1
-console.log(searchInsert([1, 3, 5, 6], 7)); // 4
+console.log(searchInsert([10, 20, 30, 40], 30)); // 2
+console.log(searchInsert([10, 20, 30, 40], 25)); // 2
+console.log(searchInsert([10, 20, 30, 40], 5));  // 0
+console.log(searchInsert([10, 20, 30, 40], 50)); // 4

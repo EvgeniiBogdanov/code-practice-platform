@@ -15,6 +15,6 @@ const groupAnagrams = (strs) => {
 };
 
 // Пример вызова:
-console.log(groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"])); // [["bat"], ["nat", "tan"], ["ate", "eat", "tea"]]
-console.log(groupAnagrams([""]));                                       // [[""]]
-console.log(groupAnagrams(["a"]));                                      // [["a"]]
+console.log(groupAnagrams(["stop", "pots", "melon", "tops", "lemon", "pear"])); // [["stop", "pots", "tops"], ["melon", "lemon"], ["pear"]]
+console.log(groupAnagrams(["abc", "", "cba", ""]));                             // [["abc", "cba"], ["", ""]]
+console.log(groupAnagrams(["x"]));                                              // [["x"]]
