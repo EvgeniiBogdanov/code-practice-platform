@@ -17,8 +17,6 @@ const PRODUCTS = [
 
 const SelectFilter = () => {
   // Напишите ваш код здесь
-
-  return <div>{/* Напишите вашу верстку здесь */}</div>;
 };
 
 export default SelectFilter;

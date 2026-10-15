@@ -18,9 +18,7 @@ const INITIAL_CART = [
 const ShoppingCart = () => {
   const [items, setItems] = useState(INITIAL_CART);
 
-  // Рассчитайте totalCount и totalPrice прямо в теле функции без useState/useEffect
-
-  // Реализуйте функцию изменения количества товара handleUpdateCount(id, delta)
+  // Напишите ваш код здесь
 
   return (
     <div>
