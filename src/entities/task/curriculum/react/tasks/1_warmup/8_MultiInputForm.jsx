@@ -7,12 +7,10 @@ import { useState } from "react";
 //    и создайте ЕДИНЫЙ универсальный обработчик, который обновляет поля.
 
 const MultiInputForm = () => {
-  // Плохой подход: 3 отдельных состояния для полей
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [city, setCity] = useState("");
 
-  // И 3 отдельные функции для каждого поля:
   const handleNameChange = (e) => setName(e.target.value);
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handleCityChange = (e) => setCity(e.target.value);
