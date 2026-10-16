@@ -102,12 +102,20 @@ const HeadlineWord = ({ children }: HeadlineWordProps): React.JSX.Element => (
 
 export const HeroSection = (): React.JSX.Element => {
   const openDialog = useCreateAccountDialog((state) => state.open);
+  // MotionConfig's reducedMotion="user" drops transforms but still fades opacity in:
+  // with reduced motion the hero renders in its final pose at once.
+  const entrance = useReducedMotion() ? false : "hidden";
 
   return (
     <section className={styles.hero} aria-labelledby="landing-hero-title">
       <div className={styles.inner}>
         <div className={styles.stage}>
-          <m.div className={styles.copy} variants={COPY_VARIANTS} initial="hidden" animate="shown">
+          <m.div
+            className={styles.copy}
+            variants={COPY_VARIANTS}
+            initial={entrance}
+            animate="shown"
+          >
             <m.a
               variants={RISE_VARIANTS}
               className={styles.eyebrow}
@@ -174,7 +182,7 @@ export const HeroSection = (): React.JSX.Element => {
           <m.div
             className={styles.artifacts}
             variants={ARTIFACTS_VARIANTS}
-            initial="hidden"
+            initial={entrance}
             animate="shown"
           >
             <FloatingSlot className={styles.slotTask} decorative period={8}>
