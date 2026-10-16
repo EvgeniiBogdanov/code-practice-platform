@@ -21,6 +21,7 @@ export interface TypeScriptDiagnosticRequest extends TypeScriptSourceInput {
     | "rename"
     | "codefix"
     | "definition"
+    | "highlights"
     | "tests";
   position?: number;
   /** Source of the type tests for the `tests` kind. */
@@ -40,6 +41,7 @@ export interface TypeScriptDiagnosticResponse {
   rename?: TypeScriptRenameEdit[];
   codefixes?: TypeScriptCodeFix[];
   definition?: TypeScriptLocation | null;
+  highlights?: TypeScriptTextSpan[];
   report?: TypeTestReport;
 }
 
@@ -79,6 +81,12 @@ export interface TypeScriptSignature {
   documentation: string;
   /** Character ranges of each parameter inside `signature`. */
   parameters: Array<{ start: number; end: number }>;
+}
+
+/** A range of the active file. */
+export interface TypeScriptTextSpan {
+  start: number;
+  end: number;
 }
 
 export interface TypeScriptLocation {

@@ -293,3 +293,26 @@ describe("editor language service parity with VS Code", () => {
     expect(location).toEqual({ filepath: "utils.ts", start: 13, end: 19 });
   });
 });
+
+describe("document highlights", () => {
+  const editor = createTypeScriptEditorService(libraries);
+
+  it("highlights every reference of the symbol under the caret, not other words", () => {
+    const code = "const count = 1;\nconst counter = count + 1;\nlog(count);";
+    const ranges = editor.highlights(
+      { code, filepath: "main.ts", files: [] },
+      code.indexOf("count")
+    );
+    expect(ranges.map(({ start, end }) => code.slice(start, end))).toEqual([
+      "count",
+      "count",
+      "count",
+    ]);
+    expect(ranges.some(({ start }) => start === code.indexOf("counter"))).toBe(false);
+  });
+
+  it("returns nothing away from a symbol", () => {
+    const code = "const a = 1;   ";
+    expect(editor.highlights({ code, filepath: "main.ts", files: [] }, code.length)).toEqual([]);
+  });
+});

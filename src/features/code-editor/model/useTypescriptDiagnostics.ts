@@ -12,6 +12,7 @@ import {
   type TypeScriptRenameEdit,
   type TypeScriptCodeFix,
   type TypeScriptLocation,
+  type TypeScriptTextSpan,
 } from "@/shared/lib/code-editor";
 import { useLatest } from "@/shared/lib/hooks";
 
@@ -24,6 +25,7 @@ export interface TypeScriptAnalysis {
   requestRename: (position: number) => Promise<TypeScriptRenameEdit[]>;
   requestCodeFixes: (diagnostic: EditorDiagnostic) => Promise<TypeScriptCodeFix[]>;
   requestDefinition: (position: number) => Promise<TypeScriptLocation | null>;
+  requestHighlights: (position: number) => Promise<TypeScriptTextSpan[]>;
 }
 
 const LOAD_FAILED: EditorDiagnostic = {
@@ -133,6 +135,12 @@ export const useTypeScriptDiagnostics = (
     [request]
   );
 
+  const requestHighlights = useCallback(
+    async (position: number): Promise<TypeScriptTextSpan[]> =>
+      (await request({ kind: "highlights", position }))?.highlights ?? [],
+    [request]
+  );
+
   return {
     problems: enabled ? (analysis?.problems ?? null) : null,
     isPending: enabled && isStale,
@@ -142,5 +150,6 @@ export const useTypeScriptDiagnostics = (
     requestRename,
     requestCodeFixes,
     requestDefinition,
+    requestHighlights,
   };
 };

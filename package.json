@@ -1,7 +1,7 @@
 {
   "name": "Code-Practice-Platform",
   "private": true,
-  "version": "2.4.31",
+  "version": "2.4.32",
   "license": "AGPL-3.0-only AND CC-BY-NC-SA-4.0",
   "type": "module",
   "scripts": {
@@ -45,6 +45,7 @@
     "emmet": "^2.4.11",
     "lucide-react": "^1.50.0",
     "marked": "^18.0.14",
+    "motion": "^14.3.0",
     "prettier": "^3.9.9",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",

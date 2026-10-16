@@ -1,0 +1,9 @@
+.code {
+  display: block;
+}
+
+/* An empty line holds only its newline: it still takes one row, like the textarea. */
+.line {
+  display: block;
+  min-height: 1lh;
+}

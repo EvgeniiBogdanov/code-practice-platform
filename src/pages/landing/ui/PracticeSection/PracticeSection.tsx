@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { clsx } from "clsx";
+import type { Variants } from "motion/react";
+import * as m from "motion/react-m";
 import { useInView } from "@/shared/lib/hooks";
 import { UiReveal, UiScaledCanvas } from "@/shared/ui";
 import { LANDING_SECTION } from "../../config/landingLinks";
@@ -39,6 +41,20 @@ const PRACTICE_STEPS: readonly PracticeStep[] = [
     Preview: ReviewStatsPreview,
   },
 ];
+
+/** The next preview rises into place while the previous one sinks back and fades. */
+const LAYER_VARIANTS: Variants = {
+  active: {
+    opacity: 1,
+    transform: "translateY(0px) scale(1)",
+    transition: { type: "spring", visualDuration: 0.7, bounce: 0 },
+  },
+  idle: {
+    opacity: 0,
+    transform: "translateY(16px) scale(0.97)",
+    transition: { type: "spring", visualDuration: 0.5, bounce: 0 },
+  },
+};
 
 export const PracticeSection = (): React.JSX.Element => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -121,13 +137,16 @@ export const PracticeSection = (): React.JSX.Element => {
             <div className={clsx(styles.visual, scene.depthFast)} aria-hidden="true">
               <UiScaledCanvas width={640} height={500}>
                 {PRACTICE_STEPS.map(({ id, Preview }, index) => (
-                  <div
+                  <m.div
                     key={id}
-                    className={clsx(styles.layer, index === activeIndex && styles.layerActive)}
+                    className={styles.layer}
+                    variants={LAYER_VARIANTS}
+                    initial={false}
+                    animate={index === activeIndex ? "active" : "idle"}
                     inert
                   >
                     <Preview isActive={isInView && index === activeIndex} />
-                  </div>
+                  </m.div>
                 ))}
               </UiScaledCanvas>
             </div>

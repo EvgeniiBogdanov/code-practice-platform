@@ -55,7 +55,6 @@
   transition:
     color var(--transition-standard),
     border-color var(--transition-standard);
-  animation: fadeUp 1s var(--ease-out-expo) 0.1s both;
 }
 
 .eyebrow:hover {
@@ -77,11 +76,21 @@
 }
 
 .pulseDot {
+  position: relative;
   width: var(--space-1-5);
   height: var(--space-1-5);
   border-radius: var(--radius-full);
   background: var(--color-success);
-  animation: pulse 2.4s ease-out infinite;
+}
+
+/* The ring scales on the compositor; animating box-shadow repainted the eyebrow every frame */
+.pulseDot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--accent-green-border);
+  animation: pulse 2.4s var(--ease-soft) infinite;
 }
 
 /* ---------- Headline ---------- */
@@ -101,25 +110,18 @@
   display: block;
 }
 
-.chunk {
+/* Each word rises out of its own mask. `clip` (not `hidden`) keeps the text baseline; the padding
+   gives descenders, the highlight and the caret room, the negative margin cancels it in layout */
+.mask {
   display: inline-block;
-  animation: chunkRise 1.2s var(--ease-out-expo) both;
+  overflow: clip;
+  padding: 0.12em 0.14em 0.18em;
+  margin: -0.12em -0.14em -0.18em;
 }
 
-.chunk1 {
-  animation-delay: 160ms;
-}
-
-.chunk2 {
-  animation-delay: 260ms;
-}
-
-.chunk3 {
-  animation-delay: 380ms;
-}
-
-.chunk4 {
-  animation-delay: 440ms;
+.word {
+  display: inline-block;
+  transform-origin: 0 100%;
 }
 
 .lead {
@@ -129,7 +131,6 @@
   line-height: var(--lh-body);
   color: var(--text-muted);
   text-wrap: pretty;
-  animation: fadeUp 1.1s var(--ease-out-expo) 0.75s both;
 }
 
 .actions {
@@ -138,7 +139,6 @@
   justify-content: center;
   gap: var(--space-3);
   margin-top: var(--space-6);
-  animation: fadeUp 1.1s var(--ease-out-expo) 0.9s both;
 }
 
 .note {
@@ -148,7 +148,6 @@
   margin: var(--space-3) 0 0;
   font-size: var(--fs-caption);
   color: var(--fg-muted);
-  animation: fadeUp 1.1s var(--ease-out-expo) 1s both;
 }
 
 /* ---------- Floating artifacts ---------- */
@@ -178,15 +177,14 @@
   transform: translateY(calc(var(--space-1) * -1)) rotate(calc(var(--tilt) * 0.25));
 }
 
-/* `--drift-y` is written by useFloatDrift; no CSS animation here, so the card is re-rasterised crisp */
-.float {
-  transform: translateY(var(--drift-y, 0px));
+/* Hover magnet, entrance and idle float are driven by Motion (see heroMotion.ts). Only the magnet
+   needs a standing layer: the WAAPI entrance and float promote their elements while they run */
+.magnet {
+  will-change: transform;
 }
 
 .pop {
   --shadow-lg: var(--artifact-shadow);
-
-  animation: cardPop 1.4s var(--ease-out-expo) 0.9s backwards;
 }
 
 .slotTask {
@@ -202,18 +200,10 @@
   --tilt: 6deg;
 }
 
-.slotReview .pop {
-  animation-delay: 1.05s;
-}
-
 .slotConsole {
   top: 24rem;
   left: 2.5rem;
   --tilt: -7deg;
-}
-
-.slotConsole .pop {
-  animation-delay: 1.2s;
 }
 
 .slotSections {
@@ -222,20 +212,12 @@
   --tilt: 7deg;
 }
 
-.slotSections .pop {
-  animation-delay: 1.35s;
-}
-
 .slotPalette {
   top: auto;
   bottom: var(--space-3);
   left: 50%;
   width: 29rem;
   margin-left: -14.5rem;
-}
-
-.slotPalette .pop {
-  animation-delay: 1.5s;
 }
 
 /* Below the wide desktop the previews line up in a grid under the copy */
@@ -285,59 +267,26 @@
 }
 
 /* ---------- Keyframes ---------- */
-/* Entrance keyframes start at opacity 0.01, not 0: Chrome skips elements painted fully
-   transparent as LCP candidates, so the hero would never be reported (Lighthouse: NO_LCP).
-   0.01 is visually identical to 0. */
-@keyframes chunkRise {
-  from {
-    opacity: 0.01;
-    transform: translate3d(0, 0.6em, 0) rotate(1.5deg);
-    filter: blur(var(--space-2-5));
-  }
-  to {
-    opacity: 1;
-    transform: none;
-    filter: none;
-  }
-}
-
-@keyframes fadeUp {
-  from {
-    opacity: 0.01;
-    transform: translate3d(0, var(--space-5), 0);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes cardPop {
-  from {
-    opacity: 0;
-    transform: translate3d(0, var(--space-14), 0) scale(0.92);
-    filter: blur(var(--space-2));
-  }
-  to {
-    opacity: 1;
-    transform: none;
-    filter: none;
-  }
-}
-
 @keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 var(--accent-green-border);
+  from {
+    transform: scale(1);
+    opacity: 1;
   }
   70%,
-  100% {
-    box-shadow: 0 0 0 var(--space-1-5) transparent;
+  to {
+    transform: scale(3);
+    opacity: 0;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .tilt {
     transition: none;
+  }
+
+  .pulseDot::after {
+    animation: none;
+    opacity: 0;
   }
 }
 

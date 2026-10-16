@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
-const DURATION_MS = 650;
+/** The glide ends on `scrollend`; this backstop covers browsers without it (older Safari). */
+const GLIDE_FALLBACK_MS = 1200;
 /** A wheel pause longer than this ends a gesture, so the next event may start a new step. */
 const QUIET_GAP_MS = 90;
 /** A delta this much larger than the previous one marks a fresh flick on top of inertia. */
@@ -17,9 +18,6 @@ const ENABLED_QUERY =
   "(min-width: 768px) and (min-height: 600px) and (prefers-reduced-motion: no-preference)";
 const LINE_HEIGHT_PX = 16;
 
-/** Starts at full speed (no sluggish ease-in) and settles softly. */
-const easeOutQuart = (t: number): number => 1 - Math.pow(1 - t, 4);
-
 interface Scene {
   top: number;
   height: number;
@@ -32,9 +30,10 @@ const readScenes = (): Scene[] =>
   });
 
 /**
- * One wheel gesture = one scene. A light scroll glides to the neighbouring scene with an eased
- * tween, a hard fling or trackpad inertia cannot skip further because the gesture is locked until
- * the wheel goes quiet. Touch and keyboard keep the native CSS scroll snapping
+ * One wheel gesture = one scene. A light scroll glides to the neighbouring scene, a hard fling or
+ * trackpad inertia cannot skip further because the gesture is locked until the wheel goes quiet.
+ * The glide is the browser's own smooth scroll: it runs on the compositor together with the
+ * scroll-driven parallax, so main-thread work (React previews, reveals) cannot make it stutter. Touch and keyboard keep the native CSS scroll snapping
  * (`mandatory` + `scroll-snap-stop: always`). Scenes much taller than the viewport scroll natively.
  */
 export const useSceneScroll = (): void => {
@@ -49,27 +48,22 @@ export const useSceneScroll = (): void => {
     let lastAbsDelta = 0;
     /** The current gesture scrolls inside a tall scene and is left to the browser. */
     let isNativeGesture = false;
-    let frame = 0;
+    let fallbackTimer = 0;
+
+    const finishGlide = (): void => {
+      window.clearTimeout(fallbackTimer);
+      if (!isAnimating) return;
+      isAnimating = false;
+      root.removeAttribute(SCROLLING_ATTRIBUTE);
+    };
 
     const animateTo = (target: number): void => {
-      window.cancelAnimationFrame(frame);
-      const from = window.scrollY;
-      animationDirection = target > from ? 1 : -1;
-      const startedAt = performance.now();
+      animationDirection = target > window.scrollY ? 1 : -1;
       isAnimating = true;
       root.setAttribute(SCROLLING_ATTRIBUTE, "");
-
-      const tick = (now: number): void => {
-        const progress = Math.min(1, (now - startedAt) / DURATION_MS);
-        window.scrollTo(0, from + (target - from) * easeOutQuart(progress));
-        if (progress < 1) {
-          frame = window.requestAnimationFrame(tick);
-          return;
-        }
-        isAnimating = false;
-        root.removeAttribute(SCROLLING_ATTRIBUTE);
-      };
-      frame = window.requestAnimationFrame(tick);
+      window.scrollTo({ top: target, behavior: "smooth" });
+      window.clearTimeout(fallbackTimer);
+      fallbackTimer = window.setTimeout(finishGlide, GLIDE_FALLBACK_MS);
     };
 
     /** Where one step in `direction` leads, or `null` to let the browser scroll inside a tall scene. */
@@ -138,9 +132,11 @@ export const useSceneScroll = (): void => {
     };
 
     window.addEventListener("wheel", handleWheel, { passive: false });
+    window.addEventListener("scrollend", finishGlide);
     return () => {
       window.removeEventListener("wheel", handleWheel);
-      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scrollend", finishGlide);
+      window.clearTimeout(fallbackTimer);
       root.removeAttribute(SCROLLING_ATTRIBUTE);
     };
   }, []);

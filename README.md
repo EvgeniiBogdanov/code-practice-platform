@@ -15,7 +15,7 @@
 
 [![CI](https://img.shields.io/github/actions/workflow/status/EvgeniiBogdanov/code-practice-platform/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/EvgeniiBogdanov/code-practice-platform/actions/workflows/ci.yml)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/EvgeniiBogdanov/code-practice-platform/badge?style=flat-square)](https://scorecard.dev/viewer/?uri=github.com/EvgeniiBogdanov/code-practice-platform)
-[![Version](https://img.shields.io/badge/version-2.4.31-black?style=flat-square)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.4.32-black?style=flat-square)](CHANGELOG.md)
 [![License: AGPL-3.0](https://img.shields.io/badge/code-AGPL--3.0-black?style=flat-square)](LICENSE)
 [![Content: CC BY-NC-SA 4.0](https://img.shields.io/badge/content-CC_BY--NC--SA_4.0-black?style=flat-square)](LICENSE-CONTENT.md)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=white)](https://react.dev)

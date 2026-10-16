@@ -15,13 +15,13 @@ import {
 } from "lucide-react";
 import { clsx } from "clsx";
 import { Tooltip, CodeButton, LintIcon } from "@/shared/ui";
-import { TaskFile } from "@/shared/lib/code-editor";
 import { useCopy } from "@/shared/lib/hooks";
 import { getFileIconKind, type FileIconKind } from "../../lib/fileIcon";
 import styles from "./EditorToolbar.module.css";
 
 export interface EditorToolbarProps {
-  files?: TaskFile[];
+  /** Names of the task files; tabs appear when there are several. */
+  fileNames?: ReadonlyArray<string>;
   activeFileIdx?: number;
   onFileSelect?: (idx: number) => void;
   filepath?: string;
@@ -41,7 +41,8 @@ export interface EditorToolbarProps {
   onIncreaseFontSize?: () => void;
   onDecreaseFontSize?: () => void;
   fontSize?: number;
-  codeText?: string;
+  /** Read when copying, so typing does not re-render the toolbar. */
+  getCodeText?: () => string;
   isFullscreen?: boolean;
   onToggleFullscreen?: () => void;
   onPreloadFullscreen?: () => void;
@@ -63,7 +64,7 @@ const FILE_ICON_CLASSES: Record<FileIconKind, string> = {
 
 export const EditorToolbar = memo(
   ({
-    files = [],
+    fileNames = [],
     activeFileIdx = 0,
     onFileSelect,
     filepath = "main.js",
@@ -82,7 +83,7 @@ export const EditorToolbar = memo(
     onIncreaseFontSize,
     onDecreaseFontSize,
     fontSize = 13,
-    codeText = "",
+    getCodeText,
     isFullscreen,
     onToggleFullscreen,
     onPreloadFullscreen,
@@ -90,15 +91,15 @@ export const EditorToolbar = memo(
     readOnly = false,
     className,
   }: EditorToolbarProps) => {
-    const { copied, copy } = useCopy(codeText);
+    const { copied, copy } = useCopy();
 
     return (
       <div className={clsx(styles.toolbar, className)}>
         <div className={styles.left}>
-          {files && files.length > 1 ? (
-            files.map((file, idx) => {
+          {fileNames.length > 1 ? (
+            fileNames.map((fileName, idx) => {
               const isActive = activeFileIdx === idx;
-              const name = file.name || `file-${idx + 1}`;
+              const name = fileName || `file-${idx + 1}`;
               return (
                 <button
                   key={idx}
@@ -207,7 +208,7 @@ export const EditorToolbar = memo(
               icon={
                 copied ? <Check size={14} className={styles.copiedCheck} /> : <Copy size={14} />
               }
-              onClick={() => copy()}
+              onClick={() => copy(getCodeText?.() ?? "")}
               aria-label="Скопировать код"
             />
           </Tooltip>

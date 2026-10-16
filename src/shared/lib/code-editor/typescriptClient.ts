@@ -12,6 +12,7 @@ export type {
   TypeScriptCodeFix,
   TypeScriptTextChange,
   TypeScriptLocation,
+  TypeScriptTextSpan,
   EditorDiagnostic,
   TypeTestCase,
   TypeTestCompileResult,

@@ -7,6 +7,7 @@ import type {
   TypeScriptHover,
   TypeScriptSignature,
   TypeScriptLocation,
+  TypeScriptTextSpan,
   TypeScriptRenameEdit,
   TypeScriptCodeFix,
   TypeTestReport,
@@ -43,6 +44,7 @@ export const createTypeScriptEditorService = (
     errorCode: number
   ) => TypeScriptCodeFix[];
   definition: (input: TypeScriptSourceInput, position: number) => TypeScriptLocation | null;
+  highlights: (input: TypeScriptSourceInput, position: number) => TypeScriptTextSpan[];
   typeTests: (input: TypeTestsInput) => TypeTestReport;
 } => {
   const parseOptions = (content: string): ts.CompilerOptions => {
@@ -335,6 +337,19 @@ export const createTypeScriptEditorService = (
       : null;
   };
 
+  /** Every reference of the symbol at the position in the active file, as VS Code highlights them. */
+  const highlights = (input: TypeScriptSourceInput, position: number): TypeScriptTextSpan[] => {
+    const activePath = update(input);
+    return (service.getDocumentHighlights(activePath, position, [activePath]) ?? [])
+      .filter((document) => document.fileName === activePath)
+      .flatMap((document) =>
+        document.highlightSpans.map(({ textSpan }) => ({
+          start: textSpan.start,
+          end: textSpan.start + textSpan.length,
+        }))
+      );
+  };
+
   const analyzeDocument = (text: string): ReturnType<TypeTestsHostAnalyze> => {
     const path = update({ code: text, filepath: TEST_DOCUMENT_PATH, files: [] });
     const program = service.getProgram();
@@ -363,6 +378,7 @@ export const createTypeScriptEditorService = (
     rename,
     codefix,
     definition,
+    highlights,
     typeTests,
   };
 };

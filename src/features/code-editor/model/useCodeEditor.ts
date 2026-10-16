@@ -6,7 +6,9 @@ import {
   getLanguageId,
   formatCode,
   findMatchingBracketPair,
+  splitHighlightedLines,
 } from "@/shared/lib/code-editor";
+import { useLatest } from "@/shared/lib/hooks";
 import { useUIStore } from "@/entities/ui-state";
 import { useCodeHistory, type HistoryEntry } from "./useCodeHistory";
 import { useIntelliSense, type AppliedCompletion } from "./useIntelliSense";
@@ -15,7 +17,7 @@ import { useEditorKeyHandlers } from "./useEditorKeyHandlers";
 import { useMultiCursor } from "./useMultiCursor";
 import { useFindReplace } from "./useFindReplace";
 import { ApplyEdit, CodeEditorProps, CursorPosition } from "./types";
-import { TAB_SIZE, getLanguageInfo } from "../lib/editorUtils";
+import { TAB_SIZE } from "../lib/editorUtils";
 import { matchesKey } from "../lib/editorKeyHelpers";
 import { applyTextChanges } from "../lib/textChanges";
 import { useTypeScriptDiagnostics } from "./useTypescriptDiagnostics";
@@ -24,7 +26,9 @@ import { useSignatureHelp } from "./useSignatureHelp";
 import { useSnippetSession } from "./useSnippetSession";
 import { useDefinitionNavigation } from "./useDefinitionNavigation";
 import { useWrappedLineHeights } from "./useWrappedLineHeights";
+import { useOccurrences } from "./useOccurrences";
 import { getCaretCoordinates } from "../lib/caretCoordinates";
+import { linkLineLayer } from "../lib/lineLayer";
 
 const MODIFIER_KEYS = new Set(["Shift", "Control", "Alt", "Meta"]);
 
@@ -61,6 +65,8 @@ export const useCodeEditor = ({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const highlightRef = useRef<HTMLPreElement>(null);
+  /** The `code` element of the highlight layer: one child per line. */
+  const linesRef = useRef<HTMLElement>(null);
   const gutterRef = useRef<HTMLDivElement>(null);
   const pendingSelectionRef = useRef<PendingSelection | null>(null);
   const firstQuickFixRef = useRef<HTMLButtonElement>(null);
@@ -75,8 +81,8 @@ export const useCodeEditor = ({
     }
   }, [onToggleFullscreen]);
   const [cursorPos, setCursorPos] = useState<CursorPosition>({ line: 1, col: 1, offset: 0 });
-  const [saveStatus, setSaveStatus] = useState<"saved" | "saving">("saved");
-  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Read by callbacks that must stay stable while the user types (toolbar, copy, undo).
+  const codeRef = useLatest(code);
 
   const handleToggleLinter = useCallback(
     (checked?: boolean) => {
@@ -146,12 +152,6 @@ export const useCodeEditor = ({
     );
   }, []);
 
-  const markSaving = useCallback((): void => {
-    setSaveStatus("saving");
-    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
-    saveTimerRef.current = setTimeout(() => setSaveStatus("saved"), 450);
-  }, []);
-
   const flushSelection = useCallback((): void => {
     const selection = pendingSelectionRef.current;
     const textarea = textareaRef.current;
@@ -186,9 +186,8 @@ export const useCodeEditor = ({
       }
       onChange(nextCode);
       history.pushHistory(nextCode, selectionStart);
-      markSaving();
     },
-    [code, onChange, history, markSaving, selectAfterRender, flushSelection]
+    [code, onChange, history, selectAfterRender, flushSelection]
   );
 
   const find = useFindReplace({
@@ -198,17 +197,34 @@ export const useCodeEditor = ({
     applyEdit,
     onSelect: updateCursorCoords,
   });
+  const occurrences = useOccurrences({
+    code,
+    cursorOffset: cursorPos.offset,
+    languageId,
+    textareaRef,
+    enabled: find.mode === null && !multiCursor.hasMultipleCursors,
+    requestHighlights: supportsLanguageService ? typeScriptAnalysis.requestHighlights : undefined,
+  });
 
   const restoreEntry = useCallback(
     (entry: HistoryEntry | null): void => {
       if (!entry || readOnly) return;
       multiCursor.clearSelections();
       selectAfterRender(entry.cursor);
-      if (entry.code === code) flushSelection();
+      if (entry.code === codeRef.current) flushSelection();
       else onChange(entry.code);
     },
-    [code, onChange, readOnly, multiCursor, selectAfterRender, flushSelection]
+    [codeRef, onChange, readOnly, multiCursor, selectAfterRender, flushSelection]
   );
+  const undo = useCallback(
+    () => restoreEntry(history.undo(codeRef.current)),
+    [restoreEntry, history, codeRef]
+  );
+  const redo = useCallback(
+    () => restoreEntry(history.redo(codeRef.current)),
+    [restoreEntry, history, codeRef]
+  );
+  const getCode = useCallback(() => codeRef.current, [codeRef]);
 
   // React's onBeforeInput is a keypress polyfill: only the native event reports
   // `historyUndo`/`historyRedo` (Edit menu, touch gestures), which must use our stack.
@@ -333,6 +349,7 @@ export const useCodeEditor = ({
     },
     [diagnostics.problems, revealRange]
   );
+  const goToNextProblem = useCallback(() => goToProblem(1), [goToProblem]);
 
   // Editor commands require focus inside the editor, as in VS Code.
   const handleEditorKeyDown = useCallback(
@@ -406,13 +423,21 @@ export const useCodeEditor = ({
     return () => window.removeEventListener("keydown", handleGlobalKey);
   }, [effectiveFullscreen, toggleFullscreen]);
 
-  const highlightedCode = useMemo(
+  // The trailing newline keeps tokens at the end of the file terminated; its empty last
+  // line is not a line of the document.
+  const highlightedLines = useMemo(
     () =>
-      highlightCode(code + "\n", filepath, {
-        problems: diagnostics.problems,
-      }),
+      splitHighlightedLines(
+        highlightCode(code + "\n", filepath, { problems: diagnostics.problems })
+      ).slice(0, -1),
     [code, filepath, diagnostics.problems]
   );
+  useLayoutEffect(() => {
+    const textarea = textareaRef.current;
+    const lines = linesRef.current;
+    if (!textarea || !lines) return;
+    return linkLineLayer(textarea, lines);
+  }, []);
   const lineCount = useMemo(() => code.split("\n").length, [code]);
   const lineHeights = useWrappedLineHeights(textareaRef, wordWrap, `${code}:${fontSize}`);
   const bracketPair = useMemo(
@@ -453,7 +478,6 @@ export const useCodeEditor = ({
 
   useEffect(() => {
     return () => {
-      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
       if (isScrollingTimeoutRef.current) clearTimeout(isScrollingTimeoutRef.current);
     };
   }, []);
@@ -492,7 +516,6 @@ export const useCodeEditor = ({
       input instanceof InputEvent ? { inputType: input.inputType, data: input.data } : undefined
     );
     updateCursorCoords();
-    markSaving();
 
     if (textareaRef.current) {
       if (isTyping) {
@@ -542,8 +565,6 @@ export const useCodeEditor = ({
     applyEdit(fixed, mapOffset(textareaRef.current?.selectionStart ?? 0));
   };
 
-  const langInfo = useMemo(() => getLanguageInfo(filepath), [filepath]);
-
   return {
     fontSize,
     increaseFontSize,
@@ -551,6 +572,7 @@ export const useCodeEditor = ({
     wrapperRef,
     textareaRef,
     highlightRef,
+    linesRef,
     gutterRef,
     wordWrap,
     setWordWrap,
@@ -559,25 +581,25 @@ export const useCodeEditor = ({
     effectiveFullscreen,
     toggleFullscreen,
     cursorPos,
-    saveStatus,
     history,
     intelliSense,
     hoverSignatures,
     signatureHelp,
     multiCursor,
     find,
+    occurrences,
     diagnostics,
     firstQuickFixRef,
     applyQuickFix,
     goToProblem,
+    goToNextProblem,
     requestRename: typeScriptAnalysis.requestRename,
     isAnalysisPending: typeScriptAnalysis.isPending,
-    highlightedCode,
+    highlightedLines,
     lineCount,
     lineHeights,
     bracketPair,
     secondaryCarets,
-    langInfo,
     isScrolling,
     isLinterEnabled,
     handleToggleLinter,
@@ -586,6 +608,9 @@ export const useCodeEditor = ({
     applyEdit,
     applyCompletion,
     restoreEntry,
+    undo,
+    redo,
+    getCode,
     selectAfterRender,
     updateCursorCoords,
     handleScroll,

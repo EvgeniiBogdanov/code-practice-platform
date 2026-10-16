@@ -17,5 +17,18 @@ pre-commit:
 
 pre-push:
   jobs:
+    # Branch name: <type>/<DD.MM.YY>[-N]-<description>, see docs/git-workflow.md
+    - name: branch-name
+      run: |
+        branch=$(git branch --show-current)
+        case "$branch" in ""|main|dependabot/*|release/*) exit 0 ;; esac
+        pattern='^(feat|fix|hotfix|content|refactor|perf|docs|test|style|build|ci|chore)/([a-z0-9]+/)?(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.[0-9][0-9](-[2-9]|-[1-9][0-9]+)?-[a-z0-9]+(-[a-z0-9]+)*$'
+        if ! printf '%s\n' "$branch" | grep -Eq "$pattern"; then
+          echo "Branch name '$branch' does not match <type>/<DD.MM.YY>[-N]-<description>"
+          echo "Example: fix/15.10.26-editor-undo-redo (see docs/git-workflow.md)"
+          echo "Rename: git branch -m <new-name>   Skip once: LEFTHOOK_EXCLUDE=branch-name git push"
+          exit 1
+        fi
+
     - name: typecheck
       run: npm run typecheck

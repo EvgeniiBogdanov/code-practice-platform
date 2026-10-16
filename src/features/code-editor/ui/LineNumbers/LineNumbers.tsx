@@ -1,4 +1,4 @@
-import React, { forwardRef, memo } from "react";
+import React, { forwardRef, memo, useCallback, useMemo } from "react";
 import { clsx } from "clsx";
 import { Tooltip } from "@/shared/ui";
 import styles from "./LineNumbers.module.css";
@@ -90,6 +90,31 @@ export const LineNumbers = forwardRef<HTMLDivElement, LineNumbersProps>(
     const digits = String(count).length;
     const dynamicGutterWidth = Math.max(36, 20 + digits * 9);
 
+    const renderRow = useCallback(
+      (index: number, isActive: boolean): React.JSX.Element => (
+        <LineNumberRow
+          key={index + 1}
+          num={index + 1}
+          isActive={isActive}
+          isErr={Boolean(errorLines?.has(index + 1))}
+          isWarn={Boolean(warningLines?.has(index + 1))}
+          height={lineHeights?.[index]}
+          wrapped={Boolean(lineHeights)}
+          messages={lineMessages?.get(index + 1)}
+        />
+      ),
+      [errorLines, warningLines, lineHeights, lineMessages]
+    );
+    // Rows are built once per content change; a caret move swaps in only the active row,
+    // so React compares element references instead of re-creating thousands of rows.
+    const rows = useMemo(
+      () => Array.from({ length: count }, (_, index) => renderRow(index, false)),
+      [count, renderRow]
+    );
+    const activeIndex = activeLine - 1;
+    const children = activeIndex >= 0 && activeIndex < count ? rows.slice() : rows;
+    if (children !== rows) children[activeIndex] = renderRow(activeIndex, true);
+
     return (
       <div
         ref={ref}
@@ -103,21 +128,7 @@ export const LineNumbers = forwardRef<HTMLDivElement, LineNumbersProps>(
           } as React.CSSProperties
         }
       >
-        {Array.from({ length: count }, (_, index) => {
-          const num = index + 1;
-          return (
-            <LineNumberRow
-              key={num}
-              num={num}
-              isActive={activeLine === num}
-              isErr={Boolean(errorLines?.has(num))}
-              isWarn={Boolean(warningLines?.has(num))}
-              height={lineHeights?.[index]}
-              wrapped={Boolean(lineHeights)}
-              messages={lineMessages?.get(num)}
-            />
-          );
-        })}
+        {children}
       </div>
     );
   }
