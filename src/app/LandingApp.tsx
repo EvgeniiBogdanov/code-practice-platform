@@ -1,4 +1,5 @@
 import React, { useEffect, useLayoutEffect } from "react";
+import { LazyMotion, MotionConfig, domAnimation } from "motion/react";
 import { LandingPage } from "@/pages/landing";
 import { subscribeToLocalAccount } from "@/shared/auth";
 import { ErrorBoundary } from "@/shared/ui";
@@ -35,7 +36,12 @@ export const LandingApp = ({ onEnterWorkspace }: LandingAppProps): React.JSX.Ele
 
   return (
     <ErrorBoundary>
-      <LandingPage onAccountCreated={onEnterWorkspace} />
+      {/* `strict` keeps the landing on the lightweight `m` components; transforms honour reduced motion. */}
+      <MotionConfig reducedMotion="user">
+        <LazyMotion features={domAnimation} strict>
+          <LandingPage onAccountCreated={onEnterWorkspace} />
+        </LazyMotion>
+      </MotionConfig>
     </ErrorBoundary>
   );
 };

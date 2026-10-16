@@ -256,6 +256,7 @@
   --code-inline-text: #ff7b72;
   --code-inline-bg: rgba(255, 255, 255, 0.08);
   --editor-selection-bg: rgba(88, 166, 255, 0.28);
+  --editor-occurrence-bg: rgba(160, 160, 160, 0.22);
   --editor-caret: var(--accent-blue);
 
   --gauge-seg-1: var(--accent-gray);
@@ -556,6 +557,7 @@
   --code-inline-text: var(--accent-pink);
   --code-inline-bg: #f5f0ed;
   --editor-selection-bg: rgba(63, 95, 149, 0.16);
+  --editor-occurrence-bg: rgba(87, 87, 87, 0.14);
   --editor-caret: var(--accent-blue);
 
   --gauge-seg-1: var(--accent-gray);
@@ -644,10 +646,7 @@
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-soft: cubic-bezier(0.22, 0.7, 0.2, 1);
-  --duration-reveal: 900ms;
-  --reveal-step: 90ms;
   --reveal-distance: 32px;
-  --reveal-blur: 6px;
 
   --landing-container: 1200px;
   --landing-container-wide: 1440px;

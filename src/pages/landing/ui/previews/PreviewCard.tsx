@@ -3,6 +3,7 @@ import { clsx } from "clsx";
 import styles from "./PreviewCard.module.css";
 
 export interface PreviewCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  ref?: React.Ref<HTMLDivElement>;
   children?: React.ReactNode;
 }
 

@@ -32,9 +32,17 @@ CI запускает всё это и Lighthouse в каждом PR. Merge во
 - Стили — только CSS Modules и дизайн-токены (`var(--...)`), классы склеиваются через `clsx`.
 - Новый файл длиннее 300 строк не пройдёт линтер — разбейте его.
 
+## Git
+
+Как работать с ветками, коммитами, синхронизацией с `main` и исправлять ошибки — в [docs/git-workflow.md](docs/git-workflow.md). Коротко:
+
+- ветка: `<тип>/<ДД.ММ.ГГ>-<описание>`, например `fix/15.10.26-editor-undo-redo`; при повторе за день добавляется счётчик: `fix/15.10.26-2-editor-undo-redo`;
+- коммит: `тип(область): что сделано` по [Conventional Commits](https://www.conventionalcommits.org/ru/v1.0.0/);
+- `git push` перед отправкой проверяет имя ветки хуком `branch-name` из [lefthook.yml](lefthook.yml).
+
 ## Pull request
 
-1. Создайте ветку от `main` и сделайте изменения.
+1. Создайте ветку от `main` с именем по правилам из раздела [Git](#git) и сделайте изменения.
 2. Заголовок PR — в формате [Conventional Commits](https://www.conventionalcommits.org/ru/v1.0.0/) (`feat: ...`, `fix(editor): ...`): при squash-merge он становится сообщением коммита.
 3. Если изменение заметно пользователю — поднимите версию в `package.json`, добавьте запись в [`CHANGELOG.md`](CHANGELOG.md) и обновите бейдж версии в README. CI проверит, что они совпадают.
 4. Заполните [шаблон PR](.github/PULL_REQUEST_TEMPLATE.md).

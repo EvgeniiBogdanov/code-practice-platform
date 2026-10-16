@@ -1,3 +1,5 @@
+import { getLayerCoordinates, getLayerLineHeights, getLineOffset } from "./lineLayer";
+
 export interface CaretCoordinates {
   top: number;
   left: number;
@@ -66,6 +68,10 @@ export const getCaretCoordinates = (
   textarea: HTMLTextAreaElement,
   cursorPos: number
 ): CaretCoordinates => {
+  const measured =
+    typeof document !== "undefined" ? getLayerCoordinates(textarea, cursorPos) : null;
+  if (measured) return measured;
+
   const computed = typeof window !== "undefined" ? window.getComputedStyle(textarea) : null;
 
   if (typeof document === "undefined" || !computed) {
@@ -293,14 +299,20 @@ export const getOffsetFromPoint = (
   if (!point || !layer.contains(point.node) || !isPointInsideCharacter(point, clientX, clientY)) {
     return null;
   }
-  return getTextOffset(layer, point.node, point.offset);
+  return (
+    getLineOffset(textarea, point.node, point.offset) ??
+    getTextOffset(layer, point.node, point.offset)
+  );
 };
 
 /**
- * Heights of each logical line when the textarea wraps, measured on a mirror
- * with the same width and typography, so the gutter can follow wrapped rows.
+ * Heights of each logical line when the textarea wraps, so the gutter can follow wrapped
+ * rows: read from the rendered lines when linked, otherwise from a mirror with the same
+ * width and typography.
  */
 export const measureLineHeights = (textarea: HTMLTextAreaElement): number[] => {
+  const rendered = getLayerLineHeights(textarea);
+  if (rendered) return rendered;
   const computed = window.getComputedStyle(textarea);
   const mirror = document.createElement("div");
   mirror.setAttribute("aria-hidden", "true");

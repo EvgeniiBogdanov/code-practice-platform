@@ -3,3 +3,4 @@ export * from "./jsHighlighter";
 export * from "./cssHighlighter";
 export * from "./htmlHighlighter";
 export * from "./codeHighlighter";
+export * from "./splitHighlightedLines";

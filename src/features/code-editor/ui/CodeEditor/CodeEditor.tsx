@@ -1,8 +1,7 @@
-import React, { useId } from "react";
-import { Check, CheckCircle2, AlertCircle, Code2 } from "lucide-react";
+import React, { useId, useMemo } from "react";
 import { clsx } from "clsx";
 import { Tooltip } from "@/shared/ui";
-import { canFormat, type LanguageId } from "@/shared/lib/code-editor";
+import { canFormat } from "@/shared/lib/code-editor";
 import { useCodeEditor } from "../../model/useCodeEditor";
 import { CodeEditorProps } from "../../model/types";
 import { LineNumbers } from "../LineNumbers";
@@ -15,29 +14,12 @@ import { EditorDecorations } from "../EditorDecorations";
 import { FindReplaceBar } from "../FindReplaceBar";
 import { TextMarkLayer } from "../TextMarkLayer";
 import { SignatureHelpCard } from "../SignatureHelpCard";
+import { HighlightedCode } from "../HighlightedCode";
+import { EditorStatusBar } from "../EditorStatusBar";
 import styles from "./CodeEditor.module.css";
 import { applyRenameEdits, getRenamedSelection } from "../../lib/renameSymbol";
-import { TAB_SIZE, pluralize, type PluralForms } from "../../lib/editorUtils";
 
 export type { CodeEditorProps };
-
-const LANGUAGE_ICON_CLASSES: Record<LanguageId, string> = {
-  javascript: styles.langIconJs,
-  javascriptreact: styles.langIconJsx,
-  typescript: styles.langIconTs,
-  typescriptreact: styles.langIconTsx,
-  css: styles.langIconCss,
-  scss: styles.langIconCss,
-  less: styles.langIconCss,
-  html: styles.langIconHtml,
-  json: styles.langIconJson,
-  sql: styles.langIconSql,
-  shellscript: styles.langIconOther,
-  markdown: styles.langIconOther,
-  plaintext: styles.langIconOther,
-};
-const ERROR_FORMS: PluralForms = { one: "ошибка", few: "ошибки", many: "ошибок" };
-const LINE_FORMS: PluralForms = { one: "строка", few: "строки", many: "строк" };
 
 export const CodeEditor = ({
   code,
@@ -68,6 +50,7 @@ export const CodeEditor = ({
     wrapperRef,
     textareaRef,
     highlightRef,
+    linesRef,
     gutterRef,
     wordWrap,
     toggleWordWrap,
@@ -75,25 +58,24 @@ export const CodeEditor = ({
     effectiveFullscreen,
     toggleFullscreen,
     cursorPos,
-    saveStatus,
     history,
     intelliSense,
     hoverSignatures,
     signatureHelp,
     multiCursor,
     find,
+    occurrences,
     diagnostics,
     firstQuickFixRef,
     applyQuickFix,
-    goToProblem,
+    goToNextProblem,
     requestRename,
     isAnalysisPending,
-    highlightedCode,
+    highlightedLines,
     lineCount,
     lineHeights,
     bracketPair,
     secondaryCarets,
-    langInfo,
     isScrolling,
     isLinterEnabled,
     handleToggleLinter,
@@ -101,7 +83,9 @@ export const CodeEditor = ({
     formatNotice,
     applyEdit,
     applyCompletion,
-    restoreEntry,
+    undo,
+    redo,
+    getCode,
     selectAfterRender,
     updateCursorCoords,
     handleScroll,
@@ -124,6 +108,10 @@ export const CodeEditor = ({
     onToggleFullscreen,
     onFileSelect,
   });
+
+  // Tabs only show names: typing in a file must not hand the toolbar a new array.
+  const fileNamesKey = files.map((file) => file.name ?? "").join("\n");
+  const fileNames = useMemo(() => (fileNamesKey ? fileNamesKey.split("\n") : []), [fileNamesKey]);
 
   const handleRename = async (): Promise<void> => {
     const cursor = textareaRef.current?.selectionStart;
@@ -191,14 +179,14 @@ export const CodeEditor = ({
     >
       <Tooltip.Provider delayDuration={600} skipDelayDuration={300}>
         <EditorToolbar
-          files={files}
+          fileNames={fileNames}
           activeFileIdx={activeFileIdx}
           onFileSelect={onFileSelect}
           filepath={filepath}
           canUndo={history.canUndo}
           canRedo={history.canRedo}
-          onUndo={() => restoreEntry(history.undo(code))}
-          onRedo={() => restoreEntry(history.redo(code))}
+          onUndo={undo}
+          onRedo={redo}
           isLinterEnabled={isLinterEnabled}
           onToggleLinter={handleToggleLinter}
           onFormat={handleFormat}
@@ -210,7 +198,7 @@ export const CodeEditor = ({
           onIncreaseFontSize={increaseFontSize}
           onDecreaseFontSize={decreaseFontSize}
           fontSize={fontSize}
-          codeText={code}
+          getCodeText={getCode}
           isFullscreen={effectiveFullscreen}
           onToggleFullscreen={toggleFullscreen}
           onPreloadFullscreen={onPreloadFullscreen}
@@ -251,8 +239,9 @@ export const CodeEditor = ({
                 marks={find.highlights}
                 active={find.activeMatch}
               />
+              <TextMarkLayer code={code} variant="occurrence" marks={occurrences} />
               <TextMarkLayer code={code} variant="selection" marks={multiCursor.selections} />
-              <code dangerouslySetInnerHTML={{ __html: highlightedCode }} />
+              <HighlightedCode lines={highlightedLines} codeRef={linesRef} />
               <EditorDecorations
                 carets={secondaryCarets}
                 brackets={bracketPair}
@@ -346,115 +335,18 @@ export const CodeEditor = ({
 
         {bottomConsole && <div className={styles.bottomConsoleWrapper}>{bottomConsole}</div>}
 
-        <div className={styles.statusBar}>
-          <div className={styles.statusLeft}>
-            {formatNotice && (
-              <>
-                <span className={clsx(styles.statusItem, styles.diagErr)} role="status">
-                  {formatNotice}
-                </span>
-                <span className={styles.statusSep}>|</span>
-              </>
-            )}
-            {saveStatus && (
-              <Tooltip
-                content={
-                  saveStatus === "saving"
-                    ? "Сохранение вашего прогресса..."
-                    : "Решение автоматически сохранено в браузере"
-                }
-                side="top"
-              >
-                <span
-                  className={clsx(
-                    styles.statusItem,
-                    styles.saveIndicator,
-                    saveStatus === "saving" && styles.saveIndicatorSaving
-                  )}
-                >
-                  {saveStatus === "saving" ? (
-                    <>
-                      <span className={styles.savePulseDot} />
-                      <span>Сохранение...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Check size={11} />
-                      <span>Сохранено</span>
-                    </>
-                  )}
-                </span>
-              </Tooltip>
-            )}
-
-            <span className={styles.statusSep}>|</span>
-
-            {/* Announced politely: screen readers hear the error count after each check. */}
-            <span className={styles.liveRegion} role="status">
-              {diagnostics.errorCount > 0 ? (
-                <Tooltip
-                  content={`${diagnostics.activeDiagnostic?.message ?? ""}\nF8 — следующая проблема`}
-                  contentClassName={styles.statusTooltip}
-                  side="top"
-                >
-                  <button
-                    type="button"
-                    className={clsx(styles.statusItem, styles.statusButton, styles.diagErr)}
-                    onClick={() => goToProblem(1)}
-                  >
-                    <AlertCircle size={11} />
-                    <span>{pluralize(diagnostics.errorCount, ERROR_FORMS)}</span>
-                  </button>
-                </Tooltip>
-              ) : (
-                <Tooltip content="Синтаксис и типы корректны" side="top">
-                  <span className={clsx(styles.statusItem, styles.diagOk)}>
-                    <CheckCircle2 size={11} />
-                    <span>Синтаксис корректен</span>
-                  </span>
-                </Tooltip>
-              )}
-            </span>
-
-            <span className={styles.statusSep}>|</span>
-
-            {multiCursor.hasMultipleCursors && (
-              <>
-                <Tooltip
-                  content="Активно мульти-выделение (Cmd+D / Ctrl+D). Нажмите Esc для сброса."
-                  side="top"
-                >
-                  <span className={clsx(styles.statusItem, styles.multiCursorIndicator)}>
-                    <span className={styles.savePulseDot} />
-                    <span>{multiCursor.selections.length} выделений</span>
-                  </span>
-                </Tooltip>
-                <span className={styles.statusSep}>|</span>
-              </>
-            )}
-
-            <span className={styles.statusItem}>
-              Стр {cursorPos.line}, Кол {cursorPos.col}
-            </span>
-            <span className={styles.statusSep}>|</span>
-            <span className={styles.statusItem}>
-              {pluralize(lineCount, LINE_FORMS)} ({code.length} симв)
-            </span>
-          </div>
-
-          <div className={styles.statusRight}>
-            <span className={styles.statusItem}>Пробелы: {TAB_SIZE}</span>
-            <span className={styles.statusSep}>|</span>
-            <span className={styles.statusItem}>UTF-8</span>
-            <span className={styles.statusSep}>|</span>
-            <Tooltip content={`Язык синтаксиса: ${langInfo.name}`} side="top">
-              <span className={styles.statusItem}>
-                <Code2 size={11} className={LANGUAGE_ICON_CLASSES[langInfo.id]} />
-                <span>{langInfo.name}</span>
-              </span>
-            </Tooltip>
-          </div>
-        </div>
+        <EditorStatusBar
+          code={code}
+          filepath={filepath}
+          lineCount={lineCount}
+          cursorLine={cursorPos.line}
+          cursorCol={cursorPos.col}
+          errorCount={diagnostics.errorCount}
+          problemMessage={diagnostics.activeDiagnostic?.message}
+          onGoToProblem={goToNextProblem}
+          multiCursorCount={multiCursor.hasMultipleCursors ? multiCursor.selections.length : 0}
+          formatNotice={formatNotice}
+        />
       </Tooltip.Provider>
     </div>
   );

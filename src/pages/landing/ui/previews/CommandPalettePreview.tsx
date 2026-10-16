@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { CornerDownLeft, Search } from "lucide-react";
 import { clsx } from "clsx";
 import { SECTIONS_CONFIG } from "@/entities/task/meta";
+import { useInView } from "@/shared/lib/hooks";
 import { GaugeIndicator, UiKbd } from "@/shared/ui";
 import { SHOWCASE_TASKS, getShowcaseTaskPath, type ShowcaseTask } from "../../config/showcaseTasks";
 import { TOTAL_TASK_COUNT } from "../../lib/formatTaskCount";
@@ -32,8 +33,15 @@ export const CommandPalettePreview = (): React.JSX.Element => {
   const [isFocused, setIsFocused] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
+  // Off screen the demo pauses: each typed letter re-renders the results and would keep the main
+  // thread busy while the visitor scrolls through other scenes.
+  const [cardRef, isInView] = useInView<HTMLDivElement>({
+    threshold: 0,
+    rootMargin: "0px",
+    once: false,
+  });
   const isDemo = !isFocused && query === "";
-  const demoQuery = useTypewriter(DEMO_QUERIES, isDemo);
+  const demoQuery = useTypewriter(DEMO_QUERIES, isDemo && isInView);
   const visibleQuery = isDemo ? demoQuery : query;
   const results = useMemo(
     () => searchShowcaseTasks(visibleQuery).slice(0, MAX_RESULTS),
@@ -70,7 +78,7 @@ export const CommandPalettePreview = (): React.JSX.Element => {
   };
 
   return (
-    <PreviewCard className={styles.paletteCard}>
+    <PreviewCard ref={cardRef} className={styles.paletteCard}>
       <label className={styles.paletteSearch}>
         <Search size={16} aria-hidden="true" />
         <input

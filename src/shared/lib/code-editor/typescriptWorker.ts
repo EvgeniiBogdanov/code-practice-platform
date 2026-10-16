@@ -75,6 +75,9 @@ self.onmessage = (event: MessageEvent<TypeScriptDiagnosticRequest>): void => {
       case "definition":
         response.definition = editorService.definition(input, position);
         break;
+      case "highlights":
+        response.highlights = editorService.highlights(input, position);
+        break;
       case "tests":
         response.report = editorService.typeTests({ ...input, tests: input.tests ?? "" });
         break;

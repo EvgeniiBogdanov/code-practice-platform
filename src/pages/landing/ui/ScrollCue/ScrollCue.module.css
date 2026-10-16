@@ -33,25 +33,30 @@
   background: var(--color-home);
 }
 
+.arrowClip {
+  display: block;
+  overflow: clip;
+}
+
 .arrow {
   display: block;
   width: var(--space-4);
   height: var(--space-8);
-  stroke-dasharray: 1 2;
-  animation: cueDraw 2.4s var(--ease-soft) infinite;
+  animation: cueSlide 2.4s var(--ease-soft) infinite;
 }
 
-/* Draw the shaft and head in one motion, hold, then wipe it out in the same direction */
-@keyframes cueDraw {
+/* Slides in from above, holds, then leaves downwards. Only `transform` animates, so the endless
+   loop stays on the compositor instead of repainting every cue on every frame */
+@keyframes cueSlide {
   0% {
-    stroke-dashoffset: 1.1;
+    transform: translateY(-100%);
   }
   45%,
   70% {
-    stroke-dashoffset: 0;
+    transform: none;
   }
   100% {
-    stroke-dashoffset: -1.1;
+    transform: translateY(100%);
   }
 }
 
@@ -76,6 +81,5 @@
 @media (prefers-reduced-motion: reduce) {
   .arrow {
     animation: none;
-    stroke-dasharray: none;
   }
 }

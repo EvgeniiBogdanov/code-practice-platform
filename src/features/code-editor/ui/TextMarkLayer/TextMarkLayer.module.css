@@ -39,3 +39,8 @@
   background: var(--editor-selection-bg, color-mix(in srgb, var(--accent-blue) 28%, transparent));
   box-shadow: 0 0 0 1px var(--accent-blue);
 }
+
+/* Other occurrences of the symbol at the caret, like VS Code's word highlight. */
+.occurrence {
+  background: var(--editor-occurrence-bg);
+}
