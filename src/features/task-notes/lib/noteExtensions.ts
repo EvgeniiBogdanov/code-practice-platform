@@ -4,6 +4,7 @@ import { Table, TableCell, TableHeader, TableRow } from "@tiptap/extension-table
 import { TaskItem, TaskList } from "@tiptap/extension-list";
 import { Placeholder } from "@tiptap/extensions";
 import StarterKit from "@tiptap/starter-kit";
+import { getBlockMenuFilterPos } from "./blockMenuFilter";
 import { BlockShortcuts } from "./blockShortcuts";
 import { DragSource } from "./dragSource";
 import { MarkdownClipboard } from "./markdownClipboard";
@@ -13,6 +14,7 @@ import { SpellcheckOnFocus } from "./spellcheckOnFocus";
 
 const HEADING_PLACEHOLDER = "Заголовок";
 const LINE_PLACEHOLDER = "Напишите что-нибудь или нажмите «/», чтобы выбрать блок…";
+const FILTER_PLACEHOLDER = "Введите для фильтра…";
 
 /** Everything the note editor can hold. Each node and mark has a markdown form, so the note stays markdown at rest. */
 export interface NoteExtensionsOptions {
@@ -42,7 +44,9 @@ export const createNoteExtensions = ({
   Placeholder.configure({
     // Only lines of text get a hint: an empty code block (or any node with its own look) must
     // not show it through behind its window.
-    placeholder: ({ node }) => {
+    placeholder: ({ editor, node, pos }) => {
+      // The "+" button's block menu reads its filter from this line.
+      if (getBlockMenuFilterPos(editor.state) === pos + 1) return FILTER_PLACEHOLDER;
       if (node.type.name === "heading") return HEADING_PLACEHOLDER;
       return node.type.name === "paragraph" ? LINE_PLACEHOLDER : "";
     },

@@ -4,6 +4,7 @@ import { Check } from "lucide-react";
 import type { BlockColors } from "../../lib/blockActions";
 import { NOTE_COLOR_NAMES, type NoteColorName } from "../../lib/noteColor";
 import type { BlockMenuHandle } from "../BlockMenu/BlockMenu";
+import { UiPopoverSurface } from "@/shared/ui";
 import { notePaletteClass } from "../noteColors";
 import styles from "./ColorMenu.module.css";
 
@@ -89,7 +90,11 @@ export const ColorMenu = ({
   }));
 
   return (
-    <div className={clsx(styles.menu, notePaletteClass)} role="listbox" aria-label="Цвет">
+    <UiPopoverSurface
+      className={clsx(styles.menu, notePaletteClass)}
+      role="listbox"
+      aria-label="Цвет"
+    >
       {lastUsed && (
         <div className={styles.section}>
           <p className={styles.heading}>Последний использованный</p>
@@ -133,6 +138,6 @@ export const ColorMenu = ({
           })}
         </div>
       ))}
-    </div>
+    </UiPopoverSurface>
   );
 };

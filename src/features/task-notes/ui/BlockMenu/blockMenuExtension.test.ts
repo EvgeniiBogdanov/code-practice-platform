@@ -1,7 +1,15 @@
 import { Editor } from "@tiptap/core";
-import { afterEach, describe, expect, it } from "vitest";
+import { SuggestionPluginKey, exitSuggestion } from "@tiptap/suggestion";
+import { afterEach, beforeAll, describe, expect, it } from "vitest";
 import { createNoteExtensions } from "../../lib/noteExtensions";
-import { BlockMenuExtension, markBlockMenuOpenedByButton } from "./blockMenuExtension";
+import { BlockMenuExtension, openBlockMenu } from "./blockMenuExtension";
+
+// jsdom lays nothing out, and the "+" menu is placed at the caret, which is measured on a range.
+beforeAll(() => {
+  Range.prototype.getClientRects = (): DOMRectList =>
+    document.createElement("span").getClientRects();
+  Range.prototype.getBoundingClientRect = (): DOMRect => new DOMRect();
+});
 
 const createEditor = (): Editor =>
   new Editor({
@@ -16,20 +24,43 @@ describe("block menu opened with the + button", () => {
 
   afterEach(() => editor.destroy());
 
-  it("takes its slash back when the menu closes without a choice", async () => {
+  it("opens on the empty line without typing a slash, showing a filter hint there", () => {
     editor = createEditor();
-    markBlockMenuOpenedByButton(editor);
-    editor.chain().focus().insertContent("/").run();
-    await tick();
-    expect(editor.getText()).toBe("/");
 
-    // Leaving the line closes the menu (the same exit as a click outside or Escape).
-    editor.commands.insertContentAt(editor.state.doc.content.size, { type: "paragraph" });
-    editor.commands.focus("end");
-    await tick();
-    await tick();
+    openBlockMenu(editor, 1);
 
-    expect(editor.getText()).not.toContain("/");
+    const line = editor.view.dom.querySelector("p");
+    expect(editor.getText()).toBe("");
+    expect(SuggestionPluginKey.getState(editor.state)).toMatchObject({ active: true, query: "" });
+    expect(line).toHaveAttribute("data-placeholder", "Введите для фильтра…");
+    expect(line).toHaveClass("is-block-filter");
+  });
+
+  it("filters by what is typed on the line and keeps that text when closed", () => {
+    editor = createEditor();
+    openBlockMenu(editor, 1);
+
+    editor.commands.insertContent("заг");
+    expect(SuggestionPluginKey.getState(editor.state)).toMatchObject({
+      active: true,
+      query: "заг",
+    });
+
+    document.body.dispatchEvent(new Event("pointerdown", { bubbles: true }));
+
+    expect(SuggestionPluginKey.getState(editor.state)).toMatchObject({ active: false });
+    expect(editor.getText()).toBe("заг");
+  });
+
+  it("opens again after being closed with Escape", () => {
+    editor = createEditor();
+    openBlockMenu(editor, 1);
+    exitSuggestion(editor.view);
+    expect(SuggestionPluginKey.getState(editor.state)).toMatchObject({ active: false });
+
+    openBlockMenu(editor, 1);
+
+    expect(SuggestionPluginKey.getState(editor.state)).toMatchObject({ active: true });
   });
 
   it("leaves a slash the person typed themselves", async () => {

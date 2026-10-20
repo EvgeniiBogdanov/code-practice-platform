@@ -81,6 +81,8 @@
   --bg-sidebar: #202020;
   --bg-card: #252525;
   --bg-popover: #252525;
+  /* Menus share the sidebar's surface */
+  --bg-menu: var(--bg-sidebar);
   --bg-subtle: rgba(255, 255, 255, 0.035);
   --bg-deep: #141414;
   --bg-elevated: #2f2f2f;
@@ -96,6 +98,8 @@
   --border-color: #2c2c2b;
   --border-strong: rgba(255, 255, 255, 0.16);
   --border-editor: rgba(255, 255, 255, 0.094);
+  /* Edge of menus and popovers: barely there, like Notion's, the surface itself sets them apart */
+  --border-popover: rgba(255, 255, 255, 0.094);
   --border-hover: rgba(255, 255, 255, 0.24);
 
   --text-main: #ffffff;
@@ -386,6 +390,8 @@
   --bg-sidebar: #f4f4f5;
   --bg-card: #ffffff;
   --bg-popover: #ffffff;
+  /* In the light theme menus stay white */
+  --bg-menu: var(--bg-popover);
   --bg-subtle: #f4f4f5;
   --bg-deep: #ececee;
   --bg-elevated: #ffffff;
@@ -401,6 +407,7 @@
   --border-color: #e4e4e7;
   --border-strong: #c4c4c8;
   --border-editor: #e4e4e7;
+  --border-popover: #e4e4e7;
   --border-hover: #a1a1a6;
 
   --text-main: #0a0a0a;

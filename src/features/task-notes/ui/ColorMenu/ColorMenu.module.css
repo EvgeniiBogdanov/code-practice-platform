@@ -4,11 +4,11 @@
   flex-direction: column;
   gap: var(--space-2);
   width: 220px;
-  max-height: min(480px, 70dvh);
+  max-height: var(--menu-max-height, min(480px, 70dvh));
   padding: var(--space-1-5);
   overflow-y: auto;
-  background: var(--bg-popover);
-  border: 1px solid var(--border-strong);
+  background: var(--bg-menu);
+  border: 1px solid var(--border-popover);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-popover);
 }

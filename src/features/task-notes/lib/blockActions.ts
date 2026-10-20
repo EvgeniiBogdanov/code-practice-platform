@@ -68,9 +68,27 @@ export const copyBlock = async (editor: Editor, { node }: BlockTarget): Promise<
   }
 };
 
+/** The block as it stands now: an untouched node keeps its identity while positions around it shift. */
+const findCurrentBlock = (editor: Editor, { node, pos }: BlockTarget): BlockTarget | null => {
+  const { doc } = editor.state;
+  if (pos < doc.content.size && doc.nodeAt(pos) === node) return { node, pos };
+  let found: BlockTarget | null = null;
+  doc.descendants((child, childPos) => {
+    if (found) return false;
+    if (child === node) found = { node, pos: childPos };
+    return true;
+  });
+  return found;
+};
+
+/**
+ * Removed only once it is on the clipboard, so a refused copy loses nothing. The text may change
+ * while the clipboard is written: the block is looked up again, and left alone if it was edited.
+ */
 export const cutBlock = async (editor: Editor, target: BlockTarget): Promise<void> => {
   await copyBlock(editor, target);
-  deleteBlock(editor, target);
+  const current = editor.isDestroyed ? null : findCurrentBlock(editor, target);
+  if (current) deleteBlock(editor, current);
 };
 
 /** Gets the block out of any list or quote around it and makes it a plain paragraph. */

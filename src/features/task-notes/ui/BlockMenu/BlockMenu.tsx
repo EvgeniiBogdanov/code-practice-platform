@@ -1,6 +1,7 @@
 import { useEffect, useImperativeHandle, useRef, useState, type JSX, type Ref } from "react";
 import { clsx } from "clsx";
 import type { BlockItem } from "../../lib/blockItems";
+import { UiPopoverSurface } from "@/shared/ui";
 import styles from "./BlockMenu.module.css";
 
 export interface BlockMenuHandle {
@@ -11,17 +12,13 @@ export interface BlockMenuHandle {
 interface BlockMenuProps {
   items: readonly BlockItem[];
   onSelect: (item: BlockItem) => void;
+  /** Shown above the list; a submenu goes without, its row already names it. */
   heading?: string;
   ref?: Ref<BlockMenuHandle>;
 }
 
 /** Notion-style "turn this line into…" list, driven by the "/" suggestion. */
-export const BlockMenu = ({
-  items,
-  onSelect,
-  heading = "Блоки",
-  ref,
-}: BlockMenuProps): JSX.Element => {
+export const BlockMenu = ({ items, onSelect, heading, ref }: BlockMenuProps): JSX.Element => {
   const [selected, setSelected] = useState(0);
   const [knownItems, setKnownItems] = useState(items);
   const activeRef = useRef<HTMLButtonElement>(null);
@@ -56,8 +53,8 @@ export const BlockMenu = ({
   }));
 
   return (
-    <div className={styles.menu} role="listbox" aria-label="Тип блока">
-      <p className={styles.heading}>{heading}</p>
+    <UiPopoverSurface className={styles.menu} role="listbox" aria-label="Тип блока">
+      {heading && <p className={styles.heading}>{heading}</p>}
       {items.length === 0 && <p className={styles.empty}>Ничего не найдено</p>}
       {items.map((item, index) => {
         const Icon = item.icon;
@@ -85,6 +82,6 @@ export const BlockMenu = ({
           </button>
         );
       })}
-    </div>
+    </UiPopoverSurface>
   );
 };

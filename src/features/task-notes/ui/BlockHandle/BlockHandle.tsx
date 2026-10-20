@@ -14,7 +14,7 @@ import type { BlockTarget } from "../../lib/blockActions";
 import { getDropSlot, moveBlock, type DropSlot } from "../../lib/blockMove";
 import { findBlockAt, getBlockDom, measureBlock } from "../../lib/blockPosition";
 import { markDragSource } from "../../lib/dragSource";
-import { markBlockMenuOpenedByButton } from "../BlockMenu/blockMenuExtension";
+import { openBlockMenu } from "../BlockMenu/blockMenuExtension";
 import { useHoveredBlock } from "../../model/useHoveredBlock";
 import { BlockPreview } from "./BlockPreview";
 import { HandleBar } from "./HandleBar";
@@ -164,14 +164,7 @@ export const BlockHandle = ({
         isVisible={active !== null}
         canAddBlock={canAddBlock && dragged === null}
         onAddBlock={(): void => {
-          if (!hovered) return;
-          markBlockMenuOpenedByButton(editor);
-          editor
-            .chain()
-            .focus()
-            .setTextSelection(hovered.pos + 1)
-            .insertContent("/")
-            .run();
+          if (hovered) openBlockMenu(editor, hovered.pos + 1);
         }}
         onOpenMenu={(anchor): void => {
           if (hovered) onOpenMenu(hovered, anchor);
