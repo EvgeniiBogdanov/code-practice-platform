@@ -4,6 +4,7 @@ import {
   useState,
   type JSX,
   type KeyboardEvent as ReactKeyboardEvent,
+  type MouseEvent as ReactMouseEvent,
 } from "react";
 import { createPortal } from "react-dom";
 import { clsx } from "clsx";
@@ -64,6 +65,19 @@ const isActionAvailable = ({ id }: MenuAction, { node }: BlockTarget): boolean =
 const VIEWPORT_MARGIN = 8;
 const MENU_GAP = 4;
 
+interface Point {
+  x: number;
+  y: number;
+}
+
+const cross = (a: Point, b: Point, p: Point): number =>
+  (b.x - a.x) * (p.y - a.y) - (b.y - a.y) * (p.x - a.x);
+
+const isInTriangle = (p: Point, a: Point, b: Point, c: Point): boolean => {
+  const signs = [cross(a, b, p), cross(b, c, p), cross(c, a, p)];
+  return signs.every((sign) => sign >= 0) || signs.every((sign) => sign <= 0);
+};
+
 interface BlockActionsMenuProps {
   editor: Editor;
   target: BlockTarget;
@@ -86,6 +100,9 @@ export const BlockActionsMenu = ({
   const [isSubmenuFlipped, setIsSubmenuFlipped] = useState(false);
   // The menu is dim until it is used: with the pointer over it, or with the keys.
   const [isKeyboardActive, setIsKeyboardActive] = useState(false);
+
+  // Where the pointer left the row that owns the open submenu.
+  const exitPointRef = useRef<Point | null>(null);
 
   const actions = ACTIONS.filter((action) => isActionAvailable(action, target));
 
@@ -113,6 +130,16 @@ export const BlockActionsMenu = ({
     const overflow = bottom - (window.innerHeight - VIEWPORT_MARGIN);
     submenu.style.setProperty("--submenu-shift", `${Math.max(overflow, 0)}px`);
   }, [openSubmenu]);
+
+  /** True while the pointer travels from its row towards the open submenu, like Notion. */
+  const isHeadingToSubmenu = ({ clientX, clientY }: ReactMouseEvent): boolean => {
+    const origin = exitPointRef.current;
+    const submenu = rootRef.current?.querySelector<HTMLElement>("[data-submenu]");
+    if (!origin || !submenu) return false;
+    const { left, right, top, bottom } = submenu.getBoundingClientRect();
+    const x = isSubmenuFlipped ? right : left;
+    return isInTriangle({ x: clientX, y: clientY }, origin, { x, y: top }, { x, y: bottom });
+  };
 
   const finish = (): void => {
     onClose();
@@ -162,7 +189,7 @@ export const BlockActionsMenu = ({
         const Icon = action.icon;
         const isSubmenuOpen = openSubmenu === action.submenu && action.submenu !== undefined;
         return (
-          <div key={action.id} className={styles.row}>
+          <div key={action.id}>
             <button
               type="button"
               role="menuitem"
@@ -173,9 +200,13 @@ export const BlockActionsMenu = ({
                 index === selected && styles.active,
                 action.isDanger && styles.danger
               )}
-              onMouseEnter={(): void => {
+              onMouseEnter={(event): void => {
+                if (openSubmenu && !isSubmenuOpen && isHeadingToSubmenu(event)) return;
                 setSelected(index);
                 setOpenSubmenu(action.submenu ?? null);
+              }}
+              onMouseLeave={(event): void => {
+                exitPointRef.current = { x: event.clientX, y: event.clientY };
               }}
               onClick={(): void => runAction(action)}
             >

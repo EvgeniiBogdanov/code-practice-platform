@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useReducer, useRef } from "react";
+import { useCallback, useEffect, useMemo, useReducer, useRef } from "react";
 import {
   acquireTypeScriptClient,
   type TypeScriptClient,
@@ -127,7 +127,11 @@ export const useTypeTests = (options: UseTypeTestsOptions): TypeTestsController 
   const { code, autoRun = false, enabled = true, taskId, testsHash } = options;
   const [state, dispatch] = useReducer(reduce, INITIAL_STATE);
   // This exact code was already checked against these tests: show that verdict in the first frame.
-  const cached = enabled ? getCachedReport(taskId, testsHash, code) : null;
+  // Hashes the whole solution: once per edit, not on each of its several renders.
+  const cached = useMemo(
+    () => (enabled ? getCachedReport(taskId, testsHash, code) : null),
+    [enabled, taskId, testsHash, code]
+  );
   if (cached && !state.isCleared && state.checkedCode !== code && state.phase !== "running") {
     dispatch({ type: "restore", report: cached, code });
   }

@@ -1,12 +1,19 @@
 import React, { useState, useMemo, useEffect, useCallback } from "react";
 import { useUIStore } from "@/entities/ui-state";
 import { Task } from "@/entities/task";
+import { useDebounce } from "@/shared/lib/hooks";
 import {
   buildFilesMap,
   buildSandboxIframeSrcDoc,
   clearLiveSandboxTimers,
   TaskSourceFile,
 } from "@/shared/lib/code-runners";
+
+/**
+ * Every rebuild transpiles all files and reloads the iframe document on the main thread:
+ * typing waits for a pause instead of paying it on each keystroke.
+ */
+export const PREVIEW_REBUILD_DELAY_MS = 400;
 
 export interface UseReactLiveSandboxParams {
   task?: Task;
@@ -44,12 +51,30 @@ export const useReactLiveSandbox = ({
 
   const activeFile = files[activeFileIdx] || files[0] || { name: "index.jsx", code: "" };
 
+  // A new task, file, variant or reload starts from a fresh iframe state.
+  const iframeKey = `${task?.id}:${storagePrefix}:${variantIdx}:${activeFileIdx}:${reloadKey}`;
+
+  // Edits reach the preview after a pause; switching to another document shows it at once.
+  const source = useMemo(
+    () => ({ files, currentCode, iframeKey }),
+    [files, currentCode, iframeKey]
+  );
+  const debouncedSource = useDebounce(source, PREVIEW_REBUILD_DELAY_MS);
+  const shown = debouncedSource.iframeKey === iframeKey ? debouncedSource : source;
+
   // Saved files live in localStorage, an external store React cannot track: `reloadKey` is the
   // snapshot version, bumped by the manual reload to pick up code saved from another window.
   const filesMap = useMemo(() => {
     void reloadKey;
-    return buildFilesMap(files, storagePrefix, task?.id, activeFileIdx, currentCode, variantIdx);
-  }, [files, storagePrefix, task?.id, activeFileIdx, currentCode, variantIdx, reloadKey]);
+    return buildFilesMap(
+      shown.files,
+      storagePrefix,
+      task?.id,
+      activeFileIdx,
+      shown.currentCode,
+      variantIdx
+    );
+  }, [shown, storagePrefix, task?.id, activeFileIdx, variantIdx, reloadKey]);
 
   const { srcDoc, error: compileError } = useMemo(() => {
     return buildSandboxIframeSrcDoc({
@@ -65,8 +90,6 @@ export const useReactLiveSandbox = ({
     };
   }, [task?.id, reloadKey]);
 
-  // A new task, file, variant or reload starts from a fresh iframe state.
-  const iframeKey = `${task?.id}:${storagePrefix}:${variantIdx}:${activeFileIdx}:${reloadKey}`;
   const [currentIframeKey, setCurrentIframeKey] = useState(iframeKey);
   if (iframeKey !== currentIframeKey) {
     setCurrentIframeKey(iframeKey);
