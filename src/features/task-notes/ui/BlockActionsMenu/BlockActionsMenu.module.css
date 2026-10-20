@@ -16,10 +16,6 @@
   z-index: var(--z-dropdown);
 }
 
-.row {
-  position: relative;
-}
-
 .item {
   composes: content from "../menuIdle.module.css";
   display: flex;
@@ -61,9 +57,24 @@
 
 .submenu {
   position: absolute;
-  top: calc(-1 * var(--space-1-5) - var(--submenu-shift, 0px));
+  top: calc(-1 * var(--submenu-shift, 0px));
   left: calc(100% + var(--space-2));
   z-index: var(--z-dropdown);
+}
+
+/* Bridges the gap so the pointer never leaves the menu on its way to the submenu. */
+.submenu::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(-1 * var(--space-2));
+  width: var(--space-2);
+}
+
+.flipped::before {
+  right: calc(-1 * var(--space-2));
+  left: auto;
 }
 
 .flipped {

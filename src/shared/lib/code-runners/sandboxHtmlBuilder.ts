@@ -413,12 +413,19 @@ export function buildSandboxIframeSrcDoc({
           } catch (e) {}
         }
 
+        var ro = null;
         if (typeof ResizeObserver !== 'undefined') {
-          var ro = new ResizeObserver(notifyHeight);
+          ro = new ResizeObserver(notifyHeight);
           var rootEl = document.getElementById('root');
           if (rootEl) ro.observe(rootEl);
           if (document.body) ro.observe(document.body);
         }
+        // React runs in the host window: a root left mounted when this document is replaced
+        // keeps it alive through the host's React (DevTools hook, react-query managers).
+        window.addEventListener('pagehide', function() {
+          if (ro) ro.disconnect();
+          try { root.unmount(); } catch (e) {}
+        });
         var scrollTimeout = null;
         window.addEventListener('scroll', function() {
           document.documentElement.classList.add('is-scrolling');

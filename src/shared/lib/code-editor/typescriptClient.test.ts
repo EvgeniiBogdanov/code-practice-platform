@@ -92,6 +92,40 @@ describe("typescript worker client", () => {
     expect(FakeWorker.instances).toHaveLength(2);
   });
 
+  it("keeps one request per typing kind in the worker; the newest waiting one wins", async () => {
+    const client = (await load())();
+    const complete = (code: string) =>
+      client.request({ kind: "completions", code, filepath: "a.ts", files: [], position: 0 });
+    const first = complete("a");
+    const stale = complete("ab");
+    const latest = complete("abc");
+    void client.request({ kind: "tests", code: "", filepath: "a.ts", files: [], tests: "" });
+    const worker = FakeWorker.instances[0];
+
+    // The first is in the worker; tests are not coalesced; "ab" was replaced while waiting.
+    expect(worker.posted.map((message) => (message as { code: string }).code)).toEqual(["a", ""]);
+    await expect(stale).resolves.toBeNull();
+
+    const [{ id: firstId }] = worker.posted as Array<{ id: number }>;
+    worker.onmessage?.({ data: { id: firstId, kind: "completions" } } as MessageEvent);
+    await expect(first).resolves.toMatchObject({ id: firstId });
+    const sent = worker.posted.at(-1) as { id: number; code: string };
+    expect(sent.code).toBe("abc");
+
+    worker.onmessage?.({ data: { id: sent.id, kind: "completions" } } as MessageEvent);
+    await expect(latest).resolves.toMatchObject({ id: sent.id });
+  });
+
+  it("sends a typing request at once when the previous one was lost in a crash", async () => {
+    const client = (await load())();
+    const hover = () => client.request({ kind: "hover", code: "", filepath: "a.ts", files: [] });
+    const lost = hover();
+    FakeWorker.instances[0].onerror?.();
+    await expect(lost).resolves.toBeNull();
+    void hover();
+    expect(FakeWorker.instances[1].posted).toHaveLength(1);
+  });
+
   it("does not time out a request that was answered in time", async () => {
     const client = (await load())();
     const onTimeout = vi.fn();

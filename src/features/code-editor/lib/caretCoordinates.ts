@@ -132,6 +132,8 @@ export const getCaretCoordinates = (
   const parsedFontSize = parseFloat(computed.fontSize) || 13;
   const lineHeight =
     markerSpan.offsetHeight || parseFloat(computed.lineHeight) || Math.round(parsedFontSize * 1.6);
+  // The copy of the document would otherwise stay in the page until the next measurement.
+  mirrorDiv.textContent = "";
 
   return {
     top,

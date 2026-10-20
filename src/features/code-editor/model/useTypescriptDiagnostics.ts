@@ -55,10 +55,13 @@ export const useTypeScriptDiagnostics = (
     filepath: string;
     filesKey: string;
   } | null>(null);
-  // Content is the dependency: unrelated editor renders must not recheck the file. The other
-  // files are serialised once per array, not on every keystroke's several renders.
+  // Content is the dependency: unrelated editor renders must not recheck the file. The active
+  // file travels as `code`, so typing in it does not re-serialise the other files.
   const { code, filepath, files } = input;
-  const filesKey = useMemo(() => JSON.stringify(files), [files]);
+  const filesKey = useMemo(
+    () => JSON.stringify(files.filter((file) => file.name !== filepath)),
+    [files, filepath]
+  );
 
   useEffect(() => {
     if (!languageEnabled || typeof Worker === "undefined") return;

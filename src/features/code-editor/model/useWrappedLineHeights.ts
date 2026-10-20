@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react";
+import { useCallback, useLayoutEffect, useState } from "react";
 import { measureLineHeights } from "../lib/caretCoordinates";
 
 const sameHeights = (a: number[] | null, b: number[]): boolean =>
@@ -12,25 +12,27 @@ export const useWrappedLineHeights = (
 ): number[] | null => {
   const [heights, setHeights] = useState<number[] | null>(null);
 
+  // Most edits do not change any row height: keep the array so the gutter does not re-render.
+  const measure = useCallback((): void => {
+    const textarea = textareaRef.current;
+    // A hidden (kept-alive) editor has no width: measuring it would wrap every character.
+    if (!textarea?.clientWidth) return;
+    const next = measureLineHeights(textarea);
+    setHeights((current) => (sameHeights(current, next) ? current : next));
+  }, [textareaRef]);
+
+  useLayoutEffect(() => {
+    if (enabled) measure();
+  }, [enabled, measure, layoutKey]);
+
+  // Width changes (panels, fullscreen) rewrap lines without changing the text.
   useLayoutEffect(() => {
     const textarea = textareaRef.current;
-    if (!enabled || !textarea || typeof ResizeObserver === "undefined") {
-      setHeights(null);
-      return;
-    }
-    // Most edits do not change any row height: keep the array so the gutter does not re-render.
-    const measure = (): void => {
-      // A hidden (kept-alive) editor has no width: measuring it would wrap every character.
-      if (!textarea.clientWidth) return;
-      const next = measureLineHeights(textarea);
-      setHeights((current) => (sameHeights(current, next) ? current : next));
-    };
-    measure();
-    // Width changes (panels, fullscreen) rewrap lines without changing the text.
+    if (!enabled || !textarea || typeof ResizeObserver === "undefined") return;
     const observer = new ResizeObserver(measure);
     observer.observe(textarea);
     return (): void => observer.disconnect();
-  }, [textareaRef, enabled, layoutKey]);
+  }, [textareaRef, enabled, measure]);
 
-  return heights;
+  return enabled ? heights : null;
 };
