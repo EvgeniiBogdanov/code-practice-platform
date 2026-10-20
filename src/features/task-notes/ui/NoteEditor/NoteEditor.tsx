@@ -1,6 +1,7 @@
 import { useRef, useState, type JSX } from "react";
 import { clsx } from "clsx";
 import { EditorContent, ReactNodeViewRenderer, useEditor } from "@tiptap/react";
+import { AnimatePresence } from "motion/react";
 import { markdownContentClass } from "@/shared/ui";
 import { releaseBlockSelection, selectBlock, type BlockTarget } from "../../lib/blockActions";
 import { createNoteExtensions } from "../../lib/noteExtensions";
@@ -26,7 +27,13 @@ export const NoteEditor = ({
   className,
 }: NoteEditorProps): JSX.Element => {
   const pageRef = useRef<HTMLDivElement>(null);
-  const [blockMenu, setBlockMenu] = useState<{ target: BlockTarget; anchor: DOMRect } | null>(null);
+  const [blockMenu, setBlockMenu] = useState<{
+    target: BlockTarget;
+    anchor: DOMRect;
+    /** New for every opening: a menu opened while the last one fades out starts fresh. */
+    id: number;
+  } | null>(null);
+  const openCountRef = useRef(0);
   const [extensions] = useState(() =>
     createNoteExtensions({
       codeBlockView: ReactNodeViewRenderer(CodeBlockView),
@@ -58,7 +65,8 @@ export const NoteEditor = ({
   const handleOpenBlockMenu = (target: BlockTarget, anchor: DOMRect): void => {
     if (!editor) return;
     selectBlock(editor, target);
-    setBlockMenu({ target, anchor });
+    openCountRef.current += 1;
+    setBlockMenu({ target, anchor, id: openCountRef.current });
   };
 
   const handleCloseBlockMenu = (): void => {
@@ -77,14 +85,17 @@ export const NoteEditor = ({
         onOpenMenu={handleOpenBlockMenu}
       />
       <SelectionToolbar editor={editor} />
-      {blockMenu && (
-        <BlockActionsMenu
-          editor={editor}
-          target={blockMenu.target}
-          anchor={blockMenu.anchor}
-          onClose={handleCloseBlockMenu}
-        />
-      )}
+      <AnimatePresence>
+        {blockMenu && (
+          <BlockActionsMenu
+            key={blockMenu.id}
+            editor={editor}
+            target={blockMenu.target}
+            anchor={blockMenu.anchor}
+            onClose={handleCloseBlockMenu}
+          />
+        )}
+      </AnimatePresence>
       <EditorContent editor={editor} className={styles.editor} />
     </div>
   );

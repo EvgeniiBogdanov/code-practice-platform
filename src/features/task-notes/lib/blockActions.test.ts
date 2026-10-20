@@ -1,9 +1,10 @@
 import { Editor } from "@tiptap/core";
 import type { Node } from "@tiptap/pm/model";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   colorBlock,
   convertBlock,
+  cutBlock,
   deleteBlock,
   duplicateBlock,
   getBlockColors,
@@ -29,7 +30,46 @@ const markdown = (editor: Editor): string => editor.getMarkdown().trimEnd();
 describe("block actions", () => {
   let editor: Editor;
 
-  afterEach(() => editor.destroy());
+  afterEach(() => {
+    editor.destroy();
+    vi.unstubAllGlobals();
+    Reflect.deleteProperty(navigator, "clipboard");
+  });
+
+  const stubClipboard = (write: () => Promise<void>): void => {
+    vi.stubGlobal("ClipboardItem", class {});
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: { write, writeText: write },
+    });
+  };
+
+  it("keeps a block whose copy the clipboard refused", async () => {
+    stubClipboard(() => Promise.reject(new Error("denied")));
+    editor = createEditor("первый\n\nвторой");
+
+    await expect(cutBlock(editor, findBlock(editor, "paragraph"))).rejects.toThrow("denied");
+
+    expect(markdown(editor)).toBe("первый\n\nвторой");
+  });
+
+  it("cuts the copied block even if text moved it while the clipboard was written", async () => {
+    let finishWrite = (): void => {};
+    stubClipboard(
+      () =>
+        new Promise<void>((resolve) => {
+          finishWrite = resolve;
+        })
+    );
+    editor = createEditor("первый\n\nвторой");
+
+    const cut = cutBlock(editor, findBlock(editor, "paragraph", 1));
+    editor.commands.insertContentAt(0, "<p>новый</p>");
+    finishWrite();
+    await cut;
+
+    expect(markdown(editor)).toBe("новый\n\nпервый");
+  });
 
   it("duplicates a block right below itself", () => {
     editor = createEditor("# Заголовок\n\nтекст");

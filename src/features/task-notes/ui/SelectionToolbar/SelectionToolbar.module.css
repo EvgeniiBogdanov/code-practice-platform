@@ -9,8 +9,8 @@
   align-items: center;
   gap: var(--space-0-5);
   padding: var(--space-1);
-  background: var(--bg-popover);
-  border: 1px solid var(--border-strong);
+  background: var(--bg-menu);
+  border: 1px solid var(--border-popover);
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-popover);
 }

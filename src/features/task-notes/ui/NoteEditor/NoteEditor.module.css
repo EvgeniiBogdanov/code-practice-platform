@@ -113,6 +113,13 @@
   border-radius: var(--radius-xs);
 }
 
+/* The empty line the "+" button's menu filters by: its hint sits in the same field, like Notion's */
+.content :global(p.is-block-filter) {
+  width: fit-content;
+  background: var(--state-hover);
+  border-radius: var(--radius-xs);
+}
+
 .content:has(:global(.suggestion)) {
   caret-color: transparent;
 }

@@ -8,12 +8,18 @@
   gap: var(--space-0-5);
   width: 220px;
   padding: var(--space-1-5);
-  background: var(--bg-popover);
-  border: 1px solid var(--border-strong);
+  background: var(--bg-menu);
+  border: 1px solid var(--border-popover);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-popover);
   outline: none;
-  z-index: var(--z-dropdown);
+  /* Portalled into the body: above the page chrome (the sidebar), like any portal */
+  z-index: var(--z-portal);
+}
+
+/* Anchors a row's submenu to the row itself, not to the whole menu */
+.row {
+  position: relative;
 }
 
 .item {
@@ -55,9 +61,11 @@
   color: var(--accent-red);
 }
 
+/* Placed against its row while measuring (centred, kept on screen); never taller than the screen */
 .submenu {
+  --menu-max-height: calc(100dvh - 2 * var(--space-2));
   position: absolute;
-  top: calc(-1 * var(--submenu-shift, 0px));
+  top: var(--submenu-top, 0);
   left: calc(100% + var(--space-2));
   z-index: var(--z-dropdown);
 }
@@ -72,12 +80,13 @@
   width: var(--space-2);
 }
 
-.flipped::before {
+/* Opens to the left when there is no room on the right; set while measuring the submenu. */
+.submenu[data-flipped]::before {
   right: calc(-1 * var(--space-2));
   left: auto;
 }
 
-.flipped {
+.submenu[data-flipped] {
   right: calc(100% + var(--space-2));
   left: auto;
 }

@@ -58,6 +58,7 @@ export * from "./TypeScriptIcon";
 export * from "./UiTransitionSurface";
 export * from "./UiFullscreenPanel";
 export * from "./UiReveal";
+export * from "./UiPopoverSurface";
 export * from "./UiScaledCanvas";
 export * from "./UiKbd";
 export * from "./TestStatusItem";

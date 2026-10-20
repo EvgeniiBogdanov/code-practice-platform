@@ -3,6 +3,7 @@ import { clsx } from "clsx";
 import { isNodeSelection, type Editor } from "@tiptap/core";
 import { useEditorState } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react/menus";
+import { AnimatePresence } from "motion/react";
 import {
   Bold,
   ChevronDown,
@@ -51,6 +52,15 @@ const MARK_BUTTONS: readonly MarkButton[] = [
     toggle: (editor) => editor.chain().focus().toggleCode().run(),
   },
 ];
+
+const VIEWPORT_MARGIN = 8;
+
+/** Ends the palette above the bottom of the screen; it scrolls when the room below is short. */
+const fitToViewport = (element: HTMLDivElement | null): void => {
+  if (!element) return;
+  const room = window.innerHeight - element.getBoundingClientRect().top - VIEWPORT_MARGIN;
+  element.style.setProperty("--menu-max-height", `${Math.max(room, 0)}px`);
+};
 
 interface SelectionToolbarProps {
   editor: Editor;
@@ -191,11 +201,13 @@ export const SelectionToolbar = ({ editor }: SelectionToolbarProps): JSX.Element
                 </span>
                 <ChevronDown size={12} />
               </button>
-              {isColorMenuOpen && (
-                <div className={styles.colorMenu}>
-                  <ColorMenu current={active.colors} lastUsed={lastUsed} onSelect={applyColors} />
-                </div>
-              )}
+              <AnimatePresence>
+                {isColorMenuOpen && (
+                  <div key="color-menu" ref={fitToViewport} className={styles.colorMenu}>
+                    <ColorMenu current={active.colors} lastUsed={lastUsed} onSelect={applyColors} />
+                  </div>
+                )}
+              </AnimatePresence>
             </div>
           </>
         )}
