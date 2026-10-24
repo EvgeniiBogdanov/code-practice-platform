@@ -1,0 +1,230 @@
+.panel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* The title, the state and the next step stay in place while the details below scroll. */
+.top {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  flex-shrink: 0;
+  padding: var(--space-5) var(--space-5) var(--space-4);
+}
+
+.body {
+  flex: 1;
+  min-height: 0;
+  padding: 0 var(--space-5) var(--space-5);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding-top: var(--space-5);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1-5);
+}
+
+.topRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.collapse {
+  flex-shrink: 0;
+  height: auto;
+  padding: var(--space-1);
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-semibold);
+  color: var(--text-main);
+}
+
+.badge {
+  padding: var(--space-0-5) var(--space-2);
+  border: 1px solid var(--skill-tone-border);
+  border-radius: var(--radius-full);
+  font-size: var(--fs-caption);
+  color: var(--skill-tone);
+  background: var(--skill-tone-bg);
+}
+
+.summary {
+  margin: 0;
+  font-size: var(--fs-body-sm);
+  color: var(--text-muted);
+}
+
+.percent {
+  color: var(--skill-tone);
+  font-weight: var(--fw-semibold);
+}
+
+.cta {
+  align-self: flex-start;
+  max-width: 100%;
+  text-decoration: none;
+}
+
+.ctaText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.done {
+  margin: 0;
+  font-size: var(--fs-body-sm);
+  color: var(--accent-green);
+}
+
+.subheading {
+  margin: 0 0 var(--space-2);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-medium);
+  color: var(--text-muted);
+}
+
+.linkGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-4);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1-5);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  height: auto;
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--skill-tone-border);
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--text-main);
+  font: inherit;
+  font-size: var(--fs-caption);
+  cursor: pointer;
+}
+
+.chip:hover {
+  border-color: var(--border-hover);
+}
+
+.chip:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+.empty {
+  font-size: var(--fs-caption);
+  color: var(--text-muted);
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.stepTitle {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  color: var(--text-main);
+}
+
+.stepCount {
+  font-weight: var(--fw-regular);
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.taskList {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.taskRow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-1-5) var(--space-2);
+  margin: 0 calc(-1 * var(--space-2));
+  border-radius: var(--radius-xs);
+  color: var(--text-main);
+  text-decoration: none;
+}
+
+.taskRow:hover {
+  background: var(--bg-subtle);
+}
+
+.taskRow:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: -2px;
+}
+
+.taskIcon {
+  flex-shrink: 0;
+  margin-top: var(--space-0-5);
+  color: var(--skill-tone);
+}
+
+.taskText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-0-5);
+  min-width: 0;
+}
+
+.taskTitle {
+  font-size: var(--fs-label);
+  line-height: 1.35;
+}
+
+.taskMeta {
+  font-size: var(--fs-caption);
+  color: var(--text-muted);
+}

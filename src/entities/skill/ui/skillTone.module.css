@@ -1,0 +1,30 @@
+/* One class per skill tone; consumers read the colours through the --skill-tone-* properties. */
+.danger {
+  --skill-tone: var(--accent-red);
+  --skill-tone-bg: var(--accent-red-bg);
+  --skill-tone-border: var(--accent-red-border);
+}
+
+.warning {
+  --skill-tone: var(--accent-amber);
+  --skill-tone-bg: var(--accent-amber-bg);
+  --skill-tone-border: var(--accent-amber-border);
+}
+
+.accent {
+  --skill-tone: var(--accent-blue);
+  --skill-tone-bg: var(--accent-blue-bg);
+  --skill-tone-border: var(--border-color);
+}
+
+.success {
+  --skill-tone: var(--accent-green);
+  --skill-tone-bg: var(--accent-green-bg);
+  --skill-tone-border: var(--border-color);
+}
+
+.neutral {
+  --skill-tone: var(--text-muted);
+  --skill-tone-bg: var(--bg-subtle);
+  --skill-tone-border: var(--border-color);
+}

@@ -13,10 +13,20 @@ export interface SidebarReactListProps {
 
 export const SidebarReactList = ({ className }: SidebarReactListProps): React.JSX.Element => {
   useSidebarSync();
-  const { currentTaskId, completedTasks, reviews, uiState, completedTotal, totalCount, tasks } =
-    useSidebarReactList();
+  const {
+    currentTaskId,
+    completedTasks,
+    reviews,
+    categoryState,
+    completedTotal,
+    totalCount,
+    tasks,
+  } = useSidebarReactList();
 
-  const categories = useMemo(() => getReactCategories(uiState, tasks), [uiState, tasks]);
+  const categories = useMemo(
+    () => getReactCategories(categoryState, tasks),
+    [categoryState, tasks]
+  );
 
   return (
     <div className={clsx(styles.listContainer, className)}>

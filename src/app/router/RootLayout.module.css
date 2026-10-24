@@ -23,6 +23,8 @@
 }
 
 .contentArea {
+  --edge-fade-color: var(--bg-canvas);
+
   flex: 1;
   min-width: 0;
   height: 100%;

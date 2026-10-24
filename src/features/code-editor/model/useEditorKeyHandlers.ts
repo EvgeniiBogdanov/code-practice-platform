@@ -1,7 +1,10 @@
-import React, { useCallback } from "react";
+import React, { useCallback, type RefObject } from "react";
 import { IntelliSenseState, type AppliedCompletion } from "./useIntelliSense";
 import { CodeHistoryState, type HistoryEntry } from "./useCodeHistory";
 import { MultiCursorState } from "./useMultiCursor";
+import type { FindReplaceState } from "./useFindReplace";
+import type { HoverSignaturesState } from "./useHoverSignatures";
+import type { SignatureHelpState } from "./useSignatureHelp";
 import type { ApplyEdit } from "./types";
 import {
   handleMarkupKey,
@@ -12,8 +15,15 @@ import {
   matchesKey,
 } from "../lib/editorKeyHelpers";
 import { handleTabKey } from "../lib/tabKey";
+import {
+  handleIntelliSenseKey,
+  handleMultiSelectionShortcuts,
+  handleUndoRedo,
+} from "../lib/editorKeyCommands";
 import { handleLineCommands } from "../lib/lineKeyHandlers";
 import { TAB_SIZE } from "../lib/editorUtils";
+
+const MODIFIER_KEYS = new Set(["Shift", "Control", "Alt", "Meta"]);
 
 export interface EditorKeyHandlersProps {
   code: string;
@@ -33,96 +43,25 @@ export interface EditorKeyHandlersProps {
   wordWrap?: boolean;
   readOnly?: boolean;
   filepath?: string;
+  textareaRef: RefObject<HTMLTextAreaElement | null>;
+  find: Pick<FindReplaceState, "handleShortcut">;
+  signatureHelp: Pick<SignatureHelpState, "signature" | "trigger" | "close">;
+  hoverSignatures: Pick<HoverSignaturesState, "closeHover">;
+  firstQuickFixRef: RefObject<HTMLButtonElement | null>;
+  goToDefinition: (position: number) => Promise<void>;
+  goToProblem: (direction: 1 | -1) => void;
+  toggleWordWrap: () => void;
+  onFormat: () => Promise<void>;
+  onRename: () => Promise<void>;
+  updateCursorCoords: () => void;
 }
 
-const isModKey = (e: React.KeyboardEvent, code: string): boolean =>
-  (e.metaKey || e.ctrlKey) && matchesKey(e, code);
-
-const handleUndoRedo = (
-  e: React.KeyboardEvent<HTMLTextAreaElement>,
-  code: string,
-  history: CodeHistoryState,
-  restoreEntry: (entry: HistoryEntry | null) => void
-): boolean => {
-  const isRedo = isModKey(e, "KeyY") || (isModKey(e, "KeyZ") && e.shiftKey);
-  if (!isRedo && !isModKey(e, "KeyZ")) return false;
-
-  e.preventDefault();
-  restoreEntry(isRedo ? history.redo(code) : history.undo(code));
-  return true;
-};
-
-const handleMultiSelectionShortcuts = (
-  e: React.KeyboardEvent<HTMLTextAreaElement>,
-  textarea: HTMLTextAreaElement,
-  code: string,
-  multiCursor?: MultiCursorState
-): boolean => {
-  if (!multiCursor) return false;
-
-  // Cmd+D (Mac) / Ctrl+D (Windows/Linux) / Alt+D: Select next match
-  if ((e.metaKey || e.ctrlKey || e.altKey) && !e.shiftKey && matchesKey(e, "KeyD")) {
-    e.preventDefault();
-    e.stopPropagation();
-    multiCursor.addNextMatch(code, textarea.selectionStart, textarea.selectionEnd, textarea);
-    return true;
-  }
-
-  // Cmd+Shift+L / Ctrl+Shift+L: Select all matches
-  if (isModKey(e, "KeyL") && e.shiftKey) {
-    e.preventDefault();
-    e.stopPropagation();
-    multiCursor.selectAllMatches(code, textarea.selectionStart, textarea.selectionEnd, textarea);
-    return true;
-  }
-
-  return false;
-};
-
-const handleIntelliSenseKey = (
-  e: React.KeyboardEvent<HTMLTextAreaElement>,
-  textarea: HTMLTextAreaElement,
-  code: string,
-  applyCompletion: (applied: AppliedCompletion) => void,
-  intelliSense: IntelliSenseState
-): boolean => {
-  if (!intelliSense.isOpen) return false;
-
-  if (e.key === "ArrowDown") {
-    e.preventDefault();
-    intelliSense.selectNext();
-    return true;
-  }
-  if (e.key === "ArrowUp") {
-    e.preventDefault();
-    intelliSense.selectPrev();
-    return true;
-  }
-  if (e.key === "Enter" || (e.key === "Tab" && !e.shiftKey)) {
-    e.preventDefault();
-    const applied = intelliSense.applySelected(code, textarea.selectionStart);
-    if (applied) applyCompletion(applied);
-    return true;
-  }
-  if (e.key === "Escape") {
-    e.preventDefault();
-    intelliSense.closeCompletions();
-    return true;
-  }
-  if (
-    e.key === "ArrowLeft" ||
-    e.key === "ArrowRight" ||
-    e.key === "Home" ||
-    e.key === "End" ||
-    e.key === "PageUp" ||
-    e.key === "PageDown"
-  ) {
-    setTimeout(() => {
-      intelliSense.handleCursorMove(code, textarea.selectionStart, textarea);
-    }, 0);
-  }
-  return false;
-};
+export interface EditorKeyHandlers {
+  /** Keys typed into the textarea. */
+  handleKeyDown: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+  /** Keys from other controls inside the editor, such as the find bar. */
+  handleOverlayKeyDown: (e: React.KeyboardEvent<HTMLElement>) => void;
+}
 
 export const useEditorKeyHandlers = ({
   code,
@@ -138,12 +77,103 @@ export const useEditorKeyHandlers = ({
   wordWrap = false,
   readOnly = false,
   filepath = "main.jsx",
-}: EditorKeyHandlersProps): {
-  handleKeyDown: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
-} => {
-  const handleKeyDown = useCallback(
+  textareaRef,
+  find,
+  signatureHelp,
+  hoverSignatures,
+  firstQuickFixRef,
+  goToDefinition,
+  goToProblem,
+  toggleWordWrap,
+  onFormat,
+  onRename,
+  updateCursorCoords,
+}: EditorKeyHandlersProps): EditorKeyHandlers => {
+  /** Editor-wide commands. Escape is ordered by runEscape, not here. */
+  const runCommand = useCallback(
+    (e: React.KeyboardEvent<HTMLElement>): boolean => {
+      if (e.key === "Escape") return false;
+      if (e.altKey && !e.shiftKey && !e.metaKey && !e.ctrlKey && matchesKey(e, "KeyZ")) {
+        e.preventDefault();
+        toggleWordWrap();
+        return true;
+      }
+      if (e.altKey && e.shiftKey && !e.metaKey && !e.ctrlKey && matchesKey(e, "KeyF")) {
+        e.preventDefault();
+        void onFormat();
+        return true;
+      }
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.code === "Space") {
+        e.preventDefault();
+        signatureHelp.trigger();
+        return true;
+      }
+      if (e.key === "F12" && textareaRef.current) {
+        e.preventDefault();
+        void goToDefinition(textareaRef.current.selectionStart);
+        return true;
+      }
+      if (e.key === "F8" && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        e.preventDefault();
+        goToProblem(e.shiftKey ? -1 : 1);
+        return true;
+      }
+      // Cmd/Ctrl+. moves focus to the quick fixes, as VS Code opens its light bulb.
+      if ((e.metaKey || e.ctrlKey) && e.code === "Period" && firstQuickFixRef.current) {
+        e.preventDefault();
+        firstQuickFixRef.current.focus();
+        return true;
+      }
+      // Find, replace, go to line (Cmd/Ctrl+F, Cmd/Ctrl+H, Ctrl+G, F3).
+      return find.handleShortcut(e);
+    },
+    [
+      toggleWordWrap,
+      onFormat,
+      signatureHelp,
+      textareaRef,
+      goToDefinition,
+      goToProblem,
+      firstQuickFixRef,
+      find,
+    ]
+  );
+
+  /** One Escape closes one widget: a parameter hint, then the find panel. */
+  const runEscape = useCallback(
+    (e: React.KeyboardEvent<HTMLElement>): boolean => {
+      if (e.key !== "Escape") return false;
+      // A handler that already took the key (such as the find bar's own Escape) keeps it.
+      if (!e.defaultPrevented && signatureHelp.signature) {
+        e.preventDefault();
+        signatureHelp.close();
+        return true;
+      }
+      return find.handleShortcut(e);
+    },
+    [signatureHelp, find]
+  );
+
+  const handleOverlayKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLElement>): void => {
+      // The textarea's keys are handled by handleKeyDown; they bubble through here too.
+      if (e.target instanceof HTMLTextAreaElement) return;
+      if (!MODIFIER_KEYS.has(e.key)) hoverSignatures.closeHover();
+      if (runCommand(e)) return;
+      runEscape(e);
+    },
+    [hoverSignatures, runCommand, runEscape]
+  );
+
+  const handleTextareaKey = useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
       const textarea = e.currentTarget;
+      if (!MODIFIER_KEYS.has(e.key)) hoverSignatures.closeHover();
+      if (e.key === "F2" && !readOnly) {
+        e.preventDefault();
+        void onRename();
+        return;
+      }
       // Safari reports the Enter that commits an IME composition with `isComposing` already
       // false but keyCode 229.
       if (e.nativeEvent?.isComposing || e.key === "Process" || e.keyCode === 229) return;
@@ -161,12 +191,16 @@ export const useEditorKeyHandlers = ({
         return;
       }
 
+      // 3. Editor-wide commands; they also work in read-only mode
+      if (runCommand(e)) return;
+
       if (readOnly) {
         if (e.altKey && (e.key === "ArrowUp" || e.key === "ArrowDown")) e.preventDefault();
+        runEscape(e);
         return;
       }
 
-      // 3. Multi-cursor active typing / backspace / delete / navigation
+      // 4. Multi-cursor active typing / backspace / delete / navigation
       // An open completion list owns Escape before the extra cursors do.
       const completionOwnsKey = e.key === "Escape" && intelliSense.isOpen;
       if (
@@ -177,7 +211,7 @@ export const useEditorKeyHandlers = ({
         return;
       }
 
-      // 4. Undo / Redo Shortcuts
+      // 5. Undo / Redo Shortcuts
       if (handleUndoRedo(e, code, history, restoreEntry)) {
         return;
       }
@@ -187,12 +221,12 @@ export const useEditorKeyHandlers = ({
         return;
       }
 
-      // 5. Move / Duplicate Lines (VS Code: Alt/Option + ArrowUp/ArrowDown)
+      // 6. Move / Duplicate Lines (VS Code: Alt/Option + ArrowUp/ArrowDown)
       if (handleLineMovement(e, textarea, code, applyEdit, intelliSense, readOnly)) {
         return;
       }
 
-      // 6. Comment Shortcuts (VS Code: Cmd/Ctrl + /, Shift + Alt/Option + A)
+      // 7. Comment Shortcuts (VS Code: Cmd/Ctrl + /, Shift + Alt/Option + A)
       if (handleCommentShortcuts(e, textarea, code, applyEdit, intelliSense, filepath, readOnly)) {
         return;
       }
@@ -208,7 +242,7 @@ export const useEditorKeyHandlers = ({
         return;
       }
 
-      // 7. IntelliSense navigation and dismissal
+      // 8. IntelliSense navigation and dismissal
       const acceptCompletion =
         applyCompletion ??
         ((applied: AppliedCompletion) =>
@@ -217,23 +251,26 @@ export const useEditorKeyHandlers = ({
         return;
       }
 
-      // 8. Snippet fields (Tab / Shift+Tab)
+      // 9. Escape closes the parameter hint or find panel once no completion list took it
+      if (runEscape(e)) return;
+
+      // 10. Snippet fields (Tab / Shift+Tab)
       if (e.key === "Tab" && jumpToTabStop?.(e.shiftKey ? -1 : 1)) {
         e.preventDefault();
         return;
       }
 
-      // 9. Tab key indentation
+      // 11. Tab key indentation
       if (handleTabKey(e, textarea, code, applyEdit, tabSize)) {
         return;
       }
 
-      // 10. Enter key auto-indentation
+      // 12. Enter key auto-indentation
       if (handleEnterKey(e, textarea, code, applyEdit, tabSize)) {
         return;
       }
 
-      // 11. Matching Pair Insertion & Deletion
+      // 13. Matching Pair Insertion & Deletion
       handlePairsAndBackspace(e, textarea, code, applyEdit, filepath);
     },
     [
@@ -246,12 +283,25 @@ export const useEditorKeyHandlers = ({
       history,
       multiCursor,
       onRun,
+      onRename,
       tabSize,
       wordWrap,
       readOnly,
       filepath,
+      hoverSignatures,
+      runCommand,
+      runEscape,
     ]
   );
 
-  return { handleKeyDown };
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
+      handleTextareaKey(e);
+      // The caret moves after the browser applies the key, so it is read one tick later.
+      setTimeout(updateCursorCoords, 0);
+    },
+    [handleTextareaKey, updateCursorCoords]
+  );
+
+  return { handleKeyDown, handleOverlayKeyDown };
 };

@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { Link } from "@tanstack/react-router";
 import { ChevronDown, FileText, Folder, Check, X, RotateCcw } from "lucide-react";
 import { clsx } from "clsx";
-import { selectIsTaskCompleted } from "@/entities/progress";
+import { isTaskCompleted } from "@/entities/progress";
 import { isTaskDue, useReviewStore } from "@/entities/review";
 import { getScriptGroupMeta, SECTIONS_CONFIG } from "@/entities/task";
 import { useTaskSection } from "@/entities/task/catalog";
@@ -33,7 +33,7 @@ export const FinderJsHierarchy = ({
 
   const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
 
-  const { jsGroupsList, jsSubgroupsList, progressState, reviews } = useJsHierarchyLists(
+  const { jsGroupsList, jsSubgroupsList, completedTasks, reviews } = useJsHierarchyLists(
     currentGroupName,
     section
   );
@@ -212,10 +212,10 @@ export const FinderJsHierarchy = ({
                         (!currentSubgroupName || t.subgroup === currentSubgroupName)
                     )
                     .map((t) => {
-                      const isSolved = selectIsTaskCompleted(progressState, t.id);
+                      const isSolved = isTaskCompleted(completedTasks[String(t.id)]);
                       const isUnsolved =
-                        progressState.completedTasks[t.id] === "unsolved" ||
-                        progressState.completedTasks[String(t.id)] === "unsolved";
+                        completedTasks[t.id] === "unsolved" ||
+                        completedTasks[String(t.id)] === "unsolved";
                       const isExcluded = excludedTaskIds.includes(String(t.id));
                       const rev = reviews[String(t.id)];
                       const isDueToday = isTaskDue(rev);

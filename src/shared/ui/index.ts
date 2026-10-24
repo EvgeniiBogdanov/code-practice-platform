@@ -64,3 +64,4 @@ export * from "./UiKbd";
 export * from "./TestStatusItem";
 export * from "./KeepAlivePane";
 export * from "./ViewModeFrame";
+export * from "./ScrollEdgeFade";

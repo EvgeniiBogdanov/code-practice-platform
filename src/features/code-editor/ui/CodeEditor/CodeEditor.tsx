@@ -17,7 +17,6 @@ import { SignatureHelpCard } from "../SignatureHelpCard";
 import { HighlightedCode } from "../HighlightedCode";
 import { EditorStatusBar } from "../EditorStatusBar";
 import styles from "./CodeEditor.module.css";
-import { applyRenameEdits, getRenamedSelection } from "../../lib/renameSymbol";
 
 export type { CodeEditorProps };
 
@@ -69,7 +68,6 @@ export const CodeEditor = ({
     firstQuickFixRef,
     applyQuickFix,
     goToNextProblem,
-    requestRename,
     isAnalysisPending,
     highlightedLines,
     lineCount,
@@ -81,20 +79,17 @@ export const CodeEditor = ({
     handleToggleLinter,
     handleFormat,
     formatNotice,
-    applyEdit,
     applyCompletion,
     undo,
     redo,
     getCode,
-    selectAfterRender,
-    updateCursorCoords,
     handleScroll,
     handleTextChange,
     handlePaste,
     handleTextareaClick,
     handleTextareaBlur,
     handleCursorKeyUp,
-    handleEditorKeyDown,
+    handleOverlayKeyDown,
     handleKeyDown,
   } = useCodeEditor({
     code,
@@ -107,56 +102,12 @@ export const CodeEditor = ({
     isFullscreen,
     onToggleFullscreen,
     onFileSelect,
+    onFilesChange,
   });
 
   // Tabs only show names: typing in a file must not hand the toolbar a new array.
   const fileNamesKey = files.map((file) => file.name ?? "").join("\n");
   const fileNames = useMemo(() => (fileNamesKey ? fileNamesKey.split("\n") : []), [fileNamesKey]);
-
-  const handleRename = async (): Promise<void> => {
-    const cursor = textareaRef.current?.selectionStart;
-    if (readOnly || cursor === undefined) return;
-    const edits = await requestRename(cursor);
-    const currentEdit = edits.find(
-      (edit) => edit.filepath === filepath && edit.start <= cursor && cursor <= edit.end
-    );
-    if (!currentEdit) return;
-    const oldName = code.slice(currentEdit.start, currentEdit.end);
-    const isTag =
-      edits.length === 2 &&
-      edits.every((edit) => {
-        if (edit.filepath !== filepath) return false;
-        const before = code.slice(Math.max(0, edit.start - 2), edit.start);
-        return before.endsWith("<") || before.endsWith("</");
-      });
-    const nextName = window.prompt("Новое имя", oldName)?.trim();
-    if (!nextName || nextName === oldName) return;
-    const valid = isTag ? /^[A-Za-z][\w.:-]*$/.test(nextName) : /^[A-Za-z_$][\w$]*$/.test(nextName);
-    if (!valid) return;
-    const currentFiles = files.length
-      ? files.map((file) => ({
-          name: file.name ?? file.filepath ?? "",
-          code: (file.name ?? file.filepath) === filepath ? code : (file.code ?? ""),
-        }))
-      : [{ name: filepath, code }];
-    const renamed = applyRenameEdits(currentFiles, edits, nextName);
-    const active = renamed.find((file) => file.name === filepath);
-    if (!active) return;
-    const renamedSelection = getRenamedSelection(edits, currentEdit, nextName);
-    const touchesOtherFiles = renamed.some(
-      (file) =>
-        file.name !== filepath &&
-        file.code !== currentFiles.find((item) => item.name === file.name)?.code
-    );
-    if (!touchesOtherFiles) {
-      applyEdit(active.code, renamedSelection.start, renamedSelection.end);
-      return;
-    }
-    if (!onFilesChange) return;
-    selectAfterRender(renamedSelection.start, renamedSelection.end);
-    onFilesChange(renamed);
-    history.pushHistory(active.code, renamedSelection.end);
-  };
 
   const isHoverVisible =
     (hoverSignatures.hoverInfo !== null || hoverSignatures.hoverProblems.length > 0) &&
@@ -175,7 +126,7 @@ export const CodeEditor = ({
         className
       )}
       style={{ "--editor-font-size": `${fontSize}px` } as React.CSSProperties}
-      onKeyDown={handleEditorKeyDown}
+      onKeyDown={handleOverlayKeyDown}
     >
       <Tooltip.Provider delayDuration={600} skipDelayDuration={300}>
         <EditorToolbar
@@ -257,15 +208,7 @@ export const CodeEditor = ({
               readOnly={readOnly}
               onChange={handleTextChange}
               onPaste={handlePaste}
-              onKeyDown={(e) => {
-                if (e.key === "F2" && !readOnly) {
-                  e.preventDefault();
-                  void handleRename();
-                  return;
-                }
-                handleKeyDown(e);
-                setTimeout(updateCursorCoords, 0);
-              }}
+              onKeyDown={handleKeyDown}
               onKeyUp={handleCursorKeyUp}
               onClick={handleTextareaClick}
               onBlur={handleTextareaBlur}

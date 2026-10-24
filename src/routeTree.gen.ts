@@ -15,17 +15,21 @@ import { Route as HomeRouteImport } from './routes/home'
 import { Route as AlgorithmsIndexRouteImport } from './routes/algorithms/index'
 import { Route as AlgorithmsTaskIdRouteImport } from './routes/algorithms/$taskId'
 import { Route as AlgorithmsFavoritesRouteImport } from './routes/algorithms/favorites'
+import { Route as AlgorithmsSkillsRouteImport } from './routes/algorithms/skills'
 import { Route as JavascriptIndexRouteImport } from './routes/javascript/index'
 import { Route as JavascriptTaskIdRouteImport } from './routes/javascript/$taskId'
 import { Route as JavascriptFavoritesRouteImport } from './routes/javascript/favorites'
+import { Route as JavascriptSkillsRouteImport } from './routes/javascript/skills'
 import { Route as OpenIndexRouteImport } from './routes/open/index'
 import { Route as OpenTaskIdRouteImport } from './routes/open/$taskId'
 import { Route as ReactIndexRouteImport } from './routes/react/index'
 import { Route as ReactTaskIdRouteImport } from './routes/react/$taskId'
 import { Route as ReactFavoritesRouteImport } from './routes/react/favorites'
+import { Route as ReactSkillsRouteImport } from './routes/react/skills'
 import { Route as TypescriptIndexRouteImport } from './routes/typescript/index'
 import { Route as TypescriptTaskIdRouteImport } from './routes/typescript/$taskId'
 import { Route as TypescriptFavoritesRouteImport } from './routes/typescript/favorites'
+import { Route as TypescriptSkillsRouteImport } from './routes/typescript/skills'
 import { Route as OpenAlgorithmsTaskIdRouteImport } from './routes/open/algorithms/$taskId'
 import { Route as OpenJavascriptTaskIdRouteImport } from './routes/open/javascript/$taskId'
 import { Route as OpenReactTaskIdRouteImport } from './routes/open/react/$taskId'
@@ -61,6 +65,11 @@ const AlgorithmsFavoritesRoute = AlgorithmsFavoritesRouteImport.update({
   path: '/algorithms/favorites',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AlgorithmsSkillsRoute = AlgorithmsSkillsRouteImport.update({
+  id: '/algorithms/skills',
+  path: '/algorithms/skills',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const JavascriptIndexRoute = JavascriptIndexRouteImport.update({
   id: '/javascript/',
   path: '/javascript/',
@@ -74,6 +83,11 @@ const JavascriptTaskIdRoute = JavascriptTaskIdRouteImport.update({
 const JavascriptFavoritesRoute = JavascriptFavoritesRouteImport.update({
   id: '/javascript/favorites',
   path: '/javascript/favorites',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JavascriptSkillsRoute = JavascriptSkillsRouteImport.update({
+  id: '/javascript/skills',
+  path: '/javascript/skills',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OpenIndexRoute = OpenIndexRouteImport.update({
@@ -101,6 +115,11 @@ const ReactFavoritesRoute = ReactFavoritesRouteImport.update({
   path: '/react/favorites',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReactSkillsRoute = ReactSkillsRouteImport.update({
+  id: '/react/skills',
+  path: '/react/skills',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TypescriptIndexRoute = TypescriptIndexRouteImport.update({
   id: '/typescript/',
   path: '/typescript/',
@@ -114,6 +133,11 @@ const TypescriptTaskIdRoute = TypescriptTaskIdRouteImport.update({
 const TypescriptFavoritesRoute = TypescriptFavoritesRouteImport.update({
   id: '/typescript/favorites',
   path: '/typescript/favorites',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TypescriptSkillsRoute = TypescriptSkillsRouteImport.update({
+  id: '/typescript/skills',
+  path: '/typescript/skills',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OpenAlgorithmsTaskIdRoute = OpenAlgorithmsTaskIdRouteImport.update({
@@ -143,13 +167,17 @@ export interface FileRoutesByFullPath {
   '/home': typeof HomeRoute
   '/algorithms/$taskId': typeof AlgorithmsTaskIdRoute
   '/algorithms/favorites': typeof AlgorithmsFavoritesRoute
+  '/algorithms/skills': typeof AlgorithmsSkillsRoute
   '/javascript/$taskId': typeof JavascriptTaskIdRoute
   '/javascript/favorites': typeof JavascriptFavoritesRoute
+  '/javascript/skills': typeof JavascriptSkillsRoute
   '/open/$taskId': typeof OpenTaskIdRoute
   '/react/$taskId': typeof ReactTaskIdRoute
   '/react/favorites': typeof ReactFavoritesRoute
+  '/react/skills': typeof ReactSkillsRoute
   '/typescript/$taskId': typeof TypescriptTaskIdRoute
   '/typescript/favorites': typeof TypescriptFavoritesRoute
+  '/typescript/skills': typeof TypescriptSkillsRoute
   '/algorithms/': typeof AlgorithmsIndexRoute
   '/javascript/': typeof JavascriptIndexRoute
   '/open/': typeof OpenIndexRoute
@@ -166,13 +194,17 @@ export interface FileRoutesByTo {
   '/home': typeof HomeRoute
   '/algorithms/$taskId': typeof AlgorithmsTaskIdRoute
   '/algorithms/favorites': typeof AlgorithmsFavoritesRoute
+  '/algorithms/skills': typeof AlgorithmsSkillsRoute
   '/javascript/$taskId': typeof JavascriptTaskIdRoute
   '/javascript/favorites': typeof JavascriptFavoritesRoute
+  '/javascript/skills': typeof JavascriptSkillsRoute
   '/open/$taskId': typeof OpenTaskIdRoute
   '/react/$taskId': typeof ReactTaskIdRoute
   '/react/favorites': typeof ReactFavoritesRoute
+  '/react/skills': typeof ReactSkillsRoute
   '/typescript/$taskId': typeof TypescriptTaskIdRoute
   '/typescript/favorites': typeof TypescriptFavoritesRoute
+  '/typescript/skills': typeof TypescriptSkillsRoute
   '/algorithms': typeof AlgorithmsIndexRoute
   '/javascript': typeof JavascriptIndexRoute
   '/open': typeof OpenIndexRoute
@@ -190,13 +222,17 @@ export interface FileRoutesById {
   '/home': typeof HomeRoute
   '/algorithms/$taskId': typeof AlgorithmsTaskIdRoute
   '/algorithms/favorites': typeof AlgorithmsFavoritesRoute
+  '/algorithms/skills': typeof AlgorithmsSkillsRoute
   '/javascript/$taskId': typeof JavascriptTaskIdRoute
   '/javascript/favorites': typeof JavascriptFavoritesRoute
+  '/javascript/skills': typeof JavascriptSkillsRoute
   '/open/$taskId': typeof OpenTaskIdRoute
   '/react/$taskId': typeof ReactTaskIdRoute
   '/react/favorites': typeof ReactFavoritesRoute
+  '/react/skills': typeof ReactSkillsRoute
   '/typescript/$taskId': typeof TypescriptTaskIdRoute
   '/typescript/favorites': typeof TypescriptFavoritesRoute
+  '/typescript/skills': typeof TypescriptSkillsRoute
   '/algorithms/': typeof AlgorithmsIndexRoute
   '/javascript/': typeof JavascriptIndexRoute
   '/open/': typeof OpenIndexRoute
@@ -215,13 +251,17 @@ export interface FileRouteTypes {
     | '/home'
     | '/algorithms/$taskId'
     | '/algorithms/favorites'
+    | '/algorithms/skills'
     | '/javascript/$taskId'
     | '/javascript/favorites'
+    | '/javascript/skills'
     | '/open/$taskId'
     | '/react/$taskId'
     | '/react/favorites'
+    | '/react/skills'
     | '/typescript/$taskId'
     | '/typescript/favorites'
+    | '/typescript/skills'
     | '/algorithms/'
     | '/javascript/'
     | '/open/'
@@ -238,13 +278,17 @@ export interface FileRouteTypes {
     | '/home'
     | '/algorithms/$taskId'
     | '/algorithms/favorites'
+    | '/algorithms/skills'
     | '/javascript/$taskId'
     | '/javascript/favorites'
+    | '/javascript/skills'
     | '/open/$taskId'
     | '/react/$taskId'
     | '/react/favorites'
+    | '/react/skills'
     | '/typescript/$taskId'
     | '/typescript/favorites'
+    | '/typescript/skills'
     | '/algorithms'
     | '/javascript'
     | '/open'
@@ -261,13 +305,17 @@ export interface FileRouteTypes {
     | '/home'
     | '/algorithms/$taskId'
     | '/algorithms/favorites'
+    | '/algorithms/skills'
     | '/javascript/$taskId'
     | '/javascript/favorites'
+    | '/javascript/skills'
     | '/open/$taskId'
     | '/react/$taskId'
     | '/react/favorites'
+    | '/react/skills'
     | '/typescript/$taskId'
     | '/typescript/favorites'
+    | '/typescript/skills'
     | '/algorithms/'
     | '/javascript/'
     | '/open/'
@@ -285,13 +333,17 @@ export interface RootRouteChildren {
   HomeRoute: typeof HomeRoute
   AlgorithmsTaskIdRoute: typeof AlgorithmsTaskIdRoute
   AlgorithmsFavoritesRoute: typeof AlgorithmsFavoritesRoute
+  AlgorithmsSkillsRoute: typeof AlgorithmsSkillsRoute
   JavascriptTaskIdRoute: typeof JavascriptTaskIdRoute
   JavascriptFavoritesRoute: typeof JavascriptFavoritesRoute
+  JavascriptSkillsRoute: typeof JavascriptSkillsRoute
   OpenTaskIdRoute: typeof OpenTaskIdRoute
   ReactTaskIdRoute: typeof ReactTaskIdRoute
   ReactFavoritesRoute: typeof ReactFavoritesRoute
+  ReactSkillsRoute: typeof ReactSkillsRoute
   TypescriptTaskIdRoute: typeof TypescriptTaskIdRoute
   TypescriptFavoritesRoute: typeof TypescriptFavoritesRoute
+  TypescriptSkillsRoute: typeof TypescriptSkillsRoute
   AlgorithmsIndexRoute: typeof AlgorithmsIndexRoute
   JavascriptIndexRoute: typeof JavascriptIndexRoute
   OpenIndexRoute: typeof OpenIndexRoute
@@ -347,6 +399,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AlgorithmsFavoritesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/algorithms/skills': {
+      id: '/algorithms/skills'
+      path: '/algorithms/skills'
+      fullPath: '/algorithms/skills'
+      preLoaderRoute: typeof AlgorithmsSkillsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/javascript/': {
       id: '/javascript/'
       path: '/javascript'
@@ -366,6 +425,13 @@ declare module '@tanstack/react-router' {
       path: '/javascript/favorites'
       fullPath: '/javascript/favorites'
       preLoaderRoute: typeof JavascriptFavoritesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/javascript/skills': {
+      id: '/javascript/skills'
+      path: '/javascript/skills'
+      fullPath: '/javascript/skills'
+      preLoaderRoute: typeof JavascriptSkillsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/open/': {
@@ -403,6 +469,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReactFavoritesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/react/skills': {
+      id: '/react/skills'
+      path: '/react/skills'
+      fullPath: '/react/skills'
+      preLoaderRoute: typeof ReactSkillsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/typescript/': {
       id: '/typescript/'
       path: '/typescript'
@@ -422,6 +495,13 @@ declare module '@tanstack/react-router' {
       path: '/typescript/favorites'
       fullPath: '/typescript/favorites'
       preLoaderRoute: typeof TypescriptFavoritesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/typescript/skills': {
+      id: '/typescript/skills'
+      path: '/typescript/skills'
+      fullPath: '/typescript/skills'
+      preLoaderRoute: typeof TypescriptSkillsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/open/algorithms/$taskId': {
@@ -461,13 +541,17 @@ const rootRouteChildren: RootRouteChildren = {
   HomeRoute: HomeRoute,
   AlgorithmsTaskIdRoute: AlgorithmsTaskIdRoute,
   AlgorithmsFavoritesRoute: AlgorithmsFavoritesRoute,
+  AlgorithmsSkillsRoute: AlgorithmsSkillsRoute,
   JavascriptTaskIdRoute: JavascriptTaskIdRoute,
   JavascriptFavoritesRoute: JavascriptFavoritesRoute,
+  JavascriptSkillsRoute: JavascriptSkillsRoute,
   OpenTaskIdRoute: OpenTaskIdRoute,
   ReactTaskIdRoute: ReactTaskIdRoute,
   ReactFavoritesRoute: ReactFavoritesRoute,
+  ReactSkillsRoute: ReactSkillsRoute,
   TypescriptTaskIdRoute: TypescriptTaskIdRoute,
   TypescriptFavoritesRoute: TypescriptFavoritesRoute,
+  TypescriptSkillsRoute: TypescriptSkillsRoute,
   AlgorithmsIndexRoute: AlgorithmsIndexRoute,
   JavascriptIndexRoute: JavascriptIndexRoute,
   OpenIndexRoute: OpenIndexRoute,

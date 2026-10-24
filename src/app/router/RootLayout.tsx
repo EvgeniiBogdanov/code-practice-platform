@@ -12,6 +12,7 @@ import { useUIStore } from "@/entities/ui-state";
 import { useGlobalShortcuts } from "@/shared/lib/hooks";
 import { initSolutionsCache } from "@/shared/lib/storage";
 import { TooltipProvider, UiLoader } from "@/shared/ui";
+import { ContentArea } from "./ContentArea";
 import styles from "./RootLayout.module.css";
 
 const FinderBreadcrumbs = lazy(() =>
@@ -103,11 +104,11 @@ export const RootLayout = memo((): React.JSX.Element => {
                 </Suspense>
               }
             />
-            <main className={styles.contentArea} ref={contentAreaRef}>
+            <ContentArea ref={contentAreaRef} className={styles.contentArea}>
               <Suspense fallback={<UiLoader center size="lg" />}>
                 <Outlet />
               </Suspense>
-            </main>
+            </ContentArea>
           </div>
         </div>
       )}

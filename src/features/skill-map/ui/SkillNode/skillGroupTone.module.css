@@ -1,0 +1,48 @@
+/* One class per group colour token; a card reads its group colour through --group-tone. */
+.accent-amber {
+  --group-tone: var(--accent-amber);
+}
+
+.accent-yellow-icon {
+  --group-tone: var(--accent-yellow-icon);
+}
+
+.accent-yellow {
+  --group-tone: var(--accent-yellow);
+}
+
+.accent-orange {
+  --group-tone: var(--accent-orange);
+}
+
+.accent-red {
+  --group-tone: var(--accent-red);
+}
+
+.accent-pink {
+  --group-tone: var(--accent-pink);
+}
+
+.accent-purple {
+  --group-tone: var(--accent-purple);
+}
+
+.accent-blue {
+  --group-tone: var(--accent-blue);
+}
+
+.accent-cyan {
+  --group-tone: var(--accent-cyan);
+}
+
+.accent-green {
+  --group-tone: var(--accent-green);
+}
+
+.accent-gray {
+  --group-tone: var(--accent-gray);
+}
+
+.color-ts {
+  --group-tone: var(--color-ts);
+}

@@ -1,8 +1,8 @@
 import { memo, useState } from "react";
-import { Settings, Database, Palette, X, UserRound, LogOut, Code2 } from "lucide-react";
+import { Settings, Database, Palette, UserRound, LogOut, Code2, X } from "lucide-react";
 import { clsx } from "clsx";
 import { useLocalAccountStore } from "@/shared/auth";
-import { Modal } from "@/shared/ui";
+import { Modal, ScrollEdgeFade, Tooltip } from "@/shared/ui";
 import { useSettingsModal } from "../model/useSettingsModal";
 import { SettingsAccountSection } from "./SettingsAccountSection";
 import { SettingsResetSection } from "./SettingsResetSection";
@@ -33,6 +33,7 @@ const TAB_COPY: Record<SettingsTabType, { title: string; subtitle: string }> = {
 
 export const SettingsModal = memo(() => {
   const [selectedTab, setSelectedTab] = useState<SettingsTabType | null>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
   const accountName = useLocalAccountStore((state) => state.account?.name);
   const signOut = useLocalAccountStore((state) => state.signOut);
 
@@ -59,7 +60,10 @@ export const SettingsModal = memo(() => {
   const [wasOpen, setWasOpen] = useState(isOpen);
   if (wasOpen !== isOpen) {
     setWasOpen(isOpen);
-    if (isOpen) setSelectedTab(null);
+    if (isOpen) {
+      setSelectedTab(null);
+      setIsScrolled(false);
+    }
   }
   const activeTab = selectedTab ?? (accountName ? "account" : "customization");
 
@@ -78,7 +82,6 @@ export const SettingsModal = memo(() => {
             signOutConfirmOpen
           )
         }
-        customHeader={<></>}
         className={styles.settingsModalCard}
         contentClassName={styles.settingsModalBody}
       >
@@ -150,16 +153,24 @@ export const SettingsModal = memo(() => {
         </aside>
 
         <main className={styles.settingsMain}>
-          <button
-            type="button"
-            className={styles.closeBtn}
-            onClick={() => setIsOpen(false)}
-            aria-label="Закрыть настройки"
-          >
-            <X size={16} />
-          </button>
+          <div className={styles.mainHeader}>
+            <Tooltip content="Закрыть (Esc)" side="bottom">
+              <button
+                type="button"
+                className={styles.closeBtn}
+                onClick={() => setIsOpen(false)}
+                aria-label="Закрыть настройки"
+              >
+                <X size={16} />
+              </button>
+            </Tooltip>
+          </div>
 
-          <div className={styles.mainScrollable}>
+          <div
+            className={styles.mainScrollable}
+            onScroll={(event): void => setIsScrolled(event.currentTarget.scrollTop > 0)}
+          >
+            <ScrollEdgeFade isVisible={isScrolled} />
             <div className={styles.pageHeader}>
               <h2 className={styles.pageTitle}>{TAB_COPY[activeTab].title}</h2>
               <p className={styles.pageSubtitle}>{TAB_COPY[activeTab].subtitle}</p>

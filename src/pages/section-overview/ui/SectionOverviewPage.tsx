@@ -17,7 +17,7 @@ export const SectionOverviewPage = memo(
       stats,
       groups,
       isSolved,
-      progressState,
+      completedTasks,
       reviews,
       isTaskDue,
       isInitialized,
@@ -45,7 +45,7 @@ export const SectionOverviewPage = memo(
           section={sectionMeta.id}
           groups={groups}
           isSolved={isSolved}
-          completedTasks={progressState.completedTasks}
+          completedTasks={completedTasks}
           reviews={reviews}
           isDue={isTaskDue}
           isLoading={!isInitialized}

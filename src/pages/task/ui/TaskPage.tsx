@@ -43,6 +43,11 @@ import { MaterialsTab } from "./MaterialsTab";
 import { QuestionsTab } from "./QuestionsTab";
 import styles from "./TaskPage.module.css";
 
+// The skill index and math load with the chip, not with every task.
+const TaskSkillChip = React.lazy(() =>
+  import("@/features/skill-map").then(({ TaskSkillChip: component }) => ({ default: component }))
+);
+
 export interface TaskPageProps {
   taskId: string;
   section: SectionType;
@@ -265,7 +270,11 @@ const TaskPageView = React.memo<TaskPageViewProps>(
                     />
                   )}
                 </h1>
-                <TaskMetaBadges task={task} />
+                <TaskMetaBadges task={task}>
+                  <React.Suspense fallback={null}>
+                    <TaskSkillChip taskId={task.id} />
+                  </React.Suspense>
+                </TaskMetaBadges>
               </div>
             ) : (
               <div className={styles.taskTitleContainer}>

@@ -1,0 +1,48 @@
+.scroller {
+  padding: var(--space-2);
+}
+
+.canvas {
+  --skill-node-width: 240px;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  width: 100%;
+}
+
+/* Cards of a depth share the row and wrap onto a new line when the screen is narrow. */
+.level {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  justify-content: center;
+  gap: var(--space-4) var(--space-3);
+}
+
+.edges {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.edge {
+  fill: none;
+  stroke-width: 1;
+  opacity: 0.2;
+  transition: opacity var(--transition-standard);
+}
+
+.edgeActive {
+  stroke-width: 1.5;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .edge {
+    transition: none;
+  }
+}

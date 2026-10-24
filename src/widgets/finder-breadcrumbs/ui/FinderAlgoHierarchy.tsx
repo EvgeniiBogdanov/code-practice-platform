@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { Link } from "@tanstack/react-router";
 import { ChevronDown, FileText, Check, X, RotateCcw, Brain } from "lucide-react";
 import { clsx } from "clsx";
-import { useProgressStore, selectIsTaskCompleted } from "@/entities/progress";
+import { useProgressStore, isTaskCompleted } from "@/entities/progress";
 import { useReviewStore, isTaskDue, getGroupCompletionClass } from "@/entities/review";
 import { getAlgoGroupMeta, getAlgoGroupMetaByInfoId } from "@/entities/task/groups";
 import type { Task } from "@/entities/task/meta";
@@ -20,7 +20,7 @@ export const FinderAlgoHierarchy = ({
   toggleDropdown,
   closeAllDropdowns,
 }: FinderHierarchyProps) => {
-  const progressState = useProgressStore();
+  const completedTasks = useProgressStore((state) => state.completedTasks);
   const reviews = useReviewStore((state) => state.reviews);
   const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
   const { tasks } = useTaskSection("algorithms");
@@ -53,17 +53,13 @@ export const FinderAlgoHierarchy = ({
         (t) => !excludedTaskIds.includes(String(t.id))
       );
       const completedCount = activeGroupTasks.filter((t) =>
-        selectIsTaskCompleted(progressState, t.id)
+        isTaskCompleted(completedTasks[String(t.id)])
       ).length;
-      const completionClass = getGroupCompletionClass(
-        activeGroupTasks,
-        reviews,
-        progressState.completedTasks
-      );
+      const completionClass = getGroupCompletionClass(activeGroupTasks, reviews, completedTasks);
       const meta = getAlgoGroupMeta(name);
       return { name, tasks: activeGroupTasks, completedCount, completionClass, meta };
     });
-  }, [progressState, reviews, tasks, excludedTaskIds]);
+  }, [completedTasks, reviews, tasks, excludedTaskIds]);
 
   return (
     <>
@@ -169,10 +165,10 @@ export const FinderAlgoHierarchy = ({
                   {tasks
                     .filter((t) => t.group === currentGroupName)
                     .map((t) => {
-                      const isSolved = selectIsTaskCompleted(progressState, t.id);
+                      const isSolved = isTaskCompleted(completedTasks[String(t.id)]);
                       const isUnsolved =
-                        progressState.completedTasks[t.id] === "unsolved" ||
-                        progressState.completedTasks[String(t.id)] === "unsolved";
+                        completedTasks[t.id] === "unsolved" ||
+                        completedTasks[String(t.id)] === "unsolved";
                       const isExcluded = excludedTaskIds.includes(String(t.id));
                       const rev = reviews[String(t.id)];
                       const isDueToday = isTaskDue(rev);

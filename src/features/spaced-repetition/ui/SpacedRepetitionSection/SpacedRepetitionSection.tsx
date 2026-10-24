@@ -2,6 +2,7 @@ import { useState, memo, lazy, Suspense } from "react";
 import { Brain, X } from "lucide-react";
 import { clsx } from "clsx";
 import { Task } from "@/entities/task";
+import { ScrollEdgeFade, Tooltip } from "@/shared/ui";
 import { useSpacedRepetitionData } from "../../model/useSpacedRepetitionData";
 import { SpacedRepetitionKpiGrid } from "./SpacedRepetitionKpiGrid";
 import { SpacedRepetitionTabBar, SRTabType } from "./SpacedRepetitionTabBar";
@@ -59,6 +60,7 @@ export const SpacedRepetitionSection = memo(
     className,
   }: Readonly<SpacedRepetitionSectionProps>): React.JSX.Element => {
     const [activeTab, setActiveTab] = useState<SRTabType>("distribution");
+    const [isScrolled, setIsScrolled] = useState(false);
 
     const {
       reviews,
@@ -106,86 +108,91 @@ export const SpacedRepetitionSection = memo(
 
         <main className={styles.modalMain}>
           {onCloseModal && (
-            <button
-              type="button"
-              className={styles.closeBtn}
-              onClick={onCloseModal}
-              aria-label="Закрыть статистику повторений"
-            >
-              <X size={16} />
-            </button>
+            <div className={styles.mainHeader}>
+              <Tooltip content="Закрыть (Esc)" side="bottom">
+                <button
+                  type="button"
+                  className={styles.closeBtn}
+                  onClick={onCloseModal}
+                  aria-label="Закрыть статистику повторений"
+                >
+                  <X size={16} />
+                </button>
+              </Tooltip>
+            </div>
           )}
 
-          <div className={styles.pageHeader}>
-            <h2 className={styles.pageTitle}>{TAB_TITLES[activeTab]}</h2>
-            <p className={styles.pageSubtitle}>
-              {TAB_SUBTITLES[activeTab]}
-              {scopeLabel ? ` (${scopeLabel})` : ""}
-            </p>
-          </div>
-
           <div
-            className={clsx(
-              styles.mainScrollable,
-              isCompactPadding && styles.mainScrollableCompact
-            )}
+            className={styles.mainScrollable}
+            onScroll={(event): void => setIsScrolled(event.currentTarget.scrollTop > 0)}
           >
-            {activeTab === "distribution" && (
-              <div className={styles.viewContent}>
-                <SpacedRepetitionKpiGrid
-                  totalReviewed={masteryStats.totalReviewed}
-                  totalCount={masteryStats.totalCount}
-                  dueToday={masteryStats.dueToday}
-                  mastered={masteryStats.mastered}
-                  masteryPercent={masteryPercent}
-                  avgInterval={avgInterval}
-                  solvedToday={dailyTaskStats.solved}
-                  unsolvedToday={dailyTaskStats.unsolved}
-                />
-                <hr className={styles.sectionDivider} />
-                <Suspense fallback={<SpacedRepetitionDistributionSkeleton />}>
-                  <SpacedRepetitionDistributionTab
-                    masteryStats={masteryStats}
-                    scopeLabel={scopeLabel}
+            <ScrollEdgeFade isVisible={isScrolled} />
+            <div className={clsx(styles.tabContent, isCompactPadding && styles.tabContentCompact)}>
+              <div className={styles.pageHeader}>
+                <h2 className={styles.pageTitle}>{TAB_TITLES[activeTab]}</h2>
+                <p className={styles.pageSubtitle}>
+                  {TAB_SUBTITLES[activeTab]}
+                  {scopeLabel ? ` (${scopeLabel})` : ""}
+                </p>
+              </div>
+
+              {activeTab === "distribution" && (
+                <div className={styles.viewContent}>
+                  <SpacedRepetitionKpiGrid
+                    totalReviewed={masteryStats.totalReviewed}
+                    totalCount={masteryStats.totalCount}
+                    dueToday={masteryStats.dueToday}
+                    mastered={masteryStats.mastered}
+                    masteryPercent={masteryPercent}
+                    avgInterval={avgInterval}
+                    solvedToday={dailyTaskStats.solved}
+                    unsolvedToday={dailyTaskStats.unsolved}
+                  />
+                  <hr className={styles.sectionDivider} />
+                  <Suspense fallback={<SpacedRepetitionDistributionSkeleton />}>
+                    <SpacedRepetitionDistributionTab
+                      masteryStats={masteryStats}
+                      scopeLabel={scopeLabel}
+                    />
+                  </Suspense>
+                </div>
+              )}
+
+              {activeTab === "schedule" && (
+                <Suspense fallback={<SpacedRepetitionScheduleSkeleton />}>
+                  <SpacedRepetitionScheduleTab
+                    reviews={reviews}
+                    targetTasks={targetTasks}
+                    activityByDate={reviewActivityByDate}
                   />
                 </Suspense>
-              </div>
-            )}
+              )}
 
-            {activeTab === "schedule" && (
-              <Suspense fallback={<SpacedRepetitionScheduleSkeleton />}>
-                <SpacedRepetitionScheduleTab
+              {activeTab === "due" && (
+                <SpacedRepetitionDueTab
+                  dueTasks={dueTasks}
                   reviews={reviews}
-                  targetTasks={targetTasks}
-                  activityByDate={reviewActivityByDate}
+                  scopeLabel={scopeLabel}
+                  onNavigate={onNavigate}
                 />
-              </Suspense>
-            )}
+              )}
 
-            {activeTab === "due" && (
-              <SpacedRepetitionDueTab
-                dueTasks={dueTasks}
-                reviews={reviews}
-                scopeLabel={scopeLabel}
-                onNavigate={onNavigate}
-              />
-            )}
+              {activeTab === "upcoming" && (
+                <SpacedRepetitionUpcomingTab
+                  upcomingTasks={upcomingTasks}
+                  scopeLabel={scopeLabel}
+                  onNavigate={onNavigate}
+                />
+              )}
 
-            {activeTab === "upcoming" && (
-              <SpacedRepetitionUpcomingTab
-                upcomingTasks={upcomingTasks}
-                scopeLabel={scopeLabel}
-                onNavigate={onNavigate}
-              />
-            )}
-
-            {activeTab === "unsolved" && (
-              <SpacedRepetitionUnsolvedTab
-                unsolvedTasks={unsolvedTasks}
-                scopeLabel={scopeLabel}
-                onNavigate={onNavigate}
-              />
-            )}
+              {activeTab === "unsolved" && (
+                <SpacedRepetitionUnsolvedTab
+                  unsolvedTasks={unsolvedTasks}
+                  scopeLabel={scopeLabel}
+                  onNavigate={onNavigate}
+                />
+              )}
+            </div>
           </div>
         </main>
       </div>

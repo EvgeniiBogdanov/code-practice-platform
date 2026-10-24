@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { renderHook } from "@testing-library/react";
 import React from "react";
-import { useEditorKeyHandlers } from "./useEditorKeyHandlers";
+import { useEditorKeyHandlers, type EditorKeyHandlersProps } from "./useEditorKeyHandlers";
 import { IntelliSenseState } from "./useIntelliSense";
 import { CodeHistoryState } from "./useCodeHistory";
 import { MultiCursorState } from "./useMultiCursor";
@@ -55,6 +55,64 @@ describe("useEditorKeyHandlers", () => {
     handleMultiPaste: vi.fn().mockReturnValue(true),
   });
 
+  // Editor-wide command dependencies; tests override the ones they assert on.
+  const createCommandDeps = (): Pick<
+    EditorKeyHandlersProps,
+    | "textareaRef"
+    | "find"
+    | "signatureHelp"
+    | "hoverSignatures"
+    | "firstQuickFixRef"
+    | "goToDefinition"
+    | "goToProblem"
+    | "toggleWordWrap"
+    | "onFormat"
+    | "onRename"
+    | "updateCursorCoords"
+  > => ({
+    textareaRef: { current: null },
+    find: { handleShortcut: vi.fn(() => false) },
+    signatureHelp: { signature: null, trigger: vi.fn(), close: vi.fn() },
+    hoverSignatures: { closeHover: vi.fn() },
+    firstQuickFixRef: { current: null },
+    goToDefinition: vi.fn(async () => {}),
+    goToProblem: vi.fn(),
+    toggleWordWrap: vi.fn(),
+    onFormat: vi.fn(async () => {}),
+    onRename: vi.fn(async () => {}),
+    updateCursorCoords: vi.fn(),
+  });
+
+  const renderKeyHandlers = (overrides: Partial<EditorKeyHandlersProps> = {}) =>
+    renderHook(() =>
+      useEditorKeyHandlers({
+        ...createCommandDeps(),
+        code: "",
+        applyEdit: vi.fn(),
+        restoreEntry: vi.fn(),
+        intelliSense: createMockIntelliSense(),
+        history: createMockHistory(),
+        ...overrides,
+      })
+    );
+
+  const keyEvent = <T extends HTMLElement>(
+    target: T,
+    init: { key: string; code?: string; altKey?: boolean; shiftKey?: boolean }
+  ): React.KeyboardEvent<T> =>
+    ({
+      currentTarget: target,
+      target,
+      code: "",
+      altKey: false,
+      shiftKey: false,
+      ctrlKey: false,
+      metaKey: false,
+      preventDefault: vi.fn(),
+      stopPropagation: vi.fn(),
+      ...init,
+    }) as unknown as React.KeyboardEvent<T>;
+
   it("handles Alt+ArrowDown to move line down", () => {
     const code = "first\nsecond\nthird";
     const onChange = vi.fn();
@@ -63,6 +121,7 @@ describe("useEditorKeyHandlers", () => {
 
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
+        ...createCommandDeps(),
         code,
         applyEdit: createApplyEdit(onChange, history),
         restoreEntry: vi.fn(),
@@ -107,6 +166,7 @@ describe("useEditorKeyHandlers", () => {
 
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
+        ...createCommandDeps(),
         code,
         applyEdit: createApplyEdit(onChange, history),
         restoreEntry: vi.fn(),
@@ -152,6 +212,7 @@ describe("useEditorKeyHandlers", () => {
 
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
+        ...createCommandDeps(),
         code,
         applyEdit: createApplyEdit(onChange, history),
         restoreEntry: vi.fn(),
@@ -193,6 +254,7 @@ describe("useEditorKeyHandlers", () => {
     const multiCursor = createMockMultiCursor();
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
+        ...createCommandDeps(),
         code,
         applyEdit: vi.fn(),
         restoreEntry: vi.fn(),
@@ -235,6 +297,7 @@ describe("useEditorKeyHandlers", () => {
 
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
+        ...createCommandDeps(),
         code,
         applyEdit: createApplyEdit(onChange, history),
         restoreEntry: vi.fn(),
@@ -280,6 +343,7 @@ describe("useEditorKeyHandlers", () => {
 
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
+        ...createCommandDeps(),
         code,
         applyEdit: createApplyEdit(onChange, history),
         restoreEntry: vi.fn(),
@@ -316,6 +380,7 @@ describe("useEditorKeyHandlers", () => {
 
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
+        ...createCommandDeps(),
         code,
         applyEdit: createApplyEdit(onChange, history),
         restoreEntry: vi.fn(),
@@ -354,6 +419,7 @@ describe("useEditorKeyHandlers", () => {
 
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
+        ...createCommandDeps(),
         code,
         applyEdit: createApplyEdit(onChange, history),
         restoreEntry: vi.fn(),
@@ -393,6 +459,7 @@ describe("useEditorKeyHandlers", () => {
 
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
+        ...createCommandDeps(),
         code,
         applyEdit: createApplyEdit(onChange, history),
         restoreEntry: vi.fn(),
@@ -437,6 +504,7 @@ describe("useEditorKeyHandlers", () => {
 
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
+        ...createCommandDeps(),
         code,
         applyEdit: createApplyEdit(onChange, history),
         restoreEntry: vi.fn(),
@@ -476,6 +544,7 @@ describe("useEditorKeyHandlers", () => {
 
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
+        ...createCommandDeps(),
         code,
         applyEdit: createApplyEdit(onChange, history),
         restoreEntry: vi.fn(),
@@ -515,6 +584,7 @@ describe("useEditorKeyHandlers", () => {
 
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
+        ...createCommandDeps(),
         code,
         applyEdit: createApplyEdit(onChange, history),
         restoreEntry: vi.fn(),
@@ -554,6 +624,7 @@ describe("useEditorKeyHandlers", () => {
 
     const { result } = renderHook(() =>
       useEditorKeyHandlers({
+        ...createCommandDeps(),
         code,
         applyEdit: createApplyEdit(onChange, history),
         restoreEntry: vi.fn(),
@@ -578,5 +649,100 @@ describe("useEditorKeyHandlers", () => {
     result.current.handleKeyDown(event);
 
     expect(onChange).toHaveBeenCalledWith("/**\n * \n */");
+  });
+
+  it("toggles word wrap with Alt+Z in the textarea", () => {
+    const toggleWordWrap = vi.fn();
+    const { result } = renderKeyHandlers({ toggleWordWrap });
+    const textarea = document.createElement("textarea");
+
+    result.current.handleKeyDown(keyEvent(textarea, { key: "z", code: "KeyZ", altKey: true }));
+
+    expect(toggleWordWrap).toHaveBeenCalledTimes(1);
+  });
+
+  it("formats with Alt+Shift+F from another control inside the editor", () => {
+    const onFormat = vi.fn(async () => {});
+    const { result } = renderKeyHandlers({ onFormat });
+    const input = document.createElement("input");
+
+    result.current.handleOverlayKeyDown(
+      keyEvent(input, { key: "f", code: "KeyF", altKey: true, shiftKey: true })
+    );
+
+    expect(onFormat).toHaveBeenCalledTimes(1);
+  });
+
+  it("passes find shortcuts from the find bar to the find panel", () => {
+    const find = { handleShortcut: vi.fn(() => true) };
+    const { result } = renderKeyHandlers({ find });
+    const input = document.createElement("input");
+    const event = keyEvent(input, { key: "F3" });
+
+    result.current.handleOverlayKeyDown(event);
+
+    expect(find.handleShortcut).toHaveBeenCalledWith(event);
+  });
+
+  it("leaves textarea keys to handleKeyDown and ignores them in the overlay handler", () => {
+    const find = { handleShortcut: vi.fn(() => true) };
+    const { result } = renderKeyHandlers({ find });
+    const textarea = document.createElement("textarea");
+
+    result.current.handleOverlayKeyDown(keyEvent(textarea, { key: "F3" }));
+
+    expect(find.handleShortcut).not.toHaveBeenCalled();
+  });
+
+  it("renames with F2 outside read-only mode only", () => {
+    const onRename = vi.fn(async () => {});
+    const textarea = document.createElement("textarea");
+    renderKeyHandlers({ onRename }).result.current.handleKeyDown(keyEvent(textarea, { key: "F2" }));
+    expect(onRename).toHaveBeenCalledTimes(1);
+
+    const readOnlyRename = vi.fn(async () => {});
+    renderKeyHandlers({ onRename: readOnlyRename, readOnly: true }).result.current.handleKeyDown(
+      keyEvent(textarea, { key: "F2" })
+    );
+    expect(readOnlyRename).not.toHaveBeenCalled();
+  });
+
+  it("goes to the definition at the caret with F12 in read-only mode", () => {
+    const goToDefinition = vi.fn(async () => {});
+    const textarea = document.createElement("textarea");
+    textarea.value = "const a = 1;";
+    textarea.setSelectionRange(6, 6);
+    const { result } = renderKeyHandlers({
+      goToDefinition,
+      readOnly: true,
+      textareaRef: { current: textarea },
+    });
+
+    result.current.handleKeyDown(keyEvent(textarea, { key: "F12" }));
+
+    expect(goToDefinition).toHaveBeenCalledWith(6);
+  });
+
+  it("moves to the next and previous problem with F8 and Shift+F8", () => {
+    const goToProblem = vi.fn();
+    const { result } = renderKeyHandlers({ goToProblem });
+    const textarea = document.createElement("textarea");
+
+    result.current.handleKeyDown(keyEvent(textarea, { key: "F8" }));
+    result.current.handleKeyDown(keyEvent(textarea, { key: "F8", shiftKey: true }));
+
+    expect(goToProblem.mock.calls).toEqual([[1], [-1]]);
+  });
+
+  it("closes the completion list before the find panel on Escape", () => {
+    const find = { handleShortcut: vi.fn(() => true) };
+    const intelliSense = createMockIntelliSense(true);
+    const { result } = renderKeyHandlers({ find, intelliSense });
+    const textarea = document.createElement("textarea");
+
+    result.current.handleKeyDown(keyEvent(textarea, { key: "Escape" }));
+
+    expect(intelliSense.closeCompletions).toHaveBeenCalledTimes(1);
+    expect(find.handleShortcut).not.toHaveBeenCalled();
   });
 });

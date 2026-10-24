@@ -6,13 +6,51 @@ import { TypeScriptIcon } from "@/shared/ui";
 import { ReactCategoryDef } from "../ui/SidebarReactCategoryItem";
 import styles from "../ui/SidebarReactList.module.css";
 
+/** The flags and actions the React sidebar reads. Selecting only these keeps unrelated UI changes from re-rendering it. */
+export type ReactCategoryState = Pick<
+  UIState,
+  | "warmupExpanded"
+  | "refactoringExpanded"
+  | "tasksExpanded"
+  | "advancedExpanded"
+  | "lifecycleExpanded"
+  | "reactTsExpanded"
+  | "reactTsPracticeExpanded"
+  | "setWarmupExpanded"
+  | "setRefactoringExpanded"
+  | "setTasksExpanded"
+  | "setAdvancedExpanded"
+  | "setLifecycleExpanded"
+  | "setReactTsExpanded"
+  | "setReactTsPracticeExpanded"
+  | "setAllReactCategoriesExpanded"
+>;
+
+export const selectReactCategoryState = (s: UIState): ReactCategoryState => ({
+  warmupExpanded: s.warmupExpanded,
+  refactoringExpanded: s.refactoringExpanded,
+  tasksExpanded: s.tasksExpanded,
+  advancedExpanded: s.advancedExpanded,
+  lifecycleExpanded: s.lifecycleExpanded,
+  reactTsExpanded: s.reactTsExpanded,
+  reactTsPracticeExpanded: s.reactTsPracticeExpanded,
+  setWarmupExpanded: s.setWarmupExpanded,
+  setRefactoringExpanded: s.setRefactoringExpanded,
+  setTasksExpanded: s.setTasksExpanded,
+  setAdvancedExpanded: s.setAdvancedExpanded,
+  setLifecycleExpanded: s.setLifecycleExpanded,
+  setReactTsExpanded: s.setReactTsExpanded,
+  setReactTsPracticeExpanded: s.setReactTsPracticeExpanded,
+  setAllReactCategoriesExpanded: s.setAllReactCategoriesExpanded,
+});
+
 interface CategoryConfig {
   id: string;
   infoId: string;
   label: string;
   icon: React.ReactNode;
-  getExpanded: (s: UIState) => boolean;
-  getToggle: (s: UIState) => (e?: React.MouseEvent) => void;
+  getExpanded: (s: ReactCategoryState) => boolean;
+  getToggle: (s: ReactCategoryState) => (e?: React.MouseEvent) => void;
 }
 
 const CATEGORY_CONFIGS: CategoryConfig[] = [
@@ -116,13 +154,16 @@ const CATEGORY_CONFIGS: CategoryConfig[] = [
   },
 ];
 
-export const getReactCategories = (uiState: UIState, tasks: readonly Task[]): ReactCategoryDef[] =>
+export const getReactCategories = (
+  categoryState: ReactCategoryState,
+  tasks: readonly Task[]
+): ReactCategoryDef[] =>
   CATEGORY_CONFIGS.map((cfg) => ({
     id: cfg.id,
     infoId: cfg.infoId,
     label: cfg.label,
     icon: cfg.icon,
     tasks: tasks.filter((t) => isTaskInReactGroup(t, cfg.infoId)),
-    isExpanded: cfg.getExpanded(uiState),
-    toggle: cfg.getToggle(uiState),
+    isExpanded: cfg.getExpanded(categoryState),
+    toggle: cfg.getToggle(categoryState),
   }));
