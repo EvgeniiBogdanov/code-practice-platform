@@ -18,7 +18,6 @@ import { useMultiCursor } from "./useMultiCursor";
 import { useFindReplace } from "./useFindReplace";
 import { ApplyEdit, CodeEditorProps, CursorPosition } from "./types";
 import { TAB_SIZE } from "../lib/editorUtils";
-import { matchesKey } from "../lib/editorKeyHelpers";
 import { applyTextChanges } from "../lib/textChanges";
 import { useTypeScriptDiagnostics } from "./useTypescriptDiagnostics";
 import { useEditorDiagnostics } from "./useEditorDiagnostics";
@@ -29,8 +28,7 @@ import { useWrappedLineHeights } from "./useWrappedLineHeights";
 import { useOccurrences } from "./useOccurrences";
 import { getCaretCoordinates } from "../lib/caretCoordinates";
 import { linkLineLayer } from "../lib/lineLayer";
-
-const MODIFIER_KEYS = new Set(["Shift", "Control", "Alt", "Meta"]);
+import { applyRenameEdits, getRenamedSelection } from "../lib/renameSymbol";
 
 interface PendingSelection {
   start: number;
@@ -49,6 +47,7 @@ export const useCodeEditor = ({
   isFullscreen,
   onToggleFullscreen,
   onFileSelect,
+  onFilesChange,
 }: CodeEditorProps) => {
   const fontSize = useUIStore((state) => state.editorFontSize);
   const increaseFontSize = useUIStore((state) => state.increaseEditorFontSize);
@@ -288,22 +287,6 @@ export const useCodeEditor = ({
   }, [code, filepath, readOnly, applyEdit]);
   const formatNotice = formatFailure?.code === code ? formatFailure.message : null;
 
-  const { handleKeyDown } = useEditorKeyHandlers({
-    code,
-    applyEdit,
-    restoreEntry,
-    applyCompletion,
-    jumpToTabStop,
-    intelliSense,
-    history,
-    multiCursor,
-    onRun,
-    tabSize: TAB_SIZE,
-    wordWrap,
-    readOnly,
-    filepath,
-  });
-
   /** Selects a range and scrolls it to the upper third of the editor. */
   const revealRange = useCallback(
     (start: number, end: number): void => {
@@ -351,60 +334,78 @@ export const useCodeEditor = ({
   );
   const goToNextProblem = useCallback(() => goToProblem(1), [goToProblem]);
 
-  // Editor commands require focus inside the editor, as in VS Code.
-  const handleEditorKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLElement>): void => {
-      // VS Code hides the hover on any key except bare modifiers (Cmd stays for Cmd+click).
-      if (!MODIFIER_KEYS.has(e.key)) hoverSignatures.closeHover();
-      if (e.altKey && !e.shiftKey && !e.metaKey && !e.ctrlKey && matchesKey(e, "KeyZ")) {
-        e.preventDefault();
-        toggleWordWrap();
-        return;
-      }
-      if (e.altKey && e.shiftKey && !e.metaKey && !e.ctrlKey && matchesKey(e, "KeyF")) {
-        e.preventDefault();
-        void handleFormat();
-        return;
-      }
-      // One Escape closes one widget: an open suggest list has already taken it.
-      if (e.key === "Escape" && !e.defaultPrevented && signatureHelp.signature) {
-        e.preventDefault();
-        signatureHelp.close();
-        return;
-      }
-      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.code === "Space") {
-        e.preventDefault();
-        signatureHelp.trigger();
-        return;
-      }
-      // Find, replace, go to line (Cmd/Ctrl+F, Cmd/Ctrl+H, Ctrl+G, F3); Escape closes the panel.
-      if (find.handleShortcut(e)) return;
-      if (e.key === "F12" && textareaRef.current) {
-        e.preventDefault();
-        void goToDefinition(textareaRef.current.selectionStart);
-        return;
-      }
-      if (e.key === "F8" && !e.metaKey && !e.ctrlKey && !e.altKey) {
-        e.preventDefault();
-        goToProblem(e.shiftKey ? -1 : 1);
-        return;
-      }
-      // Cmd/Ctrl+. moves focus to the quick fixes, as VS Code opens its light bulb.
-      if ((e.metaKey || e.ctrlKey) && e.code === "Period" && firstQuickFixRef.current) {
-        e.preventDefault();
-        firstQuickFixRef.current.focus();
-      }
-    },
-    [
-      handleFormat,
-      toggleWordWrap,
-      goToProblem,
-      goToDefinition,
-      signatureHelp,
-      hoverSignatures,
-      find,
-    ]
-  );
+  /** F2: renames the symbol under the caret in every file it touches. */
+  const handleRename = async (): Promise<void> => {
+    const cursor = textareaRef.current?.selectionStart;
+    if (readOnly || cursor === undefined) return;
+    const edits = await typeScriptAnalysis.requestRename(cursor);
+    const currentEdit = edits.find(
+      (edit) => edit.filepath === filepath && edit.start <= cursor && cursor <= edit.end
+    );
+    if (!currentEdit) return;
+    const oldName = code.slice(currentEdit.start, currentEdit.end);
+    const isTag =
+      edits.length === 2 &&
+      edits.every((edit) => {
+        if (edit.filepath !== filepath) return false;
+        const before = code.slice(Math.max(0, edit.start - 2), edit.start);
+        return before.endsWith("<") || before.endsWith("</");
+      });
+    const nextName = window.prompt("Новое имя", oldName)?.trim();
+    if (!nextName || nextName === oldName) return;
+    const valid = isTag ? /^[A-Za-z][\w.:-]*$/.test(nextName) : /^[A-Za-z_$][\w$]*$/.test(nextName);
+    if (!valid) return;
+    const currentFiles = files.length
+      ? files.map((file) => ({
+          name: file.name ?? file.filepath ?? "",
+          code: (file.name ?? file.filepath) === filepath ? code : (file.code ?? ""),
+        }))
+      : [{ name: filepath, code }];
+    const renamed = applyRenameEdits(currentFiles, edits, nextName);
+    const active = renamed.find((file) => file.name === filepath);
+    if (!active) return;
+    const renamedSelection = getRenamedSelection(edits, currentEdit, nextName);
+    const touchesOtherFiles = renamed.some(
+      (file) =>
+        file.name !== filepath &&
+        file.code !== currentFiles.find((item) => item.name === file.name)?.code
+    );
+    if (!touchesOtherFiles) {
+      applyEdit(active.code, renamedSelection.start, renamedSelection.end);
+      return;
+    }
+    if (!onFilesChange) return;
+    selectAfterRender(renamedSelection.start, renamedSelection.end);
+    onFilesChange(renamed);
+    history.pushHistory(active.code, renamedSelection.end);
+  };
+
+  const { handleKeyDown, handleOverlayKeyDown } = useEditorKeyHandlers({
+    code,
+    applyEdit,
+    restoreEntry,
+    applyCompletion,
+    jumpToTabStop,
+    intelliSense,
+    history,
+    multiCursor,
+    onRun,
+    tabSize: TAB_SIZE,
+    wordWrap,
+    readOnly,
+    filepath,
+    textareaRef,
+    find,
+    signatureHelp,
+    hoverSignatures,
+    firstQuickFixRef,
+    goToDefinition,
+    goToProblem,
+    toggleWordWrap,
+    onFormat: handleFormat,
+    onRename: handleRename,
+    updateCursorCoords,
+  });
 
   useEffect(() => {
     const handleGlobalKey = (e: KeyboardEvent): void => {
@@ -593,7 +594,6 @@ export const useCodeEditor = ({
     applyQuickFix,
     goToProblem,
     goToNextProblem,
-    requestRename: typeScriptAnalysis.requestRename,
     isAnalysisPending: typeScriptAnalysis.isPending,
     highlightedLines,
     lineCount,
@@ -619,7 +619,7 @@ export const useCodeEditor = ({
     handleTextareaClick,
     handleTextareaBlur,
     handleCursorKeyUp,
-    handleEditorKeyDown,
+    handleOverlayKeyDown,
     handleKeyDown,
   };
 };

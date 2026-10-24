@@ -50,9 +50,12 @@ export const TaskHints = ({ section, taskId, className }: TaskHintsProps): JSX.E
   useEffect(() => {
     if (peekTaskHints(section, taskId) !== undefined) return undefined;
     let isMounted = true;
-    loadTaskHints(section, taskId).then((loaded) => {
-      if (isMounted) setHints(loaded);
-    });
+    loadTaskHints(section, taskId)
+      .then((loaded) => {
+        if (isMounted) setHints(loaded);
+      })
+      // Hints are optional: when their chunk fails to load, the panel stays hidden.
+      .catch(() => undefined);
     return (): void => {
       isMounted = false;
     };

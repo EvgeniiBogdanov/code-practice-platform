@@ -11,6 +11,7 @@ import { Tooltip } from "@/shared/ui";
 import { FinderSectionDropdown } from "./FinderSectionDropdown";
 import { FinderHomeHierarchy } from "./FinderHomeHierarchy";
 import { FinderFavoritesHierarchy } from "./FinderFavoritesHierarchy";
+import { FinderSkillsHierarchy } from "./FinderSkillsHierarchy";
 import styles from "./FinderBreadcrumbs.module.css";
 
 const FinderJsHierarchy = lazy(() =>
@@ -40,12 +41,15 @@ export const FinderBreadcrumbs = (): React.JSX.Element => {
   );
 
   const isFavoritesPage = location.pathname.endsWith("/favorites");
+  const isSkillsPage = location.pathname.endsWith("/skills");
+  // Section pages without a task: no group / task hierarchy after the section.
+  const isSectionPage = isFavoritesPage || isSkillsPage;
   const taskSection: SectionType = section === "home" ? "react" : section;
-  const { tasks } = useTaskSection(taskSection, section !== "home" && !isFavoritesPage);
+  const { tasks } = useTaskSection(taskSection, section !== "home" && !isSectionPage);
   const currentTask: Task | null = useMemo(() => {
-    if (!taskId || isFavoritesPage) return null;
+    if (!taskId || isSectionPage) return null;
     return tasks.find((task) => String(task.id) === taskId) ?? null;
-  }, [isFavoritesPage, taskId, tasks]);
+  }, [isSectionPage, taskId, tasks]);
 
   return (
     <nav
@@ -79,10 +83,11 @@ export const FinderBreadcrumbs = (): React.JSX.Element => {
       {section === "home" && <FinderHomeHierarchy />}
 
       {isFavoritesPage && section !== "home" && <FinderFavoritesHierarchy />}
+      {isSkillsPage && section !== "home" && <FinderSkillsHierarchy />}
 
       <Suspense fallback={null}>
         {/* 3. JavaScript Hierarchy: Group / Subgroup / Task */}
-        {(section === "javascript" || section === "typescript") && !isFavoritesPage && (
+        {(section === "javascript" || section === "typescript") && !isSectionPage && (
           <FinderJsHierarchy
             section={section}
             paramId={taskId}
@@ -94,7 +99,7 @@ export const FinderBreadcrumbs = (): React.JSX.Element => {
         )}
 
         {/* 4. React Hierarchy: Category / Task */}
-        {section === "react" && !isFavoritesPage && (
+        {section === "react" && !isSectionPage && (
           <FinderReactHierarchy
             paramId={taskId}
             currentTask={currentTask}
@@ -105,7 +110,7 @@ export const FinderBreadcrumbs = (): React.JSX.Element => {
         )}
 
         {/* 5. Algorithms Hierarchy: Group / Task */}
-        {section === "algorithms" && !isFavoritesPage && (
+        {section === "algorithms" && !isSectionPage && (
           <FinderAlgoHierarchy
             paramId={taskId}
             currentTask={currentTask}

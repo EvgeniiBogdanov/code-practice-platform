@@ -1,0 +1,4232 @@
+[
+  {
+    "id": "js249",
+    "skill": "js.scope",
+    "step": 0,
+    "group": "Область видимости",
+    "difficulty": "easy",
+    "probability": 92,
+    "title": "1. var, let и const: блочная область видимости"
+  },
+  {
+    "id": "js255",
+    "skill": "js.scope",
+    "step": 0,
+    "group": "Область видимости",
+    "difficulty": "medium",
+    "probability": 85,
+    "title": "2. Цепочка областей видимости и затенение (shadowing)"
+  },
+  {
+    "id": "js250",
+    "skill": "js.scope",
+    "step": 1,
+    "group": "Область видимости",
+    "difficulty": "easy",
+    "probability": 90,
+    "title": "1. Hoisting: поднятие var и функций"
+  },
+  {
+    "id": "js251",
+    "skill": "js.scope",
+    "step": 1,
+    "group": "Область видимости",
+    "difficulty": "medium",
+    "probability": 88,
+    "title": "2. Временная мёртвая зона (TDZ) для let, const и class"
+  },
+  {
+    "id": "js252",
+    "skill": "js.scope",
+    "step": 1,
+    "group": "Область видимости",
+    "difficulty": "medium",
+    "probability": 90,
+    "title": "3. Function Declaration, Function Expression и стрелочные функции"
+  },
+  {
+    "id": "js254",
+    "skill": "js.scope",
+    "step": 2,
+    "group": "Область видимости",
+    "difficulty": "easy",
+    "probability": 60,
+    "title": "1. Параметры функций: значения по умолчанию, rest и arguments"
+  },
+  {
+    "id": "js253",
+    "skill": "js.scope",
+    "step": 2,
+    "group": "Область видимости",
+    "difficulty": "medium",
+    "probability": 65,
+    "title": "2. IIFE и паттерн «Модуль» с приватным состоянием"
+  },
+  {
+    "id": "js256",
+    "skill": "js.types",
+    "step": 0,
+    "group": "Типы данных",
+    "difficulty": "easy",
+    "probability": 90,
+    "title": "1. typeof, примитивы и ссылочные типы"
+  },
+  {
+    "id": "js186",
+    "skill": "js.types",
+    "step": 1,
+    "group": "Типы данных",
+    "difficulty": "medium",
+    "probability": 96,
+    "title": "1. Типы данных и неявное приведение (Type Coercion)"
+  },
+  {
+    "id": "js187",
+    "skill": "js.types",
+    "step": 1,
+    "group": "Типы данных",
+    "difficulty": "hard",
+    "probability": 88,
+    "title": "2. Сложение объектов, массивов и парадоксы сравнения (ToPrimitive)"
+  },
+  {
+    "id": "js188",
+    "skill": "js.types",
+    "step": 2,
+    "group": "Типы данных",
+    "difficulty": "medium",
+    "probability": 92,
+    "title": "1. Проверка типов, граничные случаи и операторы (Object.is, || vs??)"
+  },
+  {
+    "id": "js1",
+    "skill": "js.loops",
+    "step": 0,
+    "group": "Циклы",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "1. Напиши базовый синтаксис цикла for"
+  },
+  {
+    "id": "js2",
+    "skill": "js.loops",
+    "step": 0,
+    "group": "Циклы",
+    "difficulty": "easy",
+    "probability": 5,
+    "title": "2. Вывести числа от 1 до N"
+  },
+  {
+    "id": "js3",
+    "skill": "js.loops",
+    "step": 0,
+    "group": "Циклы",
+    "difficulty": "easy",
+    "probability": 8,
+    "title": "3. Сумма чисел от 1 до N"
+  },
+  {
+    "id": "js4",
+    "skill": "js.loops",
+    "step": 0,
+    "group": "Циклы",
+    "difficulty": "easy",
+    "probability": 5,
+    "title": "4. Чётные числа"
+  },
+  {
+    "id": "js5",
+    "skill": "js.loops",
+    "step": 0,
+    "group": "Циклы",
+    "difficulty": "easy",
+    "probability": 86,
+    "title": "5. Палиндром"
+  },
+  {
+    "id": "js6",
+    "skill": "js.loops",
+    "step": 0,
+    "group": "Циклы",
+    "difficulty": "easy",
+    "probability": 10,
+    "title": "6. Сумма элементов массива"
+  },
+  {
+    "id": "js7",
+    "skill": "js.loops",
+    "step": 0,
+    "group": "Циклы",
+    "difficulty": "medium",
+    "probability": 22,
+    "title": "7. Пузырьковая сортировка"
+  },
+  {
+    "id": "js8",
+    "skill": "js.loops",
+    "step": 1,
+    "group": "Циклы",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "1. Напиши базовый синтаксис цикла for of"
+  },
+  {
+    "id": "js9",
+    "skill": "js.loops",
+    "step": 1,
+    "group": "Циклы",
+    "difficulty": "easy",
+    "probability": 10,
+    "title": "2. Сумма элементов массива"
+  },
+  {
+    "id": "js10",
+    "skill": "js.loops",
+    "step": 1,
+    "group": "Циклы",
+    "difficulty": "easy",
+    "probability": 5,
+    "title": "3. Вывод только положительных чисел"
+  },
+  {
+    "id": "js11",
+    "skill": "js.loops",
+    "step": 1,
+    "group": "Циклы",
+    "difficulty": "easy",
+    "probability": 12,
+    "title": "4. Проверка наличия элемента"
+  },
+  {
+    "id": "js12",
+    "skill": "js.loops",
+    "step": 1,
+    "group": "Циклы",
+    "difficulty": "easy",
+    "probability": 12,
+    "title": "5. Фильтрация строк по длине"
+  },
+  {
+    "id": "js13",
+    "skill": "js.loops",
+    "step": 1,
+    "group": "Циклы",
+    "difficulty": "easy",
+    "probability": 20,
+    "title": "6. Подсчёт вхождений слова в массиве"
+  },
+  {
+    "id": "js189",
+    "skill": "js.loops",
+    "step": 2,
+    "group": "Циклы",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "1. Напиши базовый синтаксис цикла for in"
+  },
+  {
+    "id": "js190",
+    "skill": "js.loops",
+    "step": 2,
+    "group": "Циклы",
+    "difficulty": "easy",
+    "probability": 20,
+    "title": "2. Сумма зарплат в объекте"
+  },
+  {
+    "id": "js191",
+    "skill": "js.loops",
+    "step": 2,
+    "group": "Циклы",
+    "difficulty": "easy",
+    "probability": 16,
+    "title": "3. Подсчет количества свойств объекта"
+  },
+  {
+    "id": "js192",
+    "skill": "js.loops",
+    "step": 2,
+    "group": "Циклы",
+    "difficulty": "easy",
+    "probability": 15,
+    "title": "4. Умножение числовых свойств на 2"
+  },
+  {
+    "id": "js193",
+    "skill": "js.loops",
+    "step": 2,
+    "group": "Циклы",
+    "difficulty": "easy",
+    "probability": 25,
+    "title": "5. Получение значений собственных свойств объекта"
+  },
+  {
+    "id": "js194",
+    "skill": "js.loops",
+    "step": 2,
+    "group": "Циклы",
+    "difficulty": "easy",
+    "probability": 55,
+    "title": "6. Проверка объекта на пустоту (isEmpty)"
+  },
+  {
+    "id": "js195",
+    "skill": "js.loops",
+    "step": 2,
+    "group": "Циклы",
+    "difficulty": "easy",
+    "probability": 50,
+    "title": "7. Инверсия объекта (ключи и значения)"
+  },
+  {
+    "id": "js_while_1",
+    "skill": "js.loops",
+    "step": 3,
+    "group": "Циклы",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "1. Напиши базовый синтаксис цикла while"
+  },
+  {
+    "id": "js_while_2",
+    "skill": "js.loops",
+    "step": 3,
+    "group": "Циклы",
+    "difficulty": "easy",
+    "probability": 6,
+    "title": "2. Обратный отсчёт от N до 1"
+  },
+  {
+    "id": "js_while_3",
+    "skill": "js.loops",
+    "step": 3,
+    "group": "Циклы",
+    "difficulty": "easy",
+    "probability": 18,
+    "title": "3. Сумма цифр числа"
+  },
+  {
+    "id": "js_while_4",
+    "skill": "js.loops",
+    "step": 3,
+    "group": "Циклы",
+    "difficulty": "easy",
+    "probability": 20,
+    "title": "4. Разворот числа"
+  },
+  {
+    "id": "js_while_5",
+    "skill": "js.loops",
+    "step": 3,
+    "group": "Циклы",
+    "difficulty": "medium",
+    "probability": 22,
+    "title": "5. Наибольший общий делитель (Алгоритм Евклида)"
+  },
+  {
+    "id": "js_while_6",
+    "skill": "js.loops",
+    "step": 3,
+    "group": "Циклы",
+    "difficulty": "medium",
+    "probability": 85,
+    "title": "6. Бинарный поиск"
+  },
+  {
+    "id": "js_while_7",
+    "skill": "js.loops",
+    "step": 3,
+    "group": "Циклы",
+    "difficulty": "medium",
+    "probability": 65,
+    "title": "7. Обход односвязного списка"
+  },
+  {
+    "id": "js_while_8",
+    "skill": "js.loops",
+    "step": 3,
+    "group": "Циклы",
+    "difficulty": "medium",
+    "probability": 94,
+    "title": "8. Слияние двух отсортированных массивов"
+  },
+  {
+    "id": "js257",
+    "skill": "js.strings",
+    "step": 0,
+    "group": "Строки",
+    "difficulty": "easy",
+    "probability": 80,
+    "title": "1. Разворот строки и порядка слов"
+  },
+  {
+    "id": "js258",
+    "skill": "js.strings",
+    "step": 0,
+    "group": "Строки",
+    "difficulty": "easy",
+    "probability": 70,
+    "title": "2. Заглавная буква в начале строки и каждого слова (capitalize)"
+  },
+  {
+    "id": "js263",
+    "skill": "js.strings",
+    "step": 0,
+    "group": "Строки",
+    "difficulty": "easy",
+    "probability": 55,
+    "title": "3. Усечение строки с многоточием (truncate)"
+  },
+  {
+    "id": "js259",
+    "skill": "js.strings",
+    "step": 0,
+    "group": "Строки",
+    "difficulty": "easy",
+    "probability": 65,
+    "title": "4. Подсчёт гласных в строке"
+  },
+  {
+    "id": "js260",
+    "skill": "js.strings",
+    "step": 1,
+    "group": "Строки",
+    "difficulty": "easy",
+    "probability": 88,
+    "title": "1. Проверка строк на анаграмму (isAnagram)"
+  },
+  {
+    "id": "js261",
+    "skill": "js.strings",
+    "step": 1,
+    "group": "Строки",
+    "difficulty": "medium",
+    "probability": 82,
+    "title": "2. Первый неповторяющийся символ строки"
+  },
+  {
+    "id": "js262",
+    "skill": "js.strings",
+    "step": 1,
+    "group": "Строки",
+    "difficulty": "medium",
+    "probability": 80,
+    "title": "3. Сжатие строки: подряд идущие символы (RLE)"
+  },
+  {
+    "id": "js243",
+    "skill": "js.strings",
+    "step": 2,
+    "group": "Строки",
+    "difficulty": "hard",
+    "probability": 60,
+    "title": "1. Разворот строки с поддержкой Unicode (Surrogate Pairs)"
+  },
+  {
+    "id": "js197",
+    "skill": "js.objects",
+    "step": 0,
+    "group": "Объекты",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "1. Создание, чтение, запись и удаление свойств (CRUD & Computed Keys)"
+  },
+  {
+    "id": "js198",
+    "skill": "js.objects",
+    "step": 0,
+    "group": "Объекты",
+    "difficulty": "easy",
+    "probability": 80,
+    "title": "2. Проверка существования свойств (in vs Object.hasOwn vs hasOwnProperty)"
+  },
+  {
+    "id": "js199",
+    "skill": "js.objects",
+    "step": 0,
+    "group": "Объекты",
+    "difficulty": "easy",
+    "probability": 75,
+    "title": "3. Методы трансформации объектов (Object.keys, values, entries, fromEntries)"
+  },
+  {
+    "id": "js200",
+    "skill": "js.objects",
+    "step": 0,
+    "group": "Объекты",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "4. Деструктуризация объектов (Алиасы, дефолты и rest)"
+  },
+  {
+    "id": "js201",
+    "skill": "js.objects",
+    "step": 0,
+    "group": "Объекты",
+    "difficulty": "easy",
+    "probability": 88,
+    "title": "5. Поверхностное копирование и слияние ({ ...obj } vs Object.assign)"
+  },
+  {
+    "id": "js216",
+    "skill": "js.objects",
+    "step": 0,
+    "group": "Объекты",
+    "difficulty": "medium",
+    "probability": null,
+    "title": "6. Глубокая вложенная деструктуризация (Defaults, Rename, Rest)"
+  },
+  {
+    "id": "js204",
+    "skill": "js.objects",
+    "step": 1,
+    "group": "Объекты",
+    "difficulty": "easy",
+    "probability": 88,
+    "title": "1. Выборка заданных свойств объекта (pick)"
+  },
+  {
+    "id": "js205",
+    "skill": "js.objects",
+    "step": 1,
+    "group": "Объекты",
+    "difficulty": "easy",
+    "probability": 88,
+    "title": "2. Исключение заданных свойств объекта (omit)"
+  },
+  {
+    "id": "js217",
+    "skill": "js.objects",
+    "step": 2,
+    "group": "Объекты",
+    "difficulty": "medium",
+    "probability": 85,
+    "title": "1. Поиск скрытой мутации после Shallow Copy (Code Review)"
+  },
+  {
+    "id": "js246",
+    "skill": "js.objects",
+    "step": 2,
+    "group": "Объекты",
+    "difficulty": "hard",
+    "probability": 45,
+    "title": "2. Неизменяемый diff и patch объектов"
+  },
+  {
+    "id": "js207",
+    "skill": "js.objects",
+    "step": 3,
+    "group": "Объекты",
+    "difficulty": "medium",
+    "probability": 97,
+    "title": "1. Безопасное получение значения по пути (get / Lodash _.get)"
+  },
+  {
+    "id": "js208",
+    "skill": "js.objects",
+    "step": 3,
+    "group": "Объекты",
+    "difficulty": "medium",
+    "probability": 95,
+    "title": "2. Установка значения по глубокому пути (set / Lodash _.set)"
+  },
+  {
+    "id": "js247",
+    "skill": "js.objects",
+    "step": 3,
+    "group": "Объекты",
+    "difficulty": "hard",
+    "probability": 70,
+    "title": "3. Безопасные safeGet и safeSet по пути объекта"
+  },
+  {
+    "id": "js222",
+    "skill": "js.objects",
+    "step": 4,
+    "group": "Объекты",
+    "difficulty": "medium",
+    "probability": 72,
+    "title": "1. Настройка дескрипторов свойств (writable, enumerable, configurable)"
+  },
+  {
+    "id": "js223",
+    "skill": "js.objects",
+    "step": 4,
+    "group": "Объекты",
+    "difficulty": "medium",
+    "probability": 45,
+    "title": "2. Интроспекция свойств: Object.keys vs Reflect.ownKeys"
+  },
+  {
+    "id": "js224",
+    "skill": "js.objects",
+    "step": 5,
+    "group": "Объекты",
+    "difficulty": "medium",
+    "probability": 70,
+    "title": "1. Метапрограммирование: Symbol.toPrimitive"
+  },
+  {
+    "id": "js225",
+    "skill": "js.objects",
+    "step": 5,
+    "group": "Объекты",
+    "difficulty": "hard",
+    "probability": 80,
+    "title": "2. Proxy-валидатор с ловушками get и set"
+  },
+  {
+    "id": "js228",
+    "skill": "js.objects",
+    "step": 6,
+    "group": "Объекты",
+    "difficulty": "hard",
+    "probability": 65,
+    "title": "1. Object.create(null) и защита от Prototype Pollution"
+  },
+  {
+    "id": "js14",
+    "skill": "js.arrays-iter",
+    "step": 0,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 10,
+    "title": "1. Проверить, есть ли строка \"apple\" в массиве"
+  },
+  {
+    "id": "js15",
+    "skill": "js.arrays-iter",
+    "step": 0,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 8,
+    "title": "2. Проверить, есть ли число 7 в массиве, начиная поиск с индекса 3"
+  },
+  {
+    "id": "js16",
+    "skill": "js.arrays-iter",
+    "step": 0,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 8,
+    "title": "3. Проверить, содержит ли строка \"hello world\" подстроку \"world\""
+  },
+  {
+    "id": "js17",
+    "skill": "js.arrays-iter",
+    "step": 0,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 30,
+    "title": "4. Что вернёт этот код?"
+  },
+  {
+    "id": "js18",
+    "skill": "js.arrays-iter",
+    "step": 0,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 30,
+    "title": "5. Что вернёт этот код?"
+  },
+  {
+    "id": "js19",
+    "skill": "js.arrays-iter",
+    "step": 1,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 10,
+    "title": "1. Найти первое чётное число в массиве"
+  },
+  {
+    "id": "js20",
+    "skill": "js.arrays-iter",
+    "step": 1,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 10,
+    "title": "2. Найти первую строку длиннее 4 символов"
+  },
+  {
+    "id": "js21",
+    "skill": "js.arrays-iter",
+    "step": 1,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 10,
+    "title": "3. Найти первое отрицательное число"
+  },
+  {
+    "id": "js22",
+    "skill": "js.arrays-iter",
+    "step": 1,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 25,
+    "title": "4. Найти пользователя по имени"
+  },
+  {
+    "id": "js23",
+    "skill": "js.arrays-iter",
+    "step": 1,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 30,
+    "title": "5. Что вернёт этот код?"
+  },
+  {
+    "id": "js264",
+    "skill": "js.arrays-iter",
+    "step": 2,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 70,
+    "title": "1. Проверки массива: some, every, findIndex и findLastIndex"
+  },
+  {
+    "id": "js24",
+    "skill": "js.arrays-iter",
+    "step": 3,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 10,
+    "title": "1. Отфильтровать чётные числа"
+  },
+  {
+    "id": "js25",
+    "skill": "js.arrays-iter",
+    "step": 3,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 10,
+    "title": "2. Оставить только строки длиннее 3 символов"
+  },
+  {
+    "id": "js26",
+    "skill": "js.arrays-iter",
+    "step": 3,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 35,
+    "title": "3. Удалить все falsy значения"
+  },
+  {
+    "id": "js27",
+    "skill": "js.arrays-iter",
+    "step": 3,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 20,
+    "title": "4. Оставить только взрослых пользователей"
+  },
+  {
+    "id": "js28",
+    "skill": "js.arrays-iter",
+    "step": 3,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 20,
+    "title": "5. Найти только активных пользователей"
+  },
+  {
+    "id": "js29",
+    "skill": "js.arrays-iter",
+    "step": 3,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 10,
+    "title": "6. Оставить строки, содержащие букву \"a\""
+  },
+  {
+    "id": "js30",
+    "skill": "js.arrays-iter",
+    "step": 3,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 10,
+    "title": "7. Оставить числа в диапазоне от 20 до 50"
+  },
+  {
+    "id": "js31",
+    "skill": "js.arrays-iter",
+    "step": 3,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 20,
+    "title": "8. Отфильтровать людей по профессии"
+  },
+  {
+    "id": "js32",
+    "skill": "js.arrays-iter",
+    "step": 3,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 25,
+    "title": "9. Найти всех разработчиков по должности (поиск подстроки)"
+  },
+  {
+    "id": "js33",
+    "skill": "js.arrays-iter",
+    "step": 3,
+    "group": "Массивы",
+    "difficulty": "medium",
+    "probability": 35,
+    "title": "10. Отфильтровать кандидатов по списку статусов"
+  },
+  {
+    "id": "js34",
+    "skill": "js.arrays-iter",
+    "step": 3,
+    "group": "Массивы",
+    "difficulty": "medium",
+    "probability": 55,
+    "title": "11. Что вернёт этот код?"
+  },
+  {
+    "id": "js35",
+    "skill": "js.arrays-iter",
+    "step": 4,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 10,
+    "title": "1. Преобразовать массив чисел в массив их квадратов"
+  },
+  {
+    "id": "js36",
+    "skill": "js.arrays-iter",
+    "step": 4,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 10,
+    "title": "2. Получить длину строк в массиве"
+  },
+  {
+    "id": "js38",
+    "skill": "js.arrays-iter",
+    "step": 4,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 25,
+    "title": "3. Вытащить только имена из массива объектов"
+  },
+  {
+    "id": "js39",
+    "skill": "js.arrays-iter",
+    "step": 4,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 40,
+    "title": "4. Изменить структуру объектов"
+  },
+  {
+    "id": "js42",
+    "skill": "js.arrays-iter",
+    "step": 4,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 10,
+    "title": "5. Сделать массив булевых значений — четное число или нет"
+  },
+  {
+    "id": "js43",
+    "skill": "js.arrays-iter",
+    "step": 4,
+    "group": "Массивы",
+    "difficulty": "medium",
+    "probability": 80,
+    "title": "6. Что вернёт этот код и почему?"
+  },
+  {
+    "id": "js265",
+    "skill": "js.arrays-iter",
+    "step": 5,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 85,
+    "title": "1. slice и splice: мутирующие и немутирующие методы"
+  },
+  {
+    "id": "js266",
+    "skill": "js.arrays-iter",
+    "step": 5,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 55,
+    "title": "2. Неизменяемые методы ES2023: toSorted, toReversed, toSpliced, with"
+  },
+  {
+    "id": "js267",
+    "skill": "js.arrays-iter",
+    "step": 5,
+    "group": "Массивы",
+    "difficulty": "medium",
+    "probability": 60,
+    "title": "3. Сплющивание массивов: flat и flatMap"
+  },
+  {
+    "id": "js44",
+    "skill": "js.arrays-reduce",
+    "step": 0,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 30,
+    "title": "1. Отсортировать массив чисел по возрастанию"
+  },
+  {
+    "id": "js45",
+    "skill": "js.arrays-reduce",
+    "step": 0,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 15,
+    "title": "2. Отсортировать строки по алфавиту"
+  },
+  {
+    "id": "js46",
+    "skill": "js.arrays-reduce",
+    "step": 0,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 15,
+    "title": "3. Отсортировать строки в обратном алфавитном порядке"
+  },
+  {
+    "id": "js47",
+    "skill": "js.arrays-reduce",
+    "step": 0,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 40,
+    "title": "4. Отсортировать пользователей по возрасту (от младшего к старшему)"
+  },
+  {
+    "id": "js48",
+    "skill": "js.arrays-reduce",
+    "step": 0,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 25,
+    "title": "5. Отсортировать строки по длине"
+  },
+  {
+    "id": "js49",
+    "skill": "js.arrays-reduce",
+    "step": 0,
+    "group": "Массивы",
+    "difficulty": "medium",
+    "probability": 60,
+    "title": "6. Перестановка элементов массива (Company X)"
+  },
+  {
+    "id": "js50",
+    "skill": "js.arrays-reduce",
+    "step": 0,
+    "group": "Массивы",
+    "difficulty": "medium",
+    "probability": 75,
+    "title": "7. Что выведет этот код?"
+  },
+  {
+    "id": "js51",
+    "skill": "js.arrays-reduce",
+    "step": 1,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "1. Напиши синтаксис reduce"
+  },
+  {
+    "id": "js52",
+    "skill": "js.arrays-reduce",
+    "step": 1,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 15,
+    "title": "2. Сумма элементов массива"
+  },
+  {
+    "id": "js53",
+    "skill": "js.arrays-reduce",
+    "step": 1,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 30,
+    "title": "3. Посчитать общую стоимость товаров"
+  },
+  {
+    "id": "js54",
+    "skill": "js.arrays-reduce",
+    "step": 1,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 20,
+    "title": "4. Сумма и произведение"
+  },
+  {
+    "id": "js55",
+    "skill": "js.arrays-reduce",
+    "step": 1,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 60,
+    "title": "5. Подсчёт элементов"
+  },
+  {
+    "id": "js56",
+    "skill": "js.arrays-reduce",
+    "step": 1,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 45,
+    "title": "6. Базовый расчет корзины"
+  },
+  {
+    "id": "js57",
+    "skill": "js.arrays-reduce",
+    "step": 1,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 40,
+    "title": "7. Минимум и максимум"
+  },
+  {
+    "id": "js63",
+    "skill": "js.arrays-reduce",
+    "step": 1,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 90,
+    "title": "8. Среднее арифметическое (Агрегация)"
+  },
+  {
+    "id": "js64",
+    "skill": "js.arrays-reduce",
+    "step": 1,
+    "group": "Массивы",
+    "difficulty": "medium",
+    "probability": 85,
+    "title": "9. Создать объект"
+  },
+  {
+    "id": "js65",
+    "skill": "js.arrays-reduce",
+    "step": 1,
+    "group": "Массивы",
+    "difficulty": "medium",
+    "probability": 86,
+    "title": "10. Суммирование расходов по категориям"
+  },
+  {
+    "id": "js58",
+    "skill": "js.arrays-reduce",
+    "step": 1,
+    "group": "Массивы",
+    "difficulty": "medium",
+    "probability": 75,
+    "title": "11. Flatten (Разглаживание)"
+  },
+  {
+    "id": "js59",
+    "skill": "js.arrays-reduce",
+    "step": 1,
+    "group": "Массивы",
+    "difficulty": "medium",
+    "probability": 92,
+    "title": "12. Группировка по свойству"
+  },
+  {
+    "id": "js66",
+    "skill": "js.arrays-reduce",
+    "step": 1,
+    "group": "Массивы",
+    "difficulty": "medium",
+    "probability": 88,
+    "title": "13. Группировка названий продуктов по категории"
+  },
+  {
+    "id": "js60",
+    "skill": "js.arrays-reduce",
+    "step": 1,
+    "group": "Массивы",
+    "difficulty": "medium",
+    "probability": 70,
+    "title": "14. Группировка с сортировкой внутри"
+  },
+  {
+    "id": "js67",
+    "skill": "js.arrays-reduce",
+    "step": 1,
+    "group": "Массивы",
+    "difficulty": "hard",
+    "probability": 88,
+    "title": "15. Группировка по country и id (Company X)"
+  },
+  {
+    "id": "js68",
+    "skill": "js.arrays-reduce",
+    "step": 1,
+    "group": "Массивы",
+    "difficulty": "medium",
+    "probability": 72,
+    "title": "16. Что вернёт этот код?"
+  },
+  {
+    "id": "js268",
+    "skill": "js.arrays-reduce",
+    "step": 2,
+    "group": "Массивы",
+    "difficulty": "easy",
+    "probability": 92,
+    "title": "1. Удаление дубликатов из массива (unique)"
+  },
+  {
+    "id": "js235",
+    "skill": "js.arrays-reduce",
+    "step": 2,
+    "group": "Массивы",
+    "difficulty": "medium",
+    "probability": 82,
+    "title": "2. Утилита разбиения массива chunk(array, size)"
+  },
+  {
+    "id": "js269",
+    "skill": "js.arrays-reduce",
+    "step": 2,
+    "group": "Массивы",
+    "difficulty": "medium",
+    "probability": 72,
+    "title": "3. Перемешивание массива: алгоритм Фишера — Йейтса (shuffle)"
+  },
+  {
+    "id": "js81",
+    "skill": "js.collections",
+    "step": 0,
+    "group": "Коллекции",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "1. Создание Set из массива и обратно"
+  },
+  {
+    "id": "js82",
+    "skill": "js.collections",
+    "step": 0,
+    "group": "Коллекции",
+    "difficulty": "easy",
+    "probability": 60,
+    "title": "2. Удаление дубликатов строк (слова в тексте)"
+  },
+  {
+    "id": "js83",
+    "skill": "js.collections",
+    "step": 0,
+    "group": "Коллекции",
+    "difficulty": "easy",
+    "probability": 90,
+    "title": "3. Поиск первого повторяющегося элемента"
+  },
+  {
+    "id": "js84",
+    "skill": "js.collections",
+    "step": 0,
+    "group": "Коллекции",
+    "difficulty": "medium",
+    "probability": 82,
+    "title": "4. Set с объектами: фильтрация по id"
+  },
+  {
+    "id": "js271",
+    "skill": "js.collections",
+    "step": 0,
+    "group": "Коллекции",
+    "difficulty": "medium",
+    "probability": 85,
+    "title": "5. Операции над множествами: union, intersection, difference"
+  },
+  {
+    "id": "js85",
+    "skill": "js.collections",
+    "step": 0,
+    "group": "Коллекции",
+    "difficulty": "easy",
+    "probability": 75,
+    "title": "6. Что выведет этот код? (Базовые методы)"
+  },
+  {
+    "id": "js86",
+    "skill": "js.collections",
+    "step": 0,
+    "group": "Коллекции",
+    "difficulty": "medium",
+    "probability": 80,
+    "title": "7. Что выведет этот код? (Сравнение объектов)"
+  },
+  {
+    "id": "js88",
+    "skill": "js.collections",
+    "step": 0,
+    "group": "Коллекции",
+    "difficulty": "medium",
+    "probability": 70,
+    "title": "8. Что выведет этот код? (Итерация и удаление)"
+  },
+  {
+    "id": "js89",
+    "skill": "js.collections",
+    "step": 1,
+    "group": "Коллекции",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "1. Создание Map и добавление элементов"
+  },
+  {
+    "id": "js90",
+    "skill": "js.collections",
+    "step": 1,
+    "group": "Коллекции",
+    "difficulty": "easy",
+    "probability": 30,
+    "title": "2. Инициализация Map из массива пар"
+  },
+  {
+    "id": "js91",
+    "skill": "js.collections",
+    "step": 1,
+    "group": "Коллекции",
+    "difficulty": "easy",
+    "probability": 30,
+    "title": "3. Получение значения по ключу"
+  },
+  {
+    "id": "js92",
+    "skill": "js.collections",
+    "step": 1,
+    "group": "Коллекции",
+    "difficulty": "easy",
+    "probability": 30,
+    "title": "4. Проверка наличия ключа и удаление"
+  },
+  {
+    "id": "js272",
+    "skill": "js.collections",
+    "step": 1,
+    "group": "Коллекции",
+    "difficulty": "easy",
+    "probability": 85,
+    "title": "5. Что выведет код? Ключи объекта и ключи Map"
+  },
+  {
+    "id": "js93",
+    "skill": "js.collections",
+    "step": 1,
+    "group": "Коллекции",
+    "difficulty": "easy",
+    "probability": 30,
+    "title": "6. Перебор Map через for...of"
+  },
+  {
+    "id": "js94",
+    "skill": "js.collections",
+    "step": 1,
+    "group": "Коллекции",
+    "difficulty": "easy",
+    "probability": 25,
+    "title": "7. forEach у Map"
+  },
+  {
+    "id": "js95",
+    "skill": "js.collections",
+    "step": 1,
+    "group": "Коллекции",
+    "difficulty": "easy",
+    "probability": 35,
+    "title": "8. Получить отдельно ключи, значения, пары"
+  },
+  {
+    "id": "js96",
+    "skill": "js.collections",
+    "step": 1,
+    "group": "Коллекции",
+    "difficulty": "medium",
+    "probability": 90,
+    "title": "9. Подсчёт частоты элементов"
+  },
+  {
+    "id": "js273",
+    "skill": "js.collections",
+    "step": 1,
+    "group": "Коллекции",
+    "difficulty": "medium",
+    "probability": 95,
+    "title": "10. Two Sum: пара чисел с заданной суммой за O(n)"
+  },
+  {
+    "id": "js99",
+    "skill": "js.collections",
+    "step": 1,
+    "group": "Коллекции",
+    "difficulty": "medium",
+    "probability": 95,
+    "title": "11. Анаграммы (Company X)"
+  },
+  {
+    "id": "js196",
+    "skill": "js.collections",
+    "step": 1,
+    "group": "Коллекции",
+    "difficulty": "hard",
+    "probability": 88,
+    "title": "12. Преобразование списка категорий (Company X)"
+  },
+  {
+    "id": "js274",
+    "skill": "js.collections",
+    "step": 1,
+    "group": "Коллекции",
+    "difficulty": "hard",
+    "probability": 93,
+    "title": "13. LRU Cache с вытеснением давно неиспользуемых ключей"
+  },
+  {
+    "id": "js226",
+    "skill": "js.collections",
+    "step": 2,
+    "group": "Коллекции",
+    "difficulty": "medium",
+    "probability": 75,
+    "title": "1. WeakMap для приватных метаданных и инкапсуляции"
+  },
+  {
+    "id": "js227",
+    "skill": "js.collections",
+    "step": 2,
+    "group": "Коллекции",
+    "difficulty": "hard",
+    "probability": 65,
+    "title": "2. WeakSet для защиты обхода циклической структуры"
+  },
+  {
+    "id": "js126",
+    "skill": "js.closures",
+    "step": 0,
+    "group": "Функции и замыкания",
+    "difficulty": "easy",
+    "probability": 90,
+    "title": "1. Генератор счетчика на замыкании"
+  },
+  {
+    "id": "js128",
+    "skill": "js.closures",
+    "step": 0,
+    "group": "Функции и замыкания",
+    "difficulty": "medium",
+    "probability": 96,
+    "title": "2. Таймеры и переменная цикла var"
+  },
+  {
+    "id": "js129",
+    "skill": "js.closures",
+    "step": 0,
+    "group": "Функции и замыкания",
+    "difficulty": "medium",
+    "probability": 85,
+    "title": "3. Фиксация значений локальной переменной"
+  },
+  {
+    "id": "js130",
+    "skill": "js.closures",
+    "step": 0,
+    "group": "Функции и замыкания",
+    "difficulty": "medium",
+    "probability": 85,
+    "title": "4. Свежие и зафиксированные значения в замыкании"
+  },
+  {
+    "id": "js131",
+    "skill": "js.closures",
+    "step": 0,
+    "group": "Функции и замыкания",
+    "difficulty": "medium",
+    "probability": 90,
+    "title": "5. Замыкание по элементам массива в асинхронном цикле"
+  },
+  {
+    "id": "js101",
+    "skill": "js.closures",
+    "step": 1,
+    "group": "Функции и замыкания",
+    "difficulty": "medium",
+    "probability": 95,
+    "title": "1. Мемоизация аргументов (Company X)"
+  },
+  {
+    "id": "js100",
+    "skill": "js.closures",
+    "step": 1,
+    "group": "Функции и замыкания",
+    "difficulty": "hard",
+    "probability": 85,
+    "title": "2. Мемоизация с TTL (Company X)"
+  },
+  {
+    "id": "js220",
+    "skill": "js.hof",
+    "step": 0,
+    "group": "Функции и замыкания",
+    "difficulty": "medium",
+    "probability": 90,
+    "title": "1. Реализация декоратора once(fn)"
+  },
+  {
+    "id": "js276",
+    "skill": "js.hof",
+    "step": 0,
+    "group": "Функции и замыкания",
+    "difficulty": "medium",
+    "probability": 70,
+    "title": "2. Частичное применение функции partial(fn, ...args)"
+  },
+  {
+    "id": "js155",
+    "skill": "js.hof",
+    "step": 1,
+    "group": "Функции и замыкания",
+    "difficulty": "medium",
+    "probability": 90,
+    "title": "1. Каррирование суммы с двумя аргументами"
+  },
+  {
+    "id": "js275",
+    "skill": "js.hof",
+    "step": 1,
+    "group": "Функции и замыкания",
+    "difficulty": "medium",
+    "probability": 95,
+    "title": "2. Универсальное каррирование curry(fn) через fn.length"
+  },
+  {
+    "id": "js156",
+    "skill": "js.hof",
+    "step": 1,
+    "group": "Функции и замыкания",
+    "difficulty": "hard",
+    "probability": 96,
+    "title": "3. Бесконечное каррирование функции суммирования"
+  },
+  {
+    "id": "js157",
+    "skill": "js.hof",
+    "step": 1,
+    "group": "Функции и замыкания",
+    "difficulty": "hard",
+    "probability": 85,
+    "title": "4. Каррирование с приведением к числу (Symbol.toPrimitive)"
+  },
+  {
+    "id": "js166",
+    "skill": "js.hof",
+    "step": 2,
+    "group": "Функции и замыкания",
+    "difficulty": "medium",
+    "probability": 90,
+    "title": "1. Композиция функций (Pipe и Compose)"
+  },
+  {
+    "id": "js132",
+    "skill": "js.recursion",
+    "step": 0,
+    "group": "Рекурсия",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "1. Что такое база рекурсии (base case)"
+  },
+  {
+    "id": "js133",
+    "skill": "js.recursion",
+    "step": 0,
+    "group": "Рекурсия",
+    "difficulty": "easy",
+    "probability": 18,
+    "title": "2. Рекурсия 'вверх' (печать при возврате)"
+  },
+  {
+    "id": "js134",
+    "skill": "js.recursion",
+    "step": 0,
+    "group": "Рекурсия",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "3. Факториал (классика синтаксиса)"
+  },
+  {
+    "id": "js135",
+    "skill": "js.recursion",
+    "step": 0,
+    "group": "Рекурсия",
+    "difficulty": "easy",
+    "probability": 18,
+    "title": "4. Возведение в степень"
+  },
+  {
+    "id": "js147",
+    "skill": "js.recursion",
+    "step": 0,
+    "group": "Рекурсия",
+    "difficulty": "easy",
+    "probability": 75,
+    "title": "5. Вычисление n-го числа Фибоначчи"
+  },
+  {
+    "id": "js136",
+    "skill": "js.recursion",
+    "step": 1,
+    "group": "Рекурсия",
+    "difficulty": "easy",
+    "probability": 18,
+    "title": "1. Максимум в массиве"
+  },
+  {
+    "id": "js137",
+    "skill": "js.recursion",
+    "step": 1,
+    "group": "Рекурсия",
+    "difficulty": "medium",
+    "probability": 97,
+    "title": "2. Глубокое сплющивание массива (flatten)"
+  },
+  {
+    "id": "js139",
+    "skill": "js.recursion",
+    "step": 2,
+    "group": "Рекурсия",
+    "difficulty": "medium",
+    "probability": 92,
+    "title": "1. Сумма всех чисел во вложенном объекте"
+  },
+  {
+    "id": "js144",
+    "skill": "js.recursion",
+    "step": 2,
+    "group": "Рекурсия",
+    "difficulty": "medium",
+    "probability": 85,
+    "title": "2. Сбор всех примитивов из глубокого объекта"
+  },
+  {
+    "id": "js138",
+    "skill": "js.recursion",
+    "step": 2,
+    "group": "Рекурсия",
+    "difficulty": "medium",
+    "probability": 96,
+    "title": "3. Глубокое клонирование объекта"
+  },
+  {
+    "id": "js140",
+    "skill": "js.recursion",
+    "step": 3,
+    "group": "Рекурсия",
+    "difficulty": "medium",
+    "probability": 90,
+    "title": "1. Обход бинарного дерева (сумма значений)"
+  },
+  {
+    "id": "js146",
+    "skill": "js.recursion",
+    "step": 3,
+    "group": "Рекурсия",
+    "difficulty": "medium",
+    "probability": 88,
+    "title": "2. Суммирование значений дерева с дочерними элементами"
+  },
+  {
+    "id": "js145",
+    "skill": "js.recursion",
+    "step": 3,
+    "group": "Рекурсия",
+    "difficulty": "medium",
+    "probability": 85,
+    "title": "3. Сбор всех значений у узлов дерева"
+  },
+  {
+    "id": "js141",
+    "skill": "js.recursion",
+    "step": 3,
+    "group": "Рекурсия",
+    "difficulty": "medium",
+    "probability": 90,
+    "title": "4. Глубина (высота) дерева"
+  },
+  {
+    "id": "js142",
+    "skill": "js.recursion",
+    "step": 3,
+    "group": "Рекурсия",
+    "difficulty": "medium",
+    "probability": 85,
+    "title": "5. Поиск файла в файловой системе"
+  },
+  {
+    "id": "js206",
+    "skill": "js.recursion",
+    "step": 4,
+    "group": "Рекурсия",
+    "difficulty": "medium",
+    "probability": 95,
+    "title": "1. Глубокое сравнение объектов (deepEqual)"
+  },
+  {
+    "id": "js209",
+    "skill": "js.recursion",
+    "step": 4,
+    "group": "Рекурсия",
+    "difficulty": "medium",
+    "probability": 92,
+    "title": "2. Преобразование вложенного объекта в плоский путь (flattenObject)"
+  },
+  {
+    "id": "js170",
+    "skill": "js.recursion",
+    "step": 4,
+    "group": "Рекурсия",
+    "difficulty": "medium",
+    "probability": 75,
+    "title": "3. Глубокая заморозка объектов (deepFreeze)"
+  },
+  {
+    "id": "js248",
+    "skill": "js.recursion",
+    "step": 4,
+    "group": "Рекурсия",
+    "difficulty": "medium",
+    "probability": 75,
+    "title": "4. Рекурсивное преобразование ключей camelCase / snake_case"
+  },
+  {
+    "id": "js211",
+    "skill": "js.recursion",
+    "step": 4,
+    "group": "Рекурсия",
+    "difficulty": "hard",
+    "probability": 90,
+    "title": "5. Глубокое слияние объектов (deepMerge)"
+  },
+  {
+    "id": "js210",
+    "skill": "js.recursion",
+    "step": 4,
+    "group": "Рекурсия",
+    "difficulty": "hard",
+    "probability": 98,
+    "title": "6. Глубокое клонирование с циклическими ссылками (deepClone + WeakMap)"
+  },
+  {
+    "id": "js277",
+    "skill": "js.this",
+    "step": 0,
+    "group": "this, прототипы и классы",
+    "difficulty": "easy",
+    "probability": 97,
+    "title": "1. Четыре правила this: вызов, метод, call/apply/bind и new"
+  },
+  {
+    "id": "js148",
+    "skill": "js.this",
+    "step": 0,
+    "group": "this, прототипы и классы",
+    "difficulty": "medium",
+    "probability": 96,
+    "title": "2. Контекст this в обычном и стрелочном методе объекта"
+  },
+  {
+    "id": "js150",
+    "skill": "js.this",
+    "step": 0,
+    "group": "this, прототипы и классы",
+    "difficulty": "medium",
+    "probability": 93,
+    "title": "3. Извлечение метода объекта и потеря контекста this"
+  },
+  {
+    "id": "js151",
+    "skill": "js.this",
+    "step": 0,
+    "group": "this, прототипы и классы",
+    "difficulty": "medium",
+    "probability": 92,
+    "title": "4. Повторное связывание контекста через bind"
+  },
+  {
+    "id": "js153",
+    "skill": "js.this",
+    "step": 0,
+    "group": "this, прототипы и классы",
+    "difficulty": "medium",
+    "probability": 90,
+    "title": "5. Стрелочная функция в асинхронном методе и лексический this"
+  },
+  {
+    "id": "js278",
+    "skill": "js.this",
+    "step": 1,
+    "group": "this, прототипы и классы",
+    "difficulty": "medium",
+    "probability": 88,
+    "title": "1. Реализация полифилов call и apply"
+  },
+  {
+    "id": "js279",
+    "skill": "js.this",
+    "step": 1,
+    "group": "this, прототипы и классы",
+    "difficulty": "hard",
+    "probability": 96,
+    "title": "2. Реализация полифила Function.prototype.bind"
+  },
+  {
+    "id": "js154",
+    "skill": "js.proto",
+    "step": 0,
+    "group": "this, прототипы и классы",
+    "difficulty": "easy",
+    "probability": 80,
+    "title": "1. Проверка свойств: оператор in и метод Object.hasOwn"
+  },
+  {
+    "id": "js149",
+    "skill": "js.proto",
+    "step": 0,
+    "group": "this, прототипы и классы",
+    "difficulty": "medium",
+    "probability": 86,
+    "title": "2. Переопределение свойства prototype конструктора"
+  },
+  {
+    "id": "js152",
+    "skill": "js.proto",
+    "step": 0,
+    "group": "this, прототипы и классы",
+    "difficulty": "medium",
+    "probability": 80,
+    "title": "3. Мутабельные свойства в прототипе конструктора"
+  },
+  {
+    "id": "js282",
+    "skill": "js.proto",
+    "step": 0,
+    "group": "this, прототипы и классы",
+    "difficulty": "medium",
+    "probability": 88,
+    "title": "4. Наследование через прототипы без class"
+  },
+  {
+    "id": "js280",
+    "skill": "js.proto",
+    "step": 0,
+    "group": "this, прототипы и классы",
+    "difficulty": "medium",
+    "probability": 88,
+    "title": "5. Реализация оператора new (myNew)"
+  },
+  {
+    "id": "js281",
+    "skill": "js.proto",
+    "step": 0,
+    "group": "this, прототипы и классы",
+    "difficulty": "medium",
+    "probability": 85,
+    "title": "6. Реализация оператора instanceof (myInstanceof)"
+  },
+  {
+    "id": "js283",
+    "skill": "js.classes",
+    "step": 0,
+    "group": "this, прототипы и классы",
+    "difficulty": "medium",
+    "probability": 75,
+    "title": "1. Классы: приватные поля #, геттеры и static"
+  },
+  {
+    "id": "js284",
+    "skill": "js.classes",
+    "step": 0,
+    "group": "this, прототипы и классы",
+    "difficulty": "medium",
+    "probability": 82,
+    "title": "2. Что выведет код? Наследование классов, extends и super"
+  },
+  {
+    "id": "js69",
+    "skill": "js.timers",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "1. Напиши базовый пример setTimeout"
+  },
+  {
+    "id": "js76",
+    "skill": "js.timers",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "2. Напиши базовый пример setInterval"
+  },
+  {
+    "id": "js75",
+    "skill": "js.timers",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "easy",
+    "probability": 78,
+    "title": "3. Что покажет? - Очистка таймаута"
+  },
+  {
+    "id": "js78",
+    "skill": "js.timers",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "4. Что покажет? - Базовый интервал"
+  },
+  {
+    "id": "js79",
+    "skill": "js.timers",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "medium",
+    "probability": 76,
+    "title": "5. Что покажет? - Интервал с задержкой"
+  },
+  {
+    "id": "js80",
+    "skill": "js.timers",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "medium",
+    "probability": 76,
+    "title": "6. Что покажет? - Накопление интервалов"
+  },
+  {
+    "id": "js77",
+    "skill": "js.timers",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "medium",
+    "probability": 75,
+    "title": "7. Практическая задача - Таймер"
+  },
+  {
+    "id": "js292",
+    "skill": "js.timers",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "medium",
+    "probability": 85,
+    "title": "8. setInterval через рекурсивный setTimeout"
+  },
+  {
+    "id": "js103",
+    "skill": "js.promise",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "1. Создание Promise"
+  },
+  {
+    "id": "js104",
+    "skill": "js.promise",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "2. reject и catch"
+  },
+  {
+    "id": "js105",
+    "skill": "js.promise",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "3. Цепочка then"
+  },
+  {
+    "id": "js106",
+    "skill": "js.promise",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "4. finally"
+  },
+  {
+    "id": "js288",
+    "skill": "js.promise",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "easy",
+    "probability": 85,
+    "title": "5. Функция задержки sleep(ms) и обратный отсчёт"
+  },
+  {
+    "id": "js110",
+    "skill": "js.promise",
+    "step": 1,
+    "group": "Асинхронность",
+    "difficulty": "medium",
+    "probability": 92,
+    "title": "1. Promise.all"
+  },
+  {
+    "id": "js111",
+    "skill": "js.promise",
+    "step": 1,
+    "group": "Асинхронность",
+    "difficulty": "medium",
+    "probability": 90,
+    "title": "2. Promise.allSettled"
+  },
+  {
+    "id": "js112",
+    "skill": "js.promise",
+    "step": 1,
+    "group": "Асинхронность",
+    "difficulty": "medium",
+    "probability": 91,
+    "title": "3. Promise.race — таймаут запроса"
+  },
+  {
+    "id": "js113",
+    "skill": "js.promise",
+    "step": 1,
+    "group": "Асинхронность",
+    "difficulty": "medium",
+    "probability": 80,
+    "title": "4. Promise.any"
+  },
+  {
+    "id": "js218",
+    "skill": "js.promise",
+    "step": 2,
+    "group": "Асинхронность",
+    "difficulty": "medium",
+    "probability": 80,
+    "title": "1. Поток управления в try / catch / finally: Приоритеты return и throw"
+  },
+  {
+    "id": "js290",
+    "skill": "js.promise",
+    "step": 2,
+    "group": "Асинхронность",
+    "difficulty": "medium",
+    "probability": 70,
+    "title": "2. Собственные классы ошибок и Error cause"
+  },
+  {
+    "id": "js289",
+    "skill": "js.promise",
+    "step": 2,
+    "group": "Асинхронность",
+    "difficulty": "medium",
+    "probability": 92,
+    "title": "3. Что выведет код? Проброс ошибок по цепочке промисов"
+  },
+  {
+    "id": "js107",
+    "skill": "js.async",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "1. Базовый async/await"
+  },
+  {
+    "id": "js108",
+    "skill": "js.async",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "easy",
+    "probability": 82,
+    "title": "2. try/catch с async/await"
+  },
+  {
+    "id": "js109",
+    "skill": "js.async",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "medium",
+    "probability": 92,
+    "title": "3. Последовательное выполнение в цикле"
+  },
+  {
+    "id": "js115",
+    "skill": "js.async",
+    "step": 1,
+    "group": "Асинхронность",
+    "difficulty": "medium",
+    "probability": 93,
+    "title": "1. Retry с задержкой"
+  },
+  {
+    "id": "js117",
+    "skill": "js.async",
+    "step": 1,
+    "group": "Асинхронность",
+    "difficulty": "medium",
+    "probability": 85,
+    "title": "2. Мемоизация асинхронной функции"
+  },
+  {
+    "id": "js116",
+    "skill": "js.async",
+    "step": 1,
+    "group": "Асинхронность",
+    "difficulty": "hard",
+    "probability": 98,
+    "title": "3. Ограничение параллельности (concurrency pool)"
+  },
+  {
+    "id": "js120",
+    "skill": "js.async",
+    "step": 1,
+    "group": "Асинхронность",
+    "difficulty": "hard",
+    "probability": 85,
+    "title": "4. Отмена промиса через AbortController"
+  },
+  {
+    "id": "js121",
+    "skill": "js.async",
+    "step": 1,
+    "group": "Асинхронность",
+    "difficulty": "hard",
+    "probability": 90,
+    "title": "5. Очередь асинхронных задач (async task queue)"
+  },
+  {
+    "id": "js71",
+    "skill": "js.event-loop",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "1. Что покажет? - Базовый вывод"
+  },
+  {
+    "id": "js72",
+    "skill": "js.event-loop",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "easy",
+    "probability": 84,
+    "title": "2. Что покажет? - Вложенные таймауты"
+  },
+  {
+    "id": "js118",
+    "skill": "js.event-loop",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "medium",
+    "probability": 99,
+    "title": "3. Порядок вывода: microtask vs macrotask"
+  },
+  {
+    "id": "js174",
+    "skill": "js.event-loop",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "medium",
+    "probability": 96,
+    "title": "4. Конструктор Promise и цепочка .then (Company X)"
+  },
+  {
+    "id": "js175",
+    "skill": "js.event-loop",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "medium",
+    "probability": 96,
+    "title": "5. IIFE, Конструктор Promise и Микрозадачи (Company X)"
+  },
+  {
+    "id": "js185",
+    "skill": "js.event-loop",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "medium",
+    "probability": 98,
+    "title": "6. Порядок вывода в Promise-цепочках (Company X)"
+  },
+  {
+    "id": "js293",
+    "skill": "js.event-loop",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "medium",
+    "probability": 99,
+    "title": "7. Порядок вывода: async/await, Promise и setTimeout (классика)"
+  },
+  {
+    "id": "js179",
+    "skill": "js.event-loop",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "hard",
+    "probability": 97,
+    "title": "8. Вложенные промисы и Async/Await (Company X)"
+  },
+  {
+    "id": "js180",
+    "skill": "js.event-loop",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "hard",
+    "probability": 94,
+    "title": "9. Вложенные таймеры и микрозадачи (Company X)"
+  },
+  {
+    "id": "js182",
+    "skill": "js.event-loop",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "hard",
+    "probability": 98,
+    "title": "10. Сложная комбинация макро и микрозадач"
+  },
+  {
+    "id": "js181",
+    "skill": "js.event-loop",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "hard",
+    "probability": 70,
+    "title": "11. Анимационный кадр requestAnimationFrame vs Event Loop"
+  },
+  {
+    "id": "js70",
+    "skill": "js.throttle",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "medium",
+    "probability": 99,
+    "title": "1. Практическая задача - debounce"
+  },
+  {
+    "id": "js165",
+    "skill": "js.throttle",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "medium",
+    "probability": 97,
+    "title": "2. Реализация функции Throttle (ограничение частоты)"
+  },
+  {
+    "id": "js122",
+    "skill": "js.throttle",
+    "step": 0,
+    "group": "Асинхронность",
+    "difficulty": "hard",
+    "probability": 90,
+    "title": "3. Дебаунс асинхронной функции с отменой устаревших вызовов"
+  },
+  {
+    "id": "js232",
+    "skill": "js.polyfills",
+    "step": 0,
+    "group": "Массивы",
+    "difficulty": "medium",
+    "probability": 95,
+    "title": "1. Реализация полифила Array.prototype.map"
+  },
+  {
+    "id": "js233",
+    "skill": "js.polyfills",
+    "step": 0,
+    "group": "Массивы",
+    "difficulty": "medium",
+    "probability": 95,
+    "title": "2. Реализация полифила Array.prototype.filter"
+  },
+  {
+    "id": "js234",
+    "skill": "js.polyfills",
+    "step": 0,
+    "group": "Массивы",
+    "difficulty": "hard",
+    "probability": 97,
+    "title": "3. Реализация полифила Array.prototype.reduce"
+  },
+  {
+    "id": "js270",
+    "skill": "js.polyfills",
+    "step": 0,
+    "group": "Массивы",
+    "difficulty": "hard",
+    "probability": 93,
+    "title": "4. Реализация полифила Array.prototype.flat"
+  },
+  {
+    "id": "js114",
+    "skill": "js.polyfills",
+    "step": 1,
+    "group": "Асинхронность",
+    "difficulty": "medium",
+    "probability": 90,
+    "title": "1. Промисификация callback-функции"
+  },
+  {
+    "id": "js158",
+    "skill": "js.polyfills",
+    "step": 1,
+    "group": "Асинхронность",
+    "difficulty": "medium",
+    "probability": 98,
+    "title": "2. Полифил Promise.all"
+  },
+  {
+    "id": "js159",
+    "skill": "js.polyfills",
+    "step": 1,
+    "group": "Асинхронность",
+    "difficulty": "medium",
+    "probability": 96,
+    "title": "3. Полифил Promise.allSettled"
+  },
+  {
+    "id": "js160",
+    "skill": "js.polyfills",
+    "step": 1,
+    "group": "Асинхронность",
+    "difficulty": "hard",
+    "probability": 93,
+    "title": "4. Полифил Promise.race и Promise.any"
+  },
+  {
+    "id": "js291",
+    "skill": "js.polyfills",
+    "step": 1,
+    "group": "Асинхронность",
+    "difficulty": "hard",
+    "probability": 92,
+    "title": "5. Реализация собственного Promise (MyPromise)"
+  },
+  {
+    "id": "js285",
+    "skill": "js.iterators",
+    "step": 0,
+    "group": "Итераторы и генераторы",
+    "difficulty": "medium",
+    "probability": 75,
+    "title": "1. Итерируемый объект range через Symbol.iterator"
+  },
+  {
+    "id": "js286",
+    "skill": "js.iterators",
+    "step": 1,
+    "group": "Итераторы и генераторы",
+    "difficulty": "medium",
+    "probability": 70,
+    "title": "1. Генераторы: бесконечные последовательности и take(n)"
+  },
+  {
+    "id": "js287",
+    "skill": "js.iterators",
+    "step": 1,
+    "group": "Итераторы и генераторы",
+    "difficulty": "hard",
+    "probability": 60,
+    "title": "2. Асинхронный генератор: ленивая постраничная загрузка"
+  },
+  {
+    "id": "js294",
+    "skill": "js.patterns",
+    "step": 0,
+    "group": "Паттерны проектирования",
+    "difficulty": "medium",
+    "probability": 70,
+    "title": "1. Паттерн Singleton (Одиночка)"
+  },
+  {
+    "id": "js171",
+    "skill": "js.patterns",
+    "step": 1,
+    "group": "Паттерны проектирования",
+    "difficulty": "medium",
+    "probability": 98,
+    "title": "1. Шина событий (EventEmitter / PubSub)"
+  },
+  {
+    "id": "js295",
+    "skill": "js.patterns",
+    "step": 1,
+    "group": "Паттерны проектирования",
+    "difficulty": "medium",
+    "probability": 98,
+    "title": "2. EventEmitter с chaining и once"
+  },
+  {
+    "id": "js173",
+    "skill": "js.patterns",
+    "step": 2,
+    "group": "Паттерны проектирования",
+    "difficulty": "hard",
+    "probability": 85,
+    "title": "1. Наблюдаемый объект (Observable / Reactive Signal)"
+  },
+  {
+    "id": "js178",
+    "skill": "js.utils",
+    "step": 0,
+    "group": "Утилиты",
+    "difficulty": "medium",
+    "probability": 90,
+    "title": "1. Хелпер условных CSS-классов (ClassNames Polyfill)"
+  },
+  {
+    "id": "js177",
+    "skill": "js.utils",
+    "step": 1,
+    "group": "Утилиты",
+    "difficulty": "medium",
+    "probability": 88,
+    "title": "1. Парсер и сериализатор URL Query String"
+  },
+  {
+    "id": "js176",
+    "skill": "js.utils",
+    "step": 2,
+    "group": "Утилиты",
+    "difficulty": "medium",
+    "probability": 80,
+    "title": "1. Мини-шаблонизатор строк (Template Engine)"
+  },
+  {
+    "id": "js244",
+    "skill": "js.utils",
+    "step": 3,
+    "group": "Утилиты",
+    "difficulty": "hard",
+    "probability": 40,
+    "title": "1. Лексический анализатор: токенизация строки"
+  },
+  {
+    "id": "typescript-1",
+    "skill": "ts.basics",
+    "step": 0,
+    "group": "Основы TypeScript",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "1. Первые аннотации"
+  },
+  {
+    "id": "typescript-25",
+    "skill": "ts.basics",
+    "step": 0,
+    "group": "Основы TypeScript",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "2. Сигнатуры функций"
+  },
+  {
+    "id": "typescript-2",
+    "skill": "ts.basics",
+    "step": 0,
+    "group": "Основы TypeScript",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "3. Составные значения"
+  },
+  {
+    "id": "typescript-3",
+    "skill": "ts.basics",
+    "step": 0,
+    "group": "Основы TypeScript",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "4. Опциональные и неизменяемые поля"
+  },
+  {
+    "id": "typescript-26",
+    "skill": "ts.basics",
+    "step": 0,
+    "group": "Основы TypeScript",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "5. any, unknown и never"
+  },
+  {
+    "id": "typescript-27",
+    "skill": "ts.basics",
+    "step": 0,
+    "group": "Основы TypeScript",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "6. null и undefined"
+  },
+  {
+    "id": "typescript-4",
+    "skill": "ts.basics",
+    "step": 0,
+    "group": "Основы TypeScript",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "7. Роль пользователя"
+  },
+  {
+    "id": "typescript-28",
+    "skill": "ts.basics",
+    "step": 0,
+    "group": "Основы TypeScript",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "8. type или interface"
+  },
+  {
+    "id": "typescript-29",
+    "skill": "ts.basics",
+    "step": 0,
+    "group": "Основы TypeScript",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "9. Структурная типизация"
+  },
+  {
+    "id": "typescript-30",
+    "skill": "ts.basics",
+    "step": 0,
+    "group": "Основы TypeScript",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "10. Литералы и as const"
+  },
+  {
+    "id": "typescript-6",
+    "skill": "ts.basics",
+    "step": 0,
+    "group": "Основы TypeScript",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "11. Статусы заказа"
+  },
+  {
+    "id": "typescript-5",
+    "skill": "ts.narrowing",
+    "step": 0,
+    "group": "Type Narrowing",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "12. Что за тип у переменной"
+  },
+  {
+    "id": "typescript-31",
+    "skill": "ts.narrowing",
+    "step": 0,
+    "group": "Type Narrowing",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "13. Сужение через in и instanceof"
+  },
+  {
+    "id": "typescript-18",
+    "skill": "ts.narrowing",
+    "step": 0,
+    "group": "Type Narrowing",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "14. Разные формы события"
+  },
+  {
+    "id": "typescript-32",
+    "skill": "ts.narrowing",
+    "step": 0,
+    "group": "Type Narrowing",
+    "difficulty": "medium",
+    "probability": null,
+    "title": "15. Проверка полноты через never"
+  },
+  {
+    "id": "typescript-33",
+    "skill": "ts.narrowing",
+    "step": 0,
+    "group": "Type Narrowing",
+    "difficulty": "medium",
+    "probability": null,
+    "title": "16. Пользовательский type guard"
+  },
+  {
+    "id": "typescript-34",
+    "skill": "ts.narrowing",
+    "step": 0,
+    "group": "Type Narrowing",
+    "difficulty": "medium",
+    "probability": null,
+    "title": "17. Функции-утверждения"
+  },
+  {
+    "id": "typescript-35",
+    "skill": "ts.generics",
+    "step": 0,
+    "group": "Generics",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "18. Первый дженерик"
+  },
+  {
+    "id": "typescript-7",
+    "skill": "ts.generics",
+    "step": 0,
+    "group": "Generics",
+    "difficulty": "medium",
+    "probability": null,
+    "title": "19. Значение по ключу"
+  },
+  {
+    "id": "typescript-8",
+    "skill": "ts.generics",
+    "step": 0,
+    "group": "Generics",
+    "difficulty": "medium",
+    "probability": null,
+    "title": "20. Ограничения и значения по умолчанию"
+  },
+  {
+    "id": "typescript-9",
+    "skill": "ts.generics",
+    "step": 0,
+    "group": "Generics",
+    "difficulty": "easy",
+    "probability": null,
+    "title": "21. Пересечение возможностей"
+  },
+  {
+    "id": "typescript-36",
+    "skill": "ts.generics",
+    "step": 0,
+    "group": "Generics",
+    "difficulty": "medium",
+    "probability": null,
+    "title": "22. Оператор satisfies"
+  },
+  {
+    "id": "typescript-37",
+    "skill": "ts.generics",
+    "step": 0,
+    "group": "Generics",
+    "difficulty": "hard",
+    "probability": null,
+    "title": "23. Управление выводом типов"
+  },
+  {
+    "id": "typescript-10",
+    "skill": "ts.utility",
+    "step": 0,
+    "group": "Utility Types",
+    "difficulty": "medium",
+    "probability": null,
+    "title": "24. Выборочная сборка"
+  },
+  {
+    "id": "typescript-11",
+    "skill": "ts.utility",
+    "step": 0,
+    "group": "Utility Types",
+    "difficulty": "medium",
+    "probability": null,
+    "title": "25. Карта записей"
+  },
+  {
+    "id": "typescript-12",
+    "skill": "ts.utility",
+    "step": 0,
+    "group": "Utility Types",
+    "difficulty": "medium",
+    "probability": null,
+    "title": "26. Исключение лишнего"
+  },
+  {
+    "id": "typescript-38",
+    "skill": "ts.utility",
+    "step": 0,
+    "group": "Utility Types",
+    "difficulty": "medium",
+    "probability": null,
+    "title": "27. Partial, Required, Readonly и NonNullable"
+  },
+  {
+    "id": "typescript-13",
+    "skill": "ts.utility",
+    "step": 0,
+    "group": "Utility Types",
+    "difficulty": "medium",
+    "probability": null,
+    "title": "28. Результат валидации"
+  },
+  {
+    "id": "typescript-14",
+    "skill": "ts.utility",
+    "step": 0,
+    "group": "Utility Types",
+    "difficulty": "medium",
+    "probability": null,
+    "title": "29. Разбор функции"
+  },
+  {
+    "id": "typescript-39",
+    "skill": "ts.utility",
+    "step": 0,
+    "group": "Utility Types",
+    "difficulty": "medium",
+    "probability": null,
+    "title": "30. Awaited и типы асинхронного кода"
+  },
+  {
+    "id": "typescript-40",
+    "skill": "ts.mapped",
+    "step": 0,
+    "group": "Mapped и Conditional Types",
+    "difficulty": "medium",
+    "probability": null,
+    "title": "31. Свои Readonly, Partial и Required"
+  },
+  {
+    "id": "typescript-41",
+    "skill": "ts.mapped",
+    "step": 0,
+    "group": "Mapped и Conditional Types",
+    "difficulty": "medium",
+    "probability": null,
+    "title": "32. Свои Pick и Omit"
+  },
+  {
+    "id": "typescript-15",
+    "skill": "ts.mapped",
+    "step": 0,
+    "group": "Mapped и Conditional Types",
+    "difficulty": "medium",
+    "probability": null,
+    "title": "33. Общий шаблон API"
+  },
+  {
+    "id": "typescript-42",
+    "skill": "ts.mapped",
+    "step": 0,
+    "group": "Mapped и Conditional Types",
+    "difficulty": "medium",
+    "probability": null,
+    "title": "34. Условные типы"
+  },
+  {
+    "id": "typescript-16",
+    "skill": "ts.mapped",
+    "step": 0,
+    "group": "Mapped и Conditional Types",
+    "difficulty": "medium",
+    "probability": null,
+    "title": "35. Условный выбор с infer"
+  },
+  {
+    "id": "typescript-43",
+    "skill": "ts.mapped",
+    "step": 0,
+    "group": "Mapped и Conditional Types",
+    "difficulty": "hard",
+    "probability": null,
+    "title": "36. Свои ReturnType, Parameters и Awaited"
+  },
+  {
+    "id": "typescript-44",
+    "skill": "ts.mapped",
+    "step": 0,
+    "group": "Mapped и Conditional Types",
+    "difficulty": "hard",
+    "probability": null,
+    "title": "37. Распределение по объединению"
+  },
+  {
+    "id": "typescript-17",
+    "skill": "ts.mapped",
+    "step": 0,
+    "group": "Mapped и Conditional Types",
+    "difficulty": "medium",
+    "probability": null,
+    "title": "38. Шаблонные строки"
+  },
+  {
+    "id": "typescript-45",
+    "skill": "ts.mapped",
+    "step": 0,
+    "group": "Mapped и Conditional Types",
+    "difficulty": "hard",
+    "probability": null,
+    "title": "39. Переименование и фильтрация ключей"
+  },
+  {
+    "id": "typescript-19",
+    "skill": "ts.patterns",
+    "step": 0,
+    "group": "Практические паттерны",
+    "difficulty": "medium",
+    "probability": null,
+    "title": "40. Получение данных"
+  },
+  {
+    "id": "typescript-20",
+    "skill": "ts.patterns",
+    "step": 0,
+    "group": "Практические паттерны",
+    "difficulty": "medium",
+    "probability": null,
+    "title": "41. Иерархия сотрудников"
+  },
+  {
+    "id": "typescript-46",
+    "skill": "ts.patterns",
+    "step": 0,
+    "group": "Практические паттерны",
+    "difficulty": "medium",
+    "probability": null,
+    "title": "42. Обобщённый репозиторий"
+  },
+  {
+    "id": "typescript-47",
+    "skill": "ts.patterns",
+    "step": 0,
+    "group": "Практические паттерны",
+    "difficulty": "medium",
+    "probability": null,
+    "title": "43. Расширение глобальных типов"
+  },
+  {
+    "id": "typescript-21",
+    "skill": "ts.patterns",
+    "step": 0,
+    "group": "Практические паттерны",
+    "difficulty": "hard",
+    "probability": null,
+    "title": "44. Перегрузка обработчика"
+  },
+  {
+    "id": "typescript-22",
+    "skill": "ts.patterns",
+    "step": 0,
+    "group": "Практические паттерны",
+    "difficulty": "hard",
+    "probability": null,
+    "title": "45. Подписка на события"
+  },
+  {
+    "id": "typescript-23",
+    "skill": "ts.patterns",
+    "step": 0,
+    "group": "Практические паттерны",
+    "difficulty": "hard",
+    "probability": null,
+    "title": "46. Глубокая настройка"
+  },
+  {
+    "id": "typescript-24",
+    "skill": "ts.patterns",
+    "step": 0,
+    "group": "Практические паттерны",
+    "difficulty": "hard",
+    "probability": null,
+    "title": "47. Брендированные идентификаторы"
+  },
+  {
+    "id": "typescript-48",
+    "skill": "ts.patterns",
+    "step": 0,
+    "group": "Практические паттерны",
+    "difficulty": "hard",
+    "probability": null,
+    "title": "48. Типобезопасный builder"
+  },
+  {
+    "id": "typescript-49",
+    "skill": "ts.advanced",
+    "step": 0,
+    "group": "Advanced Types",
+    "difficulty": "hard",
+    "probability": null,
+    "title": "49. Пути к вложенным полям"
+  },
+  {
+    "id": "typescript-50",
+    "skill": "ts.advanced",
+    "step": 0,
+    "group": "Advanced Types",
+    "difficulty": "hard",
+    "probability": null,
+    "title": "50. Параметры маршрута из строки"
+  },
+  {
+    "id": "typescript-51",
+    "skill": "ts.advanced",
+    "step": 0,
+    "group": "Advanced Types",
+    "difficulty": "hard",
+    "probability": null,
+    "title": "51. Операции с кортежами"
+  },
+  {
+    "id": "typescript-52",
+    "skill": "ts.advanced",
+    "step": 0,
+    "group": "Advanced Types",
+    "difficulty": "hard",
+    "probability": null,
+    "title": "52. Каррирование"
+  },
+  {
+    "id": "typescript-53",
+    "skill": "ts.advanced",
+    "step": 0,
+    "group": "Advanced Types",
+    "difficulty": "hard",
+    "probability": null,
+    "title": "53. Вариантность функций"
+  },
+  {
+    "id": "typescript-54",
+    "skill": "ts.advanced",
+    "step": 0,
+    "group": "Advanced Types",
+    "difficulty": "hard",
+    "probability": null,
+    "title": "54. Объединение в пересечение"
+  },
+  {
+    "id": "w1",
+    "skill": "react.state",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "1. Синтаксис useState"
+  },
+  {
+    "id": "w5",
+    "skill": "react.state",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "2. Счетчик"
+  },
+  {
+    "id": "w6",
+    "skill": "react.state",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "3. Исправление асинхронных обновлений"
+  },
+  {
+    "id": "w7",
+    "skill": "react.state",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "4. Безопасное обновление объекта"
+  },
+  {
+    "id": "w4",
+    "skill": "react.state",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "5. Подвох условного рендеринга"
+  },
+  {
+    "id": "w2",
+    "skill": "react.state",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "6. Инпут для поиска"
+  },
+  {
+    "id": "w3",
+    "skill": "react.state",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "7. Чекбокс"
+  },
+  {
+    "id": "w8",
+    "skill": "react.state",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "8. Единый обработчик нескольких полей формы"
+  },
+  {
+    "id": "w9",
+    "skill": "react.state",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "9. Отправка формы поиска"
+  },
+  {
+    "id": "w10",
+    "skill": "react.state",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "10. Фильтрация списка"
+  },
+  {
+    "id": "w11",
+    "skill": "react.state",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "11. Фильтрация выпадающим списком (Select)"
+  },
+  {
+    "id": "w25",
+    "skill": "react.state",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "12. CRUD массива в состоянии"
+  },
+  {
+    "id": "w12",
+    "skill": "react.state",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "13. Генерация стабильных ключей для данных без ID"
+  },
+  {
+    "id": "w26",
+    "skill": "react.state",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "14. Поднятие состояния (Lifting State Up)"
+  },
+  {
+    "id": "w30",
+    "skill": "react.state",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "15. Вычисляемое состояние (Derived State)"
+  },
+  {
+    "id": "w32",
+    "skill": "react.state",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "16. useReducer (Счётчик с шагом)"
+  },
+  {
+    "id": "w34",
+    "skill": "react.state",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "18. Сброс состояния через key"
+  },
+  {
+    "id": "r1",
+    "skill": "react.state",
+    "step": 0,
+    "group": "group-refactoring",
+    "difficulty": "refactoring",
+    "probability": null,
+    "title": "1. Мутация состояния и потеря рендера"
+  },
+  {
+    "id": "w15",
+    "skill": "react.effects",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "21. useEffect (Синтаксис)"
+  },
+  {
+    "id": "w27",
+    "skill": "react.effects",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "24. Таймер и интервал в useEffect"
+  },
+  {
+    "id": "w28",
+    "skill": "react.effects",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "25. Подписка на глобальные события окна"
+  },
+  {
+    "id": "r2",
+    "skill": "react.effects",
+    "step": 0,
+    "group": "group-refactoring",
+    "difficulty": "refactoring",
+    "probability": null,
+    "title": "2. Эффект-синхронизатор"
+  },
+  {
+    "id": "r8",
+    "skill": "react.effects",
+    "step": 0,
+    "group": "group-refactoring",
+    "difficulty": "refactoring",
+    "probability": null,
+    "title": "12. Устаревшее замыкание в слушателе событий"
+  },
+  {
+    "id": "18",
+    "skill": "react.effects",
+    "step": 0,
+    "group": "group-middle",
+    "difficulty": "middle",
+    "probability": null,
+    "title": "15. Секундомер с кругами (Company X)"
+  },
+  {
+    "id": "a11",
+    "skill": "react.effects",
+    "step": 0,
+    "group": "group-lifecycle",
+    "difficulty": "middle",
+    "probability": null,
+    "title": "4. Устаревшее замыкание в setTimeout"
+  },
+  {
+    "id": "a4",
+    "skill": "react.effects",
+    "step": 0,
+    "group": "group-lifecycle",
+    "difficulty": "middle",
+    "probability": null,
+    "title": "3. Порядок вызовов Render, Ref Callback и useEffect (Company X)"
+  },
+  {
+    "id": "a5",
+    "skill": "react.effects",
+    "step": 0,
+    "group": "group-lifecycle",
+    "difficulty": "senior",
+    "probability": null,
+    "title": "5. Порядок вызовов useLayoutEffect, useEffect и Cleanup (Company X)"
+  },
+  {
+    "id": "w18",
+    "skill": "react.render",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "29. useMemo (Синтаксис)"
+  },
+  {
+    "id": "w19",
+    "skill": "react.render",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "30. useMemo (Практика)"
+  },
+  {
+    "id": "w20",
+    "skill": "react.render",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "31. useCallback (Синтаксис)"
+  },
+  {
+    "id": "w21",
+    "skill": "react.render",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "32. useCallback (Практика)"
+  },
+  {
+    "id": "r10",
+    "skill": "react.render",
+    "step": 0,
+    "group": "group-refactoring",
+    "difficulty": "refactoring",
+    "probability": null,
+    "title": "3. Лишние рендеры из-за технических данных"
+  },
+  {
+    "id": "r3",
+    "skill": "react.render",
+    "step": 0,
+    "group": "group-refactoring",
+    "difficulty": "refactoring",
+    "probability": null,
+    "title": "5. Оптимизация без memo: опускаем состояние вниз"
+  },
+  {
+    "id": "r4",
+    "skill": "react.render",
+    "step": 0,
+    "group": "group-refactoring",
+    "difficulty": "refactoring",
+    "probability": null,
+    "title": "6. Почему React.memo не работает"
+  },
+  {
+    "id": "r5",
+    "skill": "react.render",
+    "step": 0,
+    "group": "group-refactoring",
+    "difficulty": "refactoring",
+    "probability": null,
+    "title": "7. Анти-паттерн преждевременной оптимизации"
+  },
+  {
+    "id": "r18",
+    "skill": "react.render",
+    "step": 0,
+    "group": "group-refactoring",
+    "difficulty": "refactoring",
+    "probability": null,
+    "title": "8. Лишние ререндеры из-за Context"
+  },
+  {
+    "id": "r20",
+    "skill": "react.render",
+    "step": 0,
+    "group": "group-refactoring",
+    "difficulty": "refactoring",
+    "probability": null,
+    "title": "11. Тормозящий поиск: useDeferredValue"
+  },
+  {
+    "id": "a9",
+    "skill": "react.render",
+    "step": 0,
+    "group": "group-lifecycle",
+    "difficulty": "junior",
+    "probability": null,
+    "title": "1. Батчинг: что выведется и сколько будет рендеров"
+  },
+  {
+    "id": "a10",
+    "skill": "react.render",
+    "step": 0,
+    "group": "group-lifecycle",
+    "difficulty": "junior",
+    "probability": null,
+    "title": "2. Какие компоненты перерисуются"
+  },
+  {
+    "id": "w22",
+    "skill": "react.refs",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "26. useRef (Синтаксис)"
+  },
+  {
+    "id": "w23",
+    "skill": "react.refs",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "27. useRef (Управление фокусом)"
+  },
+  {
+    "id": "w24",
+    "skill": "react.refs",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "28. useRef (Неконтролируемая форма)"
+  },
+  {
+    "id": "r12",
+    "skill": "react.refs",
+    "step": 0,
+    "group": "group-refactoring",
+    "difficulty": "refactoring",
+    "probability": null,
+    "title": "14. Обрезанное модальное окно (React Portals)"
+  },
+  {
+    "id": "r11",
+    "skill": "react.refs",
+    "step": 0,
+    "group": "group-refactoring",
+    "difficulty": "refactoring",
+    "probability": null,
+    "title": "15. Ref как проп и useImperativeHandle (React 19)"
+  },
+  {
+    "id": "20",
+    "skill": "react.refs",
+    "step": 0,
+    "group": "group-middle",
+    "difficulty": "middle",
+    "probability": null,
+    "title": "8. Доступное модальное окно"
+  },
+  {
+    "id": "19",
+    "skill": "react.forms",
+    "step": 0,
+    "group": "group-middle",
+    "difficulty": "middle",
+    "probability": null,
+    "title": "7. Форма регистрации с валидацией"
+  },
+  {
+    "id": "12",
+    "skill": "react.forms",
+    "step": 0,
+    "group": "group-middle",
+    "difficulty": "middle",
+    "probability": null,
+    "title": "5. Работа с паролем (Company X)"
+  },
+  {
+    "id": "26",
+    "skill": "react.forms",
+    "step": 0,
+    "group": "group-middle",
+    "difficulty": "senior",
+    "probability": null,
+    "title": "19. Форма на Actions: useActionState, useOptimistic, useFormStatus"
+  },
+  {
+    "id": "w31",
+    "skill": "react.patterns",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "33. Пользовательский хук (useToggle)"
+  },
+  {
+    "id": "w35",
+    "skill": "react.patterns",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "34. Пользовательский хук (useLocalStorage)"
+  },
+  {
+    "id": "r19",
+    "skill": "react.patterns",
+    "step": 0,
+    "group": "group-refactoring",
+    "difficulty": "refactoring",
+    "probability": null,
+    "title": "13. HOC → кастомный хук"
+  },
+  {
+    "id": "r13",
+    "skill": "react.patterns",
+    "step": 0,
+    "group": "group-refactoring",
+    "difficulty": "refactoring",
+    "probability": null,
+    "title": "4. Навигация в SPA через React Router"
+  },
+  {
+    "id": "r15",
+    "skill": "react.patterns",
+    "step": 0,
+    "group": "group-refactoring",
+    "difficulty": "refactoring",
+    "probability": null,
+    "title": "16. Рефакторинг (Company X)"
+  },
+  {
+    "id": "r16",
+    "skill": "react.patterns",
+    "step": 0,
+    "group": "group-refactoring",
+    "difficulty": "refactoring",
+    "probability": null,
+    "title": "17. Рефакторинг (Company X)"
+  },
+  {
+    "id": "r17",
+    "skill": "react.patterns",
+    "step": 0,
+    "group": "group-refactoring",
+    "difficulty": "refactoring",
+    "probability": null,
+    "title": "18. Рефакторинг (Company X)"
+  },
+  {
+    "id": "6",
+    "skill": "react.patterns",
+    "step": 0,
+    "group": "group-middle",
+    "difficulty": "junior",
+    "probability": null,
+    "title": "1. Todo List"
+  },
+  {
+    "id": "9",
+    "skill": "react.patterns",
+    "step": 0,
+    "group": "group-middle",
+    "difficulty": "junior",
+    "probability": null,
+    "title": "2. Todo List (Company X)"
+  },
+  {
+    "id": "16",
+    "skill": "react.patterns",
+    "step": 0,
+    "group": "group-middle",
+    "difficulty": "middle",
+    "probability": null,
+    "title": "6. Корзина товаров и скидки (Company X)"
+  },
+  {
+    "id": "21",
+    "skill": "react.patterns",
+    "step": 0,
+    "group": "group-middle",
+    "difficulty": "middle",
+    "probability": null,
+    "title": "9. Дерево файлов (рекурсивный компонент)"
+  },
+  {
+    "id": "24",
+    "skill": "react.patterns",
+    "step": 0,
+    "group": "group-middle",
+    "difficulty": "senior",
+    "probability": null,
+    "title": "17. Error Boundary"
+  },
+  {
+    "id": "25",
+    "skill": "react.patterns",
+    "step": 0,
+    "group": "group-middle",
+    "difficulty": "senior",
+    "probability": null,
+    "title": "18. lazy, Suspense и use() (React 19)"
+  },
+  {
+    "id": "13",
+    "skill": "react.patterns",
+    "step": 0,
+    "group": "group-middle",
+    "difficulty": "senior",
+    "probability": null,
+    "title": "20. Синхронизация фильтров с URL (Company X)"
+  },
+  {
+    "id": "14",
+    "skill": "react.patterns",
+    "step": 0,
+    "group": "group-middle",
+    "difficulty": "senior",
+    "probability": null,
+    "title": "21. Автокомплит с клавиатурой (Company X)"
+  },
+  {
+    "id": "17",
+    "skill": "react.patterns",
+    "step": 0,
+    "group": "group-middle",
+    "difficulty": "senior",
+    "probability": null,
+    "title": "22. Аккордеон: Compound Components (Company X)"
+  },
+  {
+    "id": "w13",
+    "skill": "react.data",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "19. async/await (Синтаксис)"
+  },
+  {
+    "id": "w14",
+    "skill": "react.data",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "20. async/await (Запрос)"
+  },
+  {
+    "id": "w16",
+    "skill": "react.data",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "22. useEffect (Запрос)"
+  },
+  {
+    "id": "w17",
+    "skill": "react.data",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "23. useEffect (AbortController)"
+  },
+  {
+    "id": "r6",
+    "skill": "react.data",
+    "step": 0,
+    "group": "group-refactoring",
+    "difficulty": "refactoring",
+    "probability": null,
+    "title": "9. Состояние гонки (Race Condition)"
+  },
+  {
+    "id": "r7",
+    "skill": "react.data",
+    "step": 0,
+    "group": "group-refactoring",
+    "difficulty": "refactoring",
+    "probability": null,
+    "title": "10. Спам запросами при вводе"
+  },
+  {
+    "id": "11",
+    "skill": "react.data",
+    "step": 0,
+    "group": "group-middle",
+    "difficulty": "junior",
+    "probability": null,
+    "title": "3. Работа с постами (Company X)"
+  },
+  {
+    "id": "10",
+    "skill": "react.data",
+    "step": 0,
+    "group": "group-middle",
+    "difficulty": "middle",
+    "probability": null,
+    "title": "4. Работа с изображением (Company X)"
+  },
+  {
+    "id": "5",
+    "skill": "react.data",
+    "step": 0,
+    "group": "group-middle",
+    "difficulty": "middle",
+    "probability": null,
+    "title": "10. Персонажи Рик и Морти: поиск и фильтры"
+  },
+  {
+    "id": "51",
+    "skill": "react.data",
+    "step": 0,
+    "group": "group-middle",
+    "difficulty": "middle",
+    "probability": null,
+    "title": "11. Персонажи Рик и Морти: Debounce"
+  },
+  {
+    "id": "23",
+    "skill": "react.data",
+    "step": 0,
+    "group": "group-middle",
+    "difficulty": "middle",
+    "probability": null,
+    "title": "12. Хук useFetch"
+  },
+  {
+    "id": "22",
+    "skill": "react.data",
+    "step": 0,
+    "group": "group-middle",
+    "difficulty": "middle",
+    "probability": null,
+    "title": "13. Бесконечная прокрутка"
+  },
+  {
+    "id": "15",
+    "skill": "react.data",
+    "step": 0,
+    "group": "group-middle",
+    "difficulty": "middle",
+    "probability": null,
+    "title": "14. Оптимистичные обновления (Company X)"
+  },
+  {
+    "id": "52",
+    "skill": "react.data",
+    "step": 0,
+    "group": "group-middle",
+    "difficulty": "senior",
+    "probability": null,
+    "title": "16. Персонажи Рик и Морти: кэширование запросов"
+  },
+  {
+    "id": "w33",
+    "skill": "react.state-mgmt",
+    "step": 0,
+    "group": "group-warmup",
+    "difficulty": "warm-up",
+    "probability": null,
+    "title": "17. useContext (Тема оформления)"
+  },
+  {
+    "id": "a1",
+    "skill": "react.state-mgmt",
+    "step": 0,
+    "group": "group-strong",
+    "difficulty": "junior",
+    "probability": null,
+    "title": "1. Загрузка данных (useReducer)"
+  },
+  {
+    "id": "a6",
+    "skill": "react.state-mgmt",
+    "step": 0,
+    "group": "group-strong",
+    "difficulty": "middle",
+    "probability": null,
+    "title": "2. Глобальное состояние: Context + useReducer"
+  },
+  {
+    "id": "a7",
+    "skill": "react.state-mgmt",
+    "step": 0,
+    "group": "group-strong",
+    "difficulty": "middle",
+    "probability": null,
+    "title": "3. Стор на Zustand и селекторы"
+  },
+  {
+    "id": "a12",
+    "skill": "react.state-mgmt",
+    "step": 0,
+    "group": "group-strong",
+    "difficulty": "middle",
+    "probability": null,
+    "title": "4. Серверное состояние на TanStack Query"
+  },
+  {
+    "id": "a2",
+    "skill": "react.state-mgmt",
+    "step": 0,
+    "group": "group-strong",
+    "difficulty": "middle",
+    "probability": null,
+    "title": "5. Загрузка данных (Redux Toolkit)"
+  },
+  {
+    "id": "a3",
+    "skill": "react.state-mgmt",
+    "step": 0,
+    "group": "group-strong",
+    "difficulty": "middle",
+    "probability": null,
+    "title": "6. Загрузка данных (RTK + Селекторы)"
+  },
+  {
+    "id": "a8",
+    "skill": "react.state-mgmt",
+    "step": 0,
+    "group": "group-strong",
+    "difficulty": "senior",
+    "probability": null,
+    "title": "7. useSyncExternalStore: подписка на внешний стор"
+  },
+  {
+    "id": "ts3",
+    "skill": "react.ts",
+    "step": 0,
+    "group": "group-ts",
+    "difficulty": "junior",
+    "probability": null,
+    "title": "1. Строгая типизация событий и формы"
+  },
+  {
+    "id": "ts5",
+    "skill": "react.ts",
+    "step": 0,
+    "group": "group-ts",
+    "difficulty": "junior",
+    "probability": null,
+    "title": "2. Проектирование типов пропсов и словарей"
+  },
+  {
+    "id": "ts6",
+    "skill": "react.ts",
+    "step": 0,
+    "group": "group-ts",
+    "difficulty": "junior",
+    "probability": null,
+    "title": "3. Типизация кастомного хука-переключателя"
+  },
+  {
+    "id": "ts8",
+    "skill": "react.ts",
+    "step": 0,
+    "group": "group-ts",
+    "difficulty": "junior",
+    "probability": null,
+    "title": "4. Разграничение типов дочерних элементов"
+  },
+  {
+    "id": "ts12",
+    "skill": "react.ts",
+    "step": 0,
+    "group": "group-ts",
+    "difficulty": "junior",
+    "probability": null,
+    "title": "5. Типизация ref в React 19"
+  },
+  {
+    "id": "ts1",
+    "skill": "react.ts",
+    "step": 0,
+    "group": "group-ts",
+    "difficulty": "middle",
+    "probability": null,
+    "title": "6. Универсальный компонент списка"
+  },
+  {
+    "id": "ts4",
+    "skill": "react.ts",
+    "step": 0,
+    "group": "group-ts",
+    "difficulty": "middle",
+    "probability": null,
+    "title": "7. Моделирование ролей и сужение типов"
+  },
+  {
+    "id": "ts7",
+    "skill": "react.ts",
+    "step": 0,
+    "group": "group-ts",
+    "difficulty": "middle",
+    "probability": null,
+    "title": "8. Безопасный Context и хук useAuth"
+  },
+  {
+    "id": "ts9",
+    "skill": "react.ts",
+    "step": 0,
+    "group": "group-ts",
+    "difficulty": "middle",
+    "probability": null,
+    "title": "9. Моделирование состояний в useReducer"
+  },
+  {
+    "id": "ts10",
+    "skill": "react.ts",
+    "step": 0,
+    "group": "group-ts",
+    "difficulty": "senior",
+    "probability": null,
+    "title": "10. Взаимоисключающие пропсы компонента"
+  },
+  {
+    "id": "ts2",
+    "skill": "react.ts",
+    "step": 0,
+    "group": "group-ts",
+    "difficulty": "senior",
+    "probability": null,
+    "title": "11. Полиморфный компонент кнопки / ссылки"
+  },
+  {
+    "id": "ts11",
+    "skill": "react.ts",
+    "step": 0,
+    "group": "group-ts",
+    "difficulty": "senior",
+    "probability": null,
+    "title": "12. Generic-компонент Select с ref (React 19)"
+  },
+  {
+    "id": "tsp1",
+    "skill": "react.ts",
+    "step": 0,
+    "group": "group-ts-practice",
+    "difficulty": "junior",
+    "probability": null,
+    "title": "1. useEffect + TS (Запрос)"
+  },
+  {
+    "id": "tsp3",
+    "skill": "react.ts",
+    "step": 0,
+    "group": "group-ts-practice",
+    "difficulty": "junior",
+    "probability": null,
+    "title": "2. Менеджер постов + TS"
+  },
+  {
+    "id": "tsp2",
+    "skill": "react.ts",
+    "step": 0,
+    "group": "group-ts-practice",
+    "difficulty": "middle",
+    "probability": null,
+    "title": "3. Работа с изображением + TS"
+  },
+  {
+    "id": "algo6",
+    "skill": "algo.hash-map",
+    "step": 0,
+    "group": "Hash Map",
+    "difficulty": "easy",
+    "probability": 82,
+    "title": "1. Contains Duplicate"
+  },
+  {
+    "id": "algo4",
+    "skill": "algo.hash-map",
+    "step": 1,
+    "group": "Hash Map",
+    "difficulty": "easy",
+    "probability": 98,
+    "title": "2. Two Sum"
+  },
+  {
+    "id": "algo5",
+    "skill": "algo.hash-map",
+    "step": 2,
+    "group": "Hash Map",
+    "difficulty": "easy",
+    "probability": 92,
+    "title": "3. Valid Anagram"
+  },
+  {
+    "id": "algo7",
+    "skill": "algo.hash-map",
+    "step": 2,
+    "group": "Hash Map",
+    "difficulty": "medium",
+    "probability": 96,
+    "title": "4. Group Anagrams"
+  },
+  {
+    "id": "algo45",
+    "skill": "algo.hash-map",
+    "step": 3,
+    "group": "Hash Map",
+    "difficulty": "easy",
+    "probability": 94,
+    "title": "5. Find All Numbers Disappeared in an Array"
+  },
+  {
+    "id": "algo38",
+    "skill": "algo.two-pointers",
+    "step": 0,
+    "group": "Two Pointers",
+    "difficulty": "easy",
+    "probability": 90,
+    "title": "1. Remove Element"
+  },
+  {
+    "id": "algo36",
+    "skill": "algo.two-pointers",
+    "step": 0,
+    "group": "Two Pointers",
+    "difficulty": "easy",
+    "probability": 90,
+    "title": "2. Remove Duplicates from Sorted Array"
+  },
+  {
+    "id": "algo35",
+    "skill": "algo.two-pointers",
+    "step": 0,
+    "group": "Two Pointers",
+    "difficulty": "easy",
+    "probability": 95,
+    "title": "3. Move Zeroes"
+  },
+  {
+    "id": "algo47",
+    "skill": "algo.two-pointers",
+    "step": 1,
+    "group": "Two Pointers",
+    "difficulty": "easy",
+    "probability": 94,
+    "title": "4. Symmetric Difference of Sorted Arrays"
+  },
+  {
+    "id": "algo51",
+    "skill": "algo.two-pointers",
+    "step": 1,
+    "group": "Two Pointers",
+    "difficulty": "easy",
+    "probability": 94,
+    "title": "5. Common Element in Three Sorted Arrays"
+  },
+  {
+    "id": "algo57",
+    "skill": "algo.two-pointers",
+    "step": 2,
+    "group": "Two Pointers",
+    "difficulty": "easy",
+    "probability": 94,
+    "title": "6. Expand Number Ranges"
+  },
+  {
+    "id": "algo2",
+    "skill": "algo.two-pointers",
+    "step": 3,
+    "group": "Two Pointers",
+    "difficulty": "easy",
+    "probability": 95,
+    "title": "7. Valid Palindrome"
+  },
+  {
+    "id": "algo37",
+    "skill": "algo.two-pointers",
+    "step": 3,
+    "group": "Two Pointers",
+    "difficulty": "easy",
+    "probability": 90,
+    "title": "8. Sort Array By Parity"
+  },
+  {
+    "id": "algo1",
+    "skill": "algo.two-pointers",
+    "step": 3,
+    "group": "Two Pointers",
+    "difficulty": "medium",
+    "probability": 92,
+    "title": "9. Two Sum II - Input Array Is Sorted"
+  },
+  {
+    "id": "algo3",
+    "skill": "algo.two-pointers",
+    "step": 3,
+    "group": "Two Pointers",
+    "difficulty": "medium",
+    "probability": 95,
+    "title": "10. 3Sum"
+  },
+  {
+    "id": "algo46",
+    "skill": "algo.two-pointers",
+    "step": 4,
+    "group": "Two Pointers",
+    "difficulty": "medium",
+    "probability": 94,
+    "title": "11. Maximize Distance to Closest Person"
+  },
+  {
+    "id": "algo48",
+    "skill": "algo.two-pointers",
+    "step": 5,
+    "group": "Two Pointers",
+    "difficulty": "medium",
+    "probability": 94,
+    "title": "12. Longest Palindromic Substring"
+  },
+  {
+    "id": "algo9",
+    "skill": "algo.sliding-window",
+    "step": 0,
+    "group": "Sliding Window",
+    "difficulty": "easy",
+    "probability": 82,
+    "title": "1. Maximum Average Subarray I"
+  },
+  {
+    "id": "algo10",
+    "skill": "algo.sliding-window",
+    "step": 1,
+    "group": "Sliding Window",
+    "difficulty": "medium",
+    "probability": 88,
+    "title": "2. Minimum Size Subarray Sum"
+  },
+  {
+    "id": "algo8",
+    "skill": "algo.sliding-window",
+    "step": 1,
+    "group": "Sliding Window",
+    "difficulty": "medium",
+    "probability": 97,
+    "title": "3. Longest Substring Without Repeating Characters"
+  },
+  {
+    "id": "algo39",
+    "skill": "algo.prefix-sum",
+    "step": 0,
+    "group": "Prefix Sum",
+    "difficulty": "easy",
+    "probability": 76,
+    "title": "1. Running Sum of 1d Array"
+  },
+  {
+    "id": "algo11",
+    "skill": "algo.prefix-sum",
+    "step": 0,
+    "group": "Prefix Sum",
+    "difficulty": "easy",
+    "probability": 80,
+    "title": "2. Range Sum Query - Immutable"
+  },
+  {
+    "id": "algo13",
+    "skill": "algo.prefix-sum",
+    "step": 1,
+    "group": "Prefix Sum",
+    "difficulty": "easy",
+    "probability": 84,
+    "title": "3. Find Pivot Index"
+  },
+  {
+    "id": "algo12",
+    "skill": "algo.prefix-sum",
+    "step": 2,
+    "group": "Prefix Sum",
+    "difficulty": "medium",
+    "probability": 92,
+    "title": "4. Subarray Sum Equals K"
+  },
+  {
+    "id": "algo14",
+    "skill": "algo.binary-search",
+    "step": 0,
+    "group": "Binary Search",
+    "difficulty": "easy",
+    "probability": 94,
+    "title": "1. Binary Search"
+  },
+  {
+    "id": "algo15",
+    "skill": "algo.binary-search",
+    "step": 0,
+    "group": "Binary Search",
+    "difficulty": "easy",
+    "probability": 86,
+    "title": "2. Search Insert Position"
+  },
+  {
+    "id": "algo16",
+    "skill": "algo.binary-search",
+    "step": 0,
+    "group": "Binary Search",
+    "difficulty": "easy",
+    "probability": 88,
+    "title": "3. First Bad Version"
+  },
+  {
+    "id": "algo17",
+    "skill": "algo.binary-search",
+    "step": 1,
+    "group": "Binary Search",
+    "difficulty": "medium",
+    "probability": 95,
+    "title": "4. Search in Rotated Sorted Array"
+  },
+  {
+    "id": "algo40",
+    "skill": "algo.stack",
+    "step": 0,
+    "group": "Stack",
+    "difficulty": "easy",
+    "probability": 86,
+    "title": "1. Remove All Adjacent Duplicates in String"
+  },
+  {
+    "id": "algo18",
+    "skill": "algo.stack",
+    "step": 0,
+    "group": "Stack",
+    "difficulty": "easy",
+    "probability": 98,
+    "title": "2. Valid Parentheses"
+  },
+  {
+    "id": "algo49",
+    "skill": "algo.stack",
+    "step": 0,
+    "group": "Stack",
+    "difficulty": "medium",
+    "probability": 92,
+    "title": "3. Simplify Path"
+  },
+  {
+    "id": "algo19",
+    "skill": "algo.stack",
+    "step": 1,
+    "group": "Stack",
+    "difficulty": "medium",
+    "probability": 90,
+    "title": "4. Min Stack"
+  },
+  {
+    "id": "algo50",
+    "skill": "algo.stack",
+    "step": 2,
+    "group": "Stack",
+    "difficulty": "medium",
+    "probability": 92,
+    "title": "5. Decode String"
+  },
+  {
+    "id": "algo58",
+    "skill": "algo.stack",
+    "step": 2,
+    "group": "Stack",
+    "difficulty": "medium",
+    "probability": 92,
+    "title": "6. Basic Calculator II"
+  },
+  {
+    "id": "algo20",
+    "skill": "algo.stack",
+    "step": 3,
+    "group": "Stack",
+    "difficulty": "medium",
+    "probability": 90,
+    "title": "7. Daily Temperatures"
+  },
+  {
+    "id": "algo21",
+    "skill": "algo.linked-list",
+    "step": 0,
+    "group": "Linked List",
+    "difficulty": "easy",
+    "probability": 95,
+    "title": "1. Reverse Linked List"
+  },
+  {
+    "id": "algo22",
+    "skill": "algo.linked-list",
+    "step": 0,
+    "group": "Linked List",
+    "difficulty": "easy",
+    "probability": 95,
+    "title": "2. Merge Two Sorted Lists"
+  },
+  {
+    "id": "algo23",
+    "skill": "algo.linked-list",
+    "step": 1,
+    "group": "Linked List",
+    "difficulty": "easy",
+    "probability": 91,
+    "title": "3. Linked List Cycle"
+  },
+  {
+    "id": "algo41",
+    "skill": "algo.dfs",
+    "step": 0,
+    "group": "Depth-First Search",
+    "difficulty": "easy",
+    "probability": 88,
+    "title": "1. Binary Tree Preorder Traversal"
+  },
+  {
+    "id": "algo24",
+    "skill": "algo.dfs",
+    "step": 1,
+    "group": "Depth-First Search",
+    "difficulty": "easy",
+    "probability": 95,
+    "title": "2. Maximum Depth of Binary Tree"
+  },
+  {
+    "id": "algo27",
+    "skill": "algo.dfs",
+    "step": 1,
+    "group": "Depth-First Search",
+    "difficulty": "easy",
+    "probability": 88,
+    "title": "3. Diameter of Binary Tree"
+  },
+  {
+    "id": "algo25",
+    "skill": "algo.dfs",
+    "step": 2,
+    "group": "Depth-First Search",
+    "difficulty": "easy",
+    "probability": 94,
+    "title": "4. Invert Binary Tree"
+  },
+  {
+    "id": "algo26",
+    "skill": "algo.dfs",
+    "step": 3,
+    "group": "Depth-First Search",
+    "difficulty": "easy",
+    "probability": 90,
+    "title": "5. Same Tree"
+  },
+  {
+    "id": "algo42",
+    "skill": "algo.bfs",
+    "step": 0,
+    "group": "Breadth-First Search",
+    "difficulty": "easy",
+    "probability": 86,
+    "title": "1. Minimum Depth of Binary Tree"
+  },
+  {
+    "id": "algo28",
+    "skill": "algo.bfs",
+    "step": 0,
+    "group": "Breadth-First Search",
+    "difficulty": "medium",
+    "probability": 92,
+    "title": "2. Binary Tree Level Order Traversal"
+  },
+  {
+    "id": "algo43",
+    "skill": "algo.bfs",
+    "step": 1,
+    "group": "Breadth-First Search",
+    "difficulty": "easy",
+    "probability": 88,
+    "title": "3. Flood Fill"
+  },
+  {
+    "id": "algo29",
+    "skill": "algo.bfs",
+    "step": 1,
+    "group": "Breadth-First Search",
+    "difficulty": "medium",
+    "probability": 95,
+    "title": "4. Number of Islands"
+  },
+  {
+    "id": "algo30",
+    "skill": "algo.bfs",
+    "step": 2,
+    "group": "Breadth-First Search",
+    "difficulty": "medium",
+    "probability": 89,
+    "title": "5. Rotting Oranges"
+  },
+  {
+    "id": "algo52",
+    "skill": "algo.bfs",
+    "step": 3,
+    "group": "Breadth-First Search",
+    "difficulty": "medium",
+    "probability": 90,
+    "title": "6. Course Schedule"
+  },
+  {
+    "id": "algo53",
+    "skill": "algo.bfs",
+    "step": 3,
+    "group": "Breadth-First Search",
+    "difficulty": "hard",
+    "probability": 90,
+    "title": "7. Parallel Courses III"
+  },
+  {
+    "id": "algo44",
+    "skill": "algo.backtracking",
+    "step": 0,
+    "group": "Backtracking",
+    "difficulty": "easy",
+    "probability": 75,
+    "title": "1. Generate Binary Strings"
+  },
+  {
+    "id": "algo31",
+    "skill": "algo.backtracking",
+    "step": 0,
+    "group": "Backtracking",
+    "difficulty": "medium",
+    "probability": 88,
+    "title": "2. Subsets"
+  },
+  {
+    "id": "algo32",
+    "skill": "algo.backtracking",
+    "step": 0,
+    "group": "Backtracking",
+    "difficulty": "medium",
+    "probability": 88,
+    "title": "3. Permutations"
+  },
+  {
+    "id": "algo33",
+    "skill": "algo.backtracking",
+    "step": 1,
+    "group": "Backtracking",
+    "difficulty": "medium",
+    "probability": 87,
+    "title": "4. Combination Sum"
+  },
+  {
+    "id": "algo34",
+    "skill": "algo.backtracking",
+    "step": 1,
+    "group": "Backtracking",
+    "difficulty": "medium",
+    "probability": 94,
+    "title": "5. Generate Parentheses"
+  },
+  {
+    "id": "algo54",
+    "skill": "algo.dp",
+    "step": 0,
+    "group": "Dynamic Programming",
+    "difficulty": "easy",
+    "probability": 85,
+    "title": "1. Climbing Stairs"
+  },
+  {
+    "id": "algo55",
+    "skill": "algo.dp",
+    "step": 1,
+    "group": "Dynamic Programming",
+    "difficulty": "medium",
+    "probability": 85,
+    "title": "2. House Robber"
+  },
+  {
+    "id": "algo56",
+    "skill": "algo.dp",
+    "step": 2,
+    "group": "Dynamic Programming",
+    "difficulty": "medium",
+    "probability": 85,
+    "title": "3. Coin Change"
+  }
+]

@@ -21,6 +21,14 @@
   background: var(--color-error);
 }
 
+.warning {
+  background: var(--accent-amber);
+}
+
+.accent {
+  background: var(--accent-blue);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .segment {
     transition: none;

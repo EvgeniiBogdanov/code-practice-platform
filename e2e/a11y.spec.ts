@@ -11,6 +11,8 @@ const WORKSPACE_PAGES = [
   { name: "home", path: "home" },
   { name: "section overview", path: "javascript/" },
   { name: "task", path: "javascript/js1" },
+  { name: "skill map", path: "javascript/skills" },
+  { name: "skill map list", path: "algorithms/skills?view=list" },
 ];
 
 const setTheme = async (page: Page, theme: (typeof THEMES)[number]): Promise<void> => {

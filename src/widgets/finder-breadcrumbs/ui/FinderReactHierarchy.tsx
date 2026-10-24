@@ -13,7 +13,7 @@ import {
   Brain,
 } from "lucide-react";
 import { clsx } from "clsx";
-import { useProgressStore, selectIsTaskCompleted } from "@/entities/progress";
+import { useProgressStore, isTaskCompleted } from "@/entities/progress";
 import { useReviewStore, isTaskDue, getGroupCompletionClass } from "@/entities/review";
 import { useTaskSection } from "@/entities/task/catalog";
 import { isTaskInReactGroup } from "@/entities/task/meta";
@@ -29,7 +29,7 @@ export const FinderReactHierarchy = ({
   toggleDropdown,
   closeAllDropdowns,
 }: FinderHierarchyProps) => {
-  const progressState = useProgressStore();
+  const completedTasks = useProgressStore((state) => state.completedTasks);
   const reviews = useReviewStore((state) => state.reviews);
   const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
   const { tasks } = useTaskSection("react");
@@ -141,12 +141,12 @@ export const FinderReactHierarchy = ({
                   (t) => !excludedTaskIds.includes(String(t.id))
                 );
                 const completedCount = activeCatTasks.filter((t) =>
-                  selectIsTaskCompleted(progressState, t.id)
+                  isTaskCompleted(completedTasks[String(t.id)])
                 ).length;
                 const completionClass = getGroupCompletionClass(
                   activeCatTasks,
                   reviews,
-                  progressState.completedTasks
+                  completedTasks
                 );
                 const isActive = currentReactCategory && cat.id === currentReactCategory.id;
 
@@ -211,10 +211,10 @@ export const FinderReactHierarchy = ({
                 </div>
                 <div className={styles.dropdownList}>
                   {currentReactCategory.tasks.map((t) => {
-                    const isSolved = selectIsTaskCompleted(progressState, t.id);
+                    const isSolved = isTaskCompleted(completedTasks[String(t.id)]);
                     const isUnsolved =
-                      progressState.completedTasks[t.id] === "unsolved" ||
-                      progressState.completedTasks[String(t.id)] === "unsolved";
+                      completedTasks[t.id] === "unsolved" ||
+                      completedTasks[String(t.id)] === "unsolved";
                     const isExcluded = excludedTaskIds.includes(String(t.id));
                     const rev = reviews[String(t.id)];
                     const isDueToday = isTaskDue(rev);

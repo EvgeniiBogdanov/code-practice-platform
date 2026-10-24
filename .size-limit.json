@@ -16,7 +16,7 @@
   {
     "name": "All CSS",
     "path": "dist/assets/*.css",
-    "limit": "74 KB"
+    "limit": "76 KB"
   },
   {
     "name": "All JS",

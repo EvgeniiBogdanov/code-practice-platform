@@ -9,10 +9,12 @@ import styles from "./TaskMetaBadges.module.css";
 export interface TaskMetaBadgesProps {
   task: Task;
   className?: string;
+  /** Extra badges from higher layers, shown after the task's own ones. */
+  children?: React.ReactNode;
 }
 
 export const TaskMetaBadges = React.memo<TaskMetaBadgesProps>(
-  ({ task, className }: TaskMetaBadgesProps): React.JSX.Element | null => {
+  ({ task, className, children }: TaskMetaBadgesProps): React.JSX.Element | null => {
     let badges = null;
 
     if (task.section === "javascript") {
@@ -21,13 +23,13 @@ export const TaskMetaBadges = React.memo<TaskMetaBadgesProps>(
       badges = getAlgoTaskBadges(task);
     }
 
-    if (!badges || badges.length === 0) {
+    if (!badges?.length && !children) {
       return null;
     }
 
     return (
       <MetaRow className={clsx(styles.taskBadgesRow, className)}>
-        {badges.map((badge) => {
+        {badges?.map((badge) => {
           const badgeNode = (
             <MetaBadge key={badge.id} variant={badge.variant} icon={badge.icon}>
               {badge.label}
@@ -44,6 +46,7 @@ export const TaskMetaBadges = React.memo<TaskMetaBadgesProps>(
 
           return badgeNode;
         })}
+        {children}
       </MetaRow>
     );
   }

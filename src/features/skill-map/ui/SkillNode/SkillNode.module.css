@@ -1,0 +1,111 @@
+.node {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: var(--skill-node-width, 240px);
+  justify-self: center;
+  height: auto;
+  min-width: 0;
+  padding: var(--space-2-5) var(--space-3);
+  border: 1px solid var(--skill-tone-border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  color: var(--text-main);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color var(--transition-standard),
+    opacity var(--transition-standard),
+    box-shadow var(--transition-standard);
+}
+
+.node:hover,
+.related {
+  border-color: var(--border-hover);
+  background: var(--bg-card);
+}
+
+.node:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+.node[aria-pressed="true"] {
+  border-color: var(--group-tone, var(--accent-blue));
+  box-shadow: var(--shadow-glow-blue);
+}
+
+/* The card under the pointer takes its group colour on the border, solid or dashed. */
+.node.active {
+  border-color: var(--group-tone, var(--border-hover));
+}
+
+.notStarted {
+  border-style: dashed;
+}
+
+.dimmed {
+  opacity: var(--opacity-stale);
+}
+
+/* Outside the active chain: the same faded level as the edges that leave it. */
+.muted {
+  opacity: 0.2;
+}
+
+/* Header: the group icon, the name that wraps to two lines, the state at the far end. */
+.head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow-wrap: break-word;
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  line-height: 1.3;
+}
+
+.state {
+  flex-shrink: 0;
+}
+
+/* Footer: the mastery figure on the left, the started tasks on the right. */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: var(--fs-micro);
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.percent {
+  color: var(--skill-tone);
+  font-weight: var(--fw-medium);
+  white-space: nowrap;
+}
+
+.count {
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .node {
+    transition: none;
+  }
+}

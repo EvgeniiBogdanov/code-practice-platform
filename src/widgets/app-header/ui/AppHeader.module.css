@@ -1,7 +1,7 @@
 .header {
-  height: 44px;
-  min-height: 44px;
-  max-height: 44px;
+  height: var(--header-height);
+  min-height: var(--header-height);
+  max-height: var(--header-height);
   display: flex;
   align-items: center;
   justify-content: space-between;

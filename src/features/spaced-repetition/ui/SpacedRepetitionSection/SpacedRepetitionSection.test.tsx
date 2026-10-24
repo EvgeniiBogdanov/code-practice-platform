@@ -88,7 +88,7 @@ describe("SpacedRepetitionSection", () => {
     vi.clearAllMocks();
   });
 
-  it("renders page header outside mainScrollable container", () => {
+  it("renders page header inside mainScrollable container so it scrolls with content", () => {
     const { container } = render(<SpacedRepetitionSection inModal={true} />);
 
     const header = container.querySelector(`.${styles.pageHeader}`);
@@ -98,11 +98,11 @@ describe("SpacedRepetitionSection", () => {
     expect(scrollable).toBeInTheDocument();
     expect(screen.getByText("Сегодня решено")).toBeInTheDocument();
     expect(screen.getByText("Сегодня не решено")).toBeInTheDocument();
-    // Header must NOT be a child of scrollable
-    expect(scrollable?.contains(header)).toBe(false);
+    // Header is a child of scrollable
+    expect(scrollable?.contains(header)).toBe(true);
   });
 
-  it("renders non-scrolling header and task list for 'due' (Повтор) tab", () => {
+  it("renders scrolling header and task list for 'due' (Повтор) tab", () => {
     const { container } = render(<SpacedRepetitionSection inModal={true} />);
 
     const dueTabBtn = screen.getByRole("tab", { name: /повтор/i });
@@ -116,14 +116,14 @@ describe("SpacedRepetitionSection", () => {
       "Задачи с наступившим сроком повторения для закрепления в долговременной памяти"
     );
 
-    // Header is outside the scroll container
-    expect(scrollable?.contains(header)).toBe(false);
+    // Header scrolls together with the content
+    expect(scrollable?.contains(header)).toBe(true);
 
     // Task list is inside the scrollable container
     expect(scrollable).toHaveTextContent("Task One");
   });
 
-  it("renders non-scrolling header and task list for 'upcoming' (В очереди) tab", () => {
+  it("renders scrolling header and task list for 'upcoming' (В очереди) tab", () => {
     const { container } = render(<SpacedRepetitionSection inModal={true} />);
 
     const upcomingTabBtn = screen.getByRole("tab", { name: /в очереди/i });
@@ -135,14 +135,14 @@ describe("SpacedRepetitionSection", () => {
     expect(header).toHaveTextContent("В очереди на повторение");
     expect(header).toHaveTextContent("Предстоящие запланированные интервалы повторений");
 
-    // Header is outside the scroll container
-    expect(scrollable?.contains(header)).toBe(false);
+    // Header scrolls together with the content
+    expect(scrollable?.contains(header)).toBe(true);
 
     // Task list is inside the scrollable container
     expect(scrollable).toHaveTextContent("Task One");
   });
 
-  it("renders non-scrolling header and task list for 'unsolved' (Нерешенные) tab", () => {
+  it("renders scrolling header and task list for 'unsolved' (Нерешенные) tab", () => {
     const { container } = render(<SpacedRepetitionSection inModal={true} />);
 
     const unsolvedTabBtn = screen.getByRole("tab", { name: /нерешенные/i });
@@ -154,8 +154,8 @@ describe("SpacedRepetitionSection", () => {
     expect(header).toHaveTextContent("Нерешенные задачи");
     expect(header).toHaveTextContent("Задачи, требующие повторного разбора и решения");
 
-    // Header is outside the scroll container
-    expect(scrollable?.contains(header)).toBe(false);
+    // Header scrolls together with the content
+    expect(scrollable?.contains(header)).toBe(true);
 
     // Task list is inside the scrollable container
     expect(scrollable).toHaveTextContent("Task Two");

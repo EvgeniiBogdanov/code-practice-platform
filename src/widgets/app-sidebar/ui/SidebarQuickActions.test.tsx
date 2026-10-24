@@ -21,7 +21,7 @@ describe("SidebarQuickActions", () => {
     });
   });
 
-  it("renders the requested actions in order and spreads them across four columns", () => {
+  it("renders the requested actions in order and spreads them across five columns", () => {
     const { container } = render(
       <Tooltip.Provider>
         <SidebarQuickActions section="react" currentTaskId="react-basics" />
@@ -34,6 +34,7 @@ describe("SidebarQuickActions", () => {
       "Статистика повторений",
       "Шпаргалка",
       "Поиск по задачам (Cmd+K)",
+      "Карта навыков",
       "Открыть избранное",
     ]);
     expect(container.querySelector("[class*=quickActions]")).toBeInTheDocument();
@@ -53,5 +54,17 @@ describe("SidebarQuickActions", () => {
     expect(useUIStore.getState().statsModalOpen).toBe(true);
     expect(useUIStore.getState().cheatSheetOpen).toBe(true);
     expect(useUIStore.getState().paletteOpen).toBe(true);
+  });
+
+  it("opens the skill map of the current section", () => {
+    render(
+      <Tooltip.Provider>
+        <SidebarQuickActions section="react" currentTaskId="react-basics" />
+      </Tooltip.Provider>
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Карта навыков" }));
+
+    expect(navigateMock).toHaveBeenCalledWith({ to: "/react/skills" });
   });
 });

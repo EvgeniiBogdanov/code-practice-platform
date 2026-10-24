@@ -1,5 +1,7 @@
 import React, { memo } from "react";
-import { BarChart2, Lightbulb, Search } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
+import { BarChart2, Lightbulb, Search, Waypoints } from "lucide-react";
+import { SKILL_MAP_ROUTES } from "@/entities/skill/route";
 import type { SectionType } from "@/entities/task/meta";
 import { useUIStore } from "@/entities/ui-state";
 import { SquareButton, Tooltip } from "@/shared/ui";
@@ -18,6 +20,7 @@ export const SidebarQuickActions = memo(
     const setCheatSheetOpen = useUIStore((state) => state.setCheatSheetOpen);
     const statsModalOpen = useUIStore((state) => state.statsModalOpen);
     const cheatSheetOpen = useUIStore((state) => state.cheatSheetOpen);
+    const navigate = useNavigate();
 
     return (
       <div className={styles.quickActions} aria-label="Быстрые действия">
@@ -44,6 +47,16 @@ export const SidebarQuickActions = memo(
             icon={<Search size={16} />}
             onClick={() => setPaletteOpen(true)}
             aria-label="Поиск по задачам (Cmd+K)"
+          />
+        </Tooltip>
+
+        <Tooltip content="Карта навыков" side="right" sideOffset={8}>
+          <SquareButton
+            icon={<Waypoints size={16} />}
+            isActive={currentTaskId === "skills"}
+            onClick={() => void navigate({ to: SKILL_MAP_ROUTES[section] })}
+            aria-label="Карта навыков"
+            aria-current={currentTaskId === "skills" ? "page" : undefined}
           />
         </Tooltip>
 

@@ -3,7 +3,7 @@ import { Brain, Flame, Wrench, Rocket, RotateCcw } from "lucide-react";
 import { getScriptGroupMeta, getAlgoGroupMeta } from "@/entities/task";
 import { isTaskInReactGroup, type SectionType, type Task } from "@/entities/task/meta";
 import { useTaskSection } from "@/entities/task/catalog";
-import { useProgressStore, selectIsTaskCompleted, ProgressState } from "@/entities/progress";
+import { useProgressStore, isTaskCompleted, ProgressState } from "@/entities/progress";
 import { useReviewStore, isTaskDue, getGroupCompletionClass, ReviewItem } from "@/entities/review";
 import { JavaScriptIcon, TypeScriptIcon, ReactIcon } from "@/shared/ui";
 import { GroupCardData } from "../ui/SectionGroupsGrid";
@@ -33,14 +33,15 @@ export interface UseSectionOverviewReturn {
   stats: SectionStats;
   groups: GroupCardData[];
   isSolved: (id: string | number) => boolean;
-  progressState: ProgressState;
+  completedTasks: ProgressState["completedTasks"];
   reviews: Record<string, ReviewItem>;
   isTaskDue: (review: ReviewItem | null | undefined) => boolean;
   isInitialized: boolean;
 }
 
 export const useSectionOverview = (section: SectionType): UseSectionOverviewReturn => {
-  const progressState = useProgressStore();
+  const completedTasks = useProgressStore((state) => state.completedTasks);
+  const isInitialized = useProgressStore((state) => state.isInitialized);
   const reviews = useReviewStore((state) => state.reviews);
   const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
   const { tasks, isLoading } = useTaskSection(section);
@@ -51,8 +52,8 @@ export const useSectionOverview = (section: SectionType): UseSectionOverviewRetu
   );
 
   const isSolved = useCallback(
-    (id: string | number): boolean => selectIsTaskCompleted(progressState, id),
-    [progressState]
+    (id: string | number): boolean => isTaskCompleted(completedTasks[String(id)]),
+    [completedTasks]
   );
 
   const sectionMeta = useMemo((): SectionMeta => {
@@ -135,11 +136,7 @@ export const useSectionOverview = (section: SectionType): UseSectionOverviewRetu
           (t) => !excludedTaskIds.includes(String(t.id))
         );
         const completedCount = activeGroupTasks.filter((t) => isSolved(t.id)).length;
-        const completionClass = getGroupCompletionClass(
-          activeGroupTasks,
-          reviews,
-          progressState.completedTasks
-        );
+        const completionClass = getGroupCompletionClass(activeGroupTasks, reviews, completedTasks);
         const meta = getScriptGroupMeta(name, section);
         return {
           id: name,
@@ -224,11 +221,7 @@ export const useSectionOverview = (section: SectionType): UseSectionOverviewRetu
       return categories.map((cat) => {
         const activeCatTasks = cat.tasks.filter((t) => !excludedTaskIds.includes(String(t.id)));
         const completedCount = activeCatTasks.filter((t) => isSolved(t.id)).length;
-        const completionClass = getGroupCompletionClass(
-          activeCatTasks,
-          reviews,
-          progressState.completedTasks
-        );
+        const completionClass = getGroupCompletionClass(activeCatTasks, reviews, completedTasks);
         return {
           id: cat.id,
           groupId: `group-${cat.id}`,
@@ -254,11 +247,7 @@ export const useSectionOverview = (section: SectionType): UseSectionOverviewRetu
     return Array.from(algoGroupsMap.entries()).map(([name, groupTasksList]) => {
       const activeAlgoTasks = groupTasksList.filter((t) => !excludedTaskIds.includes(String(t.id)));
       const completedCount = activeAlgoTasks.filter((t) => isSolved(t.id)).length;
-      const completionClass = getGroupCompletionClass(
-        activeAlgoTasks,
-        reviews,
-        progressState.completedTasks
-      );
+      const completionClass = getGroupCompletionClass(activeAlgoTasks, reviews, completedTasks);
       const meta = getAlgoGroupMeta(name);
       return {
         id: name,
@@ -272,16 +261,16 @@ export const useSectionOverview = (section: SectionType): UseSectionOverviewRetu
         color: meta.color,
       };
     });
-  }, [section, sectionTasks, excludedTaskIds, isSolved, progressState.completedTasks, reviews]);
+  }, [section, sectionTasks, excludedTaskIds, isSolved, completedTasks, reviews]);
 
   return {
     sectionMeta,
     stats,
     groups,
     isSolved,
-    progressState,
+    completedTasks,
     reviews,
     isTaskDue,
-    isInitialized: progressState.isInitialized && !isLoading,
+    isInitialized: isInitialized && !isLoading,
   };
 };
