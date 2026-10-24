@@ -38,6 +38,9 @@ test.describe("skill map", () => {
     await expect(page.getByRole("region", { name: "Sliding Window" })).toBeVisible();
     await expect(page).toHaveURL(/skill=algo\.sliding-window/);
 
+    // The expanded panel floats over the route toolbar on desktop, so collapse it to reach the view switch.
+    await page.getByRole("button", { name: "Свернуть панель навыка" }).click();
+    await expect(page.getByRole("button", { name: /^Открыть панель навыка/ })).toBeVisible();
     await page.getByRole("button", { name: "Список", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Основа", level: 3 })).toBeVisible();
     await expect(page.getByRole("button", { name: /Sliding Window/, pressed: true })).toBeVisible();
