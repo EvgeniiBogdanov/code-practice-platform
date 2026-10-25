@@ -116,6 +116,7 @@
 
 .drawer {
   --skills-drawer-width: 380px;
+  --edge-fade-color: var(--bg-card);
 
   position: fixed;
   top: 50%;

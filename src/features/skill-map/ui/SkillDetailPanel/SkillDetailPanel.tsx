@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo } from "react";
 import { Link } from "@tanstack/react-router";
 import { clsx } from "clsx";
 import { ArrowRight, Minimize2 } from "lucide-react";
@@ -81,7 +81,6 @@ export const SkillDetailPanel = memo(
     onSelectSkill,
     onCollapse,
   }: SkillDetailPanelProps): React.JSX.Element | null => {
-    const [isScrolled, setIsScrolled] = useState(false);
     const skill = getSkillById(skillId);
     const skillStats = stats.get(skillId);
     if (!skill || !skillStats) return null;
@@ -136,12 +135,8 @@ export const SkillDetailPanel = memo(
             <p className={styles.done}>Навык освоен: все задачи закреплены повторениями.</p>
           )}
         </div>
-
-        <div
-          className={styles.body}
-          onScroll={(event): void => setIsScrolled(event.currentTarget.scrollTop > 0)}
-        >
-          <ScrollEdgeFade isVisible={isScrolled} />
+        <div className={styles.body}>
+          <ScrollEdgeFade />
           <div className={styles.sections}>
             <div>
               <h4 className={styles.subheading}>Почему такая оценка</h4>
@@ -170,7 +165,7 @@ export const SkillDetailPanel = memo(
               <SkillTaskList skill={skill} tasks={skillStats.tasks} />
             </div>
           </div>
-        </div>
+        </div>{" "}
       </section>
     );
   }

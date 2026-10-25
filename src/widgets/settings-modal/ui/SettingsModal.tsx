@@ -33,7 +33,6 @@ const TAB_COPY: Record<SettingsTabType, { title: string; subtitle: string }> = {
 
 export const SettingsModal = memo(() => {
   const [selectedTab, setSelectedTab] = useState<SettingsTabType | null>(null);
-  const [isScrolled, setIsScrolled] = useState(false);
   const accountName = useLocalAccountStore((state) => state.account?.name);
   const signOut = useLocalAccountStore((state) => state.signOut);
 
@@ -62,7 +61,6 @@ export const SettingsModal = memo(() => {
     setWasOpen(isOpen);
     if (isOpen) {
       setSelectedTab(null);
-      setIsScrolled(false);
     }
   }
   const activeTab = selectedTab ?? (accountName ? "account" : "customization");
@@ -165,12 +163,8 @@ export const SettingsModal = memo(() => {
               </button>
             </Tooltip>
           </div>
-
-          <div
-            className={styles.mainScrollable}
-            onScroll={(event): void => setIsScrolled(event.currentTarget.scrollTop > 0)}
-          >
-            <ScrollEdgeFade isVisible={isScrolled} />
+          <div className={styles.mainScrollable}>
+            <ScrollEdgeFade />
             <div className={styles.pageHeader}>
               <h2 className={styles.pageTitle}>{TAB_COPY[activeTab].title}</h2>
               <p className={styles.pageSubtitle}>{TAB_COPY[activeTab].subtitle}</p>
@@ -188,7 +182,7 @@ export const SettingsModal = memo(() => {
             )}
             {activeTab === "customization" && <SettingsCustomizationSection />}
             {activeTab === "editor" && <SettingsEditorSection />}
-          </div>
+          </div>{" "}
         </main>
       </Modal>
 
