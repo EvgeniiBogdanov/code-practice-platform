@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Code2, Brain } from "lucide-react";
+import { Code2, Brain, Network } from "lucide-react";
 import { clsx } from "clsx";
 import { JavaScriptIcon, TypeScriptIcon, ReactIcon } from "@/shared/ui";
 import styles from "./HeaderSectionNav.module.css";
@@ -16,6 +16,7 @@ export const HeaderSectionNav = ({ className }: HeaderSectionNavProps) => {
   const isReact = pathname.startsWith("/react");
   const isJs = pathname.startsWith("/javascript");
   const isAlgo = pathname.startsWith("/algorithms");
+  const isSystemDesign = pathname.startsWith("/system-design");
   const isEditor = pathname.startsWith("/editor");
 
   return (
@@ -41,6 +42,11 @@ export const HeaderSectionNav = ({ className }: HeaderSectionNavProps) => {
       <Link to="/algorithms" className={clsx(styles.navItem, isAlgo && styles.active)}>
         <Brain size={14} className={styles.iconAlgo} />
         <span>Алгоритмы</span>
+      </Link>
+
+      <Link to="/system-design" className={clsx(styles.navItem, isSystemDesign && styles.active)}>
+        <Network size={14} className={styles.iconSd} />
+        <span>Системный дизайн</span>
       </Link>
 
       <Link to="/editor" className={clsx(styles.navItem, isEditor && styles.active)}>

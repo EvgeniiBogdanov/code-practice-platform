@@ -5,7 +5,7 @@ export const CURRICULUM_COUNTS: Record<SectionType, number> = {
   typescript: 54,
   react: 101,
   algorithms: 58,
-  "system-design": 0,
+  "system-design": 6,
 };
 
 export const getTaskSectionById = (taskId: string | number): SectionType => {
