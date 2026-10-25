@@ -1,49 +1,25 @@
 import { useMemo } from "react";
 import { useLocation } from "@tanstack/react-router";
+import { getSectionFromPathname, SECTIONS_CONFIG, type SectionType } from "@/entities/task/meta";
 import { useAllTaskSections } from "@/entities/task/catalog";
 
 export function useSettingsActiveSection() {
   const location = useLocation();
   const { tasks } = useAllTaskSections();
 
-  const activeSection = useMemo(() => {
-    const path = location.pathname;
-    if (path.includes("/typescript")) return "typescript";
-    if (path.includes("/javascript")) return "javascript";
-    if (path.includes("/algorithms")) return "algorithms";
-    if (path.includes("/react")) return "react";
-    return "home";
-  }, [location.pathname]);
+  const activeSection = useMemo<SectionType | "home">(
+    () => getSectionFromPathname(location.pathname) ?? "home",
+    [location.pathname]
+  );
 
-  const sectionName = useMemo(() => {
-    switch (activeSection) {
-      case "typescript":
-        return "TypeScript";
-      case "javascript":
-        return "JavaScript";
-      case "algorithms":
-        return "Алгоритмы";
-      case "react":
-        return "React";
-      default:
-        return "Вся платформа";
-    }
-  }, [activeSection]);
+  const sectionName =
+    activeSection === "home" ? "Вся платформа" : SECTIONS_CONFIG[activeSection].title;
 
-  const currentSectionTasks = useMemo(() => {
-    switch (activeSection) {
-      case "typescript":
-        return tasks.filter((task) => task.section === "typescript");
-      case "javascript":
-        return tasks.filter((task) => task.section === "javascript");
-      case "algorithms":
-        return tasks.filter((task) => task.section === "algorithms");
-      case "react":
-        return tasks.filter((task) => task.section === "react");
-      default:
-        return tasks;
-    }
-  }, [activeSection, tasks]);
+  const currentSectionTasks = useMemo(
+    () =>
+      activeSection === "home" ? tasks : tasks.filter((task) => task.section === activeSection),
+    [activeSection, tasks]
+  );
 
   return {
     activeSection,
