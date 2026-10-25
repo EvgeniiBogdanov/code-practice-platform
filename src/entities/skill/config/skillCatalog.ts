@@ -1,5 +1,4 @@
-import type { SectionType } from "@/entities/task/meta";
-import type { SkillDefinition, SkillTaskEntry } from "../types";
+import type { SkillDefinition, SkillSection, SkillTaskEntry } from "../types";
 import { ALGORITHM_SKILLS } from "./algorithmSkills";
 import { JAVASCRIPT_SKILLS } from "./javascriptSkills";
 import { REACT_SKILLS } from "./reactSkills";
@@ -14,7 +13,7 @@ export const SKILLS: readonly SkillDefinition[] = [
   ...ALGORITHM_SKILLS,
 ];
 
-export const SKILL_SECTIONS: readonly SectionType[] = [
+export const SKILL_SECTIONS: readonly SkillSection[] = [
   "javascript",
   "typescript",
   "react",
@@ -41,5 +40,5 @@ export const getSkillById = (skillId: string): SkillDefinition | undefined =>
 export const getSkillTaskEntry = (taskId: string | number): SkillTaskEntry | undefined =>
   entryByTaskId.get(String(taskId));
 
-export const getSectionSkills = (section: SectionType): SkillDefinition[] =>
+export const getSectionSkills = (section: SkillSection): SkillDefinition[] =>
   SKILLS.filter((skill) => skill.section === section);

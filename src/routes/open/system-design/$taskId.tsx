@@ -1,0 +1,44 @@
+import React from "react";
+import { createFileRoute } from "@tanstack/react-router";
+import { OpenEditorPage } from "@/pages/open-editor";
+import { loadTaskSection } from "@/entities/task/catalog";
+
+export interface OpenTaskSearch {
+  tab?: "candidate" | "solution" | "visualization";
+  view?: "split" | "preview" | "code";
+}
+
+const OpenSystemDesignTaskRoute = () => {
+  const { taskId } = Route.useParams();
+  const search = Route.useSearch();
+
+  return (
+    <OpenEditorPage
+      taskId={taskId}
+      section="system-design"
+      tab={search.tab || "candidate"}
+      initialViewMode={search.view}
+    />
+  );
+};
+
+export const Route = createFileRoute("/open/system-design/$taskId")({
+  loader: () => loadTaskSection("system-design"),
+  validateSearch: (search: Record<string, unknown>): OpenTaskSearch => ({
+    tab:
+      search.tab === "solution"
+        ? "solution"
+        : search.tab === "visualization"
+          ? "visualization"
+          : "candidate",
+    view:
+      search.view === "code"
+        ? "code"
+        : search.view === "preview"
+          ? "preview"
+          : search.view === "split"
+            ? "split"
+            : undefined,
+  }),
+  component: OpenSystemDesignTaskRoute,
+});

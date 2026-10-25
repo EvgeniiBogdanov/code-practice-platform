@@ -59,6 +59,10 @@ const SECTION_LOADERS: Record<SectionType, () => Promise<Task[]>> = {
     const module = await import("../curriculum/algorithms/data/tasksData");
     return normalizeTasks(module.ALGO_TASKS as readonly RawTask[], "algorithms", "Algorithms");
   },
+  "system-design": async () => {
+    const { SYSTEM_DESIGN_TASKS } = await import("../curriculum/system-design/data/tasksData");
+    return normalizeTasks(SYSTEM_DESIGN_TASKS, "system-design", "System design");
+  },
 };
 
 const emitChange = (): void => {

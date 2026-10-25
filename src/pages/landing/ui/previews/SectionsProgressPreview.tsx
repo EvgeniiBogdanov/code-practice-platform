@@ -6,10 +6,17 @@ import { TOTAL_TASK_COUNT } from "../../lib/formatTaskCount";
 import { PreviewCard } from "./PreviewCard";
 import styles from "./HeroPreviews.module.css";
 
-const SECTION_ORDER: readonly SectionType[] = ["javascript", "typescript", "react", "algorithms"];
+type LandingSection = Exclude<SectionType, "system-design">;
+
+const SECTION_ORDER: readonly LandingSection[] = [
+  "javascript",
+  "typescript",
+  "react",
+  "algorithms",
+];
 
 /** Demo progress of a learner; totals come from the real curriculum manifest. */
-const DEMO_SOLVED: Record<SectionType, number> = {
+const DEMO_SOLVED: Record<LandingSection, number> = {
   javascript: 124,
   typescript: 9,
   react: 41,
@@ -17,7 +24,7 @@ const DEMO_SOLVED: Record<SectionType, number> = {
 };
 
 interface ProgressSegment {
-  id: SectionType;
+  id: LandingSection;
   x: number;
   width: number;
 }

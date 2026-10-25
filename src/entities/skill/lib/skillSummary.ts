@@ -1,6 +1,5 @@
-import type { SectionType } from "@/entities/task/meta";
 import { getSectionSkills } from "../config/skillCatalog";
-import type { SkillStats } from "../types";
+import type { SkillSection, SkillStats } from "../types";
 import { getSkillReadiness } from "./skillMastery";
 
 export interface SkillSectionSummary {
@@ -15,7 +14,7 @@ export interface SkillSectionSummary {
 /** The counters the skill map header shows for one section. */
 export const getSectionSummary = (
   stats: ReadonlyMap<string, SkillStats>,
-  section: SectionType
+  section: SkillSection
 ): SkillSectionSummary => {
   const sectionStats = getSectionSkills(section).flatMap((skill) => {
     const skillStats = stats.get(skill.id);

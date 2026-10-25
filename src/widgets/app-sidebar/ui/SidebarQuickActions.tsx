@@ -50,17 +50,21 @@ export const SidebarQuickActions = memo(
           />
         </Tooltip>
 
-        <Tooltip content="Карта навыков" side="right" sideOffset={8}>
-          <SquareButton
-            icon={<Waypoints size={16} />}
-            isActive={currentTaskId === "skills"}
-            onClick={() => void navigate({ to: SKILL_MAP_ROUTES[section] })}
-            aria-label="Карта навыков"
-            aria-current={currentTaskId === "skills" ? "page" : undefined}
-          />
-        </Tooltip>
+        {section !== "system-design" && (
+          <>
+            <Tooltip content="Карта навыков" side="right" sideOffset={8}>
+              <SquareButton
+                icon={<Waypoints size={16} />}
+                isActive={currentTaskId === "skills"}
+                onClick={() => void navigate({ to: SKILL_MAP_ROUTES[section] })}
+                aria-label="Карта навыков"
+                aria-current={currentTaskId === "skills" ? "page" : undefined}
+              />
+            </Tooltip>
 
-        <SidebarFavorites section={section} currentTaskId={currentTaskId} />
+            <SidebarFavorites section={section} currentTaskId={currentTaskId} />
+          </>
+        )}
       </div>
     );
   }

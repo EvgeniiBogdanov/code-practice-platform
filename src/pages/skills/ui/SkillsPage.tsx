@@ -16,8 +16,9 @@ import {
   formatSkillPercent,
   getSectionSummary,
   getSkillById,
+  type SkillSection,
 } from "@/entities/skill";
-import { SECTIONS_CONFIG, type SectionType } from "@/entities/task/meta";
+import { SECTIONS_CONFIG } from "@/entities/task/meta";
 import { Badge, Card, Tooltip, TopicIconBox } from "@/shared/ui";
 import { useSkillMapPrefsStore } from "../model/skillMapPrefsStore";
 import type { SkillMapView, SkillsSearch } from "../model/skillsSearch";
@@ -34,7 +35,7 @@ const matchesMedia = (query: string): boolean =>
 
 export interface SkillsPageProps extends SkillsSearch {
   /** The map lives inside a section, like its favorites. */
-  section: SectionType;
+  section: SkillSection;
 }
 
 export const SkillsPage = ({ section, skill, view }: SkillsPageProps): React.JSX.Element => {

@@ -31,14 +31,14 @@ export const useSidebarHomeStats = (): UseSidebarHomeStatsReturn => {
 
     excludedSet.forEach((taskId) => {
       const section = getTaskSectionById(taskId);
-      if (section in excluded) excluded[section] += 1;
+      if (section !== "system-design") excluded[section] += 1;
     });
 
     Object.entries(completedTasks).forEach(([taskId, status]) => {
       if (excludedSet.has(taskId)) return;
       if (isTaskCompleted(status)) {
         const section = getTaskSectionById(taskId);
-        if (section in completed) completed[section] += 1;
+        if (section !== "system-design") completed[section] += 1;
       }
     });
 
