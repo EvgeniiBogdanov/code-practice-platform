@@ -1,8 +1,19 @@
 import React from "react";
 import { Home, Brain, Network } from "lucide-react";
 import { JavaScriptIcon, TypeScriptIcon, ReactIcon } from "@/shared/ui";
-import { CURRICULUM_COUNTS } from "./curriculumManifest";
+import { CURRICULUM_COUNTS, DESIGN_CASE_COUNT } from "./curriculumManifest";
 import { SectionType } from "../types";
+
+const RU_PLURAL_RULES = new Intl.PluralRules("ru-RU");
+
+const CASE_WORD: Record<Intl.LDMLPluralRule, string> = {
+  zero: "кейсов",
+  one: "кейс",
+  two: "кейса",
+  few: "кейса",
+  many: "кейсов",
+  other: "кейса",
+};
 
 export interface SectionMeta {
   id: "home" | SectionType;
@@ -67,7 +78,7 @@ export const SECTIONS_CONFIG: Record<"home" | SectionType, SectionMeta> = {
     path: "/system-design",
     icon: Network,
     color: "var(--color-sd)",
-    badge: "Кейсы и теория",
+    badge: `${DESIGN_CASE_COUNT} ${CASE_WORD[RU_PLURAL_RULES.select(DESIGN_CASE_COUNT)]}`,
   },
 };
 

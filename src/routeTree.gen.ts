@@ -28,6 +28,7 @@ import { Route as ReactFavoritesRouteImport } from './routes/react/favorites'
 import { Route as ReactSkillsRouteImport } from './routes/react/skills'
 import { Route as SystemDesignIndexRouteImport } from './routes/system-design/index'
 import { Route as SystemDesignTaskIdRouteImport } from './routes/system-design/$taskId'
+import { Route as SystemDesignDrillsRouteImport } from './routes/system-design/drills'
 import { Route as TypescriptIndexRouteImport } from './routes/typescript/index'
 import { Route as TypescriptTaskIdRouteImport } from './routes/typescript/$taskId'
 import { Route as TypescriptFavoritesRouteImport } from './routes/typescript/favorites'
@@ -37,7 +38,9 @@ import { Route as OpenJavascriptTaskIdRouteImport } from './routes/open/javascri
 import { Route as OpenReactTaskIdRouteImport } from './routes/open/react/$taskId'
 import { Route as OpenSystemDesignTaskIdRouteImport } from './routes/open/system-design/$taskId'
 import { Route as OpenTypescriptTaskIdRouteImport } from './routes/open/typescript/$taskId'
+import { Route as SystemDesignCasesIndexRouteImport } from './routes/system-design/cases/index'
 import { Route as SystemDesignCasesCaseIdRouteImport } from './routes/system-design/cases/$caseId'
+import { Route as SystemDesignTopicsIndexRouteImport } from './routes/system-design/topics/index'
 import { Route as SystemDesignTopicsTopicIdRouteImport } from './routes/system-design/topics/$topicId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -135,6 +138,11 @@ const SystemDesignTaskIdRoute = SystemDesignTaskIdRouteImport.update({
   path: '/system-design/$taskId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SystemDesignDrillsRoute = SystemDesignDrillsRouteImport.update({
+  id: '/system-design/drills',
+  path: '/system-design/drills',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TypescriptIndexRoute = TypescriptIndexRouteImport.update({
   id: '/typescript/',
   path: '/typescript/',
@@ -180,9 +188,19 @@ const OpenTypescriptTaskIdRoute = OpenTypescriptTaskIdRouteImport.update({
   path: '/open/typescript/$taskId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SystemDesignCasesIndexRoute = SystemDesignCasesIndexRouteImport.update({
+  id: '/system-design/cases/',
+  path: '/system-design/cases/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SystemDesignCasesCaseIdRoute = SystemDesignCasesCaseIdRouteImport.update({
   id: '/system-design/cases/$caseId',
   path: '/system-design/cases/$caseId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SystemDesignTopicsIndexRoute = SystemDesignTopicsIndexRouteImport.update({
+  id: '/system-design/topics/',
+  path: '/system-design/topics/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SystemDesignTopicsTopicIdRoute =
@@ -207,6 +225,7 @@ export interface FileRoutesByFullPath {
   '/react/favorites': typeof ReactFavoritesRoute
   '/react/skills': typeof ReactSkillsRoute
   '/system-design/$taskId': typeof SystemDesignTaskIdRoute
+  '/system-design/drills': typeof SystemDesignDrillsRoute
   '/typescript/$taskId': typeof TypescriptTaskIdRoute
   '/typescript/favorites': typeof TypescriptFavoritesRoute
   '/typescript/skills': typeof TypescriptSkillsRoute
@@ -223,6 +242,8 @@ export interface FileRoutesByFullPath {
   '/open/typescript/$taskId': typeof OpenTypescriptTaskIdRoute
   '/system-design/cases/$caseId': typeof SystemDesignCasesCaseIdRoute
   '/system-design/topics/$topicId': typeof SystemDesignTopicsTopicIdRoute
+  '/system-design/cases/': typeof SystemDesignCasesIndexRoute
+  '/system-design/topics/': typeof SystemDesignTopicsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -239,6 +260,7 @@ export interface FileRoutesByTo {
   '/react/favorites': typeof ReactFavoritesRoute
   '/react/skills': typeof ReactSkillsRoute
   '/system-design/$taskId': typeof SystemDesignTaskIdRoute
+  '/system-design/drills': typeof SystemDesignDrillsRoute
   '/typescript/$taskId': typeof TypescriptTaskIdRoute
   '/typescript/favorites': typeof TypescriptFavoritesRoute
   '/typescript/skills': typeof TypescriptSkillsRoute
@@ -255,6 +277,8 @@ export interface FileRoutesByTo {
   '/open/typescript/$taskId': typeof OpenTypescriptTaskIdRoute
   '/system-design/cases/$caseId': typeof SystemDesignCasesCaseIdRoute
   '/system-design/topics/$topicId': typeof SystemDesignTopicsTopicIdRoute
+  '/system-design/cases': typeof SystemDesignCasesIndexRoute
+  '/system-design/topics': typeof SystemDesignTopicsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -272,6 +296,7 @@ export interface FileRoutesById {
   '/react/favorites': typeof ReactFavoritesRoute
   '/react/skills': typeof ReactSkillsRoute
   '/system-design/$taskId': typeof SystemDesignTaskIdRoute
+  '/system-design/drills': typeof SystemDesignDrillsRoute
   '/typescript/$taskId': typeof TypescriptTaskIdRoute
   '/typescript/favorites': typeof TypescriptFavoritesRoute
   '/typescript/skills': typeof TypescriptSkillsRoute
@@ -288,6 +313,8 @@ export interface FileRoutesById {
   '/open/typescript/$taskId': typeof OpenTypescriptTaskIdRoute
   '/system-design/cases/$caseId': typeof SystemDesignCasesCaseIdRoute
   '/system-design/topics/$topicId': typeof SystemDesignTopicsTopicIdRoute
+  '/system-design/cases/': typeof SystemDesignCasesIndexRoute
+  '/system-design/topics/': typeof SystemDesignTopicsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -306,6 +333,7 @@ export interface FileRouteTypes {
     | '/react/favorites'
     | '/react/skills'
     | '/system-design/$taskId'
+    | '/system-design/drills'
     | '/typescript/$taskId'
     | '/typescript/favorites'
     | '/typescript/skills'
@@ -322,6 +350,8 @@ export interface FileRouteTypes {
     | '/open/typescript/$taskId'
     | '/system-design/cases/$caseId'
     | '/system-design/topics/$topicId'
+    | '/system-design/cases/'
+    | '/system-design/topics/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -338,6 +368,7 @@ export interface FileRouteTypes {
     | '/react/favorites'
     | '/react/skills'
     | '/system-design/$taskId'
+    | '/system-design/drills'
     | '/typescript/$taskId'
     | '/typescript/favorites'
     | '/typescript/skills'
@@ -354,6 +385,8 @@ export interface FileRouteTypes {
     | '/open/typescript/$taskId'
     | '/system-design/cases/$caseId'
     | '/system-design/topics/$topicId'
+    | '/system-design/cases'
+    | '/system-design/topics'
   id:
     | '__root__'
     | '/'
@@ -370,6 +403,7 @@ export interface FileRouteTypes {
     | '/react/favorites'
     | '/react/skills'
     | '/system-design/$taskId'
+    | '/system-design/drills'
     | '/typescript/$taskId'
     | '/typescript/favorites'
     | '/typescript/skills'
@@ -386,6 +420,8 @@ export interface FileRouteTypes {
     | '/open/typescript/$taskId'
     | '/system-design/cases/$caseId'
     | '/system-design/topics/$topicId'
+    | '/system-design/cases/'
+    | '/system-design/topics/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -403,6 +439,7 @@ export interface RootRouteChildren {
   ReactFavoritesRoute: typeof ReactFavoritesRoute
   ReactSkillsRoute: typeof ReactSkillsRoute
   SystemDesignTaskIdRoute: typeof SystemDesignTaskIdRoute
+  SystemDesignDrillsRoute: typeof SystemDesignDrillsRoute
   TypescriptTaskIdRoute: typeof TypescriptTaskIdRoute
   TypescriptFavoritesRoute: typeof TypescriptFavoritesRoute
   TypescriptSkillsRoute: typeof TypescriptSkillsRoute
@@ -419,6 +456,8 @@ export interface RootRouteChildren {
   OpenTypescriptTaskIdRoute: typeof OpenTypescriptTaskIdRoute
   SystemDesignCasesCaseIdRoute: typeof SystemDesignCasesCaseIdRoute
   SystemDesignTopicsTopicIdRoute: typeof SystemDesignTopicsTopicIdRoute
+  SystemDesignCasesIndexRoute: typeof SystemDesignCasesIndexRoute
+  SystemDesignTopicsIndexRoute: typeof SystemDesignTopicsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -556,6 +595,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SystemDesignTaskIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/system-design/drills': {
+      id: '/system-design/drills'
+      path: '/system-design/drills'
+      fullPath: '/system-design/drills'
+      preLoaderRoute: typeof SystemDesignDrillsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/typescript/': {
       id: '/typescript/'
       path: '/typescript'
@@ -619,11 +665,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OpenTypescriptTaskIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/system-design/cases/': {
+      id: '/system-design/cases/'
+      path: '/system-design/cases'
+      fullPath: '/system-design/cases/'
+      preLoaderRoute: typeof SystemDesignCasesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/system-design/cases/$caseId': {
       id: '/system-design/cases/$caseId'
       path: '/system-design/cases/$caseId'
       fullPath: '/system-design/cases/$caseId'
       preLoaderRoute: typeof SystemDesignCasesCaseIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/system-design/topics/': {
+      id: '/system-design/topics/'
+      path: '/system-design/topics'
+      fullPath: '/system-design/topics/'
+      preLoaderRoute: typeof SystemDesignTopicsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/system-design/topics/$topicId': {
@@ -651,6 +711,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReactFavoritesRoute: ReactFavoritesRoute,
   ReactSkillsRoute: ReactSkillsRoute,
   SystemDesignTaskIdRoute: SystemDesignTaskIdRoute,
+  SystemDesignDrillsRoute: SystemDesignDrillsRoute,
   TypescriptTaskIdRoute: TypescriptTaskIdRoute,
   TypescriptFavoritesRoute: TypescriptFavoritesRoute,
   TypescriptSkillsRoute: TypescriptSkillsRoute,
@@ -667,6 +728,8 @@ const rootRouteChildren: RootRouteChildren = {
   OpenTypescriptTaskIdRoute: OpenTypescriptTaskIdRoute,
   SystemDesignCasesCaseIdRoute: SystemDesignCasesCaseIdRoute,
   SystemDesignTopicsTopicIdRoute: SystemDesignTopicsTopicIdRoute,
+  SystemDesignCasesIndexRoute: SystemDesignCasesIndexRoute,
+  SystemDesignTopicsIndexRoute: SystemDesignTopicsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

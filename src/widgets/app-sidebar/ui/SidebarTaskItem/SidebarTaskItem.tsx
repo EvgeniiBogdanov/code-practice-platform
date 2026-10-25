@@ -16,6 +16,8 @@ export interface SidebarTaskItemProps {
   isExcluded?: boolean;
   difficulty?: string;
   reviewRating?: string;
+  /** Page icon; a plain file by default. */
+  icon?: React.ReactNode;
   onClick?: () => void;
 }
 
@@ -49,6 +51,7 @@ export const SidebarTaskItem = memo(
     isExcluded = false,
     difficulty,
     reviewRating,
+    icon = <FileText size={16} className={styles.fileIcon} />,
     onClick,
   }: SidebarTaskItemProps) => {
     const ratingClass = getRatingClass(isSolved, isUnsolved, difficulty, reviewRating, isExcluded);
@@ -73,7 +76,7 @@ export const SidebarTaskItem = memo(
           onClick={onClick}
         >
           <div className={styles.taskTitleGroup}>
-            <FileText size={16} className={styles.fileIcon} />
+            {icon}
             <span className={clsx(styles.taskTitleText, ratingClass)}>{title}</span>
           </div>
 

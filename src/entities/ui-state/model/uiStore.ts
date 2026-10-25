@@ -203,6 +203,7 @@ export const useUIStore = create<UIState>()(
       expandedJsSubgroups: {},
       expandedAlgoGroups: {},
       expandedAlgoSubgroups: {},
+      expandedSystemDesignGroups: {},
 
       tooltip: null,
       hideTooltips: initialUI.hideTooltips,
@@ -647,6 +648,13 @@ export const useUIStore = create<UIState>()(
           expandedAlgoSubgroups:
             typeof updater === "function" ? updater(state.expandedAlgoSubgroups || {}) : updater,
         })),
+      setExpandedSystemDesignGroups: (updater) =>
+        set((state) => ({
+          expandedSystemDesignGroups:
+            typeof updater === "function"
+              ? updater(state.expandedSystemDesignGroups || {})
+              : updater,
+        })),
       toggleJsSubgroup: (groupName, subName) => {
         const key = `${groupName}/${subName}`;
         set((state) => {
@@ -683,13 +691,19 @@ export const useUIStore = create<UIState>()(
               : hideInteractiveAssistant,
         })),
 
-      collapseAllInCurrentSection: (section) => {
+      collapseAllInCurrentSection: (section, allGroupNames = []) => {
         if (section === "typescript") {
           set({ expandedTsGroups: {}, expandedTsSubgroups: {} });
         } else if (section === "javascript") {
           set({ expandedJsGroups: {}, expandedJsSubgroups: {} });
         } else if (section === "algorithms") {
           set({ expandedAlgoGroups: {}, expandedAlgoSubgroups: {} });
+        } else if (section === "system-design") {
+          set({
+            expandedSystemDesignGroups: Object.fromEntries(
+              allGroupNames.map((name) => [name, false])
+            ),
+          });
         } else if (section === "react") {
           set({
             warmupExpanded: false,
@@ -717,6 +731,12 @@ export const useUIStore = create<UIState>()(
             nextGroups[name] = true;
           }
           set({ expandedAlgoGroups: nextGroups });
+        } else if (section === "system-design") {
+          set({
+            expandedSystemDesignGroups: Object.fromEntries(
+              allGroupNames.map((name) => [name, true])
+            ),
+          });
         } else if (section === "react") {
           set({
             warmupExpanded: true,
@@ -791,6 +811,7 @@ export const useUIStore = create<UIState>()(
           expandedJsSubgroups: {},
           expandedAlgoGroups: {},
           expandedAlgoSubgroups: {},
+          expandedSystemDesignGroups: {},
           hideTooltips: false,
           hideInteractiveAssistant: false,
         });
@@ -828,6 +849,7 @@ export const useUIStore = create<UIState>()(
         expandedJsSubgroups: state.expandedJsSubgroups,
         expandedAlgoGroups: state.expandedAlgoGroups,
         expandedAlgoSubgroups: state.expandedAlgoSubgroups,
+        expandedSystemDesignGroups: state.expandedSystemDesignGroups,
         hideTooltips: state.hideTooltips,
         hideInteractiveAssistant: state.hideInteractiveAssistant,
       }),

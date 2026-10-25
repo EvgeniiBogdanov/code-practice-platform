@@ -96,4 +96,13 @@ describe("useHomeStats - excluded tasks deduction", () => {
     expect(result.current.grandSolved).toBe(2);
     expect(result.current.grandExcluded).toBe(1);
   });
+
+  it("counts system design drills for their own card, not for the grand totals", () => {
+    useProgressStore.setState({ completedTasks: { "sd-query-cache": "solved" } });
+    const { result } = renderHook(() => useHomeStats());
+
+    expect(result.current.sdTotal).toBe(CURRICULUM_COUNTS["system-design"]);
+    expect(result.current.sdSolved).toBe(1);
+    expect(result.current.grandSolved).toBe(0);
+  });
 });

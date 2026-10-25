@@ -5,6 +5,7 @@ import { clsx } from "clsx";
 import { SECTIONS_CONFIG, SECTIONS_LIST, SectionType } from "@/entities/task/meta";
 import { useTaskSection } from "@/entities/task/catalog";
 import { useUIStore } from "@/entities/ui-state";
+import { SYSTEM_DESIGN_GROUP_IDS } from "../../model/systemDesignGroups";
 import { Tooltip, SquareButton } from "@/shared/ui";
 import styles from "./SidebarWorkspaceHeader.module.css";
 
@@ -23,19 +24,23 @@ export const SidebarWorkspaceHeader = memo(
     const taskSection = activeSectionKey === "home" ? "react" : activeSectionKey;
     const { tasks: activeSectionTasks } = useTaskSection(taskSection, activeSectionKey !== "home");
     const activeGroupNames = useMemo(
-      () => [
-        ...new Set(
-          activeSectionTasks
-            .map((task) => task.group)
-            .filter((groupName): groupName is string => Boolean(groupName))
-        ),
-      ],
-      [activeSectionTasks]
+      () =>
+        activeSectionKey === "system-design"
+          ? [...SYSTEM_DESIGN_GROUP_IDS]
+          : [
+              ...new Set(
+                activeSectionTasks
+                  .map((task) => task.group)
+                  .filter((groupName): groupName is string => Boolean(groupName))
+              ),
+            ],
+      [activeSectionKey, activeSectionTasks]
     );
 
     const expandedTsGroups = useUIStore((state) => state.expandedTsGroups);
     const expandedJsGroups = useUIStore((state) => state.expandedJsGroups);
     const expandedAlgoGroups = useUIStore((state) => state.expandedAlgoGroups);
+    const expandedSystemDesignGroups = useUIStore((state) => state.expandedSystemDesignGroups);
     const warmupExpanded = useUIStore((state) => state.warmupExpanded);
     const refactoringExpanded = useUIStore((state) => state.refactoringExpanded);
     const tasksExpanded = useUIStore((state) => state.tasksExpanded);
@@ -54,6 +59,9 @@ export const SidebarWorkspaceHeader = memo(
       if (activeSectionKey === "algorithms") {
         return Object.values(expandedAlgoGroups || {}).some(Boolean);
       }
+      if (activeSectionKey === "system-design") {
+        return Object.values(expandedSystemDesignGroups || {}).some(Boolean);
+      }
       if (activeSectionKey === "react") {
         return Boolean(
           warmupExpanded ||
@@ -70,6 +78,7 @@ export const SidebarWorkspaceHeader = memo(
       expandedTsGroups,
       expandedJsGroups,
       expandedAlgoGroups,
+      expandedSystemDesignGroups,
       warmupExpanded,
       refactoringExpanded,
       tasksExpanded,
@@ -79,9 +88,9 @@ export const SidebarWorkspaceHeader = memo(
     ]);
 
     const handleToggleExpandAll = useCallback(() => {
-      if (activeSectionKey === "home" || activeSectionKey === "system-design") return;
+      if (activeSectionKey === "home") return;
       if (isAnyExpanded) {
-        collapseAllInCurrentSection(activeSectionKey);
+        collapseAllInCurrentSection(activeSectionKey, activeGroupNames);
       } else {
         expandAllInCurrentSection(activeSectionKey, activeGroupNames);
       }
@@ -169,7 +178,7 @@ export const SidebarWorkspaceHeader = memo(
         </div>
 
         <div className={styles.headerActions}>
-          {activeSectionKey !== "home" && activeSectionKey !== "system-design" && (
+          {activeSectionKey !== "home" && (
             <Tooltip
               content={isAnyExpanded ? "Свернуть все темы" : "Развернуть все темы"}
               side="bottom"

@@ -94,8 +94,10 @@
   position: absolute;
   top: calc(100% + 5px);
   left: 0;
-  min-width: 260px;
-  max-width: 360px;
+  /* The sidebar clips its content: the menu must fit between its edges at any sidebar width. */
+  --dropdown-room: calc(var(--sidebar-width, 280px) - 2 * var(--space-4));
+  min-width: min(260px, var(--dropdown-room));
+  max-width: min(360px, var(--dropdown-room));
   width: max-content;
   max-height: 380px;
   background: var(--bg-card);

@@ -21,6 +21,10 @@ export interface HomeStats {
   algoTotal: number;
   algoSolved: number;
   algoPct: number;
+  /** System design drills; the section is an MVP and stays out of the grand totals. */
+  sdTotal: number;
+  sdSolved: number;
+  sdPct: number;
 }
 
 export const useHomeStats = (): HomeStats => {
@@ -34,6 +38,7 @@ export const useHomeStats = (): HomeStats => {
     let tsExcluded = 0;
     let jsExcluded = 0;
     let algoExcluded = 0;
+    let sdExcluded = 0;
 
     excludedSet.forEach((taskId) => {
       const section = getTaskSectionById(taskId);
@@ -41,12 +46,14 @@ export const useHomeStats = (): HomeStats => {
       if (section === "javascript") jsExcluded += 1;
       if (section === "typescript") tsExcluded += 1;
       if (section === "algorithms") algoExcluded += 1;
+      if (section === "system-design") sdExcluded += 1;
     });
 
     let reactSolved = 0;
     let tsSolved = 0;
     let jsSolved = 0;
     let algoSolved = 0;
+    let sdSolved = 0;
 
     Object.entries(completedTasks).forEach(([taskId, status]) => {
       if (excludedSet.has(taskId)) return;
@@ -56,6 +63,7 @@ export const useHomeStats = (): HomeStats => {
       if (section === "javascript") jsSolved += 1;
       if (section === "typescript") tsSolved += 1;
       if (section === "algorithms") algoSolved += 1;
+      if (section === "system-design") sdSolved += 1;
     });
 
     const reactTotal = Math.max(0, CURRICULUM_COUNTS.react - reactExcluded);
@@ -69,6 +77,9 @@ export const useHomeStats = (): HomeStats => {
 
     const algoTotal = Math.max(0, CURRICULUM_COUNTS.algorithms - algoExcluded);
     const algoPct = algoTotal > 0 ? Math.round((algoSolved / algoTotal) * 100) : 0;
+
+    const sdTotal = Math.max(0, CURRICULUM_COUNTS["system-design"] - sdExcluded);
+    const sdPct = sdTotal > 0 ? Math.round((sdSolved / sdTotal) * 100) : 0;
 
     const grandTotal = reactTotal + jsTotal + tsTotal + algoTotal;
     const grandSolved = reactSolved + jsSolved + tsSolved + algoSolved;
@@ -94,6 +105,9 @@ export const useHomeStats = (): HomeStats => {
       algoTotal,
       algoSolved,
       algoPct,
+      sdTotal,
+      sdSolved,
+      sdPct,
     };
   }, [completedTasks, excludedTaskIds]);
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { NodeCount, TreeToggleIcon, TreeNodeHeader } from "@/shared/ui";
+import { NodeCount, TreeToggleIcon, TreeNodeHeader, type NodeCountVariant } from "@/shared/ui";
 import styles from "./SidebarGroupHeader.module.css";
 
 export interface SidebarGroupHeaderProps {
@@ -14,6 +14,8 @@ export interface SidebarGroupHeaderProps {
   completedClass?: string;
   completedCount: number;
   totalCount: number;
+  /** `count` shows only the total, for folders that hold pages rather than tasks. */
+  countVariant?: NodeCountVariant;
   className?: string;
 }
 
@@ -30,6 +32,7 @@ export const SidebarGroupHeader = React.memo(
     completedClass,
     completedCount,
     totalCount,
+    countVariant,
     className,
   }: SidebarGroupHeaderProps) => {
     return (
@@ -48,6 +51,7 @@ export const SidebarGroupHeader = React.memo(
           total={totalCount}
           completedClass={completedClass}
           isCompleted={isCompleted}
+          variant={countVariant}
         />
       </TreeNodeHeader>
     );

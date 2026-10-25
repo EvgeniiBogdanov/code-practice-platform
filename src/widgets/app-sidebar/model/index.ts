@@ -5,3 +5,4 @@ export * from "./useSidebarAlgoList";
 export * from "./useSidebarReactList";
 export * from "./useSidebarSystemDesignList";
 export * from "./useSidebarKeyboardNav";
+export * from "./systemDesignGroups";

@@ -1,0 +1,88 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.article {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  color: inherit;
+  text-decoration: none;
+  background-color: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: background-color var(--transition-fast);
+}
+
+/* Same hover as the task cards of the group pages: the card lifts, nothing darkens. */
+.article:hover {
+  background-color: var(--bg-elevated);
+}
+
+:global([data-theme="light"]) .article:hover {
+  background-color: var(--bg-surface);
+  box-shadow: var(--shadow-md);
+}
+
+.icon {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: var(--space-10);
+  height: var(--space-10);
+  color: var(--accent-blue);
+  background: var(--accent-blue-bg);
+  border-radius: var(--radius-md);
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.kicker {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.title {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--text-main);
+}
+
+.summary {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+
+.meta {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--text-muted);
+}
+
+.minutes {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--fs-xs);
+}
+
+.arrow {
+  color: var(--text-muted);
+}

@@ -1,11 +1,12 @@
 import React, { memo } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, FlaskConical } from "lucide-react";
 import { clsx } from "clsx";
-import { Badge, UiNumberScramble, type BadgeVariant } from "@/shared/ui";
+import { Badge, Callout, UiNumberScramble, type BadgeVariant } from "@/shared/ui";
 import styles from "./HomeSectionCard.module.css";
 
-export type HomeSectionCardTone = "javascript" | "typescript" | "react" | "algorithms";
+export type HomeSectionCardTone =
+  "javascript" | "typescript" | "react" | "algorithms" | "system-design";
 
 export interface HomeSectionCardProps {
   tone: HomeSectionCardTone;
@@ -15,6 +16,8 @@ export interface HomeSectionCardProps {
   tagVariant: BadgeVariant;
   description: string;
   topics: readonly string[];
+  /** Marks an unfinished section: shown as a note above the progress line. */
+  notice?: string;
   solved: number;
   total: number;
   pct: number;
@@ -30,6 +33,7 @@ export const HomeSectionCard = memo(
     tagVariant,
     description,
     topics,
+    notice,
     solved,
     total,
     pct,
@@ -43,6 +47,14 @@ export const HomeSectionCard = memo(
           {tagText}
         </Badge>
       </header>
+      {notice && (
+        <Callout
+          size="xs"
+          color="amber"
+          icon={<FlaskConical size={14} aria-hidden="true" />}
+          content={notice}
+        />
+      )}
       <p className={styles.description}>{description}</p>
       <ul className={styles.topics}>
         {topics.map((topic) => (
