@@ -59,6 +59,10 @@ const SECTION_LOADERS: Record<SectionType, () => Promise<Task[]>> = {
     const module = await import("../curriculum/algorithms/data/tasksData");
     return normalizeTasks(module.ALGO_TASKS as readonly RawTask[], "algorithms", "Algorithms");
   },
+  "system-design": async () => {
+    const { SYSTEM_DESIGN_TASKS } = await import("../curriculum/system-design/data/tasksData");
+    return normalizeTasks(SYSTEM_DESIGN_TASKS, "system-design", "System design");
+  },
 };
 
 const emitChange = (): void => {
@@ -92,12 +96,9 @@ export const loadTaskSection = (section: SectionType): Promise<Task[]> => {
 };
 
 export const loadAllTaskSections = async (): Promise<Task[]> => {
-  const sections = await Promise.all([
-    loadTaskSection("javascript"),
-    loadTaskSection("typescript"),
-    loadTaskSection("react"),
-    loadTaskSection("algorithms"),
-  ]);
+  const sections = await Promise.all(
+    (Object.keys(SECTION_LOADERS) as SectionType[]).map(loadTaskSection)
+  );
   return sections.flat();
 };
 

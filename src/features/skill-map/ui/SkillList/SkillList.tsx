@@ -8,15 +8,15 @@ import {
   getSkillById,
   getSkillToneClass,
   type SkillStats,
+  type SkillSection,
 } from "@/entities/skill";
 import { SkillGroupIcon } from "../SkillGroupIcon";
-import type { SectionType } from "@/entities/task/meta";
 import { getSkillGraphLayout } from "../../lib/skillGraphLayout";
 import { matchesSkillFilter, type SkillFilter } from "../../model/skillFilter";
 import styles from "./SkillList.module.css";
 
 export interface SkillListProps {
-  section: SectionType;
+  section: SkillSection;
   stats: ReadonlyMap<string, SkillStats>;
   selectedId: string | null;
   filter: SkillFilter;

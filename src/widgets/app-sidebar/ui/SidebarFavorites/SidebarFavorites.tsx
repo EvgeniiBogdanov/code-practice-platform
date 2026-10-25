@@ -1,12 +1,12 @@
 import React, { useCallback } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Star } from "lucide-react";
-import { SectionType } from "@/entities/task";
+import type { SectionType } from "@/entities/task";
 import { SquareButton, Tooltip } from "@/shared/ui";
 import styles from "./SidebarFavorites.module.css";
 
 export interface SidebarFavoritesProps {
-  section: SectionType;
+  section: Exclude<SectionType, "system-design">;
   currentTaskId: string;
 }
 
@@ -15,7 +15,7 @@ const FAVORITES_ROUTES = {
   typescript: "/typescript/favorites",
   react: "/react/favorites",
   algorithms: "/algorithms/favorites",
-} as const satisfies Record<SectionType, string>;
+} as const satisfies Record<SidebarFavoritesProps["section"], string>;
 
 export const SidebarFavorites = React.memo(
   ({ section, currentTaskId }: Readonly<SidebarFavoritesProps>): React.JSX.Element => {

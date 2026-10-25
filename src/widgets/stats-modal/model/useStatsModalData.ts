@@ -1,12 +1,17 @@
 import { useMemo } from "react";
 import { useLocation } from "@tanstack/react-router";
-import type { Task } from "@/entities/task/meta";
+import {
+  getSectionFromPathname,
+  SECTIONS_CONFIG,
+  type SectionType,
+  type Task,
+} from "@/entities/task/meta";
 import { useAllTaskSections } from "@/entities/task/catalog";
 import { useReviewStore } from "@/entities/review";
 
 export interface SpacedRepetitionModalData {
   sectionName: string;
-  section: "javascript" | "typescript" | "react" | "algorithms" | "home";
+  section: SectionType | "home";
   taskList: Task[];
 }
 
@@ -15,55 +20,25 @@ export const useStatsModalData = (): SpacedRepetitionModalData => {
   const { tasks } = useAllTaskSections();
   const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
 
-  const activeSection = useMemo<
-    "javascript" | "typescript" | "react" | "algorithms" | "home"
-  >(() => {
-    const p = location.pathname;
-    if (p.startsWith("/typescript") || p.startsWith("/open/typescript")) return "typescript";
-    if (p.startsWith("/javascript")) return "javascript";
-    if (p.startsWith("/react")) return "react";
-    if (p.startsWith("/algorithms")) return "algorithms";
-    return "home";
-  }, [location.pathname]);
+  const section = useMemo<SectionType | "home">(
+    () => getSectionFromPathname(location.pathname) ?? "home",
+    [location.pathname]
+  );
 
   const activeTasks = useMemo(() => {
     const excludedSet = new Set(excludedTaskIds.map(String));
     return tasks.filter((task) => !excludedSet.has(String(task.id)));
   }, [tasks, excludedTaskIds]);
 
-  return useMemo(() => {
-    if (activeSection === "typescript") {
-      return {
-        sectionName: "TypeScript",
-        section: "typescript",
-        taskList: activeTasks.filter((task) => task.section === "typescript"),
-      };
-    }
-    if (activeSection === "javascript") {
-      return {
-        sectionName: "JavaScript",
-        section: "javascript",
-        taskList: activeTasks.filter((task) => task.section === "javascript"),
-      };
-    }
-    if (activeSection === "react") {
-      return {
-        sectionName: "React",
-        section: "react",
-        taskList: activeTasks.filter((task) => task.section === "react"),
-      };
-    }
-    if (activeSection === "algorithms") {
-      return {
-        sectionName: "Алгоритмы",
-        section: "algorithms",
-        taskList: activeTasks.filter((task) => task.section === "algorithms"),
-      };
-    }
-    return {
-      sectionName: "Вся платформа",
-      section: "home",
-      taskList: activeTasks,
-    };
-  }, [activeSection, activeTasks]);
+  return useMemo(
+    () =>
+      section === "home"
+        ? { sectionName: "Вся платформа", section, taskList: activeTasks }
+        : {
+            sectionName: SECTIONS_CONFIG[section].title,
+            section,
+            taskList: activeTasks.filter((task) => task.section === section),
+          },
+    [section, activeTasks]
+  );
 };

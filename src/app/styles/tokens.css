@@ -199,6 +199,9 @@
   --color-js-border: var(--accent-orange-border);
   --color-algo: var(--accent-purple);
   --color-algo-bg: var(--accent-purple-bg);
+  --color-sd: var(--accent-pink);
+  --color-sd-bg: var(--accent-pink-bg);
+  --color-sd-border: var(--accent-pink-border);
   --color-home: var(--accent-blue);
   --color-home-bg: var(--accent-blue-bg);
   --color-home-border: var(--accent-blue-border);
@@ -504,6 +507,9 @@
   --color-algo: var(--accent-purple);
   --color-algo-bg: var(--accent-purple-bg);
   --color-algo-border: var(--accent-purple-border);
+  --color-sd: var(--accent-pink);
+  --color-sd-bg: var(--accent-pink-bg);
+  --color-sd-border: var(--accent-pink-border);
   --color-home: var(--accent-primary);
   --color-home-bg: var(--accent-primary-bg);
   --color-home-border: var(--accent-primary-border);

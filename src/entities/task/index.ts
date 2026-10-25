@@ -18,6 +18,7 @@ export * from "./lib/getJsTaskProbability";
 export * from "./lib/getAlgoTaskBadges";
 export * from "./lib/getAlgoTaskProbability";
 export * from "./lib/getDifficultyTone";
+export * from "./lib/getSectionFromPathname";
 export * from "./model/reactGroups";
 
 export { REACT_GROUPS_CONFIG } from "./curriculum/react/data/groupConfig";

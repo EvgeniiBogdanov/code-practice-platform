@@ -1,5 +1,5 @@
 import React from "react";
-import { Home, Brain } from "lucide-react";
+import { Home, Brain, Network } from "lucide-react";
 import { JavaScriptIcon, TypeScriptIcon, ReactIcon } from "@/shared/ui";
 import { CURRICULUM_COUNTS } from "./curriculumManifest";
 import { SectionType } from "../types";
@@ -59,6 +59,15 @@ export const SECTIONS_CONFIG: Record<"home" | SectionType, SectionMeta> = {
     icon: Brain,
     color: "var(--color-algo)",
     badge: `${CURRICULUM_COUNTS.algorithms} задач`,
+  },
+  "system-design": {
+    id: "system-design",
+    title: "Системный дизайн",
+    label: "Системный дизайн",
+    path: "/system-design",
+    icon: Network,
+    color: "var(--color-sd)",
+    badge: "Кейсы и теория",
   },
 };
 

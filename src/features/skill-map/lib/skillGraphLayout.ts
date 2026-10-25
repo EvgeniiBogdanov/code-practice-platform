@@ -1,5 +1,9 @@
-import { getSectionSkillDepths, getSectionSkills, getSkillById } from "@/entities/skill";
-import type { SectionType } from "@/entities/task/meta";
+import {
+  getSectionSkillDepths,
+  getSectionSkills,
+  getSkillById,
+  type SkillSection,
+} from "@/entities/skill";
 
 export interface SkillGraphEdge {
   from: string;
@@ -12,7 +16,7 @@ export interface SkillGraphLayout {
   edges: SkillGraphEdge[];
 }
 
-const sameSectionRequires = (skillId: string, section: SectionType): string[] =>
+const sameSectionRequires = (skillId: string, section: SkillSection): string[] =>
   (getSkillById(skillId)?.requires ?? []).filter(
     (required) => getSkillById(required)?.section === section
   );
@@ -22,7 +26,7 @@ const sameSectionRequires = (skillId: string, section: SectionType): string[] =>
  * (average position of the parents), which keeps most edges short and uncrossed; ties keep
  * the catalog order.
  */
-export const getSkillGraphLayout = (section: SectionType): SkillGraphLayout => {
+export const getSkillGraphLayout = (section: SkillSection): SkillGraphLayout => {
   const skills = getSectionSkills(section);
   const depths = getSectionSkillDepths(section);
   const levelCount = Math.max(0, ...depths.values()) + 1;

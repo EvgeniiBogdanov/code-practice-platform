@@ -67,4 +67,16 @@ describe("SidebarQuickActions", () => {
 
     expect(navigateMock).toHaveBeenCalledWith({ to: "/react/skills" });
   });
+
+  it("offers no skill map or favorites in system design", () => {
+    render(
+      <Tooltip.Provider>
+        <SidebarQuickActions section="system-design" currentTaskId="sd-1" />
+      </Tooltip.Provider>
+    );
+
+    expect(
+      screen.getAllByRole("button").map((button) => button.getAttribute("aria-label"))
+    ).toEqual(["Статистика повторений", "Шпаргалка", "Поиск по задачам (Cmd+K)"]);
+  });
 });
