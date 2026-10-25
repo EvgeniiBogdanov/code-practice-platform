@@ -3,6 +3,7 @@ export * from "./model/curriculumManifest";
 export * from "./model/sectionsConfig";
 export * from "./model/taskTree";
 export * from "./model/taskFiles";
+export * from "./model/taskTests";
 export * from "./model/taskRoute";
 export * from "./model/taskCatalog";
 export * from "./model/taskRegistry";

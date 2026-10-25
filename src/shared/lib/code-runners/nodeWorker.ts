@@ -4,6 +4,8 @@
 
 import { formatNodeValue, formatConsoleTable } from "./nodeFormatter";
 import { sandboxHelpers } from "./nodeSandboxHelpers";
+import { runDrillSuite } from "./drillHarness";
+import { isRunTestsMessage, type TestResultMessage } from "./drillTestTypes";
 
 export { formatNodeValue, formatConsoleTable };
 
@@ -61,6 +63,15 @@ if (typeof self !== "undefined") {
   }
 
   self.onmessage = async (event: MessageEvent) => {
+    if (isRunTestsMessage(event.data)) {
+      const message: TestResultMessage = {
+        type: "TEST_RESULT",
+        report: await runDrillSuite(event.data),
+      };
+      self.postMessage(message);
+      return;
+    }
+
     const { type, code: codeText } = event.data || {};
     if (type !== "EXECUTE") return;
 
