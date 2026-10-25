@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { ScrollEdgeFade } from "@/shared/ui";
 
 export interface ContentAreaProps {
@@ -7,18 +7,10 @@ export interface ContentAreaProps {
   children: React.ReactNode;
 }
 
-/** The page scroller: a soft edge appears under the app header once the page scrolls. */
-export const ContentArea = ({ ref, className, children }: ContentAreaProps): React.JSX.Element => {
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  return (
-    <main
-      ref={ref}
-      className={className}
-      onScroll={(event): void => setIsScrolled(event.currentTarget.scrollTop > 0)}
-    >
-      <ScrollEdgeFade isVisible={isScrolled} />
-      {children}
-    </main>
-  );
-};
+/** The page scroller: its top edge fades out the content that scrolls under the app header. */
+export const ContentArea = ({ ref, className, children }: ContentAreaProps): React.JSX.Element => (
+  <main ref={ref} className={className}>
+    <ScrollEdgeFade />
+    {children}
+  </main>
+);

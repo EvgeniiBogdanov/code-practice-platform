@@ -60,7 +60,6 @@ export const SpacedRepetitionSection = memo(
     className,
   }: Readonly<SpacedRepetitionSectionProps>): React.JSX.Element => {
     const [activeTab, setActiveTab] = useState<SRTabType>("distribution");
-    const [isScrolled, setIsScrolled] = useState(false);
 
     const {
       reviews,
@@ -121,12 +120,8 @@ export const SpacedRepetitionSection = memo(
               </Tooltip>
             </div>
           )}
-
-          <div
-            className={styles.mainScrollable}
-            onScroll={(event): void => setIsScrolled(event.currentTarget.scrollTop > 0)}
-          >
-            <ScrollEdgeFade isVisible={isScrolled} />
+          <div className={styles.mainScrollable}>
+            <ScrollEdgeFade />
             <div className={clsx(styles.tabContent, isCompactPadding && styles.tabContentCompact)}>
               <div className={styles.pageHeader}>
                 <h2 className={styles.pageTitle}>{TAB_TITLES[activeTab]}</h2>
@@ -193,7 +188,7 @@ export const SpacedRepetitionSection = memo(
                 />
               )}
             </div>
-          </div>
+          </div>{" "}
         </main>
       </div>
     );

@@ -14,6 +14,8 @@
 }
 
 .appContentWrapper {
+  --edge-fade-color: var(--bg-canvas);
+
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -23,8 +25,6 @@
 }
 
 .contentArea {
-  --edge-fade-color: var(--bg-canvas);
-
   flex: 1;
   min-width: 0;
   height: 100%;

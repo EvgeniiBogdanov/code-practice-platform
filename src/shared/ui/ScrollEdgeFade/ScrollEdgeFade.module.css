@@ -1,22 +1,13 @@
-/* Sticky inside the scroller, so it stays at its top edge and never covers the scrollbar. */
+/*
+ * Sticks to the scroller's top edge and takes no space in the flow: the negative margin
+ * cancels its height, so the content keeps the spot the scroller's top padding gives it.
+ */
 .edgeFade {
   position: sticky;
   top: 0;
   z-index: 1;
-  height: var(--space-6);
-  margin-bottom: calc(-1 * var(--space-6));
+  height: var(--scroll-edge-fade-height);
+  margin-top: calc(-1 * var(--scroll-edge-fade-height));
   pointer-events: none;
   background: linear-gradient(to bottom, var(--edge-fade-color, var(--bg-card)), transparent);
-  opacity: 0;
-  transition: opacity var(--transition-standard);
-}
-
-.edgeFadeVisible {
-  opacity: 1;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .edgeFade {
-    transition: none;
-  }
 }
