@@ -249,7 +249,7 @@ git branch --set-upstream-to=origin/<имя-ветки>
 1. Запушьте ветку и откройте PR в `main`.
 2. **Заголовок PR — в формате Conventional Commits**, иначе упадёт проверка `Conventional PR title`: `fix(react): update warm-up task statements`. Заголовок вида `Content/react task statements` не пройдёт — нет типа.
 3. Заполните [шаблон PR](../.github/PULL_REQUEST_TEMPLATE.md).
-4. Если изменение видно пользователю — поднимите версию в `package.json`, добавьте запись в `CHANGELOG.md`, обновите бейдж в README (CI сверяет их).
+4. Поднимите версию на единицу патча относительно `main` (`2.4.31` → `2.4.32` → `2.4.33`, без скачков и без `X.Y.0`: для такой версии CI создаёт тег и GitHub Release). Обновите её в `package.json` и `package-lock.json`, добавьте запись в `CHANGELOG.md`, обновите бейдж в README (CI сверяет их). Это нужно в каждом PR, не только в видимых пользователю. Если версия на `main` выросла, пока шла работа, поднимите свою заново.
 5. Дождитесь зелёного `CI OK`. Merge — только через squash: заголовок PR становится коммитом в `main`.
 6. После merge удалите ветку и обновите `main`:
 
