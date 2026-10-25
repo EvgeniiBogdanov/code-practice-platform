@@ -2,7 +2,8 @@
 /**
  * Проверяет, что версия описана согласованно: package.json ↔ верхняя запись CHANGELOG.md ↔ бейдж README.
  * Если передан git-ref базы (в CI — `HEAD^1`, вершина main для merge-коммита PR) и версия изменилась,
- * новая версия должна быть больше базовой. Отсутствие поднятия версии — не ошибка, только notice.
+ * новая версия обычно больше базовой. Отсутствие поднятия версии — только notice, понижение — warning:
+ * версию иногда приходится исправить, пока для неё нет релиза.
  */
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
@@ -41,7 +42,9 @@ if (baseRef) {
   if (baseVersion === version) {
     console.log(`::notice title=Версия не изменилась::package.json остаётся ${version}`);
   } else if (compareSemver(version, baseVersion) < 0) {
-    errors.push(`package.json: версия ${version} меньше базовой ${baseVersion}`);
+    console.log(
+      `::warning title=Версия понижена::package.json: версия ${version} меньше базовой ${baseVersion}`
+    );
   } else {
     console.log(`Версия: ${baseVersion} → ${version}`);
   }
