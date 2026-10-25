@@ -3,3 +3,45 @@
   flex-direction: column;
   gap: 0;
 }
+
+.overviewLink,
+.item {
+  display: block;
+  padding: var(--space-1) var(--space-3);
+  overflow: hidden;
+  font-size: var(--fs-sidebar-item);
+  font-weight: var(--fw-medium);
+  color: var(--text-secondary);
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-radius: var(--radius-md);
+  transition: color var(--transition-fast);
+}
+
+.overviewLink:hover,
+.item:hover {
+  color: var(--text-main);
+  background-color: var(--bg-subtle);
+}
+
+.active {
+  color: var(--text-main);
+  background-color: var(--bg-surface);
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-top: var(--space-3);
+}
+
+.groupTitle {
+  padding: 0 var(--space-3);
+  margin: 0;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
