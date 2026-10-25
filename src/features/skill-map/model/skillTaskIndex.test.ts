@@ -10,6 +10,7 @@ import {
 } from "@/entities/task";
 import {
   SKILLS,
+  SKILL_SECTIONS,
   findSkillCycle,
   getSkillById,
   type SkillStepMatch,
@@ -67,7 +68,10 @@ describe("skill taxonomy", () => {
   let index: SkillTaskEntry[] = [];
 
   beforeAll(async () => {
-    tasks = (await loadAllTaskSections()).filter((task) => !task.isGroupOverview);
+    // Sections without a skill map (system design) have no skills to place their tasks into.
+    tasks = (await loadAllTaskSections()).filter(
+      (task) => !task.isGroupOverview && SKILL_SECTIONS.some((section) => section === task.section)
+    );
     index = buildIndex(tasks);
   });
 

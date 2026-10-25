@@ -21,7 +21,7 @@
   {
     "name": "All JS",
     "path": "dist/assets/*.js",
-    "limit": "4130 KB"
+    "limit": "4200 KB"
   },
   {
     "name": "Lazy: Task explanations",

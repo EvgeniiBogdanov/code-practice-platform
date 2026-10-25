@@ -440,3 +440,8 @@
 .icon_typescript {
   color: var(--color-ts);
 }
+
+.icon_system-design {
+  color: var(--color-sd);
+  flex-shrink: 0;
+}

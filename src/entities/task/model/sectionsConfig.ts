@@ -77,4 +77,5 @@ export const SECTIONS_LIST: SectionMeta[] = [
   SECTIONS_CONFIG.typescript,
   SECTIONS_CONFIG.react,
   SECTIONS_CONFIG.algorithms,
+  SECTIONS_CONFIG["system-design"],
 ];

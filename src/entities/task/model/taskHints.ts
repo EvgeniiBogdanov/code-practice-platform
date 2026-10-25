@@ -8,6 +8,8 @@ const HINT_LOADERS: Partial<Record<SectionType, () => Promise<HintsDictionary>>>
   javascript: async () =>
     (await import("../curriculum/javascript/data/javascriptHints")).JAVASCRIPT_HINTS,
   react: async () => (await import("../curriculum/react/data/reactHints")).REACT_HINTS,
+  "system-design": async () =>
+    (await import("../curriculum/system-design/data/systemDesignHints")).SYSTEM_DESIGN_HINTS,
 };
 
 const loadedDictionaries = new Map<SectionType, HintsDictionary>();
