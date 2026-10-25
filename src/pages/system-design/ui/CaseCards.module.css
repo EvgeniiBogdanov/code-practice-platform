@@ -1,0 +1,98 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-4);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  color: inherit;
+  text-decoration: none;
+  background-color: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: background-color var(--transition-fast);
+}
+
+/* Same hover as the task cards of the group pages: the card lifts, nothing darkens. */
+.card:hover {
+  background-color: var(--bg-elevated);
+}
+
+:global([data-theme="light"]) .card:hover {
+  background-color: var(--bg-surface);
+  box-shadow: var(--shadow-md);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.kicker {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--color-sd);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.title {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--text-main);
+}
+
+.summary {
+  flex: 1;
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+
+.stages {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.stage {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  height: var(--space-8);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  color: var(--text-muted);
+  background: var(--bg-subtle);
+  border-radius: var(--radius-md);
+}
+
+.stageDone {
+  color: var(--color-sd);
+  background: var(--color-sd-bg);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.progress {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--color-sd);
+}

@@ -13,10 +13,20 @@ export interface SidebarTasksListProps {
   completedTasks: ProgressState["completedTasks"];
   reviews: Record<string, ReviewItem>;
   expanded: boolean;
+  /** Page icon of every task; a plain file by default. */
+  icon?: React.ReactNode;
 }
 
 export const SidebarTasksList = memo(
-  ({ tasks, to, currentTaskId, completedTasks, reviews, expanded }: SidebarTasksListProps) => {
+  ({
+    tasks,
+    to,
+    currentTaskId,
+    completedTasks,
+    reviews,
+    expanded,
+    icon,
+  }: SidebarTasksListProps) => {
     const excludedTaskIds = useReviewStore((state) => state.excludedTaskIds);
 
     return (
@@ -43,6 +53,7 @@ export const SidebarTasksList = memo(
               isExcluded={isExcluded}
               difficulty={task.difficulty}
               reviewRating={rev?.rating}
+              icon={icon}
             />
           );
         })}

@@ -32,6 +32,14 @@
   --section-tint: var(--color-algo-bg);
 }
 
+.card_system-design {
+  --section-color: var(--color-sd);
+  --section-tint: var(--color-sd-bg);
+
+  /* The last card: full width, so an odd count does not leave a gap in the grid. */
+  grid-column: 1 / -1;
+}
+
 .header {
   display: flex;
   align-items: center;

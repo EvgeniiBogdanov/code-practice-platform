@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "@tanstack/react-router";
 import { clsx } from "clsx";
-import { SECTIONS_CONFIG, SectionType } from "@/entities/task/meta";
-import { NodeCount, PlatformLogo } from "@/shared/ui";
+import type { SectionType } from "@/entities/task/meta";
+import { PlatformLogo } from "@/shared/ui";
 import { SidebarProgressCard } from "../SidebarProgressCard/SidebarProgressCard";
 import { useSidebarHomeStats } from "../../model/useSidebarHomeStats";
 import styles from "./SidebarHomeOverview.module.css";
@@ -18,17 +18,9 @@ export const SidebarHomeOverview = ({
 }: SidebarHomeOverviewProps): React.JSX.Element => {
   const {
     completedTsTotal,
-    totalTs,
-    tsCompletionClass,
     completedJsTotal,
     completedReactTotal,
     completedAlgoTotal,
-    totalJs,
-    totalReact,
-    totalAlgo,
-    jsCompletionClass,
-    reactCompletionClass,
-    algoCompletionClass,
     completedAllTotal,
     totalAll,
   } = useSidebarHomeStats();
@@ -53,50 +45,6 @@ export const SidebarHomeOverview = ({
       >
         <PlatformLogo size={17} className={styles.icon_home} />
         <span className={styles.homeItemTitle}>Обзор платформы</span>
-      </Link>
-
-      <Link to="/javascript" className={styles.homeOverviewItem}>
-        <SECTIONS_CONFIG.javascript.icon
-          size={17}
-          color={SECTIONS_CONFIG.javascript.color}
-          className={styles.icon_javascript}
-        />
-        <span className={styles.homeItemTitle}>JavaScript</span>
-        <NodeCount completed={completedJsTotal} total={totalJs} className={jsCompletionClass} />
-      </Link>
-
-      <Link to="/typescript" className={styles.homeOverviewItem}>
-        <SECTIONS_CONFIG.typescript.icon size={17} className={styles.icon_typescript} />
-        <span className={styles.homeItemTitle}>TypeScript</span>
-        <NodeCount completed={completedTsTotal} total={totalTs} className={tsCompletionClass} />
-      </Link>
-
-      <Link to="/react" className={styles.homeOverviewItem}>
-        <SECTIONS_CONFIG.react.icon
-          size={17}
-          color={SECTIONS_CONFIG.react.color}
-          className={styles.icon_react}
-        />
-        <span className={styles.homeItemTitle}>React</span>
-        <NodeCount
-          completed={completedReactTotal}
-          total={totalReact}
-          className={reactCompletionClass}
-        />
-      </Link>
-
-      <Link to="/algorithms" className={styles.homeOverviewItem}>
-        <SECTIONS_CONFIG.algorithms.icon
-          size={17}
-          color={SECTIONS_CONFIG.algorithms.color}
-          className={styles.icon_algorithms}
-        />
-        <span className={styles.homeItemTitle}>Алгоритмы</span>
-        <NodeCount
-          completed={completedAlgoTotal}
-          total={totalAlgo}
-          className={algoCompletionClass}
-        />
       </Link>
     </div>
   );

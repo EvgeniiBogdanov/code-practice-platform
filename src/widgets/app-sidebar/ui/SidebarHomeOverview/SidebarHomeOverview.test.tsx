@@ -24,42 +24,24 @@ vi.mock("@tanstack/react-router", () => ({
 // Mock sidebar stats hook
 vi.mock("../../model/useSidebarHomeStats", () => ({
   useSidebarHomeStats: () => ({
+    completedTsTotal: 1,
     completedJsTotal: 10,
     completedReactTotal: 5,
     completedAlgoTotal: 2,
-    totalJs: 100,
-    totalReact: 50,
-    totalAlgo: 30,
-    jsCompletionClass: "js-complete",
-    reactCompletionClass: "react-complete",
-    algoCompletionClass: "algo-complete",
+    completedAllTotal: 18,
+    totalAll: 200,
   }),
 }));
 
 describe("SidebarHomeOverview", () => {
-  it("renders all section navigation links and badges", () => {
+  it("shows the overall progress and only the platform overview link", () => {
     render(<SidebarHomeOverview activeSectionKey="home" isHomeActive={true} />);
 
-    expect(screen.getByText("Обзор платформы")).toBeInTheDocument();
-    expect(screen.getByText("JavaScript")).toBeInTheDocument();
-    expect(screen.getByText("React")).toBeInTheDocument();
-    expect(screen.getByText("Алгоритмы")).toBeInTheDocument();
-
+    expect(screen.getByText("18/200")).toBeInTheDocument();
     const homeLink = screen.getByTestId("link-/home");
-    expect(homeLink).toBeInTheDocument();
+    expect(homeLink).toHaveTextContent("Обзор платформы");
     expect(homeLink.className).toContain("homeItemActive");
-
-    const jsLink = screen.getByTestId("link-/javascript");
-    expect(jsLink).toBeInTheDocument();
-    expect(screen.getByText("10/100")).toBeInTheDocument();
-
-    const reactLink = screen.getByTestId("link-/react");
-    expect(reactLink).toBeInTheDocument();
-    expect(screen.getByText("5/50")).toBeInTheDocument();
-
-    const algoLink = screen.getByTestId("link-/algorithms");
-    expect(algoLink).toBeInTheDocument();
-    expect(screen.getByText("2/30")).toBeInTheDocument();
+    expect(screen.getAllByRole("link")).toHaveLength(1);
   });
 
   it("does not apply homeItemActive when isHomeActive is false", () => {

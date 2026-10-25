@@ -30,13 +30,18 @@ describe("useSidebarHomeStats", () => {
     useReviewStore.setState({ excludedTaskIds: [] });
   });
 
-  it("calculates active totals deducting excluded tasks", () => {
+  it("calculates the overall total deducting excluded tasks", () => {
+    const platformTotal =
+      CURRICULUM_COUNTS.javascript +
+      CURRICULUM_COUNTS.typescript +
+      CURRICULUM_COUNTS.react +
+      CURRICULUM_COUNTS.algorithms;
     const { result: before } = renderHook(() => useSidebarHomeStats());
-    expect(before.current.totalJs).toBe(CURRICULUM_COUNTS.javascript);
+    expect(before.current.totalAll).toBe(platformTotal);
 
     useReviewStore.setState({ excludedTaskIds: ["js-1", "js-2"] });
     const { result: after } = renderHook(() => useSidebarHomeStats());
-    expect(after.current.totalJs).toBe(CURRICULUM_COUNTS.javascript - 2);
+    expect(after.current.totalAll).toBe(platformTotal - 2);
   });
   it("keeps the TypeScript counter separate from React TypeScript exercises", () => {
     useProgressStore.setState({
@@ -44,7 +49,6 @@ describe("useSidebarHomeStats", () => {
     });
     useReviewStore.setState({ excludedTaskIds: ["typescript-2"] });
     const { result } = renderHook(() => useSidebarHomeStats());
-    expect(result.current.totalTs).toBe(CURRICULUM_COUNTS.typescript - 1);
     expect(result.current.completedTsTotal).toBe(1);
     expect(result.current.completedReactTotal).toBe(1);
   });

@@ -5,17 +5,9 @@ import { useReviewStore } from "@/entities/review";
 
 export interface UseSidebarHomeStatsReturn {
   completedTsTotal: number;
-  totalTs: number;
-  tsCompletionClass: string;
   completedJsTotal: number;
   completedReactTotal: number;
   completedAlgoTotal: number;
-  totalJs: number;
-  totalReact: number;
-  totalAlgo: number;
-  jsCompletionClass: string;
-  reactCompletionClass: string;
-  algoCompletionClass: string;
   completedAllTotal: number;
   totalAll: number;
 }
@@ -52,27 +44,11 @@ export const useSidebarHomeStats = (): UseSidebarHomeStatsReturn => {
     return { completedTotals: completed, activeTotals: active };
   }, [completedTasks, excludedTaskIds]);
 
-  const getCompletionClass = (
-    section: "javascript" | "typescript" | "react" | "algorithms"
-  ): string => {
-    return activeTotals[section] > 0 && completedTotals[section] === activeTotals[section]
-      ? "completedGreen"
-      : "";
-  };
-
   return {
     completedTsTotal: completedTotals.typescript,
-    totalTs: activeTotals.typescript,
-    tsCompletionClass: getCompletionClass("typescript"),
     completedJsTotal: completedTotals.javascript,
     completedReactTotal: completedTotals.react,
     completedAlgoTotal: completedTotals.algorithms,
-    totalJs: activeTotals.javascript,
-    totalReact: activeTotals.react,
-    totalAlgo: activeTotals.algorithms,
-    jsCompletionClass: getCompletionClass("javascript"),
-    reactCompletionClass: getCompletionClass("react"),
-    algoCompletionClass: getCompletionClass("algorithms"),
     completedAllTotal: Object.values(completedTotals).reduce((sum, count) => sum + count, 0),
     totalAll: Object.values(activeTotals).reduce((sum, count) => sum + count, 0),
   };

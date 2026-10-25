@@ -36,6 +36,9 @@ vi.mock("../model/useHomeStats", () => ({
     algoTotal: 20,
     algoSolved: 5,
     algoPct: 25,
+    sdTotal: 6,
+    sdSolved: 0,
+    sdPct: 0,
   }),
 }));
 

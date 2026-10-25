@@ -50,6 +50,8 @@ export interface UIState {
   expandedJsSubgroups: Record<string, boolean>;
   expandedAlgoGroups: Record<string, boolean>;
   expandedAlgoSubgroups: Record<string, boolean>;
+  /** Folders of the system design sidebar: theory, cases, drills. */
+  expandedSystemDesignGroups: Record<string, boolean>;
 
   tooltip: string | null;
   hideTooltips: boolean;
@@ -136,6 +138,9 @@ export interface UIState {
   setExpandedAlgoSubgroups: (
     updater: Record<string, boolean> | ((prev: Record<string, boolean>) => Record<string, boolean>)
   ) => void;
+  setExpandedSystemDesignGroups: (
+    updater: Record<string, boolean> | ((prev: Record<string, boolean>) => Record<string, boolean>)
+  ) => void;
   toggleJsSubgroup: (groupName: string, subName: string) => void;
   openSingleCategory: (categoryId: string) => void;
 
@@ -145,10 +150,12 @@ export interface UIState {
     hideInteractiveAssistant: boolean | ((prev: boolean) => boolean)
   ) => void;
   collapseAllInCurrentSection: (
-    section: "javascript" | "typescript" | "algorithms" | "react"
+    section: "javascript" | "typescript" | "algorithms" | "react" | "system-design",
+    /** Folders that are open by default (system design): they are closed explicitly. */
+    allGroupNames?: string[]
   ) => void;
   expandAllInCurrentSection: (
-    section: "javascript" | "typescript" | "algorithms" | "react",
+    section: "javascript" | "typescript" | "algorithms" | "react" | "system-design",
     allGroupNames?: string[]
   ) => void;
   resetUISettings: () => void;

@@ -1,0 +1,18 @@
+.table {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1-5);
+}
+
+.favorite {
+  color: var(--text-muted);
+}
+
+.favorite[aria-pressed="false"] svg {
+  color: color-mix(in srgb, var(--text-muted), transparent);
+}
+
+.favorite[aria-pressed="false"]:hover svg,
+.favorite[aria-pressed="false"]:focus-visible svg {
+  color: color-mix(in srgb, var(--color-favorite), var(--text-muted));
+}

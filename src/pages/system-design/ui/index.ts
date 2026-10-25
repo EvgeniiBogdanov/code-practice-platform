@@ -4,3 +4,8 @@ export {
   SystemDesignOverviewPage,
   type SystemDesignOverviewPageProps,
 } from "./SystemDesignOverviewPage";
+export {
+  SystemDesignFolderPage,
+  type SystemDesignFolderId,
+  type SystemDesignFolderPageProps,
+} from "./SystemDesignFolderPage";

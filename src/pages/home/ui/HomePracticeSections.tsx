@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { FolderGit2, Brain } from "lucide-react";
+import { FolderGit2, Brain, Network } from "lucide-react";
 import { JavaScriptIcon, TypeScriptIcon, ReactIcon } from "@/shared/ui";
 import { HomeStats } from "../model/useHomeStats";
 import { HomeSectionCard } from "./HomeSectionCard";
@@ -73,6 +73,21 @@ export const HomePracticeSections = memo(
             total={stats.algoTotal}
             pct={stats.algoPct}
             to="/algorithms"
+          />
+
+          <HomeSectionCard
+            icon={<Network size={22} color="var(--color-sd)" />}
+            tone="system-design"
+            title="Системный дизайн"
+            tagText="MVP"
+            tagVariant="orange"
+            description="Дизайн-интервью для фронтенда: кейсы по RADIO с развилками и эталоном, теория и код-дриллы с автотестами: debounce, кэш, WebSocket, optimistic-обновления."
+            topics={["#radio", "#rendering", "#real-time", "#web-vitals"]}
+            notice="Ранняя версия, раздел в разработке."
+            solved={stats.sdSolved}
+            total={stats.sdTotal}
+            pct={stats.sdPct}
+            to="/system-design"
           />
         </div>
       </div>

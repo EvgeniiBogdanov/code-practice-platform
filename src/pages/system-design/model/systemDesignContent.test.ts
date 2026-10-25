@@ -1,9 +1,14 @@
 import { describe, expect, it } from "vitest";
 import { DESIGN_CASES, loadDesignCase } from "@/entities/design-case";
+import { DESIGN_CASE_COUNT } from "@/entities/task/meta";
 import { DESIGN_TOPICS } from "@/entities/design-topic";
 import { loadTaskSection } from "@/entities/task/catalog";
 
 describe("system design content", () => {
+  it("keeps the case count shown in the section menu in step with the case list", () => {
+    expect(DESIGN_CASES).toHaveLength(DESIGN_CASE_COUNT);
+  });
+
   it("links every case only to existing drills and topics", async () => {
     const drillIds = new Set(
       (await loadTaskSection("system-design")).map((task) => String(task.id))

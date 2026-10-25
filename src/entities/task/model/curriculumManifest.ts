@@ -8,6 +8,9 @@ export const CURRICULUM_COUNTS: Record<SectionType, number> = {
   "system-design": 6,
 };
 
+/** Cases live in `entities/design-case`; a test there keeps this count in step with the list. */
+export const DESIGN_CASE_COUNT = 3;
+
 export const getTaskSectionById = (taskId: string | number): SectionType => {
   const id = String(taskId);
 
