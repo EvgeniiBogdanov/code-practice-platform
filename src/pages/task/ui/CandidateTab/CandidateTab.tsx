@@ -1,6 +1,12 @@
 import React, { memo, useState, useEffect, useMemo, useRef } from "react";
 import { clsx } from "clsx";
-import { Task, getTaskFiles, hasTaskVisualComponent } from "@/entities/task";
+import {
+  Task,
+  getTaskFiles,
+  hasTaskVisualComponent,
+  isDrillTestTask,
+  isTypeTestTask,
+} from "@/entities/task";
 import {
   getUserSolution,
   getUserSolutionSync,
@@ -26,6 +32,7 @@ import {
 } from "@/shared/ui";
 import { CodeEditor } from "@/features/code-editor";
 import { TypeTestsPanel, useTypeTests, useTypeTestsNavigation } from "@/features/type-tests";
+import { DrillTestsPanel, useDrillTests } from "@/features/drill-tests";
 import { TaskHints } from "@/features/task-hints";
 import { JsConsole, ReactLivePreview } from "@/features/code-runner";
 import { EDITOR_PLACEHOLDER_HEIGHT } from "../../model/editorPlaceholder";
@@ -281,7 +288,8 @@ export const CandidateTab = memo(
       };
     }, []);
 
-    const hasTypeTests = Boolean(task?.rawTests);
+    const hasTypeTests = isTypeTestTask(task);
+    const hasDrillTests = isDrillTestTask(task);
     const typeTests = useTypeTests({
       enabled: hasTypeTests,
       taskId: String(task?.id ?? ""),
@@ -291,6 +299,15 @@ export const CandidateTab = memo(
       testsHash: task?.testsHash ?? "",
       updatesChecklist: true,
       checklistTests: task?.checklistTests,
+    });
+    const drillTests = useDrillTests({
+      enabled: hasDrillTests,
+      taskId: String(task?.id ?? ""),
+      code: activeFile.code ?? "",
+      filename: activeFile.name ?? "solution.ts",
+      tests: task?.rawTests ?? "",
+      // The only automatic mark on the platform: green tests are an objective check.
+      onAllPassed: isSolved ? undefined : onMarkSolved,
     });
     const { showCompileProblem } = useTypeTestsNavigation(activeFile.name ?? "");
     const hintsRef = useRef<HTMLDivElement>(null);
@@ -349,7 +366,13 @@ export const CandidateTab = memo(
                             code={activeFile?.code || ""}
                             onChange={handleCodeChange}
                             onFilesChange={handleFilesChange}
-                            onRun={() => (hasTypeTests ? typeTests.run() : handleRunCode())}
+                            onRun={() =>
+                              hasTypeTests
+                                ? typeTests.run()
+                                : hasDrillTests
+                                  ? drillTests.run()
+                                  : handleRunCode()
+                            }
                             onReset={handleResetCode}
                             files={files}
                             activeFileIdx={activeFileIdx}
@@ -381,6 +404,13 @@ export const CandidateTab = memo(
                                   onNextTask={onNextTask}
                                   onRequestHint={handleRequestHint}
                                   onShowCompileProblem={showCompileProblem}
+                                />
+                              ) : hasDrillTests ? (
+                                <DrillTestsPanel
+                                  controller={drillTests}
+                                  isSolved={isSolved}
+                                  onShowReference={onShowReference}
+                                  onNextTask={onNextTask}
                                 />
                               ) : (
                                 consoleNode
