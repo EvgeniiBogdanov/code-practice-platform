@@ -9,6 +9,7 @@
 import { createClockDate, createDrillClock } from "./drillClock";
 import { AssertionError, expect } from "./drillExpect";
 import { createFetchMock, createWebSocketMock } from "./drillMocks";
+import { DENIED_GLOBALS, createSandboxGlobal } from "./workerLockdown";
 import type {
   DrillLoadError,
   DrillTestCaseResult,
@@ -84,6 +85,15 @@ export const runDrillSuite = async ({
     WebSocket: wsMock.WebSocket,
   };
 
+  const sandboxGlobal = createSandboxGlobal(environment, globalThis);
+  const lockedGlobals = Object.fromEntries(DENIED_GLOBALS.map((name) => [name, undefined]));
+  const globalAliases = {
+    globalThis: sandboxGlobal,
+    self: sandboxGlobal,
+    window: sandboxGlobal,
+    global: sandboxGlobal,
+  };
+
   const solutionExports: Record<string, unknown> = {};
   const loadModule = (
     code: string,
@@ -91,6 +101,8 @@ export const runDrillSuite = async ({
     extra: Record<string, unknown>
   ): void => {
     const scope: Record<string, unknown> = {
+      ...lockedGlobals,
+      ...globalAliases,
       ...environment,
       ...extra,
       exports: exportsObject,

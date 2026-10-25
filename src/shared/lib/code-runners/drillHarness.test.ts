@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { runDrillSuite } from "./drillHarness";
 import type { DrillTestsReport } from "./drillTestTypes";
 import { transpileCode } from "./transpiler";
@@ -345,5 +345,77 @@ describe("runDrillSuite: load errors", () => {
     const report = await run(`import _ from "lodash"; export const x = _;`, `test("x", () => {});`);
     expect(report.loadError?.source).toBe("solution");
     expect(report.loadError?.message).toContain("lodash");
+  });
+});
+
+describe("runDrillSuite: isolation", () => {
+  it("hides the page and storage APIs from the solution and the tests", async () => {
+    const report = await run(
+      `export const seen = {
+        post: typeof postMessage,
+        scripts: typeof importScripts,
+        db: typeof indexedDB,
+        xhr: typeof XMLHttpRequest,
+        viaSelf: typeof self.postMessage,
+        viaGlobal: typeof globalThis.indexedDB,
+        viaWindow: typeof window.importScripts,
+      };`,
+      `test("solution", () => {
+        expect(seen).toEqual({
+          post: "undefined", scripts: "undefined", db: "undefined", xhr: "undefined",
+          viaSelf: "undefined", viaGlobal: "undefined", viaWindow: "undefined",
+        });
+      });
+      test("tests", () => {
+        expect([typeof postMessage, typeof self.postMessage, typeof Worker]).toEqual(["undefined", "undefined", "undefined"]);
+      });`
+    );
+    expect(outcome(report)).toEqual([
+      ["solution", true],
+      ["tests", true],
+    ]);
+  });
+
+  it("cannot send its own messages: calling postMessage fails and nothing reaches the page", async () => {
+    const posted = vi.spyOn(globalThis, "postMessage").mockImplementation(() => {});
+    try {
+      const report = await run(
+        `export const forge = (): void => { postMessage({ type: "TEST_RESULT" }); };
+         export const forgeViaSelf = (): void => { self.postMessage({ type: "TEST_RESULT" }); };`,
+        `test("bare", () => { expect(forge).toThrow(TypeError); });
+         test("via self", () => { expect(forgeViaSelf).toThrow(TypeError); });`
+      );
+      expect(outcome(report)).toEqual([
+        ["bare", true],
+        ["via self", true],
+      ]);
+      expect(posted).not.toHaveBeenCalled();
+    } finally {
+      posted.mockRestore();
+    }
+  });
+
+  it("routes fetch, WebSocket and timers through the mocks even via globalThis", async () => {
+    const report = await run(
+      `export const viaGlobal = () => {
+        globalThis.fetch("/x");
+        new globalThis.WebSocket("wss://x");
+        return globalThis.setTimeout === setTimeout;
+      };`,
+      `test("mocks win", () => {
+        expect(viaGlobal()).toBe(true);
+        expect(fetchMock.calls.map((c) => c.url)).toEqual(["/x"]);
+        expect(wsMock.instances.length).toBe(1);
+      });`
+    );
+    expect(outcome(report)).toEqual([["mocks win", true]]);
+  });
+
+  it("does not let the code change the sandbox global", async () => {
+    const report = await run(
+      `export const tamper = () => { "use strict"; globalThis.fetch = () => null; };`,
+      `test("frozen", () => { expect(tamper).toThrow(TypeError); });`
+    );
+    expect(outcome(report)).toEqual([["frozen", true]]);
   });
 });

@@ -37,11 +37,34 @@ export interface TestResultMessage {
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null;
 
-export const isRunTestsMessage = (data: unknown): data is RunTestsMessage =>
-  isRecord(data) &&
-  data.type === "RUN_TESTS" &&
-  typeof data.solutionCode === "string" &&
-  typeof data.testsCode === "string";
+export interface ExecuteMessage {
+  type: "EXECUTE";
+  code: string;
+  timeoutMs?: number;
+}
+
+export type WorkerRequest = ExecuteMessage | RunTestsMessage;
+
+/** The single place where a message from the page is validated before the worker runs code. */
+export const parseWorkerRequest = (data: unknown): WorkerRequest | null => {
+  if (!isRecord(data)) return null;
+  if (data.type === "EXECUTE" && typeof data.code === "string") {
+    return { type: "EXECUTE", code: data.code };
+  }
+  if (
+    data.type === "RUN_TESTS" &&
+    typeof data.solutionCode === "string" &&
+    typeof data.testsCode === "string"
+  ) {
+    return {
+      type: "RUN_TESTS",
+      solutionCode: data.solutionCode,
+      testsCode: data.testsCode,
+      testTimeoutMs: typeof data.testTimeoutMs === "number" ? data.testTimeoutMs : undefined,
+    };
+  }
+  return null;
+};
 
 export const isTestResultMessage = (data: unknown): data is TestResultMessage =>
   isRecord(data) && data.type === "TEST_RESULT" && isRecord(data.report);
