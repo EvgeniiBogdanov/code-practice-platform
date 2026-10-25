@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { getSectionFromPathname } from "./getSectionFromPathname";
 
 describe("getSectionFromPathname", () => {
-  it.each(["javascript", "typescript", "react", "algorithms"] as const)(
+  it.each(["javascript", "typescript", "react", "algorithms", "system-design"] as const)(
     "resolves %s routes",
     (section) => {
       expect(getSectionFromPathname(`/${section}`)).toBe(section);

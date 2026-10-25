@@ -1,8 +1,8 @@
 import type { SectionType } from "../types";
-import { SECTIONS_LIST } from "../model/sectionsConfig";
+import { SECTIONS_CONFIG } from "../model/sectionsConfig";
 
 const SECTION_IDS: ReadonlySet<string> = new Set(
-  SECTIONS_LIST.flatMap((section) => (section.id === "home" ? [] : [section.id]))
+  Object.values(SECTIONS_CONFIG).flatMap((section) => (section.id === "home" ? [] : [section.id]))
 );
 
 const isSectionType = (value: string | undefined): value is SectionType =>

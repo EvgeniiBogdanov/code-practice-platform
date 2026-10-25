@@ -1,6 +1,6 @@
 import React from "react";
 
-export type SectionType = "javascript" | "typescript" | "react" | "algorithms";
+export type SectionType = "javascript" | "typescript" | "react" | "algorithms" | "system-design";
 
 export type TaskDifficulty =
   "warm-up" | "refactoring" | "junior" | "middle" | "senior" | "easy" | "medium" | "hard";

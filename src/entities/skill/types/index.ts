@@ -1,5 +1,8 @@
 import type { SectionType } from "@/entities/task/meta";
 
+/** Sections that have a skill map. System design is practised through cases, not skills. */
+export type SkillSection = Exclude<SectionType, "system-design">;
+
 /** How a step picks its tasks out of the curriculum. Used only when the task index is generated. */
 export type SkillStepMatch =
   { group: string; subgroups?: readonly string[] } | { taskIds: readonly string[] };
@@ -11,7 +14,7 @@ export interface SkillStep {
 
 export interface SkillDefinition {
   id: string;
-  section: SectionType;
+  section: SkillSection;
   title: string;
   /** Skills this one builds on. Soft links: they shape recommendations, never lock anything. */
   requires: readonly string[];

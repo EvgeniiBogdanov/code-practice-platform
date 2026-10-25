@@ -63,6 +63,10 @@
   color: var(--color-algo);
 }
 
+.system-design .countBadge {
+  color: var(--color-sd);
+}
+
 .react .countBadge {
   color: var(--color-react);
 }
@@ -86,6 +90,10 @@
 
 .algorithms .barFill {
   background: var(--color-algo);
+}
+
+.system-design .barFill {
+  background: var(--color-sd);
 }
 
 .react .barFill {

@@ -2,7 +2,7 @@ import React, { lazy, Suspense, useState, useCallback, useRef, useEffect, useMem
 import { useLocation } from "@tanstack/react-router";
 import { clsx } from "clsx";
 import { useUIStore } from "@/entities/ui-state";
-import type { SectionType } from "@/entities/task/meta";
+import { getSectionFromPathname, type SectionType } from "@/entities/task/meta";
 import { Tooltip } from "@/shared/ui";
 import { SidebarWorkspaceHeader } from "./SidebarWorkspaceHeader";
 import { SidebarHomeSkeleton } from "./SidebarHomeOverview/SidebarHomeSkeleton";
@@ -23,6 +23,11 @@ const SidebarJsList = lazy(() =>
 );
 const SidebarAlgoList = lazy(() =>
   import("./SidebarAlgoList").then((module) => ({ default: module.SidebarAlgoList }))
+);
+const SidebarSystemDesignList = lazy(() =>
+  import("./SidebarSystemDesignList").then((module) => ({
+    default: module.SidebarSystemDesignList,
+  }))
 );
 
 export interface AppSidebarProps {
@@ -50,13 +55,10 @@ export const AppSidebar = ({ className }: AppSidebarProps): React.JSX.Element =>
 
   const displayedSidebarWidth = isResizing ? draftSidebarWidth : sidebarWidth;
 
-  const activeSectionKey: "home" | SectionType = useMemo(() => {
-    if (pathname.startsWith("/typescript")) return "typescript";
-    if (pathname.startsWith("/javascript")) return "javascript";
-    if (pathname.startsWith("/algorithms")) return "algorithms";
-    if (pathname.startsWith("/react")) return "react";
-    return "home";
-  }, [pathname]);
+  const activeSectionKey: "home" | SectionType = useMemo(
+    () => getSectionFromPathname(pathname) ?? "home",
+    [pathname]
+  );
 
   const handleMouseDown = useCallback(
     (e: React.MouseEvent) => {
@@ -147,6 +149,7 @@ export const AppSidebar = ({ className }: AppSidebarProps): React.JSX.Element =>
                 )}
                 {activeSectionKey === "algorithms" && <SidebarAlgoList />}
                 {activeSectionKey === "react" && <SidebarReactList />}
+                {activeSectionKey === "system-design" && <SidebarSystemDesignList />}
               </Suspense>
             )}
           </nav>

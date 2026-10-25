@@ -30,6 +30,7 @@ const SECTION_FOLDER_WIDTHS: Record<SectionType, readonly string[]> = {
     "45%",
   ],
   react: ["48%", "55%", "82%", "75%", "82%", "88%", "90%"],
+  "system-design": ["60%", "78%", "52%"],
 };
 
 const getFolderWidths = (section?: SectionType, foldersCount?: number): readonly string[] => {

@@ -6,8 +6,8 @@ import {
   type SkillReason,
   type SkillRecommendation,
   type SkillStats,
+  type SkillSection,
 } from "@/entities/skill";
-import type { SectionType } from "@/entities/task/meta";
 
 export interface SkillFocusItem extends SkillRecommendation {
   /** «weak» — work on a gap; «next» — the next skill of the route. */
@@ -30,7 +30,7 @@ const getNextStepReason = (stats: SkillStats): SkillReason => {
  */
 export const getSkillFocus = (
   stats: ReadonlyMap<string, SkillStats>,
-  { limit, maxWeak = limit, section }: { limit: number; maxWeak?: number; section?: SectionType }
+  { limit, maxWeak = limit, section }: { limit: number; maxWeak?: number; section?: SkillSection }
 ): SkillFocusItem[] => {
   const weak = getWeakSkillRecommendations(stats, maxWeak, section).map((item): SkillFocusItem => ({
     ...item,

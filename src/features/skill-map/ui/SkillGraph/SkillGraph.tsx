@@ -1,7 +1,6 @@
 import React, { memo, useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { clsx } from "clsx";
-import { getSkillById, type SkillStats } from "@/entities/skill";
-import type { SectionType } from "@/entities/task/meta";
+import { getSkillById, type SkillStats, type SkillSection } from "@/entities/skill";
 import { getRelatedSkills, getSkillGraphLayout } from "../../lib/skillGraphLayout";
 import { getSkillVisual } from "../../lib/skillVisual";
 import { matchesSkillFilter, type SkillFilter } from "../../model/skillFilter";
@@ -9,7 +8,7 @@ import { SkillNode } from "../SkillNode/SkillNode";
 import styles from "./SkillGraph.module.css";
 
 export interface SkillGraphProps {
-  section: SectionType;
+  section: SkillSection;
   stats: ReadonlyMap<string, SkillStats>;
   selectedId: string | null;
   filter: SkillFilter;

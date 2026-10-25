@@ -79,7 +79,7 @@ export const SidebarWorkspaceHeader = memo(
     ]);
 
     const handleToggleExpandAll = useCallback(() => {
-      if (activeSectionKey === "home") return;
+      if (activeSectionKey === "home" || activeSectionKey === "system-design") return;
       if (isAnyExpanded) {
         collapseAllInCurrentSection(activeSectionKey);
       } else {
@@ -169,7 +169,7 @@ export const SidebarWorkspaceHeader = memo(
         </div>
 
         <div className={styles.headerActions}>
-          {activeSectionKey !== "home" && (
+          {activeSectionKey !== "home" && activeSectionKey !== "system-design" && (
             <Tooltip
               content={isAnyExpanded ? "Свернуть все темы" : "Развернуть все темы"}
               side="bottom"
