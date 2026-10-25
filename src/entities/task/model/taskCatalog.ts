@@ -92,12 +92,9 @@ export const loadTaskSection = (section: SectionType): Promise<Task[]> => {
 };
 
 export const loadAllTaskSections = async (): Promise<Task[]> => {
-  const sections = await Promise.all([
-    loadTaskSection("javascript"),
-    loadTaskSection("typescript"),
-    loadTaskSection("react"),
-    loadTaskSection("algorithms"),
-  ]);
+  const sections = await Promise.all(
+    (Object.keys(SECTION_LOADERS) as SectionType[]).map(loadTaskSection)
+  );
   return sections.flat();
 };
 

@@ -4,3 +4,4 @@ export * from "./model/curriculumManifest";
 export * from "./model/sectionsConfig";
 export * from "./model/reactGroups";
 export * from "./lib/getDifficultyTone";
+export * from "./lib/getSectionFromPathname";
