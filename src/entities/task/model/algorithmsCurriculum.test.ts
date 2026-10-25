@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { deepEqual } from "@/shared/lib/code-runners/testEngine";
+import { deepEqual } from "@/shared/lib/code-runners/deepEqual";
 import { sandboxHelpers } from "@/shared/lib/code-runners/nodeSandboxHelpers";
 import { loadTaskSection } from "./taskCatalog";
 

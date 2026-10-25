@@ -2,7 +2,7 @@ import { getTaskSolutionSource } from "@/entities/task";
 import React, { useCallback, useState, useEffect, useMemo } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Home, FileQuestion } from "lucide-react";
-import { getTaskFiles, hasTaskVisualComponent } from "@/entities/task";
+import { getTaskFiles, hasTaskVisualComponent, isTypeTestTask } from "@/entities/task";
 import type { SectionType } from "@/entities/task/meta";
 import { useTaskById } from "@/entities/task/catalog";
 import { CodeEditor, activateCodeHistoryTask } from "@/features/code-editor";
@@ -335,7 +335,7 @@ export const OpenEditorPage = ({
     setLastExecution(null);
   };
 
-  const hasTypeTests = tab !== "visualization" && Boolean(task?.rawTests);
+  const hasTypeTests = tab !== "visualization" && isTypeTestTask(task);
   const isReferenceTab = tab === "solution";
   const typeTests = useTypeTests({
     enabled: hasTypeTests,

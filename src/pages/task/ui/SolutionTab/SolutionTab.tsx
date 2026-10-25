@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { clsx } from "clsx";
-import { Task } from "@/entities/task";
+import { Task, isTypeTestTask } from "@/entities/task";
 import {
   Accordion,
   ErrorBoundary,
@@ -55,7 +55,7 @@ export const SolutionTab = memo(({ task, className }: SolutionTabProps): React.J
   } = useSolutionTab(task);
 
   // The reference only shows that it passes: it runs on its own and ticks nothing.
-  const hasTypeTests = Boolean(task.rawTests);
+  const hasTypeTests = isTypeTestTask(task);
   const typeTests = useTypeTests({
     enabled: hasTypeTests,
     autoRun: isFilesReady,

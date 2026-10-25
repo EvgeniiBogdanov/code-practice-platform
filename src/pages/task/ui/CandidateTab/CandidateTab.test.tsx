@@ -5,7 +5,12 @@ import { Task } from "@/entities/task";
 import { broadcastSyncEvent } from "@/shared/lib/storage";
 
 vi.mock("@/features/code-editor", () => ({
-  CodeEditor: ({ code }: { code: string }) => <div data-testid="code-editor">{code}</div>,
+  CodeEditor: ({ code, bottomConsole }: { code: string; bottomConsole?: React.ReactNode }) => (
+    <div data-testid="code-editor">
+      {code}
+      {bottomConsole}
+    </div>
+  ),
 }));
 
 vi.mock("@/features/code-runner", () => ({
@@ -49,5 +54,31 @@ describe("CandidateTab - SOLUTIONS_CLEARED Sync Event", () => {
     });
 
     expect(screen.getByTestId("code-editor")).toHaveTextContent("function initialCode() {}");
+  });
+});
+
+describe("CandidateTab - test panels", () => {
+  const drillTask: Task = {
+    ...mockTask,
+    id: "drill-task-1",
+    rawTests: 'test("works", () => {});',
+  };
+
+  it("shows the drill tests panel instead of the console for a task with runtime tests", async () => {
+    render(<CandidateTab task={drillTask} />);
+    expect(await screen.findByRole("region", { name: "Проверка решения" })).toBeInTheDocument();
+    expect(screen.queryByTestId("js-console")).not.toBeInTheDocument();
+  });
+
+  it("keeps the console for a task without tests", async () => {
+    render(<CandidateTab task={mockTask} />);
+    expect(await screen.findByTestId("js-console")).toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: "Проверка решения" })).not.toBeInTheDocument();
+  });
+
+  it("does not treat TypeScript type tests as drill tests", async () => {
+    render(<CandidateTab task={{ ...drillTask, id: "ts-1", section: "typescript" }} />);
+    await screen.findByTestId("code-editor");
+    expect(screen.queryByText(/Решение должно\s+экспортировать/)).not.toBeInTheDocument();
   });
 });
