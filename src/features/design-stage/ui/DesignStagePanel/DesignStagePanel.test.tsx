@@ -107,4 +107,9 @@ describe("DesignStagePanel", () => {
       rubric: [0, 1],
     });
   });
+
+  it("does not draw its own board: the scheme is shared by the whole case", () => {
+    renderPanel();
+    expect(screen.queryByRole("group", { name: /схема/i })).not.toBeInTheDocument();
+  });
 });

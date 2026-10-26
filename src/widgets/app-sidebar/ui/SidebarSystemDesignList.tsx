@@ -7,7 +7,6 @@ import { getTaskRoute } from "@/entities/task";
 import { TaskListWrapper } from "@/shared/ui";
 import { useSidebarSystemDesignList } from "../model";
 import { SidebarProgressCard } from "./SidebarProgressCard/SidebarProgressCard";
-import { SidebarQuickActions } from "./SidebarQuickActions";
 import { SidebarSystemDesignGroup } from "./SidebarSystemDesignGroup";
 import { SidebarTaskItem } from "./SidebarTaskItem";
 import { SidebarTasksList } from "./SidebarTasksList";
@@ -23,7 +22,6 @@ export const SidebarSystemDesignList = ({
   className,
 }: SidebarSystemDesignListProps): React.JSX.Element => {
   const {
-    currentTaskId,
     decodedCurrentId,
     pathname,
     drills,
@@ -41,9 +39,7 @@ export const SidebarSystemDesignList = ({
         completedCount={completedTotal}
         totalCount={totalCount}
         sectionType="system-design"
-      >
-        <SidebarQuickActions section="system-design" currentTaskId={currentTaskId} />
-      </SidebarProgressCard>
+      />
 
       {DESIGN_TOPICS.length > 0 && (
         <SidebarSystemDesignGroup

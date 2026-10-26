@@ -39,5 +39,5 @@ export const optimizationsStage: DesignStage = {
     "Названы метрики эксплуатации: задержка доставки, переподключения, доля failed.",
   ],
   drillIds: [],
-  topicIds: ["performance", "a11y-security"],
+  topicIds: ["performance", "security"],
 };

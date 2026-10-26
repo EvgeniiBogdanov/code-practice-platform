@@ -16,12 +16,12 @@
   {
     "name": "All CSS",
     "path": "dist/assets/*.css",
-    "limit": "79 KB"
+    "limit": "84 KB"
   },
   {
     "name": "All JS",
     "path": "dist/assets/*.js",
-    "limit": "4200 KB"
+    "limit": "4300 KB"
   },
   {
     "name": "Lazy: Task explanations",
@@ -47,6 +47,11 @@
     "name": "Lazy: xterm",
     "path": "dist/assets/vendor-xterm-*.js",
     "limit": "72 KB"
+  },
+  {
+    "name": "Lazy: React Flow",
+    "path": "dist/assets/vendor-flow-*.js",
+    "limit": "55 KB"
   },
   {
     "name": "Lazy: Markdown",

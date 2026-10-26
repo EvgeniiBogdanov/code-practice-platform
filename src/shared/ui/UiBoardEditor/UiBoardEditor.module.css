@@ -1,0 +1,20 @@
+.host {
+  width: 100%;
+}
+
+.fullscreen {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: var(--space-0);
+}
+
+.problem {
+  padding: var(--space-4);
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+}

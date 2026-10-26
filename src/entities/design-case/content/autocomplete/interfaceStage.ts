@@ -40,5 +40,5 @@ export const interfaceStageStage: DesignStage = {
     "Названа проблема XSS: HTML с сервера не вставляется как есть.",
   ],
   drillIds: [],
-  topicIds: ["a11y-security"],
+  topicIds: ["a11y"],
 };

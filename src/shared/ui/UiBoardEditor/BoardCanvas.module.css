@@ -1,0 +1,229 @@
+.board {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* In fullscreen the canvas takes whatever height the toolbar leaves. */
+.fullscreen {
+  flex: 1;
+  min-height: var(--space-0);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toolGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.canvas {
+  position: relative;
+  height: calc(var(--space-10) * 10);
+  overflow: hidden;
+  background-color: var(--bg-canvas);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+}
+
+/* Focused only from code (a click on empty space) to receive the shortcuts: no ring on the whole canvas. */
+.canvas:focus {
+  outline: none;
+}
+
+.fullscreen .canvas {
+  flex: 1;
+  height: auto;
+  min-height: var(--space-0);
+}
+
+/* React Flow reads its colours from --xy-* variables: point them at the project tokens. */
+.canvas :global(.react-flow) {
+  --xy-background-color: var(--bg-canvas);
+  --xy-background-pattern-color: var(--border-color);
+  --xy-edge-stroke: var(--text-muted);
+  --xy-edge-stroke-selected: var(--accent-blue);
+  --xy-edge-stroke-width: var(--space-0-5);
+  --xy-connectionline-stroke: var(--accent-blue);
+  --xy-handle-background-color: var(--accent-blue);
+  --xy-handle-border-color: var(--bg-card);
+  --xy-resize-background-color: var(--accent-blue);
+  --xy-attribution-background-color: transparent;
+}
+
+/* The library's credit link stays (it asks for it), but as quiet text instead of a grey plate. */
+.canvas :global(.react-flow__attribution a) {
+  color: var(--text-muted);
+}
+
+.empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  text-align: center;
+  pointer-events: none;
+}
+
+/* The card fills the node box, so resizing the node resizes the card. */
+.card {
+  width: 100%;
+  height: 100%;
+  padding: var(--space-1);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.selected {
+  border-color: var(--accent-blue);
+}
+
+.card .handle {
+  width: var(--space-2);
+  height: var(--space-2);
+}
+
+/* `.card .text` outweighs the global `textarea:not(...)` rule (vertical-only resize, 80px minimum). */
+.card .text {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: var(--space-0);
+  padding: var(--space-1);
+  font: inherit;
+  font-size: var(--fs-sm);
+  color: var(--text-main);
+  resize: none;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+}
+
+.card .text:focus-visible {
+  outline: var(--space-0-5) solid var(--accent-blue);
+}
+
+/* Left is the default; the textarea inherits it. */
+.card .alignCenter {
+  text-align: center;
+}
+
+.card .alignRight {
+  text-align: right;
+}
+
+.alignToolbar {
+  display: flex;
+  gap: var(--space-0-5);
+  padding: var(--space-1);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+/* The box the caption is centred in, on the middle of the arrow; only the caption itself takes the pointer. */
+.edgeLabelBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/*
+ * Like a connector caption in Miro: plain text on the line, in the colour of the board so the line
+ * breaks under it. No frame until the pointer or the cursor is there. It is as wide as its text.
+ */
+.edgeCaption {
+  display: inline-grid;
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 100%;
+  height: var(--space-5);
+  pointer-events: all;
+  background-color: var(--bg-canvas);
+  border: 1px solid transparent;
+  border-radius: var(--radius-xs);
+  transition:
+    border-color var(--transition-fast),
+    opacity var(--transition-fast);
+}
+
+/* Invisible copy of the text: it gives the grid cell the width of what is typed. */
+.edgeCaption::after {
+  grid-area: 1 / 1;
+  padding: 0 var(--space-1-5);
+  overflow: hidden;
+  font-size: var(--fs-sm);
+  white-space: pre;
+  visibility: hidden;
+  content: attr(data-value);
+}
+
+/* `width: 0` keeps the input's own default width out of the caption's size; `min-width` then fills the cell. */
+.edgeCaption .edgeInput {
+  grid-area: 1 / 1;
+  width: 0;
+  min-width: 100%;
+  height: 100%;
+  min-height: var(--space-0);
+  padding: 0 var(--space-1-5);
+  font-size: var(--fs-sm);
+  line-height: 1;
+  color: var(--text-secondary);
+  text-align: center;
+  text-overflow: ellipsis;
+  background: transparent;
+  border: none;
+  border-radius: inherit;
+  outline: none;
+  box-shadow: none;
+}
+
+.edgeCaption .edgeInput::placeholder {
+  color: var(--text-muted);
+}
+
+.edgeCaption:hover:not(:focus-within) {
+  border-color: var(--border-strong);
+}
+
+.edgeCaption.edgeCaptionSelected,
+.edgeCaption:focus-within {
+  border-color: var(--accent-blue);
+}
+
+/* Nothing written yet: the caption is invisible, so a plain arrow stays clean. */
+.edgeCaption.edgeCaptionEmpty {
+  opacity: 0;
+}
+
+/* It appears when the pointer is over the arrow or the caption, or the arrow is selected, to be filled in. */
+.canvas :global(.react-flow__edge):hover .edgeCaptionEmpty,
+.edgeCaption.edgeCaptionEmpty:hover,
+.edgeCaption.edgeCaptionEmpty:focus-within,
+.edgeCaption.edgeCaptionEmpty.edgeCaptionSelected {
+  border-color: var(--border-strong);
+  border-style: dashed;
+  opacity: 1;
+}
+
+.edgeCaption.edgeCaptionEmpty:focus-within,
+.edgeCaption.edgeCaptionEmpty.edgeCaptionSelected {
+  border-color: var(--accent-blue);
+}

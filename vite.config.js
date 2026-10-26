@@ -93,6 +93,10 @@ export default defineConfig(({ mode }) => ({
             if (id.includes("@xterm")) {
               return "vendor-xterm";
             }
+            // The scheme editor of the system design cases loads on first use.
+            if (id.includes("/@xyflow/")) {
+              return "vendor-flow";
+            }
             // Exact package match: a substring check also caught lucide's `book-marked`
             // icon and dragged the whole icon runtime (and every icon user) into this chunk.
             if (/\/node_modules\/(marked|dompurify)\//.test(id)) {

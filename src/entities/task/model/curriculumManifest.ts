@@ -5,11 +5,11 @@ export const CURRICULUM_COUNTS: Record<SectionType, number> = {
   typescript: 54,
   react: 101,
   algorithms: 58,
-  "system-design": 6,
+  "system-design": 9,
 };
 
 /** Cases live in `entities/design-case`; a test there keeps this count in step with the list. */
-export const DESIGN_CASE_COUNT = 3;
+export const DESIGN_CASE_COUNT = 4;
 
 export const getTaskSectionById = (taskId: string | number): SectionType => {
   const id = String(taskId);

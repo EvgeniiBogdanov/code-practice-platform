@@ -1,11 +1,12 @@
 import React from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, BookOpen, Code2, Layers } from "lucide-react";
-import { AccentButton, TopicIconBox, type TopicIconBoxColor } from "@/shared/ui";
+import { AccentButton, type TopicIconBoxColor } from "@/shared/ui";
 import type { DesignCase } from "@/entities/design-case";
 import { useTaskSection } from "@/entities/task/catalog";
 import { CaseCards } from "./CaseCards";
 import { DrillTable } from "./DrillTable";
+import { SectionHero } from "./SectionHero";
 import { TopicCards } from "./TopicCards";
 import styles from "./SystemDesignFolderPage.module.css";
 
@@ -22,7 +23,7 @@ const FOLDERS: Record<SystemDesignFolderId, FolderMeta> = {
   theory: {
     title: "Теория",
     description:
-      "Короткие статьи, на которые ссылаются этапы кейсов: как вести дизайн-интервью, рендеринг, данные, сеть, производительность, доступность.",
+      "Короткие статьи, на которые ссылаются этапы кейсов: процесс собеседования, архитектура, рендеринг, данные, сеть, производительность, безопасность, доступность, интернационализация и доставка.",
     icon: <BookOpen size={26} />,
     color: "blue",
   },
@@ -59,24 +60,21 @@ export const SystemDesignFolderPage = ({
 
   return (
     <div className={styles.page}>
-      <header className={styles.hero}>
-        <TopicIconBox colorVariant={color} size="lg">
-          {icon}
-        </TopicIconBox>
-        <div className={styles.heroContent}>
-          <div className={styles.titleRow}>
-            <h1 className={styles.title}>{title}</h1>
-            {folder === "drills" && firstDrill && (
-              <Link to="/system-design/$taskId" params={{ taskId: String(firstDrill.id) }}>
-                <AccentButton colorVariant={color} size="md" rightIcon={<ArrowRight size={14} />}>
-                  Решать задачи
-                </AccentButton>
-              </Link>
-            )}
-          </div>
-          <p className={styles.description}>{description}</p>
-        </div>
-      </header>
+      <SectionHero
+        icon={icon}
+        color={color}
+        title={title}
+        description={description}
+        action={
+          folder === "drills" && firstDrill ? (
+            <Link to="/system-design/$taskId" params={{ taskId: String(firstDrill.id) }}>
+              <AccentButton colorVariant={color} size="md" rightIcon={<ArrowRight size={14} />}>
+                Решать задачи
+              </AccentButton>
+            </Link>
+          ) : undefined
+        }
+      />
 
       {folder === "theory" && <TopicCards />}
       {folder === "cases" && <CaseCards cases={cases} />}

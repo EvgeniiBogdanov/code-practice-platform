@@ -9,7 +9,6 @@ import { safeDecodeURI } from "@/shared/lib/url";
 import type { SystemDesignGroupId } from "./systemDesignGroups";
 
 export interface UseSidebarSystemDesignListReturn {
-  currentTaskId: string;
   decodedCurrentId: string;
   pathname: string;
   drills: Task[];
@@ -74,7 +73,6 @@ export const useSidebarSystemDesignList = (): UseSidebarSystemDesignListReturn =
   );
 
   return {
-    currentTaskId,
     decodedCurrentId,
     pathname,
     drills,

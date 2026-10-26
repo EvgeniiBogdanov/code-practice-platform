@@ -1,41 +1,102 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
-  max-width: 880px;
+  gap: var(--space-3);
+  max-width: 920px;
   padding: var(--space-8) var(--space-6);
   margin: 0 auto;
 }
 
-.back {
-  display: inline-flex;
+/* «Back» on the left, «next article» on the right. */
+.topNav {
+  display: flex;
+  gap: var(--space-4);
   align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-2);
+}
+
+.navLink {
+  display: inline-flex;
   gap: var(--space-2);
-  align-self: flex-start;
+  align-items: center;
+  min-width: 0;
   font-size: var(--fs-sm);
   color: var(--text-muted);
   text-decoration: none;
 }
 
-.back:hover {
+.navLink:hover {
   color: var(--text-main);
 }
 
-.header {
+.navNext {
+  margin-left: auto;
+}
+
+.navLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* A line between the badges and the text, as in the theory block of the other sections. */
+.articleContent {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+  margin-top: var(--space-2);
+  border-top: 1px solid var(--border-color);
 }
 
-.title {
-  margin: 0;
-  font-size: var(--fs-h2);
-  font-weight: var(--fw-bold);
+/* The way on, under the text: a row like the articles in the folder list. */
+.nextCard {
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+  padding: var(--space-4) var(--space-5);
+  margin-top: var(--space-6);
+  color: inherit;
+  text-decoration: none;
+  background-color: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: background-color var(--transition-fast);
+}
+
+.nextCard:hover {
+  background-color: var(--bg-elevated);
+}
+
+[data-theme="light"] .nextCard:hover {
+  background-color: var(--bg-surface);
+  box-shadow: var(--shadow-md);
+}
+
+.nextBody {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.nextKicker {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.nextTitle {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
   color: var(--text-main);
 }
 
-.meta {
-  margin: 0;
-  font-size: var(--fs-sm);
+.nextArrow {
+  flex-shrink: 0;
   color: var(--text-muted);
 }

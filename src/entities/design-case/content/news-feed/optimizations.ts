@@ -40,5 +40,5 @@ export const optimizationsStage: DesignStage = {
     "Упомянуты доступность ленты и обработка ошибок загрузки.",
   ],
   drillIds: [],
-  topicIds: ["performance", "a11y-security"],
+  topicIds: ["performance", "a11y"],
 };

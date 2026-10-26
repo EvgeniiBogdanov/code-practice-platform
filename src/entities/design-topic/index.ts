@@ -1,3 +1,8 @@
-export type { DesignTopic } from "./model/types";
+export type { DesignTopic, DesignTopicGroup } from "./model/types";
 export { DESIGN_TOPICS } from "./content/topics";
-export { getDesignTopic, loadDesignTopicArticle } from "./model/designTopics";
+export { DESIGN_TOPIC_GROUPS } from "./content/topicGroups";
+export {
+  getAdjacentDesignTopics,
+  getDesignTopic,
+  loadDesignTopicArticle,
+} from "./model/designTopics";

@@ -1,0 +1,89 @@
+/* The same strip as the task page: it sits on top of a bordered card and stays visible while scrolling. */
+.strip {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  gap: var(--space-2);
+  height: calc(var(--space-8) + var(--space-0-5));
+  padding: 0 var(--space-2-5);
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  background: var(--bg-sidebar);
+  border-bottom: 1px solid var(--border-color);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+[data-theme="light"] .strip {
+  background: var(--bg-card);
+}
+
+.tab {
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: var(--space-1-5);
+  align-items: center;
+  height: 100%;
+  padding: 0 var(--space-2-5);
+  margin-bottom: -1px;
+  font-family: inherit;
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  border-radius: var(--radius-xs) var(--radius-xs) 0 0;
+  transition:
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    background var(--transition-hover);
+}
+
+.tab:hover {
+  color: var(--text-main);
+  background: var(--state-hover);
+}
+
+.tab.active {
+  color: var(--text-main);
+  border-bottom-color: var(--tab-accent);
+}
+
+.icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--tab-accent);
+}
+
+.label {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.green {
+  --tab-accent: var(--accent-green);
+}
+
+.blue {
+  --tab-accent: var(--accent-blue);
+}
+
+.yellow {
+  --tab-accent: var(--accent-yellow);
+}
+
+.purple {
+  --tab-accent: var(--accent-purple);
+}
+
+.cyan {
+  --tab-accent: var(--accent-cyan);
+}
+
+.orange {
+  --tab-accent: var(--accent-orange);
+}
