@@ -1,7 +1,7 @@
 {
   "name": "Code-Practice-Platform",
   "private": true,
-  "version": "2.4.42",
+  "version": "2.4.43",
   "license": "AGPL-3.0-only AND CC-BY-NC-SA-4.0",
   "type": "module",
   "scripts": {
@@ -41,6 +41,7 @@
     "@tiptap/suggestion": "^3.31.4",
     "@xterm/addon-fit": "^0.11.0",
     "@xterm/xterm": "^6.0.0",
+    "@xyflow/react": "^12.12.0",
     "clsx": "^2.1.1",
     "dompurify": "^3.4.16",
     "emmet": "^2.4.11",

@@ -11,6 +11,13 @@ describe("design topics", () => {
     }
   });
 
+  it("starts every article with text, not a title: the page already shows the topic title", async () => {
+    for (const { id } of DESIGN_TOPICS) {
+      const article = (await loadDesignTopicArticle(id)) ?? "";
+      expect(article.trimStart(), id).not.toMatch(/^# /);
+    }
+  });
+
   it("returns null for an unknown article and undefined for an unknown topic", async () => {
     expect(await loadDesignTopicArticle("no-such-topic")).toBeNull();
     expect(getDesignTopic("no-such-topic")).toBeUndefined();

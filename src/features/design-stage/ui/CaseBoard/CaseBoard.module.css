@@ -1,0 +1,66 @@
+/* A bordered card with a title strip, like the card of the stage tabs above it. */
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme="light"] .card {
+  background: var(--bg-card);
+}
+
+.header {
+  display: flex;
+  gap: var(--space-1-5);
+  align-items: center;
+  height: calc(var(--space-8) + var(--space-0-5));
+  padding: 0 var(--space-2-5);
+  background: var(--bg-sidebar);
+  border-bottom: 1px solid var(--border-color);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+[data-theme="light"] .header {
+  background: var(--bg-card);
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--accent-blue);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--text-main);
+}
+
+.note {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  background: var(--bg-app);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+
+.hint {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+
+@media (max-width: 640px) {
+  .body {
+    padding: var(--space-3);
+  }
+}

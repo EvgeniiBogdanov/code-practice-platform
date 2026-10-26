@@ -40,5 +40,5 @@ export const interfaceStageStage: DesignStage = {
     "Описаны компоненты и граница ответственности: транспорт скрыт от окна чата.",
   ],
   drillIds: [],
-  topicIds: ["network-realtime", "a11y-security"],
+  topicIds: ["network-realtime", "a11y"],
 };

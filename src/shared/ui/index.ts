@@ -36,6 +36,7 @@ export * from "./PlatformLogo";
 export * from "./Icon";
 export * from "./ResizableSplitPane";
 export * from "./UiLoader";
+export * from "./UiCardTabs";
 export * from "./UiSkeleton";
 export * from "./UiNumberScramble";
 export * from "./GaugeIndicator";

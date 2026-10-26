@@ -40,5 +40,5 @@ export const optimizationsStage: DesignStage = {
     "Названы метрики, по которым будет видно качество работы в продакшене.",
   ],
   drillIds: [],
-  topicIds: ["a11y-security", "performance"],
+  topicIds: ["a11y", "performance"],
 };

@@ -1,6 +1,10 @@
+import type { BoardValue } from "@/shared/ui/UiBoardEditor";
 import type { DesignCase, DesignStage, StageProgress } from "./types";
 
 export const EMPTY_STAGE_PROGRESS: StageProgress = { choices: {}, answer: "", rubric: [] };
+
+/** What the board shows before the learner draws anything. */
+export const EMPTY_BOARD: BoardValue = { nodes: [], edges: [] };
 
 export const getStageKey = (caseId: string, stageId: string): string => `${caseId}:${stageId}`;
 

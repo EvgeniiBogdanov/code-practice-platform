@@ -12,6 +12,28 @@ vi.mock("@tanstack/react-router", () => ({
 vi.mock("@/entities/task/catalog", () => ({
   useTaskSection: () => ({ tasks: [{ id: "sd-1", title: "Debounce" }] }),
 }));
+vi.mock("@/shared/ui/UiBoardEditor", () => ({
+  UiBoardEditor: ({
+    label,
+    value,
+    onChange,
+  }: {
+    label: string;
+    value: { nodes: readonly unknown[] };
+    onChange: (board: {
+      nodes: { id: string; x: number; y: number; text: string }[];
+      edges: [];
+    }) => void;
+  }): React.JSX.Element => (
+    <button
+      type="button"
+      aria-label={`Редактор: ${label}`}
+      onClick={() => onChange({ nodes: [{ id: "n1", x: 1, y: 2, text: "API" }], edges: [] })}
+    >
+      cards: {value.nodes.length}
+    </button>
+  ),
+}));
 
 const stageIds: RadioStageId[] = [
   "requirements",
@@ -41,13 +63,13 @@ const designCase: DesignCase = {
 describe("DesignCasePage", () => {
   beforeEach(() => {
     localStorage.clear();
-    useDesignCaseStore.setState({ stages: {} });
+    useDesignCaseStore.setState({ stages: {}, boards: {}, revisions: {} });
   });
 
   it("walks through the RADIO stages and ends with the production tab", () => {
     render(<DesignCasePage designCase={designCase} />);
 
-    expect(screen.getByRole("heading", { name: "Автокомплит" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /^Автокомплит/ })).toBeInTheDocument();
     expect(screen.getByText("Пройдено этапов: 0 из 5")).toBeInTheDocument();
     expect(screen.getByText("Задание requirements")).toBeInTheDocument();
 
@@ -57,6 +79,75 @@ describe("DesignCasePage", () => {
 
     fireEvent.click(screen.getByRole("tab", { name: "В продакшене" }));
     expect(screen.getByText("Что будет под нагрузкой")).toBeInTheDocument();
+  });
+
+  it("keeps one scheme on the page while the stage tabs change", () => {
+    render(<DesignCasePage designCase={designCase} />);
+    const board = screen.getByRole("button", { name: "Редактор: Схема решения" });
+    expect(board).toHaveTextContent("cards: 0");
+
+    fireEvent.click(board);
+    expect(board).toHaveTextContent("cards: 1");
+
+    fireEvent.click(screen.getByRole("tab", { name: "Архитектура" }));
+    fireEvent.click(screen.getByRole("tab", { name: "В продакшене" }));
+
+    expect(screen.getAllByRole("button", { name: "Редактор: Схема решения" })).toHaveLength(1);
+    expect(screen.getByRole("button", { name: "Редактор: Схема решения" })).toBe(board);
+    expect(board).toHaveTextContent("cards: 1");
+  });
+
+  it("keeps the reset button off until there is something to reset", () => {
+    render(<DesignCasePage designCase={designCase} />);
+    expect(screen.getByRole("button", { name: "Сбросить кейс" })).toBeDisabled();
+
+    fireEvent.click(screen.getByRole("button", { name: "Редактор: Схема решения" }));
+
+    expect(screen.getByRole("button", { name: "Сбросить кейс" })).toBeEnabled();
+  });
+
+  it("asks first, then clears the whole case and goes back to the first stage", () => {
+    useDesignCaseStore.setState({
+      stages: {
+        "autocomplete:architecture": { choices: { fork: "a" }, answer: "Ответ", rubric: [0] },
+        "other:requirements": { choices: {}, answer: "Чужой ответ", rubric: [] },
+      },
+      boards: { autocomplete: { nodes: [{ id: "n1", x: 0, y: 0, text: "API" }], edges: [] } },
+    });
+    render(<DesignCasePage designCase={designCase} />);
+    // A passed stage shows a tick, so its tab is named "Пройден Архитектура".
+    fireEvent.click(screen.getByRole("tab", { name: /Архитектура/ }));
+
+    fireEvent.click(screen.getByRole("button", { name: "Сбросить кейс" }));
+    expect(screen.getByText("Сбросить кейс?")).toBeInTheDocument();
+    expect(useDesignCaseStore.getState().boards["autocomplete"]).toBeDefined();
+
+    fireEvent.click(screen.getByRole("button", { name: "Сбросить" }));
+
+    const state = useDesignCaseStore.getState();
+    expect(state.stages["autocomplete:architecture"]).toBeUndefined();
+    expect(state.boards["autocomplete"]).toBeUndefined();
+    expect(state.stages["other:requirements"]?.answer).toBe("Чужой ответ");
+    expect(screen.getByRole("tab", { name: "Требования" })).toHaveAttribute(
+      "aria-selected",
+      "true"
+    );
+    expect(screen.getByRole("button", { name: "Редактор: Схема решения" })).toHaveTextContent(
+      "cards: 0"
+    );
+    expect(screen.getByRole("button", { name: "Сбросить кейс" })).toBeDisabled();
+  });
+
+  it("leaves everything as it was when the reset is cancelled", () => {
+    useDesignCaseStore.setState({
+      stages: { "autocomplete:requirements": { choices: {}, answer: "Ответ", rubric: [] } },
+    });
+    render(<DesignCasePage designCase={designCase} />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Сбросить кейс" }));
+    fireEvent.click(screen.getByRole("button", { name: "Отмена" }));
+
+    expect(useDesignCaseStore.getState().stages["autocomplete:requirements"]?.answer).toBe("Ответ");
   });
 
   it("counts a finished stage in the header", () => {
