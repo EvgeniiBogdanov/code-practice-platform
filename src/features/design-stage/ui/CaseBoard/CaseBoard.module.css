@@ -16,8 +16,8 @@
   display: flex;
   gap: var(--space-1-5);
   align-items: center;
-  height: calc(var(--space-8) + var(--space-0-5));
-  padding: 0 var(--space-2-5);
+  min-height: calc(var(--space-8) + var(--space-0-5));
+  padding: var(--space-1) var(--space-2-5);
   background: var(--bg-sidebar);
   border-bottom: 1px solid var(--border-color);
   border-radius: var(--radius-md) var(--radius-md) 0 0;
@@ -39,16 +39,20 @@
   color: var(--text-main);
 }
 
-.note {
-  font-size: var(--fs-sm);
-  color: var(--text-muted);
+.switch {
+  margin-left: auto;
+}
+
+/* `hidden` keeps the editor mounted, with its undo history, while the reference is open. */
+.view[hidden] {
+  display: none;
 }
 
 .body {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-  padding: var(--space-5);
+  padding: var(--space-3);
   background: var(--bg-app);
   border-radius: 0 0 var(--radius-md) var(--radius-md);
 }

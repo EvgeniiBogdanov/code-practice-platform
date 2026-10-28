@@ -22,6 +22,11 @@ const FinderReactHierarchy = lazy(() =>
     default: FinderReactHierarchy,
   }))
 );
+const FinderSystemDesignHierarchy = lazy(() =>
+  import("./FinderSystemDesignHierarchy").then(({ FinderSystemDesignHierarchy }) => ({
+    default: FinderSystemDesignHierarchy,
+  }))
+);
 const FinderAlgoHierarchy = lazy(() =>
   import("./FinderAlgoHierarchy").then(({ FinderAlgoHierarchy }) => ({
     default: FinderAlgoHierarchy,
@@ -114,6 +119,16 @@ export const FinderBreadcrumbs = (): React.JSX.Element => {
           <FinderAlgoHierarchy
             paramId={taskId}
             currentTask={currentTask}
+            activeDropdown={activeDropdown}
+            toggleDropdown={toggleDropdown}
+            closeAllDropdowns={closeAllDropdowns}
+          />
+        )}
+
+        {/* 6. System Design Hierarchy: Folder / Page */}
+        {section === "system-design" && !isSectionPage && (
+          <FinderSystemDesignHierarchy
+            pathname={location.pathname}
             activeDropdown={activeDropdown}
             toggleDropdown={toggleDropdown}
             closeAllDropdowns={closeAllDropdowns}

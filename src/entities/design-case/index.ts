@@ -2,6 +2,7 @@ export * from "./model/types";
 export { RADIO_STAGES, type RadioStageMeta } from "./model/radioStages";
 export { DESIGN_CASES } from "./content/cases";
 export { getDesignCaseMeta, loadDesignCase } from "./model/designCases";
+export { getReferenceBoard, type ReferenceBoard } from "./model/referenceScheme";
 export {
   EMPTY_BOARD,
   EMPTY_STAGE_PROGRESS,

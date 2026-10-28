@@ -48,10 +48,6 @@
   flex-shrink: 0;
 }
 
-.spinner {
-  animation: spin 0.8s linear infinite;
-}
-
 .error {
   margin: 0;
   font-size: var(--fs-caption);
@@ -109,11 +105,5 @@
 
   .inline .submit {
     width: 100%;
-  }
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
   }
 }

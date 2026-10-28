@@ -25,9 +25,10 @@
   align-items: center;
 }
 
+/* A page can give the canvas another height through --board-canvas-height, e.g. to fill a column. */
 .canvas {
   position: relative;
-  height: calc(var(--space-10) * 10);
+  height: var(--board-canvas-height, calc(var(--space-10) * 10));
   overflow: hidden;
   background-color: var(--bg-canvas);
   border: 1px solid var(--border-color);
@@ -92,6 +93,11 @@
   border-color: var(--accent-blue);
 }
 
+/* The viewer keeps the handles only as attachment points for the arrows. */
+.card .hiddenHandle {
+  visibility: hidden;
+}
+
 .card .handle {
   width: var(--space-2);
   height: var(--space-2);
@@ -115,6 +121,28 @@
 
 .card .text:focus-visible {
   outline: var(--space-0-5) solid var(--accent-blue);
+}
+
+/* The viewer shows the text as it is, line breaks included. */
+.card .staticText {
+  height: 100%;
+  padding: var(--space-1);
+  margin: 0;
+  overflow: hidden;
+  font-size: var(--fs-sm);
+  line-height: 1.35;
+  color: var(--text-main);
+  white-space: pre-line;
+}
+
+/* What the current step added: the accent frame on cards, the accent stroke on arrows. */
+.highlighted .card {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 1px var(--accent-blue);
+}
+
+.highlighted :global(.react-flow__edge-path) {
+  stroke: var(--accent-blue);
 }
 
 /* Left is the default; the textarea inherits it. */
@@ -226,4 +254,17 @@
 .edgeCaption.edgeCaptionEmpty:focus-within,
 .edgeCaption.edgeCaptionEmpty.edgeCaptionSelected {
   border-color: var(--accent-blue);
+}
+
+.staticCaption {
+  max-width: 100%;
+  padding: 0 var(--space-1-5);
+  overflow: hidden;
+  font-size: var(--fs-sm);
+  line-height: var(--space-5);
+  color: var(--text-secondary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background-color: var(--bg-canvas);
+  border-radius: var(--radius-xs);
 }

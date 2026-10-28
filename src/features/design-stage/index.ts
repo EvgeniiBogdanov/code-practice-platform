@@ -1,4 +1,4 @@
-export { CaseBoard, type CaseBoardProps } from "./ui/CaseBoard/CaseBoard";
+export { CaseBoard, type CaseBoardProps, type CaseBoardView } from "./ui/CaseBoard/CaseBoard";
 export {
   DesignStagePanel,
   type DesignStagePanelProps,

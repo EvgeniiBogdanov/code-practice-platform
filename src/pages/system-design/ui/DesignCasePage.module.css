@@ -1,12 +1,15 @@
-/* The layout of the task page: a title block, then one bordered card of tabs and their content. */
+/*
+ * The layout of the case page: a title block, then one bordered card with the stage tabs across the
+ * whole width and two columns under them, the stage on the left and the board on the right.
+ */
 .pageContainer {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
   width: 100%;
-  max-width: 1080px;
-  padding: 0 var(--space-10) var(--space-16);
+  max-width: 1600px;
+  padding: 0 var(--space-6) var(--space-16);
   margin: 0 auto;
 }
 
@@ -83,10 +86,42 @@
   background: var(--bg-card);
 }
 
-.tabsContent {
-  padding: var(--space-5);
+.workspace {
+  display: grid;
+  grid-template-columns: var(--design-case-aside-width) minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+  padding: var(--space-4);
   background: var(--bg-app);
   border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+
+.stageColumn {
+  min-width: 0;
+}
+
+/* The board stays in view while the stage column scrolls; its canvas fills the screen height. */
+.boardColumn {
+  --board-canvas-height: max(
+    calc(var(--space-10) * 9),
+    calc(100dvh - var(--header-height) - var(--space-10) * 5)
+  );
+
+  position: sticky;
+  top: var(--space-4);
+  min-width: 0;
+}
+
+@media (max-width: 1100px) {
+  .workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .boardColumn {
+    --board-canvas-height: calc(var(--space-10) * 10);
+
+    position: static;
+  }
 }
 
 @media (max-width: 640px) {
@@ -94,7 +129,7 @@
     padding: var(--space-0) var(--space-3) var(--space-8);
   }
 
-  .tabsContent {
+  .workspace {
     padding: var(--space-3);
   }
 }

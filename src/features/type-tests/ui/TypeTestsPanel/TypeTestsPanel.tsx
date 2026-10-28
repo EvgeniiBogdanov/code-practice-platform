@@ -1,15 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
-import {
-  ChevronDown,
-  ChevronUp,
-  ListChecks,
-  LoaderCircle,
-  Play,
-  ZoomIn,
-  ZoomOut,
-} from "lucide-react";
+import { ChevronDown, ChevronUp, ListChecks, Play, ZoomIn, ZoomOut } from "lucide-react";
 import { clsx } from "clsx";
-import { CodeButton, PanelToolbar, Tooltip, UiKbd } from "@/shared/ui";
+import { CodeButton, PanelToolbar, Tooltip, UiKbd, UiSpinner } from "@/shared/ui";
 import { parseTestOutline, type EditorDiagnostic } from "@/shared/lib/code-editor";
 import { MAX_TESTS_FONT_SIZE, MIN_TESTS_FONT_SIZE, useUIStore } from "@/entities/ui-state";
 import { HINT_AFTER_FAILED_RUNS, type TypeTestsController } from "../../model/useTypeTests";
@@ -135,13 +127,7 @@ export const TypeTestsPanel = ({
             >
               <CodeButton
                 variant="success"
-                icon={
-                  isRunning ? (
-                    <LoaderCircle size={14} className={styles.spinner} />
-                  ) : (
-                    <Play size={14} fill="currentColor" />
-                  )
-                }
+                icon={isRunning ? <UiSpinner size={14} /> : <Play size={14} fill="currentColor" />}
                 disabled={isRunning}
                 aria-label="Запустить тесты"
                 onClick={controller.run}

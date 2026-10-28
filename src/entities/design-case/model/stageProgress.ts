@@ -1,17 +1,16 @@
 import type { BoardValue } from "@/shared/ui/UiBoardEditor";
 import type { DesignCase, DesignStage, StageProgress } from "./types";
 
-export const EMPTY_STAGE_PROGRESS: StageProgress = { choices: {}, answer: "", rubric: [] };
+export const EMPTY_STAGE_PROGRESS: StageProgress = { choices: {}, rubric: [] };
 
 /** What the board shows before the learner draws anything. */
 export const EMPTY_BOARD: BoardValue = { nodes: [], edges: [] };
 
 export const getStageKey = (caseId: string, stageId: string): string => `${caseId}:${stageId}`;
 
-/** A stage is done when every fork is answered, the answer is written and the rubric is ticked. */
+/** A stage is done when every fork is answered and the scheme is checked against the whole rubric. */
 export const isStageComplete = (stage: DesignStage, progress: StageProgress): boolean =>
   stage.forks.every((fork) => progress.choices[fork.id] !== undefined) &&
-  progress.answer.trim().length > 0 &&
   stage.rubric.every((_, index) => progress.rubric.includes(index));
 
 export const countCompletedStages = (

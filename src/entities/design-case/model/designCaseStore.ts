@@ -15,12 +15,26 @@ export interface DesignCaseState {
    */
   revisions: Record<string, number>;
   chooseOption: (caseId: string, stageId: string, forkId: string, optionId: string) => void;
-  setAnswer: (caseId: string, stageId: string, answer: string) => void;
   setBoard: (caseId: string, board: BoardValue) => void;
   toggleRubricItem: (caseId: string, stageId: string, index: number) => void;
-  /** Forgets the choices, answers, self-check marks and the board of one case. */
+  /** Forgets the choices, self-check marks and the board of one case. */
   resetCase: (caseId: string) => void;
 }
+
+type PersistedState = Pick<DesignCaseState, "stages" | "boards">;
+
+/** Versions 1 and 2 kept a written answer or notes per stage, which are no longer stored. */
+interface PersistedStateLegacy {
+  stages?: Record<string, Partial<StageProgress>>;
+  boards?: Record<string, BoardValue>;
+}
+
+const dropStageNotes = ({ stages = {}, boards = {} }: PersistedStateLegacy): PersistedState => ({
+  boards,
+  stages: Object.fromEntries(
+    Object.entries(stages).map(([key, { choices = {}, rubric = [] }]) => [key, { choices, rubric }])
+  ),
+});
 
 const updateStage = (
   stages: Record<string, StageProgress>,
@@ -43,14 +57,6 @@ export const useDesignCaseStore = create<DesignCaseState>()(
           stages: updateStage(state.stages, caseId, stageId, (current) => ({
             ...current,
             choices: { ...current.choices, [forkId]: optionId },
-          })),
-        }));
-      },
-      setAnswer: (caseId, stageId, answer): void => {
-        set((state) => ({
-          stages: updateStage(state.stages, caseId, stageId, (current) => ({
-            ...current,
-            answer,
           })),
         }));
       },
@@ -84,9 +90,13 @@ export const useDesignCaseStore = create<DesignCaseState>()(
     }),
     {
       name: "playground_design_cases",
-      version: 1,
+      version: 3,
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({ stages: state.stages, boards: state.boards }),
+      migrate: (persisted, version) =>
+        version < 3
+          ? dropStageNotes(persisted as PersistedStateLegacy)
+          : (persisted as PersistedState),
     }
   )
 );
@@ -106,10 +116,10 @@ export const selectCaseRevision =
   (state: DesignCaseState): number =>
     state.revisions[caseId] ?? 0;
 
-const hasStageProgress = ({ choices, answer, rubric }: StageProgress): boolean =>
-  Object.keys(choices).length > 0 || answer.trim().length > 0 || rubric.length > 0;
+const hasStageProgress = ({ choices, rubric }: StageProgress): boolean =>
+  Object.keys(choices).length > 0 || rubric.length > 0;
 
-/** Whether there is anything to reset: a choice, an answer, a ticked item or a card on the board. */
+/** Whether there is anything to reset: a choice, a ticked item or a card on the board. */
 export const selectHasCaseProgress =
   (caseId: string) =>
   (state: DesignCaseState): boolean =>

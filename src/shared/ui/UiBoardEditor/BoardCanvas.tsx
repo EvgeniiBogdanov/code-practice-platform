@@ -1,20 +1,9 @@
 import { useCallback, useEffect, useRef, useState, type JSX } from "react";
 import { clsx } from "clsx";
-import {
-  Maximize2,
-  Minimize2,
-  Plus,
-  Redo2,
-  Scan,
-  Trash2,
-  Undo2,
-  ZoomIn,
-  ZoomOut,
-} from "lucide-react";
+import { Plus, Redo2, Trash2, Undo2 } from "lucide-react";
 import {
   Background,
   ConnectionMode,
-  MarkerType,
   ReactFlow,
   ReactFlowProvider,
   useEdgesState,
@@ -27,7 +16,11 @@ import "@xyflow/react/dist/style.css";
 import { Button } from "../Button";
 import { BoardCardNode } from "./BoardCardNode";
 import { BoardLabeledEdge } from "./BoardLabeledEdge";
+import { BoardViewControls } from "./BoardViewControls";
 import {
+  BOARD_BACKGROUND_GAP,
+  DEFAULT_EDGE_OPTIONS,
+  FIT_VIEW_OPTIONS,
   createBoardEdge,
   createBoardNode,
   toFlowEdges,
@@ -42,13 +35,9 @@ import styles from "./BoardCanvas.module.css";
 
 const NODE_TYPES = { card: BoardCardNode };
 const EDGE_TYPES = { labeled: BoardLabeledEdge };
-const DEFAULT_EDGE_OPTIONS = { markerEnd: { type: MarkerType.ArrowClosed } };
-const FIT_VIEW_OPTIONS = { padding: 0.2, maxZoom: 1 };
-const ZOOM_OPTIONS = { duration: 150 };
 const DELETE_KEYS = ["Backspace", "Delete"];
 /** Where a new card appears, measured from the top-left corner of the visible area. */
 const NEW_CARD_MARGIN = 40;
-const BACKGROUND_GAP = 20;
 const ICON_SIZE = 16;
 
 const BoardEditor = ({
@@ -64,8 +53,10 @@ const BoardEditor = ({
   const [nodes, setNodes, onNodesChange] = useNodesState<CardFlowNode>(initial.nodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState<LabeledFlowEdge>(initial.edges);
   const [hasSelection, setHasSelection] = useState(false);
-  const { getViewport, fitView, zoomIn, zoomOut, deleteElements, getNodes, getEdges } =
-    useReactFlow<CardFlowNode, LabeledFlowEdge>();
+  const { getViewport, deleteElements, getNodes, getEdges } = useReactFlow<
+    CardFlowNode,
+    LabeledFlowEdge
+  >();
 
   const applyBoard = useCallback(
     (board: BoardValue): void => {
@@ -90,18 +81,6 @@ const BoardEditor = ({
       edges: getEdges().filter((edge) => edge.selected),
     });
   }, [deleteElements, getNodes, getEdges]);
-
-  const showAll = useCallback((): void => {
-    void fitView(FIT_VIEW_OPTIONS);
-  }, [fitView]);
-
-  const handleZoomIn = useCallback((): void => {
-    void zoomIn(ZOOM_OPTIONS);
-  }, [zoomIn]);
-
-  const handleZoomOut = useCallback((): void => {
-    void zoomOut(ZOOM_OPTIONS);
-  }, [zoomOut]);
 
   const onConnect = useCallback(
     (connection: Connection): void => {
@@ -149,8 +128,6 @@ const BoardEditor = ({
 
   const focusCanvas = useCallback((): void => canvasRef.current?.focus(), []);
 
-  const fullscreenLabel = isFullscreen ? "Свернуть" : "На весь экран";
-
   return (
     <div className={clsx(styles.board, isFullscreen && styles.fullscreen)}>
       <div className={styles.toolbar} role="toolbar" aria-label="Инструменты схемы">
@@ -189,42 +166,7 @@ const BoardEditor = ({
           >
             <Redo2 size={ICON_SIZE} />
           </Button>
-          <Button
-            size="icon-sm"
-            variant="ghost"
-            aria-label="Уменьшить"
-            title="Уменьшить"
-            onClick={handleZoomOut}
-          >
-            <ZoomOut size={ICON_SIZE} />
-          </Button>
-          <Button
-            size="icon-sm"
-            variant="ghost"
-            aria-label="Увеличить"
-            title="Увеличить"
-            onClick={handleZoomIn}
-          >
-            <ZoomIn size={ICON_SIZE} />
-          </Button>
-          <Button
-            size="icon-sm"
-            variant="ghost"
-            aria-label="Показать всё"
-            title="Показать всё"
-            onClick={showAll}
-          >
-            <Scan size={ICON_SIZE} />
-          </Button>
-          <Button
-            size="icon-sm"
-            variant="ghost"
-            aria-label={fullscreenLabel}
-            title={fullscreenLabel}
-            onClick={onToggleFullscreen}
-          >
-            {isFullscreen ? <Minimize2 size={ICON_SIZE} /> : <Maximize2 size={ICON_SIZE} />}
-          </Button>
+          <BoardViewControls isFullscreen={isFullscreen} onToggleFullscreen={onToggleFullscreen} />
         </div>
       </div>
       <div ref={canvasRef} tabIndex={-1} className={styles.canvas}>
@@ -246,7 +188,7 @@ const BoardEditor = ({
           zoomOnScroll={false}
           preventScrolling={false}
         >
-          <Background gap={BACKGROUND_GAP} />
+          <Background gap={BOARD_BACKGROUND_GAP} />
         </ReactFlow>
         {nodes.length === 0 && (
           <p className={styles.empty}>

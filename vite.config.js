@@ -97,6 +97,11 @@ export default defineConfig(({ mode }) => ({
             if (id.includes("/@xyflow/")) {
               return "vendor-flow";
             }
+            // Mermaid brings its own copy of marked: it belongs to the lazy diagram chunks,
+            // not to the markdown chunk every article loads.
+            if (id.includes("/node_modules/mermaid/node_modules/")) {
+              return;
+            }
             // Exact package match: a substring check also caught lucide's `book-marked`
             // icon and dragged the whole icon runtime (and every icon user) into this chunk.
             if (/\/node_modules\/(marked|dompurify)\//.test(id)) {

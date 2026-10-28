@@ -6,13 +6,13 @@ const stage = (id: DesignStage["id"], drillIds: string[] = []): DesignStage => (
   id,
   prompt: "p",
   forks: [{ id: "f", question: "q", options: [{ id: "a", label: "A", explanation: "e" }] }],
-  reference: "r",
+  notes: "n",
   rubric: ["one", "two"],
   drillIds,
   topicIds: [],
 });
 
-const done: StageProgress = { choices: { f: "a" }, answer: "text", rubric: [0, 1] };
+const done: StageProgress = { choices: { f: "a" }, rubric: [0, 1] };
 
 const designCase: DesignCase = {
   id: "c",
@@ -21,14 +21,14 @@ const designCase: DesignCase = {
   summary: "s",
   production: "p",
   stages: [stage("requirements"), stage("architecture", ["sd-1"])],
+  scheme: { nodes: [], edges: [] },
 };
 
 describe("isStageComplete", () => {
-  it("needs every fork answered, a written answer and the whole rubric", () => {
+  it("needs every fork answered and the whole rubric", () => {
     const s = stage("requirements");
     expect(isStageComplete(s, done)).toBe(true);
     expect(isStageComplete(s, { ...done, choices: {} })).toBe(false);
-    expect(isStageComplete(s, { ...done, answer: "  \n" })).toBe(false);
     expect(isStageComplete(s, { ...done, rubric: [0] })).toBe(false);
   });
 });

@@ -445,3 +445,19 @@
   color: var(--color-sd);
   flex-shrink: 0;
 }
+
+/* The folders of the system design section, coloured as in the sidebar. */
+.iconTheory {
+  color: var(--accent-blue);
+  flex-shrink: 0;
+}
+
+.iconCases {
+  color: var(--accent-purple);
+  flex-shrink: 0;
+}
+
+.iconDrills {
+  color: var(--accent-green);
+  flex-shrink: 0;
+}

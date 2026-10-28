@@ -19,9 +19,6 @@ vi.mock("@tanstack/react-router", () => ({
     </a>
   ),
 }));
-vi.mock("@/shared/ui/UiDiagramScene", () => ({
-  UiDiagramScene: ({ label }: { label: string }) => <div role="img" aria-label={label} />,
-}));
 
 const stage: DesignStage = {
   id: "requirements",
@@ -36,18 +33,18 @@ const stage: DesignStage = {
       ],
     },
   ],
-  reference: "Эталон: берём SSR",
-  diagram: { label: "Схема", nodes: [], edges: [] },
+  notes: "Эталон: берём SSR",
   rubric: ["Названы требования", "Названы ограничения"],
   drillIds: ["sd-1"],
   topicIds: ["radio"],
 };
 
-const renderPanel = (): void => {
+const renderPanel = (showReference = false): void => {
   render(
     <DesignStagePanel
       caseId="case"
       stage={stage}
+      showReference={showReference}
       topics={[{ id: "radio", title: "RADIO" }]}
       drills={[{ id: "sd-1", title: "Debounce", solved: false }]}
     />
@@ -72,10 +69,15 @@ describe("DesignStagePanel", () => {
     expect(screen.getByText("SSR — рекомендуемый вариант")).toBeInTheDocument();
   });
 
-  it("keeps the reference available before anything is answered", () => {
+  it("shows the notes of the reference only while the reference is open on the board", () => {
     renderPanel();
+    expect(screen.queryByText("Эталон: берём SSR")).not.toBeInTheDocument();
+  });
+
+  it("shows the notes of the reference before anything is answered", () => {
+    renderPanel(true);
+    expect(screen.getByText("Пояснения к эталону")).toBeInTheDocument();
     expect(screen.getByText("Эталон: берём SSR")).toBeInTheDocument();
-    expect(screen.getByRole("img", { name: "Схема" })).toBeInTheDocument();
   });
 
   it("links the topics and drills of the stage", () => {
@@ -90,12 +92,11 @@ describe("DesignStagePanel", () => {
     );
   });
 
-  it("completes the stage once the fork is answered, the answer is written and the rubric is ticked", () => {
+  it("completes the stage once the fork is answered and the rubric is ticked", () => {
     renderPanel();
     expect(screen.queryByText("Этап пройден")).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("radio", { name: "SSR" }));
-    fireEvent.change(screen.getByLabelText("Ваш ответ"), { target: { value: "Берём SSR" } });
     fireEvent.click(screen.getByRole("checkbox", { name: "Названы требования" }));
     expect(screen.queryByText("Этап пройден")).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("checkbox", { name: "Названы ограничения" }));
@@ -103,7 +104,6 @@ describe("DesignStagePanel", () => {
     expect(screen.getByText("Этап пройден")).toBeInTheDocument();
     expect(useDesignCaseStore.getState().stages["case:requirements"]).toEqual({
       choices: { render: "ssr" },
-      answer: "Берём SSR",
       rubric: [0, 1],
     });
   });
