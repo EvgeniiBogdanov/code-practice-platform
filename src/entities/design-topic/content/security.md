@@ -12,6 +12,21 @@
 
 Для сессий надёжнее `HttpOnly`-cookie. Refresh-токен храните только в такой cookie с ограниченным путём. Используйте **ротацию**: при каждом обновлении старый refresh-токен инвалидируется, а его повторное использование считается признаком кражи, и сессия закрывается.
 
+```mermaid
+sequenceDiagram
+  participant B as Браузер
+  participant A as API
+  participant Au as Сервер авторизации
+  B->>A: запрос с access-токеном
+  A-->>B: 401, токен истёк
+  B->>Au: POST /refresh, refresh в cookie HttpOnly
+  Au->>Au: ротация: старый refresh больше не действует
+  Au-->>B: новый access и новый refresh в cookie
+  B->>A: повтор запроса
+  A-->>B: 200
+  Note over B,Au: повтор старого refresh — признак кражи, сессия закрывается
+```
+
 ## XSS (межсайтовый скриптинг)
 
 Злоумышленник внедряет скрипт, который выполняется с правами пользователя на вашем сайте.
@@ -26,9 +41,35 @@
 - **CORS** управляет тем, какому origin браузер разрешит **читать** ответ. Это не защита сервера от запросов. Не ставьте `Access-Control-Allow-Origin: *` вместе с credentials.
 - **Заголовки:** `Strict-Transport-Security` (только HTTPS), `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `frame-ancestors` в CSP против clickjacking.
 
+```mermaid
+flowchart LR
+  S["Скрипт на странице"] --> P{{"CSP: script-src 'self'<br/>cdn.analytics.com"}}
+  P -- "inline, внедрён через XSS" --> X["Заблокирован,<br/>отчёт в report-to"]
+  P -- "свой /app.js" --> OK["Выполняется"]
+  P -- "cdn.analytics.com" --> Q{{"integrity (SRI)<br/>совпал?"}}
+  Q -- да --> OK
+  Q -- нет --> X
+```
+
 ## CSRF
 
 Если аутентификация идёт через cookie, браузер отправит её и с чужого сайта. Защита: `SameSite=Lax` или `Strict`, проверка заголовка `Origin` для небезопасных методов, при необходимости CSRF-токен.
+
+```mermaid
+sequenceDiagram
+  participant E as evil.example
+  participant B as Браузер
+  participant S as bank.example
+  Note over E,B: пользователь открыл страницу злоумышленника
+  E->>B: скрытая форма на /transfer
+  alt cookie без SameSite
+    B->>S: POST /transfer и cookie сессии
+    S-->>B: 200, перевод выполнен
+  else SameSite=Lax и проверка Origin
+    B->>S: POST без cookie
+    S-->>B: 403, чужой Origin
+  end
+```
 
 ## Сторонние скрипты и зависимости
 

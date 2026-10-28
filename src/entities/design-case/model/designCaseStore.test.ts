@@ -23,17 +23,15 @@ describe("useDesignCaseStore", () => {
     const fill = (caseId: string): void => {
       const store = useDesignCaseStore.getState();
       store.chooseOption(caseId, "requirements", "fork", "a");
-      store.setAnswer(caseId, "architecture", "text");
       store.toggleRubricItem(caseId, "interface", 0);
       store.setBoard(caseId, { nodes: [{ id: "n1", x: 0, y: 0, text: "API" }], edges: [] });
     };
 
-    it("forgets the choices, answers, ticks and board of that case", () => {
+    it("forgets the choices, ticks and board of that case", () => {
       fill("c");
       useDesignCaseStore.getState().resetCase("c");
 
       expect(read("c", "requirements").choices).toEqual({});
-      expect(read("c", "architecture").answer).toBe("");
       expect(read("c", "interface").rubric).toEqual([]);
       expect(selectCaseBoard("c")(useDesignCaseStore.getState()).nodes).toEqual([]);
       expect(hasProgress("c")).toBe(false);
@@ -46,7 +44,7 @@ describe("useDesignCaseStore", () => {
 
       expect(hasProgress("chat")).toBe(false);
       expect(hasProgress("chat-2")).toBe(true);
-      expect(read("chat-2", "architecture").answer).toBe("text");
+      expect(read("chat-2", "requirements").choices).toEqual({ fork: "a" });
     });
 
     it("counts the resets of a case, so an open board editor can tell it was rebuilt", () => {
@@ -72,16 +70,15 @@ describe("useDesignCaseStore", () => {
       expect(hasProgress("c")).toBe(false);
     });
 
-    it("is true once anything is chosen, written, ticked or drawn", () => {
-      useDesignCaseStore.getState().setAnswer("c", "requirements", "text");
+    it("is true once anything is chosen, ticked or drawn", () => {
+      useDesignCaseStore.getState().chooseOption("c", "requirements", "fork", "a");
       expect(hasProgress("c")).toBe(true);
     });
 
-    it("ignores a tick that was taken back and a blank answer", () => {
+    it("ignores a tick that was taken back", () => {
       const store = useDesignCaseStore.getState();
       store.toggleRubricItem("c", "requirements", 0);
       store.toggleRubricItem("c", "requirements", 0);
-      store.setAnswer("c", "architecture", "   ");
       expect(hasProgress("c")).toBe(false);
     });
 
@@ -93,34 +90,32 @@ describe("useDesignCaseStore", () => {
     });
   });
 
-  it("keeps choices, answer and rubric per case and stage", () => {
+  it("keeps choices and rubric per case and stage", () => {
     const store = useDesignCaseStore.getState();
     store.chooseOption("c", "requirements", "fork", "a");
     store.chooseOption("c", "requirements", "fork", "b");
-    store.setAnswer("c", "requirements", "text");
     store.toggleRubricItem("c", "requirements", 1);
     store.toggleRubricItem("c", "requirements", 0);
     store.toggleRubricItem("c", "requirements", 1);
 
     expect(read("c", "requirements")).toEqual({
       choices: { fork: "b" },
-      answer: "text",
       rubric: [0],
     });
-    expect(read("c", "architecture").answer).toBe("");
-    expect(read("other", "requirements").answer).toBe("");
+    expect(read("c", "architecture")).toEqual({ choices: {}, rubric: [] });
+    expect(read("other", "requirements")).toEqual({ choices: {}, rubric: [] });
   });
 
   it("keeps one board per case, shared by all its stages", () => {
     const board = { nodes: [{ id: "n1", x: 1, y: 2, text: "API" }], edges: [] };
     const store = useDesignCaseStore.getState();
-    store.setAnswer("c", "architecture", "text");
+    store.toggleRubricItem("c", "architecture", 0);
     store.setBoard("c", board);
 
     const state = useDesignCaseStore.getState();
     expect(selectCaseBoard("c")(state)).toEqual(board);
     expect(selectCaseBoard("other")(state)).toEqual({ nodes: [], edges: [] });
-    expect(read("c", "architecture")).toEqual({ choices: {}, answer: "text", rubric: [] });
+    expect(read("c", "architecture")).toEqual({ choices: {}, rubric: [0] });
   });
 
   it("replaces the board of the case on every change", () => {
@@ -133,15 +128,36 @@ describe("useDesignCaseStore", () => {
 
   it("persists progress and the board to localStorage", () => {
     const store = useDesignCaseStore.getState();
-    store.setAnswer("c", "requirements", "kept");
+    store.chooseOption("c", "requirements", "fork", "a");
     store.setBoard("c", { nodes: [{ id: "n1", x: 0, y: 0, text: "API" }], edges: [] });
     const key = useDesignCaseStore.persist.getOptions().name;
     if (!key) throw new Error("The store must have a persistence key");
     expect(JSON.parse(localStorage.getItem(key) ?? "null")).toMatchObject({
       state: {
-        stages: { "c:requirements": { answer: "kept" } },
+        stages: { "c:requirements": { choices: { fork: "a" } } },
         boards: { c: { nodes: [{ text: "API" }] } },
       },
     });
+  });
+
+  it("drops the notes and answers stored by older versions", async () => {
+    const key = useDesignCaseStore.persist.getOptions().name;
+    if (!key) throw new Error("The store must have a persistence key");
+    localStorage.setItem(
+      key,
+      JSON.stringify({
+        version: 2,
+        state: {
+          stages: {
+            "c:architecture": { choices: { fork: "a" }, notes: "Берём SSR", rubric: [0] },
+          },
+          boards: {},
+        },
+      })
+    );
+
+    await useDesignCaseStore.persist.rehydrate();
+
+    expect(read("c", "architecture")).toEqual({ choices: { fork: "a" }, rubric: [0] });
   });
 });

@@ -10,7 +10,8 @@ const escapeHtmlChar = (str: string): string =>
   str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
 export interface MarkdownBlock {
-  type: "markdown" | "code";
+  /** `mermaid`: a fenced ```mermaid block, drawn as a diagram; `code` holds its source. */
+  type: "markdown" | "code" | "mermaid";
   html?: string;
   language?: string;
   code?: string;
@@ -252,7 +253,9 @@ export function parseMarkdownBlocks(markdownText: string): MarkdownBlock[] {
         const lang = codeSection.substring(0, delimIdx);
         const code = decodeURIComponent(codeSection.substring(delimIdx + "__LANG_DELIM__".length));
 
-        blocks.push({ type: "code", language: lang, code });
+        blocks.push(
+          lang === "mermaid" ? { type: "mermaid", code } : { type: "code", language: lang, code }
+        );
         if (mdSection.trim()) blocks.push({ type: "markdown", html: mdSection });
       } else {
         if (part.trim()) blocks.push({ type: "markdown", html: part });

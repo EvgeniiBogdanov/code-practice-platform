@@ -1,5 +1,5 @@
 import React from "react";
-import { CheckCircle2, ChevronDown, ChevronUp, ListChecks, LoaderCircle, Play } from "lucide-react";
+import { CheckCircle2, ChevronDown, ChevronUp, ListChecks, Play } from "lucide-react";
 import { clsx } from "clsx";
 import {
   Button,
@@ -11,6 +11,7 @@ import {
   TestStatusItem,
   Tooltip,
   UiKbd,
+  UiSpinner,
   type ProgressSegmentTone,
   type TestStatus,
 } from "@/shared/ui";
@@ -125,13 +126,7 @@ export const DrillTestsPanel = ({
             >
               <CodeButton
                 variant="success"
-                icon={
-                  isRunning ? (
-                    <LoaderCircle size={14} className={styles.spinner} />
-                  ) : (
-                    <Play size={14} fill="currentColor" />
-                  )
-                }
+                icon={isRunning ? <UiSpinner size={14} /> : <Play size={14} fill="currentColor" />}
                 disabled={isRunning}
                 aria-label="Запустить тесты"
                 onClick={controller.run}

@@ -42,3 +42,16 @@ export interface BoardCanvasProps extends UiBoardEditorProps {
   isFullscreen: boolean;
   onToggleFullscreen: () => void;
 }
+
+export interface UiBoardViewerProps {
+  value: BoardValue;
+  /** Accessible name of the whole viewer. */
+  label: string;
+  /** Cards and arrows drawn with the accent colour, e.g. what a step added to the scheme. */
+  highlightedIds?: readonly string[];
+}
+
+export interface BoardViewerCanvasProps extends UiBoardViewerProps {
+  isFullscreen: boolean;
+  onToggleFullscreen: () => void;
+}

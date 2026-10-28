@@ -63,4 +63,13 @@ describe("parseMarkdownBlocks", () => {
     expect(blocks).toHaveLength(2);
     expect(countTag(blocks[0].html ?? "", "li")).toBe(2);
   });
+
+  it("keeps a mermaid block as a diagram with its source, not as code", () => {
+    const blocks = parseMarkdownBlocks(
+      "Схема:\n\n```mermaid\nflowchart LR\n  A --> B\n```\n\nПосле схемы."
+    );
+
+    expect(blocks.map((block) => block.type)).toEqual(["markdown", "mermaid", "markdown"]);
+    expect(blocks[1]).toEqual({ type: "mermaid", code: "flowchart LR\n  A --> B" });
+  });
 });

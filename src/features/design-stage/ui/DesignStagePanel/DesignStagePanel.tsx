@@ -1,6 +1,5 @@
 import React from "react";
-import { Badge, Accordion, MarkdownView, Textarea } from "@/shared/ui";
-import { UiDiagramScene } from "@/shared/ui/UiDiagramScene";
+import { Badge, Callout, MarkdownView } from "@/shared/ui";
 import {
   isStageComplete,
   selectStageProgress,
@@ -17,18 +16,23 @@ export interface DesignStagePanelProps {
   stage: DesignStage;
   topics: readonly StageTopicLink[];
   drills: readonly StageDrillLink[];
+  /** The reference scheme is open on the board: its notes are shown next to the self-check. */
+  showReference: boolean;
 }
 
-/** One RADIO stage: the prompt, design decisions, the learner's own answer, the reference and a rubric. */
+/**
+ * One RADIO stage next to the board: the prompt, design decisions, the notes of the reference scheme
+ * while it is open, and the self-check of the learner's scheme.
+ */
 export const DesignStagePanel = ({
   caseId,
   stage,
   topics,
   drills,
+  showReference,
 }: DesignStagePanelProps): React.JSX.Element => {
   const progress = useDesignCaseStore(selectStageProgress(caseId, stage.id));
   const chooseOption = useDesignCaseStore((state) => state.chooseOption);
-  const setAnswer = useDesignCaseStore((state) => state.setAnswer);
   const toggleRubricItem = useDesignCaseStore((state) => state.toggleRubricItem);
   const isComplete = isStageComplete(stage, progress);
 
@@ -48,36 +52,20 @@ export const DesignStagePanel = ({
         />
       ))}
 
-      <section className={styles.section}>
-        <Textarea
-          label="Ваш ответ"
-          placeholder="Опишите решение своими словами: что выбираете и почему"
-          rows={8}
-          value={progress.answer}
-          onChange={(event) => setAnswer(caseId, stage.id, event.target.value)}
-        />
-      </section>
-
-      <Accordion title="Эталонный ответ" color="purple" size="sm">
-        <div className={styles.reference}>
-          <MarkdownView content={stage.reference} />
-          {stage.diagram && (
-            <div className={styles.diagram}>
-              <UiDiagramScene
-                label={stage.diagram.label}
-                nodes={stage.diagram.nodes}
-                edges={stage.diagram.edges}
-              />
-            </div>
-          )}
-        </div>
-      </Accordion>
+      {showReference && (
+        <Callout color="purple" size="sm" title="Пояснения к эталону">
+          <MarkdownView content={stage.notes} />
+        </Callout>
+      )}
 
       <section className={styles.section} aria-label="Самопроверка">
         <div className={styles.rubricHeader}>
           <h3 className={styles.rubricTitle}>Самопроверка</h3>
           {isComplete && <Badge variant="green">Этап пройден</Badge>}
         </div>
+        <p className={styles.rubricHint}>
+          Сверьте свою схему с эталоном и отметьте, что на ней есть.
+        </p>
         <StageRubric
           items={stage.rubric}
           checkedIndexes={progress.rubric}

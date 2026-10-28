@@ -135,22 +135,6 @@
   overflow-wrap: anywhere;
 }
 
-.spinner {
-  animation: panelSpin 0.9s linear infinite;
-}
-
-@keyframes panelSpin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .spinner {
-    animation-duration: 3s;
-  }
-}
-
 .srOnly {
   position: absolute;
   width: 1px;

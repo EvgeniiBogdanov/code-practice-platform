@@ -1,0 +1,85 @@
+/* A framed diagram in the flow of an article; the button in the corner opens it full screen. */
+.figure {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(var(--space-10) * 3);
+  padding: var(--space-5) var(--space-4) var(--space-4);
+  margin: var(--space-4) 0;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+}
+
+.fullscreen {
+  height: 100%;
+  margin: 0;
+  overflow: auto;
+}
+
+.expand {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  z-index: 1;
+}
+
+/* Its width is the room a diagram is drawn for. */
+.canvasHost {
+  width: 100%;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(var(--space-10) * 2);
+  color: var(--text-muted);
+}
+
+/* Mermaid caps the svg at its natural width: it shrinks to the column and keeps that size full screen. */
+.canvas {
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+}
+
+.canvas :global(svg) {
+  height: auto;
+}
+
+.problem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.problemRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.problemText {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+
+/* On a phone a diagram keeps a readable size and scrolls sideways instead of shrinking its text. */
+@media (max-width: 640px) {
+  .figure {
+    padding: var(--space-5) var(--space-3) var(--space-3);
+  }
+
+  .canvas {
+    justify-content: flex-start;
+  }
+
+  .canvas :global(svg) {
+    min-width: calc(var(--space-10) * 14);
+  }
+}

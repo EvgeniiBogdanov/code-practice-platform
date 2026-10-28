@@ -3,6 +3,7 @@ import { clsx } from "clsx";
 import DOMPurify from "dompurify";
 import { parseMarkdownBlocks, MarkdownBlock } from "../../lib/markdown";
 import { CodeViewer } from "../CodeViewer";
+import { UiMermaidDiagram } from "../UiMermaidDiagram";
 import styles from "./MarkdownView.module.css";
 
 export interface MarkdownViewProps {
@@ -81,6 +82,9 @@ export const MarkdownView = ({
       onClick={handleContainerClick}
     >
       {blocks.map((block, idx) => {
+        if (block.type === "mermaid") {
+          return <UiMermaidDiagram key={idx} code={block.code || ""} />;
+        }
         if (block.type === "code") {
           return (
             <CodeViewer

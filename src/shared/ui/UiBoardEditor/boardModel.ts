@@ -1,4 +1,4 @@
-import type { Connection, Edge, Node } from "@xyflow/react";
+import { MarkerType, type Connection, type Edge, type Node } from "@xyflow/react";
 import type { BoardEdge, BoardNode, BoardValue, CardAlign } from "./boardTypes";
 
 export type CardData = { text: string; align: CardAlign };
@@ -17,6 +17,11 @@ export const DEFAULT_CARD_HEIGHT = 56;
 export const MIN_CARD_WIDTH = 80;
 export const MIN_CARD_HEIGHT = 40;
 export const DEFAULT_CARD_ALIGN: CardAlign = "left";
+
+/** Settings the editor and the viewer share, so a scheme looks the same in both. */
+export const DEFAULT_EDGE_OPTIONS = { markerEnd: { type: MarkerType.ArrowClosed } };
+export const FIT_VIEW_OPTIONS = { padding: 0.2, maxZoom: 1 };
+export const BOARD_BACKGROUND_GAP = 20;
 
 /**
  * New cards fill a grid row by row, so a few quick additions never land on top of each other.

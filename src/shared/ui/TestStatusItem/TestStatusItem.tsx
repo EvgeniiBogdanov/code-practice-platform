@@ -1,6 +1,7 @@
 import React, { useId } from "react";
-import { Check, ChevronRight, Circle, LoaderCircle, MinusCircle, X } from "lucide-react";
+import { Check, ChevronRight, Circle, MinusCircle, X } from "lucide-react";
 import { clsx } from "clsx";
+import { UiSpinner } from "../UiSpinner";
 import styles from "./TestStatusItem.module.css";
 
 export type TestStatus = "idle" | "running" | "passed" | "failed" | "skipped";
@@ -29,7 +30,7 @@ const STATUS_LABELS: Record<TestStatus, string> = {
 
 const STATUS_ICONS: Record<TestStatus, React.ReactNode> = {
   idle: <Circle size={14} />,
-  running: <LoaderCircle size={14} className={styles.spinner} />,
+  running: <UiSpinner size={14} />,
   passed: <Check size={14} />,
   failed: <X size={14} />,
   skipped: <MinusCircle size={14} />,

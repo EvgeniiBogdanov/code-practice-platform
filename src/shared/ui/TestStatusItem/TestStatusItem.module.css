@@ -80,21 +80,7 @@ button.header:focus-visible {
   font-size: var(--test-status-font-size, var(--fs-body-sm));
 }
 
-.spinner {
-  animation: testStatusSpin 0.9s linear infinite;
-}
-
-@keyframes testStatusSpin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .spinner {
-    animation-duration: 3s;
-  }
-
   .chevron {
     transition: none;
   }

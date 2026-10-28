@@ -323,6 +323,8 @@
   --task-tree-row-height: 34px;
   --task-tree-indent: 14px;
   --task-tree-border-width: 1.5px;
+  /* The stage column of a design case; the board takes the rest of the width. */
+  --design-case-aside-width: 360px;
 
   /* ==========================================
      4. BORDER RADIUS TOKENS

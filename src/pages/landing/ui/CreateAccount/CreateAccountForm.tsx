@@ -1,8 +1,8 @@
 import React, { useId, useState } from "react";
-import { ArrowRight, LoaderCircle } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { clsx } from "clsx";
 import { ACCOUNT_NAME_MAX_LENGTH, getAccountNameError, useLocalAccountStore } from "@/shared/auth";
-import { Button, Input } from "@/shared/ui";
+import { Button, Input, UiSpinner } from "@/shared/ui";
 import type { WorkspaceTarget } from "../../model/createAccountDialog";
 import styles from "./CreateAccount.module.css";
 
@@ -87,13 +87,7 @@ export const CreateAccountForm = ({
           size="xl"
           className={styles.submit}
           aria-busy={isEntering}
-          rightIcon={
-            isEntering ? (
-              <LoaderCircle size={18} className={styles.spinner} />
-            ) : (
-              <ArrowRight size={18} />
-            )
-          }
+          rightIcon={isEntering ? <UiSpinner size={18} /> : <ArrowRight size={18} />}
         >
           {isEntering ? "Открываем платформу…" : "Создать локальный аккаунт"}
         </Button>

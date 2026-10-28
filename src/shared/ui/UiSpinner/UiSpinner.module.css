@@ -1,0 +1,22 @@
+.spinner {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  animation: uiSpinnerRotate 0.8s linear infinite;
+}
+
+@keyframes uiSpinnerRotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon {
+    animation-duration: 3s;
+  }
+}

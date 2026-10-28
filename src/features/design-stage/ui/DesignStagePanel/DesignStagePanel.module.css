@@ -1,26 +1,13 @@
 .panel {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  gap: var(--space-5);
 }
 
 .section {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-}
-
-.reference {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-
-.diagram {
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
 }
 
 .rubricHeader {
@@ -34,4 +21,10 @@
   font-size: var(--fs-md);
   font-weight: var(--fw-semibold);
   color: var(--text-main);
+}
+
+.rubricHint {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
 }

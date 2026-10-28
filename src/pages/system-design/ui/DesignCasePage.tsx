@@ -23,6 +23,7 @@ import {
   EMPTY_STAGE_PROGRESS,
   RADIO_STAGES,
   countCompletedStages,
+  getReferenceBoard,
   isStageComplete,
   selectHasCaseProgress,
   useDesignCaseStore,
@@ -35,6 +36,7 @@ import { useTaskSection } from "@/entities/task/catalog";
 import {
   CaseBoard,
   DesignStagePanel,
+  type CaseBoardView,
   type StageDrillLink,
   type StageTopicLink,
 } from "@/features/design-stage";
@@ -64,6 +66,8 @@ export interface DesignCasePageProps {
 
 export const DesignCasePage = ({ designCase }: DesignCasePageProps): React.JSX.Element => {
   const [activeId, setActiveId] = useState<string>(designCase.stages[0]?.id ?? PRODUCTION_TAB_ID);
+  // Shared by both columns: the board shows the reference, the stage column shows its notes.
+  const [boardView, setBoardView] = useState<CaseBoardView>("mine");
   const stagesProgress = useDesignCaseStore((state) => state.stages);
   const completedTasks = useProgressStore((state) => state.completedTasks);
   const { tasks } = useTaskSection("system-design");
@@ -75,6 +79,7 @@ export const DesignCasePage = ({ designCase }: DesignCasePageProps): React.JSX.E
   const handleReset = (): void => {
     resetCase(designCase.id);
     setActiveId(designCase.stages[0]?.id ?? PRODUCTION_TAB_ID);
+    setBoardView("mine");
     setIsResetOpen(false);
   };
 
@@ -109,6 +114,15 @@ export const DesignCasePage = ({ designCase }: DesignCasePageProps): React.JSX.E
   );
 
   const activeStage = designCase.stages.find((stage) => stage.id === activeId);
+  const activeTitle = RADIO_STAGES.find(({ id }) => id === activeStage?.id)?.title;
+
+  const reference = useMemo(
+    () => getReferenceBoard(designCase.scheme, activeStage?.id ?? "all"),
+    [designCase.scheme, activeStage?.id]
+  );
+  const referenceHint = activeTitle
+    ? `Эталон к этапу «${activeTitle}»: выделено то, что добавляет этот этап.`
+    : "Готовая эталонная схема целиком, со всеми этапами.";
 
   const resolveLinks = (
     topicIds: readonly string[],
@@ -163,32 +177,42 @@ export const DesignCasePage = ({ designCase }: DesignCasePageProps): React.JSX.E
             ariaLabel="Этапы кейса"
             panelId={PANEL_ID}
           />
-          <div
-            id={PANEL_ID}
-            role="tabpanel"
-            aria-labelledby={getCardTabId(PANEL_ID, activeId)}
-            className={styles.tabsContent}
-          >
-            {activeStage ? (
-              <DesignStagePanel
-                key={activeStage.id}
+          <div className={styles.workspace}>
+            <div
+              id={PANEL_ID}
+              role="tabpanel"
+              aria-labelledby={getCardTabId(PANEL_ID, activeId)}
+              className={styles.stageColumn}
+            >
+              {activeStage ? (
+                <DesignStagePanel
+                  key={activeStage.id}
+                  caseId={designCase.id}
+                  stage={activeStage}
+                  showReference={boardView === "reference"}
+                  {...resolveLinks(activeStage.topicIds, activeStage.drillIds)}
+                />
+              ) : (
+                <MarkdownView content={designCase.production} />
+              )}
+            </div>
+            <div className={styles.boardColumn}>
+              <CaseBoard
                 caseId={designCase.id}
-                stage={activeStage}
-                {...resolveLinks(activeStage.topicIds, activeStage.drillIds)}
+                view={boardView}
+                onViewChange={setBoardView}
+                reference={reference}
+                referenceHint={referenceHint}
               />
-            ) : (
-              <MarkdownView content={designCase.production} />
-            )}
+            </div>
           </div>
         </div>
-
-        <CaseBoard caseId={designCase.id} />
       </article>
 
       <ConfirmModal
         isOpen={isResetOpen}
         title="Сбросить кейс?"
-        description={`Выбранные варианты, ответы, отметки самопроверки и схема кейса «${designCase.title}» будут удалены. Решённые дриллы останутся как есть.`}
+        description={`Выбранные варианты, отметки самопроверки и схема кейса «${designCase.title}» будут удалены. Решённые дриллы останутся как есть.`}
         icon={<RotateCcw size={18} />}
         actions={[
           {

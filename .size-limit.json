@@ -21,7 +21,7 @@
   {
     "name": "All JS",
     "path": "dist/assets/*.js",
-    "limit": "4300 KB"
+    "limit": "5550 KB"
   },
   {
     "name": "Lazy: Task explanations",
@@ -57,5 +57,16 @@
     "name": "Lazy: Markdown",
     "path": "dist/assets/vendor-markdown-*.js",
     "limit": "25 KB"
+  },
+  {
+    "name": "Lazy: Mermaid (entry, flowchart, sequence, gantt, dagre)",
+    "path": [
+      "dist/assets/renderMermaid-*.js",
+      "dist/assets/flowDiagram-*.js",
+      "dist/assets/sequenceDiagram-*.js",
+      "dist/assets/ganttDiagram-*.js",
+      "dist/assets/dagre-*.js"
+    ],
+    "limit": "95 KB"
   }
 ]
