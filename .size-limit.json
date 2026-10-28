@@ -50,7 +50,7 @@
   },
   {
     "name": "Lazy: React Flow",
-    "path": "dist/assets/vendor-flow-*.js",
+    "path": "dist/assets/BoardViewControls-*.js",
     "limit": "55 KB"
   },
   {
