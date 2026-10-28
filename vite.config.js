@@ -93,10 +93,8 @@ export default defineConfig(({ mode }) => ({
             if (id.includes("@xterm")) {
               return "vendor-xterm";
             }
-            // The scheme editor of the system design cases loads on first use.
-            if (id.includes("/@xyflow/")) {
-              return "vendor-flow";
-            }
+            // @xyflow stays out of a named chunk: rolldown attaches the React CJS runtime it shares
+            // to that chunk, which made the lazy scheme editor a static dependency of every first paint.
             // Mermaid brings its own copy of marked: it belongs to the lazy diagram chunks,
             // not to the markdown chunk every article loads.
             if (id.includes("/node_modules/mermaid/node_modules/")) {
