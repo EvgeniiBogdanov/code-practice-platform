@@ -9,12 +9,14 @@ vi.mock("@tanstack/react-router", () => ({
     children,
     to,
     className,
+    "aria-label": ariaLabel,
   }: {
     children: React.ReactNode;
     to: string;
     className?: string;
+    "aria-label"?: string;
   }) => (
-    <a href={to} className={className}>
+    <a href={to} className={className} aria-label={ariaLabel}>
       {children}
     </a>
   ),
@@ -59,14 +61,29 @@ describe("DesignStagePanel", () => {
 
   it("shows the trade-offs of every option only after a choice", () => {
     renderPanel();
+    expect(screen.getByText("Развилка 1 из 1")).toBeInTheDocument();
     expect(screen.queryByText("Проще деплой")).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("radio", { name: "CSR" }));
 
     expect(screen.getByRole("radio", { name: "CSR" })).toBeChecked();
-    expect(screen.getByText("Быстрый первый экран")).toBeInTheDocument();
-    expect(screen.getByText("Проще деплой")).toBeInTheDocument();
-    expect(screen.getByText("SSR — рекомендуемый вариант")).toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: "CSR" })).toHaveAccessibleDescription(
+      "Ваш выбор Проще деплой"
+    );
+    expect(screen.getByRole("radio", { name: "SSR" })).toHaveAccessibleDescription(
+      "Рекомендуем Быстрый первый экран"
+    );
+    expect(screen.getByText(/Рекомендуем другой вариант/)).toBeInTheDocument();
+  });
+
+  it("confirms a choice that matches the recommendation", () => {
+    renderPanel();
+    fireEvent.click(screen.getByRole("radio", { name: "SSR" }));
+
+    expect(screen.getByText(/Совпадает с рекомендацией/)).toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: "SSR" })).toHaveAccessibleDescription(
+      "Рекомендуем Ваш выбор Быстрый первый экран"
+    );
   });
 
   it("shows the notes of the reference only while the reference is open on the board", () => {
@@ -82,11 +99,12 @@ describe("DesignStagePanel", () => {
 
   it("links the topics and drills of the stage", () => {
     renderPanel();
-    expect(screen.getByRole("link", { name: "RADIO" })).toHaveAttribute(
+    expect(screen.getByRole("navigation", { name: "Подготовка к этапу" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "RADIO — Теория" })).toHaveAttribute(
       "href",
       "/system-design/topics/$topicId"
     );
-    expect(screen.getByRole("link", { name: "Debounce" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Debounce — Код-дрилл" })).toHaveAttribute(
       "href",
       "/system-design/$taskId"
     );
@@ -97,7 +115,9 @@ describe("DesignStagePanel", () => {
     expect(screen.queryByText("Этап пройден")).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("radio", { name: "SSR" }));
+    expect(screen.getByText("0 из 2")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("checkbox", { name: "Названы требования" }));
+    expect(screen.getByText("1 из 2")).toBeInTheDocument();
     expect(screen.queryByText("Этап пройден")).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("checkbox", { name: "Названы ограничения" }));
 

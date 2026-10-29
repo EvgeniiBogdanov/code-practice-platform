@@ -6,9 +6,8 @@ describe("getTaskSolutionSource", () => {
     expect(getTaskSolutionSource({ rawSolution: "raw", solution: "fallback" })).toBe("raw");
     expect(getTaskSolutionSource({ rawSolution: "", solution: "fallback" })).toBe("");
   });
-  it("uses string solutions and does not invoke React component solutions", () => {
+  it("falls back to the solution, then to an empty source", () => {
     expect(getTaskSolutionSource({ solution: "fallback" })).toBe("fallback");
-    expect(getTaskSolutionSource({ solution: () => null })).toBe("");
     expect(getTaskSolutionSource({})).toBe("");
   });
 });

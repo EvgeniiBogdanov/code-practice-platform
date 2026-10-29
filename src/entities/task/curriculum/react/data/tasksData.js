@@ -1,51 +1,27 @@
 // Импорт компонентов разминки
 import WarmupCandidate1Raw from "../tasks/1_warmup/1_UseStateBasic.jsx?raw";
-import WarmupCandidate1 from "../tasks/1_warmup/1_UseStateBasic.jsx";
-import WarmupSolution1 from "../solutions/1_warmup/1_UseStateBasic.jsx";
 import WarmupSolution1Raw from "../solutions/1_warmup/1_UseStateBasic.jsx?raw";
 import WarmupCandidate2Raw from "../tasks/1_warmup/6_SearchInput.jsx?raw";
-import WarmupCandidate2 from "../tasks/1_warmup/6_SearchInput.jsx";
-import WarmupSolution2 from "../solutions/1_warmup/6_SearchInput.jsx";
 import WarmupSolution2Raw from "../solutions/1_warmup/6_SearchInput.jsx?raw";
 import WarmupCandidate3Raw from "../tasks/1_warmup/7_Subscription.jsx?raw";
-import WarmupCandidate3 from "../tasks/1_warmup/7_Subscription.jsx";
-import WarmupSolution3 from "../solutions/1_warmup/7_Subscription.jsx";
 import WarmupSolution3Raw from "../solutions/1_warmup/7_Subscription.jsx?raw";
 import WarmupCandidate4Raw from "../tasks/1_warmup/5_ConditionalRendering.jsx?raw";
-import WarmupCandidate4 from "../tasks/1_warmup/5_ConditionalRendering.jsx";
-import WarmupSolution4 from "../solutions/1_warmup/5_ConditionalRendering.jsx";
 import WarmupSolution4Raw from "../solutions/1_warmup/5_ConditionalRendering.jsx?raw";
 import WarmupCandidate5Raw from "../tasks/1_warmup/2_Counter.jsx?raw";
-import WarmupCandidate5 from "../tasks/1_warmup/2_Counter.jsx";
-import WarmupSolution5 from "../solutions/1_warmup/2_Counter.jsx";
 import WarmupSolution5Raw from "../solutions/1_warmup/2_Counter.jsx?raw";
 import WarmupCandidate6Raw from "../tasks/1_warmup/3_TripleCounter.jsx?raw";
-import WarmupCandidate6 from "../tasks/1_warmup/3_TripleCounter.jsx";
-import WarmupSolution6 from "../solutions/1_warmup/3_TripleCounter.jsx";
 import WarmupSolution6Raw from "../solutions/1_warmup/3_TripleCounter.jsx?raw";
 import WarmupCandidate7Raw from "../tasks/1_warmup/4_UserProfile.jsx?raw";
-import WarmupCandidate7 from "../tasks/1_warmup/4_UserProfile.jsx";
-import WarmupSolution7 from "../solutions/1_warmup/4_UserProfile.jsx";
 import WarmupSolution7Raw from "../solutions/1_warmup/4_UserProfile.jsx?raw";
 import WarmupCandidate8Raw from "../tasks/1_warmup/8_MultiInputForm.jsx?raw";
-import WarmupCandidate8 from "../tasks/1_warmup/8_MultiInputForm.jsx";
-import WarmupSolution8 from "../solutions/1_warmup/8_MultiInputForm.jsx";
 import WarmupSolution8Raw from "../solutions/1_warmup/8_MultiInputForm.jsx?raw";
 import WarmupCandidate9Raw from "../tasks/1_warmup/9_FormSubmit.jsx?raw";
-import WarmupCandidate9 from "../tasks/1_warmup/9_FormSubmit.jsx";
-import WarmupSolution9 from "../solutions/1_warmup/9_FormSubmit.jsx";
 import WarmupSolution9Raw from "../solutions/1_warmup/9_FormSubmit.jsx?raw";
 import WarmupCandidate10Raw from "../tasks/1_warmup/10_ListFilter.jsx?raw";
-import WarmupCandidate10 from "../tasks/1_warmup/10_ListFilter.jsx";
-import WarmupSolution10 from "../solutions/1_warmup/10_ListFilter.jsx";
 import WarmupSolution10Raw from "../solutions/1_warmup/10_ListFilter.jsx?raw";
 import WarmupCandidate11Raw from "../tasks/1_warmup/11_SelectFilter.jsx?raw";
-import WarmupCandidate11 from "../tasks/1_warmup/11_SelectFilter.jsx";
-import WarmupSolution11 from "../solutions/1_warmup/11_SelectFilter.jsx";
 import WarmupSolution11Raw from "../solutions/1_warmup/11_SelectFilter.jsx?raw";
 import WarmupCandidate12Raw from "../tasks/1_warmup/13_ListKeys.jsx?raw";
-import WarmupCandidate12 from "../tasks/1_warmup/13_ListKeys.jsx";
-import WarmupSolution12 from "../solutions/1_warmup/13_ListKeys.jsx";
 import WarmupSolution12Raw from "../solutions/1_warmup/13_ListKeys.jsx?raw";
 import WarmupCandidate13 from "../tasks/1_warmup/19_AsyncAwait.js?raw";
 import WarmupSolution13 from "../solutions/1_warmup/19_AsyncAwait.js?raw";
@@ -53,59 +29,35 @@ import WarmupCandidate14 from "../tasks/1_warmup/20_AsyncAwaitFetch.js?raw";
 import WarmupSolution14 from "../solutions/1_warmup/20_AsyncAwaitFetch.js?raw";
 import WarmupCandidate15 from "../tasks/1_warmup/21_UseEffectBasic.js?raw";
 import WarmupSolution15 from "../solutions/1_warmup/21_UseEffectBasic.js?raw";
-import WarmupCandidate16 from "../tasks/1_warmup/22_UseEffectFetch.jsx";
 import WarmupCandidate16Raw from "../tasks/1_warmup/22_UseEffectFetch.jsx?raw";
-import WarmupSolution16 from "../solutions/1_warmup/22_UseEffectFetch.jsx";
 import WarmupSolution16Raw from "../solutions/1_warmup/22_UseEffectFetch.jsx?raw";
-import WarmupCandidate17 from "../tasks/1_warmup/23_UseEffectAbortController.jsx";
 import WarmupCandidate17Raw from "../tasks/1_warmup/23_UseEffectAbortController.jsx?raw";
-import WarmupSolution17 from "../solutions/1_warmup/23_UseEffectAbortController.jsx";
 import WarmupSolution17Raw from "../solutions/1_warmup/23_UseEffectAbortController.jsx?raw";
 import WarmupCandidate18 from "../tasks/1_warmup/29_UseMemoBasic.js?raw";
 import WarmupSolution18 from "../solutions/1_warmup/29_UseMemoBasic.js?raw";
-import WarmupCandidate19 from "../tasks/1_warmup/30_UseMemoPractice.jsx";
 import WarmupCandidate19Raw from "../tasks/1_warmup/30_UseMemoPractice.jsx?raw";
-import WarmupSolution19 from "../solutions/1_warmup/30_UseMemoPractice.jsx";
 import WarmupSolution19Raw from "../solutions/1_warmup/30_UseMemoPractice.jsx?raw";
 import WarmupCandidate20 from "../tasks/1_warmup/31_UseCallbackBasic.js?raw";
 import WarmupSolution20 from "../solutions/1_warmup/31_UseCallbackBasic.js?raw";
-import WarmupCandidate21 from "../tasks/1_warmup/32_UseCallbackPractice.jsx";
 import WarmupCandidate21Raw from "../tasks/1_warmup/32_UseCallbackPractice.jsx?raw";
-import WarmupSolution21 from "../solutions/1_warmup/32_UseCallbackPractice.jsx";
 import WarmupSolution21Raw from "../solutions/1_warmup/32_UseCallbackPractice.jsx?raw";
 import WarmupCandidate22 from "../tasks/1_warmup/26_UseRefBasic.js?raw";
 import WarmupSolution22 from "../solutions/1_warmup/26_UseRefBasic.js?raw";
-import WarmupCandidate23 from "../tasks/1_warmup/27_UseRefFocus.jsx";
 import WarmupCandidate23Raw from "../tasks/1_warmup/27_UseRefFocus.jsx?raw";
-import WarmupSolution23 from "../solutions/1_warmup/27_UseRefFocus.jsx";
 import WarmupSolution23Raw from "../solutions/1_warmup/27_UseRefFocus.jsx?raw";
-import WarmupCandidate24 from "../tasks/1_warmup/28_UseRefUncontrolledForm.jsx";
 import WarmupCandidate24Raw from "../tasks/1_warmup/28_UseRefUncontrolledForm.jsx?raw";
-import WarmupSolution24 from "../solutions/1_warmup/28_UseRefUncontrolledForm.jsx";
 import WarmupSolution24Raw from "../solutions/1_warmup/28_UseRefUncontrolledForm.jsx?raw";
-import WarmupCandidate25 from "../tasks/1_warmup/12_ArrayCrud.jsx";
 import WarmupCandidate25Raw from "../tasks/1_warmup/12_ArrayCrud.jsx?raw";
-import WarmupSolution25 from "../solutions/1_warmup/12_ArrayCrud.jsx";
 import WarmupSolution25Raw from "../solutions/1_warmup/12_ArrayCrud.jsx?raw";
-import WarmupCandidate26 from "../tasks/1_warmup/14_LiftingStateUp.jsx";
 import WarmupCandidate26Raw from "../tasks/1_warmup/14_LiftingStateUp.jsx?raw";
-import WarmupSolution26 from "../solutions/1_warmup/14_LiftingStateUp.jsx";
 import WarmupSolution26Raw from "../solutions/1_warmup/14_LiftingStateUp.jsx?raw";
-import WarmupCandidate27 from "../tasks/1_warmup/24_UseEffectTimer.jsx";
 import WarmupCandidate27Raw from "../tasks/1_warmup/24_UseEffectTimer.jsx?raw";
-import WarmupSolution27 from "../solutions/1_warmup/24_UseEffectTimer.jsx";
 import WarmupSolution27Raw from "../solutions/1_warmup/24_UseEffectTimer.jsx?raw";
-import WarmupCandidate28 from "../tasks/1_warmup/25_UseEffectEventListener.jsx";
 import WarmupCandidate28Raw from "../tasks/1_warmup/25_UseEffectEventListener.jsx?raw";
-import WarmupSolution28 from "../solutions/1_warmup/25_UseEffectEventListener.jsx";
 import WarmupSolution28Raw from "../solutions/1_warmup/25_UseEffectEventListener.jsx?raw";
-import WarmupCandidate30 from "../tasks/1_warmup/15_DerivedState.jsx";
 import WarmupCandidate30Raw from "../tasks/1_warmup/15_DerivedState.jsx?raw";
-import WarmupSolution30 from "../solutions/1_warmup/15_DerivedState.jsx";
 import WarmupSolution30Raw from "../solutions/1_warmup/15_DerivedState.jsx?raw";
-import WarmupCandidate31 from "../tasks/1_warmup/33_CustomHookUseToggle.jsx";
 import WarmupCandidate31Raw from "../tasks/1_warmup/33_CustomHookUseToggle.jsx?raw";
-import WarmupSolution31 from "../solutions/1_warmup/33_CustomHookUseToggle.jsx";
 import WarmupSolution31Raw from "../solutions/1_warmup/33_CustomHookUseToggle.jsx?raw";
 
 // Импорт компонентов Рефакторинга
@@ -133,45 +85,22 @@ import RefactoringCandidate12 from "../tasks/2_refactoring/14_ReactPortals.js?ra
 import RefactoringSolution12 from "../solutions/2_refactoring/14_ReactPortals.js?raw";
 import RefactoringCandidate13 from "../tasks/2_refactoring/4_ReactRouterNavigation.js?raw";
 import RefactoringSolution13 from "../solutions/2_refactoring/4_ReactRouterNavigation.js?raw";
-import RefactoringCandidate15Comp from "../tasks/2_refactoring/16_CompanyXRefactoring.tsx";
 import RefactoringCandidate15 from "../tasks/2_refactoring/16_CompanyXRefactoring.tsx?raw";
-import RefactoringSolution15Comp from "../solutions/2_refactoring/16_CompanyXRefactoring.tsx";
 import RefactoringSolution15 from "../solutions/2_refactoring/16_CompanyXRefactoring.tsx?raw";
-import RefactoringCandidate16 from "../tasks/2_refactoring/17_TimerRefactoring/App.jsx";
 import RefactoringCandidate16Raw from "../tasks/2_refactoring/17_TimerRefactoring/App.jsx?raw";
 import RefactoringCandidate16_App from "../tasks/2_refactoring/17_TimerRefactoring/App.jsx?raw";
 import RefactoringCandidate16_Css from "../tasks/2_refactoring/17_TimerRefactoring/App.css?raw";
-import RefactoringSolution16 from "../solutions/2_refactoring/17_TimerRefactoring/App.jsx";
 import RefactoringSolution16Raw from "../solutions/2_refactoring/17_TimerRefactoring/App.jsx?raw";
 import RefactoringSolution16_App from "../solutions/2_refactoring/17_TimerRefactoring/App.jsx?raw";
 import RefactoringSolution16_Css from "../solutions/2_refactoring/17_TimerRefactoring/App.css?raw";
-import RefactoringCandidate17 from "../tasks/2_refactoring/18_RandomNumberGenerator/App.jsx";
 import RefactoringCandidate17_App from "../tasks/2_refactoring/18_RandomNumberGenerator/App.jsx?raw";
 import RefactoringCandidate17_Buttons from "../tasks/2_refactoring/18_RandomNumberGenerator/Buttons.jsx?raw";
 import RefactoringCandidate17_List from "../tasks/2_refactoring/18_RandomNumberGenerator/List.jsx?raw";
-import RefactoringSolution17 from "../solutions/2_refactoring/18_RandomNumberGenerator/App.jsx";
 import RefactoringSolution17_App from "../solutions/2_refactoring/18_RandomNumberGenerator/App.jsx?raw";
 import RefactoringSolution17_Buttons from "../solutions/2_refactoring/18_RandomNumberGenerator/Buttons.jsx?raw";
 import RefactoringSolution17_List from "../solutions/2_refactoring/18_RandomNumberGenerator/List.jsx?raw";
 
 // Импорт компонентов кандидатов
-import Candidate1 from "../tasks/3_ui_patterns/10_FetchPersons.jsx";
-import Candidate2 from "../tasks/3_ui_patterns/11_FetchPersonsDebounce.jsx";
-import Candidate3 from "../tasks/3_ui_patterns/16_FetchPersonsCache.jsx";
-import Candidate5 from "../tasks/3_ui_patterns/1_TodoList.jsx";
-import Candidate6 from "../tasks/3_ui_patterns/2_TodoListCompanyX.jsx";
-import Candidate7 from "../tasks/3_ui_patterns/4_RefetchImage.jsx";
-import Candidate8 from "../tasks/3_ui_patterns/3_PostsManager.jsx";
-import Candidate9 from "../tasks/3_ui_patterns/5_PasswordCompanyX.jsx";
-import Candidate10 from "../tasks/3_ui_patterns/20_UrlSearchParamsFilter.jsx";
-import Candidate11 from "../tasks/3_ui_patterns/21_AutocompleteCombobox.jsx";
-import Candidate12 from "../tasks/3_ui_patterns/14_OptimisticLike.jsx";
-import Candidate13 from "../tasks/3_ui_patterns/6_ShoppingCart.jsx";
-import Candidate14 from "../tasks/3_ui_patterns/22_CompoundAccordion.jsx";
-import Candidate15 from "../tasks/3_ui_patterns/15_StopwatchLaps.jsx";
-import CandidateAdvanced1 from "../tasks/4_state_management/1_FetchUsersReducer/index.jsx";
-import CandidateAdvanced2 from "../tasks/4_state_management/5_FetchUsersRTK/index.jsx";
-import CandidateAdvanced3 from "../tasks/4_state_management/6_FetchUsersRTKSelectors/index.jsx";
 import Candidate1Raw from "../tasks/3_ui_patterns/10_FetchPersons.jsx?raw";
 import Candidate2Raw from "../tasks/3_ui_patterns/11_FetchPersonsDebounce.jsx?raw";
 import Candidate3Raw from "../tasks/3_ui_patterns/16_FetchPersonsCache.jsx?raw";
@@ -201,48 +130,27 @@ import CandidateAdvanced2_Store from "../tasks/4_state_management/5_FetchUsersRT
 import CandidateAdvanced3_Index from "../tasks/4_state_management/6_FetchUsersRTKSelectors/index.jsx?raw";
 import CandidateAdvanced3_Slice from "../tasks/4_state_management/6_FetchUsersRTKSelectors/usersSlice.js?raw";
 import CandidateAdvanced3_Store from "../tasks/4_state_management/6_FetchUsersRTKSelectors/store.js?raw";
-import CandidateAdvanced4 from "../tasks/5_lifecycle_and_runtime/3_ReactRenderRefUseEffect.jsx";
 import CandidateAdvanced4Raw from "../tasks/5_lifecycle_and_runtime/3_ReactRenderRefUseEffect.jsx?raw";
-import SolutionAdvanced4 from "../solutions/5_lifecycle_and_runtime/3_ReactRenderRefUseEffect.jsx";
 import SolutionAdvanced4Raw from "../solutions/5_lifecycle_and_runtime/3_ReactRenderRefUseEffect.jsx?raw";
 
-import CandidateAdvanced5 from "../tasks/5_lifecycle_and_runtime/5_ReactLayoutEffectCleanupCycle.jsx";
 import CandidateAdvanced5Raw from "../tasks/5_lifecycle_and_runtime/5_ReactLayoutEffectCleanupCycle.jsx?raw";
-import SolutionAdvanced5 from "../solutions/5_lifecycle_and_runtime/5_ReactLayoutEffectCleanupCycle.jsx";
 import SolutionAdvanced5Raw from "../solutions/5_lifecycle_and_runtime/5_ReactLayoutEffectCleanupCycle.jsx?raw";
 
 // Импорт эталонных решений
-import Solution1 from "../solutions/3_ui_patterns/10_FetchPersons.jsx";
 import Solution1Raw from "../solutions/3_ui_patterns/10_FetchPersons.jsx?raw";
-import Solution2 from "../solutions/3_ui_patterns/11_FetchPersonsDebounce.jsx";
 import Solution2Raw from "../solutions/3_ui_patterns/11_FetchPersonsDebounce.jsx?raw";
-import Solution3 from "../solutions/3_ui_patterns/16_FetchPersonsCache.jsx";
 import Solution3Raw from "../solutions/3_ui_patterns/16_FetchPersonsCache.jsx?raw";
-import Solution5 from "../solutions/3_ui_patterns/1_TodoList.jsx";
 import Solution5Raw from "../solutions/3_ui_patterns/1_TodoList.jsx?raw";
-import Solution6 from "../solutions/3_ui_patterns/2_TodoListCompanyX.jsx";
 import Solution6Raw from "../solutions/3_ui_patterns/2_TodoListCompanyX.jsx?raw";
-import Solution7 from "../solutions/3_ui_patterns/4_RefetchImage.jsx";
 import Solution7Raw from "../solutions/3_ui_patterns/4_RefetchImage.jsx?raw";
-import Solution8 from "../solutions/3_ui_patterns/3_PostsManager.jsx";
 import Solution8Raw from "../solutions/3_ui_patterns/3_PostsManager.jsx?raw";
-import Solution9 from "../solutions/3_ui_patterns/5_PasswordCompanyX.jsx";
 import Solution9Raw from "../solutions/3_ui_patterns/5_PasswordCompanyX.jsx?raw";
-import Solution10 from "../solutions/3_ui_patterns/20_UrlSearchParamsFilter.jsx";
 import Solution10Raw from "../solutions/3_ui_patterns/20_UrlSearchParamsFilter.jsx?raw";
-import Solution11 from "../solutions/3_ui_patterns/21_AutocompleteCombobox.jsx";
 import Solution11Raw from "../solutions/3_ui_patterns/21_AutocompleteCombobox.jsx?raw";
-import Solution12 from "../solutions/3_ui_patterns/14_OptimisticLike.jsx";
 import Solution12Raw from "../solutions/3_ui_patterns/14_OptimisticLike.jsx?raw";
-import Solution13 from "../solutions/3_ui_patterns/6_ShoppingCart.jsx";
 import Solution13Raw from "../solutions/3_ui_patterns/6_ShoppingCart.jsx?raw";
-import Solution14 from "../solutions/3_ui_patterns/22_CompoundAccordion.jsx";
 import Solution14Raw from "../solutions/3_ui_patterns/22_CompoundAccordion.jsx?raw";
-import Solution15 from "../solutions/3_ui_patterns/15_StopwatchLaps.jsx";
 import Solution15Raw from "../solutions/3_ui_patterns/15_StopwatchLaps.jsx?raw";
-import SolutionAdvanced1 from "../solutions/4_state_management/1_FetchUsersReducer/index.jsx";
-import SolutionAdvanced2 from "../solutions/4_state_management/5_FetchUsersRTK/index.jsx";
-import SolutionAdvanced3 from "../solutions/4_state_management/6_FetchUsersRTKSelectors/index.jsx";
 
 import SolutionAdvanced1_Index from "../solutions/4_state_management/1_FetchUsersReducer/index.jsx?raw";
 import SolutionAdvanced1_Hook from "../solutions/4_state_management/1_FetchUsersReducer/useFetchUsers.js?raw";
@@ -283,35 +191,21 @@ import ReactTsCandidate12 from "../tasks/6_typescript_patterns/5_React19RefTypin
 import ReactTsSolution12 from "../solutions/6_typescript_patterns/5_React19RefTyping.tsx?raw";
 
 // Импорт компонентов TypeScript: Прикладные сценарии
-import ReactTsPracticeCandidate1 from "../tasks/7_typescript_components/1_UseEffectFetch.tsx";
-import ReactTsPracticeSolution1 from "../solutions/7_typescript_components/1_UseEffectFetch.tsx";
 import ReactTsPracticeCandidate1Raw from "../tasks/7_typescript_components/1_UseEffectFetch.tsx?raw";
 import ReactTsPracticeSolution1Raw from "../solutions/7_typescript_components/1_UseEffectFetch.tsx?raw";
-import ReactTsPracticeCandidate2 from "../tasks/7_typescript_components/3_RefetchImage.tsx";
-import ReactTsPracticeSolution2 from "../solutions/7_typescript_components/3_RefetchImage.tsx";
 import ReactTsPracticeCandidate2Raw from "../tasks/7_typescript_components/3_RefetchImage.tsx?raw";
 import ReactTsPracticeSolution2Raw from "../solutions/7_typescript_components/3_RefetchImage.tsx?raw";
-import ReactTsPracticeCandidate3 from "../tasks/7_typescript_components/2_PostsManager.tsx";
-import ReactTsPracticeSolution3 from "../solutions/7_typescript_components/2_PostsManager.tsx";
 import ReactTsPracticeCandidate3Raw from "../tasks/7_typescript_components/2_PostsManager.tsx?raw";
 import ReactTsPracticeSolution3Raw from "../solutions/7_typescript_components/2_PostsManager.tsx?raw";
 
 // Новые задачи: закрытие пробелов по темам собеседований
-import WarmupCandidate32 from "../tasks/1_warmup/16_UseReducerCounter.jsx";
 import WarmupCandidate32Raw from "../tasks/1_warmup/16_UseReducerCounter.jsx?raw";
-import WarmupSolution32 from "../solutions/1_warmup/16_UseReducerCounter.jsx";
 import WarmupSolution32Raw from "../solutions/1_warmup/16_UseReducerCounter.jsx?raw";
-import WarmupCandidate33 from "../tasks/1_warmup/17_UseContextTheme.jsx";
 import WarmupCandidate33Raw from "../tasks/1_warmup/17_UseContextTheme.jsx?raw";
-import WarmupSolution33 from "../solutions/1_warmup/17_UseContextTheme.jsx";
 import WarmupSolution33Raw from "../solutions/1_warmup/17_UseContextTheme.jsx?raw";
-import WarmupCandidate34 from "../tasks/1_warmup/18_KeyResetState.jsx";
 import WarmupCandidate34Raw from "../tasks/1_warmup/18_KeyResetState.jsx?raw";
-import WarmupSolution34 from "../solutions/1_warmup/18_KeyResetState.jsx";
 import WarmupSolution34Raw from "../solutions/1_warmup/18_KeyResetState.jsx?raw";
-import WarmupCandidate35 from "../tasks/1_warmup/34_UseLocalStorage.jsx";
 import WarmupCandidate35Raw from "../tasks/1_warmup/34_UseLocalStorage.jsx?raw";
-import WarmupSolution35 from "../solutions/1_warmup/34_UseLocalStorage.jsx";
 import WarmupSolution35Raw from "../solutions/1_warmup/34_UseLocalStorage.jsx?raw";
 import RefactoringCandidate18 from "../tasks/2_refactoring/8_ContextRerenders.js?raw";
 import RefactoringSolution18 from "../solutions/2_refactoring/8_ContextRerenders.js?raw";
@@ -319,67 +213,37 @@ import RefactoringCandidate19 from "../tasks/2_refactoring/13_HocToHook.js?raw";
 import RefactoringSolution19 from "../solutions/2_refactoring/13_HocToHook.js?raw";
 import RefactoringCandidate20 from "../tasks/2_refactoring/11_DeferredSearch.js?raw";
 import RefactoringSolution20 from "../solutions/2_refactoring/11_DeferredSearch.js?raw";
-import Candidate16 from "../tasks/3_ui_patterns/7_FormValidation.jsx";
 import Candidate16Raw from "../tasks/3_ui_patterns/7_FormValidation.jsx?raw";
-import Solution16 from "../solutions/3_ui_patterns/7_FormValidation.jsx";
 import Solution16Raw from "../solutions/3_ui_patterns/7_FormValidation.jsx?raw";
-import Candidate17 from "../tasks/3_ui_patterns/8_AccessibleModal.jsx";
 import Candidate17Raw from "../tasks/3_ui_patterns/8_AccessibleModal.jsx?raw";
-import Solution17 from "../solutions/3_ui_patterns/8_AccessibleModal.jsx";
 import Solution17Raw from "../solutions/3_ui_patterns/8_AccessibleModal.jsx?raw";
-import Candidate18 from "../tasks/3_ui_patterns/9_FileTree.jsx";
 import Candidate18Raw from "../tasks/3_ui_patterns/9_FileTree.jsx?raw";
-import Solution18 from "../solutions/3_ui_patterns/9_FileTree.jsx";
 import Solution18Raw from "../solutions/3_ui_patterns/9_FileTree.jsx?raw";
-import Candidate19 from "../tasks/3_ui_patterns/13_InfiniteScroll.jsx";
 import Candidate19Raw from "../tasks/3_ui_patterns/13_InfiniteScroll.jsx?raw";
-import Solution19 from "../solutions/3_ui_patterns/13_InfiniteScroll.jsx";
 import Solution19Raw from "../solutions/3_ui_patterns/13_InfiniteScroll.jsx?raw";
-import Candidate20 from "../tasks/3_ui_patterns/12_UseFetchHook.jsx";
 import Candidate20Raw from "../tasks/3_ui_patterns/12_UseFetchHook.jsx?raw";
-import Solution20 from "../solutions/3_ui_patterns/12_UseFetchHook.jsx";
 import Solution20Raw from "../solutions/3_ui_patterns/12_UseFetchHook.jsx?raw";
-import Candidate21 from "../tasks/3_ui_patterns/17_ErrorBoundary.jsx";
 import Candidate21Raw from "../tasks/3_ui_patterns/17_ErrorBoundary.jsx?raw";
-import Solution21 from "../solutions/3_ui_patterns/17_ErrorBoundary.jsx";
 import Solution21Raw from "../solutions/3_ui_patterns/17_ErrorBoundary.jsx?raw";
-import Candidate22 from "../tasks/3_ui_patterns/18_LazySuspenseUse.jsx";
 import Candidate22Raw from "../tasks/3_ui_patterns/18_LazySuspenseUse.jsx?raw";
-import Solution22 from "../solutions/3_ui_patterns/18_LazySuspenseUse.jsx";
 import Solution22Raw from "../solutions/3_ui_patterns/18_LazySuspenseUse.jsx?raw";
-import Candidate23 from "../tasks/3_ui_patterns/19_ActionsForm.jsx";
 import Candidate23Raw from "../tasks/3_ui_patterns/19_ActionsForm.jsx?raw";
-import Solution23 from "../solutions/3_ui_patterns/19_ActionsForm.jsx";
 import Solution23Raw from "../solutions/3_ui_patterns/19_ActionsForm.jsx?raw";
-import AdvancedCandidate6 from "../tasks/4_state_management/2_ContextReducerCart.jsx";
 import AdvancedCandidate6Raw from "../tasks/4_state_management/2_ContextReducerCart.jsx?raw";
-import AdvancedSolution6 from "../solutions/4_state_management/2_ContextReducerCart.jsx";
 import AdvancedSolution6Raw from "../solutions/4_state_management/2_ContextReducerCart.jsx?raw";
-import AdvancedCandidate7 from "../tasks/4_state_management/3_ZustandStore.jsx";
 import AdvancedCandidate7Raw from "../tasks/4_state_management/3_ZustandStore.jsx?raw";
-import AdvancedSolution7 from "../solutions/4_state_management/3_ZustandStore.jsx";
 import AdvancedSolution7Raw from "../solutions/4_state_management/3_ZustandStore.jsx?raw";
-import AdvancedCandidate8 from "../tasks/4_state_management/7_SyncExternalStore.jsx";
 import AdvancedCandidate8Raw from "../tasks/4_state_management/7_SyncExternalStore.jsx?raw";
-import AdvancedSolution8 from "../solutions/4_state_management/7_SyncExternalStore.jsx";
 import AdvancedSolution8Raw from "../solutions/4_state_management/7_SyncExternalStore.jsx?raw";
-import AdvancedCandidate9 from "../tasks/5_lifecycle_and_runtime/1_BatchingRenderCount.jsx";
 import AdvancedCandidate9Raw from "../tasks/5_lifecycle_and_runtime/1_BatchingRenderCount.jsx?raw";
-import AdvancedSolution9 from "../solutions/5_lifecycle_and_runtime/1_BatchingRenderCount.jsx";
 import AdvancedSolution9Raw from "../solutions/5_lifecycle_and_runtime/1_BatchingRenderCount.jsx?raw";
-import AdvancedCandidate10 from "../tasks/5_lifecycle_and_runtime/2_ChildRerenders.jsx";
 import AdvancedCandidate10Raw from "../tasks/5_lifecycle_and_runtime/2_ChildRerenders.jsx?raw";
-import AdvancedSolution10 from "../solutions/5_lifecycle_and_runtime/2_ChildRerenders.jsx";
 import AdvancedSolution10Raw from "../solutions/5_lifecycle_and_runtime/2_ChildRerenders.jsx?raw";
-import AdvancedCandidate11 from "../tasks/5_lifecycle_and_runtime/4_StaleClosureTimeout.jsx";
 import AdvancedCandidate11Raw from "../tasks/5_lifecycle_and_runtime/4_StaleClosureTimeout.jsx?raw";
-import AdvancedSolution11 from "../solutions/5_lifecycle_and_runtime/4_StaleClosureTimeout.jsx";
 import AdvancedSolution11Raw from "../solutions/5_lifecycle_and_runtime/4_StaleClosureTimeout.jsx?raw";
 
 // Задача по TanStack Query
-import AdvancedCandidate12 from "../tasks/4_state_management/4_TanStackQueryTodos.jsx";
 import AdvancedCandidate12Raw from "../tasks/4_state_management/4_TanStackQueryTodos.jsx?raw";
-import AdvancedSolution12 from "../solutions/4_state_management/4_TanStackQueryTodos.jsx";
 import AdvancedSolution12Raw from "../solutions/4_state_management/4_TanStackQueryTodos.jsx?raw";
 
 
@@ -388,9 +252,7 @@ export const WARMUP_TASKS = [
       id: "w1",
       title: "1. Синтаксис useState",
       desc: 'Объявите состояние "text" в компоненте и отобразите его.',
-      candidate: WarmupCandidate1,
       rawCandidate: WarmupCandidate1Raw,
-      solution: WarmupSolution1,
       rawSolution: WarmupSolution1Raw,
       filepath: "src/react/tasks/1_warmup/1_UseStateBasic.jsx",
       articles: [
@@ -433,9 +295,7 @@ export const WARMUP_TASKS = [
       id: "w5",
       title: "2. Счетчик",
       desc: "Реализуйте кнопки инкремента и декремента. Счетчик не должен опускаться ниже 0.",
-      candidate: WarmupCandidate5,
       rawCandidate: WarmupCandidate5Raw,
-      solution: WarmupSolution5,
       rawSolution: WarmupSolution5Raw,
       filepath: "src/react/tasks/1_warmup/2_Counter.jsx",
       articles: [
@@ -478,9 +338,7 @@ export const WARMUP_TASKS = [
       id: "w6",
       title: "3. Исправление асинхронных обновлений",
       desc: "Реализуйте счетчик, который увеличивает значение сразу на 3 при клике на кнопку, используя функциональную форму обновления для обхода батчинга.",
-      candidate: WarmupCandidate6,
       rawCandidate: WarmupCandidate6Raw,
-      solution: WarmupSolution6,
       rawSolution: WarmupSolution6Raw,
       filepath: "src/react/tasks/1_warmup/3_TripleCounter.jsx",
       articles: [
@@ -523,9 +381,7 @@ export const WARMUP_TASKS = [
       id: "w7",
       title: "4. Безопасное обновление объекта",
       desc: "Напишите компонент профиля пользователя, который обновляет только возраст, сохраняя остальные данные объекта через spread-оператор.",
-      candidate: WarmupCandidate7,
       rawCandidate: WarmupCandidate7Raw,
-      solution: WarmupSolution7,
       rawSolution: WarmupSolution7Raw,
       filepath: "src/react/tasks/1_warmup/4_UserProfile.jsx",
       articles: [
@@ -568,9 +424,7 @@ export const WARMUP_TASKS = [
       id: "w4",
       title: "5. Подвох условного рендеринга",
       desc: "Исправьте условный рендеринг так, чтобы при unreadCount = 0 на экране ничего не отображалось вместо цифры 0.",
-      candidate: WarmupCandidate4,
       rawCandidate: WarmupCandidate4Raw,
-      solution: WarmupSolution4,
       rawSolution: WarmupSolution4Raw,
       filepath: "src/react/tasks/1_warmup/5_ConditionalRendering.jsx",
       articles: [
@@ -612,9 +466,7 @@ export const WARMUP_TASKS = [
       id: "w2",
       title: "6. Инпут для поиска",
       desc: "Напишите компонент управляемого инпута для поиска, который отображает введенный текст и кнопку для очистки поля.",
-      candidate: WarmupCandidate2,
       rawCandidate: WarmupCandidate2Raw,
-      solution: WarmupSolution2,
       rawSolution: WarmupSolution2Raw,
       filepath: "src/react/tasks/1_warmup/6_SearchInput.jsx",
       articles: [
@@ -657,9 +509,7 @@ export const WARMUP_TASKS = [
       id: "w3",
       title: "7. Чекбокс",
       desc: "Напишите компонент чекбокса для подписки на рассылку, который динамически меняет текстовый статус в зависимости от того, выбран флажок или нет.",
-      candidate: WarmupCandidate3,
       rawCandidate: WarmupCandidate3Raw,
-      solution: WarmupSolution3,
       rawSolution: WarmupSolution3Raw,
       filepath: "src/react/tasks/1_warmup/7_Subscription.jsx",
       articles: [
@@ -702,9 +552,7 @@ export const WARMUP_TASKS = [
       id: "w8",
       title: "8. Единый обработчик нескольких полей формы",
       desc: "Напишите компонент формы с тремя полями ввода, управляемыми единым объектом состояния и универсальным обработчиком по e.target.name.",
-      candidate: WarmupCandidate8,
       rawCandidate: WarmupCandidate8Raw,
-      solution: WarmupSolution8,
       rawSolution: WarmupSolution8Raw,
       filepath: "src/react/tasks/1_warmup/8_MultiInputForm.jsx",
       articles: [
@@ -741,9 +589,7 @@ export const WARMUP_TASKS = [
       id: "w9",
       title: "9. Отправка формы поиска",
       desc: "Исправьте форму поиска так, чтобы при сабмите или нажатии Enter не происходила перезагрузка страницы браузера.",
-      candidate: WarmupCandidate9,
       rawCandidate: WarmupCandidate9Raw,
-      solution: WarmupSolution9,
       rawSolution: WarmupSolution9Raw,
       filepath: "src/react/tasks/1_warmup/9_FormSubmit.jsx",
       articles: [
@@ -780,9 +626,7 @@ export const WARMUP_TASKS = [
       id: "w10",
       title: "10. Фильтрация списка",
       desc: "Реализуйте регистронезависимый поиск по списку имен пользователей.",
-      candidate: WarmupCandidate10,
       rawCandidate: WarmupCandidate10Raw,
-      solution: WarmupSolution10,
       rawSolution: WarmupSolution10Raw,
       filepath: "src/react/tasks/1_warmup/10_ListFilter.jsx",
       articles: [
@@ -825,9 +669,7 @@ export const WARMUP_TASKS = [
       id: "w11",
       title: "11. Фильтрация выпадающим списком (Select)",
       desc: "Реализуйте выпадающий список <select> для фильтрации массива товаров по категории.",
-      candidate: WarmupCandidate11,
       rawCandidate: WarmupCandidate11Raw,
-      solution: WarmupSolution11,
       rawSolution: WarmupSolution11Raw,
       filepath: "src/react/tasks/1_warmup/11_SelectFilter.jsx",
       articles: [
@@ -870,9 +712,7 @@ export const WARMUP_TASKS = [
       id: "w25",
       title: "12. CRUD массива в состоянии",
       desc: "Реализуйте базовые операции со списком задач: добавление новой задачи через spread [...prev, newTodo], переключение completed через .map() и удаление по id через .filter().",
-      candidate: WarmupCandidate25,
       rawCandidate: WarmupCandidate25Raw,
-      solution: WarmupSolution25,
       rawSolution: WarmupSolution25Raw,
       filepath: "src/react/tasks/1_warmup/12_ArrayCrud.jsx",
       solutions: [
@@ -926,9 +766,7 @@ export const WARMUP_TASKS = [
       id: "w12",
       title: "13. Генерация стабильных ключей для данных без ID",
       desc: "Организуйте корректное управление ключами (key) для списка товаров без уникальных id, чтобы избежать сбоев при удалении элементов.",
-      candidate: WarmupCandidate12,
       rawCandidate: WarmupCandidate12Raw,
-      solution: WarmupSolution12,
       rawSolution: WarmupSolution12Raw,
       filepath: "src/react/tasks/1_warmup/13_ListKeys.jsx",
       articles: [
@@ -971,9 +809,7 @@ export const WARMUP_TASKS = [
       id: "w26",
       title: "14. Поднятие состояния (Lifting State Up)",
       desc: "Организуйте однонаправленный поток данных: родительский компонент хранит состояние активной вкладки, а дочерний компонент кнопки получает пропсы и вызывает колбэк изменения наверх.",
-      candidate: WarmupCandidate26,
       rawCandidate: WarmupCandidate26Raw,
-      solution: WarmupSolution26,
       rawSolution: WarmupSolution26Raw,
       filepath: "src/react/tasks/1_warmup/14_LiftingStateUp.jsx",
       solutions: [
@@ -1026,9 +862,7 @@ export const WARMUP_TASKS = [
       id: "w30",
       title: "15. Вычисляемое состояние (Derived State)",
       desc: "Рассчитайте общее количество товаров и итоговую стоимость корзины на лету прямо во время рендеринга без заведения избыточных useState и без useEffect.",
-      candidate: WarmupCandidate30,
       rawCandidate: WarmupCandidate30Raw,
-      solution: WarmupSolution30,
       rawSolution: WarmupSolution30Raw,
       filepath: "src/react/tasks/1_warmup/15_DerivedState.jsx",
       solutions: [
@@ -1081,9 +915,7 @@ export const WARMUP_TASKS = [
     id: "w32",
     title: "16. useReducer (Счётчик с шагом)",
     desc: "Перенесите логику счётчика с шагом в чистую функцию reducer и управляйте состоянием через dispatch.",
-    candidate: WarmupCandidate32,
     rawCandidate: WarmupCandidate32Raw,
-    solution: WarmupSolution32,
     rawSolution: WarmupSolution32Raw,
     filepath: "src/react/tasks/1_warmup/16_UseReducerCounter.jsx",
     articles: [
@@ -1121,9 +953,7 @@ export const WARMUP_TASKS = [
     id: "w33",
     title: "17. useContext (Тема оформления)",
     desc: "Передайте тему оформления через Context, чтобы промежуточный Layout не пробрасывал пропсы (prop drilling).",
-    candidate: WarmupCandidate33,
     rawCandidate: WarmupCandidate33Raw,
-    solution: WarmupSolution33,
     rawSolution: WarmupSolution33Raw,
     filepath: "src/react/tasks/1_warmup/17_UseContextTheme.jsx",
     articles: [
@@ -1166,9 +996,7 @@ export const WARMUP_TASKS = [
     id: "w34",
     title: "18. Сброс состояния через key",
     desc: "Исправьте баг, при котором черновик сообщения «переезжает» к другому собеседнику, — без useEffect, только с помощью key.",
-    candidate: WarmupCandidate34,
     rawCandidate: WarmupCandidate34Raw,
-    solution: WarmupSolution34,
     rawSolution: WarmupSolution34Raw,
     filepath: "src/react/tasks/1_warmup/18_KeyResetState.jsx",
     articles: [
@@ -1343,9 +1171,7 @@ export const WARMUP_TASKS = [
       id: "w16",
       title: "22. useEffect (Запрос)",
       desc: "Напишите GET-запрос к API и отрисуйте список имен пользователей в виде <ul><li></li></ul> с использованием useEffect и useState.",
-      candidate: WarmupCandidate16,
       rawCandidate: WarmupCandidate16Raw,
-      solution: WarmupSolution16,
       rawSolution: WarmupSolution16Raw,
       filepath: "src/react/tasks/1_warmup/22_UseEffectFetch.jsx",
       solutions: [
@@ -1398,9 +1224,7 @@ export const WARMUP_TASKS = [
       id: "w17",
       title: "23. useEffect (AbortController)",
       desc: "Напишите GET-запрос к API с отменой запроса через AbortController в функции очистки useEffect при размонтировании.",
-      candidate: WarmupCandidate17,
       rawCandidate: WarmupCandidate17Raw,
-      solution: WarmupSolution17,
       rawSolution: WarmupSolution17Raw,
       filepath: "src/react/tasks/1_warmup/23_UseEffectAbortController.jsx",
       solutions: [
@@ -1469,9 +1293,7 @@ export const WARMUP_TASKS = [
       id: "w27",
       title: "24. Таймер и интервал в useEffect",
       desc: "Реализуйте секундомер с setInterval в useEffect. Обеспечьте обязательную очистку clearInterval при размонтировании и используйте функциональный сеттер setSeconds(prev => prev + 1) для защиты от Stale Closure.",
-      candidate: WarmupCandidate27,
       rawCandidate: WarmupCandidate27Raw,
-      solution: WarmupSolution27,
       rawSolution: WarmupSolution27Raw,
       filepath: "src/react/tasks/1_warmup/24_UseEffectTimer.jsx",
       solutions: [
@@ -1524,9 +1346,7 @@ export const WARMUP_TASKS = [
       id: "w28",
       title: "25. Подписка на глобальные события окна",
       desc: "Реализуйте подписку на глобальное событие keydown окна браузера для закрытия модального окна по нажатию клавиши Escape. Обязательно удаляйте слушатель в функции очистки useEffect.",
-      candidate: WarmupCandidate28,
       rawCandidate: WarmupCandidate28Raw,
-      solution: WarmupSolution28,
       rawSolution: WarmupSolution28Raw,
       filepath: "src/react/tasks/1_warmup/25_UseEffectEventListener.jsx",
       solutions: [
@@ -1623,9 +1443,7 @@ export const WARMUP_TASKS = [
       id: "w23",
       title: "27. useRef (Управление фокусом)",
       desc: "Напишите компонент, который устанавливает фокус на инпут при клике на кнопку с помощью useRef.",
-      candidate: WarmupCandidate23,
       rawCandidate: WarmupCandidate23Raw,
-      solution: WarmupSolution23,
       rawSolution: WarmupSolution23Raw,
       filepath: "src/react/tasks/1_warmup/27_UseRefFocus.jsx",
       solutions: [
@@ -1678,9 +1496,7 @@ export const WARMUP_TASKS = [
       id: "w24",
       title: "28. useRef (Неконтролируемая форма)",
       desc: "Напишите неуправляемую форму: значение читается через ref при отправке, затем поле очищается и получает фокус.",
-      candidate: WarmupCandidate24,
       rawCandidate: WarmupCandidate24Raw,
-      solution: WarmupSolution24,
       rawSolution: WarmupSolution24Raw,
       filepath: "src/react/tasks/1_warmup/28_UseRefUncontrolledForm.jsx",
       solutions: [
@@ -1782,9 +1598,7 @@ export const WARMUP_TASKS = [
       id: "w19",
       title: "30. useMemo (Практика)",
       desc: "Мемоизируйте фильтрацию большого массива пользователей (10 000 элементов), чтобы она не пересчитывалась при ре-рендерах, вызванных сменой темы, а срабатывала только при изменении поискового запроса.",
-      candidate: WarmupCandidate19,
       rawCandidate: WarmupCandidate19Raw,
-      solution: WarmupSolution19,
       rawSolution: WarmupSolution19Raw,
       filepath: "src/react/tasks/1_warmup/30_UseMemoPractice.jsx",
       articles: [
@@ -1871,9 +1685,7 @@ export const WARMUP_TASKS = [
       id: "w21",
       title: "32. useCallback (Практика)",
       desc: "Создайте мемоизированную функцию-обработчик increment с помощью хука useCallback с пустым массивом зависимостей и передайте в компонент, защищенный React.memo.",
-      candidate: WarmupCandidate21,
       rawCandidate: WarmupCandidate21Raw,
-      solution: WarmupSolution21,
       rawSolution: WarmupSolution21Raw,
       filepath: "src/react/tasks/1_warmup/32_UseCallbackPractice.jsx",
       articles: [
@@ -1916,9 +1728,7 @@ export const WARMUP_TASKS = [
       id: "w31",
       title: "33. Пользовательский хук (useToggle)",
       desc: "Создайте собственный переиспользуемый хук useToggle(initialValue = false), возвращающий кортеж [value, toggle, setValue], и примените его для управления видимостью блока в интерфейсе.",
-      candidate: WarmupCandidate31,
       rawCandidate: WarmupCandidate31Raw,
-      solution: WarmupSolution31,
       rawSolution: WarmupSolution31Raw,
       filepath: "src/react/tasks/1_warmup/33_CustomHookUseToggle.jsx",
       solutions: [
@@ -1971,9 +1781,7 @@ export const WARMUP_TASKS = [
     id: "w35",
     title: "34. Пользовательский хук (useLocalStorage)",
     desc: "Создайте хук useLocalStorage с ленивой инициализацией useState, безопасным JSON.parse и записью в localStorage при изменении значения.",
-    candidate: WarmupCandidate35,
     rawCandidate: WarmupCandidate35Raw,
-    solution: WarmupSolution35,
     rawSolution: WarmupSolution35Raw,
     filepath: "src/react/tasks/1_warmup/34_UseLocalStorage.jsx",
     articles: [
@@ -2729,9 +2537,7 @@ export const REFACTORING_TASKS = [
     id: "r15",
     title: "16. Рефакторинг (Company X)",
     desc: "Проведите код-ревью компонента UserPostsList: найдите баги загрузки данных, утечку таймера, мутацию state, неверные ключи и сломанную мемоизацию — и исправьте их.",
-    candidate: RefactoringCandidate15Comp,
     rawCandidate: RefactoringCandidate15,
-    solution: RefactoringSolution15Comp,
     rawSolution: RefactoringSolution15,
     filepath: "src/react/tasks/2_refactoring/16_CompanyXRefactoring.tsx",
     articles: [
@@ -2782,9 +2588,7 @@ export const REFACTORING_TASKS = [
     title: "17. Рефакторинг (Company X)",
     desc: "Проведите рефакторинг компонента секундомера: вынесите стили в App.css, избавьтесь от прямого доступа к DOM, устраните утечки таймеров, вынесите логику в кастомный хук useTimer и отформатируйте вывод времени.",
     isMultiFile: true,
-    candidate: RefactoringCandidate16,
     rawCandidate: `// App.jsx\n${RefactoringCandidate16_App}\n\n// App.css\n${RefactoringCandidate16_Css}`,
-    solution: RefactoringSolution16,
     rawSolution: `// App.jsx\n${RefactoringSolution16_App}\n\n// App.css\n${RefactoringSolution16_Css}`,
     filepath: "src/react/tasks/2_refactoring/17_TimerRefactoring/App.jsx",
     files: [
@@ -2861,9 +2665,7 @@ export const REFACTORING_TASKS = [
     title: "18. Рефакторинг (Company X)",
     desc: "Исправьте проблемы в приложении генератора случайных чисел: почините раскрытие списка при переключении видимости, устраните потерю остановки таймера, предотвратите сброс данных при повторном монтировании, реализуйте удаление элементов и улучшите архитектуру приложения.",
     isMultiFile: true,
-    candidate: RefactoringCandidate17,
     rawCandidate: `// App.jsx\n${RefactoringCandidate17_App}\n\n// Buttons.jsx\n${RefactoringCandidate17_Buttons}\n\n// List.jsx\n${RefactoringCandidate17_List}`,
-    solution: RefactoringSolution17,
     rawSolution: `// App.jsx\n${RefactoringSolution17_App}\n\n// Buttons.jsx\n${RefactoringSolution17_Buttons}\n\n// List.jsx\n${RefactoringSolution17_List}`,
     filepath: "src/react/tasks/2_refactoring/18_RandomNumberGenerator/App.jsx",
     files: [
@@ -2961,9 +2763,7 @@ export const MAIN_TASKS = [
     difficulty: "junior",
     title: "1. Todo List",
     desc: "Базовый трекер задач: добавление без пустых строк, удаление по клику и зачеркивание при выполнении.",
-    candidate: Candidate5,
     rawCandidate: Candidate5Raw,
-    solution: Solution5,
     rawSolution: Solution5Raw,
     filepath: "src/react/tasks/3_ui_patterns/1_TodoList.jsx",
     articles: [
@@ -3013,9 +2813,7 @@ export const MAIN_TASKS = [
     difficulty: "junior",
     title: "2. Todo List (Company X)",
     desc: "Реализуйте Todo-приложение со списками «Сегодня» и «Завтра» в едином объекте состояния: у каждого списка своё поле ввода, добавление без пустых задач и удаление.",
-    candidate: Candidate6,
     rawCandidate: Candidate6Raw,
-    solution: Solution6,
     rawSolution: Solution6Raw,
     filepath: "src/react/tasks/3_ui_patterns/2_TodoListCompanyX.jsx",
     articles: [
@@ -3060,9 +2858,7 @@ export const MAIN_TASKS = [
     difficulty: "junior",
     title: "3. Работа с постами (Company X)",
     desc: "Реализуйте компонент PostsManager: загрузка первых 5 постов по URL, индикаторы загрузки/ошибки, локальное добавление постов в начало с пометкой (локальный) и удаление постов.",
-    candidate: Candidate8,
     rawCandidate: Candidate8Raw,
-    solution: Solution8,
     rawSolution: Solution8Raw,
     filepath: "src/react/tasks/3_ui_patterns/3_PostsManager.jsx",
     articles: [
@@ -3106,9 +2902,7 @@ export const MAIN_TASKS = [
     difficulty: "middle",
     title: "4. Работа с изображением (Company X)",
     desc: "Реализуйте компонент RefetchImage: повторная загрузка изображения по клику через fetch с корректным управлением памятью и освобождением ресурсов.",
-    candidate: Candidate7,
     rawCandidate: Candidate7Raw,
-    solution: Solution7,
     rawSolution: Solution7Raw,
     filepath: "src/react/tasks/3_ui_patterns/4_RefetchImage.jsx",
     articles: [
@@ -3157,9 +2951,7 @@ export const MAIN_TASKS = [
     difficulty: "middle",
     title: "5. Работа с паролем (Company X)",
     desc: "Реализуйте поле ввода пароля с возможностью временно показать текст. При показе пароля запускается авто-скрытие по таймеру hideTimeoutMs. Таймер перезапускается при вводе и сбрасывается при размонтировании.",
-    candidate: Candidate9,
     rawCandidate: Candidate9Raw,
-    solution: Solution9,
     rawSolution: Solution9Raw,
     filepath: "src/react/tasks/3_ui_patterns/5_PasswordCompanyX.jsx",
     articles: [
@@ -3209,9 +3001,7 @@ export const MAIN_TASKS = [
     difficulty: "middle",
     title: "6. Корзина товаров и скидки (Company X)",
     desc: "Реализация корзины интернет-магазина с промокодами, расчетом скидок и стоимости доставки через производное состояние без лишних синхронизирующих эффектов.",
-    candidate: Candidate13,
     rawCandidate: Candidate13Raw,
-    solution: Solution13,
     rawSolution: Solution13Raw,
     filepath: "src/react/tasks/3_ui_patterns/6_ShoppingCart.jsx",
     articles: [
@@ -3267,9 +3057,7 @@ export const MAIN_TASKS = [
     difficulty: "middle",
     title: "7. Форма регистрации с валидацией",
     desc: "Реализуйте форму регистрации: правила валидации, показ ошибок после blur или попытки отправки, блокировку кнопки и доступность через useId и aria-атрибуты.",
-    candidate: Candidate16,
     rawCandidate: Candidate16Raw,
-    solution: Solution16,
     rawSolution: Solution16Raw,
     filepath: "src/react/tasks/3_ui_patterns/7_FormValidation.jsx",
     articles: [
@@ -3318,9 +3106,7 @@ export const MAIN_TASKS = [
     difficulty: "middle",
     title: "8. Доступное модальное окно",
     desc: "Реализуйте модальное окно через портал: закрытие по Escape и клику на фон, фокус внутри окна (focus trap) и возврат фокуса на кнопку после закрытия.",
-    candidate: Candidate17,
     rawCandidate: Candidate17Raw,
-    solution: Solution17,
     rawSolution: Solution17Raw,
     filepath: "src/react/tasks/3_ui_patterns/8_AccessibleModal.jsx",
     articles: [
@@ -3369,9 +3155,7 @@ export const MAIN_TASKS = [
     difficulty: "middle",
     title: "9. Дерево файлов (рекурсивный компонент)",
     desc: "Отрисуйте дерево папок любой глубины рекурсивным компонентом: раскрытие и сворачивание папок и подсчёт файлов на всех уровнях.",
-    candidate: Candidate18,
     rawCandidate: Candidate18Raw,
-    solution: Solution18,
     rawSolution: Solution18Raw,
     filepath: "src/react/tasks/3_ui_patterns/9_FileTree.jsx",
     articles: [
@@ -3415,9 +3199,7 @@ export const MAIN_TASKS = [
     difficulty: "middle",
     title: "10. Персонажи Рик и Морти: поиск и фильтры",
     desc: "Асинхронный поиск по имени и фильтрация по статусу (alive, dead, unknown) с Rick and Morty API. Оптимизация запросов, обработка состояний загрузки/ошибок и предотвращение race conditions.",
-    candidate: Candidate1,
     rawCandidate: Candidate1Raw,
-    solution: Solution1,
     rawSolution: Solution1Raw,
     filepath: "src/react/tasks/3_ui_patterns/10_FetchPersons.jsx",
     articles: [
@@ -3487,9 +3269,7 @@ export const MAIN_TASKS = [
     difficulty: "middle",
     title: "11. Персонажи Рик и Морти: Debounce",
     desc: "Добавьте в компонент отмену спама запросов при печати (Debounce) с помощью кастомного хука useDebounce.",
-    candidate: Candidate2,
     rawCandidate: Candidate2Raw,
-    solution: Solution2,
     rawSolution: Solution2Raw,
     filepath: "src/react/tasks/3_ui_patterns/11_FetchPersonsDebounce.jsx",
     articles: [
@@ -3538,9 +3318,7 @@ export const MAIN_TASKS = [
     difficulty: "middle",
     title: "12. Хук useFetch",
     desc: "Напишите переиспользуемый хук useFetch с состояниями загрузки и ошибки, отменой устаревших запросов через AbortController и методом refetch.",
-    candidate: Candidate20,
     rawCandidate: Candidate20Raw,
-    solution: Solution20,
     rawSolution: Solution20Raw,
     filepath: "src/react/tasks/3_ui_patterns/12_UseFetchHook.jsx",
     articles: [
@@ -3584,9 +3362,7 @@ export const MAIN_TASKS = [
     difficulty: "middle",
     title: "13. Бесконечная прокрутка",
     desc: "Подгружайте посты постранично, когда маячок в конце списка попадает в зону видимости (IntersectionObserver), с защитой от дублей запросов и обработкой ошибок.",
-    candidate: Candidate19,
     rawCandidate: Candidate19Raw,
-    solution: Solution19,
     rawSolution: Solution19Raw,
     filepath: "src/react/tasks/3_ui_patterns/13_InfiniteScroll.jsx",
     articles: [
@@ -3630,9 +3406,7 @@ export const MAIN_TASKS = [
     difficulty: "middle",
     title: "14. Оптимистичные обновления (Company X)",
     desc: "Реализация паттерна Optimistic UI: мгновенное изменение состояния интерфейса, вызов асинхронной мутации и автоматический откат (Rollback) при серверной ошибке.",
-    candidate: Candidate12,
     rawCandidate: Candidate12Raw,
-    solution: Solution12,
     rawSolution: Solution12Raw,
     filepath: "src/react/tasks/3_ui_patterns/14_OptimisticLike.jsx",
     articles: [
@@ -3687,9 +3461,7 @@ export const MAIN_TASKS = [
     difficulty: "middle",
     title: "15. Секундомер с кругами (Company X)",
     desc: "Реализация высокоточного секундомера с фиксацией кругов (Lap Times), защитой от дрейфа таймера в Event Loop и обязательной очисткой ресурсов.",
-    candidate: Candidate15,
     rawCandidate: Candidate15Raw,
-    solution: Solution15,
     rawSolution: Solution15Raw,
     filepath: "src/react/tasks/3_ui_patterns/15_StopwatchLaps.jsx",
     articles: [
@@ -3745,9 +3517,7 @@ export const MAIN_TASKS = [
     difficulty: "senior",
     title: "16. Персонажи Рик и Морти: кэширование запросов",
     desc: "Добавьте к решению с Debounce кэширование результатов сетевых запросов с помощью Map для исключения повторных вызовов API при одинаковых фильтрах.",
-    candidate: Candidate3,
     rawCandidate: Candidate3Raw,
-    solution: Solution3,
     rawSolution: Solution3Raw,
     filepath: "src/react/tasks/3_ui_patterns/16_FetchPersonsCache.jsx",
     articles: [
@@ -3801,9 +3571,7 @@ export const MAIN_TASKS = [
     difficulty: "senior",
     title: "17. Error Boundary",
     desc: "Напишите классовый Error Boundary с fallback и сбросом ошибки, изолируйте виджеты друг от друга и объясните, почему ошибки обработчиков событий он не ловит.",
-    candidate: Candidate21,
     rawCandidate: Candidate21Raw,
-    solution: Solution21,
     rawSolution: Solution21Raw,
     filepath: "src/react/tasks/3_ui_patterns/17_ErrorBoundary.jsx",
     articles: [
@@ -3847,9 +3615,7 @@ export const MAIN_TASKS = [
     difficulty: "senior",
     title: "18. lazy, Suspense и use() (React 19)",
     desc: "Загрузите тяжёлый компонент по требованию через React.lazy, а данные профиля прочитайте хуком use() внутри Suspense вместо useEffect + isLoading.",
-    candidate: Candidate22,
     rawCandidate: Candidate22Raw,
-    solution: Solution22,
     rawSolution: Solution22Raw,
     filepath: "src/react/tasks/3_ui_patterns/18_LazySuspenseUse.jsx",
     articles: [
@@ -3898,9 +3664,7 @@ export const MAIN_TASKS = [
     difficulty: "senior",
     title: "19. Форма на Actions: useActionState, useOptimistic, useFormStatus",
     desc: "Перепишите форму комментария на Actions из React 19: состояние формы через useActionState, мгновенный показ комментария через useOptimistic и статус отправки через useFormStatus.",
-    candidate: Candidate23,
     rawCandidate: Candidate23Raw,
-    solution: Solution23,
     rawSolution: Solution23Raw,
     filepath: "src/react/tasks/3_ui_patterns/19_ActionsForm.jsx",
     articles: [
@@ -3949,9 +3713,7 @@ export const MAIN_TASKS = [
     difficulty: "senior",
     title: "20. Синхронизация фильтров с URL (Company X)",
     desc: "Реализуйте каталог товаров с фильтрацией (поиск, категория, наличие, сортировка) и полной двусторонней синхронизацией состояния с адресной строкой и навигацией браузера.",
-    candidate: Candidate10,
     rawCandidate: Candidate10Raw,
-    solution: Solution10,
     rawSolution: Solution10Raw,
     filepath: "src/react/tasks/3_ui_patterns/20_UrlSearchParamsFilter.jsx",
     articles: [
@@ -4028,9 +3790,7 @@ export const MAIN_TASKS = [
     difficulty: "senior",
     title: "21. Автокомплит с клавиатурой (Company X)",
     desc: "Реализация доступного поля ввода с выпадающим списком подсказок (Combobox / Autocomplete), навигацией стрелками клавиатуры, выбором по Enter и управлением фокусом.",
-    candidate: Candidate11,
     rawCandidate: Candidate11Raw,
-    solution: Solution11,
     rawSolution: Solution11Raw,
     filepath: "src/react/tasks/3_ui_patterns/21_AutocompleteCombobox.jsx",
     articles: [
@@ -4091,9 +3851,7 @@ export const MAIN_TASKS = [
     difficulty: "senior",
     title: "22. Аккордеон: Compound Components (Company X)",
     desc: "Проектирование составного компонента (Compound Components) с координацией состояния через React Context, поддержкой режимов single/multiple и WAI-ARIA.",
-    candidate: Candidate14,
     rawCandidate: Candidate14Raw,
-    solution: Solution14,
     rawSolution: Solution14Raw,
     filepath: "src/react/tasks/3_ui_patterns/22_CompoundAccordion.jsx",
     articles: [
@@ -4156,9 +3914,7 @@ export const ADVANCED_TASKS = [
     difficulty: "junior",
     title: "1. Загрузка данных (useReducer)",
     desc: "Реализуйте загрузку пользователей из внешнего API при монтировании с индикацией загрузки и обработкой ошибок, используя useReducer вместо useState.",
-    candidate: CandidateAdvanced1,
     rawCandidate: CandidateAdvanced1Raw,
-    solution: SolutionAdvanced1,
     rawSolution: `// index.jsx\n${SolutionAdvanced1_Index}\n\n// useFetchUsers.js\n${SolutionAdvanced1_Hook}\n\n// reducer.js\n${SolutionAdvanced1_Reducer}`,
     filepath: "src/react/tasks/4_state_management/1_FetchUsersReducer/index.jsx",
     files: [
@@ -4227,9 +3983,7 @@ export const ADVANCED_TASKS = [
     difficulty: "middle",
     title: "2. Глобальное состояние: Context + useReducer",
     desc: "Уберите prop drilling корзины: вынесите её в провайдер на useReducer, разделите контексты данных и dispatch и создайте хуки useCart / useCartDispatch.",
-    candidate: AdvancedCandidate6,
     rawCandidate: AdvancedCandidate6Raw,
-    solution: AdvancedSolution6,
     rawSolution: AdvancedSolution6Raw,
     filepath: "src/react/tasks/4_state_management/2_ContextReducerCart.jsx",
     articles: [
@@ -4268,9 +4022,7 @@ export const ADVANCED_TASKS = [
     difficulty: "middle",
     title: "3. Стор на Zustand и селекторы",
     desc: "Создайте стор задач на Zustand и подпишите компоненты через селекторы так, чтобы каждый перерисовывался только при изменении нужной ему части состояния.",
-    candidate: AdvancedCandidate7,
     rawCandidate: AdvancedCandidate7Raw,
-    solution: AdvancedSolution7,
     rawSolution: AdvancedSolution7Raw,
     filepath: "src/react/tasks/4_state_management/3_ZustandStore.jsx",
     articles: [
@@ -4314,9 +4066,7 @@ export const ADVANCED_TASKS = [
     difficulty: "middle",
     title: "4. Серверное состояние на TanStack Query",
     desc: "Замените ручную загрузку через useEffect на useQuery и useMutation: общий кеш без дублирующих запросов, инвалидация после добавления и staleTime.",
-    candidate: AdvancedCandidate12,
     rawCandidate: AdvancedCandidate12Raw,
-    solution: AdvancedSolution12,
     rawSolution: AdvancedSolution12Raw,
     filepath: "src/react/tasks/4_state_management/4_TanStackQueryTodos.jsx",
     articles: [
@@ -4365,9 +4115,7 @@ export const ADVANCED_TASKS = [
     difficulty: "middle",
     title: "5. Загрузка данных (Redux Toolkit)",
     desc: "Реализуйте загрузку пользователей из внешнего API с помощью createAsyncThunk, настройте store с configureStore и выведите список пользователей, используя useSelector и useDispatch.",
-    candidate: CandidateAdvanced2,
     rawCandidate: CandidateAdvanced2Raw,
-    solution: SolutionAdvanced2,
     rawSolution: `// index.jsx\n${SolutionAdvanced2_Index}\n\n// usersSlice.js\n${SolutionAdvanced2_Slice}\n\n// store.js\n${SolutionAdvanced2_Store}`,
     filepath: "src/react/tasks/4_state_management/5_FetchUsersRTK/index.jsx",
     files: [
@@ -4436,9 +4184,7 @@ export const ADVANCED_TASKS = [
     difficulty: "middle",
     title: "6. Загрузка данных (RTK + Селекторы)",
     desc: "Реализуйте загрузку пользователей из внешнего API с помощью createAsyncThunk, строку поиска и мемоизированную фильтрацию с использованием createSelector.",
-    candidate: CandidateAdvanced3,
     rawCandidate: CandidateAdvanced3Raw,
-    solution: SolutionAdvanced3,
     rawSolution: `// index.jsx\n${SolutionAdvanced3_Index}\n\n// usersSlice.js\n${SolutionAdvanced3_Slice}\n\n// store.js\n${SolutionAdvanced3_Store}`,
     filepath: "src/react/tasks/4_state_management/6_FetchUsersRTKSelectors/index.jsx",
     files: [
@@ -4507,9 +4253,7 @@ export const ADVANCED_TASKS = [
     difficulty: "senior",
     title: "7. useSyncExternalStore: подписка на внешний стор",
     desc: "Перепишите подписку на статус сети на useSyncExternalStore и напишите минимальный внешний стор, который безопасно читают несколько компонентов.",
-    candidate: AdvancedCandidate8,
     rawCandidate: AdvancedCandidate8Raw,
-    solution: AdvancedSolution8,
     rawSolution: AdvancedSolution8Raw,
     filepath: "src/react/tasks/4_state_management/7_SyncExternalStore.jsx",
     articles: [
@@ -4556,9 +4300,7 @@ export const LIFECYCLE_TASKS = [
     difficulty: "junior",
     title: "1. Батчинг: что выведется и сколько будет рендеров",
     desc: "Предскажите порядок логов, число рендеров и итоговое значение после клика: обновления в обработчике и в setTimeout, прямая и функциональная форма setState.",
-    candidate: AdvancedCandidate9,
     rawCandidate: AdvancedCandidate9Raw,
-    solution: AdvancedSolution9,
     rawSolution: AdvancedSolution9Raw,
     filepath: "src/react/tasks/5_lifecycle_and_runtime/1_BatchingRenderCount.jsx",
     articles: [
@@ -4602,9 +4344,7 @@ export const LIFECYCLE_TASKS = [
     difficulty: "junior",
     title: "2. Какие компоненты перерисуются",
     desc: "Предскажите, какие компоненты отрендерятся после изменения состояния родителя: обычный ребёнок, memo без пропсов, memo с массивом в пропсах и компонент из children.",
-    candidate: AdvancedCandidate10,
     rawCandidate: AdvancedCandidate10Raw,
-    solution: AdvancedSolution10,
     rawSolution: AdvancedSolution10Raw,
     filepath: "src/react/tasks/5_lifecycle_and_runtime/2_ChildRerenders.jsx",
     articles: [
@@ -4648,9 +4388,7 @@ export const LIFECYCLE_TASKS = [
     difficulty: "middle",
     title: "3. Порядок вызовов Render, Ref Callback и useEffect (Company X)",
     desc: "Разбор фаз жизненного цикла в React 19: Render phase (синхронно), Commit phase (Ref Callback) и Post-commit phase (useEffect).",
-    candidate: CandidateAdvanced4,
     rawCandidate: CandidateAdvanced4Raw,
-    solution: SolutionAdvanced4,
     rawSolution: SolutionAdvanced4Raw,
     filepath: "src/react/tasks/5_lifecycle_and_runtime/3_ReactRenderRefUseEffect.jsx",
     solutions: [
@@ -4701,9 +4439,7 @@ export const LIFECYCLE_TASKS = [
     difficulty: "middle",
     title: "4. Устаревшее замыкание в setTimeout",
     desc: "Объясните, почему отложенный alert показывает старое значение счётчика, и исправьте компонент так, чтобы он показывал актуальное.",
-    candidate: AdvancedCandidate11,
     rawCandidate: AdvancedCandidate11Raw,
-    solution: AdvancedSolution11,
     rawSolution: AdvancedSolution11Raw,
     filepath: "src/react/tasks/5_lifecycle_and_runtime/4_StaleClosureTimeout.jsx",
     articles: [
@@ -4747,9 +4483,7 @@ export const LIFECYCLE_TASKS = [
     difficulty: "senior",
     title: "5. Порядок вызовов useLayoutEffect, useEffect и Cleanup (Company X)",
     desc: "Глубокий анализ порядка выполнения синхронных вызовов useLayoutEffect, их очисток и эффектов useEffect при первичном монтировании и обновлении состояния.",
-    candidate: CandidateAdvanced5,
     rawCandidate: CandidateAdvanced5Raw,
-    solution: SolutionAdvanced5,
     rawSolution: SolutionAdvanced5Raw,
     filepath: "src/react/tasks/5_lifecycle_and_runtime/5_ReactLayoutEffectCleanupCycle.jsx",
     solutions: [
@@ -5375,8 +5109,6 @@ export const REACT_TS_PRACTICE_TASKS = [
     difficulty: "junior",
     title: "1. useEffect + TS (Запрос)",
     desc: "Перепишите код компонента списка пользователей с запросом данных из сетевого API с чистого JSX на TSX с использованием TypeScript.",
-    candidate: ReactTsPracticeCandidate1,
-    solution: ReactTsPracticeSolution1,
     rawCandidate: ReactTsPracticeCandidate1Raw,
     rawSolution: ReactTsPracticeSolution1Raw,
     filepath: "src/react/tasks/7_typescript_components/1_UseEffectFetch.tsx",
@@ -5425,8 +5157,6 @@ export const REACT_TS_PRACTICE_TASKS = [
     difficulty: "junior",
     title: "2. Менеджер постов + TS",
     desc: "Перепишите компонент PostsManager (загрузка постов по API, добавление локальных постов и удаление) с чистого JSX на TSX с использованием TypeScript.",
-    candidate: ReactTsPracticeCandidate3,
-    solution: ReactTsPracticeSolution3,
     rawCandidate: ReactTsPracticeCandidate3Raw,
     rawSolution: ReactTsPracticeSolution3Raw,
     filepath: "src/react/tasks/7_typescript_components/2_PostsManager.tsx",
@@ -5478,8 +5208,6 @@ export const REACT_TS_PRACTICE_TASKS = [
     difficulty: "middle",
     title: "3. Работа с изображением + TS",
     desc: "Перепишите компонент RefetchImage (карточка изображения с перезагрузкой по кнопке и использованием blob-URL) с чистого JSX на TSX с использованием TypeScript.",
-    candidate: ReactTsPracticeCandidate2,
-    solution: ReactTsPracticeSolution2,
     rawCandidate: ReactTsPracticeCandidate2Raw,
     rawSolution: ReactTsPracticeSolution2Raw,
     filepath: "src/react/tasks/7_typescript_components/3_RefetchImage.tsx",

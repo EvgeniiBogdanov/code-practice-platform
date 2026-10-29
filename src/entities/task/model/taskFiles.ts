@@ -26,8 +26,8 @@ export function getTaskFiles(
   // 2. Raw text extraction
   const rawText =
     type === "candidate"
-      ? task.rawCandidate || (typeof task.candidate === "string" ? task.candidate : "")
-      : task.rawSolution || (typeof task.solution === "string" ? task.solution : "");
+      ? task.rawCandidate || task.candidate || ""
+      : task.rawSolution || task.solution || "";
 
   const defaultName = task.filepath
     ? task.filepath.split("/").pop() ||

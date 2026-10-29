@@ -39,7 +39,7 @@ export const CreateAccountForm = ({
     setError(null);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault();
     if (isEntering) return;
 

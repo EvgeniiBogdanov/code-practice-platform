@@ -15,7 +15,7 @@
 
 [![CI](https://img.shields.io/github/actions/workflow/status/EvgeniiBogdanov/code-practice-platform/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/EvgeniiBogdanov/code-practice-platform/actions/workflows/ci.yml)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/EvgeniiBogdanov/code-practice-platform/badge?style=flat-square)](https://scorecard.dev/viewer/?uri=github.com/EvgeniiBogdanov/code-practice-platform)
-[![Version](https://img.shields.io/badge/version-2.4.46-black?style=flat-square)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.4.47-black?style=flat-square)](CHANGELOG.md)
 [![License: AGPL-3.0](https://img.shields.io/badge/code-AGPL--3.0-black?style=flat-square)](LICENSE)
 [![Content: CC BY-NC-SA 4.0](https://img.shields.io/badge/content-CC_BY--NC--SA_4.0-black?style=flat-square)](LICENSE-CONTENT.md)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=white)](https://react.dev)
@@ -35,13 +35,13 @@
 
 Собеседование решается практикой, а форма — регулярностью. Платформа собирает всё для этого в одном месте и работает без бэкенда: аккаунт — это только имя, а задачи, решения и прогресс хранятся в браузере.
 
-| Раздел               | Задач | Что внутри                                                                      |
-| :------------------- | ----: | :------------------------------------------------------------------------------ |
-| **JavaScript**       |   257 | От var/let/const и типов до this, классов, Event Loop и MyPromise               |
-| **TypeScript**       |    54 | От аннотаций и сужения типов до infer, вариантности и рекурсивных типов         |
-| **React**            |   101 | Хуки и Actions React 19, перерендеры, Zustand, Redux и TanStack Query           |
-| **Алгоритмы**        |    58 | Two Pointers, Sliding Window, графы и деревья с визуализацией O(N)/O(1)         |
-| **Системный дизайн** |     9 | 14 статей теории, 4 кейса по RADIO с общей схемой и 9 код-дриллов с автотестами |
+| Раздел               | Задач | Что внутри                                                                        |
+| :------------------- | ----: | :-------------------------------------------------------------------------------- |
+| **JavaScript**       |   257 | От var/let/const и типов до this, классов, Event Loop и MyPromise                 |
+| **TypeScript**       |    54 | От аннотаций и сужения типов до infer, вариантности и рекурсивных типов           |
+| **React**            |   101 | Хуки и Actions React 19, перерендеры, Zustand, Redux и TanStack Query             |
+| **Алгоритмы**        |    58 | Two Pointers, Sliding Window, графы и деревья с визуализацией O(N)/O(1)           |
+| **Системный дизайн** |    18 | 14 статей теории, 8 кейсов по RADIO с общей схемой и 18 код-дриллов с автотестами |
 
 ## Возможности
 

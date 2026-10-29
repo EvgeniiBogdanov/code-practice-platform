@@ -2,47 +2,36 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.eyebrow {
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-body);
+  color: var(--color-sd);
+  letter-spacing: 0.02em;
 }
 
 .question {
   margin: 0;
-  font-size: var(--fs-md);
+  font-size: var(--fs-lg);
   font-weight: var(--fw-semibold);
+  line-height: var(--lh-heading);
   color: var(--text-main);
 }
 
-.options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-
-.option {
-  padding: var(--space-2) var(--space-4);
-  font: inherit;
-  font-size: var(--fs-sm);
-  color: var(--text-secondary);
-  cursor: pointer;
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  transition: all var(--transition-fast);
-}
-
-.option:hover {
-  color: var(--text-main);
-  border-color: var(--border-hover);
-}
-
-.chosen,
-.chosen:hover {
-  color: var(--text-main);
-  background-color: var(--color-sd-bg);
-  border-color: var(--color-sd);
-}
-
-.explanations {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
+/* A checked option takes the colour of the section. */
+.choices {
+  --choice-accent: var(--color-sd);
+  --choice-accent-bg: var(--color-sd-bg);
 }

@@ -18,7 +18,7 @@ export const SettingsAccountSection = memo(
     const inputId = useId();
     const errorId = useId();
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+    const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>): void => {
       event.preventDefault();
       const validationError = getAccountNameError(name);
       if (validationError) {

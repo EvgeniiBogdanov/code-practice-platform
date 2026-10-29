@@ -65,7 +65,7 @@ export const SettingsCustomizationSection = memo((): React.JSX.Element => {
   }, []);
 
   const handleSubmit = useCallback(
-    async (e: React.FormEvent): Promise<void> => {
+    async (e: React.SubmitEvent<HTMLFormElement>): Promise<void> => {
       e.preventDefault();
       const sanitized = sanitizeAssistantName(inputValue, MAX_ASSISTANT_NAME_LENGTH).trim();
       const nextName = sanitized || DEFAULT_ASSISTANT_NAME;

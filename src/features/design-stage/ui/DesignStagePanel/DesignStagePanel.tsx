@@ -1,6 +1,8 @@
 import React from "react";
-import { Badge, Callout, MarkdownView } from "@/shared/ui";
+import { Shapes } from "lucide-react";
+import { Callout, MarkdownView } from "@/shared/ui";
 import {
+  RADIO_STAGES,
   isStageComplete,
   selectStageProgress,
   useDesignCaseStore,
@@ -35,43 +37,53 @@ export const DesignStagePanel = ({
   const chooseOption = useDesignCaseStore((state) => state.chooseOption);
   const toggleRubricItem = useDesignCaseStore((state) => state.toggleRubricItem);
   const isComplete = isStageComplete(stage, progress);
+  const meta = RADIO_STAGES.find(({ id }) => id === stage.id);
 
   return (
     <div className={styles.panel}>
-      <section className={styles.section} aria-label="Задание этапа">
-        <MarkdownView content={stage.prompt} />
-        <StageLinks topics={topics} drills={drills} />
+      <section className={styles.prompt} aria-label="Задание этапа">
+        {meta && (
+          <header className={styles.promptHeader}>
+            <span className={styles.letter} aria-hidden="true">
+              {meta.letter}
+            </span>
+            <span className={styles.promptTitle}>Задание</span>
+            <span className={styles.promptHint}>{meta.hint}</span>
+          </header>
+        )}
+        <MarkdownView className={styles.promptText} content={stage.prompt} />
       </section>
 
-      {stage.forks.map((fork) => (
+      <StageLinks topics={topics} drills={drills} />
+
+      {stage.forks.map((fork, index) => (
         <ForkQuestion
           key={fork.id}
           fork={fork}
+          position={index + 1}
+          total={stage.forks.length}
           chosenOptionId={progress.choices[fork.id]}
           onChoose={(optionId) => chooseOption(caseId, stage.id, fork.id, optionId)}
         />
       ))}
 
       {showReference && (
-        <Callout color="purple" size="sm" title="Пояснения к эталону">
-          <MarkdownView content={stage.notes} />
+        <Callout
+          color="purple"
+          size="sm"
+          icon={<Shapes size={16} aria-hidden="true" />}
+          title="Пояснения к эталону"
+        >
+          <MarkdownView className={styles.notes} content={stage.notes} />
         </Callout>
       )}
 
-      <section className={styles.section} aria-label="Самопроверка">
-        <div className={styles.rubricHeader}>
-          <h3 className={styles.rubricTitle}>Самопроверка</h3>
-          {isComplete && <Badge variant="green">Этап пройден</Badge>}
-        </div>
-        <p className={styles.rubricHint}>
-          Сверьте свою схему с эталоном и отметьте, что на ней есть.
-        </p>
-        <StageRubric
-          items={stage.rubric}
-          checkedIndexes={progress.rubric}
-          onToggle={(index) => toggleRubricItem(caseId, stage.id, index)}
-        />
-      </section>
+      <StageRubric
+        items={stage.rubric}
+        checkedIndexes={progress.rubric}
+        onToggle={(index) => toggleRubricItem(caseId, stage.id, index)}
+        isComplete={isComplete}
+      />
     </div>
   );
 };

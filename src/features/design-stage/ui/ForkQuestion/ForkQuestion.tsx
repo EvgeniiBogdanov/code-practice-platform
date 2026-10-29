@@ -1,56 +1,92 @@
 import React, { useId } from "react";
-import { clsx } from "clsx";
-import { Callout } from "@/shared/ui";
+import { CircleCheck, Lightbulb } from "lucide-react";
+import { Badge, Callout, UiChoiceList, type UiChoiceOption } from "@/shared/ui";
 import type { DesignFork } from "@/entities/design-case";
 import styles from "./ForkQuestion.module.css";
 
 export interface ForkQuestionProps {
   fork: DesignFork;
+  /** Position of the fork among the forks of the stage, from 1. */
+  position: number;
+  total: number;
   chosenOptionId: string | undefined;
   onChoose: (optionId: string) => void;
 }
 
-/** A design decision: pick an option, then see the trade-offs of every option. */
+/**
+ * A design decision as a test question: pick an option, then every option shows its trade-offs in
+ * place, the recommended one marked, so the answer can be compared and changed.
+ */
 export const ForkQuestion = ({
   fork,
+  position,
+  total,
   chosenOptionId,
   onChoose,
 }: ForkQuestionProps): React.JSX.Element => {
-  const labelId = useId();
+  const questionId = useId();
   const isAnswered = chosenOptionId !== undefined;
+  const recommended = fork.options.find((option) => option.recommended);
+  const isRecommendedChosen = isAnswered && recommended?.id === chosenOptionId;
+
+  const options = fork.options.map((option): UiChoiceOption => ({
+    id: option.id,
+    label: option.label,
+    description: isAnswered ? option.explanation : undefined,
+    tone: isAnswered && option.recommended ? "success" : undefined,
+    tags:
+      isAnswered && (option.recommended || option.id === chosenOptionId) ? (
+        <>
+          {option.recommended && (
+            <Badge variant="green" size="sm">
+              Рекомендуем
+            </Badge>
+          )}
+          {option.id === chosenOptionId && (
+            <Badge variant="gray" size="sm">
+              Ваш выбор
+            </Badge>
+          )}
+        </>
+      ) : undefined,
+  }));
 
   return (
-    <div className={styles.fork}>
-      <p id={labelId} className={styles.question}>
-        {fork.question}
-      </p>
-      <div className={styles.options} role="radiogroup" aria-labelledby={labelId}>
-        {fork.options.map((option) => (
-          <button
-            key={option.id}
-            type="button"
-            role="radio"
-            aria-checked={option.id === chosenOptionId}
-            className={clsx(styles.option, option.id === chosenOptionId && styles.chosen)}
-            onClick={() => onChoose(option.id)}
-          >
-            {option.label}
-          </button>
+    <section className={styles.fork} aria-labelledby={questionId}>
+      <header className={styles.header}>
+        <span className={styles.eyebrow}>
+          Развилка {position} из {total}
+        </span>
+        <h3 id={questionId} className={styles.question}>
+          {fork.question}
+        </h3>
+      </header>
+
+      {isAnswered &&
+        (isRecommendedChosen ? (
+          <Callout
+            size="sm"
+            color="green"
+            icon={<CircleCheck size={16} aria-hidden="true" />}
+            content="Совпадает с рекомендацией. Ниже — компромиссы каждого варианта."
+          />
+        ) : (
+          <Callout
+            size="sm"
+            color="amber"
+            icon={<Lightbulb size={16} aria-hidden="true" />}
+            content="Рекомендуем другой вариант. Сравните компромиссы: на интервью важно обосновать выбор."
+          />
         ))}
-      </div>
-      {isAnswered && (
-        <div className={styles.explanations}>
-          {fork.options.map((option) => (
-            <Callout
-              key={option.id}
-              size="sm"
-              color={option.recommended ? "green" : "gray"}
-              title={option.recommended ? `${option.label} — рекомендуемый вариант` : option.label}
-              content={option.explanation}
-            />
-          ))}
-        </div>
-      )}
-    </div>
+
+      <UiChoiceList
+        className={styles.choices}
+        options={options}
+        value={chosenOptionId}
+        onChange={onChoose}
+        labelledBy={questionId}
+        showKeys
+      />
+    </section>
   );
 };

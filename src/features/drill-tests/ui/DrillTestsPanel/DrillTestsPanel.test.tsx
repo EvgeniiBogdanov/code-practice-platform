@@ -109,11 +109,30 @@ describe("DrillTestsPanel", () => {
     expect(screen.getByText("SyntaxError: boom")).toBeInTheDocument();
   });
 
-  it("reveals a collapsed panel when the user starts a run", () => {
+  it("reveals a collapsed panel when the user starts a run, keeping the saved setting", () => {
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
     useUIStore.setState({ consoleCollapsed: true });
     const { rerender } = render(<DrillTestsPanel controller={makeController()} />);
     expect(screen.queryByRole("region", { name: "Результаты тестов" })).not.toBeInTheDocument();
+
     rerender(<DrillTestsPanel controller={makeController({ manualRuns: 1 })} />);
+    expect(screen.getByRole("region", { name: "Результаты тестов" })).toBeInTheDocument();
+    expect(useUIStore.getState().consoleCollapsed).toBe(true);
+    // The reveal must not update the store during render.
+    expect(consoleError).not.toHaveBeenCalled();
+    consoleError.mockRestore();
+  });
+
+  it("collapses a revealed panel with the toggle and saves the choice", () => {
+    useUIStore.setState({ consoleCollapsed: true });
+    const { rerender } = render(<DrillTestsPanel controller={makeController()} />);
+    rerender(<DrillTestsPanel controller={makeController({ manualRuns: 1 })} />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Свернуть панель" }));
+    expect(screen.queryByRole("region", { name: "Результаты тестов" })).not.toBeInTheDocument();
+    expect(useUIStore.getState().consoleCollapsed).toBe(true);
+
+    fireEvent.click(screen.getByRole("button", { name: "Развернуть панель" }));
     expect(useUIStore.getState().consoleCollapsed).toBe(false);
   });
 });
