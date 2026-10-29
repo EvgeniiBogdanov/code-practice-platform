@@ -1,5 +1,3 @@
-import React from "react";
-
 export type SectionType = "javascript" | "typescript" | "react" | "algorithms" | "system-design";
 
 export type TaskDifficulty =
@@ -27,7 +25,7 @@ export interface TaskSolution {
   filepath?: string;
   code?: string;
   files?: TaskFile[];
-  solution?: React.ComponentType | string;
+  solution?: string;
 }
 
 export type TaskVariant = TaskSolution;
@@ -57,8 +55,8 @@ export interface Task {
   subgroup?: string;
   tags?: string[];
   files?: TaskFile[];
-  candidate?: React.ComponentType | string;
-  solution?: React.ComponentType | string;
+  candidate?: string;
+  solution?: string;
   rawCandidate?: string;
   rawSolution?: string;
   /** TypeScript tasks: source of the read-only type tests (`tests.ts`). */

@@ -136,11 +136,11 @@ export const REACT_TS_TYPES = [
     autoImport: { symbol: "MouseEvent", module: "react", isDefault: false },
   },
   {
-    name: "FormEvent",
-    label: "FormEvent<HTMLFormElement>",
+    name: "SubmitEvent",
+    label: "SubmitEvent<HTMLFormElement>",
     detail: "Событие отправки формы в React",
-    insertText: "FormEvent<$1>",
-    autoImport: { symbol: "FormEvent", module: "react", isDefault: false },
+    insertText: "SubmitEvent<$1>",
+    autoImport: { symbol: "SubmitEvent", module: "react", isDefault: false },
   },
   {
     name: "RefObject",

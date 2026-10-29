@@ -324,7 +324,7 @@
   --task-tree-indent: 14px;
   --task-tree-border-width: 1.5px;
   /* The stage column of a design case; the board takes the rest of the width. */
-  --design-case-aside-width: 360px;
+  --design-case-aside-width: clamp(360px, 32vw, 460px);
 
   /* ==========================================
      4. BORDER RADIUS TOKENS

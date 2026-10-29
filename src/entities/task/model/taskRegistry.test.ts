@@ -71,13 +71,13 @@ describe("taskRegistry", () => {
     expect(task?.title).toContain("Рефакторинг (Company X)");
     expect(task?.section).toBe("react");
 
-    // Candidate code and component
-    expect(task?.candidate).toBeDefined();
+    // Candidate code
+    expect(task?.rawCandidate).toBeDefined();
     expect(task?.rawCandidate).toContain("useRef");
     expect(task?.rawCandidate).toContain("document.querySelector");
 
-    // Solution code and component
-    expect(task?.solution).toBeDefined();
+    // Solution code
+    expect(task?.rawSolution).toBeDefined();
     expect(task?.rawSolution).toContain("useTimer");
     expect(task?.rawSolution).toContain("formatTime");
 
@@ -117,8 +117,8 @@ describe("taskRegistry", () => {
     expect(task?.section).toBe("react");
 
     // Candidate and Solution code
-    expect(task?.candidate).toBeDefined();
-    expect(task?.solution).toBeDefined();
+    expect(task?.rawCandidate).toBeDefined();
+    expect(task?.rawSolution).toBeDefined();
     expect(task?.rawSolution).toContain("AbortController");
     expect(task?.rawSolution).toContain("toSorted");
 
@@ -138,13 +138,13 @@ describe("taskRegistry", () => {
     expect(task?.title).toContain("Рефакторинг (Company X)");
     expect(task?.section).toBe("react");
 
-    // Candidate code and component
-    expect(task?.candidate).toBeDefined();
+    // Candidate code
+    expect(task?.rawCandidate).toBeDefined();
     expect(task?.rawCandidate).toContain("toggleVisibleList");
     expect(task?.rawCandidate).toContain("setVisibleList(visibleList)");
 
-    // Solution code and component
-    expect(task?.solution).toBeDefined();
+    // Solution code
+    expect(task?.rawSolution).toBeDefined();
     expect(task?.rawSolution).toContain("setVisibleList((prev) => !prev)");
     expect(task?.rawSolution).toContain("timerRef");
     expect(task?.rawSolution).toContain("removeNumber");
@@ -194,13 +194,13 @@ describe("taskRegistry", () => {
     expect(task?.section).toBe("react");
 
     // Candidate code and raw code (no spoilers in candidate code)
-    expect(task?.candidate).toBeDefined();
+    expect(task?.rawCandidate).toBeDefined();
     expect(task?.rawCandidate).not.toContain("URLSearchParams");
     expect(task?.rawCandidate).toContain("PRODUCTS");
     expect(task?.rawCandidate).toContain("ProductCatalogUrlSync");
 
     // Solution code and raw code
-    expect(task?.solution).toBeDefined();
+    expect(task?.rawSolution).toBeDefined();
     expect(task?.rawSolution).toContain("URLSearchParams");
     expect(task?.rawSolution).toContain("parseFiltersFromUrl");
     expect(task?.rawSolution).toContain("serializeFiltersToQuery");
@@ -439,8 +439,8 @@ describe("taskRegistry", () => {
       expect(task?.section).toBe("react");
       expect(task?.category).toBe("Разминка");
       expect(task?.difficulty).toBe("warm-up");
-      expect(task?.candidate || task?.rawCandidate).toBeDefined();
-      expect(task?.solution || task?.rawSolution).toBeDefined();
+      expect(task?.rawCandidate).toBeDefined();
+      expect(task?.rawSolution).toBeDefined();
       expect(task?.checklist && task.checklist.length).toBeGreaterThanOrEqual(3);
       expect(task?.articles && task.articles.length).toBeGreaterThanOrEqual(1);
       expect(task?.interviewerQuestions && task.interviewerQuestions.length).toBeGreaterThanOrEqual(
@@ -456,12 +456,12 @@ describe("taskRegistry", () => {
     const task3 = await getTaskById("w3");
     expect(task3?.interviewerQuestions?.[0].question).toContain("checked");
 
-    // Verify tasks w19 and w21 have live interactive candidate components
+    // Verify tasks w19 and w21 are interactive tasks with starter code
     const task19 = await getTaskById("w19");
     const task21 = await getTaskById("w21");
-    expect(task19?.candidate).toBeDefined();
+    expect(task19?.rawCandidate).toBeDefined();
     expect(task19?.isRaw).toBeFalsy();
-    expect(task21?.candidate).toBeDefined();
+    expect(task21?.rawCandidate).toBeDefined();
     expect(task21?.isRaw).toBeFalsy();
     expect(task21?.rawSolution).toContain("React.memo");
 

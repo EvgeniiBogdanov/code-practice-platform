@@ -96,7 +96,7 @@ describe("DesignCasePage", () => {
 
     fireEvent.click(screen.getByRole("tab", { name: "Архитектура" }));
     expect(screen.getByText("Задание architecture")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Debounce" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Debounce/ })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("tab", { name: "В продакшене" }));
     expect(screen.getByText("Что будет под нагрузкой")).toBeInTheDocument();

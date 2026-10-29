@@ -119,7 +119,7 @@ export const REACT_JSX_PROPS: Record<
     {
       label: "onSubmit",
       insertText: "onSubmit={$1}",
-      detail: "(e: FormEvent) => void",
+      detail: "(e: SubmitEvent) => void",
       kind: "event",
     },
     {

@@ -68,7 +68,8 @@ export const KNOWN_MODULES: Record<string, { name: string; default?: string; nam
       "ChangeEvent",
       "MouseEvent",
       "KeyboardEvent",
-      "FormEvent",
+      "SubmitEvent",
+      "InputEvent",
       "FocusEvent",
       "PointerEvent",
       "TouchEvent",
@@ -258,7 +259,7 @@ export function isTypeScriptGenericContext(text: string): boolean {
   if (!text) return false;
   return (
     /\b(?:type|interface)\s+[A-Z][a-zA-Z0-9_$]*\s*<[^>]*$/.test(text) ||
-    /\b(?:ChangeEvent|MouseEvent|KeyboardEvent|FormEvent|FocusEvent|PointerEvent|TouchEvent|SyntheticEvent)\s*<[^>]*$/.test(
+    /\b(?:ChangeEvent|MouseEvent|KeyboardEvent|SubmitEvent|InputEvent|FormEvent|FocusEvent|PointerEvent|TouchEvent|SyntheticEvent)\s*<[^>]*$/.test(
       text
     ) ||
     /\b(?:useRef|useState|useReducer|createContext|useCallback|useMemo)\s*<[^>]*$/.test(text) ||

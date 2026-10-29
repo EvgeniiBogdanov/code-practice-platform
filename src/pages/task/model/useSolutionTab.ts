@@ -69,15 +69,11 @@ export function useSolutionTab(task: Task): UseSolutionTabReturn {
       }));
     }
     const solCode =
-      typeof activeSolution?.rawSolution === "string"
-        ? activeSolution.rawSolution
-        : typeof activeSolution?.code === "string"
-          ? activeSolution.code
-          : typeof task.rawSolution === "string"
-            ? task.rawSolution
-            : typeof task.solution === "string"
-              ? task.solution
-              : "";
+      activeSolution?.rawSolution ??
+      activeSolution?.code ??
+      task.rawSolution ??
+      task.solution ??
+      "";
 
     const solTask: Task = {
       ...task,

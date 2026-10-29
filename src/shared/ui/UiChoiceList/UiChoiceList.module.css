@@ -1,0 +1,156 @@
+/*
+ * The accent of a checked option; a section overrides it with its own colour:
+ * `.myList { --choice-accent: var(--color-sd); --choice-accent-bg: var(--color-sd-bg); }`.
+ */
+.list {
+  --choice-accent: var(--accent-primary);
+  --choice-accent-bg: var(--accent-primary-bg);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.option {
+  --choice-indicator-color: var(--text-muted);
+  --choice-indicator-bg: transparent;
+  --choice-indicator-border: var(--border-strong);
+
+  position: relative;
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  padding: var(--space-3) var(--space-4) var(--space-3) var(--space-3);
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.option:hover {
+  background: var(--state-hover);
+  border-color: var(--border-hover);
+}
+
+.option:has(.input:focus-visible) {
+  outline: 2px solid var(--choice-accent);
+  outline-offset: 2px;
+}
+
+/* Hidden but focusable: the native radio keeps arrow keys and screen readers working. */
+.input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.indicator {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-6);
+  height: var(--space-6);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-none);
+  color: var(--choice-indicator-color);
+  background: var(--choice-indicator-bg);
+  border: 1.5px solid var(--choice-indicator-border);
+  border-radius: var(--radius-full);
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+/* Centres the capital letter itself: the line box around it sits a fraction of a pixel off */
+.letter {
+  line-height: var(--lh-none);
+  text-box: trim-both cap alphabetic;
+}
+
+.checkIcon {
+  opacity: 0;
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-1-5);
+  min-width: 0;
+
+  /* Aligns the first line of the label with the middle of the indicator. */
+  padding-top: var(--space-0-5);
+}
+
+.label {
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-body);
+  color: var(--text-main);
+  text-align: left;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1-5);
+}
+
+.description {
+  font-size: var(--fs-label);
+  line-height: var(--lh-relaxed);
+  color: var(--text-muted);
+  text-align: left;
+}
+
+.checked {
+  --choice-indicator-color: var(--text-on-accent);
+  --choice-indicator-bg: var(--choice-accent);
+  --choice-indicator-border: var(--choice-accent);
+
+  background: var(--choice-accent-bg);
+  border-color: var(--choice-accent);
+}
+
+.checked:hover {
+  background: var(--choice-accent-bg);
+  border-color: var(--choice-accent);
+}
+
+.checked .checkIcon,
+.success .checkIcon {
+  opacity: 1;
+}
+
+/* A tone colours the row after an answer and wins over the checked accent. */
+.success,
+.success:hover {
+  --choice-indicator-color: var(--text-on-accent);
+  --choice-indicator-bg: var(--accent-green);
+  --choice-indicator-border: var(--accent-green);
+
+  background: var(--accent-green-bg);
+  border-color: var(--accent-green-border);
+}
+
+.success.checked {
+  border-color: var(--accent-green);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .option,
+  .indicator {
+    transition: none;
+  }
+}

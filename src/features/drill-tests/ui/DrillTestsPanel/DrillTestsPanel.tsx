@@ -58,15 +58,23 @@ export const DrillTestsPanel = ({
 }: DrillTestsPanelProps): React.JSX.Element => {
   const { report, phase, isStale, expandedRows } = controller;
   const isRunning = phase === "running";
-  const isCollapsed = useUIStore((state) => state.consoleCollapsed);
+  const storeCollapsed = useUIStore((state) => state.consoleCollapsed);
   const setConsoleCollapsed = useUIStore((state) => state.setConsoleCollapsed);
 
-  // A run started by the user reveals the panel, like the console does.
+  // A run started by the user reveals a collapsed panel without changing the persistent setting,
+  // like the console does. Only local state is updated during render: a store update here would
+  // re-render other components mid-render.
+  const [isRevealed, setIsRevealed] = React.useState(false);
   const [seenRuns, setSeenRuns] = React.useState(controller.manualRuns);
   if (controller.manualRuns !== seenRuns) {
     setSeenRuns(controller.manualRuns);
-    if (isCollapsed) setConsoleCollapsed(false);
+    setIsRevealed(true);
   }
+  const isCollapsed = storeCollapsed && !isRevealed;
+  const toggleCollapsed = (): void => {
+    setIsRevealed(false);
+    setConsoleCollapsed(!isCollapsed);
+  };
 
   const passed = report?.tests.filter((t) => t.passed).length ?? 0;
   const total = report?.tests.length ?? 0;
@@ -136,7 +144,7 @@ export const DrillTestsPanel = ({
               icon={isCollapsed ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
               aria-label={isCollapsed ? "Развернуть панель" : "Свернуть панель"}
               aria-expanded={!isCollapsed}
-              onClick={() => setConsoleCollapsed(!isCollapsed)}
+              onClick={toggleCollapsed}
             />
           </>
         }
